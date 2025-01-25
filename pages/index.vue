@@ -1,4 +1,6 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+import { navigateTo } from '#imports'
+
 function handleEnter() {
   navigateTo('/about')
 }
@@ -6,12 +8,25 @@ function handleEnter() {
 
 <template>
   <div class="flex justify-center pt-40">
-    <button @click="handleEnter" @keydown.enter="handleEnter" class="flex justify-center space-x-2 items-center uppercase focus:ring-4 focus-visible:outline-none focus:ring-black-12A focus:ring-offset-2 bg-orange-7 rounded-lg text-white px-4 py-2 font-thin text-2xl font-mono antialiased">
-      <NuxtLink to="/about">My Projects</NuxtLink>
-      <Icon name="uil:github" class="color-black" />
+    <button
+      :class="useClsx(
+        'flex items-center justify-center',
+        'rounded-lg bg-orange-7 px-4 py-2 text-2xl',
+        'text-white font-thin font-mono uppercase antialiased space-x-2',
+        'focus-visible:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-black-12A',
+      )"
+      @click="handleEnter"
+      @keydown.enter="handleEnter"
+    >
+      <NuxtLink to="/about">
+        My Projects
+      </NuxtLink>
+      <Icon class="color-black" name="uil:github" />
     </button>
   </div>
-  <div class="bg-black-12A text-white-12A p-10 mt-10 text-white text-2xl antialiased">
+  <div
+    :class="useClsx('text-white text-2xl text-white-12A antialiased mt-10 bg-black-12A p-10')"
+  >
     Hello!
   </div>
   <button class="bg-black">
