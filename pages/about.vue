@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <section class="bg-blue-9 h-screen">
+  <section class="bg-blue-7 h-screen">
     <h1>This is about me</h1>
   </section>
 </template>
