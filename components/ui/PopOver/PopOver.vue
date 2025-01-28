@@ -7,7 +7,7 @@
         'rounded-[4px] px-[15px] py-0',
         'h-[35px] !bg-pureWhite color-violet-11',
         'shadow-[0_2px_10px_var(--un-preset-radix-black7A)]',
-        'hover:bg-mauve-3 focus:shadow-[0_0_0_2px_var(--un-preset-radix-black12A)] ',
+        'hover:bg-mauve-3 focus:shadow-[0_0_0_2px_var(--un-preset-radix-black12A)]',
       )
       "
     >
