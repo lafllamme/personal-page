@@ -3,7 +3,13 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  modules: ['@nuxt/image', '@nuxt/icon', '@unocss/nuxt', 'radix-vue/nuxt'],
+  modules: [
+    '@nuxt/image', 
+    '@nuxt/icon', 
+    '@unocss/nuxt', 
+    'radix-vue/nuxt',
+    '@nuxthub/core'
+  ],
   css: [
     '@/assets/reset/main.ts',
   ],
