@@ -1,0 +1,130 @@
+<script setup lang="ts">
+import {computed, ref, watch, onMounted, defineProps} from 'vue'
+import {useClsx} from '~/composables/useClsx'
+import {definePageMeta} from "#imports";
+
+// Define the prop for the variant type. Default to 'expand'
+interface Props {
+  variant?: 'expand' | 'within'
+}
+
+withDefaults(defineProps<Props>(), {
+  variant: 'expand'
+})
+
+
+// Color mode composable
+const colorMode = useColorMode()
+// Reference to the button element
+const button = ref<HTMLButtonElement | null>(null)
+// Computed dark mode flag
+const isDark = computed(() => colorMode.value === 'dark')
+const isLoading = ref(true)
+
+
+// Toggle dark/light mode
+function toggleDarkMode() {
+  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+  console.log('[ColorMode] Toggled mode:', colorMode.value)
+}
+
+// Simulate an async delay (replace this with your actual loading logic)
+onMounted(() => {
+  isLoading.value = false
+})
+
+watch(() => isDark.value, (val) => {
+  console.log('[ColorMode] Is dark mode!:', val)
+})
+</script>
+
+<template>
+    <template v-if="isLoading">
+      <div class="w-12 h-12 sm:w-18 sm:-h-18 md:w-20 md:h-20 rounded-full bg-gray-8 dark:bg-gray-12 animate-pulse"></div>
+    </template>
+    <template v-else>
+      <button
+          ref="button"
+          class="theme-toggle w-12 h-12 sm:w-18 sm:-h-18 md:w-20 md:h-20"
+          :class="useClsx(
+            isDark && 'theme-toggle--toggled',
+            'focus-visible:outline focus-visible:ring focus-visible:ring-offset-2',
+            'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+            'blur-out'
+          )"
+          type="button"
+          title="Toggle theme"
+          aria-label="Toggle theme"
+          @click="toggleDarkMode"
+      >
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+            :class="useClsx(
+              isDark ? 'color-pureWhite' : 'color-pureBlack',
+              variant && `theme-toggle__${variant}`,
+              'transition-none'
+            )"
+            class="w-12 h-12 sm:w-18 sm:-h-18 md:w-20 md:h-20"
+            viewBox="0 0 32 32"
+        >
+          <template v-if="!variant || variant === 'expand'">
+            <clipPath id="theme-toggle__expand__cutout">
+              <path d="M0-11h25a1 1 0 0017 13v30H0Z"/>
+            </clipPath>
+            <g clip-path="url(#theme-toggle__expand__cutout)">
+              <circle cx="16" cy="16" r="8.4"/>
+              <path
+                  d="M18.3 3.2c0 1.3-1 2.3-2.3 2.3s-2.3-1-2.3-2.3S14.7.9 16 .9s2.3 1 2.3 2.3zm-4.6 25.6c0-1.3 1-2.3 2.3-2.3s2.3 1 2.3 2.3-1 2.3-2.3 2.3-2.3-1-2.3-2.3zm15.1-10.5c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zM3.2 13.7c1.3 0 2.3 1 2.3 2.3s-1 2.3-2.3 2.3S.9 17.3.9 16s1-2.3 2.3-2.3zm5.8-7C9 7.9 7.9 9 6.7 9S4.4 8 4.4 6.7s1-2.3 2.3-2.3S9 5.4 9 6.7zm16.3 21c-1.3 0-2.3-1-2.3-2.3s1-2.3 2.3-2.3 2.3 1 2.3 2.3-1 2.3-2.3 2.3zm2.4-21c0 1.3-1 2.3-2.3 2.3S23 7.9 23 6.7s1-2.3 2.3-2.3 2.4 1 2.4 2.3zM6.7 23C8 23 9 24 9 25.3s-1 2.3-2.3 2.3-2.3-1-2.3-2.3 1-2.3 2.3-2.3z"
+              />
+            </g>
+          </template>
+          <template v-else-if="variant === 'within'">
+            <clipPath id="theme-toggle__within__clip">
+              <path d="M0 0h32v32h-32ZM6 16A1 1 0 0026 16 1 1 0 006 16"/>
+            </clipPath>
+            <g clip-path="url(#theme-toggle__within__clip)">
+              <path
+                  d="M30.7 21.3 27.1 16l3.7-5.3c.4-.5.1-1.3-.6-1.4l-6.3-1.1-1.1-6.3c-.1-.6-.8-.9-1.4-.6L16 5l-5.4-3.7c-.5-.4-1.3-.1-1.4.6l-1 6.3-6.4 1.1c-.6.1-.9.9-.6 1.3L4.9 16l-3.7 5.3c-.4.5-.1 1.3.6 1.4l6.3 1.1 1.1 6.3c.1.6.8.9 1.4.6l5.3-3.7 5.3 3.7c.5.4 1.3.1 1.4-.6l1.1-6.3 6.3-1.1c.8-.1 1.1-.8.7-1.4zM16 25.1c-5.1 0-9.1-4.1-9.1-9.1 0-5.1 4.1-9.1 9.1-9.1s9.1 4.1 9.1 9.1c0 5.1-4 9.1-9.1 9.1z"
+              />
+            </g>
+            <path
+                class="theme-toggle__within__circle"
+                d="M16 7.7c-4.6 0-8.2 3.7-8.2 8.2s3.6 8.4 8.2 8.4 8.2-3.7 8.2-8.2-3.6-8.4-8.2-8.4zm0 14.4c-3.4 0-6.1-2.9-6.1-6.2s2.7-6.1 6.1-6.1c3.4 0 6.1 2.9 6.1 6.2s-2.7 6.1-6.1 6.1z"
+            />
+            <path
+                class="theme-toggle__within__inner"
+                d="M16 9.5c-3.6 0-6.4 2.9-6.4 6.4s2.8 6.5 6.4 6.5 6.4-2.9 6.4-6.4-2.8-6.5-6.4-6.5z"
+            />
+          </template>
+        </svg>
+      </button>
+    </template>
+</template>
+
+<style lang="scss" scoped>
+.theme-toggle {
+  --theme-toggle__expand--duration: 0.9s !important;
+  --theme-toggle__within--duration: 0.9s !important;
+  animation-timing-function: cubic-bezier(0.66, 0.22, 0.91, 0.93);
+}
+
+.blur-out {
+  animation: blur-out 0.6s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+}
+
+/**
+ * ----------------------------------------
+ * animation blur-out
+ * ----------------------------------------
+ */
+
+@keyframes blur-out {
+  0% {
+    filter: blur(10px) opacity(0%);
+  }
+  100% {
+    filter: blur(0.01);
+  }
+}
+</style>
