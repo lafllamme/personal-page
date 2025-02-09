@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import {computed, defineProps, onMounted, ref, watch} from 'vue'
+import {computed, defineProps, onMounted, ref} from 'vue'
 import {useClsx} from '~/composables/useClsx'
 
-// Define the prop for the variant type. Default to 'expand'
 interface Props {
   variant?: 'expand' | 'within'
 }
@@ -11,30 +10,36 @@ withDefaults(defineProps<Props>(), {
   variant: 'expand'
 })
 
-
-// Color mode composable
 const colorMode = useColorMode()
-// Reference to the button element
 const button = ref<HTMLButtonElement | null>(null)
-// Computed dark mode flag
 const isDark = computed(() => colorMode.value === 'dark')
 const isLoading = ref(true)
+const isAnimating = ref(false)
 
-
-// Toggle dark/light mode
 function toggleDarkMode() {
-  colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+  debounceAnimation()
   console.log('[ColorMode] Toggled mode:', colorMode.value)
 }
 
-// Simulate an async delay (replace this with your actual loading logic)
+function debounceAnimation(timeout: number = 1000) {
+  if (isAnimating.value) {
+    return
+  }
+  else {
+    isAnimating.value = true
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+
+    setTimeout(() => {
+      isAnimating.value = false
+    }, timeout)
+  }
+}
+
 onMounted(() => {
   isLoading.value = false
 })
 
-watch(() => isDark.value, (val) => {
-  console.log('[ColorMode] Is dark mode!:', val)
-})
+//TODO: Check why ring colors are not working as expected in dark mode
 </script>
 
 <template>
@@ -46,9 +51,10 @@ watch(() => isDark.value, (val) => {
           ref="button"
           :class="useClsx(
             isDark && 'theme-toggle--toggled',
-            'focus-visible:outline focus-visible:ring focus-visible:ring-offset-2',
+            '!ring-offset-inherit ring-offset-2 focus-visible:ring',
             'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-            'blur-out'
+            'outline-none',
+            'blur-out',
           )"
           aria-label="Toggle theme"
           class="theme-toggle w-12 h-12 sm:w-18 sm:-h-18 md:w-20 md:h-20"
