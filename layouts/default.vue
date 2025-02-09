@@ -16,10 +16,11 @@ import Header from '@/components/ui/Header/Header.vue'
 </template>
 
 <style lang="scss">
+//TODO: Fix dark mode settings
 html {
   @apply transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)];
   &.dark-theme {
-    @apply bg-black-12A;
+    background: rgb(25, 25, 25);
   }
   &.light-theme {
     @apply bg-gray-2;
