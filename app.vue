@@ -2,6 +2,8 @@
 </script>
 
 <template>
-  <NuxtLoadingIndicator :throttle="0" />
-  <NuxtPage />
+  <NuxtLayout>
+    <NuxtLoadingIndicator :throttle="0" />
+    <NuxtPage />
+  </NuxtLayout>
 </template>
