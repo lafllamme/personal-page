@@ -1,7 +1,6 @@
-<script setup lang="ts">
-import {computed, ref, watch, onMounted, defineProps} from 'vue'
+<script lang="ts" setup>
+import {computed, defineProps, onMounted, ref, watch} from 'vue'
 import {useClsx} from '~/composables/useClsx'
-import {definePageMeta} from "#imports";
 
 // Define the prop for the variant type. Default to 'expand'
 interface Props {
@@ -45,28 +44,28 @@ watch(() => isDark.value, (val) => {
     <template v-else>
       <button
           ref="button"
-          class="theme-toggle w-12 h-12 sm:w-18 sm:-h-18 md:w-20 md:h-20"
           :class="useClsx(
             isDark && 'theme-toggle--toggled',
             'focus-visible:outline focus-visible:ring focus-visible:ring-offset-2',
             'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
             'blur-out'
           )"
-          type="button"
-          title="Toggle theme"
           aria-label="Toggle theme"
+          class="theme-toggle w-12 h-12 sm:w-18 sm:-h-18 md:w-20 md:h-20"
+          title="Toggle theme"
+          type="button"
           @click="toggleDarkMode"
       >
         <svg
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
             :class="useClsx(
               isDark ? 'color-pureWhite' : 'color-pureBlack',
               variant && `theme-toggle__${variant}`,
               'transition-none'
             )"
+            aria-hidden="true"
             class="w-12 h-12 sm:w-18 sm:-h-18 md:w-20 md:h-20"
             viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
         >
           <template v-if="!variant || variant === 'expand'">
             <clipPath id="theme-toggle__expand__cutout">
@@ -121,7 +120,7 @@ watch(() => isDark.value, (val) => {
 
 @keyframes blur-out {
   0% {
-    filter: blur(10px) opacity(0%);
+    filter: blur(8px) opacity(0%);
   }
   100% {
     filter: blur(0.01);
