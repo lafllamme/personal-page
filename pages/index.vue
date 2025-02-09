@@ -14,6 +14,7 @@ function handleEnter() {
         'rounded-lg bg-orange-7 px-4 py-2 text-2xl',
         'text-white font-thin font-mono uppercase antialiased space-x-2',
         'focus-visible:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-black-12A',
+        'transition-all duration-900 ease-in-out',
       )"
       @click="handleEnter"
       @keydown.enter="handleEnter"
@@ -25,15 +26,8 @@ function handleEnter() {
     </button>
   </div>
   <div
-    :class="useClsx('text-white text-2xl text-white-12A antialiased mt-10 bg-black-12A p-10')"
+    :class="useClsx('color-orange-11 text-2xl antialiased mt-10 p-10')"
   >
     Hello!
   </div>
-  <button class="bg-black">
-    Nothing work (as expected)
-  </button>
 </template>
-
-<style scoped>
-
-</style>
