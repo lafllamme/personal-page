@@ -3,6 +3,7 @@ import {
   defineConfig,
   presetAttributify,
   presetIcons,
+  presetMini,
   presetTypography,
   presetUno,
   presetWebFonts,
@@ -115,6 +116,7 @@ export default defineConfig({
   },
   presets: [
     presetUno(),
+    presetMini(),
     presetAttributify(),
     presetIcons(),
     presetTypography(),
@@ -125,6 +127,8 @@ export default defineConfig({
     }),
     // @ts-expect-error presetRadix is not defined
     presetRadix({
+      darkSelector: '.dark',
+      lightSelector: '.light',
       palette: [
         'gray',
         'mauve',
