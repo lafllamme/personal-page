@@ -21,14 +21,14 @@ const currentTrigger = ref('')
     v-model="currentTrigger"
     class="relative z-[1] w-full flex justify-center"
   >
-    <NavigationMenuList class="center m-0 flex list-none rounded-[6px] bg-pureWhite p-1 shadow-[0_2px_10px] shadow-black7A">
+    <NavigationMenuList class="center m-0 flex list-none rounded-[6px] bg-pureWhite p-1 shadow-[0_2px_10px] shadow-black7A transition-colors duration-900 dark:bg-pureBlack">
       <NavigationMenuItem>
         <NavigationMenuTrigger
-          class="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] text-grass11 font-medium leading-none outline-none hover:bg-green3 focus:shadow-[0_0_0_2px] focus:shadow-green7"
+          class="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] text-mint-11 font-medium leading-none outline-none hover:bg-mint-3 focus:shadow-[0_0_0_2px] focus:shadow-mint-7"
         >
           Learn
           <Icon
-            class="relative top-[1px] text-green10 transition-transform duration-[250ms] ease-in group-data-[state=open]:-rotate-180"
+            class="relative top-[1px] text-mint-10 transition-transform duration-[250ms] ease-in group-data-[state=open]:-rotate-180"
             icon="radix-icons:caret-down"
           />
         </NavigationMenuTrigger>
@@ -39,7 +39,7 @@ const currentTrigger = ref('')
             <li class="grid row-span-3">
               <NavigationMenuLink as-child>
                 <a
-                  class="h-full w-full flex flex-col select-none justify-end rounded-[6px] from-green9 to-teal9 bg-gradient-to-b p-[25px] no-underline outline-none focus:shadow-[0_0_0_2px] focus:shadow-green7"
+                  class="h-full w-full flex flex-col select-none justify-end rounded-[6px] from-green9 to-teal9 bg-gradient-to-b p-[25px] no-underline outline-none focus:shadow-[0_0_0_2px] focus:shadow-mint-7"
                   href="/"
                 >
                   <img
@@ -76,11 +76,11 @@ const currentTrigger = ref('')
 
       <NavigationMenuItem>
         <NavigationMenuTrigger
-          class="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] text-grass11 font-medium leading-none outline-none hover:bg-green3 focus:shadow-[0_0_0_2px] focus:shadow-green7"
+          class="group flex select-none items-center justify-between gap-[2px] rounded-[4px] px-3 py-2 text-[15px] text-mint-11 font-medium leading-none outline-none hover:bg-mint-3 focus:shadow-[0_0_0_2px] focus:shadow-mint-7"
         >
           Overview
           <Icon
-            class="relative top-[1px] text-green10 transition-transform duration-[250ms] ease-in group-data-[state=open]:-rotate-180"
+            class="relative top-[1px] text-mint-10 transition-transform duration-[250ms] ease-in group-data-[state=open]:-rotate-180"
             icon="radix-icons:caret-down"
           />
         </NavigationMenuTrigger>
@@ -128,7 +128,7 @@ const currentTrigger = ref('')
 
       <NavigationMenuItem>
         <NavigationMenuLink
-          class="block select-none rounded-[4px] px-3 py-2 text-[15px] text-grass11 font-medium leading-none no-underline outline-none hover:bg-green3 focus:shadow-[0_0_0_2px] focus:shadow-green7"
+          class="block select-none rounded-[4px] px-3 py-2 text-[15px] text-mint-11 font-medium leading-none no-underline outline-none hover:bg-mint-3 focus:shadow-[0_0_0_2px] focus:shadow-mint-7"
           @click="navigateTo('/')"
         >
           Home
@@ -138,13 +138,13 @@ const currentTrigger = ref('')
       <NavigationMenuIndicator
         class="transition-[all,transform_250ms_ease] top-full z-[1] h-[10px] flex items-end justify-center overflow-hidden duration-200 data-[state=hidden]:animate-fadeOut data-[state=visible]:animate-fadeIn data-[state=hidden]:opacity-0"
       >
-        <div class="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-pureWhite" />
+        <div class="relative top-[70%] h-[10px] w-[10px] rotate-[45deg] rounded-tl-[2px] bg-pureWhite dark:bg-pureBlack" />
       </NavigationMenuIndicator>
     </NavigationMenuList>
 
     <div class="absolute left-0 top-full w-full flex perspective-[2000px] justify-center">
       <NavigationMenuViewport
-        class="transition-[width,_height] relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[10px] bg-pureWhite duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)] data-[state=closed]:animate-scaleOut data-[state=open]:animate-scaleIn"
+        class="transition-[width,_height] relative mt-[10px] h-[var(--radix-navigation-menu-viewport-height)] w-full origin-[top_center] overflow-hidden rounded-[10px] bg-pureWhite duration-300 sm:w-[var(--radix-navigation-menu-viewport-width)] data-[state=closed]:animate-scaleOut data-[state=open]:animate-scaleIn dark:bg-pureBlack"
       />
     </div>
   </NavigationMenuRoot>
