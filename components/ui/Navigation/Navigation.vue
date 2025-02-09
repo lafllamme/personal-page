@@ -129,9 +129,9 @@ const currentTrigger = ref('')
       <NavigationMenuItem>
         <NavigationMenuLink
           class="block select-none rounded-[4px] px-3 py-2 text-[15px] text-grass11 font-medium leading-none no-underline outline-none hover:bg-green3 focus:shadow-[0_0_0_2px] focus:shadow-green7"
-          href="https://github.com/unovue/radix-vue"
+          @click="navigateTo('/')"
         >
-          Github
+          Home
         </NavigationMenuLink>
       </NavigationMenuItem>
 
