@@ -51,7 +51,7 @@ onMounted(() => {
           ref="button"
           :class="useClsx(
             isDark && 'theme-toggle--toggled',
-            '!ring-offset-inherit ring-offset-2 focus-visible:ring',
+            'ring-offset-inherit focus-visible:ring',
             'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
             'outline-none',
             'blur-out',
