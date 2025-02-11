@@ -23,7 +23,11 @@ function handleEnter() {
         @click="handleEnter"
         @keydown.enter="handleEnter"
       >
-        <NuxtLink aria-label="My Projects" tabindex="-1" to="/about">
+        <NuxtLink
+          aria-label="My Projects"
+          tabindex="-1"
+          to="/about"
+        >
           My Projects
         </NuxtLink>
         <Icon class="color-black" name="uil:github" />
