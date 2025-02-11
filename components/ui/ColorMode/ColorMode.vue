@@ -54,7 +54,7 @@ onMounted(() => {
             'ring-offset-inherit focus-visible:ring',
             'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
             'outline-none',
-            'blur-out',
+            'blur-out z-2',
           )"
           aria-label="Toggle theme"
           class="theme-toggle w-12 h-12 sm:w-18 sm:-h-18 md:w-20 md:h-20"
