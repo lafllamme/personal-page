@@ -14,7 +14,7 @@ import ColorMode from '~/components/ui/ColorMode/ColorMode.vue'
       </h2>
       <div class="flex items-center">
         <!-- The actual site navigation -->
-        <Navigation class="pt-2" />
+        <Navigation class="pt-3 <md:hidden" />
         <!-- The color mode toggle, on the same row but not part of the nav-list -->
         <ColorMode
           :class="useClsx('absolute right-2 top-4 md:right-4')"
