@@ -29,7 +29,7 @@ const currentTrigger = ref('')
           Learn
           <Icon
             class="relative top-[1px] text-mint-10 transition-transform duration-[250ms] ease-in group-data-[state=open]:-rotate-180"
-            icon="radix-icons:caret-down"
+            icon="ri:arrow-down-s-line"
           />
         </NavigationMenuTrigger>
         <NavigationMenuContent
@@ -81,7 +81,7 @@ const currentTrigger = ref('')
           Overview
           <Icon
             class="relative top-[1px] text-mint-10 transition-transform duration-[250ms] ease-in group-data-[state=open]:-rotate-180"
-            icon="radix-icons:caret-down"
+            icon="ri:arrow-down-s-line"
           />
         </NavigationMenuTrigger>
         <NavigationMenuContent class="data-[motion=from-end]:animate-enterFromRight data-[motion=from-start]:animate-enterFromLeft data-[motion=to-end]:animate-exitToRight data-[motion=to-start]:animate-exitToLeft absolute left-0 top-0 w-full sm:w-auto">
