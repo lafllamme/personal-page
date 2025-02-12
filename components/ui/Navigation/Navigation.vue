@@ -28,7 +28,7 @@ const currentTrigger = ref('')
         >
           Learn
           <Icon
-            class="relative top-[1px] text-mint-10 transition-transform duration-[250ms] ease-in group-data-[state=open]:-rotate-180"
+            class="relative top-[1px] text-mint-10 transition-transform duration-[150ms] ease-in group-data-[state=open]:-rotate-180"
             icon="ri:arrow-down-s-line"
           />
         </NavigationMenuTrigger>
@@ -39,15 +39,15 @@ const currentTrigger = ref('')
             <li class="grid row-span-3">
               <NavigationMenuLink as-child>
                 <a
-                  class="h-full w-full flex flex-col select-none justify-end rounded-[6px] from-green9 to-teal9 bg-gradient-to-b p-[25px] no-underline outline-none focus:shadow-[0_0_0_2px] focus:shadow-mint-7"
+                  class="h-full w-full flex flex-col select-none justify-end rounded-[6px] from-cyan-9 to-mint-9 bg-gradient-to-b p-[25px] no-underline outline-none dark:from-cyan-4 dark:to-mint-4 focus:shadow-[0_0_0_2px] focus:shadow-mint-7"
                   href="/"
                 >
                   <img
                     class="w-16"
                     src="https://www.radix-vue.com/logo.svg"
                   >
-                  <div class="mb-[7px] mt-4 text-[18px] text-pureWhite font-medium leading-[1.2]">Radix Primitives</div>
-                  <p class="text-[14px] text-mauve4 leading-[1.3]">Unstyled, accessible components for Vue.</p>
+                  <div class="mb-[7px] mt-4 text-[18px] text-pureBlack font-medium leading-[1.2] dark:text-pureWhite">Radix Primitives</div>
+                  <p class="A text-[14px] text-gray-11A leading-[1.3] dark:text-gray-9A">Unstyled, accessible components for Vue.</p>
                 </a>
               </NavigationMenuLink>
             </li>
@@ -80,7 +80,7 @@ const currentTrigger = ref('')
         >
           Overview
           <Icon
-            class="relative top-[1px] text-mint-10 transition-transform duration-[250ms] ease-in group-data-[state=open]:-rotate-180"
+            class="relative top-[1px] text-mint-10 transition-transform duration-[150ms] ease-in group-data-[state=open]:-rotate-180"
             icon="ri:arrow-down-s-line"
           />
         </NavigationMenuTrigger>
