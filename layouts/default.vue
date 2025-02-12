@@ -3,7 +3,7 @@ import Header from '@/components/ui/Header/Header.vue'
 </script>
 
 <template>
-  <div class="scroll-none overflow-y-auto bg-gray-3 transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] dark:bg-black-12A">
+  <div class="scroll-none overflow-y-auto bg-gray-3 transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] dark:bg-gray-1">
     <!-- Shared Header (which may include your ColorMode component) -->
     <Header />
 
