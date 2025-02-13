@@ -11,6 +11,7 @@ import {
   NavigationMenuViewport,
 } from 'radix-vue'
 import { ref } from 'vue'
+import ColorMode from '~/components/ui/ColorMode/ColorMode.vue'
 import MenuListItem from './Menu/MenuListItem.vue'
 
 const currentTrigger = ref('')
@@ -43,6 +44,7 @@ const currentTrigger = ref('')
                   href="/"
                 >
                   <img
+                    alt="Radix Logo"
                     class="w-16"
                     src="https://www.radix-vue.com/logo.svg"
                   >
@@ -148,4 +150,7 @@ const currentTrigger = ref('')
       />
     </div>
   </NavigationMenuRoot>
+  <ColorMode
+    :class="useClsx('absolute right-2 top-4 md:right-4')"
+  />
 </template>
