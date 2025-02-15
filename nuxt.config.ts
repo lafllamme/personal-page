@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
+
+  tres: {
+    devtools: true,
+    glsl: true,
+  },
   modules: [
     '@nuxt/image',
     '@nuxt/icon',
@@ -13,6 +18,7 @@ export default defineNuxtConfig({
     'radix-vue/nuxt',
     '@nuxthub/core',
     '@nuxtjs/color-mode',
+    '@tresjs/nuxt',
   ],
   colorMode: {
     preference: 'system', // default value of $colorMode.preference
