@@ -2,6 +2,9 @@
 import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
 import { Mesh, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Uniform, Vector3, WebGLRenderer } from 'three'
 
+// Get reactive window size
+const { width, height } = useWindowSize()
+
 const shaderContainer = ref(null)
 let scene, camera, renderer, material, mesh
 const startTime = Date.now()
@@ -10,8 +13,10 @@ const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
+const aspectRatio = computed(() => width.value / height.value)
 
 const smallerMD = breakpoints.smaller('md')
+const isSafari = computed(() => /^(?:(?!chrome|android).)*safari/i.test(navigator.userAgent))
 
 watch(() => smallerMD.value, (value) => {
   console.debug('[Background] => smallerMD:', value)
@@ -19,23 +24,25 @@ watch(() => smallerMD.value, (value) => {
 
 console.debug('[Background] => isDark:', isDark.value)
 
-// Get reactive window size
-const { width, height } = useWindowSize()
-
 /**
  * Computes dynamic offset based on aspect ratio.
  */
 function computeDynamicOffset() {
-  const aspectRatio = width.value / height.value
-  const baseOffsetX = 0.7 // Base horizontal offset
-  const baseOffsetY = 0.35 // Base vertical offset
+  let baseOffsetX = 0.7 // Base horizontal offset
+  let baseOffsetY = 0.35 // Base vertical offset
 
-  console.log('[Background] => aspectRatio:', aspectRatio)
+  if (isSafari.value) {
+    console.log('[Background] => Safari detected, adjusting offset')
+    baseOffsetX *= 0.65
+    baseOffsetY *= 0.65
+  }
+
+  console.log('[Background] => aspectRatio:', aspectRatio.value)
   // Dynamically adjust based on aspect ratio
-  if (aspectRatio > 1.5) {
+  if (aspectRatio.value > 1.5) {
     return [baseOffsetX, baseOffsetY] // Desktop widescreen
   }
-  else if (aspectRatio > 1.2) {
+  else if (aspectRatio.value > 1.2) {
     return [baseOffsetX * 0.8, baseOffsetY * 1.1] // Tablet adjustment
   }
   else {
