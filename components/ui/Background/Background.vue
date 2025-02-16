@@ -1,5 +1,5 @@
 <script setup>
-import { useWindowSize } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
 import { Mesh, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Uniform, Vector3, WebGLRenderer } from 'three'
 
 const shaderContainer = ref(null)
@@ -8,6 +8,14 @@ const startTime = Date.now()
 const isLoaded = ref(true)
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+
+const smallerMD = breakpoints.smaller('md')
+
+watch(() => smallerMD.value, (value) => {
+  console.debug('[Background] => smallerMD:', value)
+})
 
 console.debug('[Background] => isDark:', isDark.value)
 
@@ -19,16 +27,19 @@ const { width, height } = useWindowSize()
  */
 function computeDynamicOffset() {
   const aspectRatio = width.value / height.value
+  const baseOffsetX = 0.7 // Base horizontal offset
+  const baseOffsetY = 0.35 // Base vertical offset
 
-  // Adjust offset dynamically based on aspect ratio
-  if (aspectRatio >= 1.5) {
-    return [0.65, 0.4] // Wider screens
+  console.log('[Background] => aspectRatio:', aspectRatio)
+  // Dynamically adjust based on aspect ratio
+  if (aspectRatio > 1.5) {
+    return [baseOffsetX, baseOffsetY] // Desktop widescreen
   }
-  else if (aspectRatio >= 1.2) {
-    return [0.45, 0.3] // Tablets / Medium screens
+  else if (aspectRatio > 1.2) {
+    return [baseOffsetX * 0.8, baseOffsetY * 1.1] // Tablet adjustment
   }
   else {
-    return [0.2, 0.2] // Mobile screens
+    return [baseOffsetX * 0.95, baseOffsetY * 3.5] // Mobile, more shift needed
   }
 }
 
@@ -189,6 +200,7 @@ function updateCanvas() {
   const scale = 2.5 // Adjust to fit screen better
   mesh.geometry.dispose()
   mesh.geometry = new PlaneGeometry(scale * aspectRatio, scale)
+  initShaders()
 }
 
 function initShaders() {
