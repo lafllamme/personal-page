@@ -1,52 +1,93 @@
 <script setup>
 import { useWindowSize } from '@vueuse/core'
-import { Mesh, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Vector3, WebGLRenderer } from 'three'
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { Mesh, PerspectiveCamera, PlaneGeometry, Scene, ShaderMaterial, Uniform, Vector3, WebGLRenderer } from 'three'
 
 const shaderContainer = ref(null)
 let scene, camera, renderer, material, mesh
 const startTime = Date.now()
+const isLoaded = ref(true)
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.value === 'dark')
 
-// Mit useWindowSize hast du reactive window width/height (optional, falls du später dynamisch darauf reagieren willst)
+console.debug('[Background] => isDark:', isDark.value)
+
+// Get reactive window size
 const { width, height } = useWindowSize()
 
-// Initialisierung der Three.js-Szene und des Shaders
+/**
+ * Computes dynamic offset based on aspect ratio.
+ */
+function computeDynamicOffset() {
+  const aspectRatio = width.value / height.value
+
+  // Adjust offset dynamically based on aspect ratio
+  if (aspectRatio >= 1.5) {
+    return [0.65, 0.4] // Wider screens
+  }
+  else if (aspectRatio >= 1.2) {
+    return [0.45, 0.3] // Tablets / Medium screens
+  }
+  else {
+    return [0.2, 0.2] // Mobile screens
+  }
+}
+
+/**
+ * Initializes the Three.js scene and applies the shader.
+ */
 function init() {
+  if (!shaderContainer.value)
+    return
+
   const container = shaderContainer.value
-  const w = width.value
-  const h = height.value
+  const aspectRatio = width.value / height.value
 
-  console.log('w:', w, 'h:', h)
+  // Clean up previous instances
+  if (renderer) {
+    container.removeChild(renderer.domElement)
+    renderer.dispose()
+  }
 
+  // Create Three.js Scene and Camera
   scene = new Scene()
+  camera = new PerspectiveCamera(75, aspectRatio, 0.1, 1000)
+  camera.position.z = 1.2 // Adjusted for better centering
 
-  camera = new PerspectiveCamera(75, w / h, 0.1, 1000)
-  camera.position.z = 1
-
-  // Renderer mit transparentem Hintergrund (alpha: true) – so sieht der Canvas keine schwarze Clear-Farbe
+  // Setup WebGL Renderer
   renderer = new WebGLRenderer({ antialias: true, alpha: true })
-  renderer.setSize(w, h)
-  renderer.setClearColor(0x000000, 0) // Clear-Farbe Schwarz, aber 0 Alpha (volltransparent)
+  renderer.setSize(width.value, height.value)
+  renderer.setPixelRatio(window.devicePixelRatio)
   container.appendChild(renderer.domElement)
 
-  // Standard-Vertex-Shader
+  // Calculate dynamic offset
+  const dynamicOffset = computeDynamicOffset()
+
+  // Vertex Shader (Pass-through)
   const vertexShader = `
     void main() {
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `
 
-  // Fragment-Shader (dein Shadertoy-Code)
+  const darkShades = `
+    #define COLOUR_1 vec4(0.298, 0.733, 0.647, 1.0)
+    #define COLOUR_2 vec4(0.0, 0.282, 0.345, 1.0)
+    #define COLOUR_3 vec4(0.02, 0.02, 0.02, 1.0)
+    `
+  const lightShades = `
+    #define COLOUR_1 vec4(0.0, 0.439, 0.373, 1.0)
+    #define COLOUR_2 vec4(0.0, 0.412, 0.502, 1.0)
+    #define COLOUR_3 vec4(0.941, 0.941, 0.941, 1.0)
+  `
+  // Fragment Shader (Dynamic Offset)
   const fragmentShader = `
     uniform vec3 iResolution;
     uniform float iTime;
+    uniform vec2 dynamicOffset; // Dynamic offset passed from JS
 
     #define SPIN_ROTATION -2.0
     #define SPIN_SPEED 7.0
-    #define OFFSET vec2(0.0)
-    #define COLOUR_1 vec4(0.871, 0.267, 0.231, 1.0)
-    #define COLOUR_2 vec4(0.0, 0.42, 0.706, 1.0)
-    #define COLOUR_3 vec4(0.086, 0.137, 0.145, 1.0)
+    ${isDark.value ? darkShades : lightShades}
     #define CONTRAST 3.5
     #define LIGTHING 0.4
     #define SPIN_AMOUNT 0.25
@@ -57,7 +98,7 @@ function init() {
 
     vec4 effect(vec2 screenSize, vec2 screen_coords) {
         float pixel_size = length(screenSize.xy) / PIXEL_FILTER;
-        vec2 uv = (floor(screen_coords.xy*(1.0/pixel_size))*pixel_size - 0.5*screenSize.xy) / length(screenSize.xy) - OFFSET;
+        vec2 uv = (floor(screen_coords.xy * (1.0 / pixel_size)) * pixel_size - 0.5 * screenSize.xy) / length(screenSize.xy) - dynamicOffset;
         float uv_len = length(uv);
 
         float speed = (SPIN_ROTATION * SPIN_EASE * 0.2);
@@ -100,50 +141,85 @@ function init() {
     }
   `
 
-  // ShaderMaterial mit den benötigten Uniforms
+  // Create Shader Material with Dynamic Offset
   material = new ShaderMaterial({
     uniforms: {
-      iResolution: { value: new Vector3(w, h, 1) },
+      iResolution: { value: new Vector3(width.value, height.value, 1) },
       iTime: { value: 0 },
+      dynamicOffset: new Uniform(new Vector3(...dynamicOffset)), // Pass computed offset
     },
     vertexShader,
     fragmentShader,
   })
 
-  // Erstellen einer vollflächigen Plane, auf die der Shader angewandt wird
-  const geometry = new PlaneGeometry(2, 2)
+  // Correcting the geometry scaling
+  const scale = 2 // Adjust to fit screen better
+  const geometry = new PlaneGeometry(scale * aspectRatio, scale)
   mesh = new Mesh(geometry, material)
   scene.add(mesh)
 }
 
+/**
+ * Animation loop to update the shader time.
+ */
 function animate() {
   requestAnimationFrame(animate)
-  material.uniforms.iTime.value = (Date.now() - startTime) * 0.001 // iTime in Sekunden
+  material.uniforms.iTime.value = (Date.now() - startTime) * 0.001
   renderer.render(scene, camera)
 }
 
-function onWindowResize() {
-  const container = shaderContainer.value
-  const w = width.value
-  const h = height.value
-  camera.aspect = w / h
+/**
+ * Updates the Three.js scene on window resize.
+ */
+function updateCanvas() {
+  if (!shaderContainer.value)
+    return
+
+  const aspectRatio = width.value / height.value
+  camera.aspect = aspectRatio
   camera.updateProjectionMatrix()
-  renderer.setSize(w, h)
-  material.uniforms.iResolution.value.set(w, h, 1)
+
+  renderer.setSize(width.value, height.value)
+  material.uniforms.iResolution.value.set(width.value, height.value, 1)
+
+  // Update dynamic offset on resize
+  material.uniforms.dynamicOffset.value.set(...computeDynamicOffset())
+
+  // Adjust plane geometry dynamically
+  const scale = 2.5 // Adjust to fit screen better
+  mesh.geometry.dispose()
+  mesh.geometry = new PlaneGeometry(scale * aspectRatio, scale)
 }
 
-onMounted(() => {
+function initShaders() {
   init()
   animate()
-  window.addEventListener('resize', onWindowResize)
+  isLoaded.value = true
+  window.addEventListener('resize', updateCanvas)
+}
+
+// Watch for window size changes
+watch([width, height], updateCanvas)
+
+onMounted(() => {
+  initShaders()
+  window.addEventListener('resize', updateCanvas)
 })
 
+// eslint-disable-next-line no-undef
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', onWindowResize)
+  window.removeEventListener('resize', updateCanvas)
+  if (renderer)
+    renderer.dispose()
+})
+
+watch (isDark, () => {
+  initShaders()
 })
 </script>
 
 <template>
-  <!-- Der Container nimmt dank Tailwind/UnoCSS die gesamte Ansicht ein und ist nicht klickbar -->
-  <div ref="shaderContainer" class="h-full w-full" />
+  <div
+    ref="shaderContainer"
+  />
 </template>
