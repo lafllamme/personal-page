@@ -18,7 +18,7 @@ function handleEnter() {
           'font-thin font-mono uppercase antialiased space-x-2',
           'shadow-[6px_8px_100px_6px] shadow-mint-7',
           'focus-visible:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-black-12A',
-          'transition-color duration-900 ease-in-out',
+          'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]',
         )"
         @click="handleEnter"
         @keydown.enter="handleEnter"
