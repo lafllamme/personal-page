@@ -4,6 +4,7 @@ export default antfu({
   formatters: true,
   unocss: true,
   vue: true,
+  typescript: true,
   eslintOptions: {
     rules: {
       'no-console': 'warn', // Example: Warn for console.log usage
