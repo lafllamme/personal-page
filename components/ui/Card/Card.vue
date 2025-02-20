@@ -39,9 +39,9 @@ import CardItem from '@/components/ui/Card/CardItem.vue'
           <CardItem
             :translate-z="20"
             as="a"
-            href="https://rahulv.dev"
             target="__blank"
             class="rounded-xl px-4 py-2 text-xs font-normal dark:text-pureWhite"
+            @click="navigateTo('/')"
           >
             Visit →
           </CardItem>
@@ -49,6 +49,7 @@ import CardItem from '@/components/ui/Card/CardItem.vue'
             :translate-z="20"
             as="button"
             class="rounded-xl bg-pureBlack px-4 py-2 text-xs text-pureWhite font-bold dark:bg-pureWhite dark:text-pureBlack"
+            @click="navigateTo('/')"
           >
             Get Started
           </CardItem>
