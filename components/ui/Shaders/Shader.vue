@@ -7,6 +7,8 @@ import vertexShader from './vertex.glsl?raw'
 // Reactive window size
 const { width, height } = useWindowSize()
 
+const aspectRatio = computed(() => width.value / height.value)
+
 // GLSL uniforms
 const uniforms = reactive({
   iTime: { value: 0 },
@@ -43,7 +45,7 @@ watch([width, height], () => {
     <TresPerspectiveCamera
       visible
       :position="[0, 0, 1]"
-      :args="[45, 1, 0.1, 1000]"
+      :args="[45, aspectRatio, 0.1, 1000]"
     />
     <OrbitControls />
     <!-- A plane sized to the same width/height as the camera's boundaries -->
