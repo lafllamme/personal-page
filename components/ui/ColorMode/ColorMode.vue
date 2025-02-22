@@ -38,8 +38,6 @@ function debounceAnimation(timeout: number = 1000) {
 onMounted(() => {
   isLoading.value = false
 })
-
-//TODO: Check why ring colors are not working as expected in dark mode
 </script>
 
 <template>
