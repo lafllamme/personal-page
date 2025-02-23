@@ -15,8 +15,10 @@
 #define PI 3.14159265359
 #define IS_ROTATE false
 
-uniform vec3 iResolution;  // viewport resolution (in pixels)
-uniform float iTime;       // shader playback time (in seconds)
+uniform vec2 iResolution;// viewport resolution (in pixels)
+uniform float iTime;// shader playback time (in seconds)
+varying vec2 vUv;
+
 
 vec4 effect(vec2 screenSize, vec2 screen_coords) {
     float pixel_size = length(screenSize.xy) / PIXEL_FILTER;
@@ -25,7 +27,7 @@ vec4 effect(vec2 screenSize, vec2 screen_coords) {
 
     float speed = (SPIN_ROTATION * SPIN_EASE * 0.2);
     if (IS_ROTATE) {
-       speed = iTime * speed;
+        speed = iTime * speed;
     }
     speed += 302.2;
     float new_pixel_angle = atan(uv.y, uv.x) + speed - SPIN_EASE * 20.0 * (1.0 * SPIN_AMOUNT * uv_len + (1.0 - 1.0 * SPIN_AMOUNT));
@@ -57,5 +59,6 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord) {
 }
 
 void main() {
-    mainImage(gl_FragColor, gl_FragCoord.xy);
+    vec2 fragCoord = vUv * iResolution;
+    mainImage(gl_FragColor, fragCoord);
 }
