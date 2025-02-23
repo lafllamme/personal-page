@@ -1,5 +1,3 @@
-// Original by localthunk (https://www.playbalatro.com)
-
 // Configuration (modify these values to change the effect)
 #define SPIN_ROTATION -2.0
 #define SPIN_SPEED 7.0
