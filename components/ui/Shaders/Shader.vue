@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { OrbitControls } from '@tresjs/cientos'
 import { useWindowSize } from '@vueuse/core'
-import { Vector2 } from 'three'
+import { Vector3 } from 'three'
 import fragmentShader from './fragment.glsl?raw'
 import vertexShader from './vertex.glsl?raw'
 
@@ -12,7 +12,7 @@ const aspectRatio = computed(() => width.value / height.value)
 // GLSL uniforms
 const uniforms = {
   iTime: { value: 0 },
-  iResolution: { value: new Vector2(width.value, height.value) },
+  iResolution: { value: new Vector3(width.value, height.value, 1) },
 }
 
 const { onLoop } = useRenderLoop()
@@ -24,12 +24,15 @@ onLoop(({ delta, elapsed }) => {
     shaderRef.value.uniforms.iTime.value = elapsed
   }
 })
+watch([width, height], () => {
+  uniforms.iResolution.value.set(width.value, height.value, 1)
+})
 </script>
 
 <template>
   <!-- Make the canvas fill the entire screen -->
   <TresCanvas
-    clear-color="#fff"
+    clear-color="#000"
     preset="realistic"
     window-size
   >
