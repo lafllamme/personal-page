@@ -8,19 +8,20 @@
 #define CONTRAST 3.5
 #define LIGTHING 0.4
 #define SPIN_AMOUNT 0.25
-#define PIXEL_FILTER 2100.0
+#define PIXEL_FILTER 1600.0
 #define SPIN_EASE 1.0
 #define PI 3.14159265359
 #define IS_ROTATE false
 
 uniform vec2 iResolution;// viewport resolution (in pixels)
 uniform float iTime;// shader playback time (in seconds)
+uniform float uOpacity;
 varying vec2 vUv;
 
 
 vec4 effect(vec2 screenSize, vec2 screen_coords) {
     float pixel_size = length(screenSize.xy) / PIXEL_FILTER;
-    vec2 uv = (floor(screen_coords.xy * (1.0 / pixel_size)) * pixel_size - 0.5 * screenSize.xy) / min(screenSize.x, screenSize.y);
+    vec2 uv = (floor(screen_coords.xy * (1.0 / pixel_size)) * pixel_size - 0.5 * screenSize.xy) / length(screenSize.xy) - OFFSET;
     float uv_len = length(uv);
 
     float speed = (SPIN_ROTATION * SPIN_EASE * 0.2);
