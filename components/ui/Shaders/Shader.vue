@@ -2,24 +2,22 @@
 import { OrbitControls } from '@tresjs/cientos'
 import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
 import { Vector3 } from 'three'
-import fragmentShader from './fragment.glsl?raw'
-import fragmentShaderMobile from './fragmentMobile.glsl?raw'
+import fragmentDesktopDark from './Dark/fragment.glsl?raw'
+import fragmentMobileDark from './Dark/fragmentMobile.glsl?raw'
+import fragmentDesktop from './Light/fragment.glsl?raw'
+import fragmentMobile from './Light/fragmentMobile.glsl?raw'
+
 import vertexShader from './vertex.glsl?raw'
 
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.value === 'dark')
 const breakpoints = useBreakpoints(breakpointsTailwind)
-
-const smAndLarger = breakpoints.greaterOrEqual('sm') // sm and larger
-const largerThanSm = breakpoints.greater('sm') // only larger than sm
-const lgAndSmaller = breakpoints.smallerOrEqual('lg') // lg and smaller
-const smallerThanLg = breakpoints.smaller('lg') // only smaller than lg
-const smallerMD = breakpoints.smaller('md') // only smaller than lg
-console.debug('[Shader] => smAndLarger:', smAndLarger.value)
-console.debug('[Shader] => largerThanSm:', largerThanSm.value)
-console.debug('[Shader] => lgAndSmaller:', lgAndSmaller.value)
-console.debug('[Shader] => smallerThanLg:', smallerThanLg.value)
-console.debug('[Shader] => smallerMD:', smallerMD.value)
-
-const shader = computed(() => smallerMD.value ? fragmentShaderMobile : fragmentShader)
+const shader = computed(() => {
+  if (breakpoints.smaller('md').value) {
+    return isDark.value ? fragmentMobileDark : fragmentMobile
+  }
+  return isDark.value ? fragmentDesktopDark : fragmentDesktop
+})
 
 const shaderRef = shallowRef<TresObject | null>(null)
 const { width, height } = useWindowSize()
@@ -48,6 +46,7 @@ watch([width, height], () => {
 <template>
   <!-- Make the canvas fill the entire screen -->
   <TresCanvas
+    :key="shader"
     clear-color="#000"
     preset="realistic"
     window-size
