@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { OrbitControls } from '@tresjs/cientos'
 import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
 import { Vector3 } from 'three'
 import fragmentDesktopDark from './Dark/fragment.glsl?raw'
@@ -51,7 +50,9 @@ watch([width, height], () => {
     preset="realistic"
     window-size
   >
-    <OrbitControls />
+    <!--
+        <OrbitControls />
+    -->
     <TresPerspectiveCamera
       :aspect="aspectRatio"
       :position="[0, 0, height]"
