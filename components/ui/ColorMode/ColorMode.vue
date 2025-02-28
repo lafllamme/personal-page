@@ -39,7 +39,7 @@ onMounted(() => {
 
 <template>
   <template v-if="isLoading">
-    <div class="h-12 w-12 animate-pulse rounded-full bg-gray-8 md:h-20 md:w-20 sm:w-18 dark:bg-gray-12 sm:-h-18" />
+    <div class="h-12 w-12 animate-pulse rounded-full bg-gray-8 dark:bg-gray-12" />
   </template>
   <template v-else>
     <button
@@ -52,7 +52,7 @@ onMounted(() => {
         'blur-out z-2',
       )"
       aria-label="Toggle theme"
-      class="theme-toggle h-12 w-12 md:h-20 md:w-20 sm:w-18 sm:-h-18"
+      class="theme-toggle h-12 w-12"
       title="Toggle theme"
       type="button"
       @click="toggleDarkMode"
@@ -64,7 +64,7 @@ onMounted(() => {
           'transition-none',
         )"
         aria-hidden="true"
-        class="h-12 w-12 md:h-20 md:w-20 sm:w-18 sm:-h-18"
+        class="h-12 w-12"
         viewBox="0 0 32 32"
         xmlns="http://www.w3.org/2000/svg"
       >
