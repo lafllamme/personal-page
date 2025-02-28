@@ -37,7 +37,7 @@ importers:
         version: 4.3.3(three@0.173.0)(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
       '@tresjs/nuxt':
         specifier: ^3.0.7
-        version: 3.0.7(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+        version: 3.0.7(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@tresjs/post-processing':
         specifier: ^2.1.0
         version: 2.1.0(@tresjs/core@4.3.3(three@0.173.0)(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3)))(three@0.173.0)(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
@@ -47,12 +47,18 @@ importers:
       '@vueuse/core':
         specifier: ^12.5.0
         version: 12.5.0(typescript@5.7.3)
+      '@vueuse/integrations':
+        specifier: ^12.7.0
+        version: 12.7.0(change-case@5.4.4)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.7.3)
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
       consola:
         specifier: ^3.4.0
         version: 3.4.0
+      focus-trap:
+        specifier: ^7
+        version: 7.6.4
       motion-v:
         specifier: ^0.9.0
         version: 0.9.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(vue@3.5.13(typescript@5.7.3))
@@ -2615,8 +2621,11 @@ packages:
   '@vueuse/core@12.6.1':
     resolution: {integrity: sha512-FpgM1tXGAHsAC5n4Tflyg0vSoJUmdevfKaAhKFdxiK9BTIdHOHOiWmo+xivwdzjYFIvI8cEeJWYuqs646jOM2w==}
 
-  '@vueuse/integrations@12.6.1':
-    resolution: {integrity: sha512-TsX9noygHqZGGoAcvvu+DoSGtbeuVl49V6gZZLgNxmKGeAxH2wQrlS3/7TM2wNczIkKV541bbOmhcQH6D+CM4Q==}
+  '@vueuse/core@12.7.0':
+    resolution: {integrity: sha512-jtK5B7YjZXmkGNHjviyGO4s3ZtEhbzSgrbX+s5o+Lr8i2nYqNyHuPVOeTdM1/hZ5Tkxg/KktAuAVDDiHMraMVA==}
+
+  '@vueuse/integrations@12.7.0':
+    resolution: {integrity: sha512-IEq7K4bCl7mn3uKJaWtNXnd1CAPaHLUMuyj5K1/k/pVcItt0VONZW8xiGxdIovJcQjkzOHjImhX5t6gija+0/g==}
     peerDependencies:
       async-validator: ^4
       axios: ^1
@@ -2668,6 +2677,9 @@ packages:
   '@vueuse/metadata@12.6.1':
     resolution: {integrity: sha512-2094HNXGdsU3aqRbad0vmlRgGncMC4u2f6nFdW1mUn7b7ym4hORrDZfyeq8G5BfGvX4y0zZynWfCdtB2WwpyVw==}
 
+  '@vueuse/metadata@12.7.0':
+    resolution: {integrity: sha512-4VvTH9mrjXqFN5LYa5YfqHVRI6j7R00Vy4995Rw7PQxyCL3z0Lli86iN4UemWqixxEvYfRjG+hF9wL8oLOn+3g==}
+
   '@vueuse/shared@10.11.1':
     resolution: {integrity: sha512-LHpC8711VFZlDaYUXEBbFBCQ7GS3dVU9mjOhhMhXP6txTV4EhYQg/KGnQuvt/sPAtoUKq7VVUnL6mVtFoL42sA==}
 
@@ -2676,6 +2688,9 @@ packages:
 
   '@vueuse/shared@12.6.1':
     resolution: {integrity: sha512-ukTb2na19KT1/YVjj4CYBDOgiV/xmsSJRL6TcKeiz2db+P5bT3I0OJxy38eRR3WSN8CmSnt7MdVJ16vX6VZFxg==}
+
+  '@vueuse/shared@12.7.0':
+    resolution: {integrity: sha512-coLlUw2HHKsm7rPN6WqHJQr18WymN4wkA/3ThFaJ4v4gWGWAQQGK+MJxLuJTBs4mojQiazlVWAKNJNpUWGRkNw==}
 
   '@webassemblyjs/ast@1.14.1':
     resolution: {integrity: sha512-nuBEDgQfm1ccRp/8bCQrx1frohyufl4JlbMMZ4P1wpeOfDhF6FQkxZJ1b/e+PLwr6X1Nhw6OLme5usuBWYBvuQ==}
@@ -3976,6 +3991,9 @@ packages:
 
   flatted@3.3.2:
     resolution: {integrity: sha512-AiwGJM8YcNOaobumgtng+6NHuOqC3A7MixFeDafM3X9cIUM+xUXoS5Vfgf+OihAYe20fxqNM9yPBXJzRtZ/4eA==}
+
+  focus-trap@7.6.4:
+    resolution: {integrity: sha512-xx560wGBk7seZ6y933idtjJQc1l+ck+pI3sKvhKozdBV1dRZoKhkW5xoCaFv9tQiX5RH1xfSxjuNu6g+lmN/gw==}
 
   foreground-child@3.3.0:
     resolution: {integrity: sha512-Ld2g8rrAyMYFXBhEqMz8ZAHBi4J4uS1i/CxGMDnjyFWddMXLVcDp051DZfu+t7+ab7Wv6SMqpWmyFIj5UbfFvg==}
@@ -6160,6 +6178,9 @@ packages:
     resolution: {integrity: sha512-ulAk51I9UVUyJgxlv9M6lFot2WP3e7t8Kz9+IS6D4rVba1tR9kON+Ey69f+1R4Q8cd45Lod6a4IcJIxnzGc/zA==}
     engines: {node: '>=18'}
 
+  tabbable@6.2.0:
+    resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
+
   tailwind-config-viewer@2.0.4:
     resolution: {integrity: sha512-icvcmdMmt9dphvas8wL40qttrHwAnW3QEN4ExJ2zICjwRsPj7gowd1cOceaWG3IfTuM/cTNGQcx+bsjMtmV+cw==}
     engines: {node: '>=13'}
@@ -8265,7 +8286,7 @@ snapshots:
       - magicast
       - supports-color
 
-  '@nuxt/ui@2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))':
+  '@nuxt/ui@2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       '@headlessui/tailwindcss': 0.2.2(tailwindcss@3.4.17)
       '@headlessui/vue': 1.7.23(vue@3.5.13(typescript@5.7.3))
@@ -8279,8 +8300,8 @@ snapshots:
       '@tailwindcss/container-queries': 0.1.1(tailwindcss@3.4.17)
       '@tailwindcss/forms': 0.5.10(tailwindcss@3.4.17)
       '@tailwindcss/typography': 0.5.16(tailwindcss@3.4.17)
-      '@vueuse/core': 12.5.0(typescript@5.7.3)
-      '@vueuse/integrations': 12.6.1(change-case@5.4.4)(fuse.js@7.1.0)(typescript@5.7.3)
+      '@vueuse/core': 12.6.1(typescript@5.7.3)
+      '@vueuse/integrations': 12.7.0(change-case@5.4.4)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.7.3)
       '@vueuse/math': 12.6.1(typescript@5.7.3)
       defu: 6.1.4
       fuse.js: 7.1.0
@@ -8896,13 +8917,13 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@tresjs/nuxt@2.0.1(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@2.0.1(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 3.6.0-next.0(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 2.0.1-next.0(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 2.0.1-next.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.159.0
       '@unocss/nuxt': 0.58.9(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -8934,11 +8955,11 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@2.0.1-next.0(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@2.0.1-next.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 3.6.0-next.0(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
       '@types/three': 0.159.0
       '@unocss/nuxt': 0.58.9(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
@@ -8971,13 +8992,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@2.0.2(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@2.0.2(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 3.6.1(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 2.0.1(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 2.0.1(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.160.0
       '@unocss/nuxt': 0.58.9(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9009,13 +9030,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@2.1.0(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@2.1.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 3.7.0(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 2.0.2(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 2.0.2(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.160.0
       '@unocss/nuxt': 0.58.9(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9047,13 +9068,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@2.1.1(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@2.1.1(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 3.7.0(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 2.1.0(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 2.1.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.160.0
       '@unocss/nuxt': 0.58.9(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9085,13 +9106,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@2.1.2(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@2.1.2(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 3.9.0(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 2.1.1(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 2.1.1(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.164.1
       '@unocss/nuxt': 0.59.4(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9123,13 +9144,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@3.0.0(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@3.0.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 4.0.2(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 2.1.2(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 2.1.2(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.165.0
       '@unocss/nuxt': 0.61.9(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9161,13 +9182,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@3.0.1(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@3.0.1(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 4.1.0(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 3.0.0(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 3.0.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.166.0
       '@unocss/nuxt': 0.61.9(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9199,13 +9220,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@3.0.2(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@3.0.2(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 4.2.1(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 3.0.1(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 3.0.1(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.166.0
       '@unocss/nuxt': 0.61.9(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9237,13 +9258,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@3.0.3(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@3.0.3(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 4.2.6(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 3.0.2(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 3.0.2(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.167.2
       '@unocss/nuxt': 0.62.4(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9275,13 +9296,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@3.0.4(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@3.0.4(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 4.2.7(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 3.0.3(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 3.0.3(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.167.2
       '@unocss/nuxt': 0.62.4(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9313,13 +9334,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@3.0.6(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@3.0.6(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 4.2.9(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 3.0.4(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 3.0.4(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.167.2
       '@unocss/nuxt': 0.62.4(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -9351,13 +9372,13 @@ snapshots:
       - vue
       - webpack
 
-  '@tresjs/nuxt@3.0.7(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
+  '@tresjs/nuxt@3.0.7(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))':
     dependencies:
       '@nuxt/devtools-kit': 1.7.0(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))
       '@nuxt/kit': 3.15.4(magicast@0.3.5)
-      '@nuxt/ui': 2.21.0(change-case@5.4.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
+      '@nuxt/ui': 2.21.0(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
       '@tresjs/core': 4.2.10(three@0.173.0)(vue@3.5.13(typescript@5.7.3))
-      '@tresjs/nuxt': 3.0.6(change-case@5.4.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
+      '@tresjs/nuxt': 3.0.6(change-case@5.4.4)(focus-trap@7.6.4)(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(three@0.173.0)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))(webpack@5.98.0(esbuild@0.23.1))
       '@types/three': 0.168.0
       '@unocss/nuxt': 0.62.4(magicast@0.3.5)(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.98.0(esbuild@0.23.1))
       defu: 6.1.4
@@ -10796,13 +10817,23 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@vueuse/integrations@12.6.1(change-case@5.4.4)(fuse.js@7.1.0)(typescript@5.7.3)':
+  '@vueuse/core@12.7.0(typescript@5.7.3)':
     dependencies:
-      '@vueuse/core': 12.6.1(typescript@5.7.3)
-      '@vueuse/shared': 12.6.1(typescript@5.7.3)
+      '@types/web-bluetooth': 0.0.20
+      '@vueuse/metadata': 12.7.0
+      '@vueuse/shared': 12.7.0(typescript@5.7.3)
+      vue: 3.5.13(typescript@5.7.3)
+    transitivePeerDependencies:
+      - typescript
+
+  '@vueuse/integrations@12.7.0(change-case@5.4.4)(focus-trap@7.6.4)(fuse.js@7.1.0)(typescript@5.7.3)':
+    dependencies:
+      '@vueuse/core': 12.7.0(typescript@5.7.3)
+      '@vueuse/shared': 12.7.0(typescript@5.7.3)
       vue: 3.5.13(typescript@5.7.3)
     optionalDependencies:
       change-case: 5.4.4
+      focus-trap: 7.6.4
       fuse.js: 7.1.0
     transitivePeerDependencies:
       - typescript
@@ -10820,6 +10851,8 @@ snapshots:
 
   '@vueuse/metadata@12.6.1': {}
 
+  '@vueuse/metadata@12.7.0': {}
+
   '@vueuse/shared@10.11.1(vue@3.5.13(typescript@5.7.3))':
     dependencies:
       vue-demi: 0.14.10(vue@3.5.13(typescript@5.7.3))
@@ -10834,6 +10867,12 @@ snapshots:
       - typescript
 
   '@vueuse/shared@12.6.1(typescript@5.7.3)':
+    dependencies:
+      vue: 3.5.13(typescript@5.7.3)
+    transitivePeerDependencies:
+      - typescript
+
+  '@vueuse/shared@12.7.0(typescript@5.7.3)':
     dependencies:
       vue: 3.5.13(typescript@5.7.3)
     transitivePeerDependencies:
@@ -12362,6 +12401,10 @@ snapshots:
       keyv: 4.5.4
 
   flatted@3.3.2: {}
+
+  focus-trap@7.6.4:
+    dependencies:
+      tabbable: 6.2.0
 
   foreground-child@3.3.0:
     dependencies:
@@ -14992,6 +15035,8 @@ snapshots:
       tslib: 2.8.1
 
   system-architecture@0.1.0: {}
+
+  tabbable@6.2.0: {}
 
   tailwind-config-viewer@2.0.4(tailwindcss@3.4.17):
     dependencies:
