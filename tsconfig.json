@@ -1,7 +1,19 @@
+// tsconfig.json
 {
-  // https://nuxt.com/docs/guide/concepts/typescript
   "extends": "./.nuxt/tsconfig.json",
-  "paths": {
-    "@/*": ["./*"]
+  "compilerOptions": {
+    "baseUrl": ".",
+    // Important for path aliases
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@shared-types": [
+        "types/index.ts"
+      ],
+      "@shared-types/*": [
+        "types/*"
+      ]
+    }
   }
 }
