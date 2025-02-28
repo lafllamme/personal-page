@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import Navigation from '@/components/ui/Navigation/Navigation.vue'
 import NavigationMobile from '~/components/ui/Navigation/Mobile/NavigationMobile.vue'
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -10,7 +12,7 @@ import NavigationMobile from '~/components/ui/Navigation/Mobile/NavigationMobile
         id="mainMenuLabel"
         class="sr-only"
       >
-        Main Menu
+        {{ t('menu') }}
       </h2>
       <div>
         <!-- The actual site navigation -->
@@ -25,6 +27,35 @@ import NavigationMobile from '~/components/ui/Navigation/Mobile/NavigationMobile
   </header>
 </template>
 
-<style scoped>
-
-</style>
+<i18n lang="yaml">
+de:
+  menu: "Hauptmenü"
+en:
+  menu: "Main Menu"
+fr:
+  menu: "Menu Principal"
+ja:
+  menu: "メインメニュー"
+zh:
+  menu: "主菜单"
+pt:
+  menu: "Menu Principal"
+es:
+  menu: "Menú Principal"
+pl:
+  menu: "Menu Główne"
+da:
+  menu: "Hovedmenu"
+cs:
+  menu: "Hlavní menu"
+nl:
+  menu: "Hoofdmenu"
+el:
+  menu: "Κύριο Μενού"
+tr:
+  menu: "Ana Menü"
+ko:
+  menu: "메인 메뉴"
+uk:
+  menu: "Головне меню"
+</i18n>
