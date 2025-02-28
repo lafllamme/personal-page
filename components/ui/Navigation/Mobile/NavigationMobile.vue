@@ -1,48 +1,29 @@
 <script lang="ts" setup>
-import { Icon } from '@iconify/vue'
-import ColorMode from '~/components/ui/ColorMode/ColorMode.vue'
+import type { NavigationProps } from './NavigationMobile.model'
+import NavigationMobileItem from '@/components/ui/Navigation/Mobile/Item/NavigationMobileItem.vue'
+import { NavigationDefaults } from './NavigationMobile.model'
 
-const isOpen = ref(false)
-
-function handleClick() {
-  console.log('clicked')
-  isOpen.value = !isOpen.value
-}
+const props = withDefaults(defineProps<NavigationProps>(), NavigationDefaults)
+const { open, items } = toRefs(props)
 </script>
 
 <template>
-  <!-- Outer flex container -->
-  <div class="w-full flex items-center">
-    <!-- Left group (ColorMode, Search, Menu) -->
-    <div class="flex flex-1 justify-center space-x-2">
-      <ColorMode />
-      <button>
-        <Icon
-          class="h-10 w-10 color-pureWhite transition-all duration-900 ease-in-out dark:color-pureBlack"
-          icon="ri:search-2-line"
-          @click="handleClick"
+  <div
+    id="mobile-menu"
+    :class="useClsx(
+      'overflow-hidden backdrop-blur-md backdrop-saturate-150',
+      'bg-pureBlack/30 dark:bg-pureWhite/30 saturation-900 transition-all ease-in-out',
+      open ? 'max-h-96' : 'max-h-0',
+    )"
+    aria-labelledby="mobile-menu-button"
+  >
+    <div class="mx-auto max-w-7xl px-4 py-4">
+      <nav class="flex flex-col gap-4">
+        <NavigationMobileItem
+          :items="items"
+          :tab-index="open ? 0 : -1"
         />
-      </button>
-      <button>
-        <Icon
-          :class="isOpen ? 'rotate-180' : ''"
-          class="h-10 w-10 color-pureWhite transition-all duration-900 ease-in-out dark:color-pureBlack"
-          icon="ri:menu-3-line"
-          @click="handleClick"
-        />
-      </button>
-    </div>
-
-    <!-- Right icon (World) -->
-    <div class="flex justify-end">
-      <Icon
-        class="h-10 w-10 color-pureWhite transition-all duration-900 ease-in-out dark:color-pureBlack"
-        icon="streamline:earth-1"
-      />
+      </nav>
     </div>
   </div>
 </template>
-
-<style lang="scss" scoped>
-
-</style>
