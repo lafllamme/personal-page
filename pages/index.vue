@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { navigateTo } from '#imports'
-
 function handleEnter() {
   navigateTo('/about')
 }
@@ -25,13 +23,13 @@ const { t } = useI18n()
         @click="handleEnter"
         @keydown.enter="handleEnter"
       >
-        <NuxtLink
+        <NuxtLinkLocale
           aria-label="My Projects"
           tabindex="-1"
           to="/about"
         >
           {{ t('projects') }}
-        </NuxtLink>
+        </NuxtLinkLocale>
         <Icon class="color-black" name="uil:github" />
       </button>
     </div>
