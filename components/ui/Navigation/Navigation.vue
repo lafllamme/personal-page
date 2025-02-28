@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { Icon } from '@iconify/vue'
+import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import {
   NavigationMenuContent,
   NavigationMenuIndicator,
@@ -10,8 +10,6 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from 'radix-vue'
-import { ref } from 'vue'
-import ColorMode from '~/components/ui/ColorMode/ColorMode.vue'
 import MenuListItem from './Menu/MenuListItem.vue'
 
 const { t } = useI18n()
