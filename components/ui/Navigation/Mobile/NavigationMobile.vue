@@ -3,6 +3,7 @@ import { Icon } from '@iconify/vue'
 import ColorMode from '~/components/ui/ColorMode/ColorMode.vue'
 
 const isOpen = ref(false)
+
 function handleClick() {
   console.log('clicked')
   isOpen.value = !isOpen.value
@@ -10,24 +11,35 @@ function handleClick() {
 </script>
 
 <template>
-  <div class="flex justify-center space-x-2">
-    <ColorMode />
-    <button>
-      <Icon
-        class="h-10 w-10 color-pureBlack transition-transform duration-700 ease-in-out dark:color-pureWhite"
-        icon="ri:search-2-line"
-        @click="handleClick"
-      />
-    </button>
+  <!-- Outer flex container -->
+  <div class="w-full flex items-center">
+    <!-- Left group (ColorMode, Search, Menu) -->
+    <div class="flex flex-1 justify-center space-x-2">
+      <ColorMode />
+      <button>
+        <Icon
+          class="h-10 w-10 color-pureWhite transition-all duration-900 ease-in-out dark:color-pureBlack"
+          icon="ri:search-2-line"
+          @click="handleClick"
+        />
+      </button>
+      <button>
+        <Icon
+          :class="isOpen ? 'rotate-180' : ''"
+          class="h-10 w-10 color-pureWhite transition-all duration-900 ease-in-out dark:color-pureBlack"
+          icon="ri:menu-3-line"
+          @click="handleClick"
+        />
+      </button>
+    </div>
 
-    <button>
+    <!-- Right icon (World) -->
+    <div class="flex justify-end">
       <Icon
-        :class="isOpen ? 'rotate-180' : ''"
-        class="h-10 w-10 color-pureBlack transition-transform duration-700 ease-in-out dark:color-pureWhite"
-        icon="ri:menu-3-line"
-        @click="handleClick"
+        class="h-10 w-10 color-pureWhite transition-all duration-900 ease-in-out dark:color-pureBlack"
+        icon="streamline:earth-1"
       />
-    </button>
+    </div>
   </div>
 </template>
 
