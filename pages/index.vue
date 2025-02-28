@@ -4,6 +4,8 @@ import { navigateTo } from '#imports'
 function handleEnter() {
   navigateTo('/about')
 }
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -28,10 +30,58 @@ function handleEnter() {
           tabindex="-1"
           to="/about"
         >
-          My Projects
+          {{ t('projects') }}
         </NuxtLink>
         <Icon class="color-black" name="uil:github" />
       </button>
     </div>
   </div>
 </template>
+
+<i18n lang="yaml">
+de:
+  hello: "Hallo Welt!"
+  projects: "Meine Projekte"
+en:
+  hello: "Hello world!"
+  projects: "My Projects"
+fr:
+  hello: "Bonjour le monde!"
+  projects: "Mes projets"
+ja:
+  hello: "こんにちは世界！"
+  projects: "私のプロジェクト"
+zh:
+  hello: "你好，世界！"
+  projects: "我的项目"
+pt:
+  hello: "Olá mundo!"
+  projects: "Meus Projetos"
+es:
+  hello: "¡Hola mundo!"
+  projects: "Mis Proyectos"
+pl:
+  hello: "Witaj świecie!"
+  projects: "Moje Projekty"
+da:
+  hello: "Hej verden!"
+  projects: "Mine Projekter"
+cs:
+  hello: "Ahoj světe!"
+  projects: "Moje Projekty"
+nl:
+  hello: "Hallo wereld!"
+  projects: "Mijn Projecten"
+el:
+  hello: "Γειά σου κόσμε!"
+  projects: "Τα έργα μου"
+tr:
+  hello: "Merhaba dünya!"
+  projects: "Projelerim"
+ko:
+  hello: "안녕하세요, 세계!"
+  projects: "내 프로젝트"
+uk:
+  hello: "Привіт, світ!"
+  projects: "Мої проекти"
+</i18n>
