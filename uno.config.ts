@@ -7,6 +7,7 @@ import {
   presetTypography,
   presetUno,
   presetWebFonts,
+  presetWind,
   transformerDirectives,
   transformerVariantGroup,
 } from 'unocss'
@@ -23,21 +24,21 @@ export default defineConfig({
       keyframes: {
         keyframes: {
           enterFromRight:
-              '0%{opacity:0;transform:translateX(200px);}100%{opacity:1;transform:translateX(0);}',
+                        '0%{opacity:0;transform:translateX(200px);}100%{opacity:1;transform:translateX(0);}',
           enterFromLeft:
-              '0%{opacity:0;transform:translateX(-200px);}100%{opacity:1;transform:translateX(0);}',
+                        '0%{opacity:0;transform:translateX(-200px);}100%{opacity:1;transform:translateX(0);}',
           exitToRight:
-              '0%{opacity:1;transform:translateX(0);}100%{opacity:0;transform:translateX(200px);}',
+                        '0%{opacity:1;transform:translateX(0);}100%{opacity:0;transform:translateX(200px);}',
           exitToLeft:
-              '0%{opacity:1;transform:translateX(0);}100%{opacity:0;transform:translateX(-200px);}',
+                        '0%{opacity:1;transform:translateX(0);}100%{opacity:0;transform:translateX(-200px);}',
           scaleIn:
-              '0%{opacity:0;transform:rotateX(-10deg) scale(0.9);}100%{opacity:1;transform:rotateX(0deg) scale(1);}',
+                        '0%{opacity:0;transform:rotateX(-10deg) scale(0.9);}100%{opacity:1;transform:rotateX(0deg) scale(1);}',
           scaleOut:
-              '0%{opacity:1;transform:rotateX(0deg) scale(1);}100%{opacity:0;transform:rotateX(-10deg) scale(0.95);}',
+                        '0%{opacity:1;transform:rotateX(0deg) scale(1);}100%{opacity:0;transform:rotateX(-10deg) scale(0.95);}',
           fadeIn:
-              '0%{opacity:0;}100%{opacity:1;}',
+                        '0%{opacity:0;}100%{opacity:1;}',
           fadeOut:
-              '0%{opacity:1;}100%{opacity:0;}',
+                        '0%{opacity:1;}100%{opacity:0;}',
         },
       },
       animation: {
@@ -103,6 +104,7 @@ export default defineConfig({
   presets: [
     presetUno(),
     presetMini(),
+    presetWind(),
     presetAttributify(),
     presetIcons(),
     presetTypography(),
