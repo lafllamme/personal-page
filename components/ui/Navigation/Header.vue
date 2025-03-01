@@ -28,12 +28,12 @@ const scrollThreshold = computed(() => width.value * 0.1)
 
 // Watch scrollY for show/hide behavior (optional)
 watch(scrollY, (currentScrollY, previousScrollY) => {
-  if (currentScrollY < scrollThreshold.value) {
+  /* if (currentScrollY < scrollThreshold.value) {
     isVisible.value = true
   }
   else {
     isVisible.value = currentScrollY <= previousScrollY
-  }
+  } */
 })
 
 // Toggle menu with focus trap for accessibility
