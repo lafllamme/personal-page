@@ -21,4 +21,5 @@ export const languages: LanguageOption[] = [
   { code: 'tr', labelKey: 'languages.tr' },
   { code: 'ko', labelKey: 'languages.ko' },
   { code: 'uk', labelKey: 'languages.uk' },
+  { code: 'ar', labelKey: 'languages.ar' },
 ]
