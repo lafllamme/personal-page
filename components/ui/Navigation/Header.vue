@@ -116,12 +116,6 @@ watch(isOpen, (newVal) => {
         <div
           :class="useClsx('flex items-center gap-6 color-pureBlack transition-colors dark:color-pureWhite')"
         >
-          <!-- Language Switcher -->
-          <LanguageSwitcher v-model:open="isSwitchOpen" />
-
-          <!-- Dark Mode Toggle & Burger Menu -->
-          <ColorMode />
-
           <button
             v-if="smallerMD"
             id="mobile-menu-button"
@@ -134,6 +128,10 @@ watch(isOpen, (newVal) => {
           >
             <Icon class="h-12 w-12 cursor-pointer" name="ri:menu-3-fill" />
           </button>
+          <!-- Dark Mode Toggle & Burger Menu -->
+          <ColorMode />
+          <!-- Language Switcher -->
+          <LanguageSwitcher v-model:open="isSwitchOpen" />
         </div>
       </div>
 
