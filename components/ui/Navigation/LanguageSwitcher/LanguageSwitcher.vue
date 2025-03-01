@@ -2,12 +2,13 @@
 import type { LanguageSwitcherProps } from './LanguageSwitcher.model'
 import { languages } from '@/types/i18n'
 import { onClickOutside } from '@vueuse/core'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
+import { computed, nextTick, ref, toRefs, watch } from 'vue'
 import { LanguageSwitcherDefaults } from './LanguageSwitcher.model'
 
 const props = withDefaults(defineProps<LanguageSwitcherProps>(), LanguageSwitcherDefaults)
 
-// Toggle language dropdown
-// define an emit when the language is changed
+// Define emit for language menu state changes
 const emit = defineEmits<{
   (e: 'update:open', state: boolean): void
 }>()
@@ -15,51 +16,90 @@ const emit = defineEmits<{
 const { open } = toRefs(props)
 
 const langSwitcher = ref<HTMLElement | null>(null)
+// Ref for the language switcher button
+const langSwitcherButton = ref<HTMLButtonElement | null>(null)
+// Ref for the language menu container (for focus trapping)
+const languageMenu = ref<HTMLElement | null>(null)
+
 const { locale, t, setLocale } = useI18n()
 
-const currentLanguageLabel = computed(() => {
-  return (locale.value || '').toUpperCase()
-})
+const currentLanguageLabel = computed(() => (locale.value || '').toUpperCase())
 
+// Toggle menu on click with proper close logic
 function toggleLanguage() {
-  // open.value = !open.value
-  console.debug('[Toggle] Language, Open ?', open.value)
-  emit('update:open', !open.value)
+  if (open.value) {
+    // If already open, close the menu and deactivate the focus trap.
+    emit('update:open', false)
+    deactivate()
+    return
+  }
+  // Otherwise, open the menu and activate the focus trap.
+  emit('update:open', true)
+  nextTick(() => {
+    activate()
+  })
+  // Optionally, return focus to the button.
+  langSwitcherButton.value?.focus()
 }
 
+// Open menu on hover (if not already open) and focus the button
+function openLanguage() {
+  if (!open.value) {
+    emit('update:open', true)
+    nextTick(() => {
+      activate()
+    })
+  }
+  langSwitcherButton.value?.focus()
+}
+
+// Change language and close the menu
 function changeLanguage(code: string) {
-  // Set the locale to the selected language
   setLocale(code)
-  // Close the dropdown
-  open.value = false
   emit('update:open', false)
+  deactivate()
 }
 
 // Close dropdown when clicking outside
 onClickOutside(langSwitcher, () => {
   if (open.value) {
-    open.value = false
     emit('update:open', false)
+    deactivate()
   }
 })
 
+// Sort languages alphabetically based on their translated label
 const sortedLanguages = computed(() => {
-  // Make a shallow copy so we don’t mutate the original array
   const copy = [...languages]
-
-  // Sort by their translated label
   copy.sort((a, b) => {
     const labelA = t(a.labelKey)
     const labelB = t(b.labelKey)
-    // Compare them with localeCompare for proper alphabetical sorting
     return labelA.localeCompare(labelB, locale.value, { sensitivity: 'base' })
   })
-
   return copy
 })
 
-watch(open, (newVal) => {
-  console.debug('open', newVal)
+// Set up VueUse focus trap on the language menu element.
+// We customize initialFocus so that the container itself is focused,
+// preventing the autofocus styling on the first menu item.
+const { activate, deactivate } = useFocusTrap(languageMenu, {
+  escapeDeactivates: true,
+  clickOutsideDeactivates: true,
+  onDeactivate: () => {
+    emit('update:open', false)
+  },
+  initialFocus: () => languageMenu.value, // Focus the container instead of first focusable element
+})
+
+// Watch the open state and activate/deactivate the focus trap accordingly.
+watch(open, async (newVal) => {
+  if (newVal) {
+    await nextTick()
+    activate()
+  }
+  else {
+    deactivate()
+  }
 })
 </script>
 
@@ -69,19 +109,20 @@ watch(open, (newVal) => {
     class="relative transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
   >
     <button
+      ref="langSwitcherButton"
       :aria-expanded="open"
       :class="useClsx(
         'hover:text-mint-12 hover:bg-gray-2/50 dark:hover:bg-gray-3/50',
         'flex items-center rounded-full px-2 py-1 antialiased font-700',
-        'focus:ring-pureBlack dark:focus:ring-pureWhite focus:outline-none focus:ring-2 ',
-        'ring-offset-pureBlack dark:ring-offset-pureWhite ',
+        'focus:ring-pureBlack dark:focus:ring-pureWhite focus:outline-none focus:ring-2',
+        'ring-offset-pureBlack dark:ring-offset-pureWhite',
         'hover:shadow-md hover:shadow-pureBlack/5 hover:dark:shadow-pureWhite/5',
       )"
       aria-controls="language-menu"
       aria-haspopup="true"
       @click="toggleLanguage"
-      @mouseenter="toggleLanguage"
-      @keydown.esc="open = false"
+      @mouseenter="openLanguage"
+      @keydown.esc="emit('update:open', false)"
     >
       <span>{{ currentLanguageLabel }}</span>
       <Icon
@@ -94,14 +135,17 @@ watch(open, (newVal) => {
     <div
       v-show="open"
       id="language-menu"
+      ref="languageMenu"
       :class="useClsx(
         'ring-pureBlack/5 dark:ring-pureWhite/5 ring-1',
         'absolute right-0 mt-2 w-36 rounded-xl shadow-lg',
         'backdrop-blur-md backdrop-saturate-150',
         'bg-pureWhite/10 dark:bg-pureBlack/10',
-
+        'focus:outline-none ',
       )"
       role="menu"
+      tabindex="-1"
+      @mouseleave="toggleLanguage"
     >
       <div class="overflow-visible py-2">
         <NuxtLinkLocale
