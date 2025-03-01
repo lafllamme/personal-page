@@ -66,7 +66,7 @@ watch(open, (newVal) => {
 <template>
   <div
     ref="langSwitcher"
-    class="relative"
+    class="relative transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
   >
     <button
       :aria-expanded="open"
@@ -98,6 +98,8 @@ watch(open, (newVal) => {
         'ring-pureBlack/5 dark:ring-pureWhite/5 ring-1',
         'absolute right-0 mt-2 w-36 rounded-xl shadow-lg',
         'backdrop-blur-md backdrop-saturate-150',
+        'bg-pureWhite/10 dark:bg-pureBlack/10',
+
       )"
       role="menu"
     >
@@ -106,7 +108,7 @@ watch(open, (newVal) => {
           v-for="lang in sortedLanguages"
           :key="lang.code"
           :class="useClsx(
-            'hover:bg-gray-3/50 hover:bg-op-50 dark:hover:bg-gray-2/50',
+            'hover:bg-pureWhite/50 hover:dark:bg-pureBlack/50 hover:bg-op-50',
             'hover:text-mint-12',
             'focus:ring-pureBlack dark:focus:ring-pureWhite font-600 antialiased focus:outline-none focus:ring-2 focus:ring-inset',
             'block cursor-pointer px-4 py-2 text-sm font-mono uppercase text-center',
