@@ -119,6 +119,10 @@ watch(isOpen, (newVal) => {
             'color-pureBlack dark:color-pureWhite',
           )"
         >
+          <!-- Dark Mode Toggle & Burger Menu -->
+          <ColorMode />
+          <!-- Language Switcher -->
+          <LanguageSwitcher v-model:open="isSwitchOpen" />
           <button
             v-if="smallerMD"
             id="mobile-menu-button"
@@ -131,10 +135,6 @@ watch(isOpen, (newVal) => {
           >
             <Icon class="h-12 w-12 cursor-pointer" name="ri:menu-3-fill" />
           </button>
-          <!-- Dark Mode Toggle & Burger Menu -->
-          <ColorMode />
-          <!-- Language Switcher -->
-          <LanguageSwitcher v-model:open="isSwitchOpen" />
         </div>
       </div>
 
