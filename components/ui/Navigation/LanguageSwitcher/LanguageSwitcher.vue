@@ -1,72 +1,83 @@
 <script lang="ts" setup>
 import type { LanguageSwitcherProps } from './LanguageSwitcher.model'
 import { languages } from '@/types/i18n'
-import { onClickOutside, useDebounceFn } from '@vueuse/core'
+import { onClickOutside } from '@vueuse/core'
 import { computed, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { LanguageSwitcherDefaults } from './LanguageSwitcher.model'
 
 const props = withDefaults(defineProps<LanguageSwitcherProps>(), LanguageSwitcherDefaults)
-
-// Define emit for language menu state changes.
-const emit = defineEmits<{
-  (e: 'update:open', state: boolean): void
-}>()
-
+const emit = defineEmits<{ (e: 'update:open', state: boolean): void }>()
 const { open } = toRefs(props)
 
-const langSwitcher = ref<HTMLElement | null>(null)
-const langSwitcherButton = ref<HTMLButtonElement | null>(null)
-const languageMenu = ref<HTMLElement | null>(null)
+// References for container, button, and menu
+const container = ref<HTMLElement | null>(null)
+const buttonRef = ref<HTMLButtonElement | null>(null)
+const menuRef = ref<HTMLElement | null>(null)
 
-// Local state to keep track of how the menu was activated
+// Track how the menu was opened: via 'hover' or 'click'
 const activationSource = ref<'hover' | 'click' | null>(null)
-// Flag to temporarily ignore hover events after a click.
-const ignoreHover = ref(false)
-const resetIgnoreHover = useDebounceFn(() => {
-  ignoreHover.value = false
-}, 200)
+
+// Timer reference for closing the menu (safe area)
+let closeTimer: number | null = null
+
+// Start a close timer when mouse leaves (applies for both click and hover activations)
+function startCloseTimer() {
+  closeTimer = window.setTimeout(() => {
+    emit('update:open', false)
+    activationSource.value = null
+    closeTimer = null
+  }, 300) // 300ms delay gives the user a safe area to re-enter
+}
+
+// Cancel any scheduled close
+function cancelCloseTimer() {
+  if (closeTimer !== null) {
+    clearTimeout(closeTimer)
+    closeTimer = null
+  }
+}
 
 const { locale, t, setLocale } = useI18n()
 const currentLanguageLabel = computed(() => (locale.value || '').toUpperCase())
 
-// Toggle menu when the button is clicked.
+// Toggle the menu on button click.
+// Whether the menu was opened via click or hover, clicking toggles it.
 function toggleLanguage() {
-  consola.info('[LanguageSwitcher] Click => Toggle language menu')
-  // Set flag to ignore any hover events for a short time.
-  ignoreHover.value = true
-  resetIgnoreHover()
-
+  cancelCloseTimer() // cancel any pending close action
   if (open.value) {
-    // If open, close it.
     emit('update:open', false)
     activationSource.value = null
   }
   else {
-    // Otherwise open it and mark the activation as a click.
     emit('update:open', true)
     activationSource.value = 'click'
   }
-  langSwitcherButton.value?.focus()
+  buttonRef.value?.focus()
 }
 
-// Open the menu on hover if not already open or if we're not ignoring hover events.
-function openLanguage() {
-  consola.info('[LanguageSwitcher] Mouse Enter => Open language menu')
-  if (!open.value && !ignoreHover.value) {
+// When mouse enters the button, cancel any close timer and open if not already open.
+function onButtonMouseEnter() {
+  cancelCloseTimer()
+  if (!open.value) {
     emit('update:open', true)
     activationSource.value = 'hover'
   }
-  langSwitcherButton.value?.focus()
 }
 
-// If the menu was opened by hover, close it on mouse leave.
-function closeLanguage() {
-  consola.info('[LanguageSwitcher] Mouse Leave from menu')
-  if (activationSource.value === 'hover') {
-    emit('update:open', false)
-    activationSource.value = null
-  }
+// When mouse leaves the button, start the close timer.
+function onButtonMouseLeave() {
+  startCloseTimer()
+}
+
+// When mouse enters the menu, cancel the close timer.
+function onMenuMouseEnter() {
+  cancelCloseTimer()
+}
+
+// When mouse leaves the menu, start the close timer.
+function onMenuMouseLeave() {
+  startCloseTimer()
 }
 
 // Change language and close the menu.
@@ -76,12 +87,10 @@ function changeLanguage(code: string) {
   activationSource.value = null
 }
 
-// Close the menu when clicking outside of the entire switcher.
-onClickOutside(langSwitcher, () => {
-  if (open.value) {
-    emit('update:open', false)
-    activationSource.value = null
-  }
+// Close the menu if clicking outside the entire container.
+onClickOutside(container, () => {
+  emit('update:open', false)
+  activationSource.value = null
 })
 
 // Sort languages alphabetically based on their translated label.
@@ -97,12 +106,14 @@ const sortedLanguages = computed(() => {
 </script>
 
 <template>
+  <!-- Container that wraps both the button and dropdown.
+       Mouseenter/mouseleave events are attached to both elements to allow a safe area. -->
   <div
-    ref="langSwitcher"
+    ref="container"
     class="relative transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
   >
     <button
-      ref="langSwitcherButton"
+      ref="buttonRef"
       :aria-expanded="open"
       :class="useClsx(
         'hover:text-mint-12 hover:bg-gray-2/50 dark:hover:bg-gray-3/50',
@@ -114,7 +125,8 @@ const sortedLanguages = computed(() => {
       aria-controls="language-menu"
       aria-haspopup="true"
       @click="toggleLanguage"
-      @mouseenter="openLanguage"
+      @mouseenter="onButtonMouseEnter"
+      @mouseleave="onButtonMouseLeave"
       @keydown.esc="emit('update:open', false)"
     >
       <span>{{ currentLanguageLabel }}</span>
@@ -128,7 +140,7 @@ const sortedLanguages = computed(() => {
     <div
       v-show="open"
       id="language-menu"
-      ref="languageMenu"
+      ref="menuRef"
       :class="useClsx(
         'ring-pureBlack/5 dark:ring-pureWhite/5 ring-1',
         'absolute right-0 mt-2 w-36 rounded-xl shadow-lg',
@@ -138,11 +150,12 @@ const sortedLanguages = computed(() => {
       )"
       role="menu"
       tabindex="-1"
-      @mouseleave="closeLanguage"
+      @mouseenter="onMenuMouseEnter"
+      @mouseleave="onMenuMouseLeave"
     >
       <div class="overflow-visible py-2">
         <NuxtLinkLocale
-          v-for="lang in sortedLanguages"
+          v-for="(lang) in sortedLanguages"
           :key="lang.code"
           :class="useClsx(
             'hover:bg-pureWhite/50 hover:dark:bg-pureBlack/50 hover:bg-op-50',
