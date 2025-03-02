@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { LanguageSwitcherProps } from './LanguageSwitcher.model'
 import { languages } from '@/types/i18n'
-import { onClickOutside } from '@vueuse/core'
+import { breakpointsTailwind, onClickOutside, useBreakpoints } from '@vueuse/core'
 import { computed, ref, toRefs } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { LanguageSwitcherDefaults } from './LanguageSwitcher.model'
@@ -17,6 +17,8 @@ const menuRef = ref<HTMLElement | null>(null)
 
 // Track how the menu was opened: via 'hover' or 'click'
 const activationSource = ref<'hover' | 'click' | null>(null)
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const smallerMD = computed(() => breakpoints.smaller('md').value)
 
 // Timer reference for closing the menu (safe area)
 let closeTimer: number | null = null
@@ -39,6 +41,7 @@ function cancelCloseTimer() {
 const { locale, t, setLocale } = useI18n()
 const currentLanguageLabel = computed(() => (locale.value || '').toUpperCase())
 
+// Helper to detect mobile devices
 function toggleLanguage() {
   cancelCloseTimer()
   if (open.value) {
@@ -49,10 +52,17 @@ function toggleLanguage() {
     emit('update:open', true)
     activationSource.value = 'click'
   }
-  // On mobile, skip focusing to avoid the first tap being lost
-  if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+  // Only focus on non-mobile devices
+  if (!smallerMD.value) {
     buttonRef.value?.focus()
   }
+}
+
+// Adding touchstart to handle mobile taps immediately
+function onButtonTouchStart(e: TouchEvent) {
+  toggleLanguage()
+  // Prevent the click from firing later, which might cause double toggling
+  e.preventDefault()
 }
 
 function onButtonMouseEnter() {
@@ -63,14 +73,14 @@ function onButtonMouseEnter() {
   }
 }
 
-function onMenuMouseEnter() {
-  cancelCloseTimer()
-}
-
 function onButtonMouseLeave() {
   if (activationSource.value !== 'click') {
     startCloseTimer()
   }
+}
+
+function onMenuMouseEnter() {
+  cancelCloseTimer()
 }
 
 function onMenuMouseLeave() {
@@ -110,7 +120,7 @@ const sortedLanguages = computed(() => {
       ref="buttonRef"
       :aria-expanded="open"
       :class="useClsx(
-        'hover:text-mint-12 hover:bg-gray-2/50 dark:hover:bg-gray-3/50',
+        'cursor-pointer hover:text-mint-12 hover:bg-gray-2/50 dark:hover:bg-gray-3/50',
         'flex items-center rounded-full px-2 py-1 antialiased font-700',
         'focus:ring-pureBlack dark:focus:ring-pureWhite focus:outline-none focus:ring-2',
         'ring-offset-pureBlack dark:ring-offset-pureWhite',
@@ -121,6 +131,7 @@ const sortedLanguages = computed(() => {
       @click="toggleLanguage"
       @mouseenter="onButtonMouseEnter"
       @mouseleave="onButtonMouseLeave"
+      @touchstart="onButtonTouchStart"
       @keydown.esc="emit('update:open', false)"
     >
       <span>{{ currentLanguageLabel }}</span>
@@ -169,8 +180,6 @@ const sortedLanguages = computed(() => {
           <span
             :class="useClsx(
               open ? 'opacity-100 translate-y-0 duration-600' : 'opacity-0 translate-y-2 duration-300',
-              locale === lang.code && 'underline decoration-mint-12 decoration-2 underline-offset-4',
-
             )"
             :style="{ transitionDelay: open ? `${300 + index * 50}ms` : '10ms' }"
             class="inline-block transition-all ease-out"
