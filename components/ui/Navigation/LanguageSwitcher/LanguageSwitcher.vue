@@ -21,16 +21,14 @@ const activationSource = ref<'hover' | 'click' | null>(null)
 // Timer reference for closing the menu (safe area)
 let closeTimer: number | null = null
 
-// Start a close timer when mouse leaves (applies for both click and hover activations)
 function startCloseTimer() {
   closeTimer = window.setTimeout(() => {
     emit('update:open', false)
     activationSource.value = null
     closeTimer = null
-  }, 300) // 300ms delay gives the user a safe area to re-enter
+  }, 300)
 }
 
-// Cancel any scheduled close
 function cancelCloseTimer() {
   if (closeTimer !== null) {
     clearTimeout(closeTimer)
@@ -41,9 +39,8 @@ function cancelCloseTimer() {
 const { locale, t, setLocale } = useI18n()
 const currentLanguageLabel = computed(() => (locale.value || '').toUpperCase())
 
-// Toggle the menu on button click.
 function toggleLanguage() {
-  cancelCloseTimer() // cancel any pending close action
+  cancelCloseTimer()
   if (open.value) {
     emit('update:open', false)
     activationSource.value = null
@@ -55,7 +52,6 @@ function toggleLanguage() {
   buttonRef.value?.focus()
 }
 
-// When mouse enters the button, cancel any close timer and open if not already open.
 function onButtonMouseEnter() {
   cancelCloseTimer()
   if (!open.value) {
@@ -64,35 +60,29 @@ function onButtonMouseEnter() {
   }
 }
 
-// When mouse leaves the button, start the close timer.
 function onButtonMouseLeave() {
   startCloseTimer()
 }
 
-// When mouse enters the menu, cancel the close timer.
 function onMenuMouseEnter() {
   cancelCloseTimer()
 }
 
-// When mouse leaves the menu, start the close timer.
 function onMenuMouseLeave() {
   startCloseTimer()
 }
 
-// Change language and close the menu.
 function changeLanguage(code: string) {
   setLocale(code)
   emit('update:open', false)
   activationSource.value = null
 }
 
-// Close the menu if clicking outside the entire container.
 onClickOutside(container, () => {
   emit('update:open', false)
   activationSource.value = null
 })
 
-// Sort languages alphabetically based on their translated label.
 const sortedLanguages = computed(() => {
   const copy = [...languages]
   copy.sort((a, b) => {
@@ -105,7 +95,6 @@ const sortedLanguages = computed(() => {
 </script>
 
 <template>
-  <!-- Outer container for the language switcher -->
   <div
     ref="container"
     class="relative transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
@@ -136,17 +125,18 @@ const sortedLanguages = computed(() => {
       />
     </button>
 
-    <!-- Menu container with growing animation -->
+    <!-- Menu container with vertical growing animation -->
     <div
       id="language-menu"
       ref="menuRef"
       :class="useClsx(
-        open ? 'opacity-100 pointer-events-auto scale-100' : 'opacity-0 pointer-events-none scale-95',
+        open ? 'opacity-100 pointer-events-auto scale-y-100' : 'opacity-0 pointer-events-none scale-y-0',
+        'origin-top',
         'ring-pureBlack/5 dark:ring-pureWhite/5 ring-1',
         'absolute right-0 mt-2 w-36 rounded-xl shadow-lg',
         'backdrop-blur-md backdrop-saturate-150',
         'bg-pureWhite/10 dark:bg-pureBlack/10',
-        'transition-all duration-300 ease-[cubic-bezier(0.77,0,0.18,1)]',
+        'transition-all duration-600 ease-[cubic-bezier(0.77,0,0.18,1)]',
         'focus:outline-none',
       )"
       role="menu"
