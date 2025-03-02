@@ -60,16 +60,20 @@ function onButtonMouseEnter() {
   }
 }
 
-function onButtonMouseLeave() {
-  startCloseTimer()
-}
-
 function onMenuMouseEnter() {
   cancelCloseTimer()
 }
 
+function onButtonMouseLeave() {
+  if (activationSource.value !== 'click') {
+    startCloseTimer()
+  }
+}
+
 function onMenuMouseLeave() {
-  startCloseTimer()
+  if (activationSource.value !== 'click') {
+    startCloseTimer()
+  }
 }
 
 function changeLanguage(code: string) {
