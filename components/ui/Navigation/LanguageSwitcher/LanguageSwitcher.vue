@@ -42,7 +42,6 @@ const { locale, t, setLocale } = useI18n()
 const currentLanguageLabel = computed(() => (locale.value || '').toUpperCase())
 
 // Toggle the menu on button click.
-// Whether the menu was opened via click or hover, clicking toggles it.
 function toggleLanguage() {
   cancelCloseTimer() // cancel any pending close action
   if (open.value) {
@@ -106,8 +105,7 @@ const sortedLanguages = computed(() => {
 </script>
 
 <template>
-  <!-- Container that wraps both the button and dropdown.
-       Mouseenter/mouseleave events are attached to both elements to allow a safe area. -->
+  <!-- Outer container for the language switcher -->
   <div
     ref="container"
     class="relative transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
@@ -137,17 +135,18 @@ const sortedLanguages = computed(() => {
         name="ri:arrow-down-s-line"
       />
     </button>
-    <!-- Always render the menu; toggle its visibility using opacity classes -->
+
+    <!-- Menu container with growing animation -->
     <div
       id="language-menu"
       ref="menuRef"
       :class="useClsx(
-        open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
+        open ? 'opacity-100 pointer-events-auto scale-100' : 'opacity-0 pointer-events-none scale-95',
         'ring-pureBlack/5 dark:ring-pureWhite/5 ring-1',
         'absolute right-0 mt-2 w-36 rounded-xl shadow-lg',
         'backdrop-blur-md backdrop-saturate-150',
         'bg-pureWhite/10 dark:bg-pureBlack/10',
-        'transition-opacity duration-300',
+        'transition-all duration-300 ease-[cubic-bezier(0.77,0,0.18,1)]',
         'focus:outline-none',
       )"
       role="menu"
@@ -165,8 +164,8 @@ const sortedLanguages = computed(() => {
             'focus:ring-pureBlack dark:focus:ring-pureWhite font-600 antialiased focus:outline-none focus:ring-2 focus:ring-inset',
             'block cursor-pointer px-4 py-2 text-sm font-mono uppercase text-center',
           )"
+          :tabindex="open ? 0 : -1"
           role="menuitem"
-          tabindex="0"
           @click="changeLanguage(lang.code)"
           @keydown.enter="changeLanguage(lang.code)"
         >
