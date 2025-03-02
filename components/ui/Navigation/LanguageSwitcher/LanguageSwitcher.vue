@@ -52,10 +52,7 @@ function toggleLanguage() {
     emit('update:open', true)
     activationSource.value = 'click'
   }
-  // Only focus on non-mobile devices
-  if (!smallerMD.value) {
-    buttonRef.value?.focus()
-  }
+  buttonRef.value?.focus()
 }
 
 // Adding touchstart to handle mobile taps immediately
