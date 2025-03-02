@@ -161,10 +161,10 @@ const sortedLanguages = computed(() => {
         >
           <span
             :class="useClsx(
-              open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2',
+              open ? 'opacity-100 translate-y-0 duration-600' : 'opacity-0 translate-y-2 duration-300',
             )"
-            :style="{ transitionDelay: open ? `${300 + index * 50}ms` : '0ms' }"
-            class="inline-block transition-all duration-600 ease-out"
+            :style="{ transitionDelay: open ? `${300 + index * 50}ms` : '10ms' }"
+            class="inline-block transition-all ease-out"
           >
             {{ t(lang.labelKey) }}
           </span>
