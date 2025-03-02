@@ -114,7 +114,10 @@ watch(isOpen, (newVal) => {
 
         <!-- Right side menu items -->
         <div
-          :class="useClsx('flex items-center gap-6 color-pureBlack transition-colors dark:color-pureWhite')"
+          :class="useClsx(
+            'flex items-center gap-6  transition-colors',
+            'color-pureBlack dark:color-pureWhite',
+          )"
         >
           <button
             v-if="smallerMD"
