@@ -49,7 +49,10 @@ function toggleLanguage() {
     emit('update:open', true)
     activationSource.value = 'click'
   }
-  buttonRef.value?.focus()
+  // On mobile, skip focusing to avoid the first tap being lost
+  if (!/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+    buttonRef.value?.focus()
+  }
 }
 
 function onButtonMouseEnter() {
@@ -166,6 +169,8 @@ const sortedLanguages = computed(() => {
           <span
             :class="useClsx(
               open ? 'opacity-100 translate-y-0 duration-600' : 'opacity-0 translate-y-2 duration-300',
+              locale === lang.code && 'underline decoration-mint-12 decoration-2 underline-offset-4',
+
             )"
             :style="{ transitionDelay: open ? `${300 + index * 50}ms` : '10ms' }"
             class="inline-block transition-all ease-out"
