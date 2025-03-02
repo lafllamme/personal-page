@@ -101,8 +101,8 @@ watch(isOpen, (newVal) => {
         <div class="flex items-center">
           <NuxtLink
             :class="useClsx(
-              'antialiased rounded-sm text-xl px-2 font-bold tracking-tight md:text-3xl',
-              'focus:outline-none focus:ring-2 focus:ring-pureBlack dark:focus:ring-pureWhite',
+              'antialiased text-xl px-2 font-bold tracking-tight md:text-3xl',
+              'focus:outline-none focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
             )"
             aria-label="Tech News"
             to="/"
