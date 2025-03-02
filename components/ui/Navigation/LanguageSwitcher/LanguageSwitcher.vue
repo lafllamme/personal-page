@@ -137,15 +137,17 @@ const sortedLanguages = computed(() => {
         name="ri:arrow-down-s-line"
       />
     </button>
+    <!-- Always render the menu; toggle its visibility using opacity classes -->
     <div
-      v-show="open"
       id="language-menu"
       ref="menuRef"
       :class="useClsx(
+        open ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none',
         'ring-pureBlack/5 dark:ring-pureWhite/5 ring-1',
         'absolute right-0 mt-2 w-36 rounded-xl shadow-lg',
         'backdrop-blur-md backdrop-saturate-150',
         'bg-pureWhite/10 dark:bg-pureBlack/10',
+        'transition-opacity duration-300',
         'focus:outline-none',
       )"
       role="menu"
@@ -155,7 +157,7 @@ const sortedLanguages = computed(() => {
     >
       <div class="overflow-visible py-2">
         <NuxtLinkLocale
-          v-for="(lang) in sortedLanguages"
+          v-for="(lang, index) in sortedLanguages"
           :key="lang.code"
           :class="useClsx(
             'hover:bg-pureWhite/50 hover:dark:bg-pureBlack/50 hover:bg-op-50',
@@ -168,7 +170,15 @@ const sortedLanguages = computed(() => {
           @click="changeLanguage(lang.code)"
           @keydown.enter="changeLanguage(lang.code)"
         >
-          {{ t(lang.labelKey) }}
+          <span
+            :class="useClsx(
+              open ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2',
+            )"
+            :style="{ transitionDelay: open ? `${300 + index * 50}ms` : '0ms' }"
+            class="inline-block transition-all duration-600 ease-out"
+          >
+            {{ t(lang.labelKey) }}
+          </span>
         </NuxtLinkLocale>
       </div>
     </div>
