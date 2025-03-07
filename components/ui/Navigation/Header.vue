@@ -4,9 +4,9 @@ import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import NavigationMobile from '@/components/ui/Navigation/Mobile/NavigationMobile.vue'
 
-import { breakpointsTailwind, useBreakpoints, useEventListener, useWindowScroll, useWindowSize } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints, useEventListener } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { computed, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 
 // Example menu items
 const menuItems = [
@@ -18,27 +18,12 @@ const menuItems = [
 
 // Responsive breakpoints
 const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerMD = computed(() => breakpoints.smaller('md').value)
 
 // State variables
 const isOpen = ref(false) // for mobile nav
 const isSwitchOpen = ref(false) // for language switcher
 const isVisible = ref(true) // optional, for show/hide behavior
 const headerRef = ref<HTMLElement | null>(null)
-
-// Track scroll to potentially hide or show header
-const { width } = useWindowSize()
-const { y: scrollY } = useWindowScroll()
-const scrollThreshold = computed(() => width.value * 0.1)
-
-watch(scrollY, (currentScrollY, previousScrollY) => {
-  // Example logic (commented out in your code):
-  // if (currentScrollY < scrollThreshold.value) {
-  //   isVisible.value = true
-  // } else {
-  //   isVisible.value = currentScrollY <= previousScrollY
-  // }
-})
 
 // Toggle the mobile menu
 function toggleMenu() {
