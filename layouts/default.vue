@@ -1,7 +1,7 @@
 <script setup>
-import Header from '~/components/ui/Navigation/Header.vue'
+import Header from '@/components/ui/Navigation/Header.vue'
 // Your 3D animated background
-import Shader from '~/components/ui/Shaders/Shader.vue'
+import Shader from '@/components/ui/Shaders/Shader.vue'
 </script>
 
 <template>
@@ -16,7 +16,7 @@ import Shader from '~/components/ui/Shaders/Shader.vue'
       class="relative z-10 overflow-y-auto transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
     >
       <Header />
-      <main class="pt-14">
+      <main class="pt-20">
         <slot name="default" />
       </main>
     </div>
