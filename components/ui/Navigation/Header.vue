@@ -73,7 +73,7 @@ watch(isOpen, (newVal) => {
       ref="headerRef"
       :class="useClsx(
         isVisible ? 'translate-y-0' : '-translate-y-full',
-        'fixed left-0 top-0 z-50 w-full transition-transform duration-500 ease-in-out',
+        'bg-pureWhite/50 dark:bg-pureBlack/50 fixed left-0 top-0 z-50 w-full transition-transform duration-500 ease-in-out',
       )"
       role="banner"
     >
@@ -124,9 +124,9 @@ watch(isOpen, (newVal) => {
           <!-- Language Switcher -->
           <LanguageSwitcher v-model:open="isSwitchOpen" />
           <button
-            v-if="smallerMD"
             id="mobile-menu-button"
             :class="useClsx(
+              'md:hidden',
               'h-12 w-12 color-pureBlack dark:color-pureWhite dark:focus:ring-pureWhite',
               'focus:outline-none focus:ring focus:ring-pureBlack',
             )"
@@ -140,9 +140,9 @@ watch(isOpen, (newVal) => {
 
       <!-- Mobile nav (Slide down) -->
       <NavigationMobile
-        v-if="smallerMD"
         :items="menuItems"
         :open="isOpen && !isSwitchOpen"
+        class="md:hidden"
       />
     </header>
 
