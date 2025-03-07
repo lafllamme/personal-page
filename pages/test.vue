@@ -34,7 +34,113 @@ const items = [
     title: 'The Spirit of Adventure',
     description: 'Embark on exciting journeys and thrilling discoveries.',
   },
+  {
+    title: 'The Dawn of Innovation',
+    description: 'Explore the birth of groundbreaking ideas and inventions.',
+  },
+  {
+    title: 'The Digital Revolution',
+    description: 'Dive into the transformative power of technology.',
+  },
+  {
+    title: 'The Art of Design',
+    description: 'Discover the beauty of thoughtful and experience design.',
+  },
+  {
+    title: 'The Power of Communication',
+    description: 'Understand the impact of effective communication in our lives.',
+  },
+  {
+    title: 'The Pursuit of Knowledge',
+    description: 'Join the quest for understanding and enlightenment.',
+  },
+  {
+    title: 'The Joy of Creation',
+    description: 'Experience the thrill of bringing ideas to life.',
+  },
+  {
+    title: 'The Spirit of Adventure',
+    description: 'Embark on exciting journeys and thrilling discoveries.',
+  },
+  {
+    title: 'The Dawn of Innovation',
+    description: 'Explore the birth of groundbreaking ideas and inventions.',
+  },
+  {
+    title: 'The Digital Revolution',
+    description: 'Dive into the transformative power of technology.',
+  },
+  {
+    title: 'The Art of Design',
+    description: 'Discover the beauty of thoughtful and experience design.',
+  },
+  {
+    title: 'The Power of Communication',
+    description: 'Understand the impact of effective communication in our lives.',
+  },
+  {
+    title: 'The Pursuit of Knowledge',
+    description: 'Join the quest for understanding and enlightenment.',
+  },
+  {
+    title: 'The Joy of Creation',
+    description: 'Experience the thrill of bringing ideas to life.',
+  },
+  {
+    title: 'The Spirit of Adventure',
+    description: 'Embark on exciting journeys and thrilling discoveries.',
+  },
+  {
+    title: 'The Dawn of Innovation',
+    description: 'Explore the birth of groundbreaking ideas and inventions.',
+  },
+  {
+    title: 'The Digital Revolution',
+    description: 'Dive into the transformative power of technology.',
+  },
+  {
+    title: 'The Art of Design',
+    description: 'Discover the beauty of thoughtful and experience design.',
+  },
+  {
+    title: 'The Power of Communication',
+    description: 'Understand the impact of effective communication in our lives.',
+  },
+  {
+    title: 'The Pursuit of Knowledge',
+    description: 'Join the quest for understanding and enlightenment.',
+  },
+  {
+    title: 'The Joy of Creation',
+    description: 'Experience the thrill of bringing ideas to life.',
+  },
+  {
+    title: 'The Spirit of Adventure',
+    description: 'Embark on exciting journeys and thrilling discoveries.',
+  },
 ]
+
+const mosaicPattern = [
+  // index 0 => wide card on md and above
+  'col-span-1 row-span-1 md:col-span-2 md:row-span-1',
+
+  // index 1 => normal
+  'col-span-1 row-span-1',
+
+  // index 2 => normal
+  'col-span-1 row-span-1',
+
+  // index 3 => wide again
+  'col-span-1 row-span-1 md:col-span-2 md:row-span-1',
+
+  // ... keep going to define as many steps as you want
+  // then repeat
+]
+
+function getMosaicClass(index: number) {
+  // cycle through the pattern
+  return mosaicPattern[index % mosaicPattern.length]
+}
 </script>
 
 <template>
@@ -44,7 +150,7 @@ const items = [
       <BentoGridItem
         v-for="(item, index) in items"
         :key="index"
-        :class="index === 3 || index === 6 ? 'md:col-span-2' : ''"
+        :class="getMosaicClass(index)"
       >
         <template #header>
           <div class="size-full flex animate-pulse space-x-4">
