@@ -1,5 +1,15 @@
 <script lang="ts" setup>
 const loadingGradient = ref('repeating-linear-gradient(to right, #8a2387, #e94057, #f27121)')
+
+// If we are in development mode, we set consola log level to 5
+if (import.meta.dev) {
+  consola.level = 5
+  consola.info('Development mode enabled')
+}
+else {
+  consola.level = 0
+  consola.info('Production mode enabled')
+}
 </script>
 
 <template>
