@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@iconify-json/radix-icons": "^1.2.2",
     "@nuxt/icon": "1.10.3",
     "@nuxt/image": "1.9.0",
     "@nuxthub/core": "0.8.16",
@@ -51,7 +52,7 @@
     "eslint": "^9.19.0",
     "eslint-plugin-format": "^1.0.1",
     "sass-embedded": "^1.83.4",
-    "svelte-eslint-parser": "^0.43.0",
+    "@unocss/webpack": "^65.5.0",
     "unocss": "^65.4.3",
     "unocss-preset-animations": "^1.1.1",
     "unocss-preset-radix": "^2.8.0",
