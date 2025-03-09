@@ -42,13 +42,13 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/icon',
     '@unocss/nuxt',
-    'radix-vue/nuxt',
     '@nuxthub/core',
     '@nuxtjs/color-mode',
     '@nuxtjs/i18n',
     '@tresjs/nuxt',
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
+    'reka-ui/nuxt',
   ],
   colorMode: {
     preference: 'system', // default value of $colorMode.preference
