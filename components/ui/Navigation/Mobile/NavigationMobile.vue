@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import type { NavigationProps } from './NavigationMobile.model'
-import NavigationMobileItem from '@/components/ui/Navigation/Mobile/Item/NavigationMobileItem.vue'
 import { NavigationDefaults } from './NavigationMobile.model'
 
 const props = withDefaults(defineProps<NavigationProps>(), NavigationDefaults)
@@ -17,13 +16,6 @@ const { open, items } = toRefs(props)
     )"
     aria-labelledby="mobile-menu-button"
   >
-    <div class="mx-auto max-w-7xl px-4 py-4">
-      <nav class="flex flex-col gap-4">
-        <NavigationMobileItem
-          :items="items"
-          :tab-index="open ? 0 : -1"
-        />
-      </nav>
-    </div>
+    hello
   </div>
 </template>
