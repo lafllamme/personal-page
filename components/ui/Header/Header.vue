@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import Navigation from '@/components/ui/Navigation/Navigation.vue'
 import NavigationMobile from '~/components/ui/Navigation/Mobile/NavigationMobile.vue'
 
 const { t } = useI18n()
@@ -16,9 +15,7 @@ const { t } = useI18n()
       </h2>
       <div>
         <!-- The actual site navigation -->
-        <div class="flex items-center justify-center pt-3 <md:hidden">
-          <Navigation />
-        </div>
+        <div class="flex items-center justify-center pt-3 <md:hidden" />
         <div class="md:hidden">
           <NavigationMobile />
         </div>
