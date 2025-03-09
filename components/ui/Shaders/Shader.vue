@@ -44,7 +44,7 @@ const uniforms = ref({
 // Function to calculate the pixel filter value based on screen width and device capabilities
 function calculatePixelFilter(screenWidth: number, isHighEndDevice: boolean) {
   let pixelFilter = isHighEndDevice ? 2 * screenWidth : 1.5 * screenWidth
-  const maxPixelFilter = 2000
+  const maxPixelFilter = 2200
   if (pixelFilter > maxPixelFilter) {
     pixelFilter = maxPixelFilter
   }
