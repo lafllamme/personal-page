@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@iconify-json/radix-icons':
+        specifier: ^1.2.2
+        version: 1.2.2
       '@nuxt/icon':
         specifier: 1.10.3
         version: 1.10.3(magicast@0.3.5)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
@@ -71,6 +74,9 @@ importers:
       radix-vue:
         specifier: ^1.9.12
         version: 1.9.14(vue@3.5.13(typescript@5.7.3))
+      reka-ui:
+        specifier: ^2.0.2
+        version: 2.0.2(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
       simplex-noise:
         specifier: ^4.0.3
         version: 4.0.3
@@ -123,9 +129,6 @@ importers:
       sass-embedded:
         specifier: ^1.83.4
         version: 1.83.4
-      svelte-eslint-parser:
-        specifier: ^0.43.0
-        version: 0.43.0
       unocss:
         specifier: ^65.4.3
         version: 65.4.3(@unocss/webpack@0.62.4(rollup@4.34.6)(webpack@5.98.0(esbuild@0.23.1)))(postcss@8.5.2)(rollup@4.34.6)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
@@ -1025,6 +1028,9 @@ packages:
 
   '@iconify-json/heroicons@1.2.2':
     resolution: {integrity: sha512-qoW4pXr5kTTL6juEjgTs83OJIwpePu7q1tdtKVEdj+i0zyyVHgg/dd9grsXJQnpTpBt6/VwNjrXBvFjRsKPENg==}
+
+  '@iconify-json/radix-icons@1.2.2':
+    resolution: {integrity: sha512-+PPmKWDP7pfJMcEc9Ty1zyo/zzq+9rfKW4EGb2HSZcPu1VUhothDLFzWvBqQNoFIOYCJ2nm0Vmf8kVyYhq9G0Q==}
 
   '@iconify-json/uil@1.2.3':
     resolution: {integrity: sha512-if91+UBhDQc6glPsIaXecGIcXnbQZfEO4Gdv89TV2xQ+V5e9GWbY5rNl2fsKZd8COsRQ5lRQAKimVQVL0CZZVg==}
@@ -5680,6 +5686,11 @@ packages:
     resolution: {integrity: sha512-qx+xQGZVsy55CH0a1hiVwHmqjLryfh7wQyF5HO07XJ9f7dQMY/gPQHhlyDkIzJKC+x2fUCpCcUODUUUFrm7SHA==}
     hasBin: true
 
+  reka-ui@2.0.2:
+    resolution: {integrity: sha512-pC2UF6Z+kJF96aJvIErhkSO4DJYIeq9pgvh3pntNqcZb3zFGMzw8h2uny+GnLX2CKiQV54kZNYXxecYIiPMGyg==}
+    peerDependencies:
+      vue: '>= 3.2.0'
+
   replace-in-file@6.3.5:
     resolution: {integrity: sha512-arB9d3ENdKva2fxRnSjwBEXfK1npgyci7ZZuwysgAp7ORjHSyxz6oqIjTEv8R0Ydl4Ll7uOAZXL4vbkhGIizCg==}
     engines: {node: '>=10'}
@@ -7823,6 +7834,10 @@ snapshots:
   '@humanwhocodes/retry@0.4.1': {}
 
   '@iconify-json/heroicons@1.2.2':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/radix-icons@1.2.2':
     dependencies:
       '@iconify/types': 2.0.0
 
@@ -14391,6 +14406,7 @@ snapshots:
   postcss-scss@4.0.9(postcss@8.5.2):
     dependencies:
       postcss: 8.5.2
+    optional: true
 
   postcss-selector-parser@6.0.10:
     dependencies:
@@ -14623,6 +14639,23 @@ snapshots:
   regjsparser@0.10.0:
     dependencies:
       jsesc: 0.5.0
+
+  reka-ui@2.0.2(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3)):
+    dependencies:
+      '@floating-ui/dom': 1.6.13
+      '@floating-ui/vue': 1.1.6(vue@3.5.13(typescript@5.7.3))
+      '@internationalized/date': 3.7.0
+      '@internationalized/number': 3.6.0
+      '@tanstack/vue-virtual': 3.13.0(vue@3.5.13(typescript@5.7.3))
+      '@vueuse/core': 12.8.2(typescript@5.7.3)
+      '@vueuse/shared': 12.8.2(typescript@5.7.3)
+      aria-hidden: 1.2.4
+      defu: 6.1.4
+      ohash: 1.1.4
+      vue: 3.5.13(typescript@5.7.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - typescript
 
   replace-in-file@6.3.5:
     dependencies:
@@ -15155,6 +15188,7 @@ snapshots:
       espree: 9.6.1
       postcss: 8.5.2
       postcss-scss: 4.0.9(postcss@8.5.2)
+    optional: true
 
   svg-tags@1.0.0: {}
 
