@@ -53,9 +53,6 @@ importers:
       '@vueuse/nuxt':
         specifier: 12.8.2
         version: 12.8.2(magicast@0.3.5)(nuxt@3.15.4(@parcel/watcher@2.5.1)(@types/node@22.13.2)(db0@0.2.4)(eslint@9.20.1(jiti@2.4.2))(ioredis@5.5.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.34.6)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(typescript@5.7.3)(vite@6.1.0(@types/node@22.13.2)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.39.0)(tsx@4.19.2)(yaml@2.7.0))(yaml@2.7.0))(typescript@5.7.3)
-      class-variance-authority:
-        specifier: ^0.7.1
-        version: 0.7.1
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -99,9 +96,6 @@ importers:
       '@antfu/eslint-config':
         specifier: ^4.1.0
         version: 4.2.0(@eslint-react/eslint-plugin@1.26.2(eslint@9.20.1(jiti@2.4.2))(ts-api-utils@2.0.1(typescript@5.7.3))(typescript@5.7.3))(@typescript-eslint/utils@8.24.0(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@unocss/eslint-plugin@65.4.3(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(@vue/compiler-sfc@3.5.13)(astro-eslint-parser@1.2.1)(eslint-plugin-astro@1.3.1(eslint@9.20.1(jiti@2.4.2)))(eslint-plugin-format@1.0.1(eslint@9.20.1(jiti@2.4.2)))(eslint-plugin-react-hooks@5.1.0(eslint@9.20.1(jiti@2.4.2)))(eslint-plugin-react-refresh@0.4.19(eslint@9.20.1(jiti@2.4.2)))(eslint-plugin-solid@0.14.5(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3))(eslint-plugin-svelte@2.46.1(eslint@9.20.1(jiti@2.4.2)))(eslint@9.20.1(jiti@2.4.2))(prettier-plugin-astro@0.14.1)(prettier-plugin-slidev@1.0.5(prettier@3.5.1))(svelte-eslint-parser@0.43.0)(typescript@5.7.3)
-      '@eslint-react/eslint-plugin':
-        specifier: ^1.24.1
-        version: 1.26.2(eslint@9.20.1(jiti@2.4.2))(ts-api-utils@2.0.1(typescript@5.7.3))(typescript@5.7.3)
       '@iconify-json/uil':
         specifier: ^1.2.3
         version: 1.2.3
@@ -120,36 +114,12 @@ importers:
       '@unocss/preset-mini':
         specifier: ^65.4.3
         version: 65.4.3
-      astro-eslint-parser:
-        specifier: ^1.2.1
-        version: 1.2.1
       eslint:
         specifier: ^9.19.0
         version: 9.20.1(jiti@2.4.2)
-      eslint-plugin-astro:
-        specifier: ^1.3.1
-        version: 1.3.1(eslint@9.20.1(jiti@2.4.2))
       eslint-plugin-format:
         specifier: ^1.0.1
         version: 1.0.1(eslint@9.20.1(jiti@2.4.2))
-      eslint-plugin-react-hooks:
-        specifier: ^5.1.0
-        version: 5.1.0(eslint@9.20.1(jiti@2.4.2))
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.18
-        version: 0.4.19(eslint@9.20.1(jiti@2.4.2))
-      eslint-plugin-solid:
-        specifier: ^0.14.5
-        version: 0.14.5(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)
-      eslint-plugin-svelte:
-        specifier: ^2.46.1
-        version: 2.46.1(eslint@9.20.1(jiti@2.4.2))
-      prettier-plugin-astro:
-        specifier: ^0.14.1
-        version: 0.14.1
-      prettier-plugin-slidev:
-        specifier: ^1.0.5
-        version: 1.0.5(prettier@3.5.1)
       sass-embedded:
         specifier: ^1.83.4
         version: 1.83.4
@@ -3132,9 +3102,6 @@ packages:
 
   citty@0.1.6:
     resolution: {integrity: sha512-tskPPKEs8D2KPafUypv2gxwJP8h/OaJmC82QQGGDQcHvXX43xF2VDACcJVmZ0EuSxkpO9Kc4MlrA3q0+FG58AQ==}
-
-  class-variance-authority@0.7.1:
-    resolution: {integrity: sha512-Ka+9Trutv7G8M6WT6SeiRWz792K5qEqIGEGzXKhAE6xOWAY6pPH8U+9IY3oCMv6kqTmLsv7Xh/2w2RigkePMsg==}
 
   clean-regexp@1.0.0:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
@@ -7133,7 +7100,8 @@ snapshots:
 
   '@antfu/utils@8.1.0': {}
 
-  '@astrojs/compiler@2.10.4': {}
+  '@astrojs/compiler@2.10.4':
+    optional: true
 
   '@babel/code-frame@7.26.2':
     dependencies:
@@ -7666,6 +7634,7 @@ snapshots:
       - eslint
       - supports-color
       - typescript
+    optional: true
 
   '@eslint-react/core@1.26.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)':
     dependencies:
@@ -7684,8 +7653,10 @@ snapshots:
       - eslint
       - supports-color
       - typescript
+    optional: true
 
-  '@eslint-react/eff@1.26.2': {}
+  '@eslint-react/eff@1.26.2':
+    optional: true
 
   '@eslint-react/eslint-plugin@1.26.2(eslint@9.20.1(jiti@2.4.2))(ts-api-utils@2.0.1(typescript@5.7.3))(typescript@5.7.3)':
     dependencies:
@@ -7707,6 +7678,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
       - ts-api-utils
+    optional: true
 
   '@eslint-react/jsx@1.26.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)':
     dependencies:
@@ -7721,6 +7693,7 @@ snapshots:
       - eslint
       - supports-color
       - typescript
+    optional: true
 
   '@eslint-react/shared@1.26.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)':
     dependencies:
@@ -7732,6 +7705,7 @@ snapshots:
       - eslint
       - supports-color
       - typescript
+    optional: true
 
   '@eslint-react/var@1.26.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)':
     dependencies:
@@ -7746,6 +7720,7 @@ snapshots:
       - eslint
       - supports-color
       - typescript
+    optional: true
 
   '@eslint/compat@1.2.6(eslint@9.20.1(jiti@2.4.2))':
     optionalDependencies:
@@ -8818,8 +8793,10 @@ snapshots:
     dependencies:
       '@slidev/types': 0.47.5
       js-yaml: 4.1.0
+    optional: true
 
-  '@slidev/types@0.47.5': {}
+  '@slidev/types@0.47.5':
+    optional: true
 
   '@stylistic/eslint-plugin@4.0.0-beta.1(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3)':
     dependencies:
@@ -11210,11 +11187,13 @@ snapshots:
       semver: 7.7.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   astrojs-compiler-sync@1.0.1(@astrojs/compiler@2.10.4):
     dependencies:
       '@astrojs/compiler': 2.10.4
       synckit: 0.9.2
+    optional: true
 
   async-sema@3.1.1: {}
 
@@ -11275,7 +11254,8 @@ snapshots:
     dependencies:
       file-uri-to-path: 1.0.0
 
-  birecord@0.1.1: {}
+  birecord@0.1.1:
+    optional: true
 
   birpc@0.2.19: {}
 
@@ -11453,10 +11433,6 @@ snapshots:
     dependencies:
       consola: 3.4.0
 
-  class-variance-authority@0.7.1:
-    dependencies:
-      clsx: 2.1.1
-
   clean-regexp@1.0.0:
     dependencies:
       escape-string-regexp: 1.0.5
@@ -11519,7 +11495,8 @@ snapshots:
 
   commondir@1.0.1: {}
 
-  compare-versions@6.1.1: {}
+  compare-versions@6.1.1:
+    optional: true
 
   compatx@0.1.8: {}
 
@@ -11814,7 +11791,8 @@ snapshots:
 
   entities@4.5.0: {}
 
-  entities@6.0.0: {}
+  entities@6.0.0:
+    optional: true
 
   error-ex@1.3.2:
     dependencies:
@@ -11993,6 +11971,7 @@ snapshots:
       postcss-selector-parser: 7.1.0
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   eslint-plugin-command@3.0.0(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
@@ -12111,6 +12090,7 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   eslint-plugin-react-dom@1.26.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3):
     dependencies:
@@ -12131,6 +12111,7 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   eslint-plugin-react-hooks-extra@1.26.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3):
     dependencies:
@@ -12151,10 +12132,12 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   eslint-plugin-react-hooks@5.1.0(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
       eslint: 9.20.1(jiti@2.4.2)
+    optional: true
 
   eslint-plugin-react-naming-convention@1.26.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3):
     dependencies:
@@ -12174,10 +12157,12 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   eslint-plugin-react-refresh@0.4.19(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
       eslint: 9.20.1(jiti@2.4.2)
+    optional: true
 
   eslint-plugin-react-web-api@1.26.2(eslint@9.20.1(jiti@2.4.2))(typescript@5.7.3):
     dependencies:
@@ -12197,6 +12182,7 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   eslint-plugin-react-x@1.26.2(eslint@9.20.1(jiti@2.4.2))(ts-api-utils@2.0.1(typescript@5.7.3))(typescript@5.7.3):
     dependencies:
@@ -12220,6 +12206,7 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   eslint-plugin-regexp@2.7.0(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
@@ -12244,6 +12231,7 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   eslint-plugin-svelte@2.46.1(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
@@ -12261,6 +12249,7 @@ snapshots:
       svelte-eslint-parser: 0.43.0
     transitivePeerDependencies:
       - ts-node
+    optional: true
 
   eslint-plugin-toml@0.12.0(eslint@9.20.1(jiti@2.4.2)):
     dependencies:
@@ -12858,7 +12847,8 @@ snapshots:
 
   ini@4.1.1: {}
 
-  inline-style-parser@0.2.4: {}
+  inline-style-parser@0.2.4:
+    optional: true
 
   ioredis@5.5.0:
     dependencies:
@@ -12955,6 +12945,7 @@ snapshots:
   is-html@2.0.0:
     dependencies:
       html-tags: 3.3.1
+    optional: true
 
   is-https@4.0.0: {}
 
@@ -12967,6 +12958,7 @@ snapshots:
       typescript: 5.7.3
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   is-inside-container@1.0.0:
     dependencies:
@@ -13081,7 +13073,8 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
-  kebab-case@1.0.2: {}
+  kebab-case@1.0.2:
+    optional: true
 
   keygrip@1.1.0:
     dependencies:
@@ -13097,9 +13090,11 @@ snapshots:
 
   knitwork@1.2.0: {}
 
-  known-css-properties@0.30.0: {}
+  known-css-properties@0.30.0:
+    optional: true
 
-  known-css-properties@0.35.0: {}
+  known-css-properties@0.35.0:
+    optional: true
 
   koa-compose@4.1.0: {}
 
@@ -13167,7 +13162,8 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  lilconfig@2.1.0: {}
+  lilconfig@2.1.0:
+    optional: true
 
   lilconfig@3.1.3: {}
 
@@ -13627,6 +13623,7 @@ snapshots:
   minimatch@10.0.1:
     dependencies:
       brace-expansion: 2.0.1
+    optional: true
 
   minimatch@3.1.2:
     dependencies:
@@ -14264,6 +14261,7 @@ snapshots:
       yaml: 1.10.2
     optionalDependencies:
       postcss: 8.5.2
+    optional: true
 
   postcss-load-config@4.0.2(postcss@8.5.2):
     dependencies:
@@ -14388,6 +14386,7 @@ snapshots:
   postcss-safe-parser@6.0.0(postcss@8.5.2):
     dependencies:
       postcss: 8.5.2
+    optional: true
 
   postcss-scss@4.0.9(postcss@8.5.2):
     dependencies:
@@ -14460,11 +14459,13 @@ snapshots:
       '@astrojs/compiler': 2.10.4
       prettier: 3.5.1
       sass-formatter: 0.7.9
+    optional: true
 
   prettier-plugin-slidev@1.0.5(prettier@3.5.1):
     dependencies:
       '@slidev/parser': 0.47.5
       prettier: 3.5.1
+    optional: true
 
   prettier@3.5.1: {}
 
@@ -14716,7 +14717,8 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  s.color@0.0.15: {}
+  s.color@0.0.15:
+    optional: true
 
   safe-buffer@5.1.2: {}
 
@@ -14823,6 +14825,7 @@ snapshots:
   sass-formatter@0.7.9:
     dependencies:
       suf-log: 2.5.3
+    optional: true
 
   scheduler@0.23.2:
     dependencies:
@@ -15051,7 +15054,8 @@ snapshots:
     optionalDependencies:
       bare-events: 2.5.4
 
-  string-ts@2.2.1: {}
+  string-ts@2.2.1:
+    optional: true
 
   string-width@4.2.3:
     dependencies:
@@ -15105,6 +15109,7 @@ snapshots:
   style-to-object@1.0.8:
     dependencies:
       inline-style-parser: 0.2.4
+    optional: true
 
   stylehacks@7.0.4(postcss@8.5.2):
     dependencies:
@@ -15125,6 +15130,7 @@ snapshots:
   suf-log@2.5.3:
     dependencies:
       s.color: 0.0.15
+    optional: true
 
   superjson@2.2.2:
     dependencies:
@@ -15372,10 +15378,12 @@ snapshots:
     dependencies:
       minimatch: 10.0.1
       typescript: 5.7.3
+    optional: true
 
   ts-interface-checker@0.1.13: {}
 
-  ts-pattern@5.6.2: {}
+  ts-pattern@5.6.2:
+    optional: true
 
   tslib@2.8.1: {}
 
@@ -16164,7 +16172,8 @@ snapshots:
       lodash: 4.17.21
       yaml: 2.7.0
 
-  yaml@1.10.2: {}
+  yaml@1.10.2:
+    optional: true
 
   yaml@2.7.0: {}
 
