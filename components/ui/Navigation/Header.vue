@@ -42,9 +42,22 @@ useEventListener('keydown', (e: KeyboardEvent) => {
 })
 
 // Focus trap for the mobile menu
+// TODO: Improve menu states for better handling
 const { activate, deactivate } = useFocusTrap(headerRef)
-watch(isOpen, (newVal) => {
-  newVal ? activate() : deactivate()
+watch(isOpen, (open) => {
+  if (open) {
+    activate()
+    isSwitchOpen.value = false
+  }
+  else {
+    deactivate()
+  }
+})
+
+watch(isSwitchOpen, (open) => {
+  if (open) {
+    isOpen.value = false
+  }
 })
 </script>
 
@@ -126,7 +139,7 @@ watch(isOpen, (newVal) => {
       <!-- Mobile nav (Slide down) -->
       <NavigationMobile
         :items="menuItems"
-        :open="isOpen && !isSwitchOpen"
+        :open="!isSwitchOpen && isOpen"
         class="md:hidden"
       />
     </header>
