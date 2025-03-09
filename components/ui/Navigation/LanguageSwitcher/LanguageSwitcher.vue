@@ -1,13 +1,16 @@
 <script lang="ts" setup>
 import type { LanguageSwitcherProps } from './LanguageSwitcher.model'
 import { languages } from '@/types/i18n'
-import { breakpointsTailwind, onClickOutside, useBreakpoints } from '@vueuse/core'
-import { computed, ref, toRefs } from 'vue'
+import { onClickOutside } from '@vueuse/core'
+import { computed, ref, toRefs, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { LanguageSwitcherDefaults } from './LanguageSwitcher.model'
 
 const props = withDefaults(defineProps<LanguageSwitcherProps>(), LanguageSwitcherDefaults)
 const emit = defineEmits<{ (e: 'update:open', state: boolean): void }>()
+
+// Amount of time for the menu to open/close
+const ANIMATION_DURATION = 600
 const { open } = toRefs(props)
 
 // References for container, button, and menu
@@ -17,21 +20,27 @@ const menuRef = ref<HTMLElement | null>(null)
 
 // Track how the menu was opened: via 'hover' or 'click'
 const activationSource = ref<'hover' | 'click' | null>(null)
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerMD = computed(() => breakpoints.smaller('md').value)
 
 // Timer reference for closing the menu (safe area)
 let closeTimer: number | null = null
 
+// Flag, if the menu is currently animating
+const isAnimating = ref(false)
+
+// Starts the close timer.
 function startCloseTimer() {
+  consola.debug('[LangSwitcher] startCloseTimer => schließe in 300ms, falls nicht abgebrochen')
   closeTimer = window.setTimeout(() => {
     emit('update:open', false)
     activationSource.value = null
     closeTimer = null
+    isAnimating.value = false // Animation zurücksetzen
   }, 300)
 }
 
+// Cancels the close timer.
 function cancelCloseTimer() {
+  consola.debug('[LangSwitcher] cancelCloseTimer => lösche den Schließ-Timer')
   if (closeTimer !== null) {
     clearTimeout(closeTimer)
     closeTimer = null
@@ -41,7 +50,6 @@ function cancelCloseTimer() {
 const { locale, t, setLocale } = useI18n()
 const currentLanguageLabel = computed(() => (locale.value || '').toUpperCase())
 
-// Helper to detect mobile devices
 function toggleLanguage() {
   cancelCloseTimer()
   if (open.value) {
@@ -51,39 +59,68 @@ function toggleLanguage() {
   else {
     emit('update:open', true)
     activationSource.value = 'click'
+    isAnimating.value = true
   }
   buttonRef.value?.focus()
 }
 
-// Adding touchstart to handle mobile taps immediately
-function onButtonTouchStart(e: TouchEvent) {
+// Watch for the open state and animate the menu
+watch(open, (isOpen) => {
+  if (isOpen) {
+    isAnimating.value = true
+    setTimeout(() => {
+      isAnimating.value = false
+    }, ANIMATION_DURATION)
+  }
+})
+
+function onClick() {
+  consola.debug('[LangSwitcher] onClick => Menü umschalten')
+  if (activationSource.value === 'hover' && isAnimating.value) {
+    consola.debug('[LangSwitcher] Hover-Aktivierung: Animation läuft noch, Klick ignoriert')
+    // BUG: consola.de meldet hier einen unerwarteten schnellen Klick – intentional gelassen
+    consola.debug('[LangSwitcher] BUG: Unerwarteter Klick während Hover-Animation')
+    return
+  }
   toggleLanguage()
-  // Prevent the click from firing later, which might cause double toggling
-  e.preventDefault()
 }
 
-function onButtonMouseEnter() {
+// Touchstart-Handler for mobile
+function onTouchStart(e: TouchEvent) {
+  toggleLanguage()
+  e.preventDefault() // Verhindert ein späteres zusätzliches Click-Event
+}
+
+// On hover over the button: Open the menu
+function onButtonHover() {
+  consola.debug('[LangSwitcher] onButtonHover => Öffne Menü per Hover')
   cancelCloseTimer()
   if (!open.value) {
     emit('update:open', true)
     activationSource.value = 'hover'
+    isAnimating.value = true
+    setTimeout(() => {
+      isAnimating.value = false
+    }, ANIMATION_DURATION)
   }
 }
 
-function onButtonMouseLeave() {
+// On mouseleave from the button: Close the menu if not activated by click
+function onButtonLeave() {
+  consola.debug('[LangSwitcher] onButtonLeave => Schließe Menü per Hover, falls nicht per Klick aktiviert')
   if (activationSource.value !== 'click') {
     startCloseTimer()
   }
 }
 
-function onMenuMouseEnter() {
+// On hover over the menu: Cancel the close timer
+function onMenuHover() {
   cancelCloseTimer()
 }
 
-function onMenuMouseLeave() {
-  if (activationSource.value !== 'click') {
-    startCloseTimer()
-  }
+// UX: always close the menu when leaving the menu area
+function onMenuLeave() {
+  startCloseTimer()
 }
 
 function changeLanguage(code: string) {
@@ -95,6 +132,7 @@ function changeLanguage(code: string) {
 onClickOutside(container, () => {
   emit('update:open', false)
   activationSource.value = null
+  isAnimating.value = false
 })
 
 const sortedLanguages = computed(() => {
@@ -125,10 +163,10 @@ const sortedLanguages = computed(() => {
       )"
       aria-controls="language-menu"
       aria-haspopup="true"
-      @click="toggleLanguage"
-      @mouseenter="onButtonMouseEnter"
-      @mouseleave="onButtonMouseLeave"
-      @touchstart="onButtonTouchStart"
+      @click="onClick"
+      @mouseenter="onButtonHover"
+      @mouseleave="onButtonLeave"
+      @touchstart="onTouchStart"
       @keydown.esc="emit('update:open', false)"
     >
       <span>{{ currentLanguageLabel }}</span>
@@ -156,8 +194,8 @@ const sortedLanguages = computed(() => {
       )"
       role="menu"
       tabindex="-1"
-      @mouseenter="onMenuMouseEnter"
-      @mouseleave="onMenuMouseLeave"
+      @mouseenter="onMenuHover"
+      @mouseleave="onMenuLeave"
     >
       <div class="overflow-visible py-2">
         <NuxtLinkLocale
