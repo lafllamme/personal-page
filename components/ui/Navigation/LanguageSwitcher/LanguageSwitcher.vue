@@ -155,11 +155,12 @@ const sortedLanguages = computed(() => {
       ref="buttonRef"
       :aria-expanded="open"
       :class="useClsx(
-        'cursor-pointer hover:text-mint-12 hover:bg-gray-5A',
+        'cursor-pointer hover:text-mint-12 hover:bg-sage-7',
         'flex items-center rounded-full px-2 py-1 antialiased font-700',
         'focus:ring-pureBlack dark:focus:ring-pureWhite focus:outline-none focus:ring-2',
         'ring-offset-pureBlack dark:ring-offset-pureWhite',
-        'hover:shadow-md hover:shadow-pureBlack/5 hover:dark:shadow-pureWhite/5',
+        'hover:shadow-[rgba(50,50,93,0.25)_0px_2px_27px_-5px,rgba(0,0,0,0.3)_0px_8px_27px_-8px]',
+        'hover:dark:shadow-[rgba(255,255,255,0.15)_0px_2px_27px_-5px,rgba(255,255,255,0.1)_0px_8px_16px_-8px]',
       )"
       aria-controls="language-menu"
       aria-haspopup="true"
@@ -197,32 +198,35 @@ const sortedLanguages = computed(() => {
       @mouseenter="onMenuHover"
       @mouseleave="onMenuLeave"
     >
-      <div class="overflow-visible py-2">
-        <NuxtLinkLocale
+      <ul class="overflow-visible py-2">
+        <li
           v-for="(lang, index) in sortedLanguages"
           :key="lang.code"
-          :class="useClsx(
-            'hover:bg-pureWhite/50 hover:dark:bg-pureBlack/50 hover:bg-op-50',
-            'hover:text-mint-12',
-            'focus:ring-pureBlack dark:focus:ring-pureWhite font-600 antialiased focus:outline-none focus:ring-2 focus:ring-inset',
-            'block cursor-pointer px-4 py-2 text-sm font-mono uppercase text-center',
-          )"
-          :tabindex="open ? 0 : -1"
-          role="menuitem"
-          @click="changeLanguage(lang.code)"
-          @keydown.enter="changeLanguage(lang.code)"
         >
-          <span
+          <NuxtLinkLocale
             :class="useClsx(
-              open ? 'opacity-100 translate-y-0 duration-600' : 'opacity-0 translate-y-2 duration-300',
+              'hover:bg-pureWhite/50 hover:dark:bg-pureBlack/50 hover:bg-op-50',
+              'hover:text-mint-12',
+              'focus:ring-pureBlack dark:focus:ring-pureWhite font-600 antialiased focus:outline-none focus:ring-2 focus:ring-inset',
+              'block cursor-pointer px-4 py-2 text-sm font-mono uppercase text-center',
             )"
-            :style="{ transitionDelay: open ? `${300 + index * 50}ms` : '10ms' }"
-            class="inline-block transition-all ease-out"
+            :tabindex="open ? 0 : -1"
+            role="menuitem"
+            @click="changeLanguage(lang.code)"
+            @keydown.enter="changeLanguage(lang.code)"
           >
-            {{ t(lang.labelKey) }}
-          </span>
-        </NuxtLinkLocale>
-      </div>
+            <span
+              :class="useClsx(
+                open ? 'opacity-100 translate-y-0 duration-600' : 'opacity-0 translate-y-2 duration-300',
+              )"
+              :style="{ transitionDelay: open ? `${300 + index * 50}ms` : '10ms' }"
+              class="inline-block transition-all ease-out"
+            >
+              {{ t(lang.labelKey) }}
+            </span>
+          </NuxtLinkLocale>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
