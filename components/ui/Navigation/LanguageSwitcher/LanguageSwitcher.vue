@@ -155,7 +155,7 @@ const sortedLanguages = computed(() => {
       ref="buttonRef"
       :aria-expanded="open"
       :class="useClsx(
-        'cursor-pointer hover:text-mint-12 hover:bg-gray-2/50 dark:hover:bg-gray-3/50',
+        'cursor-pointer hover:text-mint-12 hover:bg-gray-5A',
         'flex items-center rounded-full px-2 py-1 antialiased font-700',
         'focus:ring-pureBlack dark:focus:ring-pureWhite focus:outline-none focus:ring-2',
         'ring-offset-pureBlack dark:ring-offset-pureWhite',
