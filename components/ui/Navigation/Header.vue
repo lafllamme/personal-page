@@ -2,8 +2,9 @@
 // Components
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
-import NavigationMobile from '@/components/ui/Navigation/Mobile/NavigationMobile.vue'
+import MobileMenu from '@/components/ui/Navigation/Mobile/MobileMenu.vue'
 
+import MobileMenuButton from '@/components/ui/Navigation/Mobile/MobileMenuButton.vue'
 import { breakpointsTailwind, useBreakpoints, useEventListener } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { ref, watch } from 'vue'
@@ -122,27 +123,19 @@ watch(isSwitchOpen, (open) => {
           <ColorMode />
           <!-- Language Switcher -->
           <LanguageSwitcher v-model:open="isSwitchOpen" />
-          <button
-            id="mobile-menu-button"
-            :class="useClsx(
-              'md:hidden',
-              'h-12 w-12 color-pureBlack dark:color-pureWhite dark:focus:ring-pureWhite',
-              'focus:outline-none focus:ring focus:ring-pureBlack',
-            )"
-            aria-label="Toggle menu"
+          <!-- MobileMenuButton -->
+          <MobileMenuButton
+            :is-open="isOpen"
             @click="toggleMenu"
-          >
-            <Icon class="h-12 w-12 cursor-pointer" name="ri:menu-3-fill" />
-          </button>
+          />
+
+          <!-- MobileMenu -->
+          <MobileMenu
+            :is-open="isOpen"
+            :items="menuItems"
+          />
         </div>
       </div>
-
-      <!-- Mobile nav (Slide down) -->
-      <NavigationMobile
-        :items="menuItems"
-        :open="!isSwitchOpen && isOpen"
-        class="md:hidden"
-      />
     </header>
 
     <!--
