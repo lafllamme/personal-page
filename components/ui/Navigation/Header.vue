@@ -101,6 +101,7 @@ watch(isSwitchOpen, (open) => {
             :class="useClsx(
               'antialiased text-xl px-2 font-bold tracking-tight md:text-3xl',
               'focus:outline-none focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
+              'transition-transform ease-in-out duration-300 hover:scale-105',
             )"
             aria-label="Tech News"
             to="/"
