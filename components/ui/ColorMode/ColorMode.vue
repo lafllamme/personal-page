@@ -48,6 +48,7 @@ onMounted(() => {
         isDark && 'theme-toggle--toggled',
         'ring-offset-inherit focus-visible:ring',
         'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+        'transition-transform ease-in-out duration-300 hover:scale-105',
         'outline-none',
         'blur-out z-2',
       )"
