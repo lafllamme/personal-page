@@ -1,6 +1,5 @@
 <script setup>
-import Header from '@/components/ui/Navigation/Header.vue'
-// Your 3D animated background
+import Header from '@/components/ui/Header/Header.vue'
 import Shader from '@/components/ui/Shaders/Shader.vue'
 </script>
 
