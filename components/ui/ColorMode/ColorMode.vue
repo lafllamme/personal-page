@@ -1,6 +1,5 @@
 <script lang="ts" setup>
-import { computed, defineProps, onMounted, ref } from 'vue'
-import { useClsx } from '~/composables/useClsx'
+import { useClsx } from '@/composables/useClsx'
 
 interface Props {
   variant?: 'expand' | 'within'
