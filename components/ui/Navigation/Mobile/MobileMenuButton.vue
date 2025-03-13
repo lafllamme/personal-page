@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { breakpointsTailwind} from '@vueuse/core'
 defineProps<{ isOpen: boolean }>()
 defineEmits({
   toggle: () => true,
