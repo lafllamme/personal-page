@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { breakpointsTailwind} from '@vueuse/core'
 defineProps<{ isOpen: boolean }>()
 defineEmits({
   toggle: () => true,
@@ -10,8 +11,8 @@ defineEmits({
     :aria-expanded="isOpen"
     :class="useClsx(
       '',
-      'flex items-center justify-center duration-200',
-      'hover:scale-110 transition-transform focus:outline-none',
+      'flex items-center justify-center',
+      'hover:scale-105 transition-transform focus:outline-none ease-in-out duration-300',
       'color-pureBlack dark:color-pureWhite',
       'focus:ring-pureBlack dark:focus:ring-pureWhite focus:ring',
     )"
@@ -22,7 +23,7 @@ defineEmits({
   >
     <svg
       :class="isOpen && '-translate-x-2'"
-      class="h-10 w-10 transform transition-transform duration-300"
+      class="h-10 w-10 transform transition-transform duration-200 ease-in-out"
       height="24"
       viewBox="0 0 24 24"
       width="24"
