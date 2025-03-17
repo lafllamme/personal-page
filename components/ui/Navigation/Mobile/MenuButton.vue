@@ -9,7 +9,6 @@ defineEmits({
   <button
     :aria-expanded="isOpen"
     :class="useClsx(
-      '',
       'flex items-center justify-center',
       'hover:scale-105 transition-transform focus:outline-none ease-in-out duration-300',
       'color-pureBlack dark:color-pureWhite',
