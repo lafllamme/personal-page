@@ -1,14 +1,19 @@
 <script lang="ts" setup>
-// Components
+// Import external components and utilities
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import MenuButton from '@/components/ui/Navigation/Mobile/MenuButton.vue'
 import Navigation from '@/components/ui/Navigation/Mobile/Navigation.vue'
 import { useEventListener } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
-// Example menu items
+// Common transition settings for synchronization
+const transitionDuration = 'duration-900'
+const transitionEasing = 'ease-[cubic-bezier(0.77,0,0.18,1)]'
+const transitionClasses = `transition-all ${transitionDuration} ${transitionEasing}`
+
+// Example menu items definition
 const menuItems = [
   {
     label: 'Products',
@@ -34,12 +39,17 @@ const menuItems = [
   },
 ]
 
-// State variables
-const isOpen = ref(false) // for mobile nav
-const isSwitchOpen = ref(false) // for language switcher
-const isVisible = ref(true) // optional, for show/hide behavior
+// Reactive state variables
+const isOpen = ref(false) // Controls mobile navigation open/close state
+const isSwitchOpen = ref(false) // Controls language switcher visibility
 const headerRef = ref<HTMLElement | null>(null)
 
+// Computed property for header background based on open state
+const headerBgClass = computed(() =>
+  isOpen.value ? 'bg-pureWhite/95 dark:bg-pureBlack/95' : 'bg-pureWhite/50 dark:bg-pureBlack/50',
+)
+
+// Toggle menu open state and close language switcher when opening menu
 function toggleMenu() {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
@@ -47,11 +57,12 @@ function toggleMenu() {
   }
 }
 
+// Handle close event emitted from Navigation component
 function handleClose(state: boolean) {
   isOpen.value = state
 }
 
-// Close menu and language switcher on Escape key
+// Close menu and language switcher on Escape key press
 useEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === 'Escape') {
     isOpen.value = false
@@ -59,7 +70,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
   }
 })
 
-// Focus trap for the mobile menu
+// Setup focus trap for accessibility when the mobile menu is open
 const { activate, deactivate } = useFocusTrap(headerRef)
 watch(isOpen, (open) => {
   if (open) {
@@ -79,32 +90,32 @@ watch(isSwitchOpen, (open) => {
 
 <template>
   <div>
+    <!-- Main Header container -->
     <header
       ref="headerRef"
-      :class="useClsx(
-        'transition-all duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]',
-        isOpen ? 'bg-pureWhite/95 dark:bg-pureBlack/95' : 'bg-pureWhite/50 dark:bg-pureBlack/50',
-        'fixed left-0 top-0 z-50 w-full',
-      )"
+      :class="[
+        transitionClasses,
+        headerBgClass,
+      ]"
+      class="fixed left-0 top-0 z-50 w-full"
       role="banner"
     >
-      <!-- Background as separate layer  -->
+      <!-- Background layer for consistent backdrop filter (Glassmorphism) -->
       <div
         :class="useClsx(
           'pointer-events-none absolute inset-0',
           'backdrop-blur-[8px] backdrop-saturate-150',
         )"
       />
+      <!-- Inner container for logo and right-side items -->
       <div
-        :class="useClsx(
-          'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]',
-          'border-b border-gray-5 border-solid',
-          'dark:border-gray-4 dark:border-gray-4',
-          'relative mx-auto flex items-center justify-between px-4 py-2 md:py-3 sm:px-6',
-        )"
+        :class="[
+          transitionClasses,
+        ]"
+        class="relative mx-auto flex items-center justify-between border-b border-gray-5 border-solid px-4 py-2 dark:border-gray-4 md:py-3 sm:px-6"
       >
-        <!-- Logo -->
-        <div class="flex items-center transition-all duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]">
+        <!-- Logo with hover/focus effects -->
+        <div class="flex items-center">
           <NuxtLink
             :class="useClsx(
               'px-2 text-xl font-bold tracking-tight antialiased',
@@ -120,7 +131,7 @@ watch(isSwitchOpen, (open) => {
           </NuxtLink>
         </div>
 
-        <!-- Right side menu items -->
+        <!-- Right side actions: Language switcher, color mode and menu button -->
         <div class="flex items-center gap-6">
           <LanguageSwitcher
             v-model:open="isSwitchOpen"
@@ -133,7 +144,7 @@ watch(isSwitchOpen, (open) => {
         </div>
       </div>
 
-      <!-- Navigation is now rendered directly within the header so that the header grows downward -->
+      <!-- Mobile Navigation component inserted within header so that header expands downward -->
       <Navigation
         :is-open="isOpen"
         :items="menuItems"
@@ -141,6 +152,7 @@ watch(isSwitchOpen, (open) => {
       />
     </header>
 
+    <!-- Accessible skip-link for keyboard navigation -->
     <NuxtLinkLocale
       :class="useClsx(
         'focus:bg-white focus:text-black focus:ring-blue-500 sr-only',
