@@ -149,13 +149,13 @@ const sortedLanguages = computed(() => {
 <template>
   <div
     ref="container"
-    class="relative transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
+    class="relative color-pureBlack transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] dark:color-pureWhite"
   >
     <button
       ref="buttonRef"
       :aria-expanded="open"
       :class="useClsx(
-        'cursor-pointer hover:text-mint-12 hover:bg-sage-7',
+        'cursor-pointer hover:text-mint-12 hover:bg-pureBlack/15 dark:hover:bg-pureWhite/30',
         'flex items-center rounded-full px-2 py-1 antialiased font-700',
         'focus:ring-pureBlack dark:focus:ring-pureWhite focus:outline-none focus:ring-2',
         'ring-offset-pureBlack dark:ring-offset-pureWhite',
