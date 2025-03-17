@@ -1,13 +1,16 @@
 <script lang="ts" setup>
+// Import utilities from Vue and VueUse
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { computed, ref, toRefs } from 'vue'
 
+// Define MenuItem interface for type safety
 interface MenuItem {
   label: string
   href: string
   children?: MenuItem[]
 }
 
+// Define props and emits for the navigation component
 const props = defineProps<{
   items: MenuItem[]
   isOpen: boolean
@@ -21,9 +24,20 @@ const { isOpen } = toRefs(props)
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const smallerMD = computed(() => breakpoints.smaller('md').value)
 
-// Track expanded accordion items for nested menus
+// Common transition settings must match the Header component
+const transitionDuration = 'duration-900'
+const transitionEasing = 'ease-[cubic-bezier(0.77,0,0.18,1)]'
+const transitionClasses = `transition-all ${transitionDuration} ${transitionEasing}`
+
+// Computed property for navigation background based on open state
+const navBgClass = computed(() =>
+  isOpen.value ? 'bg-pureWhite/95 dark:bg-pureBlack/95' : 'bg-pureWhite/50 dark:bg-pureBlack/50',
+)
+
+// Set to track expanded accordion items for nested menus
 const expandedItems = ref<Set<string>>(new Set())
 
+// Toggle accordion for items with nested children
 function toggleAccordion(label: string, event: Event) {
   event.preventDefault()
   event.stopPropagation()
@@ -35,21 +49,26 @@ function toggleAccordion(label: string, event: Event) {
   }
 }
 
+// Helper to check if an accordion item is expanded
 function isExpanded(label: string) {
   return expandedItems.value.has(label)
 }
 
+// Calculate a staggered animation delay for menu items (optional)
 function getAnimationDelay(index: number) {
   return `${index * 0.1}s`
 }
 
+// Emit close event when a non-accordion menu item is clicked
 function handleClick() {
   emit('close', false)
 }
 </script>
 
 <template>
-  <!-- The transition container animates max-height and opacity so that the menu "grows" down -->
+  <!-- Transition container for the mobile navigation.
+       The transition animates both opacity and max-height for a smooth slide-down effect.
+       Note: Using v-show triggers CSS transitions immediately; any minor delay is inherent to Vue's transition system. -->
   <Transition
     enter-active-class="transition-all duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
     enter-from-class="opacity-0 max-h-0"
@@ -60,11 +79,11 @@ function handleClick() {
   >
     <div
       v-show="isOpen"
-      :class="useClsx(
-        isOpen ? 'bg-pureWhite/95 dark:bg-pureBlack/95' : 'bg-pureWhite/50 dark:bg-pureBlack/50',
-        'overflow-hidden shadow-lg backdrop-blur-[8px] backdrop-saturate-150',
-        'transition-all !duration-900 !ease-[cubic-bezier(0.77,0,0.18,1)]',
-      )"
+      :class="[
+        navBgClass,
+        transitionClasses,
+      ]"
+      class="overflow-hidden shadow-lg backdrop-blur-[8px] backdrop-saturate-150"
     >
       <ul class="m-0 list-none p-0">
         <li
@@ -73,7 +92,7 @@ function handleClick() {
           :style="{ animationDelay: getAnimationDelay(index) }"
           class="animate-fade-down opacity-0"
         >
-          <!-- Menu item. If it has children, it toggles an accordion -->
+          <!-- Menu item container: if children exist, toggle accordion; otherwise, emit close -->
           <div
             :class="useClsx(
               'color-pureBlack dark:color-pureWhite hover:bg-gray-5',
@@ -94,7 +113,7 @@ function handleClick() {
             </template>
             <template v-else>
               <span>{{ item.label }}</span>
-              <!-- Dropdown arrow rotates on toggle -->
+              <!-- Dropdown arrow rotates when the accordion is expanded -->
               <svg
                 :class="{ 'transform rotate-180': isExpanded(item.label) }"
                 class="transition-transform duration-300"
@@ -112,7 +131,7 @@ function handleClick() {
             </template>
           </div>
 
-          <!-- Nested accordion content with its own transition -->
+          <!-- Transition for nested accordion content (if any) -->
           <Transition
             enter-active-class="transition-all duration-300 ease-out"
             enter-from-class="opacity-0 max-h-0"
@@ -139,7 +158,7 @@ function handleClick() {
                     </li>
                   </ul>
                 </div>
-                <!-- Second column: Featured content (optional) -->
+                <!-- Second column: Optional featured content -->
                 <div class="col-span-2 hidden md:block">
                   <div class="bg-gray-100 dark:bg-gray-800 h-full flex flex-col rounded-lg p-4">
                     <h3 class="mb-2 text-lg font-medium">
@@ -174,6 +193,7 @@ function handleClick() {
 </template>
 
 <style scoped>
+/* Keyframes for fade-down animation for individual menu items */
 @keyframes fade-down {
   from {
     opacity: 0;
