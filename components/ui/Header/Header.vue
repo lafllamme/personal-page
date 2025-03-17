@@ -8,10 +8,8 @@ import { useEventListener } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { computed, ref, watch } from 'vue'
 
-// Common transition settings for synchronization
-const transitionDuration = 'duration-900'
+// Base transition easing remains the same
 const transitionEasing = 'ease-[cubic-bezier(0.77,0,0.18,1)]'
-const transitionClasses = `transition-all ${transitionDuration} ${transitionEasing}`
 
 // Example menu items definition
 const menuItems = [
@@ -40,24 +38,48 @@ const menuItems = [
 ]
 
 // Reactive state variables
-const isOpen = ref(false) // Controls mobile navigation open/close state
-const isSwitchOpen = ref(false) // Controls language switcher visibility
+const isOpen = ref(false) // Drives Navigation.vue visibility
+const isSwitchOpen = ref(false) // Controls language switcher
 const headerRef = ref<HTMLElement | null>(null)
+// New menuPhase state: 'closed' | 'opening' | 'open' | 'closing'
+const menuPhase = ref<'closed' | 'opening' | 'open' | 'closing'>('closed')
 
-// Computed property for header background based on open state
+// Compute header background based on the current menuPhase
 const headerBgClass = computed(() =>
-  isOpen.value ? 'bg-pureWhite/95 dark:bg-pureBlack/95' : 'bg-pureWhite/50 dark:bg-pureBlack/50',
+  menuPhase.value === 'opening' || menuPhase.value === 'open'
+    ? 'bg-pureWhite/95 dark:bg-pureBlack/95'
+    : 'bg-pureWhite/50 dark:bg-pureBlack/50',
 )
 
-// Toggle menu open state and close language switcher when opening menu
+// Dynamically compute the transition class for the header
+const headerTransitionClass = computed(() => {
+  // Use a faster (e.g. 300ms) transition for opening, and slower for closing
+  const durationClass = menuPhase.value === 'opening' ? 'duration-300' : 'duration-900'
+  return `transition-all ${durationClass} ${transitionEasing}`
+})
+
+// Optionally, you can also adjust inline styles if needed
+const headerStyle = computed(() => {
+  if (menuPhase.value === 'closing') {
+    // Keep a delay when closing if desired
+    return { transitionDelay: '300ms' }
+  }
+  return { transitionDelay: '0ms' }
+})
+
+// Toggle menu state with explicit phases
 function toggleMenu() {
-  isOpen.value = !isOpen.value
-  if (isOpen.value) {
-    isSwitchOpen.value = false
+  if (menuPhase.value === 'closed' || menuPhase.value === 'closing') {
+    menuPhase.value = 'opening'
+    isOpen.value = true
+  }
+  else {
+    menuPhase.value = 'closing'
+    isOpen.value = false
   }
 }
 
-// Handle close event emitted from Navigation component
+// Close menu from Navigation child (e.g. when a menu item is clicked)
 function handleClose(state: boolean) {
   isOpen.value = state
 }
@@ -70,7 +92,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
   }
 })
 
-// Setup focus trap for accessibility when the mobile menu is open
+// Focus trap for mobile menu accessibility
 const { activate, deactivate } = useFocusTrap(headerRef)
 watch(isOpen, (open) => {
   if (open) {
@@ -90,13 +112,11 @@ watch(isSwitchOpen, (open) => {
 
 <template>
   <div>
-    <!-- Main Header container -->
+    <!-- Main Header container with dynamic style and classes -->
     <header
       ref="headerRef"
-      :class="[
-        transitionClasses,
-        headerBgClass,
-      ]"
+      :class="[headerTransitionClass, headerBgClass]"
+      :style="headerStyle"
       class="fixed left-0 top-0 z-50 w-full"
       role="banner"
     >
@@ -109,19 +129,15 @@ watch(isSwitchOpen, (open) => {
       />
       <!-- Inner container for logo and right-side items -->
       <div
-        :class="[
-          transitionClasses,
-        ]"
+        :class="[headerTransitionClass]"
         class="relative mx-auto flex items-center justify-between border-b border-gray-5 border-solid px-4 py-2 dark:border-gray-4 md:py-3 sm:px-6"
       >
-        <!-- Logo with hover/focus effects -->
         <div class="flex items-center">
           <NuxtLink
             :class="useClsx(
               'px-2 text-xl font-bold tracking-tight antialiased',
-              'transition-transform duration-300 ease-in-out',
-              'hover:scale-105 md:text-3xl focus:outline-none',
-              'focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
+              'transition-transform duration-300 ease-in-out hover:scale-105 md:text-3xl',
+              'focus:outline-none focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
             )"
             aria-label="Tech News"
             to="/"
@@ -130,29 +146,21 @@ watch(isSwitchOpen, (open) => {
             <span class="text-fg text-mint-8">News</span>
           </NuxtLink>
         </div>
-
-        <!-- Right side actions: Language switcher, color mode and menu button -->
         <div class="flex items-center gap-6">
-          <LanguageSwitcher
-            v-model:open="isSwitchOpen"
-          />
+          <LanguageSwitcher v-model:open="isSwitchOpen" />
           <ColorMode />
-          <MenuButton
-            :is-open="isOpen"
-            @click="toggleMenu"
-          />
+          <MenuButton :is-open="isOpen" @click="toggleMenu" />
         </div>
       </div>
-
-      <!-- Mobile Navigation component inserted within header so that header expands downward -->
+      <!-- Pass transition events from Navigation to adjust menuPhase -->
       <Navigation
         :is-open="isOpen"
         :items="menuItems"
         @close="handleClose"
+        @closed="() => { menuPhase = 'closed' }"
+        @opened="() => { menuPhase = 'open' }"
       />
     </header>
-
-    <!-- Accessible skip-link for keyboard navigation -->
     <NuxtLinkLocale
       :class="useClsx(
         'focus:bg-white focus:text-black focus:ring-blue-500 sr-only',
