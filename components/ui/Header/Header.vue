@@ -2,19 +2,36 @@
 // Components
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
-import MobileMenu from '@/components/ui/Navigation/Mobile/MobileMenu.vue'
-
-import MobileMenuButton from '@/components/ui/Navigation/Mobile/MobileMenuButton.vue'
+import MenuButton from '@/components/ui/Navigation/Mobile/MenuButton.vue'
+import Navigation from '@/components/ui/Navigation/Mobile/Navigation.vue'
 import { useEventListener } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { ref, watch } from 'vue'
 
 // Example menu items
 const menuItems = [
-  { label: 'Home', href: '#' },
-  { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
-  { label: 'Contact', href: '#contact' },
+  {
+    label: 'Products',
+    href: '/products',
+    children: [
+      { label: 'Software', href: '/products/software' },
+      { label: 'Hardware', href: '/products/hardware' },
+      { label: 'Services', href: '/products/services' },
+    ],
+  },
+  {
+    label: 'About',
+    href: '/about',
+    children: [
+      { label: 'Our Story', href: '/about/story' },
+      { label: 'Team', href: '/about/team' },
+      { label: 'Careers', href: '/about/careers' },
+    ],
+  },
+  {
+    label: 'Contact',
+    href: '/contact',
+  },
 ]
 
 // State variables
@@ -23,7 +40,6 @@ const isSwitchOpen = ref(false) // for language switcher
 const isVisible = ref(true) // optional, for show/hide behavior
 const headerRef = ref<HTMLElement | null>(null)
 
-// Toggle the mobile menu
 function toggleMenu() {
   isOpen.value = !isOpen.value
   if (isOpen.value) {
@@ -32,11 +48,10 @@ function toggleMenu() {
 }
 
 function handleClose(state: boolean) {
-  consola.debug('Closing menu', state)
   isOpen.value = state
 }
 
-// Close menu and language switcher on Escape
+// Close menu and language switcher on Escape key
 useEventListener('keydown', (e: KeyboardEvent) => {
   if (e.key === 'Escape') {
     isOpen.value = false
@@ -45,7 +60,6 @@ useEventListener('keydown', (e: KeyboardEvent) => {
 })
 
 // Focus trap for the mobile menu
-// TODO: Improve menu states for better handling
 const { activate, deactivate } = useFocusTrap(headerRef)
 watch(isOpen, (open) => {
   if (open) {
@@ -56,7 +70,6 @@ watch(isOpen, (open) => {
     deactivate()
   }
 })
-
 watch(isSwitchOpen, (open) => {
   if (open) {
     isOpen.value = false
@@ -66,47 +79,38 @@ watch(isSwitchOpen, (open) => {
 
 <template>
   <div>
-    <!--
-      Header container with position:fixed for sticky top behavior.
-      We keep focus trap + scrolling logic as in your original code.
-    -->
     <header
       ref="headerRef"
       :class="useClsx(
-        isVisible ? 'translate-y-0' : '-translate-y-full',
-        'bg-pureWhite/50 dark:bg-pureBlack/50 fixed left-0 top-0 z-50 w-full transition-transform duration-500 ease-in-out',
+        'transition-all duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]',
+        isOpen ? 'bg-pureWhite/95 dark:bg-pureBlack/95' : 'bg-pureWhite/50 dark:bg-pureBlack/50',
+        'fixed left-0 top-0 z-50 w-full',
       )"
       role="banner"
     >
-      <!--
-        1) The blurred background layer:
-           Absolutely positioned, fills entire header.
-           Has the border + backdrop-blur + saturate, etc.
-      -->
+      <!-- Background as separate layer  -->
       <div
         :class="useClsx(
-          isOpen && 'bg-pureWhite dark:bg-pureBlack',
-          'transition-colors duration-300 ease-[cubic-bezier(0.77,0,0.18,1)]',
-          'pointer-events-none absolute inset-0 border-b border-gray-5 border-solid',
-          'backdrop-blur-[8px] backdrop-saturate-150 dark:border-gray-4 dark:border-gray-4',
+          'pointer-events-none absolute inset-0',
+          'backdrop-blur-[8px] backdrop-saturate-150',
         )"
       />
-
-      <!--
-        2) The actual header content:
-           Position: relative to stack above the blur layer.
-           Contains logo, language switcher, color mode, etc.
-      -->
       <div
-        :class="useClsx('relative mx-auto flex items-center justify-between px-4 py-2 lg:px-8 md:py-3 sm:px-6')"
+        :class="useClsx(
+          'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]',
+          'border-b border-gray-5 border-solid',
+          'dark:border-gray-4 dark:border-gray-4',
+          'relative mx-auto flex items-center justify-between px-4 py-2 md:py-3 sm:px-6',
+        )"
       >
         <!-- Logo -->
-        <div class="flex items-center">
+        <div class="flex items-center transition-all duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]">
           <NuxtLink
             :class="useClsx(
-              'antialiased text-xl px-2 font-bold tracking-tight md:text-3xl',
-              'focus:outline-none focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
-              'transition-transform ease-in-out duration-300 hover:scale-105',
+              'px-2 text-xl font-bold tracking-tight antialiased',
+              'transition-transform duration-300 ease-in-out',
+              'hover:scale-105 md:text-3xl focus:outline-none',
+              'focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
             )"
             aria-label="Tech News"
             to="/"
@@ -117,42 +121,30 @@ watch(isSwitchOpen, (open) => {
         </div>
 
         <!-- Right side menu items -->
-        <div
-          :class="useClsx(
-            'flex items-center gap-6  transition-colors',
-            'color-pureBlack dark:color-pureWhite',
-          )"
-        >
-          <!-- Dark Mode Toggle & Burger Menu -->
+        <div class="flex items-center gap-6">
+          <LanguageSwitcher
+            v-model:open="isSwitchOpen"
+          />
           <ColorMode />
-          <!-- Language Switcher -->
-          <LanguageSwitcher v-model:open="isSwitchOpen" />
-
-          <!-- MobileMenuButton -->
-          <MobileMenuButton
+          <MenuButton
             :is-open="isOpen"
             @click="toggleMenu"
           />
-
-          <!-- MobileMenu -->
-          <MobileMenu
-            :is-open="isOpen"
-            :items="menuItems"
-            @close="handleClose"
-          />
         </div>
       </div>
+
+      <!-- Navigation is now rendered directly within the header so that the header grows downward -->
+      <Navigation
+        :is-open="isOpen"
+        :items="menuItems"
+        @close="handleClose"
+      />
     </header>
 
-    <!--
-      Skip to content link for keyboard users
-      (unchanged from your original).
-    -->
     <NuxtLinkLocale
       :class="useClsx(
-        'focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:p-4',
-        'focus:outline-none focus:ring-2 focus:bg-white focus:text-black focus:ring-blue-500',
-        'sr-only focus:not-sr-only',
+        'focus:bg-white focus:text-black focus:ring-blue-500 sr-only',
+        'focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:p-4 focus:outline-none focus:ring-2',
       )"
       to="#main-content"
     >
