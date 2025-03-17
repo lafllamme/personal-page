@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+
 /**
  * A composable utility for building dynamic class strings using the `clsx` library.
  *
@@ -25,5 +26,5 @@ import clsx from 'clsx'
  * // => 'is-valid'
  */
 export function useClsx(...classes: Parameters<typeof clsx>): string {
-    return clsx(...classes)
+  return clsx(...classes)
 }
