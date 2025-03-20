@@ -21,15 +21,3 @@ import Shader from '@/components/ui/Shaders/Shader.vue'
     </div>
   </div>
 </template>
-
-<style lang="scss">
-html::-webkit-scrollbar,
-body::-webkit-scrollbar {
-  display: none; // Hide scrollbars in WebKit browsers
-}
-
-html {
-  scrollbar-width: none; // Hide scrollbars in Firefox
-  scroll-behavior: smooth;
-}
-</style>
