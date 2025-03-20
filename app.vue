@@ -23,6 +23,16 @@ else {
 </template>
 
 <style lang="scss">
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; // Hide scrollbars in WebKit browsers
+}
+
+html {
+  scrollbar-width: none; // Hide scrollbars in Firefox
+  scroll-behavior: smooth;
+}
+
 // page transitions
 /* Enhanced soft fade transition without scaling to avoid jumpiness */
 .page-enter-active,
