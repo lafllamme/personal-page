@@ -51,7 +51,7 @@ function isExpanded(label: string) {
 }
 
 function getAnimationDelay(index: number) {
-  return `${index * 0.1}s`
+  return `${index * 100}ms`
 }
 
 function handleClick() {
@@ -113,20 +113,10 @@ function onAfterLeave() {
             </template>
             <template v-else>
               <span>{{ item.label }}</span>
-              <svg
+              <Icon
                 :class="{ 'transform rotate-180': isExpanded(item.label) }"
-                class="transition-transform duration-300"
-                fill="none"
-                height="20"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                width="20"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
+                class="h-6 w-6" name="ri:arrow-down-s-line"
+              />
             </template>
           </div>
           <Transition
@@ -139,14 +129,17 @@ function onAfterLeave() {
           >
             <div v-if="item.children && isExpanded(item.label)" class="overflow-hidden">
               <div
-                class="bg-gray-50 dark:bg-gray-900 grid grid-cols-1 mx-2 mb-2 gap-4 rounded-lg px-5 py-3 md:grid-cols-3"
+                :class="useClsx(
+                  'bg-gray-3 grid grid-cols-1',
+                  'mx-2 mb-2 gap-4 rounded-lg px-5 py-3 md:grid-cols-3',
+                )"
               >
                 <div>
                   <ul class="m-0 list-none p-0">
                     <li v-for="child in item.children" :key="child.label" class="mb-2">
                       <a
                         :href="child.href"
-                        class="hover:bg-gray-100 dark:hover:bg-gray-800 block rounded px-3 py-2 decoration-none transition-colors"
+                        class="block rounded px-3 py-2 color-pureBlack decoration-none transition-colors hover:bg-gray-10 dark:color-pureWhite"
                         @click="handleClick"
                       >
                         {{ child.label }}
@@ -154,23 +147,23 @@ function onAfterLeave() {
                     </li>
                   </ul>
                 </div>
-                <div class="col-span-2 hidden md:block">
-                  <div class="bg-gray-100 dark:bg-gray-800 h-full flex flex-col rounded-lg p-4">
+                <div class="col-span-2 hidden color-pureBlack md:block dark:color-pureWhite">
+                  <div class="h-full flex flex-col rounded-lg bg-gray-3 p-4">
                     <h3 class="mb-2 text-lg font-medium">
                       Featured in {{ item.label }}
                     </h3>
-                    <p class="text-gray-600 dark:text-gray-300 mb-4">
+                    <p class="mb-4">
                       Discover our top picks and latest additions.
                     </p>
                     <div class="grid grid-cols-2 mt-auto gap-3">
-                      <div class="bg-white dark:bg-gray-700 rounded p-3 shadow-sm">
-                        <div class="bg-gray-200 dark:bg-gray-600 mb-2 h-24 w-full rounded" />
+                      <div class="rounded p-3 shadow-sm">
+                        <div class="mb-2 h-24 w-full rounded bg-gray-2" />
                         <p class="font-medium">
                           Featured Item
                         </p>
                       </div>
-                      <div class="bg-white dark:bg-gray-700 rounded p-3 shadow-sm">
-                        <div class="bg-gray-200 dark:bg-gray-600 mb-2 h-24 w-full rounded" />
+                      <div class="rounded bg-gray-3 p-3 shadow-sm">
+                        <div class="mb-2 h-24 w-full rounded bg-gray-2" />
                         <p class="font-medium">
                           Featured Item
                         </p>
