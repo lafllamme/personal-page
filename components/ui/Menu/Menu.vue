@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { useWindowSize } from '@vueuse/core'
+import { useEventListener, useWindowSize } from '@vueuse/core'
+
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface MenuItem {
@@ -81,12 +82,12 @@ function updateBodyScroll() {
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', handleEsc)
   updateBodyScroll()
 })
 
+useEventListener(window, 'keydown', handleEsc)
+
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleEsc)
   document.body.style.overflow = 'auto'
 })
 
@@ -99,7 +100,11 @@ watch(isOpen, () => {
   <div class="relative w-full">
     <!-- Menu Button -->
     <button
-      class="bg-base12 text-base1 hover:bg-base11 dark:bg-base11 dark:text-base1 dark:hover:bg-base10 fixed right-6 top-6 z-30 flex items-center gap-2 border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all"
+      :class="useClsx(
+        'flex items-center gap-2 border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all',
+        'bg-pureBlack dark:bg-pureWhite color-pureWhite dark:color-pureBlack',
+        'hover:scale-110 transition-all duration-300 fixed right-6 top-6 z-30',
+      )"
       @click="isOpen = true"
     >
       Menu
@@ -109,7 +114,7 @@ watch(isOpen, () => {
     <!-- Overlay -->
     <div
       :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
-      class="bg-black/40 fixed inset-0 z-40 backdrop-blur-sm transition-opacity duration-300"
+      class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
       @click="isOpen = false"
     />
 
@@ -119,7 +124,7 @@ watch(isOpen, () => {
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
         isMobile ? 'w-full' : 'max-w-[70%] md:max-w-[60%]',
       ]"
-      class="bg-base1 dark:bg-base12 fixed inset-y-0 right-0 z-50 w-full shadow-xl transition-all duration-500 ease-out"
+      class="fixed inset-y-0 right-0 z-50 w-full bg-pureWhite shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack"
     >
       <!-- Background Text -->
       <div class="pointer-events-none absolute bottom-0 right-0 top-0 flex items-center justify-center overflow-hidden">
