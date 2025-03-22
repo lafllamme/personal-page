@@ -1,5 +1,4 @@
 <script setup>
-import Header from '@/components/ui/Header/Header.vue'
 import Shader from '@/components/ui/Shaders/Shader.vue'
 </script>
 
@@ -14,7 +13,7 @@ import Shader from '@/components/ui/Shaders/Shader.vue'
     <div
       class="relative z-10 overflow-y-auto transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]"
     >
-      <Header />
+      <!--      <Header /> -->
       <main class="pt-20">
         <slot name="default" />
       </main>
