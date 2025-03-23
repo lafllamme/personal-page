@@ -119,7 +119,7 @@ watch(isOpen, () => {
     <div
       :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        'max-w-[90%] sm:max-w-[62%] md:max-w-[40%] lg:max-w-[30%]',
+        'max-w-[100%] sm:max-w-[62%] md:max-w-[40%] lg:max-w-[30%]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
       )"
@@ -128,9 +128,9 @@ watch(isOpen, () => {
       <div class="pointer-events-none absolute inset-0">
         <div
           :class="useClsx(
-            'text-[30vw] font-black leading-none tracking-widest font-mono',
-            'absolute right-12 top-10 origin-right transform',
-            'uppercase opacity-10 -translate-y-1/2 -rotate-90',
+            'text-[15vh] color-gray-12A font-black leading-none tracking-wide',
+            'absolute right-12 top-8 origin-right transform',
+            'uppercase opacity-10 -translate-y-1/2 -rotate-90 font-esp',
           )"
         >
           TecNews
@@ -138,10 +138,15 @@ watch(isOpen, () => {
       </div>
 
       <!-- Content -->
-      <div class="relative z-10 h-full flex flex-col p-6">
+      <div class="relative z-10 h-full flex flex-col p-6 color-pureBlack dark:color-pureWhite">
         <!-- Close Button -->
         <button
-          class="bg-base1 text-base11 hover:bg-base2 dark:bg-base11 dark:text-base2 dark:hover:bg-base10 absolute right-6 top-6 flex items-center gap-2 border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all"
+          :class="useClsx(
+            'flex items-center gap-2 border-0 px-4 py-2',
+            'dark:hover:bg-base10 absolute right-4 top-4',
+            'text-sm tracking-wider font-mono uppercase transition-all',
+            'bg-base1 text-base11 hover:bg-base2 dark:bg-base11 dark:text-base2',
+          )"
           @click="isOpen = false"
         >
           Close
@@ -150,12 +155,19 @@ watch(isOpen, () => {
 
         <!-- Search -->
         <div class="mb-10 mt-10">
-          <div class="relative">
+          <div class="relative color-pureBlack dark:color-pureWhite">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <Icon class="text-base7 h-4 w-4" name="mdi-magnify" />
+              <Icon
+                class="h-4 w-4"
+                name="mdi-magnify"
+              />
             </div>
             <input
-              class="border-base2 text-base12 placeholder:text-base7 focus:border-base12 dark:border-base10 dark:text-base1 dark:placeholder:text-base8 dark:focus:border-base7 w-full border-0 border-b bg-transparent py-3 pl-10 pr-4 text-sm font-mono focus:outline-none focus:ring-0"
+              :class="useClsx(
+                'border-base2 focus:border-base12 dark:border-base10 dark:text-base1',
+                'dark:focus:border-base7 w-full border-0 border-b bg-transparent',
+                'py-3 pl-10 pr-4 text-sm font-mono dark:color-pureWhite placeholder:color-pureBlack',
+                'focus:outline-none focus:ring-0 dark:placeholder:color-pureWhite')"
               placeholder="Search"
               type="search"
             >
@@ -172,6 +184,7 @@ watch(isOpen, () => {
               <div
                 :class="useClsx(
                   !item.children && 'hover:text-base7 dark:hover:text-base8',
+                  'color-pureBlack dark:color-pureWhite',
                   idx !== 0 && 'border-t border-solid border-pureBlack dark:border-pureWhite',
                   'flex cursor-pointer items-center justify-between py-3 text-2xl tracking-normal font-mono uppercase',
                 )"
@@ -193,7 +206,10 @@ watch(isOpen, () => {
                   <ul class="mb-3 pl-4 space-y-1">
                     <li v-for="child in item.children" :key="child.id">
                       <a
-                        class="text-base6 hover:text-base12 dark:text-base7 dark:hover:text-base1 block py-2 text-xs tracking-wider font-mono uppercase transition-colors"
+                        :class="useClsx(
+                          'hover:text-base12 dark:hover:text-base1 block py-2 text-xs color-pureBlack',
+                          'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
+                        )"
                         href="#"
                       >
                         {{ child.title }}
@@ -222,19 +238,3 @@ watch(isOpen, () => {
     </div>
   </div>
 </template>
-
-<style>
-/* Ensure smooth transitions */
-* {
-  transition-property:
-    color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
-    backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-/* For dark mode toggle if needed */
-.dark {
-  color-scheme: dark;
-}
-</style>
