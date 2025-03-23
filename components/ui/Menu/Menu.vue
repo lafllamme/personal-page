@@ -119,22 +119,18 @@ watch(isOpen, () => {
     <div
       :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        'max-w-[90%] sm:max-w-[56%] lg:max-w-[30%]',
+        'max-w-[90%] sm:max-w-[62%] md:max-w-[40%] lg:max-w-[30%]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
       )"
     >
       <!-- Background Text -->
-      <div
-        :class="useClsx(
-          'pointer-events-none absolute',
-          'bottom-0 right-0 top-0 flex items-center justify-end overflow-hidden',
-        )"
-      >
+      <div class="pointer-events-none absolute inset-0">
         <div
           :class="useClsx(
-            '-rotate-90 transform',
-            'text-[20vw] font-black leading-none tracking-tighter font-mono uppercase opacity-10',
+            'text-[30vw] font-black leading-none tracking-widest font-mono',
+            'absolute right-12 top-10 origin-right transform',
+            'uppercase opacity-10 -translate-y-1/2 -rotate-90',
           )"
         >
           TecNews
@@ -153,7 +149,7 @@ watch(isOpen, () => {
         </button>
 
         <!-- Search -->
-        <div class="mb-10 mt-16">
+        <div class="mb-10 mt-10">
           <div class="relative">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <Icon class="text-base7 h-4 w-4" name="mdi-magnify" />
@@ -172,7 +168,6 @@ watch(isOpen, () => {
             <div
               v-for="(item, idx) in menuItems"
               :key="item.id"
-              class="border-base1 dark:border-base11 border-b"
             >
               <div
                 :class="useClsx(
@@ -183,9 +178,9 @@ watch(isOpen, () => {
                 @click="item.children && toggleItem(item.id)"
               >
                 {{ item.title }}
-                <div v-if="item.children" class="text-base7 flex items-center">
-                  <Icon v-if="openItems.includes(item.id)" class="h-3 w-3" name="mdi-minus" />
-                  <Icon v-else class="h-3 w-3" name="mdi-plus" />
+                <div v-if="item.children" class="text-base7 flex items-center color-mint-11">
+                  <Icon v-if="openItems.includes(item.id)" class="h-8 w-8" name="mdi-minus" />
+                  <Icon v-else class="h-8 w-8" name="mdi-plus" />
                 </div>
               </div>
 
