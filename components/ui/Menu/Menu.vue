@@ -98,14 +98,14 @@ watch(isOpen, () => {
     <!-- Menu Button -->
     <button
       :class="useClsx(
-        'flex items-center gap-2 border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all',
-        'bg-pureBlack dark:bg-pureWhite color-pureWhite dark:color-pureBlack',
-        'hover:scale-110 transition-all duration-300 fixed right-6 top-6 z-30',
+        'group flex items-center gap-2 rounded-full border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all',
+        'color-pureBlack dark:color-pureWhite outline-1 outline-solid outline-pureBlack dark:outline-pureWhite',
+        'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] z-30',
       )"
       @click="isOpen = true"
     >
       Menu
-      <Icon class="h-3.5 w-3.5" name="mdi-plus" />
+      <Icon class="h-3.5 w-3.5 transition-transform duration-300 ease-out group-hover:rotate-45" name="mdi-plus" />
     </button>
 
     <!-- Overlay -->
