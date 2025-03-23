@@ -1,9 +1,8 @@
 <script lang="ts" setup>
 // Import external components and utilities
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
+import Menu from '@/components/ui/Menu/Menu.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
-import MenuButton from '@/components/ui/Navigation/Mobile/MenuButton.vue'
-import Navigation from '@/components/ui/Navigation/Mobile/Navigation.vue'
 import { useEventListener } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { computed, ref, watch } from 'vue'
@@ -149,17 +148,10 @@ watch(isSwitchOpen, (open) => {
         <div class="flex items-center gap-6">
           <LanguageSwitcher v-model:open="isSwitchOpen" />
           <ColorMode />
-          <MenuButton :is-open="isOpen" @click="toggleMenu" />
+          <Menu />
         </div>
       </div>
       <!-- Pass transition events from Navigation to adjust menuPhase -->
-      <Navigation
-        :is-open="isOpen"
-        :items="menuItems"
-        @close="handleClose"
-        @closed="() => { menuPhase = 'closed' }"
-        @opened="() => { menuPhase = 'open' }"
-      />
     </header>
     <NuxtLinkLocale
       :class="useClsx(
