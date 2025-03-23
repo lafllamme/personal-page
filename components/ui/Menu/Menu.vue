@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import { useEventListener, useWindowSize } from '@vueuse/core'
 
-import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
-
 interface MenuItem {
   id: number
   title: string
@@ -13,7 +11,6 @@ const isOpen = ref(false)
 const openItems = ref<number[]>([])
 
 const { width: windowWidth } = useWindowSize()
-const isMobile = computed(() => windowWidth.value < 640)
 
 const menuItems: MenuItem[] = [
   {
@@ -120,16 +117,25 @@ watch(isOpen, () => {
 
     <!-- Menu Panel -->
     <div
-      :class="[
+      :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        isMobile ? 'w-full' : 'max-w-[70%] md:max-w-[60%]',
-      ]"
-      class="fixed inset-y-0 right-0 z-50 w-full bg-pureWhite shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack"
+        'max-w-[90%] sm:max-w-[56%] lg:max-w-[30%]',
+        'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
+        'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
+      )"
     >
       <!-- Background Text -->
-      <div class="pointer-events-none absolute bottom-0 right-0 top-0 flex items-center justify-center overflow-hidden">
+      <div
+        :class="useClsx(
+          'pointer-events-none absolute',
+          'bottom-0 right-0 top-0 flex items-center justify-end overflow-hidden',
+        )"
+      >
         <div
-          class="text-base1 dark:text-base11 rotate-90 transform text-[20vw] font-black leading-none tracking-tighter font-mono uppercase opacity-10"
+          :class="useClsx(
+            '-rotate-90 transform',
+            'text-[20vw] font-black leading-none tracking-tighter font-mono uppercase opacity-10',
+          )"
         >
           TecNews
         </div>
@@ -154,7 +160,7 @@ watch(isOpen, () => {
             </div>
             <input
               class="border-base2 text-base12 placeholder:text-base7 focus:border-base12 dark:border-base10 dark:text-base1 dark:placeholder:text-base8 dark:focus:border-base7 w-full border-0 border-b bg-transparent py-3 pl-10 pr-4 text-sm font-mono focus:outline-none focus:ring-0"
-              placeholder="Search..."
+              placeholder="Search"
               type="search"
             >
           </div>
@@ -164,13 +170,16 @@ watch(isOpen, () => {
         <div class="flex-1 overflow-y-auto">
           <div class="space-y-1">
             <div
-              v-for="item in menuItems"
+              v-for="(item, idx) in menuItems"
               :key="item.id"
               class="border-base1 dark:border-base11 border-b"
             >
               <div
-                :class="{ 'hover:text-base7 dark:hover:text-base8': !item.children }"
-                class="text-base12 dark:text-base1 flex cursor-pointer items-center justify-between py-3 text-sm tracking-wider font-mono uppercase"
+                :class="useClsx(
+                  !item.children && 'hover:text-base7 dark:hover:text-base8',
+                  idx !== 0 && 'border-t border-solid border-pureBlack dark:border-pureWhite',
+                  'flex cursor-pointer items-center justify-between py-3 text-2xl tracking-normal font-mono uppercase',
+                )"
                 @click="item.children && toggleItem(item.id)"
               >
                 {{ item.title }}
