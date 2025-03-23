@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import Menu from '@/components/ui/Menu/Menu.vue'
+import BentoGrid from '@/components/ui/Grid/BentoGrid.vue'
+import BentoGridItem from '@/components/ui/Grid/BentoGridItem.vue'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -145,30 +146,29 @@ function getMosaicClass(index: number) {
 <template>
   <!-- All page content is wrapped in a single root element -->
   <div class="pt-20">
-    <Menu />
-    <!--    &lt;!&ndash; Sample page content for testing neon styles &ndash;&gt;
-        <BentoGrid class="mx-auto max-w-7xl">
-          <BentoGridItem
-            v-for="(item, index) in items"
-            :key="index"
-            :class="getMosaicClass(index)"
-          >
-            <template #header>
-              <div class="size-full flex animate-pulse space-x-4">
-                <div class="size-full flex flex-1 rounded-md bg-slate-7" />
-              </div>
-            </template>
+    <!-- Sample page content for testing neon styles -->
+    <BentoGrid class="mx-auto max-w-7xl">
+      <BentoGridItem
+        v-for="(item, index) in items"
+        :key="index"
+        :class="getMosaicClass(index)"
+      >
+        <template #header>
+          <div class="size-full flex animate-pulse space-x-4">
+            <div class="size-full flex flex-1 rounded-md bg-slate-7" />
+          </div>
+        </template>
 
-            <template #title>
-              <strong>{{ item.title }}</strong>
-            </template>
+        <template #title>
+          <strong>{{ item.title }}</strong>
+        </template>
 
-            <template #icon />
+        <template #icon />
 
-            <template #description>
-              <p>{{ item.description }}</p>
-            </template>
-          </BentoGridItem>
-        </BentoGrid> -->
+        <template #description>
+          <p>{{ item.description }}</p>
+        </template>
+      </BentoGridItem>
+    </BentoGrid>
   </div>
 </template>
