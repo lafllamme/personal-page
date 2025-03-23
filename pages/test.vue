@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import BentoGrid from '@/components/ui/Grid/BentoGrid.vue'
-import BentoGridItem from '@/components/ui/Grid/BentoGridItem.vue'
+import GridItem from '@/components/ui/Grid/GridItem/GridItem.vue'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -148,7 +148,7 @@ function getMosaicClass(index: number) {
   <div class="pt-20">
     <!-- Sample page content for testing neon styles -->
     <BentoGrid class="mx-auto max-w-7xl">
-      <BentoGridItem
+      <GridItem
         v-for="(item, index) in items"
         :key="index"
         :class="getMosaicClass(index)"
@@ -168,7 +168,7 @@ function getMosaicClass(index: number) {
         <template #description>
           <p>{{ item.description }}</p>
         </template>
-      </BentoGridItem>
+      </GridItem>
     </BentoGrid>
   </div>
 </template>
