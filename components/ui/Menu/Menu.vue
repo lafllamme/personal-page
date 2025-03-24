@@ -72,22 +72,27 @@ function handleEsc(event: KeyboardEvent) {
   }
 }
 
-function updateBodyScroll() {
-  document.body.style.overflow = isOpen.value ? 'hidden' : 'auto'
+function setBodyScroll(state: boolean) {
+  if (state) {
+    document.body.style.overflow = 'hidden'
+  }
+  else {
+    document.body.style.overflow = 'auto'
+  }
 }
-
-onMounted(() => {
-  updateBodyScroll()
-})
 
 useEventListener(window, 'keydown', handleEsc)
 
 onUnmounted(() => {
-  document.body.style.overflow = 'auto'
+  setBodyScroll(false)
 })
 
-watch(isOpen, () => {
-  updateBodyScroll()
+onMounted(() => {
+  setBodyScroll(isOpen.value)
+})
+
+watch(isOpen, (val) => {
+  setBodyScroll(val)
 })
 </script>
 
