@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useEventListener, useWindowSize } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 
 interface MenuItem {
   id: number
@@ -9,8 +9,6 @@ interface MenuItem {
 
 const isOpen = ref(false)
 const openItems = ref<number[]>([])
-
-const { width: windowWidth } = useWindowSize()
 
 const menuItems: MenuItem[] = [
   {
@@ -122,6 +120,7 @@ watch(isOpen, () => {
         'max-w-[100%] sm:max-w-[62%] md:max-w-[40%] lg:max-w-[30%]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
+        'transform-gpu will-change-[transform,opacity] backface-hidden',
       )"
     >
       <!-- Background Text -->
@@ -200,7 +199,7 @@ watch(isOpen, () => {
               <div
                 v-if="item.children"
                 :class="openItems.includes(item.id) ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
-                class="grid transition-all duration-300 ease-in-out"
+                class="will-change-[transform,opacity] backface-hidden' grid transform-gpu transition-all duration-300 ease-in-out"
               >
                 <div class="overflow-hidden">
                   <ul class="mb-3 pl-4 space-y-1">
