@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { useEventListener } from '@vueuse/core'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface MenuItem {
   id: number
@@ -161,17 +162,15 @@ watch(isOpen, (val) => {
         <div class="mb-10 mt-10">
           <div class="relative color-pureBlack dark:color-pureWhite">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <Icon
-                class="h-4 w-4"
-                name="mdi-magnify"
-              />
+              <Icon class="h-4 w-4" name="mdi-magnify" />
             </div>
             <input
               :class="useClsx(
                 'border-base2 focus:border-base12 dark:border-base10 dark:text-base1',
                 'dark:focus:border-base7 w-full border-0 border-b bg-transparent',
                 'py-3 pl-10 pr-4 text-sm font-mono dark:color-pureWhite placeholder:color-pureBlack',
-                'focus:outline-none focus:ring-0 dark:placeholder:color-pureWhite')"
+                'focus:outline-none focus:ring-0 dark:placeholder:color-pureWhite',
+              )"
               placeholder="Search"
               type="search"
             >
@@ -181,10 +180,7 @@ watch(isOpen, (val) => {
         <!-- Menu Items -->
         <div class="flex-1 overflow-y-auto">
           <div class="space-y-1">
-            <div
-              v-for="(item, idx) in menuItems"
-              :key="item.id"
-            >
+            <div v-for="(item, idx) in menuItems" :key="item.id">
               <div
                 :class="useClsx(
                   !item.children && 'hover:text-base7 dark:hover:text-base8',
@@ -200,28 +196,36 @@ watch(isOpen, (val) => {
                   <Icon v-else class="h-8 w-8" name="mdi-plus" />
                 </div>
               </div>
-
-              <div
-                v-if="item.children"
-                :class="openItems.includes(item.id) ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'"
-                class="will-change-[transform,opacity] backface-hidden' grid transform-gpu transition-all duration-300 ease-in-out"
+              <!-- Accordion Transition Layer Using UnoCSS -->
+              <transition
+                enter-active-class="transition-all duration-300 ease-in-out"
+                enter-from-class="grid-rows-[0fr] opacity-0"
+                enter-to-class="grid-rows-[1fr] opacity-100"
+                leave-active-class="transition-all duration-300 ease-in-out"
+                leave-from-class="grid-rows-[1fr] opacity-100"
+                leave-to-class="grid-rows-[0fr] opacity-0"
               >
-                <div class="overflow-hidden">
-                  <ul class="mb-3 pl-4 space-y-1">
-                    <li v-for="child in item.children" :key="child.id">
-                      <a
-                        :class="useClsx(
-                          'hover:text-base12 dark:hover:text-base1 block py-2 text-xs color-pureBlack',
-                          'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
-                        )"
-                        href="#"
-                      >
-                        {{ child.title }}
-                      </a>
-                    </li>
-                  </ul>
+                <div
+                  v-if="item.children && openItems.includes(item.id)"
+                  class="will-change-[transform,opacity] backface-hidden grid transform-gpu"
+                >
+                  <div class="overflow-hidden">
+                    <ul class="mb-3 pl-4 space-y-1">
+                      <li v-for="child in item.children" :key="child.id">
+                        <a
+                          :class="useClsx(
+                            'hover:text-base12 dark:hover:text-base1 block py-2 text-xs color-pureBlack',
+                            'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
+                          )"
+                          href="#"
+                        >
+                          {{ child.title }}
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
+              </transition>
             </div>
           </div>
         </div>
