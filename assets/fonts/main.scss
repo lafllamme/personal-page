@@ -25,6 +25,36 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'Anurati';
+  src: url('./Headline/Anurati.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Blanka';
+  src: url('./Headline/Blanka.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Heat';
+  src: url('./Headline/Heat.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Sprintura';
+  src: url('./Headline/Sprintura.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Linetical';
+  src: url('./Headline/Linetical.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 
 @font-face {
   font-family: 'Aeroblade';
@@ -68,13 +98,55 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Race';
+  src: url('./Headline/Race.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'SF';
+  src: url('./Headline/SF.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Electric';
+  src: url('./Headline/Electric.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 .font-headline {
   font-family: 'Headline', sans-serif;
 }
+.font-anurati {
+  font-family: 'Anurati', sans-serif;
+}
+.font-blanka {
+  font-family: 'Blanka', sans-serif;
+}
+.font-electric {
+  font-family: 'Electric', sans-serif;
+}
+.font-sf {
+  font-family: 'SF', sans-serif;
+}
+
+.font-race{
+  font-family: 'Race', sans-serif;
+}
+.font-heat{
+  font-family: 'Heat', sans-serif;
+}
 
 .font-glitch {
   font-family: 'Glitch', sans-serif;
+}
+
+.font-sprintura {
+  font-family: 'Sprintura', sans-serif;
 }
 
 .font-aeroblade {
@@ -83,6 +155,9 @@
 
 .font-brolink {
   font-family: 'Brolink', sans-serif;
+}
+.font-linetical {
+  font-family: 'Linetical', sans-serif;
 }
 
 .font-mechsuit {
