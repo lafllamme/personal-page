@@ -123,7 +123,7 @@ watch(isOpen, (val) => {
     <div
       :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        'max-w-[100%] sm:max-w-[62%] md:max-w-[40%] lg:max-w-[30%]',
+        'max-w-[100%] sm:max-w-[60vw] xl:max-w-[35vw] max-w-[450px]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
         'transform-gpu will-change-[transform,opacity] backface-hidden',
@@ -133,9 +133,9 @@ watch(isOpen, (val) => {
       <div class="pointer-events-none absolute inset-0">
         <div
           :class="useClsx(
-            'text-[15vh] color-gray-12A font-black leading-none tracking-wide',
-            'absolute right-12 top-8 origin-right transform',
-            'uppercase opacity-10 -translate-y-1/2 -rotate-90 font-esp',
+            'text-[18vh] color-gray-12A font-thin leading-none tracking-wider',
+            'absolute right-8 md:right-15 top-12 origin-right transform animate-glow',
+            'uppercase opacity-10 -translate-y-1/2 -rotate-90 font-electric',
           )"
         >
           TecNews
@@ -179,14 +179,14 @@ watch(isOpen, (val) => {
 
         <!-- Menu Items -->
         <div class="flex-1 overflow-y-auto">
-          <div class="space-y-1">
+          <div class="michroma-regular space-y-1">
             <div v-for="(item, idx) in menuItems" :key="item.id">
               <div
                 :class="useClsx(
                   !item.children && 'hover:text-base7 dark:hover:text-base8',
                   'color-pureBlack dark:color-pureWhite',
                   idx !== 0 && 'border-t border-solid border-pureBlack dark:border-pureWhite',
-                  'flex cursor-pointer items-center justify-between py-3 text-2xl tracking-normal font-mono uppercase',
+                  'flex cursor-pointer items-center justify-between py-3 text-3xl tracking-normal uppercase',
                 )"
                 @click="item.children && toggleItem(item.id)"
               >
@@ -246,3 +246,12 @@ watch(isOpen, (val) => {
     </div>
   </div>
 </template>
+
+<style>
+.michroma-regular {
+  font-family: 'Michroma', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+</style>
