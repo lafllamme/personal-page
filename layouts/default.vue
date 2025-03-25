@@ -4,7 +4,7 @@ import Shader from '@/components/ui/Shaders/Shader.vue'
 </script>
 
 <template>
-  <div class="relative min-h-screen overflow-hidden bg-gray-3 dark:bg-gray-2">
+  <div class="relative overflow-hidden bg-gray-3 dark:bg-gray-2">
     <!-- Background container -->
     <div class="absolute inset-0 z-0">
       <Shader />
