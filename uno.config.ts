@@ -1,3 +1,4 @@
+import { animatedUno } from 'animated-unocss'
 // uno.config.ts
 import {
   defineConfig,
@@ -108,6 +109,7 @@ export default defineConfig({
     presetAttributify(),
     presetIcons(),
     presetTypography(),
+    animatedUno(),
     presetWebFonts({
       fonts: {
         // ...
