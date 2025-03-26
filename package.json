@@ -50,6 +50,7 @@
     "@unocss/eslint-plugin": "^65.4.3",
     "@unocss/nuxt": "^65.4.3",
     "@unocss/preset-mini": "^65.4.3",
+    "animated-unocss": "^0.0.6",
     "eslint": "^9.19.0",
     "eslint-plugin-format": "^1.0.1",
     "sass-embedded": "^1.83.4",
