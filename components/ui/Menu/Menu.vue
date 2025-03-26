@@ -9,6 +9,7 @@ interface MenuItem {
 }
 
 const isOpen = ref(false)
+const isAnimating = ref(false)
 const openItems = ref<number[]>([])
 
 const menuItems: MenuItem[] = [
@@ -92,8 +93,22 @@ onMounted(() => {
   setBodyScroll(isOpen.value)
 })
 
+function handleAnimation() {
+  isAnimating.value = true
+  setTimeout(() => {
+    isAnimating.value = false
+  }, 1200)
+}
+
 watch(isOpen, (val) => {
   setBodyScroll(val)
+  if (val) {
+    handleAnimation()
+  }
+})
+
+watch(isAnimating, (val) => {
+  consola.debug('isAnimating', val)
 })
 </script>
 
@@ -130,7 +145,10 @@ watch(isOpen, (val) => {
       )"
     >
       <!-- Background Text -->
-      <div class="pointer-events-none absolute inset-0">
+      <div
+        :class="isAnimating && 'animate-delay-[50ms] animated animated-fade-in-right animated-duration-900 animated-repeat-1'"
+        class="pointer-events-none absolute inset-0"
+      >
         <div
           :class="useClsx(
             'text-[18vh] color-gray-12A font-thin leading-none tracking-wider',
@@ -247,11 +265,12 @@ watch(isOpen, (val) => {
   </div>
 </template>
 
-<style>
+<style scoped>
 .michroma-regular {
   font-family: 'Michroma', sans-serif;
   font-weight: 400;
   font-style: normal;
 }
+
 @import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
 </style>
