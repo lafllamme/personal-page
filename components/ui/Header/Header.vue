@@ -131,7 +131,7 @@ watch(isSwitchOpen, (open) => {
         :class="[headerTransitionClass]"
         class="relative mx-auto flex items-center justify-between border-b border-gray-5 border-solid px-4 py-2 dark:border-gray-4 md:py-3 sm:px-6"
       >
-        <div class="flex items-center">
+        <div class="flex items-center pr-5">
           <NuxtLink
             :class="useClsx(
               'px-2 text-xl font-bold tracking-tight antialiased',
@@ -145,9 +145,15 @@ watch(isSwitchOpen, (open) => {
             <span class="text-fg text-mint-8">News</span>
           </NuxtLink>
         </div>
-        <div class="flex items-center gap-6">
+        <div class="flex items-center">
           <LanguageSwitcher v-model:open="isSwitchOpen" />
+          <div
+            class="mx-4 h-6 w-px bg-gray-11 transition-colors duration-300"
+          />
           <ColorMode />
+          <div
+            class="mx-4 h-6 w-px bg-gray-11 transition-colors duration-300"
+          />
           <Menu />
         </div>
       </div>
