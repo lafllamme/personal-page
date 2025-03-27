@@ -138,7 +138,7 @@ watch(isAnimating, (val) => {
     <div
       :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        'max-w-[100%] sm:max-w-[60vw] xl:max-w-[35vw] max-w-[450px]',
+        'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
         'transform-gpu will-change-[transform,opacity] backface-hidden',
@@ -146,7 +146,10 @@ watch(isAnimating, (val) => {
     >
       <!-- Background Text -->
       <div
-        :class="isAnimating && 'animate-delay-[50ms] animated animated-fade-in-right animated-duration-900 animated-repeat-1'"
+        :class="useClsx(
+          isAnimating && 'animated-fade-in-right',
+          'animate-delay-[50ms] animated  animated-duration-900 animated-repeat-1',
+        )"
         class="pointer-events-none absolute inset-0"
       >
         <div
