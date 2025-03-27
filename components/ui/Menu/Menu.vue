@@ -121,7 +121,7 @@ watch(isAnimating, (val) => {
           'group flex items-center gap-2 rounded-full border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all',
           'color-pureBlack dark:color-pureWhite ',
           'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] z-30',
-        //outline-pureBlack dark:outline-pureWhite outline-1 outline-solid
+          'focus:outline-pureBlack dark:focus:outline-pureWhite focus:outline-1 focus:outline-solid',
         )"
         @click="isOpen = true"
       >
