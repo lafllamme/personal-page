@@ -115,17 +115,25 @@ watch(isAnimating, (val) => {
 <template>
   <div class="relative w-full">
     <!-- Menu Button -->
-    <button
-      :class="useClsx(
-        'group flex items-center gap-2 rounded-full border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all',
-        'color-pureBlack dark:color-pureWhite outline-1 outline-solid outline-pureBlack dark:outline-pureWhite',
-        'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] z-30',
-      )"
-      @click="isOpen = true"
-    >
-      Menu
-      <Icon class="h-3.5 w-3.5 transition-transform duration-300 ease-out group-hover:rotate-45" name="mdi-plus" />
-    </button>
+    <div class="group">
+      <button
+        :class="useClsx(
+          'group flex items-center gap-2 rounded-full border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all',
+          'color-pureBlack dark:color-pureWhite ',
+          'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] z-30',
+        //outline-pureBlack dark:outline-pureWhite outline-1 outline-solid
+        )"
+        @click="isOpen = true"
+      >
+        Menu
+        <Icon class="h-3.5 w-3.5 transition-transform duration-300 ease-out group-hover:rotate-45" name="mdi-plus" />
+      </button>
+
+      <!-- Hover indicator -->
+      <span
+        class="absolute bottom-0 left-1/2 h-[1px] w-0 transform bg-mint-8 transition-all duration-300 group-hover:w-2/3 -translate-x-1/2"
+      />
+    </div>
 
     <!-- Overlay -->
     <div
