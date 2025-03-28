@@ -1,5 +1,9 @@
 {
-  "name": "design-principles",
+  "name": "tecnews",
+  "version": "0.0.1",
+  "description": "TecNews is a news website that provides the latest updates and articles on technology, gadgets, and software.",
+  "author": "Dogan Teke",
+  "license": "MIT",
   "private": true,
   "type": "module",
   "scripts": {
