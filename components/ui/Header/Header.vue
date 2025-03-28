@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 // Import external components and utilities
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
+import Divider from '@/components/ui/Menu/Divider/Divider.vue'
 import Menu from '@/components/ui/Menu/Menu.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import { useEventListener } from '@vueuse/core'
@@ -145,15 +146,11 @@ watch(isSwitchOpen, (open) => {
             <span class="text-fg text-mint-8">News</span>
           </NuxtLink>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center gap-3">
           <LanguageSwitcher v-model:open="isSwitchOpen" />
-          <div
-            class="mx-4 h-6 w-px bg-gray-11 transition-colors duration-300"
-          />
+          <Divider />
           <ColorMode />
-          <div
-            class="mx-4 h-6 w-px bg-gray-11 transition-colors duration-300"
-          />
+          <Divider />
           <Menu />
         </div>
       </div>
