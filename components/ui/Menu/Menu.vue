@@ -208,7 +208,7 @@ watch(isAnimating, (val) => {
 
         <!-- Menu Items -->
         <div class="flex-1 overflow-y-auto">
-          <div class="figtree-regular antialiased space-y-1">
+          <div class="space-grotesk-regular antialiased space-y-1">
             <div v-for="(item, idx) in menuItems" :key="item.id">
               <div
                 :class="useClsx(
@@ -279,6 +279,14 @@ watch(isAnimating, (val) => {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Figtree:ital,wght@0,300..900;1,300..900&family=Major+Mono+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Boldonse&family=Zen+Dots&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap');
+.space-grotesk-regular {
+  font-family: 'Space Grotesk', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
+
 .boldonse-regular {
   font-family: 'Boldonse', system-ui;
   font-weight: 400;
@@ -309,6 +317,13 @@ watch(isAnimating, (val) => {
   font-family: 'Figtree', sans-serif;
   font-optical-sizing: auto;
   font-weight: 600;
+  font-style: normal;
+}
+
+.jetbrains-mono-regular {
+  font-family: 'JetBrains Mono', monospace;
+  font-optical-sizing: auto;
+  font-weight: 500;
   font-style: normal;
 }
 </style>
