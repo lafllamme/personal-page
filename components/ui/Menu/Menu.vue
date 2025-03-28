@@ -208,7 +208,7 @@ watch(isAnimating, (val) => {
 
         <!-- Menu Items -->
         <div class="flex-1 overflow-y-auto">
-          <div class="michroma-regular space-y-1">
+          <div class="figtree-regular antialiased space-y-1">
             <div v-for="(item, idx) in menuItems" :key="item.id">
               <div
                 :class="useClsx(
@@ -277,11 +277,38 @@ watch(isAnimating, (val) => {
 </template>
 
 <style scoped>
-.michroma-regular {
-  font-family: 'Michroma', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Figtree:ital,wght@0,300..900;1,300..900&family=Major+Mono+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Boldonse&family=Zen+Dots&display=swap');
+.boldonse-regular {
+  font-family: 'Boldonse', system-ui;
+  font-weight: 400;
+  font-style: normal;
+}
+.audiowide-regular {
+  font-family: 'Audiowide', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.zen-dots-regular {
+  font-family: 'Zen Dots', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.bruno-ace-sc-regular {
+  font-family: 'Bruno Ace SC', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.major-mono-display-regular {
+  font-family: 'Major Mono Display', monospace;
   font-weight: 400;
   font-style: normal;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Michroma&display=swap');
+.figtree-regular {
+  font-family: 'Figtree', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
 </style>
