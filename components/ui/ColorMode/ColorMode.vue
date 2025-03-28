@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import { useClsx } from '@/composables/useClsx'
 
 interface Props {
@@ -38,19 +39,21 @@ onMounted(() => {
 
 <template>
   <template v-if="isLoading">
-    <div class="aspect-square h-8 w-8 animate-pulse rounded-full bg-gray-8 dark:bg-gray-12" />
+    <div class="px-2">
+      <div class="aspect-square h-8 w-8 animate-pulse rounded-full bg-gray-8 px-2 dark:bg-gray-12" />
+    </div>
   </template>
   <template v-else>
-    <div class="group relative">
+    <div class="group relative flex items-center px-2">
       <button
         ref="button"
         :class="useClsx(
-          isDark && 'theme-toggle--toggled',
-          'theme-toggle transition-all duration-500 rotate-0 delay-25 hover:rotate-[360deg]',
-          'ring-offset-inherit focus-visible:ring',
-          'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
           'outline-none',
           'blur-out z-2 group',
+          isDark && 'theme-toggle--toggled',
+          'ring-offset-inherit focus-visible:ring',
+          'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+          'theme-toggle transition-all duration-500 rotate-0 delay-25 media-mouse:hover:rotate-[360deg]',
         )"
         aria-label="Toggle theme"
         title="Toggle theme"
@@ -98,15 +101,14 @@ onMounted(() => {
             />
           </template>
         </svg>
-      </button><!-- Hover indicator -->
-      <span
-        class="absolute bottom-0 left-1/2 h-[1px] w-0 transform bg-mint-8 transition-all duration-300 group-hover:w-[110%] -translate-x-1/2"
-      />
+      </button>
+      <Underline class="!-bottom-0.5" />
     </div>
   </template>
 </template>
 
 <style lang="scss" scoped>
+//TODO: add this to UnoCSS Config
 .theme-toggle {
   --theme-toggle__expand--duration: 0.9s !important;
   --theme-toggle__within--duration: 0.9s !important;
