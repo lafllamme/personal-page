@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import { useEventListener } from '@vueuse/core'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 
@@ -126,13 +127,12 @@ watch(isAnimating, (val) => {
         @click="isOpen = true"
       >
         Menu
-        <Icon class="h-3.5 w-3.5 transition-transform duration-300 ease-out group-hover:rotate-45" name="mdi-plus" />
+        <Icon
+          class="h-3.5 w-3.5 transition-transform duration-300 ease-out group-hover:rotate-45"
+          name="mdi-plus"
+        />
       </button>
-
-      <!-- Hover indicator -->
-      <span
-        class="absolute bottom-0 left-1/2 h-[1px] w-0 transform bg-mint-8 transition-all duration-300 group-hover:w-2/3 -translate-x-1/2"
-      />
+      <Underline />
     </div>
 
     <!-- Overlay -->
