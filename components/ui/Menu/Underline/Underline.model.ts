@@ -3,7 +3,7 @@ export interface UnderlineProps {
   color?: string
 }
 
-export const UnderlinePropsDefaults: UnderlineProps = {
+export const UnderlinePropsDefaults: Partial<UnderlineProps> = {
   className: '',
   color: 'bg-mint-8 ',
 }
