@@ -124,7 +124,7 @@ watch(isAnimating, (val) => {
     <!-- Overlay -->
     <div
       :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
-      class="fixed inset-0 z-100 bg-pureBlack/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
+      class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
       @click="isOpen = false"
     />
 
@@ -133,7 +133,7 @@ watch(isAnimating, (val) => {
       :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
         'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
-        'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
+        'fixed inset-y-0 right-0 z-100 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
         'transform-gpu will-change-[transform,opacity] backface-hidden',
       )"
