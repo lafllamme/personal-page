@@ -12,6 +12,7 @@ interface MenuItem {
 const isOpen = ref(false)
 const isAnimating = ref(false)
 const openItems = ref<number[]>([])
+const buttonRef = ref<HTMLButtonElement | null>(null)
 
 const menuItems: MenuItem[] = [
   {
@@ -84,6 +85,10 @@ function setBodyScroll(state: boolean) {
   }
 }
 
+function handleClick() {
+  isOpen.value = !isOpen.value
+}
+
 useEventListener(window, 'keydown', handleEsc)
 
 onUnmounted(() => {
@@ -117,7 +122,10 @@ watch(isAnimating, (val) => {
   <div class="relative w-full">
     <!-- Menu Button -->
     <div class="group flex items-center">
-      <MenuButton :is-open="isOpen" @click="isOpen = !isOpen" />
+      <MenuButton
+        :is-open="isOpen"
+        @click="handleClick"
+      />
       <!--      <Underline /> -->
     </div>
 
@@ -125,6 +133,7 @@ watch(isAnimating, (val) => {
     <div
       :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
       class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
+
       @click="isOpen = false"
     />
 
@@ -160,14 +169,14 @@ watch(isAnimating, (val) => {
       <!-- Content -->
       <div class="relative z-10 h-full min-h-screen flex flex-col p-6 color-pureBlack dark:color-pureWhite">
         <!-- Search -->
-        <div class="mb-10 mt-10">
+        <div class="jetbrains-mono-regular mb-10 mt-10">
           <div class="relative color-pureBlack dark:color-pureWhite">
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
               <Icon class="h-4 w-4" name="mdi-magnify" />
             </div>
             <input
               :class="useClsx(
-                'border-base2 focus:border-base12 dark:border-base10 dark:text-base1',
+                'border-base2 focus:border-base12 dark:border-base10 dark:text-base1 jetbrains-mono-regular',
                 'dark:focus:border-base7 w-full border-0 border-b bg-transparent',
                 'py-3 pl-10 pr-4 text-sm font-mono dark:color-pureWhite placeholder:color-pureBlack',
                 'focus:outline-none focus:ring-0 dark:placeholder:color-pureWhite',
