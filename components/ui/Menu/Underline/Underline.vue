@@ -10,10 +10,10 @@ const { className, color } = props
   <!-- Hover indicator -->
   <span
     :class="useClsx(
-      className,
       color ? color : 'bg-mint-8',
       'absolute bottom-0 left-1/2 h-[2px]',
       'w-0 transform transition-all duration-300 media-mouse:group-hover:w-3/4 -translate-x-1/2',
+      className,
     )"
   />
 </template>

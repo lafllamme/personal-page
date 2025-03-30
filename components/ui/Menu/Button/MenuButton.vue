@@ -1,23 +1,32 @@
 <script lang="ts" setup>
 import type { MenuButtonEmits, MenuButtonProps } from '@/components/ui/Menu/Button/MenuButton.model'
 import { MenuButtonDefaults } from '@/components/ui/Menu/Button/MenuButton.model'
+import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 
 withDefaults(defineProps<MenuButtonProps>(), MenuButtonDefaults)
 defineEmits<MenuButtonEmits>()
+const menuBtn = ref<HTMLButtonElement | null>(null)
+
+function handleClick() {
+  menuBtn.value?.focus()
+  consola.debug('[MenuButton] Focus =>', document.activeElement)
+}
 </script>
 
 <template>
   <button
+    ref="menuBtn"
     :aria-expanded="isOpen"
     :class="useClsx(
-      'absolute right-0 z-100 flex items-center justify-center',
+      'group absolute right-0 z-100 flex items-center justify-center',
       'transition-transform focus:outline-none ease-in-out duration-300',
       'color-pureBlack dark:color-pureWhite',
       'focus:ring-pureBlack dark:focus:ring-pureWhite focus:ring',
     )"
     aria-controls="mobile-menu"
-    aria-haspopup="true"
+
     aria-label="Toggle menu"
+    @click="handleClick"
   >
     <svg
       :class="isOpen && '-translate-x-1.55'"
@@ -49,5 +58,6 @@ defineEmits<MenuButtonEmits>()
         fill="currentColor"
       />
     </svg>
+    <Underline class-name="!media-mouse:group-hover:w-120%" />
   </button>
 </template>
