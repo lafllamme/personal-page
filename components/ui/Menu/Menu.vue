@@ -124,7 +124,7 @@ watch(isAnimating, (val) => {
     <!-- Overlay -->
     <div
       :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
-      class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
+      class="fixed inset-0 z-100 bg-pureBlack/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
       @click="isOpen = false"
     />
 
