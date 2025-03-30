@@ -134,7 +134,7 @@ watch(isAnimating, (val) => {
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
         'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
-        'shadow-xl transition-all duration-400 ease-out dark:bg-pureBlack',
+        'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
         'transform-gpu will-change-[transform,opacity] backface-hidden',
       )"
     >
@@ -158,7 +158,7 @@ watch(isAnimating, (val) => {
       </div>
 
       <!-- Content -->
-      <div class="relative z-10 h-full flex flex-col p-6 color-pureBlack dark:color-pureWhite">
+      <div class="relative z-10 h-full min-h-screen flex flex-col p-6 color-pureBlack dark:color-pureWhite">
         <!-- Search -->
         <div class="mb-10 mt-10">
           <div class="relative color-pureBlack dark:color-pureWhite">
