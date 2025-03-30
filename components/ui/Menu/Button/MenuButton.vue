@@ -10,7 +10,7 @@ defineEmits<MenuButtonEmits>()
   <button
     :aria-expanded="isOpen"
     :class="useClsx(
-      'absolute right-0 z-100 flex items-center justify-center',
+      'absolute right-0 z-1000 flex items-center justify-center',
       'transition-transform focus:outline-none ease-in-out duration-300',
       'color-pureBlack dark:color-pureWhite',
       'focus:ring-pureBlack dark:focus:ring-pureWhite focus:ring',
