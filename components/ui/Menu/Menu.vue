@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Underline from '@/components/ui/Menu/Underline/Underline.vue'
+import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
 import { useEventListener } from '@vueuse/core'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 
@@ -116,23 +116,9 @@ watch(isAnimating, (val) => {
 <template>
   <div class="relative w-full">
     <!-- Menu Button -->
-    <div class="group">
-      <button
-        :class="useClsx(
-          'group flex items-center gap-2 rounded-full border-0 px-4 py-2 text-sm tracking-wider font-mono uppercase transition-all',
-          'color-pureBlack dark:color-pureWhite ',
-          'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] z-30',
-          'focus:outline-pureBlack dark:focus:outline-pureWhite focus:outline-1 focus:outline-solid',
-        )"
-        @click="isOpen = true"
-      >
-        Menu
-        <Icon
-          class="h-3.5 w-3.5 transition-transform duration-300 ease-out group-hover:rotate-45"
-          name="mdi-plus"
-        />
-      </button>
-      <Underline />
+    <div class="group flex items-center">
+      <MenuButton :is-open="isOpen" @click="isOpen = !isOpen" />
+      <!--      <Underline /> -->
     </div>
 
     <!-- Overlay -->
@@ -148,7 +134,7 @@ watch(isAnimating, (val) => {
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
         'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
-        'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
+        'shadow-xl transition-all duration-400 ease-out dark:bg-pureBlack',
         'transform-gpu will-change-[transform,opacity] backface-hidden',
       )"
     >
@@ -173,20 +159,6 @@ watch(isAnimating, (val) => {
 
       <!-- Content -->
       <div class="relative z-10 h-full flex flex-col p-6 color-pureBlack dark:color-pureWhite">
-        <!-- Close Button -->
-        <button
-          :class="useClsx(
-            'flex items-center gap-2 border-0 px-4 py-2',
-            'dark:hover:bg-base10 absolute right-4 top-4',
-            'text-sm tracking-wider font-mono uppercase transition-all',
-            'bg-base1 text-base11 hover:bg-base2 dark:bg-base11 dark:text-base2',
-          )"
-          @click="isOpen = false"
-        >
-          Close
-          <Icon class="h-3.5 w-3.5" name="mdi-close" />
-        </button>
-
         <!-- Search -->
         <div class="mb-10 mt-10">
           <div class="relative color-pureBlack dark:color-pureWhite">
