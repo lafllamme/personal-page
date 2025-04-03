@@ -53,7 +53,7 @@ onMounted(() => {
           isDark && 'theme-toggle--toggled',
           'ring-offset-inherit focus-visible:ring',
           'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-          'theme-toggle transition-all duration-500 rotate-0 delay-25 media-mouse:hover:rotate-[360deg]',
+          'theme-toggle transition-all duration-500 rotate-0 delay-100 media-mouse:hover:rotate-[360deg]',
         )"
         aria-label="Toggle theme"
         title="Toggle theme"
@@ -102,7 +102,7 @@ onMounted(() => {
           </template>
         </svg>
       </button>
-      <Underline class="!-bottom-0.5" />
+      <Underline class="!-bottom-1.5" />
     </div>
   </template>
 </template>
