@@ -241,14 +241,22 @@ watch(isAnimating, (val) => {
         </div>
 
         <!-- Footer -->
-        <div class="mt-auto pt-6">
-          <div class="border-base1 dark:border-base11 flex items-center justify-between border-t pt-6">
-            <span class="text-base7 text-xs font-mono">© 2025 TecNews</span>
+        <div class="geist-regular mt-auto pt-6 text-xs md:text-sm">
+          <div
+            :class="useClsx(
+              'flex items-center justify-between border-t',
+              'border-gray-7A border-solid pt-6',
+            )"
+          >
+            <span class="hover: transition-all duration-300 ease-out hover:scale-105 hover:color-mint-11">© 2025 TecNews</span>
             <button
-              class="text-base12 dark:text-base1 flex items-center gap-1 text-xs tracking-wider font-mono uppercase"
+              class="group flex items-center gap-1 tracking-wider uppercase"
             >
               Contact
-              <Icon class="h-3 w-3" name="mdi-chevron-right" />
+              <Icon
+                class="h-4 w-4 transition-all duration-300 ease-out group-hover:translate-x-1.5 group-hover:color-mint-11"
+                name="ri:arrow-right-line"
+              />
             </button>
           </div>
         </div>
@@ -261,6 +269,14 @@ watch(isAnimating, (val) => {
 @import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Figtree:ital,wght@0,300..900;1,300..900&family=Major+Mono+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Boldonse&family=Zen+Dots&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap');
+
+.geist-regular {
+  font-family: 'Geist', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .space-grotesk-regular {
   font-family: 'Space Grotesk', sans-serif;
   font-optical-sizing: auto;
