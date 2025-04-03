@@ -141,6 +141,7 @@ watch(isAnimating, (val) => {
     <div
       :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
+        'safe-area-footer',
         'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
@@ -322,5 +323,11 @@ watch(isAnimating, (val) => {
   font-optical-sizing: auto;
   font-weight: 500;
   font-style: normal;
+}
+.safe-area-footer {
+  /* Adjust the base padding as needed (here 1rem) and add the safe area inset */
+  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
+  /* Fallback for older iOS versions */
+  padding-bottom: calc(1rem + constant(safe-area-inset-bottom));
 }
 </style>
