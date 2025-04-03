@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { HeadMeta } from 'types'
+
 const loadingGradient = ref('repeating-linear-gradient(to right, #8a2387, #e94057, #f27121)')
 
 // If we are in development mode, we set consola log level to 5
@@ -10,6 +12,17 @@ else {
   consola.level = 0
   consola.info('Production mode enabled')
 }
+
+const appConfig = useAppConfig()
+
+const { meta } = appConfig as { meta: HeadMeta }
+consola.debug('appConfig', appConfig)
+consola.debug('appConfig meta', appConfig.meta)
+useHead({
+  meta: [
+    { name: 'viewport', content: meta.viewport },
+  ],
+})
 </script>
 
 <template>
