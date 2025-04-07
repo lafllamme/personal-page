@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { HeadMeta } from 'types'
+import Cursor from '@/components/ui/Cursor/Cursor.vue'
 
 const loadingGradient = ref('repeating-linear-gradient(to right, #8a2387, #e94057, #f27121)')
 
@@ -26,13 +27,15 @@ useHead({
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtLoadingIndicator
-      :color="loadingGradient"
-      :throttle="0"
-    />
-    <NuxtPage />
-  </NuxtLayout>
+  <Cursor>
+    <NuxtLayout>
+      <NuxtLoadingIndicator
+        :color="loadingGradient"
+        :throttle="0"
+      />
+      <NuxtPage />
+    </NuxtLayout>
+  </Cursor>
 </template>
 
 <style lang="scss">
