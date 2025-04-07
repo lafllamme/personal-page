@@ -50,7 +50,7 @@
     "vue-i18n": "^11.1.1",
     "vue-router": "latest"
   },
-  "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321",
+  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971",
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.0",
     "@iconify-json/uil": "^1.2.3",
