@@ -2,6 +2,7 @@
 // Import external components and utilities
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import Menu from '@/components/ui/Menu/Menu.vue'
+import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import { useEventListener } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
@@ -134,7 +135,7 @@ watch(isSwitchOpen, (open) => {
         <div class="flex items-center pr-5">
           <NuxtLink
             :class="useClsx(
-              'px-2 text-xl font-bold tracking-tight antialiased',
+              'absolute group px-2 text-xl font-bold tracking-tight antialiased',
               'transition-transform duration-300 ease-in-out hover:scale-105 md:text-3xl',
               'focus:outline-none focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
             )"
@@ -143,6 +144,7 @@ watch(isSwitchOpen, (open) => {
           >
             <span class="text-pureBlack dark:text-pureWhite">Tec</span>
             <span class="text-fg text-mint-8">News</span>
+            <Underline />
           </NuxtLink>
         </div>
         <div class="flex items-center">
