@@ -30,12 +30,11 @@ jobs:
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Build application
-        run: pnpm build
-
       - name: Rebuild application
         run: pnpm rebuild
 
+      - name: Build application
+        run: pnpm build
 
       - name: Deploy to NuxtHub
         uses: nuxt-hub/action@v1
