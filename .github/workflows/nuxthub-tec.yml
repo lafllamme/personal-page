@@ -28,6 +28,8 @@ jobs:
         run: pnpm approve-builds
 
       - name: Install dependencies
+        env:
+          npm_config_build_from_source: true
         run: pnpm install --no-frozen-lockfile
 
       - name: Build application
