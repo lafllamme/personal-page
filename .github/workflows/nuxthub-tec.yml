@@ -24,11 +24,11 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Approve post-install scripts
-        run: pnpm approve-builds
-
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+
+      - name: Approve post-install scripts
+        run: pnpm approve-builds
 
       - name: Build application
         run: pnpm build
