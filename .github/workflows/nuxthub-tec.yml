@@ -24,8 +24,8 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Approve post-install scripts
-        run: pnpm approve-builds
+      - name: Allow build scripts
+        run: pnpm config set ignore-scripts false
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
