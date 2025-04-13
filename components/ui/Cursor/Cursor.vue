@@ -1,52 +1,22 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from 'vue'
+import type { CursorProps, CursorType } from '@/components/ui/Cursor/Cursor.model'
+import { CursorDefaultProps } from '@/components/ui/Cursor/Cursor.model'
 
-interface Props {
-  clickableElements?: string[]
-  textElements?: string[]
-  clickableClasses?: string[]
-  textClasses?: string[]
-  size?: number
-  color?: string
-  textColor?: string
-  textWidth?: number
-  clickScale?: number
-  minTextHeight?: number
-}
+const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps)
 
-const props = withDefaults(defineProps<Props>(), {
-  clickableElements: () => ['a', 'button', 'input[type="submit"]', 'input[type="button"]'],
-  textElements: () => [
-    'h1',
-    'h2',
-    'h3',
-    'h4',
-    'h5',
-    'h6',
-    'p',
-    'span',
-    'li',
-    'blockquote',
-    'input[type="text"]',
-    'input[type="email"]',
-    'input[type="password"]',
-    'input[type="search"]',
-    'input[type="tel"]',
-    'input[type="url"]',
-    'textarea',
-  ],
-  clickableClasses: () => ['cursor-animate-click'],
-  textClasses: () => ['cursor-animate-text'],
-  size: 24,
-  color: 'white',
-  textColor: '#4CBBA5',
-  textWidth: 4,
-  clickScale: 1.8,
-  minTextHeight: 18,
-})
+const {
+  clickableElements,
+  clickableClasses,
+  textElements,
+  textClasses,
+  color,
+  textColor,
+  size,
+  minTextHeight,
+} = toRefs(props)
 
 const cursorRef = ref<HTMLElement | null>(null)
-const cursorType = ref<'default' | 'click' | 'text'>('default')
+const cursorType = ref<CursorType>('default')
 const textHeight = ref<number>(0)
 
 onMounted(() => {
@@ -65,12 +35,12 @@ onMounted(() => {
     const target = e.target as HTMLElement
 
     const isClickable
-        = props.clickableElements.some(sel => target.matches(sel) || !!target.closest(sel))
-          || props.clickableClasses.some(cls => target.classList.contains(cls.replace('.', '')))
+        = clickableElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
+          || clickableClasses.value.some(cls => target.classList.contains(cls.replace('.', '')))
 
     const isText
-        = props.textElements.some(sel => target.matches(sel) || !!target.closest(sel))
-          || props.textClasses.some(cls => target.classList.contains(cls.replace('.', '')))
+        = textElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
+          || textClasses.value.some(cls => target.classList.contains(cls.replace('.', '')))
 
     if (isClickable) {
       cursorType.value = 'click'
@@ -78,27 +48,27 @@ onMounted(() => {
     else if (isText) {
       cursorType.value = 'text'
 
-      const textEl = props.textElements
+      const textEl = textElements.value
         .map(sel => (target.matches(sel) ? target : target.closest(sel)))
         .filter(Boolean)[0] as HTMLElement | null
 
       if (textEl) {
         const fontSize = Number.parseFloat(window.getComputedStyle(textEl).fontSize)
         if (['input', 'textarea'].includes(textEl.tagName.toLowerCase())) {
-          textHeight.value = Math.max(textEl.clientHeight * 0.8, props.minTextHeight)
+          textHeight.value = Math.max(textEl.clientHeight * 0.8, minTextHeight.value)
         }
         else if (fontSize < 16) {
-          textHeight.value = Math.max(fontSize * 1.8, props.minTextHeight)
+          textHeight.value = Math.max(fontSize * 1.8, minTextHeight.value)
         }
         else if (fontSize < 24) {
-          textHeight.value = Math.max(fontSize * 1.5, props.minTextHeight)
+          textHeight.value = Math.max(fontSize * 1.5, minTextHeight.value)
         }
         else {
-          textHeight.value = Math.max(fontSize * 1.2, props.minTextHeight)
+          textHeight.value = Math.max(fontSize * 1.2, minTextHeight.value)
         }
       }
       else {
-        textHeight.value = Math.max(props.size * 1.2, props.minTextHeight)
+        textHeight.value = Math.max(size.value * 1.2, minTextHeight.value)
       }
     }
     else {
