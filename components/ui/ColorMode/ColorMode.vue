@@ -1,15 +1,11 @@
 <script lang="ts" setup>
+import type { ColorModeProps } from '@/components/ui/ColorMode/ColorMode.model'
+import { ColorModeDefaultProps } from '@/components/ui/ColorMode/ColorMode.model'
 import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import { useClsx } from '@/composables/useClsx'
 
-interface Props {
-  variant?: 'expand' | 'within'
-}
-
-withDefaults(defineProps<Props>(), {
-  variant: 'expand',
-})
-
+const props = withDefaults(defineProps<ColorModeProps>(), ColorModeDefaultProps)
+const { variant } = toRefs(props)
 const colorMode = useColorMode()
 const button = ref<HTMLButtonElement | null>(null)
 const isDark = computed(() => colorMode.value === 'dark')
