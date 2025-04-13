@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import Link from '@/components/ui/Link/Link.vue'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
 import { useEventListener } from '@vueuse/core'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
@@ -168,7 +169,7 @@ watch(isAnimating, (val) => {
       </div>
 
       <!-- Content -->
-      <div class="relative z-10 h-full min-h-screen flex flex-col p-6 color-pureBlack dark:color-pureWhite">
+      <div class="relative z-10 h-full flex flex-col p-6 color-pureBlack h-svh dark:color-pureWhite">
         <!-- Search -->
         <div class="jetbrains-mono-regular mb-10 mt-10">
           <div class="relative color-pureBlack dark:color-pureWhite">
@@ -223,15 +224,16 @@ watch(isAnimating, (val) => {
                   <div class="overflow-hidden">
                     <ul class="mb-3 pl-4 space-y-1">
                       <li v-for="child in item.children" :key="child.id">
-                        <a
+                        <Link
                           :class="useClsx(
-                            'hover:text-base12 dark:hover:text-base1 block py-2 text-xs color-pureBlack',
+                            'hover:text-base12 dark:hover:text-base1 block py-2 text-xs',
                             'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
                           )"
+                          :title="child.title"
                           href="#"
                         >
                           {{ child.title }}
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </div>
@@ -249,7 +251,9 @@ watch(isAnimating, (val) => {
               'border-gray-7A border-solid pt-6',
             )"
           >
-            <span class="hover: transition-all duration-300 ease-out hover:scale-105 hover:color-mint-11">© 2025 TecNews</span>
+            <span
+              class="hover: transition-all duration-300 ease-out hover:scale-105 hover:color-mint-11"
+            >© 2025 TecNews</span>
             <button
               class="group flex items-center gap-1 tracking-wider uppercase"
             >
@@ -290,21 +294,25 @@ watch(isAnimating, (val) => {
   font-weight: 400;
   font-style: normal;
 }
+
 .audiowide-regular {
   font-family: 'Audiowide', sans-serif;
   font-weight: 400;
   font-style: normal;
 }
+
 .zen-dots-regular {
   font-family: 'Zen Dots', sans-serif;
   font-weight: 400;
   font-style: normal;
 }
+
 .bruno-ace-sc-regular {
   font-family: 'Bruno Ace SC', sans-serif;
   font-weight: 400;
   font-style: normal;
 }
+
 .major-mono-display-regular {
   font-family: 'Major Mono Display', monospace;
   font-weight: 400;
@@ -324,6 +332,7 @@ watch(isAnimating, (val) => {
   font-weight: 500;
   font-style: normal;
 }
+
 .safe-area-footer {
   /* Adjust the base padding as needed (here 1rem) and add the safe area inset */
   padding-bottom: calc(1rem + env(safe-area-inset-bottom));
