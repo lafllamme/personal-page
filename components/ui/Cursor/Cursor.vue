@@ -19,61 +19,61 @@ const cursorRef = ref<HTMLElement | null>(null)
 const cursorType = ref<CursorType>('default')
 const textHeight = ref<number>(0)
 
-onMounted(() => {
-  if (cursorRef.value) {
-    document.body.appendChild(cursorRef.value)
+function checkElementType(e: MouseEvent) {
+  const target = e.target as HTMLElement
+
+  const isClickable
+      = clickableElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
+        || clickableClasses.value.some(cls => target.classList.contains(cls.replace('.', '')))
+
+  const isText
+      = textElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
+        || textClasses.value.some(cls => target.classList.contains(cls.replace('.', '')))
+
+  if (isClickable) {
+    cursorType.value = 'click'
   }
+  else if (isText) {
+    cursorType.value = 'text'
 
-  const updateCursorPosition = (e: MouseEvent) => {
-    if (cursorRef.value) {
-      cursorRef.value.style.left = `${e.clientX}px`
-      cursorRef.value.style.top = `${e.clientY}px`
-    }
-  }
+    const textEl = textElements.value
+      .map(sel => (target.matches(sel) ? target : target.closest(sel)))
+      .filter(Boolean)[0] as HTMLElement | null
 
-  const checkElementType = (e: MouseEvent) => {
-    const target = e.target as HTMLElement
-
-    const isClickable
-        = clickableElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
-          || clickableClasses.value.some(cls => target.classList.contains(cls.replace('.', '')))
-
-    const isText
-        = textElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
-          || textClasses.value.some(cls => target.classList.contains(cls.replace('.', '')))
-
-    if (isClickable) {
-      cursorType.value = 'click'
-    }
-    else if (isText) {
-      cursorType.value = 'text'
-
-      const textEl = textElements.value
-        .map(sel => (target.matches(sel) ? target : target.closest(sel)))
-        .filter(Boolean)[0] as HTMLElement | null
-
-      if (textEl) {
-        const fontSize = Number.parseFloat(window.getComputedStyle(textEl).fontSize)
-        if (['input', 'textarea'].includes(textEl.tagName.toLowerCase())) {
-          textHeight.value = Math.max(textEl.clientHeight * 0.8, minTextHeight.value)
-        }
-        else if (fontSize < 16) {
-          textHeight.value = Math.max(fontSize * 1.8, minTextHeight.value)
-        }
-        else if (fontSize < 24) {
-          textHeight.value = Math.max(fontSize * 1.5, minTextHeight.value)
-        }
-        else {
-          textHeight.value = Math.max(fontSize * 1.2, minTextHeight.value)
-        }
+    if (textEl) {
+      const fontSize = Number.parseFloat(window.getComputedStyle(textEl).fontSize)
+      if (['input', 'textarea'].includes(textEl.tagName.toLowerCase())) {
+        textHeight.value = Math.max(textEl.clientHeight * 0.8, minTextHeight.value)
+      }
+      else if (fontSize < 16) {
+        textHeight.value = Math.max(fontSize * 1.8, minTextHeight.value)
+      }
+      else if (fontSize < 24) {
+        textHeight.value = Math.max(fontSize * 1.5, minTextHeight.value)
       }
       else {
-        textHeight.value = Math.max(size.value * 1.2, minTextHeight.value)
+        textHeight.value = Math.max(fontSize * 1.2, minTextHeight.value)
       }
     }
     else {
-      cursorType.value = 'default'
+      textHeight.value = Math.max(size.value * 1.2, minTextHeight.value)
     }
+  }
+  else {
+    cursorType.value = 'default'
+  }
+}
+
+function updateCursorPosition(e: MouseEvent) {
+  if (cursorRef.value) {
+    cursorRef.value.style.left = `${e.clientX}px`
+    cursorRef.value.style.top = `${e.clientY}px`
+  }
+}
+
+onMounted(() => {
+  if (cursorRef.value) {
+    document.body.appendChild(cursorRef.value)
   }
 
   document.addEventListener('mousemove', updateCursorPosition, { passive: true })
