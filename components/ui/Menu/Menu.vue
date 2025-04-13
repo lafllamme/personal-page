@@ -14,6 +14,11 @@ const isOpen = ref(false)
 const isAnimating = ref(false)
 const openItems = ref<number[]>([])
 const buttonRef = ref<HTMLButtonElement | null>(null)
+const hasInputFocus = ref(false)
+
+const iconSearch = computed(() => {
+  return hasInputFocus.value ? 'ri:search-2-fill' : 'ri:search-line'
+})
 
 const menuItems: MenuItem[] = [
   {
@@ -90,6 +95,10 @@ function handleClick() {
   isOpen.value = !isOpen.value
 }
 
+function handleInputFocus(focused: boolean = false) {
+  hasInputFocus.value = focused
+}
+
 useEventListener(window, 'keydown', handleEsc)
 
 onUnmounted(() => {
@@ -142,7 +151,6 @@ watch(isAnimating, (val) => {
     <div
       :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        'safe-area-footer',
         'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
         'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
@@ -171,43 +179,73 @@ watch(isAnimating, (val) => {
       <!-- Content -->
       <div class="relative z-10 h-full flex flex-col p-6 color-pureBlack h-svh dark:color-pureWhite">
         <!-- Search -->
-        <div class="jetbrains-mono-regular mb-10 mt-10">
-          <div class="relative color-pureBlack dark:color-pureWhite">
-            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-              <Icon class="h-4 w-4" name="mdi-magnify" />
-            </div>
+        <div class="mb-10 mt-10">
+          <div
+            class="relative flex items-center border border-solid px-4 py-2 color-pureBlack dark:color-pureWhite"
+          >
             <input
+              id="search"
               :class="useClsx(
-                'border-base2 focus:border-base12 dark:border-base10 dark:text-base1 jetbrains-mono-regular',
-                'dark:focus:border-base7 w-full border-0 border-b bg-transparent',
-                'py-3 pl-10 pr-4 text-sm font-mono dark:color-pureWhite placeholder:color-pureBlack',
-                'focus:outline-none focus:ring-0 dark:placeholder:color-pureWhite',
+                'geist-regular peer tracking-normal',
+                'w-full bg-transparent rounded-sm',
+                'text-md placeholder:color-gray-10',
+                'focus:outline-none focus:ring-0',
               )"
-              placeholder="Search"
+              placeholder=""
               type="search"
+              @blur="handleInputFocus(false)"
+              @focus="handleInputFocus(true)"
             >
+            <label
+              :class="useClsx(
+                hasInputFocus && 'slide-out-blurred-top',
+                'color-gray-10 peer-focus:color-mint-8 transition-all duration-300 ease-out',
+                'pointer-events-none absolute left-4 top-1/2 transform',
+                'peer-focus:top-4 -translate-y-1/2 animation-fill-forwards peer-focus:text-xs peer-focus:-translate-y-2',
+              )"
+              for="search"
+            >
+              Search
+            </label>
+            <div class="pointer-events-none">
+              <div class="relative h-8 w-8">
+                <!-- Line icon -->
+                <Icon
+                  :class="{ 'opacity-0 scale-95': hasInputFocus, 'opacity-100 scale-100': !hasInputFocus }"
+                  class="absolute h-full w-full transition-all duration-300 ease-out"
+                  name="ri:search-line"
+                />
+                <!-- Filled icon -->
+                <Icon
+                  :class="{ 'opacity-100 scale-100': hasInputFocus, 'opacity-0 scale-95': !hasInputFocus }"
+                  class="absolute h-full w-full transition-all duration-300 ease-out"
+                  name="ri:search-2-fill"
+                />
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- Menu Items -->
         <div class="flex-1 overflow-y-auto">
           <div class="space-grotesk-regular antialiased space-y-1">
-            <div v-for="(item, idx) in menuItems" :key="item.id">
-              <div
+            <ul v-for="(item, idx) in menuItems" :key="item.id">
+              <li
                 :class="useClsx(
                   !item.children && 'hover:text-base7 dark:hover:text-base8',
                   'color-pureBlack dark:color-pureWhite',
                   idx !== 0 && 'border-t border-solid border-pureBlack dark:border-pureWhite',
                   'flex cursor-pointer items-center justify-between py-3 text-3xl tracking-normal uppercase',
                 )"
+                tabindex="0"
                 @click="item.children && toggleItem(item.id)"
               >
                 {{ item.title }}
-                <div v-if="item.children" class="text-base7 flex items-center color-mint-11">
+                <button v-if="item.children" class="flex items-center color-mint-11">
                   <Icon v-if="openItems.includes(item.id)" class="h-8 w-8" name="mdi-minus" />
                   <Icon v-else class="h-8 w-8" name="mdi-plus" />
-                </div>
-              </div>
+                </button>
+              </li>
               <!-- Accordion Transition Layer Using UnoCSS -->
               <transition
                 enter-active-class="transition-all duration-300 ease-in-out"
@@ -217,11 +255,11 @@ watch(isAnimating, (val) => {
                 leave-from-class="grid-rows-[1fr] opacity-100"
                 leave-to-class="grid-rows-[0fr] opacity-0"
               >
-                <div
+                <ol
                   v-if="item.children && openItems.includes(item.id)"
                   class="will-change-[transform,opacity] backface-hidden grid transform-gpu"
                 >
-                  <div class="overflow-hidden">
+                  <li class="overflow-hidden">
                     <ul class="mb-3 pl-4 space-y-1">
                       <li v-for="child in item.children" :key="child.id">
                         <Link
@@ -236,10 +274,10 @@ watch(isAnimating, (val) => {
                         </Link>
                       </li>
                     </ul>
-                  </div>
-                </div>
+                  </li>
+                </ol>
               </transition>
-            </div>
+            </ul>
           </div>
         </div>
 
@@ -279,6 +317,12 @@ watch(isAnimating, (val) => {
   font-family: 'Geist', sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
+  font-style: normal;
+}
+
+.geist-thin {
+  font-family: 'Geist', sans-serif;
+  font-optical-sizing: auto;
   font-style: normal;
 }
 
@@ -329,14 +373,29 @@ watch(isAnimating, (val) => {
 .jetbrains-mono-regular {
   font-family: 'JetBrains Mono', monospace;
   font-optical-sizing: auto;
-  font-weight: 500;
   font-style: normal;
 }
 
-.safe-area-footer {
-  /* Adjust the base padding as needed (here 1rem) and add the safe area inset */
-  padding-bottom: calc(1rem + env(safe-area-inset-bottom));
-  /* Fallback for older iOS versions */
-  padding-bottom: calc(1rem + constant(safe-area-inset-bottom));
+.slide-out-blurred-top {
+  animation: slide-out-blurred-top 0.45s cubic-bezier(0.755, 0.05, 0.855, 0.06) both;
+}
+
+@keyframes slide-out-blurred-top {
+  0% {
+    transform: translateY(0) scaleY(1) scaleX(1);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-1000px) scaleY(2) scaleX(0.2);
+    -webkit-transform-origin: 50% 0%;
+    transform-origin: 50% 0%;
+    -webkit-filter: blur(40px);
+    filter: blur(40px);
+    opacity: 0;
+  }
 }
 </style>
