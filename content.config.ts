@@ -2,6 +2,7 @@ import { defineCollection, defineContentConfig } from '@nuxt/content'
 // TODO: Fix ts error
 export default defineContentConfig({
   // Global markdown options
+  // @ts-expect-error This is available, we need to find the correct type
   highlight: {
     theme: {
       default: 'github-light', // Default theme (same as single string)
