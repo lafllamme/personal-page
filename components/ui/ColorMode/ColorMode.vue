@@ -50,8 +50,8 @@ onMounted(() => {
         :class="useClsx(
           isDark && 'theme-toggle--toggled',
           'outline-none blur-out z-2 group',
-          'ring-offset-inherit focus-visible:ring',
-          'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+          'ring-offset-inherit focus:ring',
+          'focus:ring-pureBlack dark:focus:ring-pureWhite',
           'theme-toggle transition-colors duration-500',
         )"
         aria-label="Toggle theme"
