@@ -27,15 +27,14 @@ useHead({
 </script>
 
 <template>
-  <Cursor>
-    <NuxtLayout>
-      <NuxtLoadingIndicator
-        :color="loadingGradient"
-        :throttle="0"
-      />
-      <NuxtPage />
-    </NuxtLayout>
-  </Cursor>
+  <NuxtLayout>
+    <NuxtLoadingIndicator
+      :color="loadingGradient"
+      :throttle="0"
+    />
+    <Cursor />
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <style lang="scss">
