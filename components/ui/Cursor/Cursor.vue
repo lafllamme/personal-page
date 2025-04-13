@@ -19,6 +19,15 @@ const cursorRef = ref<HTMLElement | null>(null)
 const cursorType = ref<CursorType>('default')
 const textHeight = ref<number>(0)
 
+function handleCursor(mounted: boolean = true) {
+  if (mounted && cursorRef.value) {
+    document.body.appendChild(cursorRef.value)
+  }
+  else if (!mounted && cursorRef.value?.parentNode) {
+    cursorRef.value.parentNode.removeChild(cursorRef.value)
+  }
+}
+
 function checkElementType(e: MouseEvent) {
   const target = e.target as HTMLElement
 
@@ -71,22 +80,18 @@ function updateCursorPosition(e: MouseEvent) {
   }
 }
 
+function initListeners() {
+  useEventListener('mousemove', updateCursorPosition, { passive: true })
+  useEventListener('mousemove', checkElementType, { passive: true })
+}
+
 onMounted(() => {
-  if (cursorRef.value) {
-    document.body.appendChild(cursorRef.value)
-  }
+  handleCursor(true)
+  initListeners()
+})
 
-  document.addEventListener('mousemove', updateCursorPosition, { passive: true })
-  document.addEventListener('mousemove', checkElementType, { passive: true })
-
-  onUnmounted(() => {
-    document.removeEventListener('mousemove', updateCursorPosition)
-    document.removeEventListener('mousemove', checkElementType)
-
-    if (cursorRef.value?.parentNode) {
-      cursorRef.value.parentNode.removeChild(cursorRef.value)
-    }
-  })
+onUnmounted(() => {
+  handleCursor(false)
 })
 </script>
 
