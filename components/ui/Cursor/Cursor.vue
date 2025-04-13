@@ -149,7 +149,7 @@ onUnmounted(() => {
         : 'translate(-50%, -50%)',
       transition: 'width 0.2s, height 0.2s, border-radius 0.2s, transform 0.2s, background-color 0.2s',
     }"
-    class="cursor-portal"
+    class="cursor-portal animate-fade-in"
   />
 </template>
 
