@@ -72,7 +72,7 @@ const linkProps = computed(() => {
     <!-- Default slot for link content (text or inner HTML) -->
     <slot />
     <!-- Underline component appears on hover -->
-    <Underline />
+    <Underline variant="left" />
   </component>
 </template>
 
