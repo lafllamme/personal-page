@@ -18,6 +18,20 @@ const {
 const cursorRef = ref<HTMLElement | null>(null)
 const cursorType = ref<CursorType>('default')
 const textHeight = ref<number>(0)
+const hasPointer = ref<boolean>(false)
+const pointerClass = computed(() => hasPointer.value ? 'has-pointer' : '')
+const firstRender = ref<boolean>(true)
+
+useHead({
+  htmlAttrs: {
+    class: pointerClass,
+  },
+})
+
+watchEffect(() => {
+  consola.debug('[Pointer] Class =>', pointerClass.value)
+  consola.debug('[Pointer] State =>', hasPointer.value)
+})
 
 function handleCursor(mounted: boolean = true) {
   if (mounted && cursorRef.value) {
@@ -25,6 +39,29 @@ function handleCursor(mounted: boolean = true) {
   }
   else if (!mounted && cursorRef.value?.parentNode) {
     cursorRef.value.parentNode.removeChild(cursorRef.value)
+  }
+}
+
+function centerCursor() {
+  if (firstRender.value && cursorRef.value) {
+    const centerX = window.innerWidth / 2
+    const centerY = window.innerHeight / 2
+    cursorRef.value.style.left = `${centerX}px`
+    cursorRef.value.style.top = `${centerY}px`
+  }
+  firstRender.value = false
+}
+
+function setCursorStyle(pointer: boolean = true) {
+  hasPointer.value = pointer
+}
+
+function checkCursor() {
+  if (window.matchMedia('(pointer: fine)').matches) {
+    setCursorStyle(true)
+  }
+  else {
+    setCursorStyle(false)
   }
 }
 
@@ -87,6 +124,8 @@ function initListeners() {
 
 onMounted(() => {
   handleCursor(true)
+  checkCursor()
+  centerCursor()
   initListeners()
 })
 
@@ -97,6 +136,7 @@ onUnmounted(() => {
 
 <template>
   <div
+    v-show="hasPointer"
     ref="cursorRef"
     :style="{
       width: cursorType === 'text' ? `${textWidth}px` : `${size}px`,
@@ -124,14 +164,8 @@ onUnmounted(() => {
   will-change: transform;
 }
 
-/* Hide native cursor globally */
-:global(html),
-:global(body),
-:global(*) {
-  cursor: none !important;
-}
-
-* {
+/* Apply the global rule only when the .has-pointer class is present */
+.has-pointer * {
   cursor: none !important;
 }
 </style>
