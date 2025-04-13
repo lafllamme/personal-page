@@ -11,6 +11,11 @@ const button = ref<HTMLButtonElement | null>(null)
 const isDark = computed(() => colorMode.value === 'dark')
 const isLoading = ref(true)
 const isAnimating = ref(false)
+const hasFocus = ref(false)
+
+function handleFocus(focused: boolean) {
+  hasFocus.value = focused
+}
 
 function toggleDarkMode() {
   debounceAnimation()
@@ -52,7 +57,9 @@ onMounted(() => {
         aria-label="Toggle theme"
         title="Toggle theme"
         type="button"
+        @blur="handleFocus(false)"
         @click="toggleDarkMode"
+        @focus="handleFocus(true)"
       >
         <div
           :class="useClsx(
@@ -102,7 +109,7 @@ onMounted(() => {
           </svg>
         </div>
       </button>
-      <Underline class="!-bottom-1.5" />
+      <Underline v-if="!hasFocus" class="!-bottom-1.5" />
     </div>
   </template>
 </template>
