@@ -130,4 +130,8 @@ onUnmounted(() => {
 :global(*) {
   cursor: none !important;
 }
+
+* {
+  cursor: none !important;
+}
 </style>
