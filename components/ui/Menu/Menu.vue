@@ -246,7 +246,7 @@ watch(isAnimating, (val) => {
               <li
                 :class="useClsx(
                   'group',
-                  'focus-visible:outline-none focus-visible:text-shadow-xl focus-visible:text-shadow-color-mint-8',
+                  'focus-visible:outline-none focus-visible:bg-mint-3A focus-visible:color-jade-11',
                   'transition-[text-shadow] transition-colors duration-200 ease-out',
                   'color-pureBlack dark:color-pureWhite',
                   !item.children && 'hover:text-base7 dark:hover:text-base8',
