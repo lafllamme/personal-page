@@ -76,6 +76,13 @@ function toggleItem(id: number) {
   }
 }
 
+function resetMenuItems(timeout?: number) {
+  const wait = new Promise(resolve => setTimeout(resolve, timeout || 300))
+  wait.then(() => {
+    openItems.value = []
+  })
+}
+
 function handleEsc(event: KeyboardEvent) {
   if (event.key === 'Escape') {
     isOpen.value = false
@@ -116,10 +123,13 @@ function handleAnimation() {
   }, 1200)
 }
 
-watch(isOpen, (val) => {
-  setBodyScroll(val)
-  if (val) {
+watch(isOpen, (open) => {
+  setBodyScroll(open)
+  if (open) {
     handleAnimation()
+  }
+  else {
+    resetMenuItems()
   }
 })
 
@@ -228,34 +238,54 @@ watch(isAnimating, (val) => {
 
         <!-- Menu Items -->
         <div
-          class="flex-1 overflow-y-auto"
+          class="flex-1 overflow-x-hidden overflow-y-auto"
           tabindex="-1"
         >
           <div class="space-grotesk-regular antialiased space-y-1">
             <ul v-for="(item, idx) in menuItems" :key="item.id">
               <li
                 :class="useClsx(
-                  'focus:outline-none focus:text-shadow-xl focus:text-shadow-color-mint-8',
+                  'group',
+                  'focus-visible:outline-none focus-visible:text-shadow-xl focus-visible:text-shadow-color-mint-8',
                   'transition-[text-shadow] transition-colors duration-200 ease-out',
                   'color-pureBlack dark:color-pureWhite',
                   !item.children && 'hover:text-base7 dark:hover:text-base8',
-                  idx !== 0 && 'border-t border-solid border-pureBlack dark:border-pureWhite',
+                  idx !== 0 && 'border-t border-solid border-gray-2',
                   'flex cursor-pointer items-center justify-between py-3 text-3xl tracking-normal uppercase',
                 )"
                 tabindex="0"
                 @click="item.children && toggleItem(item.id)"
                 @keydown.enter.prevent="item.children && toggleItem(item.id)"
               >
-                {{ item.title }}
-                <button v-if="item.children" class="flex items-center color-mint-11">
+                <span
+                  :class="useClsx(
+                    'absolute h-12 w-0.5 bg-jade-11',
+                    'transition-all duration-300 opacity-0 group-hover:opacity-100',
+                  )"
+                />
+                <span class="transition-all duration-300 group-hover:pl-4 group-hover:color-jade-11">
+                  {{ item.title }}
+                </span>
+                <button
+                  v-if="item.children"
+                  :class="useClsx(
+                    'flex items-center p-1',
+                    'group-hover:color-jade-11 color-pureBlack dark:color-pureWhite',
+                    'focus:outline-none focus:ring focus:ring-inset',
+                    'transition-colors duration-300',
+                    'focus:ring-pureBlack dark:focus:ring-pureWhite',
+                  )"
+                >
                   <Icon
-                    :class="openItems.includes(item.id) && 'rotate-45'"
-                    class="h-8 w-8 rotate-0 transition-transform duration-300 ease"
+                    :class="useClsx(
+                      openItems.includes(item.id) && 'rotate-45',
+                      'h-8 w-8 p-1 rotate-0 transition-transform duration-300 ease',
+                    )"
                     name="ri:add-large-fill"
                   />
                 </button>
               </li>
-              <!-- Accordion Transition Layer Using UnoCSS -->
+              <!-- Accordion Transition Layer -->
               <transition
                 enter-active-class="transition-all duration-300 ease-in-out"
                 enter-from-class="grid-rows-[0fr] opacity-0"
@@ -317,7 +347,7 @@ watch(isAnimating, (val) => {
   </div>
 </template>
 
-<style scoped>
+<style>
 @import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Figtree:ital,wght@0,300..900;1,300..900&family=Major+Mono+Display&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Boldonse&family=Zen+Dots&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap');
