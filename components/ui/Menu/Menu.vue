@@ -227,23 +227,32 @@ watch(isAnimating, (val) => {
         </div>
 
         <!-- Menu Items -->
-        <div class="flex-1 overflow-y-auto">
+        <div
+          class="flex-1 overflow-y-auto"
+          tabindex="-1"
+        >
           <div class="space-grotesk-regular antialiased space-y-1">
             <ul v-for="(item, idx) in menuItems" :key="item.id">
               <li
                 :class="useClsx(
-                  !item.children && 'hover:text-base7 dark:hover:text-base8',
+                  'focus:outline-none focus:text-shadow-xl focus:text-shadow-color-mint-8',
+                  'transition-[text-shadow] transition-colors duration-200 ease-out',
                   'color-pureBlack dark:color-pureWhite',
+                  !item.children && 'hover:text-base7 dark:hover:text-base8',
                   idx !== 0 && 'border-t border-solid border-pureBlack dark:border-pureWhite',
                   'flex cursor-pointer items-center justify-between py-3 text-3xl tracking-normal uppercase',
                 )"
                 tabindex="0"
                 @click="item.children && toggleItem(item.id)"
+                @keydown.enter.prevent="item.children && toggleItem(item.id)"
               >
                 {{ item.title }}
                 <button v-if="item.children" class="flex items-center color-mint-11">
-                  <Icon v-if="openItems.includes(item.id)" class="h-8 w-8" name="mdi-minus" />
-                  <Icon v-else class="h-8 w-8" name="mdi-plus" />
+                  <Icon
+                    :class="openItems.includes(item.id) && 'rotate-45'"
+                    class="h-8 w-8 rotate-0 transition-transform duration-300 ease"
+                    name="ri:add-large-fill"
+                  />
                 </button>
               </li>
               <!-- Accordion Transition Layer Using UnoCSS -->
