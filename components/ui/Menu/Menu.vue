@@ -247,6 +247,7 @@ watch(isAnimating, (val) => {
                 :class="useClsx(
                   'group',
                   'focus-visible:outline-none focus-visible:bg-mint-3A focus-visible:color-jade-11',
+                  'focus-within:outline-none focus-within:bg-mint-3A focus-within:color-jade-11',
                   'transition-[text-shadow] transition-colors duration-200 ease-out',
                   'color-pureBlack dark:color-pureWhite',
                   !item.children && 'hover:text-base7 dark:hover:text-base8',
@@ -303,7 +304,7 @@ watch(isAnimating, (val) => {
                       <li v-for="child in item.children" :key="child.id">
                         <Link
                           :class="useClsx(
-                            'hover:text-base12 dark:hover:text-base1 block py-2 text-xs',
+                            'hover:text-base12 dark:hover:text-base1 block py-2 px-1 text-xs',
                             'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
                           )"
                           :title="child.title"
