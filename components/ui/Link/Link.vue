@@ -66,7 +66,7 @@ const linkProps = computed(() => {
   -->
   <component
     :is="componentType"
-    class="group relative inline-block focus:outline-none focus-visible:ring focus-visible:ring-mint-4"
+    class="group relative inline-block focus-visible:outline-none focus-visible:ring focus-visible:ring-mint-8 focus-visible:ring-inset"
     v-bind="linkProps"
   >
     <!-- Default slot for link content (text or inner HTML) -->
