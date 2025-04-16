@@ -1,71 +1,18 @@
 <script lang="ts" setup>
+import type { MenuProps } from './Menu.model'
 import Link from '@/components/ui/Link/Link.vue'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
-import { useEventListener } from '@vueuse/core'
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { useScrollLock } from '@vueuse/core'
+import { MenuPropsDefault } from './Menu.model'
 
-interface MenuItem {
-  id: number
-  title: string
-  children?: { id: number, title: string }[]
-}
+const props = withDefaults(defineProps<MenuProps>(), MenuPropsDefault)
+const { items } = toRefs(props)
 
 const isOpen = ref(false)
 const isAnimating = ref(false)
 const openItems = ref<number[]>([])
-const buttonRef = ref<HTMLButtonElement | null>(null)
 const hasInputFocus = ref(false)
-
-const iconSearch = computed(() => {
-  return hasInputFocus.value ? 'ri:search-2-fill' : 'ri:search-line'
-})
-
-const menuItems: MenuItem[] = [
-  {
-    id: 1,
-    title: 'Technology',
-    children: [
-      { id: 11, title: 'Gadgets' },
-      { id: 12, title: 'Software' },
-      { id: 13, title: 'AI & Machine Learning' },
-    ],
-  },
-  {
-    id: 2,
-    title: 'Business',
-    children: [
-      { id: 21, title: 'Startups' },
-      { id: 22, title: 'Venture Capital' },
-      { id: 23, title: 'Market Trends' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Science',
-    children: [
-      { id: 31, title: 'Space' },
-      { id: 32, title: 'Environment' },
-      { id: 33, title: 'Health' },
-    ],
-  },
-  {
-    id: 4,
-    title: 'Reviews',
-    children: [
-      { id: 41, title: 'Smartphones' },
-      { id: 42, title: 'Laptops' },
-      { id: 43, title: 'Wearables' },
-    ],
-  },
-  {
-    id: 5,
-    title: 'About',
-  },
-  {
-    id: 6,
-    title: 'Contact',
-  },
-]
+const isLocked = useScrollLock(document)
 
 function toggleItem(id: number) {
   if (openItems.value.includes(id)) {
@@ -90,12 +37,7 @@ function handleEsc(event: KeyboardEvent) {
 }
 
 function setBodyScroll(state: boolean) {
-  if (state) {
-    document.body.style.overflow = 'hidden'
-  }
-  else {
-    document.body.style.overflow = 'auto'
-  }
+  isLocked.value = state
 }
 
 function handleClick() {
@@ -106,36 +48,22 @@ function handleInputFocus(focused: boolean = false) {
   hasInputFocus.value = focused
 }
 
-useEventListener(window, 'keydown', handleEsc)
-
-onUnmounted(() => {
-  setBodyScroll(false)
-})
-
-onMounted(() => {
-  setBodyScroll(isOpen.value)
-})
+function wait(timeout: number = 1200) {
+  return new Promise(resolve => setTimeout(resolve, timeout))
+}
 
 function handleAnimation() {
   isAnimating.value = true
-  setTimeout(() => {
+  wait().then(() => {
     isAnimating.value = false
-  }, 1200)
+  })
 }
 
 watch(isOpen, (open) => {
   setBodyScroll(open)
-  if (open) {
-    handleAnimation()
-  }
-  else {
-    resetMenuItems()
-  }
+  open ? handleAnimation() : resetMenuItems()
 })
-
-watch(isAnimating, (val) => {
-  consola.debug('isAnimating', val)
-})
+useEventListener(window, 'keydown', handleEsc)
 </script>
 
 <template>
@@ -242,7 +170,7 @@ watch(isAnimating, (val) => {
           tabindex="-1"
         >
           <div class="space-grotesk-regular antialiased space-y-1">
-            <ul v-for="(item, idx) in menuItems" :key="item.id">
+            <ul v-for="(item, idx) in items" :key="item.id">
               <li
                 :class="useClsx(
                   'group',
