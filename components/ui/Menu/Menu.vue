@@ -74,7 +74,6 @@ useEventListener(window, 'keydown', handleEsc)
         :is-open="isOpen"
         @click="handleClick"
       />
-      <!--      <Underline /> -->
     </div>
 
     <!-- Overlay -->
@@ -174,13 +173,12 @@ useEventListener(window, 'keydown', handleEsc)
               <li
                 :class="useClsx(
                   'group',
-                  'focus-visible:outline-none focus-visible:bg-mint-3A focus-visible:color-jade-11',
-                  'focus-within:outline-none focus-within:bg-mint-3A focus-within:color-jade-11',
-                  'transition-[text-shadow] transition-colors duration-200 ease-out',
                   'color-pureBlack dark:color-pureWhite',
-                  !item.children && 'hover:text-base7 dark:hover:text-base8',
                   idx !== 0 && 'border-t border-solid border-gray-2',
-                  'flex cursor-pointer items-center justify-between py-3 text-3xl tracking-normal uppercase',
+                  'transition-[text-shadow] transition-colors duration-200 ease-out',
+                  'focus-within:outline-none focus-within:bg-mint-3A focus-within:color-jade-11',
+                  'focus-visible:outline-none focus-visible:bg-mint-3A focus-visible:color-jade-11',
+                  'flex cursor-pointer items-center py-3 text-3xl tracking-normal uppercase',
                 )"
                 tabindex="0"
                 @click="item.children && toggleItem(item.id)"
@@ -188,7 +186,7 @@ useEventListener(window, 'keydown', handleEsc)
               >
                 <span
                   :class="useClsx(
-                    'absolute h-12 w-0.5 bg-jade-11',
+                    'relative h-12 w-0.5 bg-jade-11',
                     'transition-all duration-300 opacity-0 group-hover:opacity-100',
                   )"
                 />
@@ -198,7 +196,7 @@ useEventListener(window, 'keydown', handleEsc)
                 <button
                   v-if="item.children"
                   :class="useClsx(
-                    'flex items-center p-1',
+                    'flex items-center ml-auto p-1',
                     'group-hover:color-jade-11 color-pureBlack dark:color-pureWhite',
                     'focus:outline-none focus:ring focus:ring-inset',
                     'transition-colors duration-300',
