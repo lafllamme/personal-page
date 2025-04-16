@@ -1,5 +1,5 @@
 export interface MenuProps {
-  items: MenuItem[]
+  items?: MenuItem[]
 }
 
 export interface MenuItem {
