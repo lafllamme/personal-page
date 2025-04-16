@@ -40,7 +40,7 @@ onMounted(() => {
 <template>
   <template v-if="isLoading">
     <div class="px-2">
-      <div class="aspect-square h-8 w-8 animate-pulse rounded-full bg-gray-8 px-2 dark:bg-gray-12" />
+      <div class="aspect-square h-8 w-8 animate-pulse rounded-full bg-gray-4A px-2" />
     </div>
   </template>
   <template v-else>
