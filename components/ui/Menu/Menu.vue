@@ -2,7 +2,7 @@
 import type { MenuProps } from './Menu.model'
 import Link from '@/components/ui/Link/Link.vue'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
-import { useScrollLock } from '@vueuse/core'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { MenuPropsDefault } from './Menu.model'
 
 const props = withDefaults(defineProps<MenuProps>(), MenuPropsDefault)
@@ -13,6 +13,9 @@ const isAnimating = ref(false)
 const openItems = ref<number[]>([])
 const hasInputFocus = ref(false)
 const isLocked = useScrollLock(document)
+
+const menu = useTemplateRef<HTMLDivElement>('menu')
+const { activate, deactivate } = useFocusTrap(menu)
 
 function toggleItem(id: number) {
   if (openItems.value.includes(id)) {
@@ -59,15 +62,26 @@ function handleAnimation() {
   })
 }
 
-watch(isOpen, (open) => {
+function handleMenu(open: boolean) {
   setBodyScroll(open)
-  open ? handleAnimation() : resetMenuItems()
+  if (open) {
+    handleAnimation()
+    activate()
+  }
+  else {
+    resetMenuItems()
+    deactivate()
+  }
+}
+
+watch(isOpen, (open) => {
+  handleMenu(open)
 })
 useEventListener(window, 'keydown', handleEsc)
 </script>
 
 <template>
-  <div class="relative w-full">
+  <div ref="menu" class="relative w-full">
     <!-- Menu Button -->
     <div class="group flex items-center">
       <MenuButton
@@ -255,11 +269,24 @@ useEventListener(window, 'keydown', handleEsc)
               'border-gray-7A border-solid pt-6',
             )"
           >
-            <span
-              class="hover: transition-all duration-300 ease-out hover:scale-105 hover:color-mint-11"
-            >© 2025 TecNews</span>
             <button
-              class="group flex items-center gap-1 tracking-wider uppercase"
+              :class="useClsx(
+                'group focus:outline-none focus:ring focus:ring-mint-8 focus:ring-offset-2',
+                'transform transition-transform duration-300 ease-out hover:scale-105',
+                'transition-colors duration-300 ease-out hover:text-mint-11',
+                'ring-offset-pureWhite dark:ring-offset-pureBlack',
+              )"
+            >
+              <span>
+                © 2025 TecNews
+              </span>
+            </button>
+            <button
+              :class="useClsx(
+                'focus:ring-mint-8 dark:ring-offset-pureBlack',
+                'group flex items-center gap-1 tracking-wider uppercase',
+                'ring-offset-pureWhite focus:outline-none focus:ring focus:ring-offset-2',
+              )"
             >
               Contact
               <Icon
