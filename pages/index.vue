@@ -7,7 +7,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <div class="h-screen flex items-center justify-center">
+  <div class="flex items-center justify-center h-svh">
     <div>
       <button
         :class="useClsx(
