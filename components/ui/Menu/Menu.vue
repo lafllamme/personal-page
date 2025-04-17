@@ -39,8 +39,8 @@ function handleEsc(event: KeyboardEvent) {
   }
 }
 
-function setBodyScroll(state: boolean) {
-  isLocked.value = state
+function setBodyScroll(locked: boolean) {
+  isLocked.value = locked
 }
 
 function handleClick() {
