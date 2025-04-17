@@ -11,32 +11,6 @@ import { computed, ref, watch } from 'vue'
 // Base transition easing remains the same
 const transitionEasing = 'ease-[cubic-bezier(0.77,0,0.18,1)]'
 
-// Example menu items definition
-const menuItems = [
-  {
-    label: 'Products',
-    href: '/products',
-    children: [
-      { label: 'Software', href: '/products/software' },
-      { label: 'Hardware', href: '/products/hardware' },
-      { label: 'Services', href: '/products/services' },
-    ],
-  },
-  {
-    label: 'About',
-    href: '/about',
-    children: [
-      { label: 'Our Story', href: '/about/story' },
-      { label: 'Team', href: '/about/team' },
-      { label: 'Careers', href: '/about/careers' },
-    ],
-  },
-  {
-    label: 'Contact',
-    href: '/contact',
-  },
-]
-
 // Reactive state variables
 const isOpen = ref(false) // Drives Navigation.vue visibility
 const isSwitchOpen = ref(false) // Controls language switcher
@@ -58,31 +32,12 @@ const headerTransitionClass = computed(() => {
   return `transition-all ${durationClass} ${transitionEasing}`
 })
 
-// Optionally, you can also adjust inline styles if needed
 const headerStyle = computed(() => {
   if (menuPhase.value === 'closing') {
-    // Keep a delay when closing if desired
     return { transitionDelay: '300ms' }
   }
   return { transitionDelay: '0ms' }
 })
-
-// Toggle menu state with explicit phases
-function toggleMenu() {
-  if (menuPhase.value === 'closed' || menuPhase.value === 'closing') {
-    menuPhase.value = 'opening'
-    isOpen.value = true
-  }
-  else {
-    menuPhase.value = 'closing'
-    isOpen.value = false
-  }
-}
-
-// Close menu from Navigation child (e.g. when a menu item is clicked)
-function handleClose(state: boolean) {
-  isOpen.value = state
-}
 
 // Close menu and language switcher on Escape key press
 useEventListener('keydown', (e: KeyboardEvent) => {
@@ -92,6 +47,7 @@ useEventListener('keydown', (e: KeyboardEvent) => {
   }
 })
 
+// TODO: Wtf was I thinking here?
 // Focus trap for mobile menu accessibility
 const { activate, deactivate } = useFocusTrap(headerRef)
 watch(isOpen, (open) => {
