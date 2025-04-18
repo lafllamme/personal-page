@@ -80,7 +80,7 @@ function handleFocus(focused: boolean) {
         <span
           class="geist-regular text-[8px] text-pureBlack font-medium lg:text-base md:text-sm sm:text-xs dark:text-pureWhite"
         >
-          {{ name }} – Index {{ index }}
+          {{ name }}
         </span>
         <p class="geist-regular text-[8px] text-pureBlack/40 font-medium lg:text-base md:text-sm sm:text-[10px] dark:text-pureWhite/40">
           {{ username }}
