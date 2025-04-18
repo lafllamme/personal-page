@@ -49,7 +49,7 @@ const secondRow = ref(reviews.slice(reviews.length / 2))
 
 <template>
   <div
-    class="w-full flex flex-col items-center justify-center overflow-hidden rounded-lg bg-pureWhite py-64 dark:bg-pureBlack md:shadow-xl"
+    class="w-full flex flex-col items-center justify-center overflow-hidden rounded-lg bg-pureWhite h-svh dark:bg-pureBlack md:shadow-xl"
   >
     <!-- First Marquee -->
     <Marquee
