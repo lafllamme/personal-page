@@ -77,11 +77,18 @@ function handleMenu(open: boolean) {
 watch(isOpen, (open) => {
   handleMenu(open)
 })
+
+const tabIndex = computed(() => (isOpen.value ? 0 : -1))
+const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
 useEventListener(window, 'keydown', handleEsc)
 </script>
 
 <template>
-  <div ref="menu" class="relative w-full">
+  <div
+    ref="menu"
+    :inert="!isOpen"
+    class="relative w-full"
+  >
     <!-- Menu Button -->
     <div class="group flex items-center">
       <MenuButton
@@ -100,6 +107,7 @@ useEventListener(window, 'keydown', handleEsc)
 
     <!-- Menu Panel -->
     <div
+      :aria-hidden="isAriaHidden"
       :class="useClsx(
         isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
         'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
@@ -107,6 +115,7 @@ useEventListener(window, 'keydown', handleEsc)
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
         'transform-gpu will-change-[transform,opacity] backface-hidden',
       )"
+      :tabindex="tabIndex"
     >
       <!-- Background Text -->
       <div
