@@ -86,7 +86,6 @@ useEventListener(window, 'keydown', handleEsc)
 <template>
   <div
     ref="menu"
-    :inert="!isOpen"
     class="relative w-full"
   >
     <!-- Menu Button -->
@@ -101,7 +100,6 @@ useEventListener(window, 'keydown', handleEsc)
     <div
       :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
       class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
-
       @click="isOpen = false"
     />
 
@@ -115,7 +113,7 @@ useEventListener(window, 'keydown', handleEsc)
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
         'transform-gpu will-change-[transform,opacity] backface-hidden',
       )"
-      :tabindex="tabIndex"
+      :inert="isOpen ? undefined : 'true'"
     >
       <!-- Background Text -->
       <div
