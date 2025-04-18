@@ -19,7 +19,7 @@ withDefaults(
   <div
     :class="
       useClsx(
-        'group flex overflow-hidden p-2 [--duration:65s] [--gap:1rem] [gap:var(--gap)]',
+        'group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]',
         vertical ? 'flex-col' : 'flex-row',
         $props.class,
       )
