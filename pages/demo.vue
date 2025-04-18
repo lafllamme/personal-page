@@ -1,105 +1,44 @@
 <script lang="ts" setup>
 import Marquee from '@/components/ui/Marquee/Marquee.vue'
 import ReviewCard from '@/components/ui/ReviewCard/ReviewCard.vue'
-import { ref } from 'vue'
 
+// Reviews data
 const reviews = [
   {
-    name: 'Jack',
-    username: '@jack_rides',
-    body: 'Wow, this totally blew me away 😲! Exceeded all my expectations—I’m in love ❤️',
-    img: 'https://avatar.vercel.sh/jack',
+    name: 'Liam',
+    username: '@liam_smith',
+    body: 'This is hands down the best I’ve used—it’s amazing! Made me smile. 😄',
+    img: 'https://avatar.vercel.sh/liam',
   },
   {
-    name: 'Jill',
-    username: '@jill_explorer',
-    body: 'Speechless 😶… never thought I’d see something this awesome. Highly recommend!',
-    img: 'https://avatar.vercel.sh/jill',
+    name: 'Emma',
+    username: '@hey_emma',
+    body: 'So impressed—everything went perfectly! Totally perfect 😊.',
+    img: 'https://avatar.vercel.sh/emma',
   },
   {
-    name: 'John',
-    username: '@john_vibes',
-    body: 'Just… wow. This is next level 🔥. Can’t wait to tell my friends!',
-    img: 'https://avatar.vercel.sh/john',
+    name: 'Gabby',
+    username: '@gabby_labs',
+    body: 'Speechless—this made me grin!!! Feels just right 🙂.',
+    img: 'https://avatar.vercel.sh/noah',
   },
   {
-    name: 'Jane',
-    username: '@jane_creates',
-    body: 'Absolutely stunning 🤩. This made my day—so impressed!',
-    img: 'https://avatar.vercel.sh/jane',
+    name: 'Maya',
+    username: '@maya_ros',
+    body: 'So refreshing—clean, crisp, and just what I needed!!!',
+    img: 'https://avatar.vercel.sh/maya',
   },
   {
-    name: 'Jenny',
-    username: '@jenny_journey',
-    body: 'Incredible experience 😍. Exactly what I needed today.',
-    img: 'https://avatar.vercel.sh/jenny',
+    name: 'Sarah',
+    username: '@sarah_lee',
+    body: 'To be honest, didn’t expect this to be so good. Truly happy 🙂',
+    img: 'https://avatar.vercel.sh/sarah',
   },
   {
-    name: 'James',
-    username: '@james_adventures',
-    body: 'Mind = blown 🤯! Seriously, this is a game changer.',
-    img: 'https://avatar.vercel.sh/james',
-  },
-  // 10 more reviews:
-  {
-    name: 'Eric',
-    username: '@eric_writes',
-    body: 'Can’t stop thinking about this 🤔✨. Truly next‑level stuff!',
-    img: 'https://avatar.vercel.sh/eric',
-  },
-  {
-    name: 'Sara',
-    username: '@sara_smiles',
-    body: 'This just made my week 😊🎉. So, so good!',
-    img: 'https://avatar.vercel.sh/sara',
-  },
-  {
-    name: 'Mike',
-    username: '@mike_moments',
-    body: 'Legit one of the best experiences I’ve had 🙌👍.',
-    img: 'https://avatar.vercel.sh/mike',
-  },
-  {
-    name: 'Laura',
-    username: '@laura_loves',
-    body: 'Heart = full ❤️✨. Can’t recommend it enough!',
-    img: 'https://avatar.vercel.sh/laura',
-  },
-  {
-    name: 'Tom',
-    username: '@tom_tracks',
-    body: 'Blew my mind 🤯🚀. Totally worth every second.',
-    img: 'https://avatar.vercel.sh/tom',
-  },
-  {
-    name: 'Nina',
-    username: '@nina_narrates',
-    body: 'Absolutely magical ✨🌟. Left me speechless!',
-    img: 'https://avatar.vercel.sh/nina',
-  },
-  {
-    name: 'Carlos',
-    username: '@carlos_creates',
-    body: 'Wow, just wow 😍👏. Beyond impressed!',
-    img: 'https://avatar.vercel.sh/carlos',
-  },
-  {
-    name: 'Eva',
-    username: '@eva_exclaims',
-    body: 'Can’t believe how good this is 🤩💯!',
-    img: 'https://avatar.vercel.sh/eva',
-  },
-  {
-    name: 'Samuel',
-    username: '@samuel_snap',
-    body: 'Total game‑changer 🎮🔥. Obsessed!',
-    img: 'https://avatar.vercel.sh/samuel',
-  },
-  {
-    name: 'Leila',
-    username: '@leila_lights',
-    body: 'Pure brilliance 🌟❤️. I’m officially hooked!',
-    img: 'https://avatar.vercel.sh/leila',
+    name: 'David',
+    username: '@david_vibes',
+    body: 'Really solid—sleek and exactly what was promised. Gave joy!?',
+    img: 'https://avatar.vercel.sh/david',
   },
 ]
 
@@ -110,11 +49,11 @@ const secondRow = ref(reviews.slice(reviews.length / 2))
 
 <template>
   <div
-    class="h-screen w-full flex flex-col items-center justify-center overflow-hidden rounded-lg bg-pureWhite dark:bg-pureBlack md:shadow-xl"
+    class="w-full flex flex-col items-center justify-center overflow-hidden rounded-lg bg-pureWhite py-64 dark:bg-pureBlack md:shadow-xl"
   >
     <!-- First Marquee -->
     <Marquee
-      class="[--duration:20s]"
+      class="![--duration:20s]"
       pause-on-hover
     >
       <ReviewCard
@@ -129,7 +68,7 @@ const secondRow = ref(reviews.slice(reviews.length / 2))
 
     <!-- Second Marquee (reverse) -->
     <Marquee
-      class="[--duration:20s]"
+      class="![--duration:20s]"
       pause-on-hover
       reverse
     >
