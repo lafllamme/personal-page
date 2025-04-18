@@ -1,12 +1,13 @@
 <script setup>
 import Header from '@/components/ui/Header/Header.vue'
+import Shader from '@/components/ui/Shaders/Shader.vue'
 </script>
 
 <template>
   <div class="relative overflow-hidden bg-gray-3 dark:bg-gray-2">
     <!-- Background container -->
     <div class="absolute inset-0 z-0">
-      <!--      <Shader /> -->
+      <Shader />
     </div>
 
     <!-- Main Content -->
