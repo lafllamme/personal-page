@@ -1,6 +1,9 @@
 <script lang="ts" setup>
+import Spline from '@/components/ui/Background/Spline/Spline.vue'
 import Marquee from '@/components/ui/Marquee/Marquee.vue'
 import ReviewCard from '@/components/ui/ReviewCard/ReviewCard.vue'
+
+const sceneUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
 
 // Reviews data
 const reviews = [
@@ -53,49 +56,63 @@ const secondLen = ref(secondRow.value.length - 1)
   <div
     class="w-full flex flex-col items-center justify-center overflow-hidden rounded-lg bg-pureWhite h-svh dark:bg-pureBlack md:shadow-xl"
   >
-    <!-- First Marquee -->
-    <Marquee
-      class="![--duration:20s]"
-      pause-on-hover
-    >
-      <ReviewCard
-        v-for="(review, idx) in firstRow"
-        :key="review.username"
-        :body="review.body"
-        :img="review.img"
-        :index="idx"
-        :max="firstLen"
-        :name="review.name"
-        :username="review.username"
+    <div class="bg-black/[0.96] relative w-full overflow-hidden rounded-lg">
+      <div
+        class="font-heading text-white absolute w-full flex flex-col items-center justify-center gap-2 p-8 text-center"
+      >
+        <span class="text-4xl font-semibold"> Inspira UI </span>
+        <span class="font-light font-sans">Build spline animations with style.</span>
+      </div>
+      <div class="flex">
+        <Spline
+          :scene="sceneUrl"
+          class="mt-24 size-full"
+        />
+      </div>
+      <!-- First Marquee -->
+      <Marquee
+        class="![--duration:20s]"
+        pause-on-hover
+      >
+        <ReviewCard
+          v-for="(review, idx) in firstRow"
+          :key="review.username"
+          :body="review.body"
+          :img="review.img"
+          :index="idx"
+          :max="firstLen"
+          :name="review.name"
+          :username="review.username"
+        />
+      </Marquee>
+
+      <!-- Second Marquee (reverse) -->
+      <Marquee
+        class="![--duration:20s]"
+        pause-on-hover
+        reverse
+      >
+        <ReviewCard
+          v-for="(review, idx) in secondRow"
+          :key="review.username"
+          :body="review.body"
+          :img="review.img"
+          :index="idx"
+          :max="secondLen"
+          :name="review.name"
+          :username="review.username"
+        />
+      </Marquee>
+
+      <!-- Left Gradient -->
+      <div
+        class="pointer-events-none absolute inset-y-0 left-0 w-1/3 from-gray-2 bg-gradient-to-r"
       />
-    </Marquee>
 
-    <!-- Second Marquee (reverse) -->
-    <Marquee
-      class="![--duration:20s]"
-      pause-on-hover
-      reverse
-    >
-      <ReviewCard
-        v-for="(review, idx) in secondRow"
-        :key="review.username"
-        :body="review.body"
-        :img="review.img"
-        :index="idx"
-        :max="secondLen"
-        :name="review.name"
-        :username="review.username"
+      <!-- Right Gradient -->
+      <div
+        class="pointer-events-none absolute inset-y-0 right-0 w-1/3 from-gray-2 bg-gradient-to-l"
       />
-    </Marquee>
-
-    <!-- Left Gradient -->
-    <div
-      class="pointer-events-none absolute inset-y-0 left-0 w-1/3 from-gray-2 bg-gradient-to-r"
-    />
-
-    <!-- Right Gradient -->
-    <div
-      class="pointer-events-none absolute inset-y-0 right-0 w-1/3 from-gray-2 bg-gradient-to-l"
-    />
+    </div>
   </div>
 </template>
