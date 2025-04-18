@@ -45,6 +45,8 @@ const reviews = [
 // Split reviews into two rows
 const firstRow = ref(reviews.slice(0, reviews.length / 2))
 const secondRow = ref(reviews.slice(reviews.length / 2))
+const firstLen = ref(firstRow.value.length - 1)
+const secondLen = ref(secondRow.value.length - 1)
 </script>
 
 <template>
@@ -57,10 +59,12 @@ const secondRow = ref(reviews.slice(reviews.length / 2))
       pause-on-hover
     >
       <ReviewCard
-        v-for="review in firstRow"
+        v-for="(review, idx) in firstRow"
         :key="review.username"
         :body="review.body"
         :img="review.img"
+        :index="idx"
+        :max="firstLen"
         :name="review.name"
         :username="review.username"
       />
@@ -73,10 +77,12 @@ const secondRow = ref(reviews.slice(reviews.length / 2))
       reverse
     >
       <ReviewCard
-        v-for="review in secondRow"
+        v-for="(review, idx) in secondRow"
         :key="review.username"
         :body="review.body"
         :img="review.img"
+        :index="idx"
+        :max="secondLen"
         :name="review.name"
         :username="review.username"
       />
