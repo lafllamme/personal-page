@@ -76,7 +76,7 @@ watch(isVisible, (visible) => {
     ref="target"
     :class="useClsx(
       'relative w-48 sm:w-64 md:w-80 lg:w-92 cursor-pointer',
-      'border border-solid border-gray-3A bg-gray-1A hover:bg-gray-3A dark:bg-gray-2A dark:hover:bg-gray-4A',
+      'border border-solid border-gray-3A bg-gray-1A hover:bg-gray-3A dark:bg-gray-4A dark:hover:bg-gray-6A',
       'rounded-xl p-2 sm:p-4 md:p-6 overflow-hidden',
       'focus:outline-none focus:ring focus:ring-mint-10',
     )"
