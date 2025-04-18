@@ -1,36 +1,29 @@
 <script lang="ts" setup>
-import { useElementVisibility } from '@vueuse/core'
-import { computed, ref, useTemplateRef, watch } from 'vue'
+import type { ReviewCardProps } from './ReviewCard.model'
+import { ReviewCardDefaultProps } from './ReviewCard.model'
 
-/** Props */
-interface Props {
-  img: string
-  name: string
-  username: string
-  body: string
-}
+// Props & defaults
+const props = withDefaults(defineProps<ReviewCardProps>(), ReviewCardDefaultProps)
+const { max, index, img, name, username, body } = toRefs(props)
 
-defineProps<Props>()
-
-/** 1️⃣ grab a ref to the <figure> */
+// Reference to this card's DOM node
 const target = useTemplateRef<HTMLElement>('target')
 const cardSelector = ref('.review-card')
 
-/** 2️⃣ visibility via IntersectionObserver */
-const isVisible = useElementVisibility(target, {
-  threshold: 0,
-  rootMargin: '0px',
-})
-
-/** 3️⃣ track when the figure itself is focused */
+// IntersectionObserver-based visibility
+const isVisible = useElementVisibility(target, { threshold: 0, rootMargin: '0px' })
+// Track if this card is focused
 const isFocused = ref(false)
 
-/** 4️⃣ compute its tabindex */
-const tabIndex = computed(() => {
-  return isVisible.value ? 0 : -1
-})
+// Compute next index, wrapping around
+const nextIdx = computed(() => (index.value < max.value ? index.value + 1 : 0))
 
-/** 5️⃣ helper: focus the next card in document order */
+// Only tabbable when visible
+const tabIndex = computed(() => (isVisible.value ? 0 : -1))
+
+/**
+ * Focus the next card by data-index, but avoid recursion
+ */
 function focusNextCard() {
   // grab all cards by their shared selector:
   const cards = Array.from(
@@ -44,19 +37,19 @@ function focusNextCard() {
   next.focus()
 }
 
-/** 6️⃣ watcher: when I’m focused but become invisible, bump to next card */
+// When a focused card leaves view, blur it and focus next (unless skipping)
 watch(
   () => [isFocused.value, isVisible.value] as const,
   ([focused, visible]) => {
     if (focused && !visible) {
       // blur me so I release actual focus
       target.value?.blur()
-      // jump to the *next* card instead of your first page control
       focusNextCard()
     }
   },
 )
 
+// Update focus flag
 function handleFocus(focused: boolean) {
   isFocused.value = focused
 }
@@ -72,6 +65,7 @@ function handleFocus(focused: boolean) {
       'hover:bg-gray-3A dark:bg-gray-4A dark:hover:bg-gray-6A',
       'relative w-48 sm:w-64 md:w-80 lg:w-92 cursor-pointer',
     )"
+    :data-index="index"
     :tabindex="tabIndex"
     @blur="handleFocus(false)"
     @focus="handleFocus(true)"
@@ -86,7 +80,7 @@ function handleFocus(focused: boolean) {
         <span
           class="geist-regular text-[8px] text-pureBlack font-medium lg:text-base md:text-sm sm:text-xs dark:text-pureWhite"
         >
-          {{ name }}
+          {{ name }} – Index {{ index }}
         </span>
         <p class="geist-regular text-[8px] text-pureBlack/40 font-medium lg:text-base md:text-sm sm:text-[10px] dark:text-pureWhite/40">
           {{ username }}
