@@ -59,11 +59,12 @@ function handleFocus(focused: boolean) {
   <figure
     ref="target"
     :class="useClsx(
-      'review-card border border-solid border-gray-3A bg-gray-1A',
-      'rounded-xl p-2 sm:p-4 md:p-6 overflow-hidden',
+      'review-card border border-solid',
+      'rounded-xl md:rounded-2xl p-2 sm:p-4 overflow-hidden',
       'focus:outline-none focus:ring focus:ring-mint-10',
-      'hover:bg-gray-3A dark:bg-gray-4A dark:hover:bg-gray-6A',
+      !customClass && 'border-gray-3A bg-gray-1A hover:bg-gray-3A dark:bg-gray-4A dark:hover:bg-gray-6A',
       'relative w-48 sm:w-64 md:w-80 lg:w-92 cursor-pointer',
+      customClass,
     )"
     :data-index="index"
     :tabindex="tabIndex"
