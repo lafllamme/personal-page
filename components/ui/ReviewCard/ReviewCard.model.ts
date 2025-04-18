@@ -5,6 +5,7 @@ export interface ReviewCardProps {
   name: string
   username: string
   body: string
+  customClass?: string
 }
 
 export const ReviewCardDefaultProps: ReviewCardProps = {
