@@ -21,6 +21,9 @@ const textHeight = ref<number>(0)
 const hasPointer = ref<boolean>(false)
 const pointerClass = computed(() => hasPointer.value ? 'has-pointer' : '')
 const firstRender = ref<boolean>(true)
+const { width, height } = useWindowSize()
+
+const isPointer = useMediaQuery('(pointer: fine)')
 
 useHead({
   htmlAttrs: {
@@ -44,8 +47,8 @@ function handleCursor(mounted: boolean = true) {
 
 function centerCursor() {
   if (firstRender.value && cursorRef.value) {
-    const centerX = window.innerWidth / 2
-    const centerY = window.innerHeight / 2
+    const centerX = width.value / 2
+    const centerY = height.value / 2
     cursorRef.value.style.left = `${centerX}px`
     cursorRef.value.style.top = `${centerY}px`
   }
@@ -57,7 +60,7 @@ function setCursorStyle(pointer: boolean = true) {
 }
 
 function checkCursor() {
-  if (window.matchMedia('(pointer: fine)').matches) {
+  if (isPointer.value) {
     setCursorStyle(true)
   }
   else {
