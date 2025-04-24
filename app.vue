@@ -3,6 +3,8 @@ import type { HeadMeta } from 'types'
 import Cursor from '@/components/ui/Cursor/Cursor.vue'
 
 const loadingGradient = ref('repeating-linear-gradient(to right, #8a2387, #e94057, #f27121)')
+const appConfig = useAppConfig()
+const { meta } = appConfig as { meta: HeadMeta }
 
 // If we are in development mode, we set consola log level to 5
 if (import.meta.dev) {
@@ -14,15 +16,25 @@ else {
   consola.info('Production mode enabled')
 }
 
-const appConfig = useAppConfig()
-
-const { meta } = appConfig as { meta: HeadMeta }
-consola.debug('appConfig', appConfig)
-consola.debug('appConfig meta', appConfig.meta)
-useHead({
-  meta: [
-    { name: 'viewport', content: meta.viewport },
-  ],
+// 1) HTML lang and dir attributes for i18n SEO
+// 1) Compute htmlAttrs from i18n
+const head = useLocaleHead({
+  dir: true,
+  lang: true,
+  seo: { canonicalQueries: ['ref'] },
+  key: 'i18n',
+})
+// 2) Custom viewport meta tag to allow fullscreen on iOS devices
+useHead(() => {
+  const { htmlAttrs, link, meta: i18nMeta } = head.value
+  return {
+    htmlAttrs,
+    link,
+    meta: [
+      ...(i18nMeta ?? []),
+      meta,
+    ],
+  }
 })
 </script>
 
@@ -38,6 +50,7 @@ useHead({
 </template>
 
 <style lang="scss">
+//TODO: Move this in a separate file
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
   display: none; // Hide scrollbars in WebKit browsers
