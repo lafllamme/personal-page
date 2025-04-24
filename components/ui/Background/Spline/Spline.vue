@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { SplineEventName } from '@splinetool/runtime'
 import { Application } from '@splinetool/runtime'
-import ParentSize from './ParentSize.vue'
+import ParentSize from './ParentSize/ParentSize.vue'
 
 const props = defineProps({
   scene: {
