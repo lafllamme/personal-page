@@ -4,32 +4,23 @@ import Spline from '@/components/ui/Background/Spline/Spline.vue'
 const sceneUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
 definePageMeta({
   layout: 'custom',
-  title: 'TecNews - Animation News',
+})
+
+useHead({
+  title: 'TecNews – Animation News',
   meta: [
-    {
-      name: 'description',
-      content: 'Read about latest news in animations with style.',
-    },
-    {
-      name: 'keywords',
-      content: 'animation, news, latest, style, TecNews',
-    },
+    { name: 'description', content: 'Read about latest news in animations with style.' },
+    { name: 'keywords', content: 'animation, news, latest, style, TecNews' },
   ],
 })
 </script>
 
 <template>
-  <div class="relative w-full overflow-hidden rounded-lg bg-pureWhite/96 pt-20 dark:bg-pureBlack/96">
-    <div
-      class="font-heading text-pureblack absolute w-full flex flex-col items-center justify-center gap-2 p-8 text-center dark:text-pureWhite"
-    >
-      <span class="geist-regular text-4xl !font-bold">TecNews</span>
-      <span class="font-light font-mono font-sans">Read about latest news in animations with style.</span>
-    </div>
-    <div class="flex">
+  <div class="relative w-full overflow-hidden">
+    <div class="flex bg-pureWhite transition-colors duration-300 ease-in-out h-svh dark:bg-pureBlack">
       <Spline
         :scene="sceneUrl"
-        class="mt-24 size-full"
+        class="mt-20 size-full rounded-full bg-mint-8 dark:bg-mint-8"
       />
     </div>
   </div>
