@@ -1,24 +1,18 @@
 <!-- ParentSize.vue -->
 <script lang="ts" setup>
-const props = defineProps({
-  class: String,
-  debounceTime: {
-    type: Number,
-    default: 300,
-  },
-  ignoreDimensions: {
-    type: [Array, String],
-    default: () => [],
-  },
-  parentSizeStyles: Object,
-  enableDebounceLeadingCall: {
-    type: Boolean,
-    default: true,
-  },
-})
+import type { ParentSizeProps } from './ParentSize.model'
+import { ParentSizeDefaultProps } from './ParentSize.model'
 
+const props = withDefaults(defineProps<ParentSizeProps>(), ParentSizeDefaultProps)
+const { class: className, debounceTime, ignoreDimensions, parentSizeStyles } = toRefs(props)
 const attrs = useAttrs()
-const target = ref<HTMLElement | null>(null)
+const target = useTemplateRef('target')
+const mergedStyles = computed(() => ({
+  ...parentSizeStyles.value,
+  ...(attrs.style as object),
+}))
+const mergedClasses = computed(() => ['w-full h-full', className.value])
+
 const state = reactive({
   width: 0,
   height: 0,
@@ -26,20 +20,13 @@ const state = reactive({
   left: 0,
 })
 
-const mergedStyles = computed(() => ({
-  ...props.parentSizeStyles,
-  ...(attrs.style as object),
-}))
-
-const mergedClass = computed(() => ['w-full h-full', props.class])
-
 const attrsWithoutClassAndStyle = computed(() => {
   const { class: _, style: __, ...rest } = attrs
   return rest
 })
 
 const normalizedIgnore = computed(() =>
-  Array.isArray(props.ignoreDimensions) ? props.ignoreDimensions : [props.ignoreDimensions],
+  Array.isArray(ignoreDimensions.value) ? ignoreDimensions.value : [ignoreDimensions.value],
 )
 
 function updateDimensions(rect: DOMRectReadOnly) {
@@ -62,7 +49,7 @@ function updateDimensions(rect: DOMRectReadOnly) {
   }
 }
 
-const debouncedUpdate = useDebounceFn(updateDimensions, props.debounceTime)
+const debouncedUpdate = useDebounceFn(updateDimensions, debounceTime.value)
 
 useResizeObserver(target, (entries) => {
   const entry = entries[0]
@@ -74,7 +61,7 @@ useResizeObserver(target, (entries) => {
 <template>
   <div
     ref="target"
-    :class="useClsx('w-full h-full', props.class)"
+    :class="mergedClasses"
     :style="mergedStyles"
     v-bind="attrsWithoutClassAndStyle"
   >
