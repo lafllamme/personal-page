@@ -1,88 +1,93 @@
 <script lang="ts" setup>
-function handleEnter() {
-  navigateTo('/about')
+import Spline from '@/components/ui/Background/Spline/Spline.vue'
+import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
+
+const sceneUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
+
+definePageMeta({
+  layout: 'custom',
+})
+
+useHead({
+  title: 'TecNews – Animation News',
+  meta: [
+    { name: 'description', content: 'Read about latest news in animations with style.' },
+    { name: 'keywords', content: 'animation, news, latest, style, TecNews' },
+  ],
+})
+const sceneLoaded = ref(false)
+const renderBackground = ref(false)
+
+function handleLoad() {
+  sceneLoaded.value = true
 }
 
-const { t } = useI18n()
+watch(sceneLoaded, (v) => {
+  consola.debug('[Index] Scene loaded ?', v)
+  if (v) {
+    setTimeout(() => {
+      renderBackground.value = true
+    }, 1000)
+  }
+})
 </script>
 
 <template>
-  <div class="flex items-center justify-center h-svh">
-    <div>
-      <button
-        :class="useClsx(
-          'flex items-center justify-center',
-          'border-pureBlack dark:border-pureWhite border-2',
-          'rounded-lg bg-pureWhite dark:bg-pureBlack px-4 py-2 text-2xl',
-          'text-mint-12',
-          'font-thin font-mono uppercase antialiased space-x-2',
-          'shadow-[6px_8px_100px_6px] shadow-mint-7',
-          'focus-visible:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-black-12A',
-          'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]',
-        )"
-        @click="handleEnter"
-        @keydown.enter="handleEnter"
+  <!-- 1) push everything down by header’s height -->
+  <div
+    class="bg-pureWhite h-svh dark:bg-pureBlack"
+  >
+    <!-- 2) center & gutter vertical breathing room -->
+    <div
+      class="flex flex-col items-center justify-center pt-20"
+    >
+      <!-- 3) “perfect circle” box -->
+      <div
+        :class="useClsx(renderBackground ? 'bg-mint-8' : 'bg-mint-1')"
+        class="relative aspect-square w-screen overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
       >
-        <NuxtLinkLocale
-          aria-label="My Projects"
-          tabindex="-1"
-          to="/about"
+        <Spline
+          :on-load="handleLoad"
+          :scene="sceneUrl"
+          render-on-demand
+        />
+      </div>
+      <div class="pt-6 text-center space-y-2">
+        <h1
+          :class="useClsx(
+            'geist-regular text-4xl px-3',
+            'dark:text-pureWhite !font-bold',
+            'text-pureBlack leading-tight tracking-tighter antialiased',
+          )"
         >
-          {{ t('projects') }}
-        </NuxtLinkLocale>
-        <Icon class="color-black" name="uil:github" />
-      </button>
+          The Future of Tech is Here
+        </h1>
+        <p class="text-gray-10 font-300">
+          <TextGenerate
+            :delay="0.8"
+            :duration="1.1"
+            words="Exploring the cutting edge of technology, AI, and development. Stay ahead with insights from industry experts."
+          />
+        </p>
+      </div>
     </div>
   </div>
 </template>
 
-<i18n lang="yaml">
-de:
-  hello: "Hallo Welt!"
-  projects: "Meine Projekte"
-en:
-  hello: "Hello world!"
-  projects: "My Projects"
-fr:
-  hello: "Bonjour le monde!"
-  projects: "Mes projets"
-ja:
-  hello: "こんにちは世界！"
-  projects: "私のプロジェクト"
-zh:
-  hello: "你好，世界！"
-  projects: "我的项目"
-pt:
-  hello: "Olá mundo!"
-  projects: "Meus Projetos"
-es:
-  hello: "¡Hola mundo!"
-  projects: "Mis Proyectos"
-pl:
-  hello: "Witaj świecie!"
-  projects: "Moje Projekty"
-da:
-  hello: "Hej verden!"
-  projects: "Mine Projekter"
-cs:
-  hello: "Ahoj světe!"
-  projects: "Moje Projekty"
-nl:
-  hello: "Hallo wereld!"
-  projects: "Mijn Projecten"
-el:
-  hello: "Γειά σου κόσμε!"
-  projects: "Τα έργα μου"
-tr:
-  hello: "Merhaba dünya!"
-  projects: "Projelerim"
-ko:
-  hello: "안녕하세요, 세계!"
-  projects: "내 프로젝트"
-uk:
-  hello: "Привіт, світ!"
-  projects: "Мої проекти"
-ar:
-  hello: "مرحبا بالعالم!"
-  projects: "مشاريعي"
-</i18n>
+<style scoped>
+@keyframes slide-in-bck-center {
+  0% {
+    transform: translateZ(600px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateZ(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-bck-center {
+  -webkit-animation: slide-in-bck-center 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+  animation: slide-in-bck-center 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+</style>
