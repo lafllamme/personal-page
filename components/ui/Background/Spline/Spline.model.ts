@@ -1,6 +1,6 @@
 export interface SplineProps {
   scene: string
-  onLoad: (app: any) => void
+  onLoad?: (app: any) => void
   renderOnDemand?: boolean
   style?: object
 }
