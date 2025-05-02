@@ -6,7 +6,6 @@ import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import { useEventListener } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-import { computed, ref, watch } from 'vue'
 
 // Base transition easing remains the same
 const transitionEasing = 'ease-[cubic-bezier(0.77,0,0.18,1)]'
@@ -76,7 +75,7 @@ watch(isSwitchOpen, (open) => {
       class="fixed left-0 top-0 z-50 w-full"
       role="banner"
     >
-      <!-- Background layer for consistent backdrop filter (Glassmorphism) -->
+      <!-- Background layer for consistent backdrop filter (Glass morphism) -->
       <div
         :class="useClsx(
           'pointer-events-none absolute inset-0',
