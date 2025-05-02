@@ -16,12 +16,19 @@ useHead({
 </script>
 
 <template>
-  <div class="relative w-full overflow-hidden">
-    <div class="flex bg-pureWhite transition-colors duration-300 ease-in-out h-svh dark:bg-pureBlack">
-      <Spline
-        :scene="sceneUrl"
-        class="mt-20 size-full rounded-full bg-mint-8 dark:bg-mint-8"
-      />
+  <!-- 1) push everything down by header’s height -->
+  <div class="bg-pureWhite p-16 h-svh dark:bg-pureBlack">
+    <!-- 2) center & gutter vertical breathing room -->
+    <div class="flex justify-center">
+      <!-- 3) “perfect circle” box -->
+      <div
+        class="relative aspect-square max-w-6xl w-full overflow-hidden rounded-full bg-mint-8 dark:bg-mint-8"
+      >
+        <Spline
+          :scene="sceneUrl"
+          class="h-full w-full"
+        />
+      </div>
     </div>
   </div>
 </template>
