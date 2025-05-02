@@ -1,33 +1,25 @@
 <script lang="ts" setup>
 import type { SplineEventName } from '@splinetool/runtime'
+import type { SplineProps } from './Spline.model'
 import { Application } from '@splinetool/runtime'
 import ParentSize from './ParentSize/ParentSize.vue'
+import { SplinePropsDefaults } from './Spline.model'
 
-const props = defineProps({
-  scene: {
-    type: String,
-    required: true,
-  },
-  onLoad: Function,
-  renderOnDemand: {
-    type: Boolean,
-    default: true,
-  },
-  style: Object,
-})
-
+const props = withDefaults(defineProps<SplineProps>(), SplinePropsDefaults)
 const emit = defineEmits([
   'error',
-  'spline-mouse-down',
-  'spline-mouse-up',
-  'spline-mouse-hover',
-  'spline-key-down',
-  'spline-key-up',
-  'spline-start',
-  'spline-look-at',
-  'spline-follow',
-  'spline-scroll',
+  'splineMouseDown',
+  'splineMouseUp',
+  'splineMouseHover',
+  'splineKeyDown',
+  'splineKeyUp',
+  'splineStart',
+  'splineLookAt',
+  'splineFollow',
+  'splineScroll',
 ])
+
+const { scene, onLoad, renderOnDemand, style } = toRefs(props)
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const isLoading = ref(false)
@@ -39,7 +31,7 @@ let cleanup: () => void = () => {
 
 const parentSizeStyles = computed(() => ({
   overflow: 'hidden',
-  ...props.style,
+  ...style.value,
 }))
 
 const canvasStyle = computed(() => ({
@@ -88,26 +80,26 @@ async function initSpline() {
     }
 
     splineApp.value = new Application(canvasRef.value, {
-      renderOnDemand: props.renderOnDemand,
+      renderOnDemand: renderOnDemand.value,
     })
 
-    await splineApp.value.load(props.scene)
+    await splineApp.value.load(scene.value)
 
     // Set up event listeners
     const cleanUpFns = [
-      eventHandler('mouseDown', (e: any) => emit('spline-mouse-down', e)),
-      eventHandler('mouseUp', (e: any) => emit('spline-mouse-up', e)),
-      eventHandler('mouseHover', (e: any) => emit('spline-mouse-hover', e)),
-      eventHandler('keyDown', (e: any) => emit('spline-key-down', e)),
-      eventHandler('keyUp', (e: any) => emit('spline-key-up', e)),
-      eventHandler('start', (e: any) => emit('spline-start', e)),
-      eventHandler('lookAt', (e: any) => emit('spline-look-at', e)),
-      eventHandler('follow', (e: any) => emit('spline-follow', e)),
-      eventHandler('scroll', (e: any) => emit('spline-scroll', e)),
+      eventHandler('mouseDown', (e: any) => emit('splineMouseDown', e)),
+      eventHandler('mouseUp', (e: any) => emit('splineMouseUp', e)),
+      eventHandler('mouseHover', (e: any) => emit('splineMouseHover', e)),
+      eventHandler('keyDown', (e: any) => emit('splineKeyDown', e)),
+      eventHandler('keyUp', (e: any) => emit('splineKeyUp', e)),
+      eventHandler('start', (e: any) => emit('splineStart', e)),
+      eventHandler('lookAt', (e: any) => emit('splineLookAt', e)),
+      eventHandler('follow', (e: any) => emit('splineFollow', e)),
+      eventHandler('scroll', (e: any) => emit('splineScroll', e)),
     ].filter(Boolean)
 
     isLoading.value = false
-    props.onLoad?.(splineApp.value)
+    onLoad.value?.(splineApp.value)
 
     return () => {
       cleanUpFns.forEach(fn => fn?.())
