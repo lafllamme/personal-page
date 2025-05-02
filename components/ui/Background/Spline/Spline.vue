@@ -21,7 +21,7 @@ const emit = defineEmits([
 
 const { scene, onLoad, renderOnDemand, style } = toRefs(props)
 
-const canvasRef = ref<HTMLCanvasElement | null>(null)
+const canvasRef = useTemplateRef('canvasRef')
 const isLoading = ref(false)
 const splineApp = ref<Application | null>(null)
 const isVisible = ref(true)
