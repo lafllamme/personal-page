@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import Spline from '@/components/ui/Background/Spline/Spline.vue'
+import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
+import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
 import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
 
 const sceneUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
@@ -56,7 +58,7 @@ watch(sceneLoaded, (v) => {
       </div>
 
       <!-- Text Wrapper -->
-      <div class="w-full pt-6 text-center md:w-1/2 space-y-2 md:px-6 md:text-left">
+      <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:px-6 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
             'geist-regular text-[8vw] animate-clip-circle',
@@ -73,6 +75,10 @@ watch(sceneLoaded, (v) => {
             words="Exploring the cutting edge of technology, AI, and development. Stay ahead with insights from industry experts."
           />
         </p>
+        <div class="mt-16 flex text-lg space-x-4">
+          <InteractiveButton text="Latest Articles" />
+          <RippleButton text="Subscribe to Newsletter" />
+        </div>
       </div>
     </div>
   </div>
