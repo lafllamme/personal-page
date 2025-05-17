@@ -77,7 +77,9 @@ watch(sceneLoaded, (v) => {
         </p>
       </div>
     </div>
-    <div class="text-md my-8 flex justify-center gap-4 md:justify-start">
+    <div
+      class="text-md my-8 flex justify-center gap-4 md:mx-8 md:justify-start lg:text-2xl md:text-xl sm:text-lg md:-my-8"
+    >
       <InteractiveButton text="Latest Articles" />
       <RippleButton class="hover:bg-gray-5A" text="Subscribe to us" />
     </div>
