@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { computed } from 'vue'
+
 interface RippleButtonProps {
   class?: string
   rippleColor?: string
@@ -11,11 +13,12 @@ const props = withDefaults(defineProps<RippleButtonProps>(), {
   duration: 600,
   text: 'Button',
 })
-
 const emit = defineEmits<{
   (e: 'click', event: MouseEvent): void
 }>()
-
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.value === 'dark')
+const rippleHex = computed(() => isDark.value ? '#58D5BA' : '#4CBBA5')
 const { class: classNames, text, rippleColor, duration } = toRefs(props)
 
 const rippleButtonRef = useTemplateRef('rippleButtonRef')
@@ -78,7 +81,7 @@ watchEffect(() => {
           height: `${ripple.size}px`,
           top: `${ripple.y}px`,
           left: `${ripple.x}px`,
-          backgroundColor: rippleColor,
+          backgroundColor: rippleHex ? rippleHex : rippleColor,
           transform: 'scale(0)',
           animationDuration: `${duration}ms`,
         }"
