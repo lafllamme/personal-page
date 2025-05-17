@@ -39,23 +39,26 @@ watch(sceneLoaded, (v) => {
   >
     <!-- 2) center & gutter vertical breathing room -->
     <div
-      class="flex flex-col items-center justify-center pt-20"
+      class="flex flex-col items-center justify-center px-4 pt-20"
     >
-      <!-- 3) “perfect circle” box -->
-      <div
-        :class="useClsx(renderBackground ? 'bg-mint-8' : 'bg-mint-1')"
-        class="relative aspect-square w-screen overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
-      >
-        <Spline
-          :on-load="handleLoad"
-          :scene="sceneUrl"
-          render-on-demand
-        />
+      <div class="mx-auto max-w-[600px] w-full">
+        <!-- optional max-w -->
+        <div
+          :class="useClsx(renderBackground ? 'bg-mint-8' : 'bg-mint-1')"
+          class="relative aspect-square w-full overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
+        >
+          <Spline
+            :on-load="handleLoad"
+            :scene="sceneUrl"
+            render-on-demand
+          />
+        </div>
       </div>
+
       <div class="pt-6 text-center space-y-2">
         <h1
           :class="useClsx(
-            'geist-regular text-4xl px-3',
+            'geist-regular text-[8vw]',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tighter antialiased',
           )"
