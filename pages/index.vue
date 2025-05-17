@@ -75,11 +75,11 @@ watch(sceneLoaded, (v) => {
             words="Exploring the cutting edge of technology, AI, and development. Stay ahead with insights from industry experts."
           />
         </p>
-        <div class="mt-16 flex text-lg space-x-4">
-          <InteractiveButton text="Latest Articles" />
-          <RippleButton text="Subscribe to Newsletter" />
-        </div>
       </div>
+    </div>
+    <div class="text-md my-8 flex justify-center gap-4 md:justify-start">
+      <InteractiveButton text="Latest Articles" />
+      <RippleButton class="hover:bg-gray-5A" text="Subscribe to us" />
     </div>
   </div>
 </template>
