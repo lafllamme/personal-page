@@ -41,7 +41,7 @@ function vars(index: number) {
         :style="vars(i)"
         class="tg-word inline-block"
       >
-        {{ word }}<span v-if="i < words.length - 1">&nbsp;</span>
+        {{ word }}<span v-show="i < words.length - 1">&nbsp;</span>
       </span>
     </div>
   </ClientOnly>
