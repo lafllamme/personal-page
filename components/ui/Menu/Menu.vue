@@ -255,7 +255,7 @@ useEventListener(window, 'keydown', handleEsc)
                             'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
                           )"
                           :title="child.title"
-                          href="#"
+                          to="/demo"
                         >
                           {{ child.title }}
                         </Link>
