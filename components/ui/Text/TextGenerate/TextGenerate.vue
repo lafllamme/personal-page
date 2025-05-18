@@ -30,6 +30,7 @@ function vars(i: number) {
     ref="el"
     :class="useClsx('leading-snug tracking-wide', classNames,
                     { 'is-visible': isVisible })"
+    aria-hidden="true"
   >
     <span
       v-for="(word, i) in words"
@@ -42,6 +43,9 @@ function vars(i: number) {
       {{ word }}<span v-show="i < words.length - 1">&nbsp;</span>
     </span>
   </div>
+  <p class="sr-only">
+    {{ props.words }}
+  </p>
 </template>
 
 <style scoped>
