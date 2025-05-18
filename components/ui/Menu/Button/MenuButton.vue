@@ -23,9 +23,9 @@ function handleFocus(state: boolean) {
     ref="menuBtn"
     :aria-expanded="isOpen"
     :class="useClsx(
-      'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring',
+      'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring',
       'transition-transform focus:outline-none ease-in-out duration-300',
-      'group absolute right-0 z-100 flex items-center justify-center',
+      'absolute right-0 z-100 flex items-center justify-center',
       'color-pureBlack dark:color-pureWhite',
     )"
     aria-controls="mobile-menu"
@@ -66,7 +66,8 @@ function handleFocus(state: boolean) {
       />
     </svg>
     <Underline
-      class-name="!media-mouse:group-hover:w-120% !-bottom-1.5"
+      class-name="!-bottom-1.52"
+      size="big"
     />
   </button>
 </template>
