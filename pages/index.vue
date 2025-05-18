@@ -35,7 +35,6 @@ watch(sceneLoaded, (v) => {
 </script>
 
 <template>
-  <!-- 1) Main Container -->
   <div
     class="bg-pureWhite dark:bg-pureBlack"
   >
