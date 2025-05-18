@@ -58,10 +58,11 @@ watchEffect(() => {
     ref="rippleButtonRef"
     :class="
       useClsx(
+        'hover:bg-gray-5A hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:border-pureWhite',
         'bg-pureWhite dark:bg-pureBlack p-2 px-6 text-center text-primary',
         'relative flex cursor-pointer items-center justify-center',
         'rounded-full border border-gray-6',
-        'hover:bg-gray-5A hover:shadow-[0_0_20px_rgba(255,255,255,0.5)] hover:border-pureWhite',
+        'transition-all duration-300',
         'font-semibold overflow-hidden',
         classNames,
       )
