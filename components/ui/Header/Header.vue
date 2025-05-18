@@ -95,9 +95,10 @@ watch(isSwitchOpen, (open) => {
         <div class="flex items-center pr-5">
           <NuxtLink
             :class="useClsx(
-              'absolute group px-2 text-xl font-bold tracking-tight antialiased',
               'transition-transform duration-300 ease-in-out hover:scale-105 md:text-3xl',
-              'focus:outline-none focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
+              'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+              'absolute group px-2 text-xl font-bold tracking-tight antialiased',
+              'focus-visible:outline-none focus-visible:ring-3',
             )"
             :to="homeLink"
             aria-label="Tech News"
