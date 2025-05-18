@@ -23,10 +23,10 @@ function handleFocus(state: boolean) {
     ref="menuBtn"
     :aria-expanded="isOpen"
     :class="useClsx(
-      'group absolute right-0 z-100 flex items-center justify-center',
+      'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring',
       'transition-transform focus:outline-none ease-in-out duration-300',
+      'group absolute right-0 z-100 flex items-center justify-center',
       'color-pureBlack dark:color-pureWhite',
-      'focus:ring-pureBlack dark:focus:ring-pureWhite focus:ring',
     )"
     aria-controls="mobile-menu"
 
