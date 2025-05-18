@@ -48,11 +48,10 @@ onMounted(() => {
       <button
         ref="button"
         :class="useClsx(
-          isDark && 'theme-toggle--toggled',
-          'outline-none blur-out z-2 group',
-          'ring-offset-inherit focus:ring',
-          'focus:ring-pureBlack dark:focus:ring-pureWhite',
+          'focus-visible:ring focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+          'outline-none blur-out z-2 group ring-offset-inherit',
           'theme-toggle transition-colors duration-500',
+          isDark && 'theme-toggle--toggled',
         )"
         aria-label="Toggle theme"
         title="Toggle theme"
