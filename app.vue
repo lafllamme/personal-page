@@ -56,9 +56,18 @@ body::-webkit-scrollbar {
   display: none; // Hide scrollbars in WebKit browsers
 }
 
-html {
+html,
+body {
   scrollbar-width: none; // Hide scrollbars in Firefox
   scroll-behavior: smooth;
+}
+
+html,
+body {
+  @apply bg-pureWhite;
+  &.dark {
+    @apply bg-pureBlack;
+  }
 }
 
 // page transitions
