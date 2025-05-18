@@ -89,7 +89,7 @@ useEventListener(window, 'keydown', handleEsc)
     class="relative w-full"
   >
     <!-- Menu Button -->
-    <div class="group flex items-center">
+    <div class="flex items-center">
       <MenuButton
         :is-open="isOpen"
         @click="handleClick"
