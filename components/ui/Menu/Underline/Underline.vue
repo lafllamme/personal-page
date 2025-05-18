@@ -3,36 +3,49 @@ import type { UnderlineProps } from '@/components/ui/Menu/Underline/Underline.mo
 import { UnderlinePropsDefaults } from '@/components/ui/Menu/Underline/Underline.model'
 
 const props = withDefaults(defineProps<UnderlineProps>(), UnderlinePropsDefaults)
-const { className, color, variant } = props
+const { className, color, variant, size } = props
 
-const underlineClasses = computed(() => {
-  return useClsx(
-    color || 'bg-mint-8',
-    'absolute bottom-0 h-[2px] transition-all duration-300',
-    // Width 0 by default */
-    'w-0',
-
-    /* ── show underline ─────────────────────────────────────────────── */
-    /* 1. pointer-hover, but only while the button is NOT focus-visible */
+/* ------------------------------------------------------------------ */
+// 1.  For every size list the exact growth rules
+const sizeRules: Record<'default' | 'big', string[]> = {
+  default: [
+    /* pointer hover – peer & group versions */
     'media-mouse:peer-[&:hover:not(:focus-visible)]:w-3/4',
+    'media-mouse:group-[&:hover:not(:focus-visible)]:w-3/4',
 
-    /* 2. mouse/touch focus (focus without focus-visible and without hover) */
+    /* mouse/touch focus (focus without focus-visible & without hover) */
     'peer-[&:focus:not(:focus-visible):not(:hover)]:w-3/4',
+    'group-[&:focus:not(:focus-visible):not(:hover)]:w-3/4',
+  ],
 
-    // Keep the default triggers
-    'media-mouse:group-hover:w-3/4',
+  big: [
+    /* pointer hover */
+    'media-mouse:peer-[&:hover:not(:focus-visible)]:w-6/5',
+    'media-mouse:group-[&:hover:not(:focus-visible)]:w-6/5',
 
-    // Positioning
-    variant === 'left'
-      ? 'left-0'
-      : 'left-1/2 -translate-x-1/2',
+    /* mouse/touch focus */
+    'peer-[&:focus:not(:focus-visible):not(:hover)]:w-6/5',
+    'group-[&:focus:not(:focus-visible):not(:hover)]:w-6/5',
+  ],
+}
 
+/* ------------------------------------------------------------------ */
+// 2.  Pick the rule set for the requested size
+const growRules = sizeRules[size] ?? sizeRules.default
+
+/* ------------------------------------------------------------------ */
+// 3.  Final class list
+const underlineClasses = computed(() =>
+  useClsx(
+    color || 'bg-mint-8',
+    'absolute bottom-0 h-[2px] w-0 transition-all duration-300',
+    ...growRules, // ← spread them
+    variant === 'left' ? 'left-0' : 'left-1/2 -translate-x-1/2',
     className,
-  )
-})
+  ),
+)
 </script>
 
 <template>
-  <!-- Underline span -->
   <span :class="underlineClasses" />
 </template>
