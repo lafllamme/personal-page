@@ -25,7 +25,7 @@ const buttonRef = ref<HTMLButtonElement>()
         'group relative w-auto cursor-pointer overflow-hidden',
         'rounded-full border border-gray-6 p-2 px-6',
         'bg-pureWhite dark:bg-pureBlack',
-        'text-center font-semibold',
+        'text-center font-semibold touch-manipulation',
         classNames,
       )
     "
