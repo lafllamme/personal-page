@@ -51,7 +51,7 @@ onMounted(() => {
       class="flex flex-col items-center justify-center px-4 pt-20 md:flex-row"
     >
       <!-- Circle Wrapper -->
-      <div class="mx-auto max-w-[420px] w-full md:order-last md:max-w-[800px] md:w-1/2">
+      <div class="mx-auto max-w-[450px] w-full md:order-last md:max-w-[800px] md:w-1/2">
         <div
           :class="useClsx(renderBackground ? 'bg-mint-8' : 'bg-mint-1')"
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
