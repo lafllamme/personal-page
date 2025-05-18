@@ -58,12 +58,13 @@ watchEffect(() => {
     ref="rippleButtonRef"
     :class="
       useClsx(
-        'hover:bg-gray-3A hover:border-gray-8A',
+        'hover:bg-gray-3A hover:border-gray-8A touch-manipulation',
+        'focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
         'dark:hover:shadow-[0_0_14px_rgba(255,255,255,0.5)] hover:shadow-[0_0_14px_rgba(0,0,0,0.5)]',
         'bg-pureWhite dark:bg-pureBlack p-2 px-6 text-center text-primary',
         'relative flex cursor-pointer items-center justify-center',
         'rounded-full border border-gray-6',
-        'transition-all duration-300',
+        'transition-all ease-out duration-300',
         'font-semibold overflow-hidden',
         classNames,
       )
