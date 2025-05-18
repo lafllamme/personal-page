@@ -183,6 +183,7 @@ const sortedLanguages = computed(() => {
     <div
       id="language-menu"
       ref="menuRef"
+      :aria-hidden="!open"
       :class="useClsx(
         open ? 'opacity-100 pointer-events-auto scale-y-100' : 'opacity-0 pointer-events-none scale-y-0',
         'origin-top',
