@@ -32,6 +32,14 @@ watch(sceneLoaded, (v) => {
     }, 1000)
   }
 })
+
+const animate = ref(false)
+
+onMounted(() => {
+  setTimeout(() => {
+    animate.value = true
+  }, 1000)
+})
 </script>
 
 <template>
@@ -43,7 +51,7 @@ watch(sceneLoaded, (v) => {
       class="flex flex-col items-center justify-center px-4 pt-20 md:flex-row"
     >
       <!-- Circle Wrapper -->
-      <div class="mx-auto max-w-[550px] w-full md:order-last md:max-w-[800px] md:w-1/2">
+      <div class="mx-auto max-w-[420px] w-full md:order-last md:max-w-[800px] md:w-1/2">
         <div
           :class="useClsx(renderBackground ? 'bg-mint-8' : 'bg-mint-1')"
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
@@ -73,17 +81,18 @@ watch(sceneLoaded, (v) => {
           class="text-md text-gray-10 font-300 md:text-justify lg:text-3xl md:text-2xl sm:text-lg"
           words="Exploring the cutting edge of technology, AI, and development. Stay ahead with insights from industry experts."
         />
+        <div
+          :class="useClsx(
+            'dark:bg-pureBlack lg:text-xl sm:text-lg',
+            'bg-pureWhite !my-8 lg:!my-16 !min-w-3/4 md:justify-start',
+            'text-md flex justify-center gap-4 whitespace-nowrap',
+            animate ? 'opacity-100 animate-fade-in' : 'opacity-0',
+          )"
+        >
+          <InteractiveButton text="Latest Articles" />
+          <RippleButton text="Subscribe to us" />
+        </div>
       </div>
-    </div>
-    <div
-      :class="useClsx(
-        'dark:bg-pureBlack lg:text-2xl md:text-xl sm:text-lg',
-        'bg-pureWhite my-8 md:m-8 lg:my-12 md:justify-start',
-        'text-md flex justify-center gap-4',
-      )"
-    >
-      <InteractiveButton text="Latest Articles" />
-      <RippleButton text="Subscribe to us" />
     </div>
   </div>
 </template>
