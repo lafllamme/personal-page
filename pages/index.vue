@@ -37,14 +37,14 @@ watch(sceneLoaded, (v) => {
 <template>
   <!-- 1) Main Container -->
   <div
-    class="bg-pureWhite h-svh dark:bg-pureBlack"
+    class="bg-pureWhite dark:bg-pureBlack"
   >
     <!-- 2) center & gutter vertical breathing room -->
     <div
       class="flex flex-col items-center justify-center px-4 pt-20 md:flex-row"
     >
       <!-- Circle Wrapper -->
-      <div class="mx-auto max-w-[600px] w-full md:order-last md:max-w-[60rem] md:w-1/2 md:px-12">
+      <div class="mx-auto max-w-[550px] w-full md:order-last md:max-w-[800px] md:w-1/2">
         <div
           :class="useClsx(renderBackground ? 'bg-mint-8' : 'bg-mint-1')"
           class="relative aspect-square w-full overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
@@ -61,27 +61,30 @@ watch(sceneLoaded, (v) => {
       <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:px-6 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
-            'geist-regular text-[8vw] animate-clip-circle',
+            'geist-regular text-[8vw] lg:text-[10vh] 2xl:text-[12vh] animate-clip-circle',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tighter antialiased',
           )"
         >
           The Future of Tech is Here
         </h1>
-        <p class="text-md text-gray-10 font-300 md:text-justify lg:text-3xl md:text-2xl sm:text-lg">
-          <TextGenerate
-            :delay="0.8"
-            :duration="1.1"
-            words="Exploring the cutting edge of technology, AI, and development. Stay ahead with insights from industry experts."
-          />
-        </p>
+        <TextGenerate
+          :delay="0.8"
+          :duration="1.1"
+          class="text-md text-gray-10 font-300 md:text-justify lg:text-3xl md:text-2xl sm:text-lg"
+          words="Exploring the cutting edge of technology, AI, and development. Stay ahead with insights from industry experts."
+        />
       </div>
     </div>
     <div
-      class="text-md my-8 flex justify-center gap-4 md:mx-8 md:justify-start lg:text-2xl md:text-xl sm:text-lg md:-my-8"
+      :class="useClsx(
+        'dark:bg-pureBlack lg:text-2xl md:text-xl sm:text-lg',
+        'bg-pureWhite my-8 md:m-8 lg:my-12 md:justify-start',
+        'text-md flex justify-center gap-4',
+      )"
     >
       <InteractiveButton text="Latest Articles" />
-      <RippleButton class="hover:bg-gray-5A" text="Subscribe to us" />
+      <RippleButton text="Subscribe to us" />
     </div>
   </div>
 </template>
