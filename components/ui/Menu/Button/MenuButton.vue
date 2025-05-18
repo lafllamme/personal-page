@@ -66,7 +66,6 @@ function handleFocus(state: boolean) {
       />
     </svg>
     <Underline
-      v-show="!hasFocus"
       class-name="!media-mouse:group-hover:w-120% !-bottom-1.5"
     />
   </button>
