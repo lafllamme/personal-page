@@ -20,10 +20,10 @@ const buttonRef = ref<HTMLButtonElement>()
     ref="buttonRef"
     :class="
       useClsx(
-        'focus:ring focus:ring-offset-4 focus:ring-offset-pureBlack dark:focus:ring-offset-pureWhite',
+        'focus-visible:ring focus-visible:ring-offset-4 focus-visible:ring-offset-pureBlack dark:focus-visible:ring-offset-pureWhite',
+        'focus-visible:outline-none focus-visible:ring-transparent',
         'group relative w-auto cursor-pointer overflow-hidden',
         'rounded-full border border-gray-6 p-2 px-6',
-        'focus:outline-none focus:ring-transparent',
         'bg-pureWhite dark:bg-pureBlack',
         'text-center font-semibold',
         classNames,
