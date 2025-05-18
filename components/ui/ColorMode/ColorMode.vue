@@ -7,7 +7,7 @@ import { useClsx } from '@/composables/useClsx'
 const props = withDefaults(defineProps<ColorModeProps>(), ColorModeDefaultProps)
 const { variant } = toRefs(props)
 const colorMode = useColorMode()
-const button = ref<HTMLButtonElement | null>(null)
+const button = useTemplateRef('button')
 const isDark = computed(() => colorMode.value === 'dark')
 const isLoading = ref(true)
 const isAnimating = ref(false)
@@ -19,6 +19,13 @@ function handleFocus(focused: boolean) {
 
 function toggleDarkMode() {
   debounceAnimation()
+  // remain active state on the button
+  nextTick(() => {
+    if (button.value) {
+      button.value.focus()
+    }
+  })
+  consola.debug('[ColoMode] Active El after click =>', document.activeElement)
 }
 
 function debounceAnimation(timeout: number = 1000) {
@@ -44,11 +51,11 @@ onMounted(() => {
     </div>
   </template>
   <template v-else>
-    <div class="group relative flex items-center px-2">
+    <div class="relative flex items-center px-2">
       <button
         ref="button"
         :class="useClsx(
-          'focus-visible:ring focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+          'peer focus-visible:ring focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
           'outline-none blur-out z-2 group ring-offset-inherit',
           'theme-toggle transition-colors duration-500',
           isDark && 'theme-toggle--toggled',
@@ -108,7 +115,7 @@ onMounted(() => {
           </svg>
         </div>
       </button>
-      <Underline v-if="!hasFocus" class="!-bottom-1.5" />
+      <Underline class="!-bottom-1.5" />
     </div>
   </template>
 </template>
