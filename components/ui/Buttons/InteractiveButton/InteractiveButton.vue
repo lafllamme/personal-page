@@ -28,7 +28,7 @@ const buttonRef = ref<HTMLButtonElement>()
     "
   >
     <!-- TODO: Correct syntax of div here   -->
-    <div class="flex items-center gap-2">
+    <div aria-hidden="true" class="flex items-center gap-2">
       <!-- 1st Content -->
       <div
         :class="useClsx(
