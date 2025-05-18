@@ -1,7 +1,10 @@
+<!-- components/ui/Cursor/Cursor.vue -->
 <script lang="ts" setup>
 import type { CursorProps, CursorType } from '@/components/ui/Cursor/Cursor.model'
 import { CursorDefaultProps } from '@/components/ui/Cursor/Cursor.model'
-
+/* ──────────────────────────────────────────────────────────
+   Props & reactive state
+   ────────────────────────────────────────────────────────── */
 const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps)
 
 const {
@@ -12,6 +15,8 @@ const {
   color,
   textColor,
   size,
+  textWidth,
+  clickScale,
   minTextHeight,
 } = toRefs(props)
 
@@ -19,12 +24,16 @@ const cursorRef = ref<HTMLElement | null>(null)
 const cursorType = ref<CursorType>('default')
 const textHeight = ref<number>(0)
 const hasPointer = ref<boolean>(false)
-const pointerClass = computed(() => hasPointer.value ? 'has-pointer' : '')
 const firstRender = ref<boolean>(true)
-const { width, height } = useWindowSize()
 
+const pointerClass = computed(() => (hasPointer.value ? 'has-pointer' : ''))
+
+const { width, height } = useWindowSize()
 const isPointer = useMediaQuery('(pointer: fine)')
 
+/* ──────────────────────────────────────────────────────────
+   <html> class toggle so the real cursor disappears
+   ────────────────────────────────────────────────────────── */
 useHead({
   htmlAttrs: {
     class: pointerClass,
@@ -36,36 +45,23 @@ watchEffect(() => {
   consola.debug('[Pointer] State =>', hasPointer.value)
 })
 
-function handleCursor(mounted: boolean = true) {
-  if (mounted && cursorRef.value) {
-    document.body.appendChild(cursorRef.value)
-  }
-  else if (!mounted && cursorRef.value?.parentNode) {
-    cursorRef.value.parentNode.removeChild(cursorRef.value)
-  }
-}
-
+/* ──────────────────────────────────────────────────────────
+   Helpers
+   ────────────────────────────────────────────────────────── */
 function centerCursor() {
   if (firstRender.value && cursorRef.value) {
-    const centerX = width.value / 2
-    const centerY = height.value / 2
-    cursorRef.value.style.left = `${centerX}px`
-    cursorRef.value.style.top = `${centerY}px`
+    cursorRef.value.style.left = `${width.value / 2}px`
+    cursorRef.value.style.top = `${height.value / 2}px`
   }
   firstRender.value = false
 }
 
-function setCursorStyle(pointer: boolean = true) {
+function setCursorStyle(pointer = true) {
   hasPointer.value = pointer
 }
 
 function checkCursor() {
-  if (isPointer.value) {
-    setCursorStyle(true)
-  }
-  else {
-    setCursorStyle(false)
-  }
+  setCursorStyle(isPointer.value)
 }
 
 function checkElementType(e: MouseEvent) {
@@ -85,12 +81,14 @@ function checkElementType(e: MouseEvent) {
   else if (isText) {
     cursorType.value = 'text'
 
+    // work out a sensible height for the bar-style cursor
     const textEl = textElements.value
       .map(sel => (target.matches(sel) ? target : target.closest(sel)))
       .filter(Boolean)[0] as HTMLElement | null
 
     if (textEl) {
-      const fontSize = Number.parseFloat(window.getComputedStyle(textEl).fontSize)
+      const fontSize = Number.parseFloat(getComputedStyle(textEl).fontSize)
+
       if (['input', 'textarea'].includes(textEl.tagName.toLowerCase())) {
         textHeight.value = Math.max(textEl.clientHeight * 0.8, minTextHeight.value)
       }
@@ -125,35 +123,38 @@ function initListeners() {
   useEventListener('mousemove', checkElementType, { passive: true })
 }
 
+/* ──────────────────────────────────────────────────────────
+   Lifecycle
+   ────────────────────────────────────────────────────────── */
 onMounted(() => {
-  handleCursor(true)
   checkCursor()
   centerCursor()
   initListeners()
 })
-
-onUnmounted(() => {
-  handleCursor(false)
-})
 </script>
 
 <template>
-  <div
-    v-show="hasPointer"
-    ref="cursorRef"
-    :style="{
-      width: cursorType === 'text' ? `${textWidth}px` : `${size}px`,
-      height: cursorType === 'text' ? `${textHeight}px` : `${size}px`,
-      borderRadius: cursorType === 'text' ? '1px' : '50%',
-      backgroundColor: cursorType === 'text' ? textColor : color,
-      mixBlendMode: cursorType === 'text' ? 'normal' : 'difference',
-      transform: cursorType === 'click'
-        ? `translate(-50%, -50%) scale(${clickScale})`
-        : 'translate(-50%, -50%)',
-      transition: 'width 0.2s, height 0.2s, border-radius 0.2s, transform 0.2s, background-color 0.2s',
-    }"
-    class="cursor-portal animate-fade-in"
-  />
+  <!-- Teleport ensures the node lives directly under <body>
+       and Vue will clean it up automatically on route changes -->
+  <Teleport to="body">
+    <div
+      v-show="hasPointer"
+      ref="cursorRef"
+      :style="{
+        width: cursorType === 'text' ? `${textWidth}px` : `${size}px`,
+        height: cursorType === 'text' ? `${textHeight}px` : `${size}px`,
+        borderRadius: cursorType === 'text' ? '1px' : '50%',
+        backgroundColor: cursorType === 'text' ? textColor : color,
+        mixBlendMode: cursorType === 'text' ? 'normal' : 'difference',
+        transform: cursorType === 'click'
+          ? `translate(-50%, -50%) scale(${clickScale})`
+          : 'translate(-50%, -50%)',
+        transition:
+          'width .2s, height .2s, border-radius .2s, transform .2s, background-color .2s',
+      }"
+      class="cursor-portal animate-fade-in"
+    />
+  </Teleport>
 </template>
 
 <style>
@@ -167,7 +168,7 @@ onUnmounted(() => {
   will-change: transform;
 }
 
-/* Apply the global rule only when the .has-pointer class is present */
+/* Only when .has-pointer is on <html> */
 .has-pointer * {
   cursor: none !important;
 }
