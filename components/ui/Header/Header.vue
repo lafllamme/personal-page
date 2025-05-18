@@ -10,6 +10,11 @@ import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 // Base transition easing remains the same
 const transitionEasing = 'ease-[cubic-bezier(0.77,0,0.18,1)]'
 
+// compute to destination for a home link
+const homeLink = computed(() => {
+  return { name: 'index' }
+})
+
 // Reactive state variables
 const isOpen = ref(false) // Drives Navigation.vue visibility
 const isSwitchOpen = ref(false) // Controls language switcher
@@ -94,8 +99,8 @@ watch(isSwitchOpen, (open) => {
               'transition-transform duration-300 ease-in-out hover:scale-105 md:text-3xl',
               'focus:outline-none focus:ring-3 focus:ring-pureBlack dark:focus:ring-pureWhite',
             )"
+            :to="homeLink"
             aria-label="Tech News"
-            to="/"
           >
             <span class="text-pureBlack dark:text-pureWhite">Tec</span>
             <span class="text-fg text-mint-8">News</span>
