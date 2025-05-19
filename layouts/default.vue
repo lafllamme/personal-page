@@ -12,7 +12,7 @@ import Shader from '@/components/ui/Shaders/Shader.vue'
 
     <!-- Main Content -->
     <div
-      class="relative z-10 overflow-y-auto transition-colors duration-300 ease-out"
+      class="relative z-10 overflow-y-auto"
     >
       <Header />
       <main>
