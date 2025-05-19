@@ -73,7 +73,7 @@ watchEffect(() => {
     :style="{
       '--duration': `${duration}ms`,
       'transitionProperty': 'color,background-color,border-color,opacity,transform,box-shadow,height,width',
-      'transitionDuration': '300ms',
+      'transitionDuration': '600ms,600ms,600ms,300ms,300ms,300ms,300ms',
       'transitionTimingFunction': 'cubic-bezier(0.33,1,0.68,1),cubic-bezier(0.33,1,0.68,1),cubic-bezier(0.33,1,0.68,1),ease-out,ease-out,ease-out,ease-out,ease-out',
     }"
     tabindex="0"
