@@ -70,14 +70,14 @@ watch(isSwitchOpen, (open) => {
       ref="headerRef"
       :class="headerBgClass"
       :style="headerStyle"
-      class="fixed left-0 top-0 z-50 w-full"
+      class="fixed left-0 top-0 z-50 w-full transition-colors duration-900 ease-[cubic-bezier(0.33,1,0.68,1)]"
       role="banner"
     >
       <!-- Background layer for consistent backdrop filter (Glass morphism) -->
       <div
         :class="useClsx(
-          /*'pointer-events-none absolute inset-0',
-          'backdrop-blur-[8px] backdrop-saturate-150',*/
+          'pointer-events-none absolute inset-0',
+          'backdrop-blur-[8px] backdrop-saturate-150',
         )"
       />
       <!-- Inner container for logo and right-side items -->
