@@ -5,22 +5,10 @@ import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 
 withDefaults(defineProps<MenuButtonProps>(), MenuButtonDefaults)
 defineEmits<MenuButtonEmits>()
-const menuBtn = ref<HTMLButtonElement | null>(null)
-const hasFocus = ref(false)
-
-function handleClick() {
-  menuBtn.value?.focus()
-  consola.debug('[MenuButton] Focus =>', document.activeElement)
-}
-
-function handleFocus(state: boolean) {
-  hasFocus.value = state
-}
 </script>
 
 <template>
   <button
-    ref="menuBtn"
     :aria-expanded="isOpen"
     :class="useClsx(
       'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring',
@@ -31,9 +19,8 @@ function handleFocus(state: boolean) {
     aria-controls="mobile-menu"
 
     aria-label="Toggle menu"
-    @blur="handleFocus(false)"
-    @click="handleClick"
-    @focus="handleFocus(true)"
+    tabindex="0"
+    type="button"
   >
     <svg
       :class="isOpen && '-translate-x-1.55'"

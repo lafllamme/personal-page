@@ -29,6 +29,8 @@ const buttonRef = ref<HTMLButtonElement>()
         classNames,
       )
     "
+    tabindex="0"
+    type="button"
   >
     <!-- TODO: Correct syntax of div here   -->
     <div aria-hidden="true" class="flex items-center gap-2">
