@@ -44,7 +44,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="bg-pureWhite dark:bg-pureBlack"
+    class="bg-pureWhite h-svh dark:bg-pureBlack"
   >
     <!-- 2) center & gutter vertical breathing room -->
     <div
