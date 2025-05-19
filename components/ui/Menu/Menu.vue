@@ -114,6 +114,7 @@ useEventListener(window, 'keydown', handleEsc)
         'transform-gpu will-change-[transform,opacity] backface-hidden',
       )"
       :inert="isOpen ? undefined : 'true'"
+      :tabindex="tabIndex"
     >
       <!-- Background Text -->
       <div
