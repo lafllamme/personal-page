@@ -78,7 +78,6 @@ watch(isOpen, (open) => {
   handleMenu(open)
 })
 
-const tabIndex = computed(() => (isOpen.value ? 0 : -1))
 const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
 useEventListener(window, 'keydown', handleEsc)
 </script>
@@ -114,7 +113,7 @@ useEventListener(window, 'keydown', handleEsc)
         'transform-gpu will-change-[transform,opacity] backface-hidden',
       )"
       :inert="isOpen ? undefined : 'true'"
-      :tabindex="tabIndex"
+      tabindex="-1"
     >
       <!-- Background Text -->
       <div

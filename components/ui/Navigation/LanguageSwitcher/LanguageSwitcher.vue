@@ -164,6 +164,8 @@ const sortedLanguages = computed(() => {
       )"
       aria-controls="language-menu"
       aria-haspopup="true"
+      tabindex="0"
+      type="button"
       @click="onClick"
       @mouseenter="onButtonHover"
       @mouseleave="onButtonLeave"

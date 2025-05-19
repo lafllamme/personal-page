@@ -102,6 +102,7 @@ watch(isSwitchOpen, (open) => {
             )"
             :to="homeLink"
             aria-label="Tech News"
+            tabindex="0"
           >
             <span class="text-pureBlack dark:text-pureWhite">Tec</span>
             <span class="text-fg text-mint-8">News</span>

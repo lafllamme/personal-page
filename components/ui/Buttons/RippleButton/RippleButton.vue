@@ -70,6 +70,8 @@ watchEffect(() => {
       )
     "
     :style="{ '--duration': `${duration}ms` }"
+    tabindex="0"
+    type="button"
     @click="handleClick"
   >
     <div class="relative z-10 color-pureBlack dark:color-pureWhite">
