@@ -44,7 +44,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="bg-pureWhite h-svh dark:bg-pureBlack"
+    class="ease-[cubic-bezier(0.33,1,0.68,1) bg-pureWhite transition-colors duration-900 h-svh dark:bg-pureBlack"
   >
     <!-- 2) center & gutter vertical breathing room -->
     <div
@@ -54,7 +54,7 @@ onMounted(() => {
       <div class="mx-auto max-w-[450px] w-full md:order-last md:max-w-[800px] md:w-1/2">
         <div
           :class="useClsx(renderBackground ? 'bg-mint-8' : 'bg-mint-1')"
-          class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
+          class="ease-[cubic-bezier(0.33,1,0.68,1) relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors transition-colors duration-[2000ms] duration-900 ease-in-out"
         >
           <Spline
             :on-load="handleLoad"
@@ -83,14 +83,19 @@ onMounted(() => {
         />
         <div
           :class="useClsx(
+            'transition-colors duration-900 ease-[cubic-bezier(0.33,1,0.68,1)',
             'dark:bg-pureBlack lg:text-xl sm:text-lg',
             'bg-pureWhite !my-8 lg:!my-16 !min-w-3/4 md:justify-start',
             'text-md flex justify-center gap-4 whitespace-nowrap',
             animate ? 'opacity-100 animate-fade-in' : 'opacity-0',
           )"
         >
-          <InteractiveButton text="Latest Articles" />
-          <RippleButton text="Subscribe to us" />
+          <InteractiveButton
+            text="Latest Articles"
+          />
+          <RippleButton
+            text="Subscribe to us"
+          />
         </div>
       </div>
     </div>
