@@ -25,7 +25,7 @@ const buttonRef = ref<HTMLButtonElement>()
         'group relative w-auto cursor-pointer overflow-hidden',
         'rounded-full border border-gray-6 p-2 px-6',
         'bg-pureWhite dark:bg-pureBlack',
-        'text-center font-semibold touch-manipulation',
+        'text-center font-semibold touch-manipulation ease-[cubic-bezier(0.33,1,0.68,1]) transition-colors duration-300',
         classNames,
       )
     "
@@ -38,14 +38,14 @@ const buttonRef = ref<HTMLButtonElement>()
       <div
         :class="useClsx(
           'group-hover:scale-[100.8] group-focus:scale-[100.8] ',
-          'bg-pureBlack dark:bg-pureWhite transition-all duration-300',
+          'bg-pureBlack dark:bg-pureWhite transition-[opacity,transform,box-shadow,height,width] duration-300',
           'size-2 scale-100 rounded-lg',
         )"
       />
       <span
         :class="useClsx(
           'inline-block whitespace-nowrap text-pureBlack dark:text-pureWhite ',
-          'transition-all duration-300 group-hover:translate-x-12',
+          'transition-[opacity,transform,box-shadow,height,width] duration-300 group-hover:translate-x-12',
           'group-hover:opacity-0 group-focus:opacity-0',
         )"
       >
