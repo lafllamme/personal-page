@@ -3,10 +3,10 @@ import Header from '@/components/ui/Header/Header.vue'
 </script>
 
 <template>
-  <div class="relative overflow-hidden bg-gray-3 dark:bg-gray-2">
+  <div class="relative overflow-hidden">
     <!-- Main Content -->
     <div
-      class="relative z-10 overflow-y-auto bg-pureWhite transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] dark:bg-pureBlack"
+      class="relative z-10 overflow-y-auto"
     >
       <Header />
       <main>
