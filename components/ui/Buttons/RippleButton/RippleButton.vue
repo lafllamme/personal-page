@@ -64,12 +64,18 @@ watchEffect(() => {
         'bg-pureWhite dark:bg-pureBlack p-2 px-6 text-center text-primary',
         'relative flex cursor-pointer items-center justify-center',
         'rounded-full border border-gray-6',
-        'transition-all ease-out duration-300',
+        'transition-[color,background-color,border-color,opacity,transform,box-shadow,height,width]',
         'font-semibold overflow-hidden',
         classNames,
       )
+
     "
-    :style="{ '--duration': `${duration}ms` }"
+    :style="{
+      '--duration': `${duration}ms`,
+      'transitionProperty': 'color,background-color,border-color,opacity,transform,box-shadow,height,width',
+      'transitionDuration': '300ms',
+      'transitionTimingFunction': 'cubic-bezier(0.33,1,0.68,1),cubic-bezier(0.33,1,0.68,1),cubic-bezier(0.33,1,0.68,1),ease-out,ease-out,ease-out,ease-out,ease-out',
+    }"
     tabindex="0"
     type="button"
     @click="handleClick"
