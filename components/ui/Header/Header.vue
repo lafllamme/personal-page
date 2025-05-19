@@ -70,7 +70,7 @@ watch(isSwitchOpen, (open) => {
       ref="headerRef"
       :class="headerBgClass"
       :style="headerStyle"
-      class="fixed left-0 top-0 z-50 w-full transition-colors duration-900 ease-[cubic-bezier(0.33,1,0.68,1)]"
+      class="fixed left-0 top-0 z-50 w-full transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]"
       role="banner"
     >
       <!-- Background layer for consistent backdrop filter (Glass morphism) -->
@@ -82,7 +82,7 @@ watch(isSwitchOpen, (open) => {
       />
       <!-- Inner container for logo and right-side items -->
       <div
-        class="relative mx-auto flex items-center justify-between border-b border-gray-5 border-solid px-4 py-2 dark:border-gray-4 md:py-3 sm:px-6"
+        class="relative mx-auto flex items-center justify-between border-b border-gray-5 border-solid px-4 py-2 transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:border-gray-4 md:py-3 sm:px-6"
       >
         <div class="flex items-center pr-5">
           <NuxtLink
