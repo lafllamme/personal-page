@@ -29,13 +29,6 @@ const headerBgClass = computed(() =>
     : 'bg-pureWhite/50 dark:bg-pureBlack/50',
 )
 
-// Dynamically compute the transition class for the header
-const headerTransitionClass = computed(() => {
-  // Use a faster (e.g. 300ms) transition for opening, and slower for closing
-  const durationClass = menuPhase.value === 'opening' ? 'duration-300' : 'duration-900'
-  return `transition-all ${durationClass} ${transitionEasing}`
-})
-
 const headerStyle = computed(() => {
   if (menuPhase.value === 'closing') {
     return { transitionDelay: '300ms' }
@@ -75,7 +68,7 @@ watch(isSwitchOpen, (open) => {
     <!-- Main Header container with dynamic style and classes -->
     <header
       ref="headerRef"
-      :class="[headerTransitionClass, headerBgClass]"
+      :class="headerBgClass"
       :style="headerStyle"
       class="fixed left-0 top-0 z-50 w-full"
       role="banner"
@@ -83,13 +76,12 @@ watch(isSwitchOpen, (open) => {
       <!-- Background layer for consistent backdrop filter (Glass morphism) -->
       <div
         :class="useClsx(
-          'pointer-events-none absolute inset-0',
-          'backdrop-blur-[8px] backdrop-saturate-150',
+          /*'pointer-events-none absolute inset-0',
+          'backdrop-blur-[8px] backdrop-saturate-150',*/
         )"
       />
       <!-- Inner container for logo and right-side items -->
       <div
-        :class="[headerTransitionClass]"
         class="relative mx-auto flex items-center justify-between border-b border-gray-5 border-solid px-4 py-2 dark:border-gray-4 md:py-3 sm:px-6"
       >
         <div class="flex items-center pr-5">
