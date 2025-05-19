@@ -11,21 +11,15 @@ const button = useTemplateRef('button')
 const isDark = computed(() => colorMode.value === 'dark')
 const isLoading = ref(true)
 const isAnimating = ref(false)
-const hasFocus = ref(false)
+const isPressed = ref(false)
 
-function handleFocus(focused: boolean) {
-  hasFocus.value = focused
+function handlePressed(pressed: boolean) {
+  isPressed.value = pressed
 }
 
 function toggleDarkMode() {
   debounceAnimation()
-  // remain active state on the button
-  nextTick(() => {
-    if (button.value) {
-      button.value.focus()
-    }
-  })
-  consola.debug('[ColoMode] Active El after click =>', document.activeElement)
+  handlePressed(true)
 }
 
 function debounceAnimation(timeout: number = 1000) {
@@ -54,18 +48,19 @@ onMounted(() => {
     <div class="relative flex items-center px-2">
       <button
         ref="button"
+        :aria-pressed="isPressed"
         :class="useClsx(
-          'peer focus-visible:ring focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+          'peer group focus-visible:ring focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
           'outline-none blur-out z-2 group ring-offset-inherit',
           'theme-toggle transition-colors duration-500',
           isDark && 'theme-toggle--toggled',
+          isPressed && 'is-active',
         )"
         aria-label="Toggle theme"
+        tabindex="0"
         title="Toggle theme"
         type="button"
-        @blur="handleFocus(false)"
         @click="toggleDarkMode"
-        @focus="handleFocus(true)"
       >
         <div
           :class="useClsx(
@@ -115,7 +110,9 @@ onMounted(() => {
           </svg>
         </div>
       </button>
-      <Underline class="!-bottom-1.5" />
+      <Underline
+        class="!-bottom-1.5"
+      />
     </div>
   </template>
 </template>
