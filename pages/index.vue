@@ -35,11 +35,9 @@ watch(sceneLoaded, (v) => {
 
 const animate = ref(false)
 
-onMounted(() => {
-  setTimeout(() => {
-    animate.value = true
-  }, 1000)
-})
+function handleGenerateComplete() {
+  animate.value = true
+}
 </script>
 
 <template>
@@ -53,8 +51,8 @@ onMounted(() => {
       <!-- Circle Wrapper -->
       <div class="mx-auto max-w-[450px] w-full md:order-last md:max-w-[800px] md:w-1/2">
         <div
-          :class="useClsx(renderBackground ? 'bg-mint-8' : 'bg-mint-1')"
-          class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
+          :class="useClsx(renderBackground && '!bg-mint-8')"
+          class="relative aspect-square w-full touch-none overflow-hidden rounded-full bg-gray-3 transition-colors duration-[2000ms] ease-in-out"
         >
           <Spline
             :on-load="handleLoad"
@@ -80,6 +78,7 @@ onMounted(() => {
           :duration="1.1"
           class="text-md text-gray-10 font-300 md:text-justify lg:text-3xl md:text-2xl sm:text-lg"
           words="Exploring the cutting edge of technology, AI, and development. Stay ahead with insights from industry experts."
+          @generate="handleGenerateComplete"
         />
         <div
           :class="useClsx(
