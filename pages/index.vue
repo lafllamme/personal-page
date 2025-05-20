@@ -49,7 +49,7 @@ function handleGenerateComplete() {
       class="flex flex-col items-center justify-center px-4 pt-20 md:flex-row"
     >
       <!-- Circle Wrapper -->
-      <div class="mx-auto max-w-[450px] w-full md:order-last md:max-w-[800px] md:w-1/2">
+      <div class="animate-top-to-bottom-reveal mx-auto max-w-[450px] w-full md:order-last md:max-w-[800px] md:w-1/2">
         <div
           :class="useClsx(renderBackground && '!bg-mint-8')"
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full bg-gray-3 transition-colors duration-[2000ms] ease-in-out"
@@ -129,5 +129,37 @@ function handleGenerateComplete() {
 .slide-in-bck-center {
   -webkit-animation: slide-in-bck-center 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   animation: slide-in-bck-center 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes topToBottomReveal {
+  0% {
+    clip-path: circle(5% at 50% 0%);
+  }
+  15% {
+    clip-path: circle(15% at 100% 25%);
+  }
+  30% {
+    clip-path: circle(30% at 75% 75%);
+  }
+  45% {
+    clip-path: circle(45% at 25% 85%);
+  }
+  60% {
+    clip-path: circle(60% at 15% 40%);
+  }
+  75% {
+    clip-path: circle(75% at 60% 25%);
+  }
+  90% {
+    clip-path: circle(90% at 75% 65%);
+  }
+  100% {
+    clip-path: circle(100% at 50% 50%);
+  }
+}
+
+.animate-top-to-bottom-reveal {
+  animation: topToBottomReveal 6s forwards;
+  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 </style>
