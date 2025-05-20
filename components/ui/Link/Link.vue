@@ -13,6 +13,8 @@ import { RouterLink } from 'vue-router'
  * - tabindex: number (default 0 to ensure keyboard navigation)
  * - ariaLabel: string (custom accessible name if different from title)
  */
+
+// TODO: Clean this up and remove unused props
 interface LinkProps {
   href?: string
   to?: string
@@ -28,6 +30,8 @@ const props = withDefaults(defineProps<LinkProps>(), {
   tabindex: 0,
 })
 
+const localePath = useLocalePath()
+
 // Determine which component to render: if a 'to' prop exists, use the RouterLink component.
 const componentType = computed(() => (props.to ? RouterLink : 'a'))
 
@@ -37,7 +41,7 @@ const componentType = computed(() => (props.to ? RouterLink : 'a'))
 const linkProps = computed(() => {
   if (props.to) {
     return {
-      'to': props.to,
+      'to': localePath(props.to),
       'target': props.target,
       'title': props.title,
       'tabindex': props.tabindex,
