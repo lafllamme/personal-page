@@ -40,11 +40,6 @@ useHead({
   },
 })
 
-watchEffect(() => {
-  consola.debug('[Pointer] Class =>', pointerClass.value)
-  consola.debug('[Pointer] State =>', hasPointer.value)
-})
-
 /* ──────────────────────────────────────────────────────────
    Helpers
    ────────────────────────────────────────────────────────── */
