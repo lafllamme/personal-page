@@ -13,16 +13,62 @@ const isAnimating = ref(false)
 const openItems = ref<number[]>([])
 const hasInputFocus = ref(false)
 const isLocked = useScrollLock(document)
+const contentRefs = ref<Record<number, HTMLElement | null>>({})
 
 const menu = useTemplateRef<HTMLDivElement>('menu')
 const { activate, deactivate } = useFocusTrap(menu)
 
+function animateHeight(element: HTMLElement, from: number, to: number, duration: number = 300) {
+  const startTime = performance.now()
+
+  function updateHeight(currentTime: number) {
+    const elapsed = currentTime - startTime
+    const progress = Math.min(elapsed / duration, 1)
+
+    // Easing function (ease-in-out)
+    const variants = {
+      exponential: (t: number) => t === 0 ? 0 : 1 - 2 ** (-10 * t),
+      quadrant: (t: number) => t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2,
+      cubic: (t: number) => t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2,
+      quickCubic: (t: number) => t * 1.2 > 1 ? 1 : (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2),
+      gentle: (t: number) => t === 1 ? 1 : 1 - 2 ** (-8 * t),
+    }
+    const easedProgress = variants.gentle(progress)
+
+    const currentHeight = from + (to - from) * easedProgress
+    element.style.height = `${currentHeight}px`
+
+    if (progress < 1) {
+      requestAnimationFrame(updateHeight)
+    }
+    else if (to > 0) {
+      element.style.height = 'auto'
+    }
+  }
+
+  requestAnimationFrame(updateHeight)
+}
+
 function toggleItem(id: number) {
+  const element = contentRefs.value[id]
+  if (!element)
+    return
+
   if (openItems.value.includes(id)) {
+    const height = element.scrollHeight
+    element.style.height = `${height}px`
+    // Force reflow
+    void element.offsetHeight
+    animateHeight(element, height, 0)
     openItems.value = openItems.value.filter(item => item !== id)
   }
   else {
+    element.style.height = '0px'
     openItems.value.push(id)
+    // Force reflow
+    void element.offsetHeight
+    const height = element.scrollHeight
+    animateHeight(element, 0, height)
   }
 }
 
@@ -79,6 +125,7 @@ watch(isOpen, (open) => {
 })
 
 const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
+const tabIndex = computed(() => (isOpen.value ? '0' : '-1'))
 useEventListener(window, 'keydown', handleEsc)
 </script>
 
@@ -234,36 +281,34 @@ useEventListener(window, 'keydown', handleEsc)
                 </button>
               </li>
               <!-- Accordion Transition Layer -->
-              <transition
-                enter-active-class="transition-all duration-300 ease-in-out"
-                enter-from-class="grid-rows-[0fr] opacity-0"
-                enter-to-class="grid-rows-[1fr] opacity-100"
-                leave-active-class="transition-all duration-300 ease-in-out"
-                leave-from-class="grid-rows-[1fr] opacity-100"
-                leave-to-class="grid-rows-[0fr] opacity-0"
+              <div
+                v-show="item.children"
+                :ref="el => contentRefs[item.id] = el as HTMLElement"
+                :style="{ height: openItems.includes(item.id) ? 'auto' : '0px' }"
+                class="overflow-hidden"
               >
-                <ol
-                  v-if="item.children && openItems.includes(item.id)"
-                  class="will-change-[transform,opacity] backface-hidden grid transform-gpu"
+                <ul
+                  class="mb-3 pl-4 space-y-1"
                 >
-                  <li class="overflow-hidden">
-                    <ul class="mb-3 pl-4 space-y-1">
-                      <li v-for="child in item.children" :key="child.id">
-                        <Link
-                          :class="useClsx(
-                            'hover:text-base12 dark:hover:text-base1 block py-2 px-1 text-xs',
-                            'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
-                          )"
-                          :title="child.title"
-                          to="/demo"
-                        >
-                          {{ child.title }}
-                        </Link>
-                      </li>
-                    </ul>
+                  <li
+                    v-for="child in item.children"
+                    :key="child.id"
+                  >
+                    <Link
+                      :aria-hidden="openItems.includes(item.id) ? 'false' : 'true'"
+                      :class="useClsx(
+                        'hover:text-base12 dark:hover:text-base1 block py-2 px-1 text-xs',
+                        'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
+                      )"
+                      :tabindex="openItems.includes(item.id) ? 0 : -1"
+                      :title="child.title"
+                      to="/demo"
+                    >
+                      {{ child.title }}
+                    </Link>
                   </li>
-                </ol>
-              </transition>
+                </ul>
+              </div>
             </ul>
           </div>
         </div>
