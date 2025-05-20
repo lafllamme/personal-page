@@ -6,8 +6,6 @@ const loadingGradient = ref('repeating-linear-gradient(to right, #8a2387, #e9405
 const appConfig = useAppConfig()
 const { meta } = appConfig as { meta: HeadMeta }
 
-consola.debug('[App] App config:', appConfig)
-
 // If we are in development mode, we set consola log level to 5
 if (import.meta.dev) {
   consola.level = 5
