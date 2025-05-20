@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import type { TextGenerateProps } from './TextGenerate.model'
 import { useElementVisibility } from '@vueuse/core'
-import { computed, toRefs } from 'vue'
+import { computed, ref, toRefs, watch } from 'vue'
 import { TextGenerateDefaultProps } from './TextGenerate.model'
 
 /* props ------------------------------------------------------------------ */
 const props = withDefaults(defineProps<TextGenerateProps>(), TextGenerateDefaultProps)
+/* emit ------------------------------------------------------------------ */
+const emit = defineEmits<{
+  (e: 'generate'): void
+}>()
+
 const { delay, duration, filter, class: classNames } = toRefs(props)
 
 /* visibility (IntersectionObserver) -------------------------------------- */
@@ -16,12 +21,32 @@ const isVisible = useElementVisibility(el, { threshold: 0.01 }) // runs only in 
 const words = computed(() => props.words.trim().split(/\s+/))
 const step = 0.2 // seconds between words
 
+// Track animation completion
+const animationComplete = ref(false)
+
 function vars(i: number) {
   return {
     '--tg-delay': `${delay.value / 1000 + i * step}s`,
     '--tg-duration': `${duration.value}s`,
   } as Record<string, string>
 }
+
+// Watch for visibility and calculate when animation should complete
+watch(isVisible, (visible) => {
+  if (visible) {
+    // Calculate time for last word's animation to complete
+    const lastWordDelay = (delay.value / 1000) + ((words.value.length - 1) * step)
+    const lastWordDuration = duration.value
+
+    // Emit at 60% of last word's animation
+    const emitTime = (lastWordDelay + lastWordDuration * 0.6) * 1000
+
+    setTimeout(() => {
+      animationComplete.value = true
+      emit('generate')
+    }, emitTime)
+  }
+})
 </script>
 
 <template>
@@ -52,8 +77,8 @@ function vars(i: number) {
 /* ------------------------------------------------------------------------
    1.  The real text (.tg-word) only fades opacity — no blur, no size change
    2.  A pseudo element (::after) duplicates the word, carries the blur halo,
-       and fades out synchronously. Because it’s absolute-positioned, it
-       doesn’t influence line-height, so no layout shift.
+       and fades out synchronously. Because it's absolute-positioned, it
+       doesn't influence line-height, so no layout shift.
 ------------------------------------------------------------------------- */
 
 /* main span ------------------------------------------------------------- */
@@ -87,7 +112,7 @@ function vars(i: number) {
   animation-delay: var(--tg-delay);
 }
 
-/* optional “no-blur” toggle via prop ------------------------------------ */
+/* optional "no-blur" toggle via prop ------------------------------------ */
 .tg-no-blur::after {
   display: none !important;
 }
