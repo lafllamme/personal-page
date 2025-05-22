@@ -21,7 +21,11 @@ const headerRef = ref<HTMLElement | null>(null)
 
 const { y } = useWindowScroll()
 
+// TODO: improve this here
 const hasScrolledEnough = computed(() => {
+  if (import.meta.server)
+    return false
+
   const scrollY = y.value
   const docHeight = document.documentElement.scrollHeight - height.value
   const scrolledPercent = docHeight > 0 ? scrollY / docHeight : 0
@@ -87,7 +91,7 @@ watch(hasScrolledEnough, (hasScrolled) => {
         <div class="flex items-center pr-5">
           <NuxtLink
             :class="useClsx(
-              'transition-transform duration-300 ease-in-out hover:scale-105 md:text-3xl',
+              'transition-transform duration-300 ease-out hover:scale-105 md:text-3xl',
               'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
               'absolute group px-2 text-xl font-bold tracking-tight antialiased',
               'focus-visible:outline-none focus-visible:ring-3',
