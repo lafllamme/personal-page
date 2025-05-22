@@ -4,36 +4,28 @@ import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import Menu from '@/components/ui/Menu/Menu.vue'
 import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, useWindowScroll } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
-
-// Base transition easing remains the same
-const transitionEasing = 'ease-[cubic-bezier(0.77,0,0.18,1)]'
 
 // compute to destination for a home link
 const homeLink = computed(() => {
   return { name: 'index' }
 })
 
+const { height } = useWindowSize()
+
 // Reactive state variables
 const isOpen = ref(false) // Drives Navigation.vue visibility
 const isSwitchOpen = ref(false) // Controls language switcher
 const headerRef = ref<HTMLElement | null>(null)
-// New menuPhase state: 'closed' | 'opening' | 'open' | 'closing'
-const menuPhase = ref<'closed' | 'opening' | 'open' | 'closing'>('closed')
 
-// Compute header background based on the current menuPhase
-const headerBgClass = computed(() =>
-  menuPhase.value === 'opening' || menuPhase.value === 'open'
-    ? 'bg-pureWhite/95 dark:bg-pureBlack/95'
-    : 'bg-pureWhite/50 dark:bg-pureBlack/50',
-)
+const { y } = useWindowScroll()
 
-const headerStyle = computed(() => {
-  if (menuPhase.value === 'closing') {
-    return { transitionDelay: '300ms' }
-  }
-  return { transitionDelay: '0ms' }
+const hasScrolledEnough = computed(() => {
+  const scrollY = y.value
+  const docHeight = document.documentElement.scrollHeight - height.value
+  const scrolledPercent = docHeight > 0 ? scrollY / docHeight : 0
+  return scrolledPercent >= 0.2
 })
 
 // Close menu and language switcher on Escape key press
@@ -61,6 +53,15 @@ watch(isSwitchOpen, (open) => {
     isOpen.value = false
   }
 })
+
+watch(hasScrolledEnough, (hasScrolled) => {
+  if (hasScrolled) {
+    consola.debug('[Header] hasScrolledEnough => add class')
+  }
+  else {
+    consola.debug('[Header] hasScrolledEnough => remove class')
+  }
+})
 </script>
 
 <template>
@@ -68,16 +69,15 @@ watch(isSwitchOpen, (open) => {
     <!-- Main Header container with dynamic style and classes -->
     <header
       ref="headerRef"
-      :class="headerBgClass"
-      :style="headerStyle"
       class="fixed left-0 top-0 z-50 w-full transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]"
       role="banner"
     >
       <!-- Background layer for consistent backdrop filter (Glass morphism) -->
       <div
         :class="useClsx(
+          hasScrolledEnough && 'backdrop-saturate-150',
           'pointer-events-none absolute inset-0',
-          'backdrop-blur-[8px] backdrop-saturate-150',
+          'backdrop-blur-[8px]',
         )"
       />
       <!-- Inner container for logo and right-side items -->
