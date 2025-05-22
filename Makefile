@@ -11,6 +11,10 @@ build:
 run:
 	pnpm run dev
 
+clean:
+	# Clean the project
+	scripts/clean.sh
+
 # Install & run the project
 up:
 	pnpm install && pnpm run dev
