@@ -242,7 +242,7 @@ useEventListener(window, 'keydown', handleEsc)
                 :class="useClsx(
                   'group',
                   'color-pureBlack dark:color-pureWhite',
-                  idx !== 0 && 'border-t border-solid border-gray-2',
+                  idx !== 0 && 'border-t border-solid border-gray-5 dark:border-gray-2',
                   'transition-[text-shadow] transition-colors duration-200 ease-out',
                   'focus-within:outline-none focus-within:bg-mint-3A focus-within:color-jade-11',
                   'focus-visible:outline-none focus-visible:bg-mint-3A focus-visible:color-jade-11',
