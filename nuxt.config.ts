@@ -35,7 +35,6 @@ export default defineNuxtConfig({
       alwaysRedirect: true,
       fallbackLocale: 'en',
     },
-    vueI18n: './i18n.config.ts',
   },
   tres: {
     devtools: true,
