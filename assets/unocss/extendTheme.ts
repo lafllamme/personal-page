@@ -39,7 +39,7 @@ export function extendTheme(theme: Theme) {
         foreground: 'hsl(var(--card-foreground))',
       },
       pureBlack: '#000000',
-      pureWhite: '#f0ebe0',
+      pureWhite: '#f2efe6',
     },
   }
 }
