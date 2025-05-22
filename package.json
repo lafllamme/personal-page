@@ -9,7 +9,6 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "dev:local": "sudo HOST=nuxt.local PORT=80 nuxi dev",
     "generate": "nuxt generate",
     "prepare": "nuxt prepare",
     "preview": "nuxt preview",
@@ -31,12 +30,12 @@
     "@tresjs/nuxt": "^3.0.7",
     "@tresjs/post-processing": "^2.1.0",
     "@unocss/reset": "^65.4.3",
-    "@vueuse/core": "^12.5.0",
+    "@vueuse/core": "^12.8.2",
     "@vueuse/integrations": "^12.7.0",
-    "@vueuse/nuxt": "12.8.2",
+    "@vueuse/nuxt": "^12.8.2",
     "clsx": "^2.1.1",
     "consola": "^3.4.0",
-    "focus-trap": "^7",
+    "focus-trap": "^7.0.0",
     "motion-v": "^0.9.0",
     "nuxt": "^3.15.2",
     "radix-vue": "^1.9.12",
@@ -49,13 +48,14 @@
     "theme-colors": "^0.1.0",
     "three": "^0.173.0",
     "unified": "^11.0.5",
-    "vue": "latest",
+    "vue": "^3.4.21",
     "vue-i18n": "^11.1.1",
-    "vue-router": "latest"
+    "vue-router": "^4.3.0"
   },
-  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971",
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.0",
+    "@iconify-json/lucide": "^1.2.44",
+    "@iconify-json/ri": "^1.2.5",
     "@iconify-json/uil": "^1.2.3",
     "@inspira-ui/plugins": "^0.0.1",
     "@types/three": "^0.173.0",
@@ -70,5 +70,6 @@
     "unocss-preset-animations": "^1.1.1",
     "unocss-preset-radix": "^2.8.0",
     "wrangler": "^3.107.3"
-  }
+  },
+  "packageManager": "pnpm@10.8.0+sha512.0e82714d1b5b43c74610193cb20734897c1d00de89d0e18420aebc5977fa13d780a9cb05734624e81ebd81cc876cd464794850641c48b9544326b5622ca29971"
 }
