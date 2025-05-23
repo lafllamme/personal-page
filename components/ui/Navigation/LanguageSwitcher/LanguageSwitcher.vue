@@ -149,7 +149,7 @@ const sortedLanguages = computed(() => {
 <template>
   <div
     ref="container"
-    class="relative color-pureBlack transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)] dark:color-pureWhite"
+    class="relative color-pureBlack transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:color-pureWhite"
   >
     <button
       ref="buttonRef"
