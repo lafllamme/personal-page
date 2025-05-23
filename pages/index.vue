@@ -69,7 +69,7 @@ function handleGenerateComplete() {
       <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:px-6 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
-            'geist-regular text-[clamp(1.75rem,8vw,10rem)] whitespace-nowrap animate-clip-circle text-balance',
+            'geist-regular text-[clamp(1.75rem,8vw,10rem)] <md:whitespace-nowrap animate-clip-circle md:text-balance',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tighter antialiased',
           )"
@@ -87,7 +87,7 @@ function handleGenerateComplete() {
           :class="useClsx(
             'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'dark:bg-pureBlack lg:text-xl sm:text-lg',
-            'bg-pureWhite !my-8 lg:!my-16 !min-w-3/4 md:justify-start',
+            'bg-pureWhite !my-6 lg:!my-16 !min-w-3/4 md:justify-start',
             'max-[400px]:text-sm text-base flex justify-center gap-4 whitespace-nowrap',
             animate ? 'opacity-100 animate-fade-in' : 'opacity-0',
           )"
