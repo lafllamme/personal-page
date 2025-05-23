@@ -231,7 +231,7 @@ useEventListener(window, 'keydown', handleEsc)
           </div>
         </div>
 
-        <!-- Menu Items -->
+        <!-- Menu Items: GPU-accelerated, smooth on iOS Safari -->
         <div
           class="flex-1 overflow-x-hidden overflow-y-auto"
           tabindex="-1"
@@ -240,25 +240,26 @@ useEventListener(window, 'keydown', handleEsc)
             <ul v-for="(item, idx) in items" :key="item.id">
               <li
                 :class="useClsx(
-                  'group',
+                  'group relative overflow-hidden',
                   'color-pureBlack dark:color-pureWhite',
                   idx !== 0 && 'border-t border-solid border-gray-5 dark:border-gray-2',
-                  'transition-[text-shadow] transition-colors duration-200 ease-out',
                   'focus-within:outline-none focus-within:bg-mint-3A focus-within:color-jade-11',
                   'focus-visible:outline-none focus-visible:bg-mint-3A focus-visible:color-jade-11',
                   'flex cursor-pointer items-center py-3 text-3xl tracking-normal uppercase',
+                  'transition-colors duration-150 will-change-opacity will-change-transform will-change-color',
                 )"
                 tabindex="0"
                 @click="item.children && toggleItem(item.id)"
                 @keydown.enter.prevent="item.children && toggleItem(item.id)"
               >
+                <!-- Animated left bar (shows on hover/focus) -->
                 <span
-                  :class="useClsx(
-                    'relative h-12 w-0.5 bg-jade-11',
-                    'transition-all duration-300 opacity-0 group-hover:opacity-100',
-                  )"
+                  class="absolute left-0 top-1/2 h-8 w-1 scale-y-50 rounded-full bg-jade-11 opacity-0 transition-all duration-150 will-change-opacity will-change-transform -translate-y-1/2 group-focus:scale-y-100 group-hover:scale-y-100 group-focus:opacity-100 group-hover:opacity-100"
                 />
-                <span class="transition-all duration-300 group-hover:pl-4 group-hover:color-jade-11">
+                <!-- Animated text (color + slide) -->
+                <span
+                  class="relative z-10 transition-all duration-200 will-change-transform group-focus:translate-x-1 group-hover:translate-x-1 group-focus:pl-4 group-hover:pl-4 group-focus:color-jade-11 group-hover:color-jade-11"
+                >
                   {{ item.title }}
                 </span>
                 <button
@@ -267,20 +268,20 @@ useEventListener(window, 'keydown', handleEsc)
                     'flex items-center ml-auto p-1',
                     'group-hover:color-jade-11 color-pureBlack dark:color-pureWhite',
                     'focus:outline-none focus:ring focus:ring-inset',
-                    'transition-colors duration-300',
+                    'transition-colors duration-150',
                     'focus:ring-pureBlack dark:focus:ring-pureWhite',
                   )"
                 >
                   <Icon
                     :class="useClsx(
                       openItems.includes(item.id) && 'rotate-45',
-                      'h-8 w-8 p-1 rotate-0 transition-transform duration-300 ease',
+                      'h-8 w-8 p-1 rotate-0 transition-transform duration-200 ease',
                     )"
                     name="ri:add-large-fill"
                   />
                 </button>
               </li>
-              <!-- Accordion Transition Layer -->
+              <!-- Accordion Transition Layer (unchanged) -->
               <div
                 v-show="item.children"
                 :ref="el => contentRefs[item.id] = el as HTMLElement"
@@ -442,5 +443,10 @@ useEventListener(window, 'keydown', handleEsc)
     filter: blur(40px);
     opacity: 0;
   }
+}
+
+/* (OPTIONAL: For ultra-smooth, you can add) */
+li.group {
+  will-change: transform, color, opacity;
 }
 </style>
