@@ -73,7 +73,7 @@ watch(hasScrolledEnough, (hasScrolled) => {
     <!-- Main Header container with dynamic style and classes -->
     <header
       ref="headerRef"
-      class="[will-change:background-color,filter] fixed left-0 top-0 z-50 w-full transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]"
+      class="fixed left-0 top-0 z-50 w-full"
       role="banner"
     >
       <!-- Background layer for consistent backdrop filter (Glass morphism) -->
@@ -81,7 +81,8 @@ watch(hasScrolledEnough, (hasScrolled) => {
         :class="useClsx(
           hasScrolledEnough && 'backdrop-saturate-150',
           'pointer-events-none absolute inset-0',
-          'backdrop-blur-[8px]',
+          'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
+          'backdrop-blur-[8px] bg-pureWhite dark:bg-pureBlack ',
         )"
       />
       <!-- Inner container for logo and right-side items -->
