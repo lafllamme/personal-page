@@ -52,7 +52,9 @@ function handleGenerateComplete() {
       class="flex flex-col items-center justify-center px-4 pt-20 md:flex-row"
     >
       <!-- Circle Wrapper -->
-      <div class="animate-top-to-bottom-reveal mx-auto max-w-[450px] w-full md:order-last md:max-w-[800px] md:w-1/2">
+      <div
+        class="animate-top-to-bottom-reveal mx-auto max-w-[450px] w-full md:order-last md:max-w-[800px] md:w-1/2 min-[1900px]:!max-w-[1200px]"
+      >
         <div
           :class="useClsx(renderBackground && '!bg-mint-8')"
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full bg-gray-3 transition-colors duration-[2000ms] ease-in-out"
@@ -69,7 +71,7 @@ function handleGenerateComplete() {
       <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:px-6 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
-            'geist-regular text-[clamp(1.75rem,8vw,10rem)] <md:whitespace-nowrap animate-clip-circle md:text-balance',
+            'geist-regular text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl <md:whitespace-nowrap animate-clip-circle md:text-balance',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tighter antialiased',
           )"
@@ -80,7 +82,7 @@ function handleGenerateComplete() {
           :delay="0.8"
           :duration="1.1"
           :words="t('hero.text')"
-          class="text-md text-wrap text-gray-10 font-300 md:text-justify lg:text-3xl md:text-2xl sm:text-lg"
+          class="max-w-3xl text-wrap text-[clamp(1rem,2vw,1.5rem)] text-gray-10 font-300 2xl:max-w-4xl md:text-justify"
           @generate="handleGenerateComplete"
         />
         <div
