@@ -2,6 +2,7 @@
 import type { MenuProps } from './Menu.model'
 import Link from '@/components/ui/Link/Link.vue'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
+import { breakpointsTailwind } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { MenuPropsDefault } from './Menu.model'
 
@@ -16,10 +17,17 @@ const isLocked = useScrollLock(document)
 const menu = useTemplateRef<HTMLDivElement>('menu')
 const { activate, deactivate } = useFocusTrap(menu)
 
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const smallerMD = computed(() => breakpoints.smaller('md').value)
+
 // Refs for measuring content height
 const contentRefs = ref<Record<number, HTMLElement | null>>({})
 
 function toggleItem(id: number) {
+  // if is mobile, close the other menu items
+  if (smallerMD.value) {
+    openItems.value = []
+  }
   if (openItems.value.includes(id)) {
     openItems.value = openItems.value.filter(item => item !== id)
   }
