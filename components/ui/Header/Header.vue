@@ -73,7 +73,7 @@ watch(hasScrolledEnough, (hasScrolled) => {
     <!-- Main Header container with dynamic style and classes -->
     <header
       ref="headerRef"
-      class="fixed left-0 top-0 z-50 w-full transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]"
+      class="[will-change:background-color,filter] fixed left-0 top-0 z-50 w-full transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]"
       role="banner"
     >
       <!-- Background layer for consistent backdrop filter (Glass morphism) -->
@@ -86,7 +86,12 @@ watch(hasScrolledEnough, (hasScrolled) => {
       />
       <!-- Inner container for logo and right-side items -->
       <div
-        class="relative mx-auto flex items-center justify-between border-b border-gray-5 border-solid px-4 py-2 transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:border-gray-4 md:py-3 sm:px-6"
+        :class="useClsx(
+          'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
+          'border-b border-gray-5 border-solid dark:border-gray-4',
+          'relative mx-auto flex items-center justify-between',
+          'px-4 py-2 md:py-3 sm:px-6',
+        )"
       >
         <div class="flex items-center pr-5">
           <NuxtLink
@@ -111,17 +116,7 @@ watch(hasScrolledEnough, (hasScrolled) => {
           <Menu />
         </div>
       </div>
-      <!-- Pass transition events from Navigation to adjust menuPhase -->
     </header>
-    <NuxtLinkLocale
-      :class="useClsx(
-        'focus:bg-white focus:text-black focus:ring-blue-500 sr-only',
-        'focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:p-4 focus:outline-none focus:ring-2',
-      )"
-      to="#main-content"
-    >
-      Skip to content
-    </NuxtLinkLocale>
   </div>
 </template>
 
