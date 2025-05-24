@@ -3,7 +3,6 @@ import type { MenuProps } from './Menu.model'
 import Link from '@/components/ui/Link/Link.vue'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
 import { useMenu } from '@/stores/menu' // adjust the path if needed
-import { breakpointsTailwind } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { MenuPropsDefault } from './Menu.model'
 
@@ -20,23 +19,21 @@ const isLocked = useScrollLock(document)
 const menu = useTemplateRef<HTMLDivElement>('menu')
 const { activate, deactivate } = useFocusTrap(menu)
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerMD = computed(() => breakpoints.smaller('md').value)
-
 // Refs for measuring content height
 const contentRefs = ref<Record<number, HTMLElement | null>>({})
 
+// Only one open at once
 function toggleItem(id: number) {
-  // if is mobile, close the other menu items
-  if (smallerMD.value) {
-    openItems.value = []
-  }
-  if (openItems.value.includes(id)) {
-    openItems.value = openItems.value.filter(item => item !== id)
-  }
-  else {
-    openItems.value.push(id)
-  }
+  openItems.value = openItems.value[0] === id ? [] : [id]
+  /* else {
+    // desktop: multi-open
+    if (openItems.value.includes(id)) {
+      openItems.value = openItems.value.filter(item => item !== id)
+    }
+    else {
+      openItems.value.push(id)
+    }
+  } */
 }
 
 function resetMenuItems(timeout?: number) {
