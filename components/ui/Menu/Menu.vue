@@ -2,7 +2,7 @@
 import type { MenuProps } from './Menu.model'
 import Link from '@/components/ui/Link/Link.vue'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
-import { useMenu } from '@/stores/menu' // adjust the path if needed
+import { useMenu } from '@/stores/menu'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { MenuPropsDefault } from './Menu.model'
 
@@ -18,22 +18,39 @@ const hasInputFocus = ref(false)
 const isLocked = useScrollLock(document)
 const menu = useTemplateRef<HTMLDivElement>('menu')
 const { activate, deactivate } = useFocusTrap(menu)
-
-// Refs for measuring content height
 const contentRefs = ref<Record<number, HTMLElement | null>>({})
 
-// Only one open at once
+const searchQuery = ref('')
+const searchResults = computed(() => {
+  if (!searchQuery.value.trim())
+    return null
+  const q = searchQuery.value.toLowerCase().trim()
+  const results: any[] = []
+  items.value.forEach((item) => {
+    if (item.title.toLowerCase().includes(q)) {
+      results.push({ ...item, _type: 'parent' })
+      return
+    }
+    if (item.children && item.children.length) {
+      const matchingChildren = item.children.filter(child =>
+        child.title.toLowerCase().includes(q),
+      )
+      if (matchingChildren.length) {
+        results.push({
+          ...item,
+          children: matchingChildren,
+          _type: 'children',
+        })
+      }
+    }
+  })
+  return results
+})
+const showResults = computed(() => !!searchQuery.value && !!searchResults.value && searchResults.value.length > 0)
+const showNoResults = computed(() => !!searchQuery.value && (!searchResults.value || searchResults.value.length === 0))
+
 function toggleItem(id: number) {
   openItems.value = openItems.value[0] === id ? [] : [id]
-  /* else {
-    // desktop: multi-open
-    if (openItems.value.includes(id)) {
-      openItems.value = openItems.value.filter(item => item !== id)
-    }
-    else {
-      openItems.value.push(id)
-    }
-  } */
 }
 
 function resetMenuItems(timeout?: number) {
@@ -44,9 +61,8 @@ function resetMenuItems(timeout?: number) {
 }
 
 function handleEsc(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
+  if (event.key === 'Escape')
     isOpen.value = false
-  }
 }
 
 function setBodyScroll(locked: boolean) {
@@ -86,35 +102,42 @@ function handleMenu(open: boolean) {
   }
 }
 
+// Highlight search matches
+function highlightText(text: string, query: string) {
+  if (!query.trim())
+    return text
+
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
+  const parts = text.split(regex)
+
+  return parts.map((part, index) => {
+    if (regex.test(part)) {
+      return `<mark class="bg-mint-5/30 text-jade-11 rounded px-1">${part}</mark>`
+    }
+    return part
+  }).join('')
+}
+
 watch(isOpen, (open) => {
   handleMenu(open)
 })
-
 const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
 const tabIndex = computed(() => (isOpen.value ? '0' : '-1'))
 useEventListener(window, 'keydown', handleEsc)
 </script>
 
 <template>
-  <div
-    ref="menu"
-    class="relative w-full"
-  >
+  <div ref="menu" class="relative w-full">
     <!-- Menu Button -->
     <div class="flex items-center">
-      <MenuButton
-        :is-open="isOpen"
-        @click="handleClick"
-      />
+      <MenuButton :is-open="isOpen" @click="handleClick" />
     </div>
-
     <!-- Overlay -->
     <div
       :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
       class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm grayscale-40 transition-opacity duration-300 ease-in-out"
       @click="isOpen = false"
     />
-
     <!-- Menu Panel -->
     <div
       :aria-hidden="isAriaHidden"
@@ -151,11 +174,10 @@ useEventListener(window, 'keydown', handleEsc)
       <div class="relative z-10 h-full flex flex-col p-6 color-pureBlack h-svh dark:color-pureWhite">
         <!-- Search -->
         <div class="mb-10 mt-10">
-          <div
-            class="relative flex items-center border border-solid px-4 py-2 color-pureBlack dark:color-pureWhite"
-          >
+          <div class="relative flex items-center border border-solid px-4 py-2 color-pureBlack dark:color-pureWhite">
             <input
               id="search"
+              v-model="searchQuery"
               :class="useClsx(
                 'geist-regular peer tracking-normal',
                 'w-full bg-transparent rounded-sm',
@@ -180,13 +202,11 @@ useEventListener(window, 'keydown', handleEsc)
             </label>
             <div class="pointer-events-none">
               <div class="relative h-8 w-8">
-                <!-- Line icon -->
                 <Icon
                   :class="{ 'opacity-0 scale-95': hasInputFocus, 'opacity-100 scale-100': !hasInputFocus }"
                   class="absolute h-full w-full transition-all duration-300 ease-out"
                   name="ri:search-line"
                 />
-                <!-- Filled icon -->
                 <Icon
                   :class="{ 'opacity-100 scale-100': hasInputFocus, 'opacity-0 scale-95': !hasInputFocus }"
                   class="absolute h-full w-full transition-all duration-300 ease-out"
@@ -195,61 +215,118 @@ useEventListener(window, 'keydown', handleEsc)
               </div>
             </div>
           </div>
+
+          <!-- Search Results Info -->
+          <div v-if="searchQuery" class="mt-2 flex items-center justify-between text-xs">
+            <span class="text-gray-10">
+              {{ showResults ? `${searchResults?.length || 0} results found` : "No results found" }}
+            </span>
+            <span
+              v-if="showResults"
+              class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs text-jade-11"
+            >
+              {{ searchResults?.length }} sections
+            </span>
+          </div>
         </div>
 
-        <!-- Menu Items (Accordion with transform/scrollHeight) -->
-        <div
-          class="flex-1 overflow-x-hidden overflow-y-auto"
-          tabindex="-1"
-        >
-          <div class="space-grotesk-regular antialiased space-y-1">
-            <ul v-for="(item, idx) in items" :key="item.id">
-              <li
+        <!-- Menu Items or Search Results -->
+        <div class="flex-1 overflow-x-hidden overflow-y-auto" tabindex="-1">
+          <!-- Line Separated Style Search Results -->
+          <TransitionGroup
+            v-if="showResults"
+            appear
+            class="space-y-0"
+            name="list"
+            tag="div"
+          >
+            <div v-for="result in searchResults" :key="result.id" class="border-b border-gray-7/30 last:border-b-0">
+              <button
                 :class="useClsx(
-                  'group relative overflow-hidden',
-                  'color-pureBlack dark:color-pureWhite',
-                  idx !== 0 && 'border-t border-solid border-gray-5 dark:border-gray-2',
-                  'focus-within:outline-none focus-within:bg-mint-3A focus-within:color-jade-11',
-                  'focus-visible:outline-none focus-visible:bg-mint-3A focus-visible:color-jade-11',
-                  'flex cursor-pointer items-center py-3 text-3xl tracking-normal uppercase',
-                  'transition-colors duration-150 will-change-opacity will-change-transform will-change-color',
+                  'w-full flex items-center justify-between px-6 py-5 text-left',
+                  'text-sm font-medium color-pureBlack dark:color-pureWhite',
+                  'hover:text-white hover:bg-gradient-to-r hover:from-gray-8/20 hover:to-transparent',
+                  'transition-all duration-300',
                 )"
-                tabindex="0"
+              >
+                <div class="flex items-center space-x-3">
+                  <div class="h-2 w-2 rounded-full bg-mint-9/60" />
+                  <span class="font-semibold tracking-wide" v-html="highlightText(result.title, searchQuery)" />
+                </div>
+                <span
+                  v-if="result.children && result.children.length"
+                  class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs text-jade-11"
+                >
+                  {{ result.children?.length || 0 }}
+                </span>
+              </button>
+
+              <div
+                v-if="result.children && result.children.length"
+                class="animate-in px-6 pb-4 duration-300 slide-in-from-top-3 space-y-2"
+              >
+                <div v-for="child in result.children" :key="child.id">
+                  <Link
+                    :class="useClsx(
+                      'flex items-center space-x-3 group',
+                      'w-full text-left px-4 py-2.5 text-sm',
+                      'text-gray-10 hover:text-gray-2',
+                      'hover:bg-gray-8/40 transition-all duration-200 rounded-lg',
+                    )"
+                    :to="child.to || '/demo'"
+                  >
+                    <Icon
+                      class="h-3 w-3 text-gray-6 transition-colors duration-200 group-hover:text-mint-9"
+                      name="ri:arrow-right-line"
+                    />
+                    <span v-html="highlightText(child.title, searchQuery)" />
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </TransitionGroup>
+
+          <!-- No Results -->
+          <div
+            v-else-if="showNoResults"
+            class="flex select-none items-center justify-center p-10 text-center text-gray-10"
+          >
+            <span>No results found for "{{ searchQuery }}"</span>
+          </div>
+
+          <!-- Enhanced Accordion Menu (Hybrid Style) -->
+          <TransitionGroup
+            v-else
+            class="space-grotesk-regular antialiased space-y-0"
+            name="list"
+            tag="div"
+          >
+            <div v-for="(item, idx) in items" :key="item.id" class="border-b border-gray-7/30 last:border-b-0">
+              <button
+                :class="useClsx(
+                  'group relative w-full flex items-center justify-between',
+                  'color-pureBlack dark:color-pureWhite',
+                  'py-4 px-4 text-left text-3xl tracking-normal uppercase',
+                  'hover:text-white hover:bg-gradient-to-r hover:from-gray-8/20 hover:to-transparent',
+                  'transition-all duration-300 focus:outline-none',
+                )"
                 @click="item.children && toggleItem(item.id)"
                 @keydown.enter.prevent="item.children && toggleItem(item.id)"
               >
-                <!-- Animated left bar (shows on hover/focus) -->
-                <span
-                  class="absolute left-0 top-1/2 h-8 w-1 scale-y-50 rounded-full bg-jade-11 opacity-0 transition-all duration-150 will-change-opacity will-change-transform -translate-y-1/2 group-focus:scale-y-100 group-hover:scale-y-100 group-focus:opacity-100 group-hover:opacity-100"
-                />
-                <!-- Animated text (color + slide) -->
-                <span
-                  class="relative z-10 transition-all duration-200 will-change-transform group-focus:translate-x-1 group-hover:translate-x-1 group-focus:pl-4 group-hover:pl-4 group-focus:color-jade-11 group-hover:color-jade-11"
-                >
-                  {{ item.title }}
-                </span>
-                <button
+                <div class="flex items-center space-x-3">
+                  <span class="font-semibold tracking-wide">{{ item.title }}</span>
+                </div>
+                <Icon
                   v-if="item.children"
                   :class="useClsx(
-                    'flex items-center ml-auto p-1',
-                    'group-hover:color-jade-11 color-pureBlack dark:color-pureWhite',
-                    'focus:outline-none focus:ring focus:ring-inset',
-                    'transition-colors duration-150',
-                    'focus:ring-pureBlack dark:focus:ring-pureWhite',
+                    'transition-transform duration-300',
+                    openItems.includes(item.id) ? 'rotate-45' : '',
                   )"
-                  tabindex="0"
-                  type="button"
-                >
-                  <Icon
-                    :class="useClsx(
-                      openItems.includes(item.id) && 'rotate-45',
-                      'h-8 w-8 p-1 rotate-0 transition-transform duration-200 ease',
-                    )"
-                    name="ri:add-large-fill"
-                  />
-                </button>
-              </li>
-              <!-- TRANSFORM/SCROLLHEIGHT ACCORDION (best perf): -->
+                  class="h-6 w-6"
+                  name="ri:add-large-fill"
+                />
+              </button>
+
               <div
                 v-show="item.children"
                 :style="{
@@ -262,34 +339,34 @@ useEventListener(window, 'keydown', handleEsc)
               >
                 <div
                   :ref="el => (contentRefs[item.id] = el as HTMLElement)"
-                  class="border-t bg-transparent pl-4"
+                  class="animate-in px-4 pb-4 duration-300 slide-in-from-top-3 space-y-1"
                   style="will-change: height, transform;"
                 >
-                  <ul class="mb-3 space-y-1">
-                    <li
-                      v-for="child in item.children"
-                      :key="child.id"
+                  <div v-for="child in item.children" :key="child.id">
+                    <Link
+                      :aria-hidden="openItems.includes(item.id) ? 'false' : 'true'"
+                      :class="useClsx(
+                        'flex items-center space-x-3 group',
+                        'w-full text-left px-4 py-2.5 text-sm',
+                        'text-gray-10 hover:text-gray-2',
+                        'hover:bg-gray-8/40 transition-all duration-200 rounded-lg',
+                      )"
+                      :tabindex="openItems.includes(item.id) ? 0 : -1"
+                      :title="child.title"
+                      :to="child.to || '/demo'"
                     >
-                      <Link
-                        :aria-hidden="openItems.includes(item.id) ? 'false' : 'true'"
-                        :class="useClsx(
-                          'hover:text-base12 dark:hover:text-base1 block py-2 px-1 text-xs',
-                          'tracking-wider font-mono uppercase transition-colors dark:color-pureWhite',
-                        )"
-                        :tabindex="openItems.includes(item.id) ? 0 : -1"
-                        :title="child.title"
-                        to="/demo"
-                      >
-                        {{ child.title }}
-                      </Link>
-                    </li>
-                  </ul>
+                      <Icon
+                        class="h-3 w-3 text-gray-6 transition-colors duration-200 group-hover:text-mint-9"
+                        name="ri:arrow-right-line"
+                      />
+                      <span>{{ child.title }}</span>
+                    </Link>
+                  </div>
                 </div>
               </div>
-            </ul>
-          </div>
+            </div>
+          </TransitionGroup>
         </div>
-
         <!-- Footer -->
         <div class="geist-regular mt-auto pt-6 text-xs md:text-sm">
           <div
@@ -306,9 +383,7 @@ useEventListener(window, 'keydown', handleEsc)
                 'ring-offset-pureWhite dark:ring-offset-pureBlack',
               )"
             >
-              <span>
-                © 2025 TecNews
-              </span>
+              <span>© 2025 TecNews</span>
             </button>
             <button
               :class="useClsx(
@@ -421,7 +496,62 @@ useEventListener(window, 'keydown', handleEsc)
   }
 }
 
-/* (OPTIONAL: For ultra-smooth, you can add) */
+/* Transition for appear/disappear of cards & menu items */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.45s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(24px) scale(0.98);
+  filter: blur(2px);
+}
+
+.list-enter-to {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.list-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.97);
+  filter: blur(2px);
+}
+
+/* Animation for menu items */
+.animate-in {
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.slide-in-from-top-3 {
+  animation-name: slideInFromTop;
+}
+
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.duration-300 {
+  animation-duration: 300ms;
+}
+
 li.group {
   will-change: transform, color, opacity;
 }
