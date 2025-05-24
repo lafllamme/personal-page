@@ -2,7 +2,7 @@
 import type { HeadMeta } from 'types'
 import Cursor from '@/components/ui/Cursor/Cursor.vue'
 
-const loadingGradient = ref('repeating-linear-gradient(to right, #8a2387, #e94057, #f27121)')
+const loadingGradient = ref('linear-gradient(90deg, #059669, #064e3b, #6d28d9)')
 const appConfig = useAppConfig()
 const { meta } = appConfig as { meta: HeadMeta }
 
