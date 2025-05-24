@@ -2,6 +2,7 @@
 import type { MenuProps } from './Menu.model'
 import Link from '@/components/ui/Link/Link.vue'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
+import { useMenu } from '@/stores/menu' // adjust the path if needed
 import { breakpointsTailwind } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { MenuPropsDefault } from './Menu.model'
@@ -9,6 +10,8 @@ import { MenuPropsDefault } from './Menu.model'
 const props = withDefaults(defineProps<MenuProps>(), MenuPropsDefault)
 const { items } = toRefs(props)
 
+const menuStore = useMenu()
+const { toggleMenu } = menuStore
 const isOpen = ref(false)
 const isAnimating = ref(false)
 const openItems = ref<number[]>([])
@@ -77,10 +80,12 @@ function handleMenu(open: boolean) {
   if (open) {
     handleAnimation()
     activate()
+    toggleMenu('open')
   }
   else {
     resetMenuItems()
     deactivate()
+    toggleMenu('close')
   }
 }
 
@@ -109,7 +114,7 @@ useEventListener(window, 'keydown', handleEsc)
     <!-- Overlay -->
     <div
       :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
-      class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm transition-opacity duration-300 ease-in-out"
+      class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm grayscale-40 transition-opacity duration-300 ease-in-out"
       @click="isOpen = false"
     />
 
