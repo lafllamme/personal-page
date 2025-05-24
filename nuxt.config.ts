@@ -52,6 +52,7 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     '@vueuse/nuxt',
     'reka-ui/nuxt',
+    '@pinia/nuxt',
   ],
   colorMode: {
     preference: 'system', // default value of $colorMode.preference
