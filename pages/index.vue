@@ -3,9 +3,12 @@ import Spline from '@/components/ui/Background/Spline/Spline.vue'
 import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
 import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
 import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
+import { useMenu } from '@/stores/menu'
 import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
+const menuStore = useMenu()
+const { isOpen } = storeToRefs(menuStore)
 
 const sceneUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
 
