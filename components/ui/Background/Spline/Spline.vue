@@ -18,7 +18,17 @@ const emit = defineEmits([
   'splineFollow',
   'splineScroll',
 ])
-
+type emitTypes =
+  | 'error'
+  | 'splineMouseDown'
+  | 'splineMouseUp'
+  | 'splineMouseHover'
+  | 'splineKeyDown'
+  | 'splineKeyUp'
+  | 'splineStart'
+  | 'splineLookAt'
+  | 'splineFollow'
+  | 'splineScroll'
 const { scene, onLoad, renderOnDemand, style } = toRefs(props)
 
 const canvasRef = useTemplateRef('canvasRef')
@@ -26,118 +36,134 @@ const isLoading = ref(false)
 const splineApp = ref<Application | null>(null)
 const isVisible = ref(true)
 
-let cleanup: () => void = () => {
-}
-
 const parentSizeStyles = computed(() => ({
   overflow: 'hidden',
   ...style.value,
 }))
-
 const canvasStyle = computed(() => ({
   display: 'block',
   width: '100%',
   height: '100%',
 }))
 
-// Use IntersectionObserver to detect when component is visible
+// Store all cleanup fns (event handlers, observers, etc)
+const cleanups: (() => void)[] = []
+
+function cleanupAll() {
+  cleanups.forEach(fn => fn())
+  cleanups.length = 0
+  if (splineApp.value) {
+    splineApp.value.dispose()
+    splineApp.value = null
+  }
+}
+
+// Event handler utility: configure debounce for "hover/scroll", instant for click/key
+const DEBOUNCED_EVENTS: SplineEventName[] = ['mouseHover', 'scroll']
+
+function eventHandler(name: SplineEventName, handler?: (e: any) => void) {
+  if (!handler || !splineApp.value)
+    return
+  const finalHandler = DEBOUNCED_EVENTS.includes(name)
+    ? useDebounceFn(handler, 50, { maxWait: 100 })
+    : handler
+  splineApp.value.addEventListener(name, finalHandler)
+  return () => splineApp.value?.removeEventListener(name, finalHandler)
+}
+
+// Intersection observer to optimize rendering (pause when not visible, resize when visible)
 const { stop: stopIntersectionObserver } = useIntersectionObserver(
   canvasRef,
   ([{ isIntersecting }]) => {
     isVisible.value = isIntersecting
-    if (isIntersecting && splineApp.value) {
-      // When becoming visible again, force a resize
+    if (isIntersecting && splineApp.value && canvasRef.value) {
       nextTick(() => {
-        if (canvasRef.value && splineApp.value) {
-          splineApp.value.requestRender()
-          splineApp.value.setSize(canvasRef.value.clientWidth, canvasRef.value.clientHeight)
-        }
+        splineApp.value?.requestRender()
+        splineApp.value?.setSize(canvasRef.value!.clientWidth, canvasRef.value!.clientHeight)
       })
     }
   },
   { threshold: 0.1 },
 )
-
-function eventHandler(name: SplineEventName, handler?: (e: any) => void) {
-  if (!handler || !splineApp.value)
-    return
-  const debouncedHandler = useDebounceFn(handler, 50, { maxWait: 100 })
-  splineApp.value.addEventListener(name, debouncedHandler)
-  return () => splineApp.value?.removeEventListener(name, debouncedHandler)
-}
+cleanups.push(stopIntersectionObserver)
 
 async function initSpline() {
   if (!canvasRef.value)
     return
 
   isLoading.value = true
-
   try {
-    // Clean up previous instance if exists
-    if (splineApp.value) {
-      splineApp.value.dispose()
-      splineApp.value = null
-    }
+    cleanupAll() // full cleanup before creating new instance
 
     splineApp.value = new Application(canvasRef.value, {
       renderOnDemand: renderOnDemand.value,
     })
-
     await splineApp.value.load(scene.value)
 
-    // Set up event listeners
-    const cleanUpFns = [
-      eventHandler('mouseDown', (e: any) => emit('splineMouseDown', e)),
-      eventHandler('mouseUp', (e: any) => emit('splineMouseUp', e)),
-      eventHandler('mouseHover', (e: any) => emit('splineMouseHover', e)),
-      eventHandler('keyDown', (e: any) => emit('splineKeyDown', e)),
-      eventHandler('keyUp', (e: any) => emit('splineKeyUp', e)),
-      eventHandler('start', (e: any) => emit('splineStart', e)),
-      eventHandler('lookAt', (e: any) => emit('splineLookAt', e)),
-      eventHandler('follow', (e: any) => emit('splineFollow', e)),
-      eventHandler('scroll', (e: any) => emit('splineScroll', e)),
-    ].filter(Boolean)
+    // Listen to Spline runtime events
+    const events: [SplineEventName, string][] = [
+      ['mouseDown', 'splineMouseDown'],
+      ['mouseUp', 'splineMouseUp'],
+      ['mouseHover', 'splineMouseHover'],
+      ['keyDown', 'splineKeyDown'],
+      ['keyUp', 'splineKeyUp'],
+      ['start', 'splineStart'],
+      ['lookAt', 'splineLookAt'],
+      ['follow', 'splineFollow'],
+      ['scroll', 'splineScroll'],
+    ]
+    for (const [eventName, emitName] of events) {
+      const cleanup = eventHandler(eventName, (e: any) => emit(emitName as emitTypes, e))
+      if (cleanup)
+        cleanups.push(cleanup)
+    }
 
     isLoading.value = false
     onLoad.value?.(splineApp.value)
-
-    return () => {
-      cleanUpFns.forEach(fn => fn?.())
-    }
   }
   catch (err) {
     console.error('Spline initialization error:', err)
     emit('error', err)
     isLoading.value = false
-    return () => {
-    }
   }
 }
 
-async function initialize() {
-  cleanup()
-  cleanup = (await initSpline()) ?? (() => {
-  })
-}
-
-onMounted(async () => {
-  await initialize()
-
-  // Reinitialize when becoming visible again
-  watch(isVisible, (visible) => {
-    if (visible) {
-      initialize()
+// Handle prop change (scene): reload scene, keep Spline app instance alive!
+watch(scene, async (val, oldVal) => {
+  if (splineApp.value && val !== oldVal) {
+    try {
+      isLoading.value = true
+      await splineApp.value.load(val)
+      isLoading.value = false
     }
-  })
+    catch (err) {
+      emit('error', err)
+      isLoading.value = false
+    }
+  }
 })
 
-onUnmounted(() => {
-  stopIntersectionObserver()
+// ParentSize "resize" listener
+function onParentResize({ width, height }: { width: number, height: number }) {
   if (splineApp.value) {
-    splineApp.value.dispose()
-    splineApp.value = null
+    splineApp.value.setSize(width, height)
+    splineApp.value.requestRender()
+  }
+}
+
+// Mount & destroy
+onMounted(() => {
+  if (import.meta.client) {
+    initSpline()
+    // Reactivate Spline on visibility
+    watch(isVisible, (visible) => {
+      if (visible && !splineApp.value) {
+        initSpline()
+      }
+    })
   }
 })
+onUnmounted(cleanupAll)
 </script>
 
 <template>
@@ -145,6 +171,7 @@ onUnmounted(() => {
     :debounce-time="50"
     :parent-size-styles="parentSizeStyles"
     v-bind="$attrs"
+    @resize="onParentResize"
   >
     <template #default>
       <canvas
