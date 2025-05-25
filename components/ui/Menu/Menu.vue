@@ -2,6 +2,7 @@
 import type { MenuProps } from './Menu.model'
 import Link from '@/components/ui/Link/Link.vue'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
+import MenuSearch from '@/components/ui/Menu/Search/MenuSearch.vue'
 import { useMenu } from '@/stores/menu'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { MenuPropsDefault } from './Menu.model'
@@ -20,34 +21,7 @@ const menu = useTemplateRef<HTMLDivElement>('menu')
 const { activate, deactivate } = useFocusTrap(menu)
 const contentRefs = ref<Record<number, HTMLElement | null>>({})
 
-const searchQuery = ref('')
-const searchResults = computed(() => {
-  if (!searchQuery.value.trim())
-    return null
-  const q = searchQuery.value.toLowerCase().trim()
-  const results: any[] = []
-  items.value.forEach((item) => {
-    if (item.title.toLowerCase().includes(q)) {
-      results.push({ ...item, _type: 'parent' })
-      return
-    }
-    if (item.children && item.children.length) {
-      const matchingChildren = item.children.filter(child =>
-        child.title.toLowerCase().includes(q),
-      )
-      if (matchingChildren.length) {
-        results.push({
-          ...item,
-          children: matchingChildren,
-          _type: 'children',
-        })
-      }
-    }
-  })
-  return results
-})
-const showResults = computed(() => !!searchQuery.value && !!searchResults.value && searchResults.value.length > 0)
-const showNoResults = computed(() => !!searchQuery.value && (!searchResults.value || searchResults.value.length === 0))
+watchOnce(items, val => menuStore.setItems(val), { immediate: true })
 
 function toggleItem(id: number) {
   openItems.value = openItems.value[0] === id ? [] : [id]
@@ -100,22 +74,6 @@ function handleMenu(open: boolean) {
     deactivate()
     toggleMenu('close')
   }
-}
-
-// Highlight search matches
-function highlightText(text: string, query: string) {
-  if (!query.trim())
-    return text
-
-  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
-  const parts = text.split(regex)
-
-  return parts.map((part, index) => {
-    if (regex.test(part)) {
-      return `<mark class="bg-mint-5/30 text-jade-11 rounded px-1">${part}</mark>`
-    }
-    return part
-  }).join('')
 }
 
 watch(isOpen, (open) => {
@@ -173,77 +131,22 @@ useEventListener(window, 'keydown', handleEsc)
       <!-- Content -->
       <div class="relative z-10 h-full flex flex-col p-6 color-pureBlack h-svh dark:color-pureWhite">
         <!-- Search -->
-        <div class="mb-10 mt-10">
-          <div
-            class="relative flex items-center border rounded-3xl border-solid px-4 py-2 color-pureBlack dark:color-pureWhite"
-          >
-            <input
-              id="search"
-              v-model="searchQuery"
-              :class="useClsx(
-                'geist-regular peer tracking-normal',
-                'w-full bg-transparent rounded-sm',
-                'text-md placeholder:color-gray-10',
-                'focus:outline-none focus:ring-0',
-              )"
-              placeholder=""
-              type="search"
-              @blur="handleInputFocus(false)"
-              @focus="handleInputFocus(true)"
-            >
-            <label
-              v-show="!searchQuery"
-              :class="useClsx(
-                hasInputFocus && 'slide-out-blurred-top',
-                'color-gray-10 peer-focus:color-mint-8 transition-all duration-300 ease-out',
-                'pointer-events-none absolute left-4 top-1/2 transform',
-                'peer-focus:top-4 -translate-y-1/2 animation-fill-forwards peer-focus:text-xs peer-focus:-translate-y-2',
-              )"
-              for="search"
-            >
-              Search
-            </label>
-            <div class="pointer-events-none">
-              <div class="relative h-8 w-8">
-                <Icon
-                  :class="{ 'opacity-0 scale-95': hasInputFocus, 'opacity-100 scale-100': !hasInputFocus }"
-                  class="absolute h-full w-full transition-all duration-300 ease-out"
-                  name="ri:search-line"
-                />
-                <Icon
-                  :class="{ 'opacity-100 scale-100': hasInputFocus, 'opacity-0 scale-95': !hasInputFocus }"
-                  class="absolute h-full w-full transition-all duration-300 ease-out"
-                  name="ri:search-2-fill"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- Search Results Info -->
-          <div v-if="searchQuery" class="mt-2 flex items-center justify-between text-xs">
-            <span class="text-gray-10">
-              {{ showResults ? `${searchResults?.length || 0} results found` : "No results found" }}
-            </span>
-            <span
-              v-if="showResults"
-              class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs text-jade-11"
-            >
-              {{ searchResults?.length }} sections
-            </span>
-          </div>
-        </div>
+        <MenuSearch />
 
         <!-- Menu Items or Search Results -->
         <div class="flex-1 overflow-x-hidden overflow-y-auto" tabindex="-1">
-          <!-- Line Separated Style Search Results -->
+          <!-- Search Results -->
           <TransitionGroup
-            v-if="showResults"
+            v-if="menuStore.showResults"
             appear
             class="space-y-0"
             name="list"
             tag="div"
           >
-            <div v-for="result in searchResults" :key="result.id" class="border-b border-gray-7/30 last:border-b-0">
+            <div
+              v-for="result in menuStore.searchResults" :key="result.id"
+              class="border-b border-gray-7/30 last:border-b-0"
+            >
               <button
                 :class="useClsx(
                   'w-full flex items-center justify-between px-6 py-5 text-left',
@@ -254,7 +157,10 @@ useEventListener(window, 'keydown', handleEsc)
               >
                 <div class="flex items-center space-x-3">
                   <div class="h-2 w-2 rounded-full bg-mint-9/60" />
-                  <span class="font-semibold tracking-wide" v-html="highlightText(result.title, searchQuery)" />
+                  <span
+                    class="font-semibold tracking-wide"
+                    v-html="menuStore.highlightText(result.title, menuStore.searchQuery)"
+                  />
                 </div>
                 <span
                   v-if="result.children && result.children.length"
@@ -282,7 +188,7 @@ useEventListener(window, 'keydown', handleEsc)
                       class="h-3 w-3 text-gray-6 transition-colors duration-200 group-hover:text-mint-9"
                       name="ri:arrow-right-line"
                     />
-                    <span v-html="highlightText(child.title, searchQuery)" />
+                    <span v-html="menuStore.highlightText(child.title, menuStore.searchQuery)" />
                   </Link>
                 </div>
               </div>
@@ -291,13 +197,13 @@ useEventListener(window, 'keydown', handleEsc)
 
           <!-- No Results -->
           <div
-            v-else-if="showNoResults"
+            v-else-if="menuStore.showNoResults"
             class="flex select-none items-center justify-center p-10 text-center text-gray-10"
           >
-            <span>No results found for "{{ searchQuery }}"</span>
+            <span>No results found for "{{ menuStore.searchQuery }}"</span>
           </div>
 
-          <!-- Enhanced Accordion Menu (Hybrid Style) -->
+          <!-- Default Menu (Accordion) -->
           <TransitionGroup
             v-else
             class="space-grotesk-regular antialiased space-y-0"
