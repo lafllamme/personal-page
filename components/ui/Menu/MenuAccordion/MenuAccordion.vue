@@ -2,13 +2,34 @@
 import Link from '@/components/ui/Link/Link.vue'
 import { useMenu } from '@/stores/menu'
 
+// Store
 const menuStore = useMenu()
-const { items, openItems, showAccordion } = storeToRefs(menuStore)
-const { toggleOpenItem, toggleMenu } = menuStore
+const { items, openItems, showAccordion, lastOpened } = storeToRefs(menuStore)
+const { toggleOpenItem, toggleMenu, handleLastOpened } = menuStore
+
+// State
 const contentRefs = ref<Record<number, HTMLElement | null>>({})
 
-function toggleItem(id: number) {
+// --- Computed: Map parentId+childId => true if highlighted ---
+const highlightedKey = computed(() => {
+  if (!lastOpened.value)
+    return ''
+  return `${lastOpened.value.parentId}:${lastOpened.value.childId}`
+})
+
+// --- Handlers ---
+function onToggleParent(id: number) {
   toggleOpenItem(id)
+}
+
+function onChildClick(item: any, child: any) {
+  handleLastOpened('set', { parentId: item.id, childId: child.id })
+  toggleMenu('toggle')
+}
+
+// --- Helper: is the child highlighted? ---
+function isHighlighted(itemId: number, childId: number) {
+  return highlightedKey.value === `${itemId}:${childId}`
 }
 </script>
 
@@ -20,6 +41,7 @@ function toggleItem(id: number) {
     tag="div"
   >
     <div v-for="(item, idx) in items" :key="item.id">
+      <!-- Parent Button -->
       <button
         :class="useClsx(
           idx !== 0 && 'border-t border-solid border-gray-5 dark:border-gray-2',
@@ -28,8 +50,8 @@ function toggleItem(id: number) {
           'py-4 px-4 text-left text-4xl tracking-normal uppercase hover:color-jade-11',
           'transition-colors duration-300 focus:outline-none focus:color-jade-11 focus-visible:bg-gray-5A rounded-full',
         )"
-        @click="item.children && toggleItem(item.id)"
-        @keydown.enter.prevent="item.children && toggleItem(item.id)"
+        @click="item.children && onToggleParent(item.id)"
+        @keydown.enter.prevent="item.children && onToggleParent(item.id)"
       >
         <span
           class="group absolute left-0 top-1/2 h-8 w-1 scale-y-50 rounded-full bg-jade-11 opacity-0 transition-all duration-150 will-change-opacity will-change-transform -translate-y-1/2 group-focus:scale-y-100 group-hover:scale-y-100 group-focus:opacity-100 group-hover:opacity-100 group-focus-visible:!scale-y-0 group-focus-visible:!opacity-0"
@@ -54,6 +76,7 @@ function toggleItem(id: number) {
         />
       </button>
 
+      <!-- Accordion Panel (children links) -->
       <div
         v-show="item.children"
         :style="{
@@ -77,11 +100,12 @@ function toggleItem(id: number) {
                 'w-full text-left px-4 py-2.5 text-md',
                 'text-gray-10 hover:text-gray-12 focus-visible:text-gray-12',
                 'transition-all duration-200 rounded-full',
+                isHighlighted(item.id, child.id) && 'text-mint-11',
               )"
               :tabindex="openItems.includes(item.id) ? 0 : -1"
               :title="child.title"
-              :to="child.to || '/demo'"
-              @click="toggleMenu('toggle')"
+              :to="child.to ?? '/demo'"
+              @click="onChildClick(item, child)"
             >
               <Icon
                 class="h-4 w-4 text-gray-6 transition-colors duration-200 group-focus-visible:color-mint-11 group-hover:color-mint-11"
@@ -95,3 +119,12 @@ function toggleItem(id: number) {
     </div>
   </TransitionGroup>
 </template>
+
+<style>
+/* Animation for menu items */
+.animate-in {
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+</style>
