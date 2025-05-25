@@ -94,7 +94,7 @@ watch(hasScrolledEnough, (hasScrolled) => {
           'px-4 py-2 md:py-3 sm:px-6',
         )"
       >
-        <div class="flex items-center pr-5">
+        <div class="flex items-center">
           <NuxtLink
             :class="useClsx(
               'transition-transform duration-300 ease-out hover:scale-105 md:text-3xl',
@@ -111,9 +111,9 @@ watch(hasScrolledEnough, (hasScrolled) => {
             <Underline />
           </NuxtLink>
         </div>
-        <div class="flex items-center">
+        <div class="flex">
           <LanguageSwitcher v-model:open="isSwitchOpen" />
-          <ColorMode class="mr-12" />
+          <ColorMode class="" />
           <Menu />
         </div>
       </div>

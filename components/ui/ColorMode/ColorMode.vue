@@ -40,12 +40,12 @@ onMounted(() => {
 
 <template>
   <template v-if="isLoading">
-    <div class="px-2">
+    <div class="mr-12 px-2">
       <div class="aspect-square h-8 w-8 animate-pulse rounded-full bg-gray-4A px-2" />
     </div>
   </template>
   <template v-else>
-    <div class="relative flex items-center px-2">
+    <div class="relative mr-12 flex items-center px-2">
       <button
         ref="button"
         :aria-pressed="isPressed"

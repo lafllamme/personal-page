@@ -18,7 +18,7 @@ const { toggleMenu } = menuStore
     :class="useClsx(
       'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring',
       'transition-transform focus:outline-none ease-in-out duration-300',
-      'absolute right-0 z-100 flex items-center justify-center',
+      'absolute right-5 top-2 md:top-3 z-100 flex items-center justify-center',
       'color-pureBlack dark:color-pureWhite',
     )"
     aria-controls="mobile-menu"
