@@ -4,7 +4,7 @@ import { useMenu } from '@/stores/menu'
 
 const menuStore = useMenu()
 const { items, openItems, showAccordion } = storeToRefs(menuStore)
-const { toggleOpenItem } = menuStore
+const { toggleOpenItem, toggleMenu } = menuStore
 const contentRefs = ref<Record<number, HTMLElement | null>>({})
 
 function toggleItem(id: number) {
@@ -81,6 +81,7 @@ function toggleItem(id: number) {
               :tabindex="openItems.includes(item.id) ? 0 : -1"
               :title="child.title"
               :to="child.to || '/demo'"
+              @click="toggleMenu('toggle')"
             >
               <Icon
                 class="h-4 w-4 text-gray-6 transition-colors duration-200 group-focus-visible:color-mint-11 group-hover:color-mint-11"
