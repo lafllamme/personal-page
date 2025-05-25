@@ -51,10 +51,6 @@ function handleClick() {
   isOpen.value = !isOpen.value
 }
 
-function handleInputFocus(focused: boolean = false) {
-  hasInputFocus.value = focused
-}
-
 function wait(timeout: number = 1200) {
   return new Promise(resolve => setTimeout(resolve, timeout))
 }
