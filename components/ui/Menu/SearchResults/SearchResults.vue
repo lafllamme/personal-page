@@ -44,7 +44,7 @@ function highlightText(text: string, query: string) {
             <div class="h-2 w-2 rounded-full bg-mint-9/60" />
             <span
               class="font-semibold tracking-wide"
-              v-html="menuStore.highlightText(result.title, menuStore.searchQuery)"
+              v-html="highlightText(result.title, menuStore.searchQuery)"
             />
           </div>
           <span
