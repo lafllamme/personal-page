@@ -52,7 +52,7 @@ export const useMenu = defineStore('menu', () => {
     wait.then(() => resetMenu())
   }
 
-  function toggleMenu(state: 'open' | 'close') {
+  function toggleMenu(state: 'open' | 'close' | 'toggle') {
     if (state === 'open') {
       openMenu()
       log('Menu opened')
@@ -60,6 +60,10 @@ export const useMenu = defineStore('menu', () => {
     else if (state === 'close') {
       closeMenu()
       log('Menu closed')
+    }
+    else if (state === 'toggle') {
+      isOpen.value = !isOpen.value
+      log(`Menu toggled to ${isOpen.value ? 'open' : 'closed'}`)
     }
   }
 
