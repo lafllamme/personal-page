@@ -81,6 +81,13 @@ export const useMenu = defineStore('menu', () => {
     }
   }
 
+  // clear search query on menu close
+  watch(isOpen, (newValue) => {
+    if (!newValue) {
+      searchQuery.value = ''
+    }
+  })
+
   return {
     // menu state
     isOpen,
