@@ -3,6 +3,8 @@ import Link from '@/components/ui/Link/Link.vue'
 import { useMenu } from '@/stores/menu'
 
 const menuStore = useMenu()
+const { searchResults, showResults, showNoResults, searchQuery } = storeToRefs(menuStore)
+const { toggleMenu } = menuStore
 
 function highlightText(text: string, query: string) {
   if (!query.trim())
@@ -22,14 +24,14 @@ function highlightText(text: string, query: string) {
   <div>
     <!-- Search Results -->
     <TransitionGroup
-      v-show="menuStore.showResults"
+      v-show="showResults"
       appear
       class="space-y-0"
       name="list"
       tag="div"
     >
       <div
-        v-for="result in menuStore.searchResults" :key="result.id"
+        v-for="result in searchResults" :key="result.id"
         class="border-b border-gray-7/30 last:border-b-0"
       >
         <button
@@ -44,7 +46,7 @@ function highlightText(text: string, query: string) {
             <div class="h-2 w-2 rounded-full bg-mint-9/60" />
             <span
               class="font-semibold tracking-wide"
-              v-html="highlightText(result.title, menuStore.searchQuery)"
+              v-html="highlightText(result.title, searchQuery)"
             />
           </div>
           <span
@@ -68,12 +70,13 @@ function highlightText(text: string, query: string) {
                 'hover:bg-gray-8/40 transition-all duration-200 rounded-lg',
               )"
               :to="child.to || '/demo'"
+              @click="toggleMenu('toggle')"
             >
               <Icon
                 class="h-3 w-3 text-gray-6 transition-colors duration-200 group-hover:text-mint-9"
                 name="ri:arrow-right-line"
               />
-              <span v-html="highlightText(child.title, menuStore.searchQuery)" />
+              <span v-html="highlightText(child.title, searchQuery)" />
             </Link>
           </div>
         </div>
@@ -82,10 +85,10 @@ function highlightText(text: string, query: string) {
 
     <!-- No Results -->
     <div
-      v-show="menuStore.showNoResults"
+      v-show="showNoResults"
       class="flex select-none items-center justify-center p-10 text-center text-gray-10"
     >
-      <span>No results found for "{{ menuStore.searchQuery }}"</span>
+      <span>No results found for "{{ searchQuery }}"</span>
     </div>
   </div>
 </template>
@@ -94,5 +97,42 @@ function highlightText(text: string, query: string) {
 mark {
   background-color: transparent;
   color: inherit;
+}
+
+/* Transition for appear/disappear of cards & menu items */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.45s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateY(24px) scale(0.98);
+  filter: blur(2px);
+}
+
+.list-enter-to {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.list-leave-from {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(-20px) scale(0.97);
+  filter: blur(2px);
+}
+
+/* Animation for menu items */
+.animate-in {
+  animation-duration: 300ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-fill-mode: both;
 }
 </style>
