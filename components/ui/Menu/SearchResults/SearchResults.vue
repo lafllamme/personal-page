@@ -3,6 +3,19 @@ import Link from '@/components/ui/Link/Link.vue'
 import { useMenu } from '@/stores/menu'
 
 const menuStore = useMenu()
+
+function highlightText(text: string, query: string) {
+  if (!query.trim())
+    return text
+  const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
+  const parts = text.split(regex)
+  return parts.map((part) => {
+    if (regex.test(part)) {
+      return `<mark class="bg-mint-5/30 text-jade-11 rounded px-1">${part}</mark>`
+    }
+    return part
+  }).join('')
+}
 </script>
 
 <template>
@@ -60,7 +73,7 @@ const menuStore = useMenu()
                 class="h-3 w-3 text-gray-6 transition-colors duration-200 group-hover:text-mint-9"
                 name="ri:arrow-right-line"
               />
-              <span v-html="menuStore.highlightText(child.title, menuStore.searchQuery)" />
+              <span v-html="highlightText(child.title, menuStore.searchQuery)" />
             </Link>
           </div>
         </div>
@@ -76,3 +89,10 @@ const menuStore = useMenu()
     </div>
   </div>
 </template>
+
+<style scoped>
+mark {
+  background-color: transparent;
+  color: inherit;
+}
+</style>
