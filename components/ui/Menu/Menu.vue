@@ -12,8 +12,7 @@ import { useMenu } from '@/stores/menu'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { MenuPropsDefault } from './Menu.model'
 
-const props = withDefaults(defineProps<MenuProps>(), MenuPropsDefault)
-const { items } = toRefs(props)
+withDefaults(defineProps<MenuProps>(), MenuPropsDefault)
 
 const menuStore = useMenu()
 const { isOpen } = storeToRefs(menuStore)
@@ -22,8 +21,6 @@ const { toggleMenu } = menuStore
 const menu = useTemplateRef('menu')
 const { activate, deactivate } = useFocusTrap(menu)
 const isLocked = useScrollLock(document)
-
-watchOnce(items, val => menuStore.setItems(val), { immediate: true })
 
 function handleEsc(event: KeyboardEvent) {
   if (event.key === 'Escape')
@@ -172,57 +169,16 @@ watch(isOpen, (open) => {
 @keyframes slide-out-blurred-top {
   0% {
     transform: translateY(0) scaleY(1) scaleX(1);
-    -webkit-transform-origin: 50% 0%;
-    transform-origin: 50% 0%;
-    -webkit-filter: blur(0);
+    transform-origin: 50% 0;
     filter: blur(0);
     opacity: 1;
   }
   100% {
     transform: translateY(-1000px) scaleY(2) scaleX(0.2);
-    -webkit-transform-origin: 50% 0%;
-    transform-origin: 50% 0%;
-    -webkit-filter: blur(40px);
+    transform-origin: 50% 0;
     filter: blur(40px);
     opacity: 0;
   }
-}
-
-/* Transition for appear/disappear of cards & menu items */
-.list-enter-active,
-.list-leave-active {
-  transition: all 0.45s cubic-bezier(0.55, 0, 0.1, 1);
-}
-
-.list-enter-from {
-  opacity: 0;
-  transform: translateY(24px) scale(0.98);
-  filter: blur(2px);
-}
-
-.list-enter-to {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-.list-leave-from {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  filter: blur(0);
-}
-
-.list-leave-to {
-  opacity: 0;
-  transform: translateY(-20px) scale(0.97);
-  filter: blur(2px);
-}
-
-/* Animation for menu items */
-.animate-in {
-  animation-duration: 300ms;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  animation-fill-mode: both;
 }
 
 .slide-in-from-top-3 {
@@ -238,13 +194,5 @@ watch(isOpen, (open) => {
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.duration-300 {
-  animation-duration: 300ms;
-}
-
-li.group {
-  will-change: transform, color, opacity;
 }
 </style>
