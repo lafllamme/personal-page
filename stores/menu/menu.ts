@@ -59,10 +59,15 @@ export const useMenu = defineStore('menu', () => {
   ]
   const items = ref<any[]>(menuItems)
 
+  interface OpenSubItem {
+    parentId: number
+    childId?: number
+  }
+
   // Menu items and search functionality
   const openItems = ref<any[]>([])
   const searchQuery = ref('')
-  const lastOpened = ref<object | null>(null)
+  const lastOpened = ref<OpenSubItem | null>(null)
 
   // Setters for items and search query
   function setItems(newItems: any[]) {
@@ -77,7 +82,7 @@ export const useMenu = defineStore('menu', () => {
     openItems.value = openItems.value[0] === id ? [] : [id]
   }
 
-  function setLastOpened(item: object) {
+  function setLastOpened(item: OpenSubItem) {
     lastOpened.value = item
   }
 
@@ -85,7 +90,7 @@ export const useMenu = defineStore('menu', () => {
     lastOpened.value = null
   }
 
-  function handleLastOpened(state: 'set' | 'clear', openItem: object) {
+  function handleLastOpened(state: 'set' | 'clear', openItem: OpenSubItem) {
     if (state === 'set' && typeof openItem !== 'undefined' && openItem) {
       setLastOpened(openItem)
       log(`Last opened item set to ${lastOpened.value}`)
@@ -117,7 +122,7 @@ export const useMenu = defineStore('menu', () => {
     log('Menu closed, search query cleared')
   }
 
-  function resetMenuStates(timeout?: number, clearMenu = true) {
+  function resetMenuStates(timeout?: number, clearMenu = false) {
     const wait = new Promise(resolve => setTimeout(resolve, timeout || 300))
     wait.then(() => resetMenu(clearMenu))
   }
