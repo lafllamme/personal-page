@@ -12,10 +12,6 @@ const { isOpen } = storeToRefs(menuStore)
 
 const sceneUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
 
-definePageMeta({
-  layout: 'custom',
-})
-
 useHead({
   title: t('head.title'),
   meta: [
