@@ -27,7 +27,6 @@ const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
     <!--  Default slot  -->
     <slot name="default" />
   </div>
-  >
 </template>
 
 <style scoped>
