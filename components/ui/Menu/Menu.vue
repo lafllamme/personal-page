@@ -3,6 +3,7 @@ import type { MenuProps } from './Menu.model'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
 import Footer from '@/components/ui/Menu/Footer/Footer.vue'
 import MenuAccordion from '@/components/ui/Menu/MenuAccordion/MenuAccordion.vue'
+import MenuBackground from '@/components/ui/Menu/MenuBackground/MenuBackground.vue'
 import MenuSearch from '@/components/ui/Menu/Search/MenuSearch.vue'
 import SearchResults from '@/components/ui/Menu/SearchResults/SearchResults.vue'
 import { useMenu } from '@/stores/menu'
@@ -17,7 +18,6 @@ const { isOpen } = storeToRefs(menuStore)
 const { toggleMenu } = menuStore
 
 const isLocked = useScrollLock(document)
-const isAnimating = ref(false)
 
 const menu = useTemplateRef<HTMLDivElement>('menu')
 const { activate, deactivate } = useFocusTrap(menu)
@@ -37,21 +37,9 @@ function handleClick() {
   isOpen.value = !isOpen.value
 }
 
-function wait(timeout: number = 1200) {
-  return new Promise(resolve => setTimeout(resolve, timeout))
-}
-
-function handleAnimation() {
-  isAnimating.value = true
-  wait().then(() => {
-    isAnimating.value = false
-  })
-}
-
 function handleMenu(open: boolean) {
   setBodyScroll(open)
   if (open) {
-    handleAnimation()
     activate()
     toggleMenu('open')
   }
@@ -77,49 +65,44 @@ useEventListener(window, 'keydown', handleEsc)
     </div>
     <!-- Overlay -->
     <div
-      :class="isOpen ? 'opacity-100' : 'pointer-events-none opacity-0'"
-      class="fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm grayscale-40 transition-opacity duration-300 ease-in-out"
+      :class="useClsx(
+        'fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm grayscale-40',
+        isOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
+        'transition-opacity duration-300 ease-in-out',
+      )"
       @click="isOpen = false"
     />
     <!-- Menu Panel -->
     <div
       :aria-hidden="isAriaHidden"
       :class="useClsx(
-        isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
-        'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
         'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
+        isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
         'transform-gpu will-change-[transform,opacity] backface-hidden',
+        'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
+        'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
       )"
       :inert="isOpen ? undefined : 'true'"
       tabindex="-1"
     >
       <!-- Background Text -->
-      <div
-        :class="useClsx(
-          isAnimating && 'animated-fade-in-right',
-          'animate-delay-[50ms] animated  animated-duration-900 animated-repeat-1',
-        )"
-        class="pointer-events-none absolute inset-0"
-      >
-        <div
-          :class="useClsx(
-            'text-[18vh] color-gray-12A font-thin leading-none tracking-wider',
-            'absolute right-8 md:right-15 top-12 origin-right transform animate-glow',
-            'uppercase opacity-10 -translate-y-1/2 -rotate-90 font-electric',
-          )"
-        >
-          TecNews
-        </div>
-      </div>
+      <MenuBackground />
 
       <!-- Content -->
-      <div class="relative z-10 h-full flex flex-col p-6 color-pureBlack h-svh dark:color-pureWhite">
+      <div
+        :class="useClsx(
+          'color-pureBlack h-svh dark:color-pureWhite',
+          'relative z-10 h-full flex flex-col p-6',
+        )"
+      >
         <!-- Search -->
         <MenuSearch />
 
         <!-- Menu Items or Search Results -->
-        <div class="flex-1 overflow-x-hidden overflow-y-auto" tabindex="-1">
+        <div
+          :class="useClsx('flex-1 overflow-x-hidden overflow-y-auto')"
+          tabindex="-1"
+        >
           <!-- Search Results -->
           <SearchResults />
 
