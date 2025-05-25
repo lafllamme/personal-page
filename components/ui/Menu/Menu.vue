@@ -4,6 +4,8 @@ import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
 import Footer from '@/components/ui/Menu/Footer/Footer.vue'
 import MenuAccordion from '@/components/ui/Menu/MenuAccordion/MenuAccordion.vue'
 import MenuBackground from '@/components/ui/Menu/MenuBackground/MenuBackground.vue'
+import MenuOverlay from '@/components/ui/Menu/MenuOverlay/MenuOverlay.vue'
+import MenuPanel from '@/components/ui/Menu/MenuPanel/MenuPanel.vue'
 import MenuSearch from '@/components/ui/Menu/Search/MenuSearch.vue'
 import SearchResults from '@/components/ui/Menu/SearchResults/SearchResults.vue'
 import { useMenu } from '@/stores/menu'
@@ -17,10 +19,9 @@ const menuStore = useMenu()
 const { isOpen } = storeToRefs(menuStore)
 const { toggleMenu } = menuStore
 
-const isLocked = useScrollLock(document)
-
-const menu = useTemplateRef<HTMLDivElement>('menu')
+const menu = useTemplateRef('menu')
 const { activate, deactivate } = useFocusTrap(menu)
+const isLocked = useScrollLock(document)
 
 watchOnce(items, val => menuStore.setItems(val), { immediate: true })
 
@@ -31,10 +32,6 @@ function handleEsc(event: KeyboardEvent) {
 
 function setBodyScroll(locked: boolean) {
   isLocked.value = locked
-}
-
-function handleClick() {
-  isOpen.value = !isOpen.value
 }
 
 function handleMenu(open: boolean) {
@@ -52,39 +49,23 @@ function handleMenu(open: boolean) {
 watch(isOpen, (open) => {
   handleMenu(open)
 })
-const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
 // const tabIndex = computed(() => (isOpen.value ? '0' : '-1'))
-useEventListener(window, 'keydown', handleEsc)
+// useEventListener(window, 'keydown', handleEsc)
 </script>
 
 <template>
-  <div ref="menu" class="relative w-full">
+  <div
+    ref="menu"
+    class="relative w-full"
+    @keydown.esc="handleEsc"
+  >
     <!-- Menu Button -->
-    <div class="flex items-center">
-      <MenuButton :is-open="isOpen" @click="handleClick" />
-    </div>
+    <MenuButton />
+
     <!-- Overlay -->
-    <div
-      :class="useClsx(
-        'fixed inset-0 z-40 bg-pureBlack/40 backdrop-blur-sm grayscale-40',
-        isOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
-        'transition-opacity duration-300 ease-in-out',
-      )"
-      @click="isOpen = false"
-    />
+    <MenuOverlay />
     <!-- Menu Panel -->
-    <div
-      :aria-hidden="isAriaHidden"
-      :class="useClsx(
-        'shadow-xl transition-all duration-500 ease-out dark:bg-pureBlack',
-        isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        'transform-gpu will-change-[transform,opacity] backface-hidden',
-        'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
-        'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
-      )"
-      :inert="isOpen ? undefined : 'true'"
-      tabindex="-1"
-    >
+    <MenuPanel>
       <!-- Background Text -->
       <MenuBackground />
 
@@ -112,7 +93,7 @@ useEventListener(window, 'keydown', handleEsc)
         <!-- Footer -->
         <Footer />
       </div>
-    </div>
+    </MenuPanel>
   </div>
 </template>
 
