@@ -144,7 +144,6 @@ function getMosaicClass(index: number) {
 </script>
 
 <template>
-  <!-- All page content is wrapped in a single root element -->
   <div class="pt-20">
     <!-- Sample page content for testing neon styles -->
     <BentoGrid class="mx-auto max-w-7xl">
