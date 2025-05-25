@@ -1,9 +1,9 @@
 export interface MenuButtonProps {
-  isOpen: boolean
+  forceOpen?: boolean
 }
 
 export const MenuButtonDefaults: MenuButtonProps = {
-  isOpen: false,
+  forceOpen: false,
 }
 
 export interface MenuButtonEmits {

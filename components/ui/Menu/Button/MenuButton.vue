@@ -2,9 +2,14 @@
 import type { MenuButtonEmits, MenuButtonProps } from '@/components/ui/Menu/Button/MenuButton.model'
 import { MenuButtonDefaults } from '@/components/ui/Menu/Button/MenuButton.model'
 import Underline from '@/components/ui/Menu/Underline/Underline.vue'
+import { useMenu } from '@/stores/menu'
 
 withDefaults(defineProps<MenuButtonProps>(), MenuButtonDefaults)
 defineEmits<MenuButtonEmits>()
+
+const menuStore = useMenu()
+const { isOpen } = storeToRefs(menuStore)
+const { toggleMenu } = menuStore
 </script>
 
 <template>
@@ -17,10 +22,10 @@ defineEmits<MenuButtonEmits>()
       'color-pureBlack dark:color-pureWhite',
     )"
     aria-controls="mobile-menu"
-
     aria-label="Toggle menu"
     tabindex="0"
     type="button"
+    @click="toggleMenu('toggle')"
   >
     <svg
       :class="isOpen && '-translate-x-1.55'"
