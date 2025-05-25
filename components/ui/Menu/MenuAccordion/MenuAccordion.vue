@@ -44,22 +44,32 @@ function isHighlighted(itemId: number, childId: number) {
       <!-- Parent Button -->
       <button
         :class="useClsx(
+          'focus:outline-none focus-visible:bg-gray-5A rounded-full focus:color-jade-11 media-mouse:hover:color-jade-11',
           idx !== 0 && 'border-t border-solid border-gray-5 dark:border-gray-2',
           'group relative w-full flex items-center justify-between',
+          'py-4 px-4 text-left text-4xl tracking-normal uppercase ',
           'color-pureBlack dark:color-pureWhite',
-          'py-4 px-4 text-left text-4xl tracking-normal uppercase hover:color-jade-11',
-          'transition-colors duration-300 focus:outline-none focus:color-jade-11 focus-visible:bg-gray-5A rounded-full',
+          'transition-colors duration-300',
         )"
         @click="item.children && onToggleParent(item.id)"
         @keydown.enter.prevent="item.children && onToggleParent(item.id)"
       >
         <span
-          class="group absolute left-0 top-1/2 h-8 w-1 scale-y-50 rounded-full bg-jade-11 opacity-0 transition-all duration-150 will-change-opacity will-change-transform -translate-y-1/2 group-focus:scale-y-100 group-hover:scale-y-100 group-focus:opacity-100 group-hover:opacity-100 group-focus-visible:!scale-y-0 group-focus-visible:!opacity-0"
+          :class="useClsx(
+            'group-focus:opacity-100 media-mouse:group-hover:opacity-100 group-focus-visible:!opacity-0',
+            'group-focus:scale-y-100 media-mouse:group-hover:scale-y-100 group-focus-visible:!scale-y-0',
+            'scale-y-50  bg-jade-11 opacity-0 transition-all duration-150',
+            'will-change-opacity will-change-transform -translate-y-1/2',
+            'group absolute left-0 top-1/2 h-8 w-1 rounded-full',
+          )"
         />
 
         <div class="flex items-center space-x-3">
           <span
-            class="font-semibold tracking-wide transition-all duration-300 group-focus:translate-x-3 group-hover:translate-x-3"
+            :class="useClsx(
+              'font-semibold tracking-wide transition-all duration-300',
+              'group-focus:translate-x-3 media-mouse:group-hover:translate-x-3',
+            )"
           >
             {{ item.title }}
           </span>
@@ -67,7 +77,7 @@ function isHighlighted(itemId: number, childId: number) {
         <Icon
           v-if="item.children"
           :class="useClsx(
-            'group-hover:color-jade-11A',
+            'media-mouse:group-hover:color-jade-11A',
             'transition-all duration-300',
             openItems.includes(item.id) ? 'rotate-45' : '',
           )"
@@ -92,7 +102,10 @@ function isHighlighted(itemId: number, childId: number) {
           class="animate-in px-4 pb-4 duration-300 slide-in-from-top-3 space-y-1"
           style="will-change: height, transform;"
         >
-          <div v-for="child in item.children" :key="child.id">
+          <div
+            v-for="child in item.children"
+            :key="child.id"
+          >
             <Link
               :aria-hidden="openItems.includes(item.id) ? 'false' : 'true'"
               :class="useClsx(
