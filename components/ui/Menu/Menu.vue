@@ -53,7 +53,6 @@ watch(isOpen, (open) => {
 <template>
   <div
     ref="menu"
-    class="relative w-full"
     @keydown.esc="handleEsc"
   >
     <!-- Menu Button -->
