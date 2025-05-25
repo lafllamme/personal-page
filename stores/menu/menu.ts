@@ -44,19 +44,6 @@ export const useMenu = defineStore('menu', () => {
   const showResults = computed(() => !!searchQuery.value && !!searchResults.value && searchResults.value.length > 0)
   const showNoResults = computed(() => !!searchQuery.value && (!searchResults.value || searchResults.value.length === 0))
 
-  function highlightText(text: string, query: string) {
-    if (!query.trim())
-      return text
-    const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi')
-    const parts = text.split(regex)
-    return parts.map((part) => {
-      if (regex.test(part)) {
-        return `<mark class="bg-mint-5/30 text-jade-11 rounded px-1">${part}</mark>`
-      }
-      return part
-    }).join('')
-  }
-
   function log(message: string) {
     const infoPrint = '[Menu Store] =>'
     consola.debug(`${infoPrint} ${message}`)
@@ -102,6 +89,5 @@ export const useMenu = defineStore('menu', () => {
     searchResults,
     showResults,
     showNoResults,
-    highlightText,
   }
 })
