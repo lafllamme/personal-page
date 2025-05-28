@@ -7,7 +7,7 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const sceneUrl = 'https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode'
+const sceneUrl = 'https://prod.spline.design/gXj2nQHDWLqDw9ik/scene.splinecode'
 
 useHead({
   title: t('head.title'),
