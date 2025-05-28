@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { MenuButtonEmits, MenuButtonProps } from '@/components/ui/Menu/Button/MenuButton.model'
 import { MenuButtonDefaults } from '@/components/ui/Menu/Button/MenuButton.model'
-import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import { useMenu } from '@/stores/menu'
 
 withDefaults(defineProps<MenuButtonProps>(), MenuButtonDefaults)
@@ -15,51 +14,85 @@ const { toggleMenu } = menuStore
 <template>
   <button
     :aria-expanded="isOpen"
+    :aria-label="isOpen ? 'Close menu' : 'Open menu'"
     :class="useClsx(
-      'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring',
+      'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring-inset focus-visible:ring',
       'transition-transform focus:outline-none ease-in-out duration-300',
-      'absolute right-5 top-2 md:top-3 z-100 flex items-center justify-center',
-      'color-pureBlack dark:color-pureWhite',
+      'absolute z-100 menu absolute right-4 top-1 z-100 md:top-2',
+      isOpen && 'opened',
     )"
     aria-controls="mobile-menu"
-    aria-label="Toggle menu"
     tabindex="0"
     type="button"
     @click="toggleMenu('toggle')"
   >
     <svg
-      :class="isOpen && '-translate-x-1.55'"
-      class="h-8 w-8 flex transform items-center transition-transform duration-300 ease-in-out"
-      height="24"
-      viewBox="0 0 24 24"
-      width="24"
-      xmlns="http://www.w3.org/2000/svg"
+      class="h-10 w-10 transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]"
+      viewBox="0 0 100 100"
     >
-      <!-- Top stripe -->
       <path
-        :class="[isOpen ? 'translate-y-[5px] rotate-45' : '']"
-        class="origin-center transform transition-all duration-300"
-        d="M3 4h18v2H3z"
-        fill="currentColor"
+        class="line line1 stroke-pureBlack dark:stroke-pureWhite"
+        d="M 20,29.000046 H 80.000231 C 80.000231,29.000046 94.498839,28.817352 94.532987,66.711331 94.543142,77.980673 90.966081,81.670246 85.259173,81.668997 79.552261,81.667751 75.000211,74.999942 75.000211,74.999942 L 25.000021,25.000058"
       />
-      <!-- Middle stripe -->
       <path
-        :class="[isOpen ? 'opacity-0 translate-x-3' : '']"
-        class="transform transition-all duration-300"
-        d="M9 11h12v2H9z"
-        fill="currentColor"
+        class="line line2 stroke-pureBlack dark:stroke-pureWhite"
+        d="M 20,50 H 80"
       />
-      <!-- Bottom stripe -->
       <path
-        :class="[isOpen ? 'translate-y-[-5px] -rotate-45' : '']"
-        class="origin-center transform transition-all duration-300"
-        d="M3 18h18v2H3z"
-        fill="currentColor"
+        class="line line3 stroke-pureBlack dark:stroke-pureWhite"
+        d="M 20,70.999954 H 80.000231 C 80.000231,70.999954 94.498839,71.182648 94.532987,33.288669 94.543142,22.019327 90.966081,18.329754 85.259173,18.331003 79.552261,18.332249 75.000211,25.000058 75.000211,25.000058 L 25.000021,74.999942"
       />
     </svg>
-    <Underline
-      class-name="!-bottom-1.52"
-      size="big"
-    />
   </button>
 </template>
+
+<style scoped>
+.menu {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  padding: 0;
+}
+
+.line {
+  fill: none;
+  stroke-width: 6;
+  transition:
+    stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.line1 {
+  stroke-dasharray: 60 207;
+  stroke-width: 6;
+}
+
+.line2 {
+  stroke-dasharray: 60 60;
+  stroke-width: 6;
+}
+
+.line3 {
+  stroke-dasharray: 60 207;
+  stroke-width: 6;
+}
+
+.opened .line1 {
+  stroke-dasharray: 90 207;
+  stroke-dashoffset: -134;
+  stroke-width: 6;
+}
+
+.opened .line2 {
+  stroke-dasharray: 1 60;
+  stroke-dashoffset: -30;
+  stroke-width: 6;
+}
+
+.opened .line3 {
+  stroke-dasharray: 90 207;
+  stroke-dashoffset: -134;
+  stroke-width: 6;
+}
+</style>
