@@ -40,6 +40,19 @@ const canvasRef = ref<HTMLCanvasElement | null>(null)
 const isLoading = ref(false)
 const splineApp = shallowRef<Application | null>(null)
 const isVisible = ref(true)
+const shouldAnimate = ref(false)
+
+watch(isLoading, (loading) => {
+  if (loading) {
+    useWait(1500)
+      .then(() => {
+        shouldAnimate.value = loading
+      })
+      .catch((err) => {
+        console.error('Error during wait:', err)
+      })
+  }
+})
 
 const parentSizeStyles = computed(() => ({
   overflow: 'hidden',
@@ -57,7 +70,6 @@ async function initSpline() {
     return
   isLoading.value = true
   try {
-    consola.debug('Spline render...should be called only once')
     splineApp.value = new Application(canvasRef.value, {
       renderOnDemand: renderOnDemand.value,
     })
@@ -133,6 +145,7 @@ onUnmounted(() => {
 
 <template>
   <ParentSize
+    :class="shouldAnimate ? 'slide-up-blur' : 'opacity-0 scale-80'"
     :debounce-time="50"
     :parent-size-styles="parentSizeStyles"
     v-bind="$attrs"
@@ -146,3 +159,22 @@ onUnmounted(() => {
     </template>
   </ParentSize>
 </template>
+
+<style scoped>
+@keyframes slideUpBlur {
+  0% {
+    opacity: 0;
+    transform: translateY(60px);
+    filter: blur(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.slide-up-blur {
+  animation: slideUpBlur 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+</style>
