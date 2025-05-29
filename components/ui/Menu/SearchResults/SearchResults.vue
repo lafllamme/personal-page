@@ -15,16 +15,11 @@ function highlightText(text: string, query: string) {
   const parts = text.split(regex)
   return parts.map((part) => {
     if (regex.test(part)) {
-      return `<mark class="bg-mint-5/20 color-mint-11 rounded p-px">${part}</mark>`
+      return `<mark class="bg-mint-5/20 color-mint-11 rounded p-0.5">${part}</mark>`
     }
     return part
   }).join('')
 }
-
-const translationResult = computed(() => {
-  const n = searchResults.value?.length
-  return t(`sections.${n === 1 ? 'one' : 'other'}`, { n })
-})
 </script>
 
 <template>
@@ -47,24 +42,25 @@ const translationResult = computed(() => {
             'text-sm md:text-lg font-medium focus-visible:outline-none',
             'hover:text-white hover:bg-gradient-to-r hover:from-gray-5A/20 hover:to-transparent',
             'transition-colors duration-300 rounded-full group',
+            'focus-visible:outline-none focus-visible:bg-gray-4A focus-visible:text-shadow-xl focus-visible:shadow-mint-8/30',
           )"
         >
-          <div class="flex items-center space-x-3">
+          <div class="flex items-center justify-between space-x-3">
             <div
-              class="h-2 w-2 rounded-full bg-mint-11/60 transition-colors duration-300 ease-out"
+              :class="useClsx(
+                'rounded-full transition-all duration-300 ease-out h-2 w-2 bg-mint-11/60',
+                'group-focus-visible:h-4 group-focus-visible:w-4',
+                'group-focus-visible:rotate-45 group-focus-visible:animate-spin',
+                'group-focus-visible:border-2 group-focus-visible:border-mint-8 group-focus-visible:border-solid',
+                'group-focus-visible:bg-transparent',
+              )"
             />
+
             <span
               class="jetbrains-mono-regular tracking-wide !font-semibold"
               v-html="highlightText(result.title, searchQuery)"
             />
           </div>
-          <span
-            v-if="result.children && result.children.length"
-            class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs color-mint-11"
-          >
-            <!-- Use pluralization for sections: -->
-            {{ translationResult }}
-          </span>
         </button>
 
         <div
@@ -86,7 +82,7 @@ const translationResult = computed(() => {
               @click="toggleMenu('toggle')"
             >
               <Icon
-                class="h-4 w-4 text-gray-6 transition-colors duration-200 group-focus:color-mint-11A group-hover:color-mint-11A"
+                class="h-4 w-4 text-gray-6 transition-colors duration-200 group-focus-visible:color-mint-11A group-hover:color-mint-11A"
                 name="ri:arrow-right-line"
               />
               <span v-html="highlightText(child.title, searchQuery)" />
