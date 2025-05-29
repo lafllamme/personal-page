@@ -3,6 +3,7 @@ export interface CursorProps {
   textElements?: string[]
   clickableClasses?: string[]
   textClasses?: string[]
+  forceType?: string[]
   size?: number
   color?: string
   textColor?: string
@@ -34,8 +35,9 @@ export const CursorDefaultProps = {
     'input[type="url"]',
     'textarea',
   ],
-  clickableClasses: () => ['cursor-animate-click'],
-  textClasses: () => ['cursor-animate-text'],
+  clickableClasses: () => ['cursor-animate-click', 'is-clickable'],
+  textClasses: () => ['cursor-animate-text', 'is-text'],
+  forceType: () => ['default-cursor', 'click-cursor', 'text-cursor'],
   size: 24,
   color: 'white',
   textColor: '#4CBBA5',
