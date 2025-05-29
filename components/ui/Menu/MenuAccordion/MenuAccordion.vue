@@ -49,7 +49,7 @@ function isHighlighted(itemId: number, childId: number) {
           'group relative w-full flex items-center justify-between',
           'py-4 px-4 text-left text-4xl tracking-normal uppercase ',
           'color-pureBlack dark:color-pureWhite',
-          'transition-colors duration-300',
+          'transition-colors duration-300 default-cursor',
         )"
         @click="item.children && onToggleParent(item.id)"
         @keydown.enter.prevent="item.children && onToggleParent(item.id)"
