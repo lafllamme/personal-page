@@ -110,10 +110,10 @@ function isHighlighted(itemId: number, childId: number) {
               :aria-hidden="openItems.includes(item.id) ? 'false' : 'true'"
               :class="useClsx(
                 'flex items-center space-x-3 group',
-                'w-full text-left px-4 py-2.5 text-md',
+                'w-full text-left px-4 py-2.5 text-base',
                 'text-gray-10 hover:text-gray-12 focus-visible:text-gray-12',
-                'transition-all duration-200 rounded-full',
-                isHighlighted(item.id, child.id) && 'text-mint-11',
+                'transition-colors duration-200 rounded-full',
+                isHighlighted(item.id, child.id) && 'color-mint-11',
               )"
               :tabindex="openItems.includes(item.id) ? 0 : -1"
               :title="child.title"
