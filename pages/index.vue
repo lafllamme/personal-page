@@ -53,7 +53,7 @@ function handleGenerateComplete() {
       >
         <div
           :class="useClsx(renderBackground && '!bg-mint-8')"
-          class="relative aspect-square w-full touch-none overflow-hidden rounded-full bg-gray-4 transition-colors duration-[2000ms] ease-in-out"
+          class="relative aspect-square w-full touch-none overflow-hidden rounded-full bg-gray-4A transition-colors duration-[2000ms] ease-in-out"
         >
           <Spline
             :on-load="handleLoad"
