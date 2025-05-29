@@ -73,7 +73,7 @@ function calculateTextBarHeight(
   if (!el)
     return Math.max(baseSize * 1.2, minHeight)
   if (['input', 'textarea'].includes(el.tagName.toLowerCase())) {
-    return Math.max(el.clientHeight * 0.8, minHeight)
+    return Math.max(el.clientHeight * 1.2, minHeight)
   }
   if (fontSize < 16) {
     return Math.max(fontSize * 2.1, minHeight)
