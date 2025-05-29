@@ -2,9 +2,7 @@
 <script lang="ts" setup>
 import type { CursorProps, CursorType } from '@/components/ui/Cursor/Cursor.model'
 import { CursorDefaultProps } from '@/components/ui/Cursor/Cursor.model'
-/* ──────────────────────────────────────────────────────────
-   Props & reactive state
-   ────────────────────────────────────────────────────────── */
+
 const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps)
 
 const {
@@ -18,6 +16,7 @@ const {
   textWidth,
   clickScale,
   minTextHeight,
+  forceType,
 } = toRefs(props)
 
 const cursorRef = ref<HTMLElement | null>(null)
@@ -31,18 +30,12 @@ const pointerClass = computed(() => (hasPointer.value ? 'has-pointer' : ''))
 const { width, height } = useWindowSize()
 const isPointer = useMediaQuery('(pointer: fine)')
 
-/* ──────────────────────────────────────────────────────────
-   <html> class toggle so the real cursor disappears
-   ────────────────────────────────────────────────────────── */
 useHead({
   htmlAttrs: {
     class: pointerClass,
   },
 })
 
-/* ──────────────────────────────────────────────────────────
-   Helpers
-   ────────────────────────────────────────────────────────── */
 function centerCursor() {
   if (firstRender.value && cursorRef.value) {
     cursorRef.value.style.left = `${width.value / 2}px`
@@ -59,47 +52,87 @@ function checkCursor() {
   setCursorStyle(isPointer.value)
 }
 
+// DRY: one place to calculate/set text bar height
+function setTextCursor(el: HTMLElement | null) {
+  cursorType.value = 'text'
+  const fontSize = el ? Number.parseFloat(getComputedStyle(el).fontSize) : size.value
+  textHeight.value = calculateTextBarHeight(
+    el,
+    fontSize,
+    minTextHeight.value,
+    size.value,
+  )
+}
+
+function calculateTextBarHeight(
+  el: HTMLElement | null,
+  fontSize: number,
+  minHeight: number,
+  baseSize: number,
+) {
+  if (!el)
+    return Math.max(baseSize * 1.2, minHeight)
+  if (['input', 'textarea'].includes(el.tagName.toLowerCase())) {
+    return Math.max(el.clientHeight * 0.8, minHeight)
+  }
+  if (fontSize < 16) {
+    return Math.max(fontSize * 2.1, minHeight)
+  }
+  if (fontSize < 24) {
+    return Math.max(fontSize * 1.75, minHeight)
+  }
+  return Math.max(fontSize * 1.2, minHeight)
+}
+
 function checkElementType(e: MouseEvent) {
   const target = e.target as HTMLElement
 
+  // 1. Check force types first
+  const forceTypeClass = forceType.value?.find(cls =>
+    target.classList.contains(cls) || !!target.closest(`.${cls}`),
+  )
+
+  if (forceTypeClass) {
+    if (forceTypeClass.includes('default')) {
+      cursorType.value = 'default'
+    }
+    else if (forceTypeClass.includes('click')) {
+      cursorType.value = 'click'
+    }
+    else if (forceTypeClass.includes('text')) {
+      // DRY: Only here!
+      const textEl = target.matches(`.${forceTypeClass}`)
+        ? target
+        : (target.closest(`.${forceTypeClass}`) as HTMLElement | null)
+      setTextCursor(textEl)
+    }
+    else {
+      cursorType.value = 'default'
+    }
+    return
+  }
+
+  // 2. Normal detection
   const isClickable
       = clickableElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
-        || clickableClasses.value.some(cls => target.classList.contains(cls.replace('.', '')))
+        || clickableClasses.value.some(cls =>
+          target.classList.contains(cls.replace('.', '')) || !!target.closest(cls),
+        )
 
   const isText
       = textElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
-        || textClasses.value.some(cls => target.classList.contains(cls.replace('.', '')))
+        || textClasses.value.some(cls =>
+          target.classList.contains(cls.replace('.', '')) || !!target.closest(cls),
+        )
 
   if (isClickable) {
     cursorType.value = 'click'
   }
   else if (isText) {
-    cursorType.value = 'text'
-
-    // work out a sensible height for the bar-style cursor
     const textEl = textElements.value
       .map(sel => (target.matches(sel) ? target : target.closest(sel)))
       .filter(Boolean)[0] as HTMLElement | null
-
-    if (textEl) {
-      const fontSize = Number.parseFloat(getComputedStyle(textEl).fontSize)
-
-      if (['input', 'textarea'].includes(textEl.tagName.toLowerCase())) {
-        textHeight.value = Math.max(textEl.clientHeight * 0.8, minTextHeight.value)
-      }
-      else if (fontSize < 16) {
-        textHeight.value = Math.max(fontSize * 1.8, minTextHeight.value)
-      }
-      else if (fontSize < 24) {
-        textHeight.value = Math.max(fontSize * 1.5, minTextHeight.value)
-      }
-      else {
-        textHeight.value = Math.max(fontSize * 1.2, minTextHeight.value)
-      }
-    }
-    else {
-      textHeight.value = Math.max(size.value * 1.2, minTextHeight.value)
-    }
+    setTextCursor(textEl)
   }
   else {
     cursorType.value = 'default'
@@ -118,9 +151,6 @@ function initListeners() {
   useEventListener('mousemove', checkElementType, { passive: true })
 }
 
-/* ──────────────────────────────────────────────────────────
-   Lifecycle
-   ────────────────────────────────────────────────────────── */
 onMounted(() => {
   checkCursor()
   centerCursor()
@@ -129,8 +159,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <!-- Teleport ensures the node lives directly under <body>
-       and Vue will clean it up automatically on route changes -->
   <Teleport to="body">
     <div
       v-show="hasPointer"
