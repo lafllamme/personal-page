@@ -13,7 +13,7 @@ function highlightText(text: string, query: string) {
   const parts = text.split(regex)
   return parts.map((part) => {
     if (regex.test(part)) {
-      return `<mark class="bg-mint-5/30 text-jade-11 rounded px-1">${part}</mark>`
+      return `<mark class="bg-mint-5/20 color-mint-11 rounded px-1 py-0.5">${part}</mark>`
     }
     return part
   }).join('')
@@ -37,21 +37,23 @@ function highlightText(text: string, query: string) {
         <button
           :class="useClsx(
             'w-full flex items-center justify-between px-6 py-5 text-left',
-            'text-sm font-medium color-pureBlack dark:color-pureWhite',
-            'hover:text-white hover:bg-gradient-to-r hover:from-gray-8/20 hover:to-transparent',
-            'transition-all duration-300',
+            'text-sm md:text-lg font-medium ',
+            'hover:text-white hover:bg-gradient-to-r hover:from-gray-5A/20 hover:to-transparent',
+            'transition-all duration-300 rounded-full group',
           )"
         >
           <div class="flex items-center space-x-3">
-            <div class="h-2 w-2 rounded-full bg-mint-9/60" />
+            <div
+              class="h-2 w-2 rounded-full bg-mint-11/60 transition-colors duration-300 ease-out"
+            />
             <span
-              class="font-semibold tracking-wide"
+              class="jetbrains-mono-regular tracking-wide !font-semibold"
               v-html="highlightText(result.title, searchQuery)"
             />
           </div>
           <span
             v-if="result.children && result.children.length"
-            class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs text-jade-11"
+            class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs color-mint-11"
           >
             {{ result.children?.length || 0 }}
           </span>
@@ -59,21 +61,24 @@ function highlightText(text: string, query: string) {
 
         <div
           v-if="result.children && result.children.length"
-          class="animate-in px-6 pb-4 duration-300 slide-in-from-top-3 space-y-2"
+          class="geist-regular animate-in px-6 pb-4 duration-300 slide-in-from-top-3 space-y-2"
         >
-          <div v-for="child in result.children" :key="child.id">
+          <div
+            v-for="child in result.children"
+            :key="child.id"
+          >
             <Link
               :class="useClsx(
                 'flex items-center space-x-3 group',
                 'w-full text-left px-4 py-2.5 text-sm',
-                'text-gray-10 hover:text-gray-2',
-                'hover:bg-gray-8/40 transition-all duration-200 rounded-lg',
+                'text-gray-10 hover:text-gray-12',
+                'transition-colors duration-200 rounded-full',
               )"
               :to="child.to || '/demo'"
               @click="toggleMenu('toggle')"
             >
               <Icon
-                class="h-3 w-3 text-gray-6 transition-colors duration-200 group-hover:text-mint-9"
+                class="h-3 w-3 text-gray-6 transition-colors duration-200 group-hover:color-jade-11A"
                 name="ri:arrow-right-line"
               />
               <span v-html="highlightText(child.title, searchQuery)" />
