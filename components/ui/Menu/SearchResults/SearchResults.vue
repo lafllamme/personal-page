@@ -6,6 +6,8 @@ const menuStore = useMenu()
 const { searchResults, showResults, showNoResults, searchQuery } = storeToRefs(menuStore)
 const { toggleMenu } = menuStore
 
+const { t } = useI18n()
+
 function highlightText(text: string, query: string) {
   if (!query.trim())
     return text
@@ -13,11 +15,16 @@ function highlightText(text: string, query: string) {
   const parts = text.split(regex)
   return parts.map((part) => {
     if (regex.test(part)) {
-      return `<mark class="bg-mint-5/20 color-mint-11 rounded px-1 py-0.5">${part}</mark>`
+      return `<mark class="bg-mint-5/20 color-mint-11 rounded p-px">${part}</mark>`
     }
     return part
   }).join('')
 }
+
+const translationResult = computed(() => {
+  const n = searchResults.value?.length
+  return t(`sections.${n === 1 ? 'one' : 'other'}`, { n })
+})
 </script>
 
 <template>
@@ -37,9 +44,9 @@ function highlightText(text: string, query: string) {
         <button
           :class="useClsx(
             'w-full flex items-center justify-between px-6 py-5 text-left',
-            'text-sm md:text-lg font-medium ',
+            'text-sm md:text-lg font-medium focus-visible:outline-none',
             'hover:text-white hover:bg-gradient-to-r hover:from-gray-5A/20 hover:to-transparent',
-            'transition-all duration-300 rounded-full group',
+            'transition-colors duration-300 rounded-full group',
           )"
         >
           <div class="flex items-center space-x-3">
@@ -55,7 +62,8 @@ function highlightText(text: string, query: string) {
             v-if="result.children && result.children.length"
             class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs color-mint-11"
           >
-            {{ result.children?.length || 0 }}
+            <!-- Use pluralization for sections: -->
+            {{ translationResult }}
           </span>
         </button>
 
@@ -70,15 +78,15 @@ function highlightText(text: string, query: string) {
             <Link
               :class="useClsx(
                 'flex items-center space-x-3 group',
-                'w-full text-left px-4 py-2.5 text-sm',
-                'text-gray-10 hover:text-gray-12',
-                'transition-colors duration-200 rounded-full',
+                'w-full text-left px-4 py-2.5 text-xs md:text-sm',
+                'text-gray-10 hover:text-gray-12 focus-visible:text-gray-12',
+                'transition-colors tracking-normal duration-200 rounded-full',
               )"
               :to="child.to || '/demo'"
               @click="toggleMenu('toggle')"
             >
               <Icon
-                class="h-3 w-3 text-gray-6 transition-colors duration-200 group-hover:color-jade-11A"
+                class="h-4 w-4 text-gray-6 transition-colors duration-200 group-focus:color-mint-11A group-hover:color-mint-11A"
                 name="ri:arrow-right-line"
               />
               <span v-html="highlightText(child.title, searchQuery)" />
@@ -93,7 +101,7 @@ function highlightText(text: string, query: string) {
       v-show="showNoResults"
       class="flex select-none items-center justify-center p-10 text-center text-gray-10"
     >
-      <span>No results found for "{{ searchQuery }}"</span>
+      <span>{{ t('no_results') }}<template v-if="searchQuery"> "{{ searchQuery }}"</template></span>
     </div>
   </div>
 </template>
@@ -141,3 +149,101 @@ mark {
   animation-fill-mode: both;
 }
 </style>
+
+<i18n lang="yaml">
+de:
+  no_results: "Keine Ergebnisse gefunden"
+  sections:
+    one: "{n} Bereich"
+    other: "{n} Bereiche"
+
+en:
+  no_results: "No results found"
+  sections:
+    one: "{n} section"
+    other: "{n} sections"
+
+fr:
+  no_results: "Aucun résultat trouvé"
+  sections:
+    one: "{n} section"
+    other: "{n} sections"
+
+es:
+  no_results: "No se encontraron resultados"
+  sections:
+    one: "{n} sección"
+    other: "{n} secciones"
+
+pt:
+  no_results: "Nenhum resultado encontrado"
+  sections:
+    one: "{n} seção"
+    other: "{n} seções"
+
+pl:
+  no_results: "Nie znaleziono wyników"
+  sections:
+    one: "{n} sekcja"
+    other: "{n} sekcje"
+
+nl:
+  no_results: "Geen resultaten gevonden"
+  sections:
+    one: "{n} sectie"
+    other: "{n} secties"
+
+da:
+  no_results: "Ingen resultater fundet"
+  sections:
+    one: "{n} sektion"
+    other: "{n} sektioner"
+
+cs:
+  no_results: "Žádné výsledky nenalezeny"
+  sections:
+    one: "{n} sekce"
+    other: "{n} sekce"
+
+el:
+  no_results: "Δεν βρέθηκαν αποτελέσματα"
+  sections:
+    one: "{n} ενότητα"
+    other: "{n} ενότητες"
+
+tr:
+  no_results: "Sonuç bulunamadı"
+  sections:
+    one: "{n} bölüm"
+    other: "{n} bölüm"
+
+ja:
+  no_results: "結果が見つかりません"
+  sections:
+    one: "{n} セクション"
+    other: "{n} セクション"
+
+zh:
+  no_results: "未找到结果"
+  sections:
+    one: "{n} 个部分"
+    other: "{n} 个部分"
+
+ko:
+  no_results: "결과가 없습니다"
+  sections:
+    one: "{n}개 섹션"
+    other: "{n}개 섹션"
+
+uk:
+  no_results: "Результатів не знайдено"
+  sections:
+    one: "{n} розділ"
+    other: "{n} розділів"
+
+ar:
+  no_results: "لم يتم العثور على نتائج"
+  sections:
+    one: "{n} قسم"
+    other: "{n} أقسام"
+</i18n>
