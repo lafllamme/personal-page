@@ -3,9 +3,6 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  app: {
-    pageTransition: { name: 'page', mode: 'out-in' },
-  },
   i18n: {
     strategy: 'prefix', // add prefix to all generated routes
     baseUrl: 'https://tec.nuxt.dev', // ← replace with your site’s URL
