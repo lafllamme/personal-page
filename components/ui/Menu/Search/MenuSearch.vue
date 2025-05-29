@@ -64,7 +64,7 @@ const hasInputFocus = ref(false)
       </span>
       <span
         v-if="menuStore.showResults"
-        class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs text-jade-11"
+        class="border border-mint-7/30 rounded-full bg-mint-5/20 px-2 py-0.5 text-xs color-mint-11"
       >
         {{ menuStore.searchResults?.length }} sections
       </span>
