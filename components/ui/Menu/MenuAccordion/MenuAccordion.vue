@@ -77,7 +77,7 @@ function isHighlighted(itemId: number, childId: number) {
         <Icon
           v-if="item.children"
           :class="useClsx(
-            'media-mouse:group-hover:color-jade-11A',
+            'group-hover:color-jade-11A',
             'transition-all duration-300',
             openItems.includes(item.id) ? 'rotate-45' : '',
           )"
