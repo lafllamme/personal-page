@@ -44,7 +44,7 @@ const shouldAnimate = ref(false)
 
 watch(isLoading, (loading) => {
   if (loading) {
-    useWait(1500)
+    useWait(1100)
       .then(() => {
         shouldAnimate.value = loading
       })
