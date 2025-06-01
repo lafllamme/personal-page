@@ -1,9 +1,12 @@
-<!-- components/ui/Cursor/Cursor.vue -->
 <script lang="ts" setup>
 import type { CursorProps, CursorType } from '@/components/ui/Cursor/Cursor.model'
 import { CursorDefaultProps } from '@/components/ui/Cursor/Cursor.model'
+import SpinningText from '@/components/ui/Text/SpinningText/SpinningText.vue'
 
-const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps)
+// TODO: Is the fade duration necessary? It seems unclear in terms of usage.
+const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps) // ms, for fade in/out
+const FADE_IN_DELAY = 3000 // 3 seconds!
+const FADE_DURATION = 0
 
 const {
   clickableElements,
@@ -21,9 +24,14 @@ const {
 
 const cursorRef = ref<HTMLElement | null>(null)
 const cursorType = ref<CursorType>('default')
-const textHeight = ref<number>(0)
+const delayedCursorType = ref<CursorType>('default')
 const hasPointer = ref<boolean>(false)
 const firstRender = ref<boolean>(true)
+const textHeight = ref<number>(0)
+
+// Fade logic
+const showSpinningText = ref(false)
+let fadeInTimeout: ReturnType<typeof setTimeout> | null = null
 
 const pointerClass = computed(() => (hasPointer.value ? 'has-pointer' : ''))
 
@@ -52,7 +60,6 @@ function checkCursor() {
   setCursorStyle(isPointer.value)
 }
 
-// DRY: one place to calculate/set text bar height
 function setTextCursor(el: HTMLElement | null) {
   cursorType.value = 'text'
   const fontSize = el ? Number.parseFloat(getComputedStyle(el).fontSize) : size.value
@@ -100,7 +107,6 @@ function checkElementType(e: MouseEvent) {
       cursorType.value = 'click'
     }
     else if (forceTypeClass.includes('text')) {
-      // DRY: Only here!
       const textEl = target.matches(`.${forceTypeClass}`)
         ? target
         : (target.closest(`.${forceTypeClass}`) as HTMLElement | null)
@@ -151,6 +157,55 @@ function initListeners() {
   useEventListener('mousemove', checkElementType, { passive: true })
 }
 
+// ========== FADE/SPINNING TEXT HELPERS ==========
+
+function scheduleSpinningTextFadeIn() {
+  if (fadeInTimeout)
+    clearTimeout(fadeInTimeout)
+  showSpinningText.value = false
+  fadeInTimeout = setTimeout(() => {
+    showSpinningText.value = true
+  }, FADE_IN_DELAY)
+}
+
+function hideSpinningTextImmediately() {
+  if (fadeInTimeout)
+    clearTimeout(fadeInTimeout)
+  showSpinningText.value = false
+}
+
+// ========== CLICK DELAY HELPERS ==========
+
+let clickDelayTimeout: ReturnType<typeof setTimeout> | null = null
+
+function scheduleDelayedCursorType(newType: CursorType, oldType: CursorType) {
+  if (oldType === 'default' && newType === 'click') {
+    if (clickDelayTimeout)
+      clearTimeout(clickDelayTimeout)
+    delayedCursorType.value = 'default'
+    clickDelayTimeout = setTimeout(() => {
+      delayedCursorType.value = 'click'
+    }, FADE_DURATION)
+  }
+  else {
+    if (clickDelayTimeout)
+      clearTimeout(clickDelayTimeout)
+    delayedCursorType.value = newType
+  }
+}
+
+// ========== WATCHERS ==========
+
+watch(cursorType, (newType, oldType) => {
+  if (newType === 'default') {
+    scheduleSpinningTextFadeIn()
+  }
+  else {
+    hideSpinningTextImmediately()
+  }
+  scheduleDelayedCursorType(newType, oldType!)
+}, { immediate: true })
+
 onMounted(() => {
   checkCursor()
   centerCursor()
@@ -164,34 +219,53 @@ onMounted(() => {
       v-show="hasPointer"
       ref="cursorRef"
       :style="{
-        width: cursorType === 'text' ? `${textWidth}px` : `${size}px`,
-        height: cursorType === 'text' ? `${textHeight}px` : `${size}px`,
-        borderRadius: cursorType === 'text' ? '1px' : '50%',
-        backgroundColor: cursorType === 'text' ? textColor : color,
-        mixBlendMode: cursorType === 'text' ? 'normal' : 'difference',
-        transform: cursorType === 'click'
+        width: delayedCursorType === 'text' ? `${textWidth}px` : `${size}px`,
+        height: delayedCursorType === 'text' ? `${textHeight}px` : `${size}px`,
+        borderRadius: delayedCursorType === 'text' ? '1px' : '50%',
+        backgroundColor: delayedCursorType === 'text' ? textColor : color,
+        mixBlendMode: delayedCursorType === 'text' ? 'normal' : 'difference',
+        transform: delayedCursorType === 'click'
           ? `translate(-50%, -50%) scale(${clickScale})`
           : 'translate(-50%, -50%)',
         transition:
           'width .2s, height .2s, border-radius .2s, transform .2s, background-color .2s',
       }"
-      class="cursor-portal animate-fade-in"
-    />
+      class="pointer-events-none fixed left-0 top-0 z-9999 translate-z-0 will-change-transform"
+    >
+      <!-- Orbit container always present in 'default', only opacity of SpinningText changes -->
+      <div
+        v-if="cursorType === 'default'"
+        :style="{
+          width: `${size * 3}px`,
+          height: `${size * 3}px`,
+        }"
+        class="pointer-events-none absolute left-1/2 top-1/2 z-1 -translate-x-1/2 -translate-y-1/2"
+      >
+        <SpinningText
+          :class="useClsx(
+            'color-pureWhite jetbrains-mono-regular text-lg',
+            'mix-blend-difference block w-full h-full leading-[0] antialiased pointer-events-none',
+            showSpinningText ? 'spinning-text-fade-in' : 'spinning-text-fade-out',
+          )"
+          reverse
+          text="learn more · read more · code more ·"
+        />
+      </div>
+    </div>
   </Teleport>
 </template>
 
 <style>
-.cursor-portal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translateZ(0);
-  will-change: transform;
+.spinning-text-fade-in {
+  opacity: 1;
+  transition: opacity 0.25s cubic-bezier(0.7, 0.3, 0, 1);
 }
 
-/* Only when .has-pointer is on <html> */
+.spinning-text-fade-out {
+  opacity: 0;
+  transition: opacity 0.18s cubic-bezier(0.7, 0.3, 0, 1);
+}
+
 .has-pointer * {
   cursor: none !important;
 }
