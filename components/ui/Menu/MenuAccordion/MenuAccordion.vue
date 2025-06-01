@@ -43,6 +43,11 @@ function isHighlighted(itemId: number, childId: number) {
     <div v-for="(item, idx) in items" :key="item.id">
       <!-- Parent Button -->
       <button
+        :id="`accordion-button-${item.id}`"
+        :aria-controls="`accordion-content-${item.id}`"
+        :aria-current="openItems.includes(item.id) ? 'true' : 'false'"
+        :aria-expanded="openItems.includes(item.id)"
+        :aria-label="item.title"
         :class="useClsx(
           'focus:outline-none focus-visible:bg-gray-5A rounded-full focus:color-jade-11 media-mouse:hover:color-jade-11',
           idx !== 0 && 'border-t border-solid border-gray-5 dark:border-gray-2',
@@ -51,6 +56,8 @@ function isHighlighted(itemId: number, childId: number) {
           'color-pureBlack dark:color-pureWhite',
           'transition-colors duration-300 default-cursor',
         )"
+        :tabindex="0"
+        type="button"
         @click="item.children && onToggleParent(item.id)"
         @keydown.enter.prevent="item.children && onToggleParent(item.id)"
       >
