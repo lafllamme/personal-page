@@ -34,18 +34,18 @@
               <div class="h-full w-full bg-gray-4A" />
             </div>
             <div class="p-6">
-              <div class="text-gray-500 dark:text-gray-400 mb-2 text-sm">
+              <div class="mb-2 text-sm text-gray-11">
                 May {{ i }}, 2024
               </div>
-              <h3 class="group-hover:text-purple-600 dark:group-hover:text-purple-400 text-gray-900 dark:text-white mb-2 text-xl font-bold transition-colors">
+              <h3 class="mb-2 text-xl font-bold transition-colors group-hover:color-mint-11">
                 The Rise of AI in Modern Development
               </h3>
-              <p class="text-gray-600 dark:text-gray-300">
+              <p class="text-gray-10">
                 How artificial intelligence is transforming the way we build and interact with technology.
               </p>
               <div class="mt-4">
                 <a
-                  class="text-gray-700 dark:text-gray-300 text-sm font-medium underline-offset-4 hover:underline"
+                  class="text-sm text-gray-12 font-medium underline-offset-4 hover:underline hover:underline-mint-8"
                   href="#"
                 >
                   Read More →
