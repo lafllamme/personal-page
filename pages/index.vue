@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import Spline from '@/components/ui/Background/Spline/Spline.vue'
+import BlogLayout from '@/components/ui/Blog/Layout/BlogLayout.vue'
 import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
 import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
 import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
@@ -22,6 +23,14 @@ const renderBackground = ref(false)
 
 function handleLoad() {
   sceneLoaded.value = true
+}
+
+function handleClick() {
+  // scroll to item with id "article-id-1"
+  const element = document.getElementById('article-id-1')
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' })
+  }
 }
 
 watch(sceneLoaded, (v) => {
@@ -92,6 +101,7 @@ function handleGenerateComplete() {
         >
           <InteractiveButton
             :text="t('buttons.latest')"
+            @click="handleClick"
           />
           <RippleButton
             :text="t('buttons.subscribe')"
@@ -99,6 +109,7 @@ function handleGenerateComplete() {
         </div>
       </div>
     </div>
+    <BlogLayout />
   </div>
 </template>
 
