@@ -44,6 +44,8 @@ function highlightText(text: string, query: string) {
             'transition-colors duration-300 rounded-full group',
             'focus-visible:outline-none focus-visible:bg-gray-4A focus-visible:text-shadow-xl focus-visible:shadow-mint-8/30',
           )"
+          tabindex="0"
+          type="button"
         >
           <div class="flex items-center justify-between space-x-3">
             <div
