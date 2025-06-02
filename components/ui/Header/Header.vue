@@ -82,7 +82,7 @@ watch(hasScrolledEnough, (hasScrolled) => {
           hasScrolledEnough && 'backdrop-saturate-150',
           'pointer-events-none absolute inset-0',
           'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
-          'backdrop-blur-[8px] bg-pureWhite dark:bg-pureBlack ',
+          'backdrop-blur-[8px] bg-pureWhite/50 dark:bg-pureBlack/50',
         )"
       />
       <!-- Inner container for logo and right-side items -->
