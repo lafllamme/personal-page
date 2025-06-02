@@ -59,7 +59,6 @@ onMounted(() => {
             :class="useClsx(
               'border border-solid border-gray-6 hover:border-[#A0CEC2] dark:hover:border-[#385C54]',
               'transition-colors transition-shadow duration-300 ease-in-out',
-              'dark:hover:shadow-[#3A6358FF] hover:shadow-[#C6E0DA]',
               isVisibleList[i] ? 'ethereal-cascade' : 'opacity-0',
               'group relative overflow-hidden rounded-lg',
               'bg-pureWhite dark:bg-pureBlack',
@@ -76,28 +75,41 @@ onMounted(() => {
             </div>
             <!-- Card Content -->
 
-            <div class="p-6">
-              <div class="mb-2 text-sm text-gray-11">
-                May {{ i }}, 2024
-              </div>
-              <h3 class="mb-2 text-xl color-pureBlack font-bold transition-colors dark:color-pureWhite">
+            <div class="p-6 transition-colors duration-300 ease-out">
+              <h3 class="geist-regular mb-2 text-xl color-pureBlack font-medium dark:color-pureWhite !font-semibold">
                 The Rise of AI in Modern Development
               </h3>
-              <p class="text-gray-10">
+              <p class="mb-2 text-pretty color-gray-10 font-light">
                 How artificial intelligence is transforming the way we build and interact with technology.
               </p>
-              <div class="mt-4 flex items-center space-x-1">
+              <div class="mb-3 flex text-sm text-gray-11 font-200 space-x-6">
+                <div class="flex items-center space-x-2">
+                  <Icon
+                    class="mt-px size-4 color-gray-10 group-hover:color-gray-12"
+                    name="ri:calendar-2-line"
+                  />
+                  <p>May {{ i }}, 2024</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <Icon
+                    class="size-4 color-gray-10 group-hover:color-gray-12"
+                    name="ri:user-3-line"
+                  />
+                  <p>Dr. Lex Icon</p>
+                </div>
+              </div>
+              <div class="flex items-center space-x-1.5">
                 <Link
                   :underline="false"
-                  class="text-sm text-gray-12 font-medium"
+                  class="text-base color-gray-12 font-semibold"
                   href="#"
                 >
                   Read More
-                  <Icon
-                    class="h-4 w-4 align-text-bottom color-gray-8 transition-all duration-200 group-hover:translate-x-1 group-focus-visible:color-mint-11A group-hover:color-mint-11A"
-                    name="ri:arrow-right-line"
-                  />
                 </Link>
+                <Icon
+                  class="size-5 color-gray-8 transition-all duration-200 group-hover:translate-x-1 group-focus-visible:color-mint-11A group-hover:color-mint-11A"
+                  name="ri:arrow-right-line"
+                />
               </div>
             </div>
           </CardSpotlight>
