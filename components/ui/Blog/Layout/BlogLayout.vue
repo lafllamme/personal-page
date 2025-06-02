@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import CardSpotlight from '@/components/ui/Card/CardSpotlight/CardSpotlight.vue'
+import Link from '@/components/ui/Link/Link.vue'
 
 const articleRefs = useTemplateRefsList()
 const isVisibleList = ref(Array.from({ length: 12 }).fill(false))
@@ -30,8 +31,8 @@ onMounted(() => {
     <!-- Featured Articles Section -->
     <section>
       <div class="mx-auto px-4">
-        <div class="mb-12 flex flex-col items-start justify-between md:flex-row md:items-end">
-          <div class="animate-fade-in">
+        <div class="mb-12 flex flex-col animate-fade-in items-start justify-between md:flex-row md:items-end">
+          <div>
             <h2 class="geist-regular mb-4 text-3xl color-pureBlack font-bold tracking-tighter dark:color-pureWhite">
               Featured Articles
             </h2>
@@ -48,6 +49,7 @@ onMounted(() => {
           </a>
         </div>
 
+        <!-- Card View -->
         <div class="grid gap-8 lg:grid-cols-3 md:grid-cols-2">
           <CardSpotlight
             v-for="i in 12"
@@ -55,19 +57,25 @@ onMounted(() => {
             :key="`article-id-${i}`"
             :ref="articleRefs.set"
             :class="useClsx(
+              'border border-solid border-gray-6 hover:border-[#A0CEC2] dark:hover:border-[#385C54]',
+              'transition-colors transition-shadow duration-300 ease-in-out',
+              'dark:hover:shadow-[#3A6358FF] hover:shadow-[#C6E0DA]',
               isVisibleList[i] ? 'ethereal-cascade' : 'opacity-0',
-              'group relative overflow-hidden border border-gray-6',
+              'group relative overflow-hidden rounded-lg',
               'bg-pureWhite dark:bg-pureBlack',
-              'rounded-lg border-solid transition-shadow shadow-2xl shadow-gray-6A',
+              'shadow-2xl shadow-gray-6A',
             )"
           >
+            <!-- Image Wrapper -->
             <div class="aspect-video overflow-hidden">
               <img
                 alt="Article Image"
-                class="h-full w-full object-cover"
+                class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
                 src="https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
               >
             </div>
+            <!-- Card Content -->
+
             <div class="p-6">
               <div class="mb-2 text-sm text-gray-11">
                 May {{ i }}, 2024
@@ -78,13 +86,18 @@ onMounted(() => {
               <p class="text-gray-10">
                 How artificial intelligence is transforming the way we build and interact with technology.
               </p>
-              <div class="mt-4">
-                <a
-                  class="text-sm text-gray-12 font-medium underline-offset-4 transition-all duration-300 ease-out hover:underline hover:underline-mint-8"
+              <div class="mt-4 flex items-center space-x-1">
+                <Link
+                  :underline="false"
+                  class="text-sm text-gray-12 font-medium"
                   href="#"
                 >
-                  Read More →
-                </a>
+                  Read More
+                  <Icon
+                    class="h-4 w-4 align-text-bottom color-gray-8 transition-all duration-200 group-hover:translate-x-1 group-focus-visible:color-mint-11A group-hover:color-mint-11A"
+                    name="ri:arrow-right-line"
+                  />
+                </Link>
               </div>
             </div>
           </CardSpotlight>
