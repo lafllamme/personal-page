@@ -23,11 +23,13 @@ interface LinkProps {
   title?: string
   tabindex?: number
   ariaLabel?: string
+  underline?: boolean
 }
 
 // Define props and set a default tabindex for accessibility.
 const props = withDefaults(defineProps<LinkProps>(), {
   tabindex: 0,
+  underline: true,
 })
 
 const localePath = useLocalePath()
@@ -76,7 +78,7 @@ const linkProps = computed(() => {
     <!-- Default slot for link content (text or inner HTML) -->
     <slot />
     <!-- Underline component appears on hover -->
-    <Underline variant="left" />
+    <Underline v-show="underline" variant="left" />
   </component>
 </template>
 
