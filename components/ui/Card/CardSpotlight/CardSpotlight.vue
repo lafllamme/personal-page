@@ -21,7 +21,7 @@ const props = withDefaults(
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
 const modeColor = computed(() => {
-  // Sand-3 vs Sand-7
+  // Sand-4 vs Sand-7
   return isDark.value ? '#2A2A28' : '#CFCECA'
 })
 const { class: classNames, slotClass, gradientSize, gradientOpacity } = toRefs(props)
