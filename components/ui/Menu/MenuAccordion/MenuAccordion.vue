@@ -128,7 +128,7 @@ function isHighlighted(itemId: number, childId: number) {
               @click="onChildClick(item, child)"
             >
               <Icon
-                class="h-4 w-4 text-gray-6 transition-colors duration-200 group-focus-visible:color-mint-11 group-hover:color-mint-11"
+                class="h-4 w-4 color-gray-6 transition-colors duration-200 group-focus-visible:color-mint-11 group-hover:color-mint-11"
                 name="ri:arrow-right-line"
               />
               <span>{{ child.title }}</span>
