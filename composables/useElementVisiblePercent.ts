@@ -25,11 +25,9 @@ export function useElementVisiblePercent(
   const isVisible = computed(() => intersectionRatio.value >= percent / 100)
 
   watch(isVisible, (val) => {
-    if (val) {
-      consola.debug('[useElementVisiblePercent] Element is visible', targetRef.value)
+    if (val)
       hasBeenVisible.value = true
-    }
-  })
+  }, { immediate: true })
 
   return { isVisible, hasBeenVisible }
 }

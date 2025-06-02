@@ -4,16 +4,14 @@ const isVisibleList = ref(Array.from({ length: 12 }).fill(false))
 
 consola.debug('[Blog] =>', articleRefs.value)
 onMounted(() => {
-  // Example of accessing the refs
   articleRefs.value.forEach((el, idx) => {
     if (el) {
       // check if the el was already visible
-      const { hasBeenVisible } = useElementVisiblePercent(el as HTMLElement, 60)
+      const { hasBeenVisible } = useElementVisiblePercent(el as HTMLElement, 50)
       watch(
         hasBeenVisible,
         (visible) => {
           if (visible) {
-            // Log the visibility of the article
             consola.debug(`Article ${idx + 1} is visible`)
             isVisibleList.value[idx + 1] = true
           }
@@ -26,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="prismatic-emergence min-h-screen flex flex-col">
+  <div class="min-h-screen flex flex-col">
     <!-- Featured Articles Section -->
     <section>
       <div class="mx-auto px-4">
@@ -55,7 +53,7 @@ onMounted(() => {
             :key="`article-id-${i}`"
             :ref="articleRefs.set"
             :class="useClsx(
-              isVisibleList[i] ? 'animate-fade-in' : 'opacity-0',
+              isVisibleList[i] ? 'ethereal-cascade' : 'opacity-0',
               'group relative overflow-hidden border border-gray-6',
               'bg-pureWhite dark:bg-pureBlack hover:shadow-md',
               'rounded-lg border-solid transition-shadow',
@@ -93,3 +91,52 @@ onMounted(() => {
     </section>
   </div>
 </template>
+
+<style scoped>
+.ethereal-cascade {
+  animation: etherealCascade 0.9s linear forwards;
+}
+
+@keyframes etherealCascade {
+  0% {
+    opacity: 0;
+    transform: translateY(80px) rotateX(20deg);
+    filter: blur(12px);
+  }
+  15% {
+    opacity: 0.15;
+    transform: translateY(68px) rotateX(17deg);
+    filter: blur(10px);
+  }
+  30% {
+    opacity: 0.35;
+    transform: translateY(50px) rotateX(12deg);
+    filter: blur(7px);
+  }
+  45% {
+    opacity: 0.55;
+    transform: translateY(32px) rotateX(8deg);
+    filter: blur(4px);
+  }
+  60% {
+    opacity: 0.75;
+    transform: translateY(18px) rotateX(4deg);
+    filter: blur(2px);
+  }
+  75% {
+    opacity: 0.88;
+    transform: translateY(8px) rotateX(1.5deg);
+    filter: blur(1px);
+  }
+  90% {
+    opacity: 0.96;
+    transform: translateY(2px) rotateX(0.3deg);
+    filter: blur(0.3px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+    filter: blur(0);
+  }
+}
+</style>
