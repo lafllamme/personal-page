@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import CardSpotlight from '@/components/ui/Card/CardSpotlight/CardSpotlight.vue'
+
 const articleRefs = useTemplateRefsList()
 const isVisibleList = ref(Array.from({ length: 12 }).fill(false))
 
@@ -47,7 +49,7 @@ onMounted(() => {
         </div>
 
         <div class="grid gap-8 lg:grid-cols-3 md:grid-cols-2">
-          <div
+          <CardSpotlight
             v-for="i in 12"
             :id="`article-id-${i}`"
             :key="`article-id-${i}`"
@@ -55,8 +57,8 @@ onMounted(() => {
             :class="useClsx(
               isVisibleList[i] ? 'ethereal-cascade' : 'opacity-0',
               'group relative overflow-hidden border border-gray-6',
-              'bg-pureWhite dark:bg-pureBlack hover:shadow-md',
-              'rounded-lg border-solid transition-shadow',
+              'bg-pureWhite dark:bg-pureBlack',
+              'rounded-lg border-solid transition-shadow shadow-2xl shadow-gray-6A',
             )"
           >
             <div class="aspect-video overflow-hidden">
@@ -70,7 +72,7 @@ onMounted(() => {
               <div class="mb-2 text-sm text-gray-11">
                 May {{ i }}, 2024
               </div>
-              <h3 class="mb-2 text-xl font-bold transition-colors group-hover:color-mint-11">
+              <h3 class="mb-2 text-xl color-pureBlack font-bold transition-colors dark:color-pureWhite">
                 The Rise of AI in Modern Development
               </h3>
               <p class="text-gray-10">
@@ -78,14 +80,14 @@ onMounted(() => {
               </p>
               <div class="mt-4">
                 <a
-                  class="text-sm text-gray-12 font-medium underline-offset-4 hover:underline hover:underline-mint-8"
+                  class="text-sm text-gray-12 font-medium underline-offset-4 transition-all duration-300 ease-out hover:underline hover:underline-mint-8"
                   href="#"
                 >
                   Read More →
                 </a>
               </div>
             </div>
-          </div>
+          </CardSpotlight>
         </div>
       </div>
     </section>
