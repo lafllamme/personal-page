@@ -10,7 +10,7 @@ onMounted(() => {
   articleRefs.value.forEach((el, idx) => {
     if (el) {
       // check if the el was already visible
-      const { hasBeenVisible } = useElementVisiblePercent(el as HTMLElement, 50)
+      const { hasBeenVisible } = useElementVisiblePercent(el as HTMLElement, 25)
       watch(
         hasBeenVisible,
         (visible) => {
