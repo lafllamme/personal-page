@@ -1,4 +1,4 @@
-export const TrendingCardPropsDefaults: TrendingCardProps = {
+export const CardPropsDefaults: CardProps = {
   id: '',
   title: '',
   author: '',
@@ -8,7 +8,7 @@ export const TrendingCardPropsDefaults: TrendingCardProps = {
   href: '#',
 }
 
-export interface TrendingCardProps {
+export interface CardProps {
   id: string
   title: string
   description: string
