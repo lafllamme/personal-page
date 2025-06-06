@@ -58,7 +58,7 @@ function handleGenerateComplete() {
     >
       <!-- Circle Wrapper -->
       <div
-        class="animate-top-to-bottom-reveal mx-auto max-w-[450px] w-full md:order-last md:max-w-[800px] md:w-1/2 min-[1900px]:!max-w-[1200px]"
+        class="animate-top-to-bottom-reveal mx-auto max-w-[450px] w-full md:order-last md:max-w-[700px] md:w-1/2 min-[1900px]:!max-w-[1200px]"
       >
         <div
           :class="useClsx(renderBackground && '!bg-mint-8')"
