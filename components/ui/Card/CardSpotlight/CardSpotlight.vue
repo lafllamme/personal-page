@@ -24,7 +24,7 @@ const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
 const modeColor = computed(() => {
   // Sand-4 vs Sand-7
-  return isDark.value ? '#F1F0EF' : '#CFCECA'
+  return isDark.value ? '#31312E' : '#F2FBF9'
 })
 const { class: classNames, slotClass, gradientSize, gradientOpacity, variant } = toRefs(props)
 
