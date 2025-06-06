@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import CardSpotlight from '@/components/ui/Card/CardSpotlight/CardSpotlight.vue'
+import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
 import Link from '@/components/ui/Link/Link.vue'
 
 // --- MOCK DATA ---
 
-const spotlightArticle = reactive({
+const featuredArticle = reactive({
   id: 'spotlight',
   title: 'The Future of Web: AI, Serverless, and Beyond',
   description: 'A deep dive into the transformative technologies shaping the next generation of web development, from intelligent UIs to hyper-scalable infrastructures.',
@@ -59,33 +60,8 @@ const featuredArticles = reactive(
 
 // --- ANIMATION/VIEWPORT LOGIC ---
 
-const spotlightRefs = useTemplateRefsList()
 const featuredRefs = useTemplateRefsList()
-
-const isVisibleSpotlight = ref([false])
 const isVisibleFeatured = ref(Array.from({ length: featuredArticles.length }).fill(false))
-
-// TODO: Create a composable for this logic
-function useVisibilityObserver(refList: Ref, visibleList: Ref, threshold = 25) {
-  onMounted(() => {
-    refList.value.forEach((el: HTMLElement, idx: number) => {
-      if (el) {
-        const { hasBeenVisible } = useElementVisiblePercent(el, threshold)
-        watch(
-          hasBeenVisible,
-          (visible) => {
-            if (visible)
-              visibleList.value[idx] = true
-          },
-          { immediate: true },
-        )
-      }
-    })
-  })
-}
-
-// Attach the observers
-useVisibilityObserver(spotlightRefs, isVisibleSpotlight)
 useVisibilityObserver(featuredRefs, isVisibleFeatured)
 </script>
 
@@ -112,66 +88,24 @@ useVisibilityObserver(featuredRefs, isVisibleFeatured)
           </a>
         </div>
 
-        <!-- SPOTLIGHT + TRENDING -->
+        <!-- Featured + TRENDING -->
         <div class="flex flex-col gap-8 md:grid md:grid-cols-3 md:items-stretch md:gap-8">
-          <!-- Spotlight Article (left, spans 2 cols on desktop) -->
+          <!-- Featured Article (left, spans 2 cols on desktop) -->
           <div class="h-full w-full md:col-span-2 md:row-span-1">
-            <CardSpotlight
-              :id="spotlightArticle.id"
-              :ref="spotlightRefs.set"
-              :class="useClsx(
-                isVisibleSpotlight[0] ? 'ethereal-cascade' : 'opacity-0',
-                'hover:border-[#A0CEC2] dark:bg-pureBlack !p-0 dark:hover:border-[#385C54]',
-                'group relative h-full overflow-hidden border border-gray-6',
-                'transition-colors transition-shadow duration-300 ease-in-out',
-                'border-solid bg-pureWhite shadow-2xl shadow-gray-6A',
-              )"
-            >
-              <div class="aspect-video w-full overflow-hidden md:aspect-[3/1]">
-                <img
-                  :alt="spotlightArticle.title"
-                  :src="spotlightArticle.image"
-                  class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-                >
-              </div>
-              <div class="p-6">
-                <h3 class="geist-regular mb-2 text-2xl color-pureBlack font-semibold dark:color-pureWhite">
-                  {{ spotlightArticle.title }}
-                </h3>
-                <p class="mb-2 text-pretty color-gray-10 font-light">
-                  {{ spotlightArticle.description }}
-                </p>
-                <div class="mb-2 flex text-sm text-gray-11 space-x-4">
-                  <div class="flex items-center space-x-2">
-                    <Icon class="mt-px size-4 color-gray-10 group-hover:color-gray-12" name="ri:calendar-2-line" />
-                    <p>{{ spotlightArticle.date }}</p>
-                  </div>
-                  <span>·</span>
-                  <div class="flex items-center space-x-2">
-                    <Icon class="size-4 color-gray-10 group-hover:color-gray-12" name="ri:user-3-line" />
-                    <p>{{ spotlightArticle.author }}</p>
-                  </div>
-                </div>
-                <div class="flex items-center space-x-1.5">
-                  <Link
-                    :href="spotlightArticle.href"
-                    :underline="false"
-                    class="text-base color-gray-12 font-semibold"
-                  >
-                    Read More
-                  </Link>
-                  <Icon
-                    class="size-5 color-gray-8 transition-all duration-200 group-hover:translate-x-1 group-focus-visible:color-mint-11A group-hover:color-mint-11A"
-                    name="ri:arrow-right-line"
-                  />
-                </div>
-              </div>
-            </CardSpotlight>
+            <FeaturedCard
+              :id="featuredArticle.id"
+              :author="featuredArticle.author"
+              :date="featuredArticle.date"
+              :description="featuredArticle.description"
+              :href="featuredArticle.href"
+              :image="featuredArticle.image"
+              :title="featuredArticle.title"
+            />
           </div>
 
           <!-- Trending Column (right) -->
           <div class="m-0 h-full w-full flex flex-col justify-between p-0">
-            <h3 class="mb-2 text-lg font-bold md:mb-4">
+            <h3 class="figtree-regular mb-2 text-lg color-pureBlack font-bold md:mb-4 dark:color-pureWhite">
               Trending Now
             </h3>
             <!-- Trending cards at flex-end -->
@@ -199,7 +133,7 @@ useVisibilityObserver(featuredRefs, isVisibleFeatured)
             :key="item.id"
             :ref="featuredRefs.set"
             :class="useClsx(
-              'border border-solid border-gray-6 hover:border-[#A0CEC2] dark:hover:border-[#385C54]',
+              'border border-solid border-gray-6 hover:border-mint-11',
               'transition-colors transition-shadow duration-300 ease-in-out opacity-0',
               isVisibleFeatured[idx]! && 'ethereal-cascade',
               'bg-pureWhite dark:bg-pureBlack',
