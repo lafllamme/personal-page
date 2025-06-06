@@ -46,7 +46,7 @@ const trendingArticles = reactive([
   },
 ])
 
-const featuredArticles = reactive(
+const regularArticles = reactive(
   Array.from({ length: 12 }).map((_, i) => ({
     id: `article-id-${i + 1}`,
     title: 'The Rise of AI in Modern Development',
@@ -61,8 +61,8 @@ const featuredArticles = reactive(
 // --- ANIMATION/VIEWPORT LOGIC ---
 
 const featuredRefs = useTemplateRefsList()
-const isVisibleFeatured = ref(Array.from({ length: featuredArticles.length }).fill(false))
-useVisibilityObserver(featuredRefs, isVisibleFeatured)
+const isVisible = ref(Array.from({ length: regularArticles.length }).fill(false))
+useVisibilityObserver(featuredRefs, isVisible)
 </script>
 
 <template>
@@ -128,19 +128,19 @@ useVisibilityObserver(featuredRefs, isVisibleFeatured)
         <!-- Below: REGULAR GRID of articles -->
         <div class="grid mt-12 gap-8 lg:grid-cols-3 md:grid-cols-2">
           <CardSpotlight
-            v-for="(item, idx) in featuredArticles"
+            v-for="(item, idx) in regularArticles"
             :id="item.id"
             :key="item.id"
             :ref="featuredRefs.set"
             :class="useClsx(
               'border border-solid border-gray-6 hover:border-mint-11',
               'transition-colors transition-shadow duration-300 ease-in-out opacity-0',
-              isVisibleFeatured[idx]! && 'ethereal-cascade',
+              isVisible[idx]! && 'ethereal-cascade',
               'bg-pureWhite dark:bg-pureBlack',
               'group relative overflow-hidden',
               'shadow-2xl shadow-gray-6A',
             )"
-            :style="isVisibleFeatured[idx] ? `animation-delay:${(idx % 3) * 0.12 + 0.1}s` : ''"
+            :style="isVisible[idx] ? `animation-delay:${(idx % 3) * 0.12 + 0.1}s` : ''"
           >
             <!-- Image Wrapper -->
             <div class="aspect-video overflow-hidden">
