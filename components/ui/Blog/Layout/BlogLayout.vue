@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import CardSpotlight from '@/components/ui/Card/CardSpotlight/CardSpotlight.vue'
+import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
 import Link from '@/components/ui/Link/Link.vue'
 
 // --- MOCK DATA ---
@@ -20,6 +21,7 @@ const trendingArticles = reactive([
     title: 'Exploring New Tech Paradigms Vol. 1',
     description: 'Top paradigms, top minds.',
     date: 'June 4, 2025',
+    image: 'https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     author: 'Dr. Lex Icon',
     href: '#',
   },
@@ -28,6 +30,7 @@ const trendingArticles = reactive([
     title: 'Exploring New Tech Paradigms Vol. 2',
     description: 'New stacks and AI.',
     date: 'June 5, 2025',
+    image: 'https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     author: 'Dr. Lex Icon',
     href: '#',
   },
@@ -36,6 +39,7 @@ const trendingArticles = reactive([
     title: 'Exploring New Tech Paradigms Vol. 3',
     description: 'Infrastructure for the future.',
     date: 'June 6, 2025',
+    image: 'https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     author: 'Dr. Lex Icon',
     href: '#',
   },
@@ -56,11 +60,9 @@ const featuredArticles = reactive(
 // --- ANIMATION/VIEWPORT LOGIC ---
 
 const spotlightRefs = useTemplateRefsList()
-const trendingRefs = useTemplateRefsList()
 const featuredRefs = useTemplateRefsList()
 
 const isVisibleSpotlight = ref([false])
-const isVisibleTrending = ref(Array.from({ length: trendingArticles.length }).fill(false))
 const isVisibleFeatured = ref(Array.from({ length: featuredArticles.length }).fill(false))
 
 // TODO: Create a composable for this logic
@@ -84,7 +86,6 @@ function useVisibilityObserver(refList: Ref, visibleList: Ref, threshold = 25) {
 
 // Attach the observers
 useVisibilityObserver(spotlightRefs, isVisibleSpotlight)
-useVisibilityObserver(trendingRefs, isVisibleTrending)
 useVisibilityObserver(featuredRefs, isVisibleFeatured)
 </script>
 
@@ -130,7 +131,7 @@ useVisibilityObserver(featuredRefs, isVisibleFeatured)
                 <img
                   :alt="spotlightArticle.title"
                   :src="spotlightArticle.image"
-                  class="h-full w-full object-cover"
+                  class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
                 >
               </div>
               <div class="p-6">
@@ -175,44 +176,17 @@ useVisibilityObserver(featuredRefs, isVisibleFeatured)
             </h3>
             <!-- Trending cards at flex-end -->
             <div class="mt-auto flex flex-col gap-4">
-              <CardSpotlight
-                v-for="(item, idx) in trendingArticles"
-                :id="item.id"
-                :key="item.id"
-                :ref="trendingRefs.set"
-                :class="useClsx(
-                  isVisibleTrending[idx] ? 'ethereal-cascade' : 'opacity-0',
-                  'transition-colors duration-300 ease-in-out hover:border-[#A0CEC2] dark:bg-pureBlack dark:hover:border-[#385C54]',
-                  'overflow-hidden border border-gray-6 border-solid bg-pureWhite p-4 shadow-lg',
-                  'group relative min-h-[120px] flex flex-col justify-between',
-                )"
-                variant="small"
-              >
-                <div class="pb-1">
-                  <div class="mb-1 text-xs text-gray-11 font-bold">
-                    Trending Topic
-                  </div>
-                  <h4 class="mb-1 text-base font-semibold">
-                    {{ item.title }}
-                  </h4>
-                  <div class="text-xs text-gray-10">
-                    {{ item.date }} · {{ item.author }}
-                  </div>
-                </div>
-                <div class="flex items-center space-x-1.5">
-                  <Link
-                    :href="item.href"
-                    :underline="false"
-                    class="text-sm color-gray-12 font-semibold"
-                  >
-                    Read More
-                  </Link>
-                  <Icon
-                    class="size-4 color-gray-8 transition-all duration-200 group-hover:translate-x-1 group-focus-visible:color-mint-11A group-hover:color-mint-11A"
-                    name="ri:arrow-right-line"
-                  />
-                </div>
-              </CardSpotlight>
+              <TrendingCard
+                v-for="article in trendingArticles"
+                :id="article.id"
+                :key="article.id"
+                :author="article.author"
+                :date="article.date"
+                :description="article.description"
+                :href="article.href"
+                :image="article.image"
+                :title="article.title"
+              />
             </div>
           </div>
         </div>
