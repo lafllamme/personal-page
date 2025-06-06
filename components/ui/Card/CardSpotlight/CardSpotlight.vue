@@ -8,13 +8,15 @@ const props = withDefaults(
     gradientSize?: number
     gradientColor?: string
     gradientOpacity?: number
+    variant?: 'small' | 'default'
   }>(),
   {
     class: '',
     slotClass: '',
-    gradientSize: 80,
+    gradientSize: 200,
     gradientColor: '#00000044',
-    gradientOpacity: 1,
+    gradientOpacity: 0.8,
+    variant: 'default',
   },
 )
 
@@ -22,9 +24,9 @@ const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
 const modeColor = computed(() => {
   // Sand-4 vs Sand-7
-  return isDark.value ? '#2A2A28' : '#CFCECA'
+  return isDark.value ? '#F1F0EF' : '#CFCECA'
 })
-const { class: classNames, slotClass, gradientSize, gradientOpacity } = toRefs(props)
+const { class: classNames, slotClass, gradientSize, gradientOpacity, variant } = toRefs(props)
 
 const mouseX = ref(-gradientSize.value * 10)
 const mouseY = ref(-gradientSize.value * 10)
@@ -53,14 +55,26 @@ const backgroundStyle = computed(() => {
     rgba(0, 0, 0, 0) 70%
   )`
 })
+
+const borderRadius = computed(() => {
+  switch (variant.value) {
+    case 'small':
+      return 'rounded-tl-[30px] rounded-tr-[8px] rounded-br-[28px] rounded-bl-[10px]  '
+    case 'default':
+      return 'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]'
+    default:
+      return ''
+  }
+})
 </script>
 
 <template>
   <div
     :class="[
       classNames,
+      borderRadius,
     ]"
-    class="group relative size-full flex overflow-hidden rounded-xl"
+    class="group relative size-full flex overflow-hidden"
     @mouseleave="handleMouseLeave"
     @mousemove="handleMouseMove"
   >
@@ -69,7 +83,7 @@ const backgroundStyle = computed(() => {
     </div>
     <div
       :class="useClsx(
-        'pointer-events-none absolute inset-0 rounded-xl',
+        'pointer-events-none absolute inset-0',
         'opacity-0 transition-opacity duration-300 group-hover:opacity-100',
       )"
       :style="{
