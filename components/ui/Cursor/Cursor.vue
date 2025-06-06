@@ -231,6 +231,7 @@ onMounted(() => {
           'width .2s, height .2s, border-radius .2s, transform .2s, background-color .2s',
       }"
       class="pointer-events-none fixed left-0 top-0 z-9999 translate-z-0 will-change-transform"
+      inert
     >
       <!-- Orbit container always present in 'default', only opacity of SpinningText changes -->
       <div
