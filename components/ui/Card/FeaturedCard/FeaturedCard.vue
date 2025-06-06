@@ -39,12 +39,12 @@ useVisibilityObserver(featureRef, isVisible)
       </p>
       <div class="mb-2 flex text-sm text-gray-11 space-x-4">
         <div class="flex items-center space-x-2">
-          <Icon class="mt-px size-4 color-gray-10 group-hover:color-gray-12" name="ri:calendar-2-line" />
+          <Icon class="mt-px size-4 color-gray-10 group-hover:color-mint-12" name="ri:calendar-2-line" />
           <p>{{ date }}</p>
         </div>
         <span>·</span>
         <div class="flex items-center space-x-2">
-          <Icon class="size-4 color-gray-10 group-hover:color-gray-12" name="ri:user-3-line" />
+          <Icon class="size-4 color-gray-10 group-hover:color-mint-12" name="ri:user-3-line" />
           <p>{{ author }}</p>
         </div>
       </div>
@@ -52,7 +52,7 @@ useVisibilityObserver(featureRef, isVisible)
         <Link
           :href="href"
           :underline="false"
-          class="text-base color-gray-12 font-semibold"
+          class="text-base color-mint-12 font-semibold"
         >
           Read More
         </Link>
