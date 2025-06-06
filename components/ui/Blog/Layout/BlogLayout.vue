@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import CardSpotlight from '@/components/ui/Card/CardSpotlight/CardSpotlight.vue'
 import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
+import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
 import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
-import Link from '@/components/ui/Link/Link.vue'
 
 // --- MOCK DATA ---
 
@@ -57,12 +56,6 @@ const regularArticles = reactive(
     href: '#',
   })),
 )
-
-// --- ANIMATION/VIEWPORT LOGIC ---
-
-const featuredRefs = useTemplateRefsList()
-const isVisible = ref(Array.from({ length: regularArticles.length }).fill(false))
-useVisibilityObserver(featuredRefs, isVisible)
 </script>
 
 <template>
@@ -88,7 +81,7 @@ useVisibilityObserver(featuredRefs, isVisible)
           </a>
         </div>
 
-        <!-- Featured + TRENDING -->
+        <!-- Featured + Trending -->
         <div class="flex flex-col gap-8 md:grid md:grid-cols-3 md:items-stretch md:gap-8">
           <!-- Featured Article (left, spans 2 cols on desktop) -->
           <div class="h-full w-full md:col-span-2 md:row-span-1">
@@ -108,7 +101,7 @@ useVisibilityObserver(featuredRefs, isVisible)
             <h3 class="figtree-regular mb-2 text-lg color-pureBlack font-bold md:mb-4 dark:color-pureWhite">
               Trending Now
             </h3>
-            <!-- Trending cards at flex-end -->
+            <!-- Trending cards -->
             <div class="mt-auto flex flex-col gap-4">
               <TrendingCard
                 v-for="article in trendingArticles"
@@ -127,63 +120,19 @@ useVisibilityObserver(featuredRefs, isVisible)
 
         <!-- Below: REGULAR GRID of articles -->
         <div class="grid mt-12 gap-8 lg:grid-cols-3 md:grid-cols-2">
-          <CardSpotlight
-            v-for="(item, idx) in regularArticles"
-            :id="item.id"
-            :key="item.id"
-            :ref="featuredRefs.set"
-            :class="useClsx(
-              'border border-solid border-gray-6 hover:border-mint-11',
-              'transition-colors transition-shadow duration-300 ease-in-out opacity-0',
-              isVisible[idx]! && 'ethereal-cascade',
-              'bg-pureWhite dark:bg-pureBlack',
-              'group relative overflow-hidden',
-              'shadow-2xl shadow-gray-6A',
-            )"
-            :style="isVisible[idx] ? `animation-delay:${(idx % 3) * 0.12 + 0.1}s` : ''"
-          >
-            <!-- Image Wrapper -->
-            <div class="aspect-video overflow-hidden">
-              <img
-                :alt="item.title"
-                :src="item.image"
-                class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
-              >
-            </div>
-            <!-- Card Content -->
-            <div class="p-6">
-              <h3 class="geist-regular mb-2 text-xl color-pureBlack font-medium dark:color-pureWhite !font-semibold">
-                {{ item.title }}
-              </h3>
-              <p class="mb-2 text-pretty color-gray-10 font-light">
-                {{ item.description }}
-              </p>
-              <div class="mb-3 flex text-sm text-gray-11 font-200 space-x-4">
-                <div class="flex items-center space-x-2">
-                  <Icon class="mt-px size-4 color-gray-10 group-hover:color-gray-12" name="ri:calendar-2-line" />
-                  <p>{{ item.date }}</p>
-                </div>
-                <span>·</span>
-                <div class="flex items-center space-x-2">
-                  <Icon class="size-4 color-gray-10 group-hover:color-gray-12" name="ri:user-3-line" />
-                  <p>{{ item.author }}</p>
-                </div>
-              </div>
-              <div class="flex items-center space-x-1.5">
-                <Link
-                  :href="item.href"
-                  :underline="false"
-                  class="text-base color-gray-12 font-semibold"
-                >
-                  Read More
-                </Link>
-                <Icon
-                  class="size-5 color-gray-8 transition-all duration-200 group-hover:translate-x-1 group-focus-visible:color-mint-11A group-hover:color-mint-11A"
-                  name="ri:arrow-right-line"
-                />
-              </div>
-            </div>
-          </CardSpotlight>
+          <!-- Regular Cards -->
+          <RegularCard
+            v-for="(article, idx) in regularArticles"
+            :id="article.id"
+            :key="article.id"
+            :author="article.author"
+            :date="article.date"
+            :description="article.description"
+            :href="article.href"
+            :image="article.image"
+            :style="`animation-delay:${(idx % 3) * 0.12 + 0.1}s`"
+            :title="article.title"
+          />
         </div>
       </div>
     </section>
