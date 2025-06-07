@@ -52,7 +52,7 @@ useVisibilityObserver(featureRef, isVisible)
         <Link
           :href="href"
           :underline="false"
-          class="text-base color-mint-12 font-semibold"
+          class="text-base color-gray-12 font-semibold"
         >
           Read More
         </Link>
