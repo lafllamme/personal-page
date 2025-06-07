@@ -54,7 +54,7 @@ function handleGenerateComplete() {
     class="bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] h-svh dark:bg-pureBlack"
   >
     <div
-      class="flex flex-col items-center justify-center px-4 pt-20 md:flex-row"
+      class="flex flex-col items-center justify-center px-2 md:flex-row md:px-4"
     >
       <!-- Circle Wrapper -->
       <div
@@ -84,10 +84,14 @@ function handleGenerateComplete() {
           {{ t('hero.headline') }}
         </h1>
         <TextGenerate
+          :class="useClsx(
+            'max-w-3xl 2xl:max-w-4xl md:text-justify',
+            'text-wrap text-[clamp(1rem,2vw,1.5rem)] text-transparent',
+            'from-gray-10 to-mint-12 bg-gradient-to-r bg-clip-text font-300',
+          )"
           :delay="0.8"
           :duration="1.1"
           :words="t('hero.text')"
-          class="max-w-3xl text-wrap text-[clamp(1rem,2vw,1.5rem)] color-mint-12A font-300 2xl:max-w-4xl md:text-justify"
           @generate="handleGenerateComplete"
         />
         <div
