@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { CardProps } from '../Card.model'
+import ArticleBadge from '@/components/ui/Badge/ArticleBadge.vue'
 import CardSpotlight from '@/components/ui/Card/CardSpotlight/CardSpotlight.vue'
 import Link from '@/components/ui/Link/Link.vue'
 import { CardPropsDefaults } from '../Card.model'
@@ -23,12 +24,19 @@ useVisibilityObserver(featureRef, isVisible)
       'border-solid bg-pureWhite shadow-2xl shadow-gray-6A',
     )"
   >
-    <div class="aspect-video w-full overflow-hidden md:aspect-[3/1]">
+    <div class="relative aspect-video w-full overflow-hidden md:aspect-[3/1]">
       <img
         :alt="title"
         :src="image"
         class="h-full w-full object-cover transition-transform duration-300 ease-in-out group-hover:scale-105"
       >
+      <ArticleBadge
+        class="absolute top-1/4 -left-2"
+        radius-type="half"
+        size="large"
+        title="Featured"
+        variant="tertiary"
+      />
     </div>
     <div class="p-6">
       <h3 class="geist-regular mb-2 text-2xl color-pureBlack font-semibold dark:color-pureWhite">
