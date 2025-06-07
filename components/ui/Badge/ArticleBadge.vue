@@ -51,6 +51,7 @@ const textClasses = computed(() => variantClasses[variant.value].text)
     )"
   >
     <Icon
+      v-if="align === 'left'"
       :class="useClsx(
         iconClasses,
         'size-4',
@@ -67,6 +68,15 @@ const textClasses = computed(() => variantClasses[variant.value].text)
     >
       {{ title }}
     </p>
+    <Icon
+      v-if="align === 'right'"
+      :class="useClsx(
+        iconClasses,
+        'size-4',
+        size === 'large' ? 'size-6' : '',
+      )"
+      :name="iconName"
+    />
   </div>
 </template>
 
