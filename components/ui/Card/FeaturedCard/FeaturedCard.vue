@@ -31,6 +31,7 @@ useVisibilityObserver(featureRef, isVisible)
         class="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110"
       >
       <ArticleBadge
+        align="right"
         class="absolute top-1/4 -left-2"
         radius-type="half"
         size="large"
