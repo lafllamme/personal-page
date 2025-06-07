@@ -8,26 +8,26 @@ const { title, variant, align, radiusType, size } = toRefs(props)
 
 const variantClasses = {
   secondary: {
-    root: 'border-purple-8 bg-purple-2',
-    icon: 'color-purple-9A',
+    root: 'transition-transform duration-200 ease-out border-purple-8 bg-purple-2 group-hover:scale-105 group-hover:saturate-150',
+    icon: 'color-purple-9A group-hover:rotate-12',
     iconName: 'lucide:sparkles',
     text: 'color-purple-11',
   },
   primary: {
-    root: 'border-mint-7 bg-mint-2',
-    icon: 'color-mint-9',
-    iconName: 'ri:sparkling-2-line',
-    text: 'color-mint-12',
+    root: 'transition-transform duration-200 linear border-jade-10 bg-jade-10 group-hover:scale-105 group-hover:saturate-150',
+    icon: 'color-mint-1 dark:color-pureBlack',
+    iconName: 'ri:arrow-right-up-line',
+    text: 'color-mint-1 dark:color-pureBlack',
   },
   default: {
-    root: 'border-gray-8 bg-gray-2',
-    icon: 'color-gray-9',
+    root: 'transition-transform duration-200 ease-out border-gray-8 bg-gray-2 group-hover:scale-105 group-hover:saturate-150',
+    icon: 'color-gray-9 group-hover:rotate-12',
     iconName: 'ri:sparkling-2-line',
     text: 'color-gray-11',
   },
   tertiary: {
-    root: 'border-amber-8 bg-amber-2',
-    icon: 'color-amber-9',
+    root: 'transition-transform duration-200 ease-out border-amber-8 bg-amber-2 group-hover:scale-105 group-hover:saturate-150',
+    icon: 'color-amber-9 group-hover:rotate-12',
     iconName: 'ri:flashlight-line',
     text: 'color-amber-11',
   },
@@ -43,16 +43,18 @@ const textClasses = computed(() => variantClasses[variant.value].text)
   <div
     :class="useClsx(
       rootClasses,
-      'px-3 py-1 space-x-1',
-      'mb-1 w-fit inline-flex items-center',
+      size === 'large' ? 'px-4 py-2' : 'px-3 py-1 space-x-1',
+      size === 'large' ? 'space-x-2' : '',
+      'mb-1 w-fit flex items-center',
       radiusType === 'half' && 'rounded-tl-none rounded-bl-none',
-      'border rounded-full border-solid transition-transform duration-200 ease-out group-hover:scale-105 group-hover:saturate-150',
+      'border rounded-full border-solid',
     )"
   >
     <Icon
       :class="useClsx(
         iconClasses,
-        'size-4 group-hover:rotate-12',
+        'size-4',
+        size === 'large' ? 'size-6' : '',
       )"
       :name="iconName"
     />
