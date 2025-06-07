@@ -79,7 +79,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             <h2
               ref="headlineRef"
               :class="useClsx(
-                'geist-regular mb-4 text-5xl font-bold tracking-tighter',
+                'geist-regular mb-4 text-3xl md:text-5xl font-bold tracking-tighter',
                 'color-pureBlack  dark:color-pureWhite',
                 isHeadingVisible ? 'animate-fade-in' : 'opacity-0',
               )"
@@ -123,13 +123,21 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           <!-- Trending Column (right) -->
           <div class="h-full w-full flex flex-col justify-end">
             <div>
-              <h3
-                ref="subheadingRef"
+              <div
                 :class="useClsx(isSubheadingVisible ? 'animate-fade-in' : 'opacity-0')"
-                class="figtree-regular mb-6 text-2xl color-pureBlack font-bold md:mb-10 dark:color-pureWhite"
+                class="mb-6 flex items-center md:mb-10 space-x-2"
               >
-                Trending Now
-              </h3>
+                <Icon
+                  class="size-8 color-mint-8 md:size-12"
+                  name="ri:speak-ai-line"
+                />
+                <h3
+                  ref="subheadingRef"
+                  class="figtree-regular text-xl color-pureBlack font-bold lg:text-3xl md:text-2xl dark:color-pureWhite"
+                >
+                  Trending Topics
+                </h3>
+              </div>
               <div class="flex flex-col gap-4">
                 <TrendingCard
                   v-for="article in trendingArticles"
@@ -148,7 +156,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         </div>
 
         <!-- Below: REGULAR GRID of articles -->
-        <div class="grid mt-12 gap-8 lg:grid-cols-3 md:grid-cols-2">
+        <div class="grid mb-24 mt-12 gap-8 lg:grid-cols-3 md:grid-cols-24">
           <!-- Regular Cards -->
           <RegularCard
             v-for="(article, idx) in regularArticles"
