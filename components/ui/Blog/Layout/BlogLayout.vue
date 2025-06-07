@@ -80,7 +80,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
               ref="headlineRef"
               :class="useClsx(
                 'geist-regular mb-4 text-3xl md:text-5xl font-bold tracking-tighter',
-                'color-pureBlack  dark:color-pureWhite',
+                'color-mint-12  dark:color-pureWhite',
                 isHeadingVisible ? 'animate-fade-in' : 'opacity-0',
               )"
             >

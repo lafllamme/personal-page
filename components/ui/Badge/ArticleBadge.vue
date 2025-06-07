@@ -14,7 +14,7 @@ const variantClasses = {
     text: 'color-purple-11',
   },
   primary: {
-    root: 'transition-transform duration-200 linear border-jade-10 bg-jade-10 group-hover:scale-105 group-hover:saturate-150',
+    root: 'transition-transform duration-200 linear border-jade-9 bg-jade-9 group-hover:scale-105 group-hover:saturate-150',
     icon: 'color-mint-1 dark:color-pureBlack',
     iconName: 'ri:arrow-right-up-line',
     text: 'color-mint-1 dark:color-pureBlack',
