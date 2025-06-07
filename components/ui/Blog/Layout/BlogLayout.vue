@@ -156,7 +156,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         </div>
 
         <!-- Below: REGULAR GRID of articles -->
-        <div class="grid mb-24 mt-12 gap-8 lg:grid-cols-3 md:grid-cols-24">
+        <div class="grid mb-24 mt-12 gap-8 lg:grid-cols-3 sm:grid-cols-2">
           <!-- Regular Cards -->
           <RegularCard
             v-for="(article, idx) in regularArticles"
