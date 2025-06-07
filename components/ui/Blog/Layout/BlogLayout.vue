@@ -73,14 +73,14 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
   <div class="min-h-screen flex flex-col">
     <!-- Header -->
     <section>
-      <div class="mx-auto px-10">
+      <div class="mx-auto px-4 md:px-10">
         <div class="mb-12 flex flex-col items-start justify-between md:flex-row md:items-end">
           <div>
             <h2
               ref="headlineRef"
               :class="useClsx(
-                'geist-regular mb-4 text-3xl md:text-5xl font-bold tracking-tighter',
-                'color-mint-12  dark:color-pureWhite',
+                'geist-regular mb-4 text-3xl md:text-5xl font-bold tracking-tight',
+                'color-mint-12',
                 isHeadingVisible ? 'animate-fade-in' : 'opacity-0',
               )"
             >
@@ -133,7 +133,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                 />
                 <h3
                   ref="subheadingRef"
-                  class="figtree-regular text-xl color-pureBlack font-bold lg:text-3xl md:text-2xl dark:color-pureWhite"
+                  class="figtree-regular text-xl color-pureBlack tracking-tight lg:text-3xl md:text-2xl dark:color-pureWhite !font-medium"
                 >
                   Trending Topics
                 </h3>
