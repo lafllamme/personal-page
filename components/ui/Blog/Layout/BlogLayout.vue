@@ -56,6 +56,17 @@ const regularArticles = reactive(
     href: '#',
   })),
 )
+
+const isHeadingVisible = ref(false)
+const isHintVisible = ref(false)
+const isSubheadingVisible = ref(false)
+const headlineRef = useTemplateRef('headlineRef')
+const hintRef = useTemplateRef('hintRef')
+const subheadingRef = useTemplateRef('subheadingRef')
+
+useVisibilityObserver(hintRef, isHintVisible)
+useVisibilityObserver(subheadingRef, isSubheadingVisible)
+useVisibilityObserver(headlineRef, isHeadingVisible)
 </script>
 
 <template>
@@ -63,16 +74,29 @@ const regularArticles = reactive(
     <!-- Header -->
     <section>
       <div class="mx-auto px-10">
-        <div class="mb-12 flex flex-col animate-fade-in items-start justify-between md:flex-row md:items-end">
+        <div class="mb-12 flex flex-col items-start justify-between md:flex-row md:items-end">
           <div>
-            <h2 class="geist-regular mb-4 text-3xl color-pureBlack font-bold tracking-tighter dark:color-pureWhite">
+            <h2
+              ref="headlineRef"
+              :class="useClsx(
+                'geist-regular mb-4 text-5xl font-bold tracking-tighter',
+                'color-pureBlack  dark:color-pureWhite',
+                isHeadingVisible ? 'animate-fade-in' : 'opacity-0',
+              )"
+            >
               Featured Articles
             </h2>
-            <p class="geist-regular max-w-2xl text-gray-10">
+            <p
+              ref="hintRef"
+              :class="useClsx(isHintVisible ? 'animate-fade-in' : 'opacity-0')"
+              class="geist-regular max-w-2xl text-gray-10"
+            >
               The most insightful pieces from our expert contributors.
             </p>
           </div>
           <a
+            ref="hintRef"
+            :class="useClsx(isHintVisible ? 'animate-fade-in' : 'opacity-0')"
             class="geist-regular mt-4 flex items-center text-sm text-gray-12 font-medium md:mt-0 hover:text-gray-10"
             href="#"
           >
@@ -97,23 +121,28 @@ const regularArticles = reactive(
           </div>
 
           <!-- Trending Column (right) -->
-          <div class="m-0 h-full w-full flex flex-col justify-between p-0">
-            <h3 class="figtree-regular mb-2 text-lg color-pureBlack font-bold md:mb-4 dark:color-pureWhite">
-              Trending Now
-            </h3>
-            <!-- Trending cards -->
-            <div class="mt-auto flex flex-col gap-4">
-              <TrendingCard
-                v-for="article in trendingArticles"
-                :id="article.id"
-                :key="article.id"
-                :author="article.author"
-                :date="article.date"
-                :description="article.description"
-                :href="article.href"
-                :image="article.image"
-                :title="article.title"
-              />
+          <div class="h-full w-full flex flex-col justify-end">
+            <div>
+              <h3
+                ref="subheadingRef"
+                :class="useClsx(isSubheadingVisible ? 'animate-fade-in' : 'opacity-0')"
+                class="figtree-regular mb-6 text-2xl color-pureBlack font-bold md:mb-10 dark:color-pureWhite"
+              >
+                Trending Now
+              </h3>
+              <div class="flex flex-col gap-4">
+                <TrendingCard
+                  v-for="article in trendingArticles"
+                  :id="article.id"
+                  :key="article.id"
+                  :author="article.author"
+                  :date="article.date"
+                  :description="article.description"
+                  :href="article.href"
+                  :image="article.image"
+                  :title="article.title"
+                />
+              </div>
             </div>
           </div>
         </div>
