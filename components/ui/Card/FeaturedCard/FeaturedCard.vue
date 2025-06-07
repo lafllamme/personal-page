@@ -35,7 +35,7 @@ useVisibilityObserver(featureRef, isVisible)
         radius-type="half"
         size="large"
         title="Featured"
-        variant="tertiary"
+        variant="primary"
       />
     </div>
     <div class="p-6">
