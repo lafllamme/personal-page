@@ -87,7 +87,7 @@ function handleGenerateComplete() {
           :delay="0.8"
           :duration="1.1"
           :words="t('hero.text')"
-          class="max-w-3xl text-wrap text-[clamp(1rem,2vw,1.5rem)] text-gray-10 font-300 2xl:max-w-4xl md:text-justify"
+          class="max-w-3xl text-wrap text-[clamp(1rem,2vw,1.5rem)] color-mint-12A font-300 2xl:max-w-4xl md:text-justify"
           @generate="handleGenerateComplete"
         />
         <div
