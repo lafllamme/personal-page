@@ -160,38 +160,4 @@ watch(isOpen, (open) => {
   font-optical-sizing: auto;
   font-style: normal;
 }
-
-.slide-out-blurred-top {
-  animation: slide-out-blurred-top 0.45s cubic-bezier(0.755, 0.05, 0.855, 0.06) both;
-}
-
-@keyframes slide-out-blurred-top {
-  0% {
-    transform: translateY(0) scaleY(1) scaleX(1);
-    transform-origin: 50% 0;
-    filter: blur(0);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-1000px) scaleY(2) scaleX(0.2);
-    transform-origin: 50% 0;
-    filter: blur(40px);
-    opacity: 0;
-  }
-}
-
-.slide-in-from-top-3 {
-  animation-name: slideInFromTop;
-}
-
-@keyframes slideInFromTop {
-  from {
-    opacity: 0;
-    transform: translateY(-0.75rem);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 </style>
