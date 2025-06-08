@@ -51,6 +51,8 @@ function handleSubscribe() {
 
 // get current year as string
 const currentYear = new Date().getFullYear().toString()
+
+const hasInputFocus = ref(false)
 </script>
 
 <template>
@@ -77,19 +79,32 @@ const currentYear = new Date().getFullYear().toString()
             <h3 class="text-lg color-mint-11 font-medium tracking-wide">
               Stay Informed
             </h3>
-            <div class="group flex <lg:max-w-90">
+            <div class="group relative flex <lg:max-w-90">
               <input
+                id="newsletter-email"
                 v-model="email"
                 :class="useClsx(
                   'placeholder:color-gray-9 placeholder:font-light placeholder:tracking-tight',
                   'group-focus-within:outline-none group-focus-within:ring group-focus-within:ring-mint-12',
                   'h-10 flex-1 border border-solid border-gray-8',
                   'rounded-full rounded-tr-none rounded-br-none',
-                  'bg-gray-2 px-3 py-2 b-r-none ',
+                  'bg-gray-2 px-3 py-2 b-r-none peer',
                 )"
-                placeholder="Enter your email"
                 type="email"
+                @blur="hasInputFocus = false"
+                @focus="hasInputFocus = true"
               >
+              <label
+                :class="useClsx(
+                  hasInputFocus && 'slide-out-blurred-top',
+                  'color-gray-10 transition-all duration-300 ease-out',
+                  'pointer-events-none absolute left-4 top-1/2 transform',
+                  'peer-focus:top-4 -translate-y-1/2 animation-fill-forwards peer-focus:text-xs peer-focus:-translate-y-2',
+                )"
+                for="newsletter-email"
+              >
+                Enter your Email
+              </label>
               <button
                 :class="useClsx(
                   'h-10 w-10 flex shrink-0 items-center justify-center',
