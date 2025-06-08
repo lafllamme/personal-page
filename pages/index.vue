@@ -51,7 +51,7 @@ function handleGenerateComplete() {
 
 <template>
   <div
-    class="bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] h-svh dark:bg-pureBlack"
+    class="bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack"
   >
     <div
       class="flex flex-col items-center justify-center px-2 md:flex-row md:px-4"
