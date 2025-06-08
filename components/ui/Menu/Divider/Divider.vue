@@ -1,5 +1,8 @@
+<script lang="ts" setup>
+</script>
+
 <template>
   <div
-    class="h-6 w-px bg-gray-11 transition-colors duration-300"
+    class="h-px w-full bg-gray-6 transition-colors duration-300"
   />
 </template>
