@@ -61,7 +61,7 @@ const currentYear = new Date().getFullYear().toString()
       <!-- Main Footer Content -->
       <div class="grid grid-cols-1 mb-12 gap-12 lg:grid-cols-12">
         <!-- Brand Section -->
-        <div class="lg:col-span-4 space-y-6">
+        <div class="color-gray-12 lg:col-span-4 space-y-6">
           <div>
             <h2 class="mb-4 text-3xl font-extralight tracking-wider">
               TecNews
@@ -73,7 +73,7 @@ const currentYear = new Date().getFullYear().toString()
 
           <!-- Newsletter -->
           <div class="space-y-4">
-            <h3 class="text-lg font-medium tracking-wide">
+            <h3 class="text-lg color-mint-11 font-medium tracking-wide">
               Stay Informed
             </h3>
             <div class="group flex <lg:max-w-90">
@@ -109,14 +109,14 @@ const currentYear = new Date().getFullYear().toString()
         <!-- Navigation Links -->
         <div class="grid grid-cols-2 gap-8 lg:col-span-8 md:grid-cols-4">
           <div class="space-y-4">
-            <h3 class="text-gray-400 text-sm font-semibold tracking-wider uppercase">
+            <h3 class="text-sm color-mint-12 font-semibold tracking-wider uppercase">
               Categories
             </h3>
             <nav class="space-y-3">
               <a
                 v-for="item in categories"
                 :key="item"
-                class="text-gray-300 hover:text-white block font-light transition-colors"
+                class="hover:text-white block color-gray-11 font-light transition-colors"
                 href="#"
               >
                 {{ item }}
@@ -125,14 +125,14 @@ const currentYear = new Date().getFullYear().toString()
           </div>
 
           <div class="space-y-4">
-            <h3 class="text-gray-400 text-sm font-semibold tracking-wider uppercase">
+            <h3 class="text-sm color-mint-12 font-semibold tracking-wider uppercase">
               Resources
             </h3>
             <nav class="space-y-3">
               <a
                 v-for="item in resources"
                 :key="item"
-                class="text-gray-300 hover:text-white block font-light transition-colors"
+                class="hover:text-white block color-gray-11 font-light transition-colors"
                 href="#"
               >
                 {{ item }}
@@ -141,14 +141,14 @@ const currentYear = new Date().getFullYear().toString()
           </div>
 
           <div class="space-y-4">
-            <h3 class="text-gray-400 text-sm font-semibold tracking-wider uppercase">
+            <h3 class="text-sm color-mint-12 font-semibold tracking-wider uppercase">
               Company
             </h3>
             <nav class="space-y-3">
               <a
                 v-for="item in company"
                 :key="item"
-                class="text-gray-300 hover:text-white block font-light transition-colors"
+                class="hover:text-white block color-gray-11 font-light transition-colors"
                 href="#"
               >
                 {{ item }}
@@ -157,7 +157,7 @@ const currentYear = new Date().getFullYear().toString()
           </div>
 
           <div class="space-y-4">
-            <h3 class="text-gray-400 text-sm font-semibold tracking-wider uppercase">
+            <h3 class="text-sm color-mint-12 font-semibold tracking-wider uppercase">
               Connect
             </h3>
             <div class="flex space-x-4">
@@ -165,7 +165,7 @@ const currentYear = new Date().getFullYear().toString()
                 v-for="social in socialLinks"
                 :key="social.name"
                 :href="social.href"
-                class="bg-black/50 hover:bg-black/80 border-gray-800 border rounded-lg transition-colors"
+                class="color-pureBlack dark:color-pureWhite"
               >
                 <Icon
                   :name="social.iconName"
@@ -183,14 +183,14 @@ const currentYear = new Date().getFullYear().toString()
 
       <!-- Bottom Section -->
       <div class="flex flex-col items-center justify-between pt-8 md:flex-row space-y-4 md:space-y-0">
-        <p class="text-gray-400 font-light">
+        <p class="color-gray-11 font-light">
           © {{ currentYear }} TecNews. All rights reserved.
         </p>
         <div class="flex space-x-6">
           <a
             v-for="item in legalLinks"
             :key="item"
-            class="text-gray-400 hover:text-white text-sm font-light transition-colors"
+            class="hover:text-white text-sm color-gray-11 font-light transition-colors"
             href="#"
           >
             {{ item }}
