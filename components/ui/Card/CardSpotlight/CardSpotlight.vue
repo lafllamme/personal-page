@@ -22,10 +22,15 @@ const props = withDefaults(
 
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
+
 const modeColor = computed(() => {
+  // <-- SSR fallback
+  if (import.meta.server)
+    return '#F2FBF9'
   // Sand-4 vs Sand-7
   return isDark.value ? '#31312E' : '#F2FBF9'
 })
+
 const { class: classNames, slotClass, gradientSize, gradientOpacity, variant } = toRefs(props)
 
 const mouseX = ref(-gradientSize.value * 10)
@@ -43,11 +48,6 @@ function handleMouseLeave() {
   mouseY.value = -gradientSize.value * 10
 }
 
-onMounted(() => {
-  mouseX.value = -gradientSize.value * 10
-  mouseY.value = -gradientSize.value * 10
-})
-
 const backgroundStyle = computed(() => {
   return `radial-gradient(
     circle at ${mouseX.value}px ${mouseY.value}px,
@@ -59,7 +59,7 @@ const backgroundStyle = computed(() => {
 const borderRadius = computed(() => {
   switch (variant.value) {
     case 'small':
-      return 'rounded-tl-[30px] rounded-tr-[8px] rounded-br-[28px] rounded-bl-[10px]  '
+      return 'rounded-tl-[30px] rounded-tr-[8px] rounded-br-[28px] rounded-bl-[10px]'
     case 'default':
       return 'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]'
     default:
