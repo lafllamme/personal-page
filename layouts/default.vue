@@ -1,4 +1,5 @@
 <script setup>
+import Footer from '@/components/ui/Footer/Footer.vue'
 import Header from '@/components/ui/Header/Header.vue'
 </script>
 
@@ -12,6 +13,7 @@ import Header from '@/components/ui/Header/Header.vue'
       <main class="mt-[calc(3rem+1px)] md:mt-[calc(3.5rem+1px)]">
         <slot name="default" />
       </main>
+      <Footer />
     </div>
   </div>
 </template>
