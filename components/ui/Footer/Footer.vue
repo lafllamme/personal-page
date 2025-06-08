@@ -1,0 +1,202 @@
+<script setup>
+import Divider from '@/components/ui/Menu/Divider/Divider.vue'
+
+// Reactive data
+const email = ref('')
+
+// Static data
+const categories = [
+  'Artificial Intelligence',
+  'Blockchain',
+  'Cybersecurity',
+  'Cloud Computing',
+]
+
+const resources = [
+  'Latest News',
+  'Trending',
+  'Analysis',
+  'Interviews',
+]
+
+const company = [
+  'About Us',
+  'Editorial Team',
+  'Careers',
+  'Contact',
+]
+
+const socialLinks = [
+  { name: 'Twitter', iconName: 'ri:twitter-x-fill', href: '#' },
+  { name: 'LinkedIn', iconName: 'ri:linkedin-box-fill', href: '#' },
+  { name: 'GitHub', iconName: 'ri:github-fill', href: '#' },
+  { name: 'Email', iconName: 'ri:mail-send-fill', href: '#' },
+]
+
+const legalLinks = [
+  'Privacy Policy',
+  'Terms of Service',
+  'Cookie Policy',
+]
+
+// Methods
+function handleSubscribe() {
+  if (email.value.trim()) {
+    console.log('Subscribing email:', email.value)
+    // Add your newsletter subscription logic here
+    email.value = ''
+  }
+}
+
+// get current year as string
+const currentYear = new Date().getFullYear().toString()
+</script>
+
+<template>
+  <div class="px-4 md:px-12">
+    <Divider />
+  </div>
+  <footer class="from-gray-900 via-gray-900 to-black text-white bg-gradient-to-br">
+    <div class="px-4 py-16 md:px-12">
+      <!-- Main Footer Content -->
+      <div class="grid grid-cols-1 mb-12 gap-12 lg:grid-cols-12">
+        <!-- Brand Section -->
+        <div class="lg:col-span-4 space-y-6">
+          <div>
+            <h2 class="mb-4 text-3xl font-extralight tracking-wider">
+              TecNews
+            </h2>
+            <p class="text-gray-300 font-light leading-relaxed">
+              Delivering cutting-edge technology insights and analysis for the modern digital landscape.
+            </p>
+          </div>
+
+          <!-- Newsletter -->
+          <div class="space-y-4">
+            <h3 class="text-lg font-medium tracking-wide">
+              Stay Informed
+            </h3>
+            <div class="group flex <lg:max-w-90">
+              <input
+                v-model="email"
+                :class="useClsx(
+                  'placeholder:color-gray-9 placeholder:font-light placeholder:tracking-tight',
+                  'group-focus:outline-none group-focus:ring group-focus:ring-mint-11',
+                  'h-10 flex-1 border border-solid border-gray-8',
+                  'rounded-full rounded-tr-none rounded-br-none',
+                  'bg-gray-2 px-3 py-2 b-r-none ',
+                )"
+                placeholder="Enter your email"
+                type="email"
+              >
+              <button
+                :class="useClsx(
+                  'h-10 w-10 flex shrink-0 items-center justify-center',
+                  'rounded-full rounded-tl-none rounded-bl-none',
+                  'bg-mint-12 transition-colors',
+                )"
+                @click="handleSubscribe"
+              >
+                <Icon
+                  class="size-4 color-mint-1 md:size-6"
+                  name="ri:arrow-right-line"
+                />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="grid grid-cols-2 gap-8 lg:col-span-8 md:grid-cols-4">
+          <div class="space-y-4">
+            <h3 class="text-gray-400 text-sm font-semibold tracking-wider uppercase">
+              Categories
+            </h3>
+            <nav class="space-y-3">
+              <a
+                v-for="item in categories"
+                :key="item"
+                class="text-gray-300 hover:text-white block font-light transition-colors"
+                href="#"
+              >
+                {{ item }}
+              </a>
+            </nav>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="text-gray-400 text-sm font-semibold tracking-wider uppercase">
+              Resources
+            </h3>
+            <nav class="space-y-3">
+              <a
+                v-for="item in resources"
+                :key="item"
+                class="text-gray-300 hover:text-white block font-light transition-colors"
+                href="#"
+              >
+                {{ item }}
+              </a>
+            </nav>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="text-gray-400 text-sm font-semibold tracking-wider uppercase">
+              Company
+            </h3>
+            <nav class="space-y-3">
+              <a
+                v-for="item in company"
+                :key="item"
+                class="text-gray-300 hover:text-white block font-light transition-colors"
+                href="#"
+              >
+                {{ item }}
+              </a>
+            </nav>
+          </div>
+
+          <div class="space-y-4">
+            <h3 class="text-gray-400 text-sm font-semibold tracking-wider uppercase">
+              Connect
+            </h3>
+            <div class="flex space-x-4">
+              <a
+                v-for="social in socialLinks"
+                :key="social.name"
+                :href="social.href"
+                class="bg-black/50 hover:bg-black/80 border-gray-800 border rounded-lg transition-colors"
+              >
+                <Icon
+                  :name="social.iconName"
+                  class="h-6 w-6"
+                />
+
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Separator -->
+      <Divider />
+
+      <!-- Bottom Section -->
+      <div class="flex flex-col items-center justify-between pt-8 md:flex-row space-y-4 md:space-y-0">
+        <p class="text-gray-400 font-light">
+          © {{ currentYear }} TecNews. All rights reserved.
+        </p>
+        <div class="flex space-x-6">
+          <a
+            v-for="item in legalLinks"
+            :key="item"
+            class="text-gray-400 hover:text-white text-sm font-light transition-colors"
+            href="#"
+          >
+            {{ item }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+</template>
