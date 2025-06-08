@@ -1,4 +1,5 @@
 <script setup>
+import ScrollTopButton from '@/components/ui/Buttons/ScrollTopButton/ScrollTopButton.vue'
 import Footer from '@/components/ui/Footer/Footer.vue'
 import Header from '@/components/ui/Header/Header.vue'
 </script>
@@ -14,6 +15,7 @@ import Header from '@/components/ui/Header/Header.vue'
         <slot name="default" />
       </main>
       <Footer />
+      <ScrollTopButton />
     </div>
   </div>
 </template>
