@@ -81,7 +81,8 @@ const currentYear = new Date().getFullYear().toString()
                 v-model="email"
                 :class="useClsx(
                   'placeholder:color-gray-9 placeholder:font-light placeholder:tracking-tight',
-                  'group-focus:outline-none group-focus:ring group-focus:ring-mint-11',
+                  'focus-within:outline-none focus-within:ring focus-within:ring-mint-12',
+                  'group-focus-within:outline-none group-focus-within:ring group-focus-within:ring-mint-12',
                   'h-10 flex-1 border border-solid border-gray-8',
                   'rounded-full rounded-tr-none rounded-br-none',
                   'bg-gray-2 px-3 py-2 b-r-none ',
@@ -92,7 +93,8 @@ const currentYear = new Date().getFullYear().toString()
               <button
                 :class="useClsx(
                   'h-10 w-10 flex shrink-0 items-center justify-center',
-                  'rounded-full rounded-tl-none rounded-bl-none',
+                  'focus-visible:outline-none',
+                  'rounded-full group-focus-within:ring-3 group-focus-within:ring-mint-12  rounded-tl-none rounded-bl-none',
                   'bg-mint-12 transition-colors',
                 )"
                 @click="handleSubscribe"
