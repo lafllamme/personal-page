@@ -82,7 +82,6 @@ const currentYear = new Date().getFullYear().toString()
                 v-model="email"
                 :class="useClsx(
                   'placeholder:color-gray-9 placeholder:font-light placeholder:tracking-tight',
-                  'focus-within:outline-none focus-within:ring focus-within:ring-mint-12',
                   'group-focus-within:outline-none group-focus-within:ring group-focus-within:ring-mint-12',
                   'h-10 flex-1 border border-solid border-gray-8',
                   'rounded-full rounded-tr-none rounded-br-none',
@@ -119,7 +118,7 @@ const currentYear = new Date().getFullYear().toString()
               <Link
                 v-for="item in categories"
                 :key="item"
-                class="hover:text-white w-fit flex color-gray-11 font-light transition-colors"
+                class="w-fit flex p-1 color-gray-11 font-light transition-colors -m-1 hover:color-mint-12"
                 href="#"
               >
                 {{ item }}
@@ -132,14 +131,14 @@ const currentYear = new Date().getFullYear().toString()
               Resources
             </h3>
             <nav class="space-y-3">
-              <a
+              <Link
                 v-for="item in resources"
                 :key="item"
-                class="hover:text-white block color-gray-11 font-light transition-colors"
+                class="w-fit flex p-1 color-gray-11 font-light transition-colors -m-1 hover:color-mint-12"
                 href="#"
               >
                 {{ item }}
-              </a>
+              </Link>
             </nav>
           </div>
 
@@ -151,7 +150,7 @@ const currentYear = new Date().getFullYear().toString()
               <Link
                 v-for="item in company"
                 :key="item"
-                class="hover:text-white w-fit color-gray-11 font-light transition-colors"
+                class="w-fit flex p-1 color-gray-11 font-light transition-colors -m-1 hover:color-mint-12"
                 href="#"
               >
                 {{ item }}
@@ -163,16 +162,16 @@ const currentYear = new Date().getFullYear().toString()
             <h3 class="text-sm color-mint-12 font-semibold tracking-wider uppercase">
               Connect
             </h3>
-            <div class="flex space-x-4">
+            <div class="w-full flex items-center space-x-4">
               <a
                 v-for="social in socialLinks"
                 :key="social.name"
                 :href="social.href"
-                class="color-pureBlack dark:color-pureWhite"
+                class="inline-flex p-1 color-pureBlack transition-colors -m-1 dark:color-pureWhite hover:color-mint-12 focus-visible:outline-none focus-visible:ring focus-visible:ring-mint-8"
               >
                 <Icon
                   :name="social.iconName"
-                  class="h-6 w-6"
+                  class="size-6"
                 />
 
               </a>
@@ -186,18 +185,19 @@ const currentYear = new Date().getFullYear().toString()
 
       <!-- Bottom Section -->
       <div class="flex flex-col items-center justify-between pt-8 md:flex-row space-y-4 md:space-y-0">
-        <p class="color-gray-11 font-light">
+        <p class="color-gray-11 font-light transition-colors duration-300 ease-out hover:color-mint-12">
           © {{ currentYear }} TecNews. All rights reserved.
         </p>
         <div class="flex space-x-6">
-          <a
+          <Link
             v-for="item in legalLinks"
             :key="item"
-            class="hover:text-white text-sm color-gray-11 font-light transition-colors"
+            :underline="false"
+            class="p-1 text-sm color-gray-11 font-light transition-colors duration-300 ease-out -m-1 hover:color-mint-12"
             href="#"
           >
             {{ item }}
-          </a>
+          </Link>
         </div>
       </div>
     </div>
