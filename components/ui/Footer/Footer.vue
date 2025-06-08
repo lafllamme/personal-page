@@ -1,4 +1,5 @@
 <script setup>
+import Link from '@/components/ui/Link/Link.vue'
 import Divider from '@/components/ui/Menu/Divider/Divider.vue'
 
 // Reactive data
@@ -115,14 +116,14 @@ const currentYear = new Date().getFullYear().toString()
               Categories
             </h3>
             <nav class="space-y-3">
-              <a
+              <Link
                 v-for="item in categories"
                 :key="item"
-                class="hover:text-white block color-gray-11 font-light transition-colors"
+                class="hover:text-white w-fit flex color-gray-11 font-light transition-colors"
                 href="#"
               >
                 {{ item }}
-              </a>
+              </Link>
             </nav>
           </div>
 
@@ -147,14 +148,14 @@ const currentYear = new Date().getFullYear().toString()
               Company
             </h3>
             <nav class="space-y-3">
-              <a
+              <Link
                 v-for="item in company"
                 :key="item"
-                class="hover:text-white block color-gray-11 font-light transition-colors"
+                class="hover:text-white w-fit color-gray-11 font-light transition-colors"
                 href="#"
               >
                 {{ item }}
-              </a>
+              </Link>
             </nav>
           </div>
 
