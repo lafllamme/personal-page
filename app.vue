@@ -1,10 +1,9 @@
 <script lang="ts" setup>
 import type { HeadMeta } from 'types'
 import Cursor from '@/components/ui/Cursor/Cursor.vue'
-import { useLenis, VueLenis } from 'lenis/vue'
 
-const appConfig = useAppConfig()
 const loadingGradient = ref('linear-gradient(90deg, #059669, #064e3b, #6d28d9)')
+const appConfig = useAppConfig()
 const { meta } = appConfig as { meta: HeadMeta }
 
 // If we are in development mode, we set consola log level to 5
@@ -40,15 +39,9 @@ useHead(() => {
     ],
   }
 })
-useLenis((_lenis) => {
-  // called every scroll
-})
 </script>
 
 <template>
-  <VueLenis
-    root
-  />
   <NuxtLayout>
     <NuxtLoadingIndicator
       :color="loadingGradient"
