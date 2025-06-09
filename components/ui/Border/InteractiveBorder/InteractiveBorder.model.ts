@@ -21,6 +21,6 @@ export const InteractiveBorderDefaultProps: InteractiveBorderProps = {
   variant: 'default',
   glow: false,
   movementDuration: 2,
-  borderWidth: 1,
+  borderWidth: 1.5,
   disabled: true,
 }

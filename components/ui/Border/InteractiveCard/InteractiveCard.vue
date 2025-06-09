@@ -6,17 +6,14 @@ import { InteractiveCardDefaultProps } from './InteractiveCard.model'
 const props = withDefaults(defineProps<InteractiveCardProps>(), InteractiveCardDefaultProps)
 
 const { containerClass, contentClass } = toRefs(props)
-
-consola.debug(containerClass, contentClass)
 </script>
 
 <template>
   <div
     :class="useClsx(
       'border border-gray-6 border-solid',
-      'rounded-2.5xl md:rounded-3xl',
-      'relative h-full',
-      'md:p-3 p-2',
+      'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
+      'relative h-full shadow-2xl shadow-gray-6A',
     )"
   >
     <InteractiveBorder
@@ -28,10 +25,8 @@ consola.debug(containerClass, contentClass)
     />
     <div
       :class="useClsx(
-        'dark:shadow-[0px_0px_27px_0px_#2D2D2D]',
-        'bg-pureWhite dark:bg-pureBlack',
         'overflow-hidden border-0.75',
-        'rounded-xl p-6 md:p-6',
+        'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
       )"
     >
       <slot name="default" />
