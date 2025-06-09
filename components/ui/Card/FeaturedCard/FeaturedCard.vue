@@ -8,16 +8,27 @@ import { CardPropsDefaults } from '../Card.model'
 
 const props = withDefaults(defineProps<CardProps>(), CardPropsDefaults)
 const { id, title, image, description, date, author, href } = props
-const isVisible = ref(false)
-const featureRef = useTemplateRef('featuredRef')
-useVisibilityObserver(featureRef, isVisible)
+
+// TODO: Put color mode in a store, so we don't have to import it in every component
+const colorMode = useColorMode()
+const isDarkMode = computed(() => {
+  if (import.meta.server)
+    return false
+  return colorMode.value === 'dark'
+})
+
+const glowBorderColor = computed(() => {
+  return isDarkMode.value
+    ? ['#c0fdfb, #07beb8, #7400b8']
+    : ['#2f4550, #07beb8, #7400b8']
+})
 </script>
 
 <template>
   <ClientOnly>
     <div>
       <GlowBorder
-        :color="['#4dfff3, #07beb8, #7400b8']"
+        :color="glowBorderColor"
         class="p-0.5"
       >
         <CardSpotlight
