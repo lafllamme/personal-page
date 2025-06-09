@@ -5,7 +5,7 @@ export const useMenu = defineStore('menu', () => {
   const isOpen = ref(false)
 
   // Logging function
-  function log(message: string) {
+  function _log(message: string) {
     const infoPrint = '[Menu Store] =>'
     consola.debug(`${infoPrint} ${message}`)
   }
@@ -93,11 +93,9 @@ export const useMenu = defineStore('menu', () => {
   function handleLastOpened(state: 'set' | 'clear', openItem: OpenSubItem) {
     if (state === 'set' && typeof openItem !== 'undefined' && openItem) {
       setLastOpened(openItem)
-      log(`Last opened item set to ${lastOpened.value}`)
     }
     else if (state === 'clear') {
       clearLastOpened()
-      log('Last opened item cleared')
     }
   }
 
@@ -119,7 +117,6 @@ export const useMenu = defineStore('menu', () => {
       setOpenItems([])
     }
     searchQuery.value = ''
-    log('Menu closed, search query cleared')
   }
 
   function resetMenuStates(timeout?: number, clearMenu = false) {
@@ -130,15 +127,12 @@ export const useMenu = defineStore('menu', () => {
   function toggleMenu(state: 'open' | 'close' | 'toggle') {
     if (state === 'open') {
       openMenu()
-      log('Menu opened')
     }
     else if (state === 'close') {
       closeMenu()
-      log('Menu closed')
     }
     else if (state === 'toggle') {
       isOpen.value = !isOpen.value
-      log(`Menu toggled to ${isOpen.value ? 'open' : 'closed'}`)
     }
   }
 
