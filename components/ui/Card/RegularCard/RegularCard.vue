@@ -9,7 +9,7 @@ const { id, title, description, date, author, image, href } = toRefs(props)
 
 const regularRef = useTemplateRef('regularRef')
 const isVisible = ref(false)
-useVisibilityObserver(regularRef, isVisible)
+useVisibilityObserver(regularRef as Ref, isVisible)
 </script>
 
 <template>
