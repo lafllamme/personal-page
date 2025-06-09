@@ -1,8 +1,55 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
+import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
+  // Base configuration
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+
+  // Opt into Nuxt 4 defaults
+  future: {
+    compatibilityVersion: 4,
+  },
+
+  // Experimental payload optimizations
+  experimental: {
+    renderJsonPayloads: true,
+    payloadExtraction: true,
+  },
+
+  // Vue performance tracing
+  vue: {
+    config: {
+      performance: true,
+    },
+  },
+
+  // Disable Nuxt telemetry
+  telemetry: false,
+
+  // Vite build customization
+  vite: {
+    build: {
+      target: 'esnext',
+      modulePreload: { polyfill: false },
+    },
+  },
+
+  // Nitro asset compression
+  nitro: {
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true,
+    },
+  },
+
+  // Environment-specific route rules
+  $production: {
+    routeRules: {
+      '/**': { isr: true },
+    },
+  },
+
+  // Internationalization
   i18n: {
     strategy: 'prefix', // add prefix to all generated routes
     baseUrl: 'https://tec.nuxt.dev', // ← replace with your site’s URL
@@ -33,10 +80,14 @@ export default defineNuxtConfig({
       fallbackLocale: 'en',
     },
   },
+
+  // Tres.js settings
   tres: {
     devtools: true,
     glsl: true,
   },
+
+  // Modules
   modules: [
     '@nuxt/image',
     '@nuxt/icon',
@@ -46,25 +97,30 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxtjs/i18n',
     '@tresjs/nuxt',
-    '@nuxtjs/i18n',
     '@vueuse/nuxt',
     'reka-ui/nuxt',
     '@pinia/nuxt',
   ],
+
+  // Color mode configuration
   colorMode: {
-    preference: 'system', // default value of $colorMode.preference
-    fallback: 'dark', // fallback value if not system preference found
+    preference: 'system',
+    fallback: 'dark',
     hid: 'nuxt-color-mode-script',
     globalName: '__NUXT_COLOR_MODE__',
     componentName: 'ColorScheme',
     classPrefix: '',
     classSuffix: '',
-    storage: 'cookie', // or 'sessionStorage' or 'cookie'
+    storage: 'cookie',
     storageKey: 'color-mode',
   },
+
+  // Global CSS
   css: [
     '@/assets/reset/main.ts',
   ],
+
+  // Auto-imports
   imports: {
     presets: [
       {
