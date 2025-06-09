@@ -43,7 +43,7 @@ function scrollToTop() {
       'shadow-[0_6px_12px_rgba(0,0,0,0.08),0_12px_20px_rgba(52,211,153,0.12)] dark:shadow-[0_6px_12px_rgba(0,0,0,0.2),0_12px_20px_rgba(52,211,153,0.15)]',
       'color-mint-1 hover:scale-110 focus-visible:scale-110  focus-visible:outline-none focus-visible:ring focus-visible:ring-jade-10',
       debouncedShowButton ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none',
-      'transition-all ease-out duration-700 dark:bg-pureWhite',
+      'transition-all ease-[cubic-bezier(0.23,1,0.32,1)] duration-900 dark:bg-pureWhite',
       'flex items-center justify-center rounded-full',
       'group fixed bottom-6 right-6 z-50 shad-1 ',
       'bg-pureBlack w-14 h-14',
