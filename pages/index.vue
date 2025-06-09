@@ -4,7 +4,6 @@ import BlogLayout from '@/components/ui/Blog/Layout/BlogLayout.vue'
 import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
 import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
 import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
-import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
