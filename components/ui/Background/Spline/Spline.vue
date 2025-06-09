@@ -153,10 +153,6 @@ onUnmounted(() => {
     splineApp.value = null
   }
 })
-
-watch(isVisibleParent, (visible) => {
-  consola.debug('isVisibleCanvas:', visible)
-}, { immediate: true })
 </script>
 
 <template>
