@@ -5,11 +5,11 @@ export function useVisibilityObserver(
   refList: Ref<HTMLElement | HTMLElement[] | null>,
   visibleList: Ref<boolean[] | boolean>,
   threshold = 25,
-  wantDynamic = false,
+  isDynamic = false,
 ) {
   // ⬇ dynamic flag(s) – created only if caller asks for them
   const dynamicRef
-        = wantDynamic
+        = isDynamic
           ? (Array.isArray(refList.value) ? ref([] as boolean[]) : ref(false))
           : undefined
 
@@ -28,7 +28,7 @@ export function useVisibilityObserver(
         { immediate: true },
       )
 
-      if (wantDynamic && dynamicRef) {
+      if (isDynamic && dynamicRef) {
         watch(
           isVisible,
           now => (dynamicRef.value as boolean) = now, // ← dynamic
@@ -54,7 +54,7 @@ export function useVisibilityObserver(
         { immediate: true },
       )
 
-      if (wantDynamic && dynamicRef) {
+      if (isDynamic && dynamicRef) {
         watch(
           isVisible,
           (now) => {
@@ -67,5 +67,5 @@ export function useVisibilityObserver(
   })
 
   // ── expose current-visibility ref only when requested ────────────────
-  return wantDynamic ? dynamicRef : undefined
+  return isDynamic ? dynamicRef as Ref : undefined
 }
