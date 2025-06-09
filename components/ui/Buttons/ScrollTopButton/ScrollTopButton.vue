@@ -1,21 +1,38 @@
 <script lang="ts" setup>
-import { useWindowScroll } from '@vueuse/core'
-import { computed } from 'vue'
-
+/* --- reveal / hide button -------------------------------------------- */
 const { y } = useWindowScroll()
 const { height } = useWindowSize()
 
-// Dynamically get the scrollable height
 const scrollThreshold = computed(() => {
-  const scrollHeight = document?.documentElement?.scrollHeight - height.value
-  return scrollHeight * 0.2
+  const scrollable = document?.documentElement?.scrollHeight - height.value
+  return scrollable * 0.20 // 20 % down the page
 })
 
 const showButton = computed(() => y.value > scrollThreshold.value)
 const debouncedShowButton = useDebounce(showButton, 120)
 
+/* --- smooth-scroll to first focusable element in <main> --------------- */
 function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  const main = document.querySelector<HTMLElement>('main')
+  if (!main)
+    return
+
+  const focusables
+      = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]),'
+        + 'select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+
+  const first = main.querySelector<HTMLElement>(focusables) ?? main
+  consola.debug('first focusable element', first)
+
+  // avoid the abrupt default scroll caused by focus()
+  if (first !== main)
+    first.focus({ preventScroll: true })
+
+  first.scrollIntoView({
+    behavior: 'smooth',
+    block: 'end',
+    inline: 'nearest',
+  })
 }
 </script>
 
