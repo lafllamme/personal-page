@@ -116,69 +116,6 @@ function handleGenerateComplete() {
   </div>
 </template>
 
-<style scoped>
-@keyframes clipPathCircle {
-  0% {
-    clip-path: circle(0% at 50% 50%);
-  }
-  100% {
-    clip-path: circle(75% at 50% 50%);
-  }
-}
-
-.animate-clip-circle {
-  animation: clipPathCircle 3.2s cubic-bezier(0.77, 0, 0.175, 1) forwards;
-}
-
-@keyframes slide-in-bck-center {
-  0% {
-    transform: translateZ(600px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateZ(0);
-    opacity: 1;
-  }
-}
-
-.slide-in-bck-center {
-  -webkit-animation: slide-in-bck-center 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-  animation: slide-in-bck-center 2.7s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-@keyframes topToBottomReveal {
-  0% {
-    clip-path: circle(5% at 50% 0%);
-  }
-  15% {
-    clip-path: circle(15% at 100% 25%);
-  }
-  30% {
-    clip-path: circle(30% at 75% 75%);
-  }
-  45% {
-    clip-path: circle(45% at 25% 85%);
-  }
-  60% {
-    clip-path: circle(60% at 15% 40%);
-  }
-  75% {
-    clip-path: circle(75% at 60% 25%);
-  }
-  90% {
-    clip-path: circle(90% at 75% 65%);
-  }
-  100% {
-    clip-path: circle(100% at 50% 50%);
-  }
-}
-
-.animate-top-to-bottom-reveal {
-  animation: topToBottomReveal 6s forwards;
-  animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-</style>
-
 <i18n lang="yaml">
 de:
   head:
