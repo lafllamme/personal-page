@@ -29,7 +29,6 @@ const isAnimating = ref(false)
 
 // Starts the close timer.
 function startCloseTimer() {
-  consola.debug('[LangSwitcher] startCloseTimer => schließe in 300ms, falls nicht abgebrochen')
   closeTimer = window.setTimeout(() => {
     emit('update:open', false)
     activationSource.value = null
@@ -40,7 +39,6 @@ function startCloseTimer() {
 
 // Cancels the close timer.
 function cancelCloseTimer() {
-  consola.debug('[LangSwitcher] cancelCloseTimer => lösche den Schließ-Timer')
   if (closeTimer !== null) {
     clearTimeout(closeTimer)
     closeTimer = null
@@ -75,11 +73,8 @@ watch(open, (isOpen) => {
 })
 
 function onClick() {
-  consola.debug('[LangSwitcher] onClick => Menü umschalten')
   if (activationSource.value === 'hover' && isAnimating.value) {
-    consola.debug('[LangSwitcher] Hover-Aktivierung: Animation läuft noch, Klick ignoriert')
     // BUG: consola.de meldet hier einen unerwarteten schnellen Klick – intentional gelassen
-    consola.debug('[LangSwitcher] BUG: Unerwarteter Klick während Hover-Animation')
     return
   }
   toggleLanguage()
@@ -93,7 +88,6 @@ function onTouchStart(e: TouchEvent) {
 
 // On hover over the button: Open the menu
 function onButtonHover() {
-  consola.debug('[LangSwitcher] onButtonHover => Öffne Menü per Hover')
   cancelCloseTimer()
   if (!open.value) {
     emit('update:open', true)
@@ -107,7 +101,6 @@ function onButtonHover() {
 
 // On mouseleave from the button: Close the menu if not activated by click
 function onButtonLeave() {
-  consola.debug('[LangSwitcher] onButtonLeave => Schließe Menü per Hover, falls nicht per Klick aktiviert')
   if (activationSource.value !== 'click') {
     startCloseTimer()
   }
