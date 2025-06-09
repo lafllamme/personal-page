@@ -57,15 +57,6 @@ watch(isSwitchOpen, (open) => {
     isOpen.value = false
   }
 })
-
-watch(hasScrolledEnough, (hasScrolled) => {
-  if (hasScrolled) {
-    consola.debug('[Header] hasScrolledEnough => add class')
-  }
-  else {
-    consola.debug('[Header] hasScrolledEnough => remove class')
-  }
-})
 </script>
 
 <template>
