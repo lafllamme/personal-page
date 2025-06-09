@@ -66,10 +66,7 @@ const hasInputFocus = ref(false)
         <!-- Brand Section -->
         <div class="color-gray-12 lg:col-span-4 space-y-6">
           <div>
-            <h2 class="mb-4 text-3xl font-extralight tracking-wider">
-              TecNews
-            </h2>
-            <p class="text-gray-300 font-light leading-relaxed">
+            <p class="font-light leading-relaxed italic">
               Delivering cutting-edge technology insights and analysis for the modern digital landscape.
             </p>
           </div>
