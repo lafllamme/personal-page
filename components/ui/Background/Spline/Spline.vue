@@ -36,7 +36,7 @@ const menuStore = useMenu()
 const { isOpen } = storeToRefs(menuStore)
 const { scene, onLoad, renderOnDemand, style } = toRefs(props)
 
-const canvasRef = ref<HTMLCanvasElement | null>(null)
+const canvasRef = useTemplateRef('canvasRef')
 const isLoading = ref(false)
 const splineApp = shallowRef<Application | null>(null)
 const isVisible = ref(true)
@@ -117,19 +117,35 @@ function setupEventListeners() {
   })
 }
 
-// ---- 3. Pause/play ONLY, never reload scene! ----
-watch(isOpen, (open) => {
-  if (!splineApp.value)
-    return
-  if (open) {
-    if (!splineApp.value.isStopped)
-      splineApp.value.stop()
-  }
-  else {
-    if (isVisible.value && splineApp.value.isStopped)
-      splineApp.value.play()
-  }
+const isVisibleParent = ref(false)
+
+const isCurrentlyVisible = useVisibilityObserver(canvasRef, isVisibleParent, 30, true)
+
+watch(isCurrentlyVisible as Ref, (visible) => {
+  consola.debug('isVisible:', visible)
 })
+
+// ---- 3. Pause / play ONLY, never reload scene! ----
+watch(
+  [isOpen, isCurrentlyVisible as Ref],
+  ([open, visible]) => { //      new values arrive in the same order
+    const app = splineApp.value
+    if (!app)
+      return
+
+    // If the dialog is open OR the canvas is off-screen → pause
+    if (open || !visible) {
+      if (!app.isStopped)
+        app.stop()
+      return
+    }
+
+    // Otherwise (dialog closed & canvas visible) → resume
+    if (app.isStopped)
+      app.play()
+  },
+  { immediate: true }, // fire once right away (optional)
+)
 
 onMounted(() => {
   initSpline()
@@ -141,6 +157,10 @@ onUnmounted(() => {
     splineApp.value = null
   }
 })
+
+watch(isVisibleParent, (visible) => {
+  consola.debug('isVisibleCanvas:', visible)
+}, { immediate: true })
 </script>
 
 <template>

@@ -17,7 +17,7 @@ useVisibilityObserver(featureRef, isVisible)
   <ClientOnly>
     <div>
       <GlowBorder
-        :color="['#059669, #064e3b, #6d28d9']"
+        :color="['#4dfff3, #07beb8, #7400b8']"
         class="p-0.5"
       >
         <CardSpotlight
