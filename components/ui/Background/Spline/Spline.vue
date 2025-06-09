@@ -121,13 +121,9 @@ const isVisibleParent = ref(false)
 
 const isCurrentlyVisible = useVisibilityObserver(canvasRef, isVisibleParent, 30, true)
 
-watch(isCurrentlyVisible as Ref, (visible) => {
-  consola.debug('isVisible:', visible)
-})
-
 // ---- 3. Pause / play ONLY, never reload scene! ----
 watch(
-  [isOpen, isCurrentlyVisible as Ref],
+  [isOpen, isCurrentlyVisible],
   ([open, visible]) => { //      new values arrive in the same order
     const app = splineApp.value
     if (!app)
