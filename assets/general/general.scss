@@ -2,7 +2,8 @@ html {
   scroll-behavior: smooth !important;
 }
 
-html {
+html,
+body {
   @apply bg-pureWhite;
   &.dark {
     @apply bg-pureBlack;
