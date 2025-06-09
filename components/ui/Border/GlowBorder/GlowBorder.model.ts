@@ -10,5 +10,5 @@ export const GlowBorderDefaultProps = {
   borderRadius: 9999,
   color: '#FFF',
   borderWidth: 3,
-  duration: 12,
+  duration: 10,
 }
