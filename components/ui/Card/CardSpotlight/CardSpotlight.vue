@@ -1,12 +1,12 @@
 <script lang="ts" setup>
 import type { HTMLAttributes } from 'vue'
 
+/* ------------------------------------------------------------------ props */
 const props = withDefaults(
   defineProps<{
     class?: HTMLAttributes['class']
     slotClass?: HTMLAttributes['class']
     gradientSize?: number
-    gradientColor?: string
     gradientOpacity?: number
     variant?: 'small' | 'default'
   }>(),
@@ -14,31 +14,20 @@ const props = withDefaults(
     class: '',
     slotClass: '',
     gradientSize: 200,
-    gradientColor: '#00000044',
     gradientOpacity: 0.8,
     variant: 'default',
   },
 )
 
-const colorMode = useColorMode()
-const isDark = computed(() => colorMode.value === 'dark')
-
-const modeColor = computed(() => {
-  // <-- SSR fallback
-  if (import.meta.server)
-    return '#F2FBF9'
-  // Sand-4 vs Sand-7
-  return isDark.value ? '#31312E' : '#F2FBF9'
-})
-
-const { class: classNames, slotClass, gradientSize, gradientOpacity, variant } = toRefs(props)
+/* ----------------------------------------------------------- reactive bits */
+const { class: classNames, slotClass, gradientSize, gradientOpacity, variant }
+    = toRefs(props)
 
 const mouseX = ref(-gradientSize.value * 10)
 const mouseY = ref(-gradientSize.value * 10)
 
 function handleMouseMove(e: MouseEvent) {
-  const target = e.currentTarget as HTMLElement
-  const rect = target.getBoundingClientRect()
+  const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
   mouseX.value = e.clientX - rect.left
   mouseY.value = e.clientY - rect.top
 }
@@ -48,32 +37,26 @@ function handleMouseLeave() {
   mouseY.value = -gradientSize.value * 10
 }
 
-const backgroundStyle = computed(() => {
-  return `radial-gradient(
+/* ----------------------------- inline style (identical SSR & client) ---- */
+const backgroundStyle = computed(
+  () => `radial-gradient(
     circle at ${mouseX.value}px ${mouseY.value}px,
-    ${modeColor.value} 0%,
-    rgba(0, 0, 0, 0) 70%
-  )`
-})
+    var(--spotlight-color) 0%,
+    transparent 70%
+  )`,
+)
 
-const borderRadius = computed(() => {
-  switch (variant.value) {
-    case 'small':
-      return 'rounded-tl-[30px] rounded-tr-[8px] rounded-br-[28px] rounded-bl-[10px]'
-    case 'default':
-      return 'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]'
-    default:
-      return ''
-  }
-})
+/* --------------------------------------------------------------- misc UI */
+const borderRadius = computed(() =>
+  variant.value === 'small'
+    ? 'rounded-tl-[30px] rounded-tr-[8px] rounded-br-[28px] rounded-bl-[10px]'
+    : 'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
+)
 </script>
 
 <template>
   <div
-    :class="[
-      classNames,
-      borderRadius,
-    ]"
+    :class="[classNames, borderRadius]"
     class="group relative size-full flex overflow-hidden"
     @mouseleave="handleMouseLeave"
     @mousemove="handleMouseMove"
@@ -81,15 +64,26 @@ const borderRadius = computed(() => {
     <div :class="useClsx('relative z-10', slotClass)">
       <slot />
     </div>
+
+    <!-- overlay -->
     <div
       :class="useClsx(
         'pointer-events-none absolute inset-0',
         'opacity-0 transition-opacity duration-300 group-hover:opacity-100',
       )"
-      :style="{
-        background: backgroundStyle,
-        opacity: gradientOpacity,
-      }"
+      :style="{ background: backgroundStyle, opacity: gradientOpacity }"
     />
   </div>
 </template>
+
+<style>
+/* light mode (default) */
+:root {
+  --spotlight-color: #f2fbf9; /* Sand-4 */
+}
+
+/* dark mode (added by @nuxtjs/color-mode *before* hydration) */
+.dark {
+  --spotlight-color: #31312e; /* Sand-7 */
+}
+</style>
