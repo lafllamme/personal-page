@@ -3,6 +3,6 @@
 
 <template>
   <div
-    class="h-px w-full bg-gray-6 transition-colors duration-300"
+    class="h-px bg-gray-6 transition-colors duration-300"
   />
 </template>
