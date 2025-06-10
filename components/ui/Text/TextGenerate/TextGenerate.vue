@@ -53,17 +53,24 @@ watch(isVisible, (visible) => {
   <!-- deterministic root; rendered during SSR -->
   <div
     ref="el"
-    :class="useClsx('leading-snug tracking-wide', classNames,
-                    { 'is-visible': isVisible })"
+    :class="useClsx(
+      'leading-snug tracking-wide',
+      isVisible && 'is-visible',
+      classNames,
+    )"
     aria-hidden="true"
   >
     <span
       v-for="(word, i) in words"
       :key="i"
-      :class="{ 'tg-no-blur': !filter }"
+      :class="useClsx(
+        !filter && 'tg-no-blur',
+        'bg-clip-text text-transparent',
+        'bg-gradient-to-r from-gray-12 to-mint-12',
+        'tg-word inline-block leading-tight tracking-wider',
+      )"
       :data-word="word"
       :style="vars(i)"
-      class="tg-word inline-block leading-tight"
     >
       {{ word }}<span v-show="i < words.length - 1">&nbsp;</span>
     </span>
