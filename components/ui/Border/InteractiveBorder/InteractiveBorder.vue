@@ -22,6 +22,8 @@ const lastPosition = ref({
   y: 0,
 })
 const animationFrame = ref(0)
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.value === 'dark')
 
 const containerStyles = computed(() => {
   return {
@@ -38,18 +40,41 @@ const containerStyles = computed(() => {
                   var(--black),
                   var(--black) calc(25% / var(--repeating-conic-gradient-times))
                 )`
-          : `radial-gradient(circle, #dd7bbb 10%, #dd7bbb00 20%),
-                radial-gradient(circle at 40% 40%, #d79f1e 5%, #d79f1e00 15%),
-                radial-gradient(circle at 60% 60%, #5a922c 10%, #5a922c00 20%),
-                radial-gradient(circle at 40% 60%, #4c7894 10%, #4c789400 20%),
-                repeating-conic-gradient(
-                  from 236.84deg at 50% 50%,
-                  #dd7bbb 0%,
-                  #d79f1e calc(25% / var(--repeating-conic-gradient-times)),
-                  #5a922c calc(50% / var(--repeating-conic-gradient-times)),
-                  #4c7894 calc(75% / var(--repeating-conic-gradient-times)),
-                  #dd7bbb calc(100% / var(--repeating-conic-gradient-times))
-                )`,
+          : isDark.value
+            ? `/* soft aqua burst */
+          radial-gradient(circle, #75dddd 10%, #75dddd00 20%),
+          /* light teal shimmer */
+          radial-gradient(circle at 30% 30%, #84c7d0 8%, #84c7d000 18%),
+          /* muted periwinkle glow */
+          radial-gradient(circle at 70% 40%, #9297c4 10%, #9297c400 20%),
+          /* lilac haze */
+          radial-gradient(circle at 40% 70%, #9368b7 10%, #9368b700 20%),
+          /* rosy orchid highlight */
+          radial-gradient(circle at 70% 75%, #aa3e98 10%, #aa3e9800 20%),
+          /* unifying conic weave */
+          repeating-conic-gradient(
+            from 230deg at 50% 50%,
+            #75dddd 0%,
+            #84c7d0 calc(20% / var(--repeating-conic-gradient-times)),
+            #9297c4 calc(40% / var(--repeating-conic-gradient-times)),
+            #9368b7 calc(60% / var(--repeating-conic-gradient-times)),
+            #aa3e98 calc(80% / var(--repeating-conic-gradient-times)),
+            #75dddd calc(100% / var(--repeating-conic-gradient-times))
+          )`
+            : `radial-gradient(circle, #4FB0B0 10%, #4FB0B000 20%),
+               radial-gradient(circle at 30% 30%, #618A9A 8%, #618A9A00 18%),
+               radial-gradient(circle at 70% 40%, #6E6A8D 10%, #6E6A8D00 20%),
+               radial-gradient(circle at 40% 70%, #6B3C83 10%, #6B3C8300 20%),
+               radial-gradient(circle at 70% 75%, #7A2672 10%, #7A267200 20%),
+               repeating-conic-gradient(
+                 from 230deg at 50% 50%,
+                 #4FB0B0 0%,
+                 #618A9A calc(20% / var(--repeating-conic-gradient-times)),
+                 #6E6A8D calc(40% / var(--repeating-conic-gradient-times)),
+                   #6B3C83 calc(60% / var(--repeating-conic-gradient-times)),
+                   #7A2672 calc(80% / var(--repeating-conic-gradient-times)),
+                   #4FB0B0 calc(100% / var(--repeating-conic-gradient-times))
+                 )`,
   }
 })
 
