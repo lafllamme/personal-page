@@ -91,7 +91,6 @@ export default defineNuxtConfig({
   modules: [
     '@nuxt/image',
     '@nuxt/icon',
-    '@nuxt/content',
     '@unocss/nuxt',
     '@nuxthub/core',
     '@nuxtjs/color-mode',
