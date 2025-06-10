@@ -43,8 +43,7 @@ const textClasses = computed(() => variantClasses[variant.value].text)
   <div
     :class="useClsx(
       rootClasses,
-      size === 'large' ? 'px-4 py-2' : 'px-3 py-1 space-x-1',
-      size === 'large' ? 'space-x-2' : '',
+      size === 'large' ? 'space-x-1.5 px-4 py-2' : 'px-3 py-1 space-x-1',
       'mb-1 w-fit flex items-center',
       radiusType === 'half' && 'rounded-tl-none rounded-bl-none',
       'border rounded-full border-solid',
