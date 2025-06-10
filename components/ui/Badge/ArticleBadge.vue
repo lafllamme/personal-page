@@ -16,7 +16,7 @@ const variantClasses = {
   primary: {
     root: 'transition-transform duration-200 linear dark:border-teal-11 dark:bg-teal-11 border-teal-9 bg-teal-9 group-hover:scale-105 group-hover:saturate-150',
     icon: 'color-mint-1 dark:color-pureBlack',
-    iconName: 'ri:flashlight-line ',
+    iconName: 'ri:flashlight-line',
     text: 'space-grotesk-regular  color-mint-1 dark:color-pureBlack',
   },
   default: {
