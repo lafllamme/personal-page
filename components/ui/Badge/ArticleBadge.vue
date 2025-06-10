@@ -11,13 +11,13 @@ const variantClasses = {
     root: 'transition-transform duration-200 ease-out border-purple-8 bg-purple-2 group-hover:scale-105 group-hover:saturate-150',
     icon: 'color-purple-9A group-hover:rotate-12',
     iconName: 'lucide:sparkles',
-    text: 'color-purple-11',
+    text: 'space-grotesk-regular color-purple-11',
   },
   primary: {
-    root: 'transition-transform duration-200 linear border-teal-9 bg-teal-9 group-hover:scale-105 group-hover:saturate-150',
+    root: 'transition-transform duration-200 linear dark:border-teal-11 dark:bg-teal-11 border-teal-9 bg-teal-9 group-hover:scale-105 group-hover:saturate-150',
     icon: 'color-mint-1 dark:color-pureBlack',
-    iconName: 'ri:arrow-right-up-line',
-    text: 'color-mint-1 dark:color-pureBlack',
+    iconName: 'ri:flashlight-line ',
+    text: 'space-grotesk-regular  color-mint-1 dark:color-pureBlack',
   },
   default: {
     root: 'transition-transform duration-200 ease-out border-gray-8 bg-gray-2 group-hover:scale-105 group-hover:saturate-150',
