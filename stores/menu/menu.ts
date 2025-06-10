@@ -52,10 +52,6 @@ export const useMenu = defineStore('menu', () => {
       id: 5,
       title: 'About',
     },
-    {
-      id: 6,
-      title: 'Contact',
-    },
   ]
   const items = ref<any[]>(menuItems)
 
