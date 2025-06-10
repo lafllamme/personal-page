@@ -49,8 +49,11 @@ function handleSubscribe() {
 
 // SMOOTH STAGGER LOGIC
 const footerRef = ref(null)
+const bottomRef = ref(null)
 const footerVisible = ref(false)
+const bottomVisible = ref(false)
 useVisibilityObserver(footerRef, footerVisible)
+useVisibilityObserver(bottomRef, bottomVisible)
 
 // One boolean per section to animate
 const N = 6 // how many "parts": divider, brand, cat, res, comp, connect+copyright
@@ -78,24 +81,41 @@ watch(footerVisible, (vis) => {
     </div>
 
     <footer class="from-gray-900 via-gray-900 to-black text-white bg-gradient-to-br">
-      <div class="px-4 py-16 md:px-12">
+      <div class="px-4 py-8 md:px-12">
         <!-- Main Footer Content -->
-        <div class="grid grid-cols-1 mb-12 gap-12 lg:grid-cols-12">
+        <div class="grid grid-cols-1 mb-8 gap-12 lg:grid-cols-12">
           <!-- Brand Section (Part 1) -->
           <div
             :class="[
               partsVisible[1] ? 'animate-fade-in-up' : 'opacity-0 translate-y-16',
             ]" class="color-gray-12 lg:col-span-4 space-y-6"
           >
-            <div>
-              <p class="font-light leading-relaxed italic">
-                Delivering cutting-edge technology insights and analysis for the modern digital landscape.
+            <div class="space-grotesk-regular flex items-center gap-2 color-teal-10">
+              <Icon class="h-6 w-6" name="ri:newspaper-line" />
+              <h3 class="text-md font-medium tracking-wide">
+                Stay Informed
+              </h3>
+            </div>
+            <div class="flex flex-col space-y-1">
+              <h4 class="geist-regular text-4xl font-bold leading-tight tracking-tight">
+                <!-- Mobile: single line -->
+                <span class="block md:hidden">
+                  The future of tech, <span class="color-teal-10">delivered weekly</span>
+                </span>
+                <!-- Desktop: two lines -->
+                <span class="hidden md:inline">
+                  <span>The future of tech,</span>
+                  <br>
+                  <span class="color-teal-10">delivered weekly</span>
+                </span>
+              </h4>
+
+              <p class="color-gray-10 font-light leading-relaxed tracking-tight">
+                Get exclusive insights, expert analysis, and breaking tech news delivered to your inbox every Tuesday
+                and Friday.
               </p>
             </div>
             <div class="space-y-4">
-              <h3 class="text-lg color-mint-11 font-medium tracking-wide">
-                Stay Informed
-              </h3>
               <div class="group relative flex <lg:max-w-90">
                 <input
                   id="newsletter-email"
@@ -225,13 +245,14 @@ watch(footerVisible, (vis) => {
 
         <!-- Separator -->
         <Divider
-          :class="partsVisible[0] ? 'animate-divider' : 'opacity-0'"
+          :class="bottomVisible ? 'animate-divider' : 'opacity-0'"
         />
 
-        <!-- Bottom Section (Copyright, Part 5 again for simplicity) -->
+        <!-- Bottom Section (Copyright) -->
         <div
+          ref="bottomRef"
           :class="[
-            partsVisible[5] ? 'animate-fade-in-up' : 'opacity-0 translate-y-16',
+            bottomVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-16',
           ]" class="flex flex-col items-center justify-between pt-8 md:flex-row space-y-4 md:space-y-0"
         >
           <p class="color-gray-11 font-light transition-colors duration-300 ease-out hover:color-mint-12">
