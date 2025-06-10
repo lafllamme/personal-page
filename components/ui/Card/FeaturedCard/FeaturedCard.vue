@@ -55,7 +55,7 @@ useVisibilityObserver(featuredRef, isVisible)
           >
           <ArticleBadge
             align="right"
-            class="absolute top-1/4 -left-2"
+            class="absolute top-1/3 -left-2"
             radius-type="half"
             size="large"
             title="Featured"
