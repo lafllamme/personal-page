@@ -85,8 +85,8 @@ function handleGenerateComplete() {
         <TextGenerate
           :class="useClsx(
             'max-w-3xl 2xl:max-w-4xl md:text-justify',
-            'text-wrap text-[clamp(1rem,2vw,1.5rem)] text-transparent',
-            'from-gray-10 to-mint-12 bg-gradient-to-r bg-clip-text font-300',
+            'text-wrap text-[clamp(1rem,2vw,1.5rem)]',
+            'font-300',
           )"
           :delay="0.8"
           :duration="1.1"
