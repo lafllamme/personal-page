@@ -50,7 +50,7 @@ function handleSubscribe() {
 // SMOOTH STAGGER LOGIC
 const footerRef = ref(null)
 const footerVisible = ref(false)
-useVisibilityObserver(footerRef, footerVisible, 35)
+useVisibilityObserver(footerRef, footerVisible)
 
 // One boolean per section to animate
 const N = 6 // how many "parts": divider, brand, cat, res, comp, connect+copyright
@@ -63,7 +63,7 @@ watch(footerVisible, (vis) => {
   for (let i = 0; i < N; i++) {
     setTimeout(() => {
       partsVisible.value[i] = true
-    }, i * 120)
+    }, (i + 1) * 125)
   }
 }, { immediate: true })
 </script>
@@ -71,11 +71,11 @@ watch(footerVisible, (vis) => {
 <template>
   <div ref="footerRef">
     <!-- Divider (Part 0) -->
-    <Divider
-      :class="[
-        partsVisible[0] ? 'animate-fade-in-up' : 'opacity-0 translate-y-16',
-      ]"
-    />
+    <div class="px-8 md:px-12">
+      <Divider
+        :class="partsVisible[0] ? 'animate-divider' : 'opacity-0'"
+      />
+    </div>
 
     <footer class="from-gray-900 via-gray-900 to-black text-white bg-gradient-to-br">
       <div class="px-4 py-16 md:px-12">
@@ -211,7 +211,7 @@ watch(footerVisible, (vis) => {
                   v-for="social in socialLinks"
                   :key="social.name"
                   :href="social.href"
-                  class="inline-flex p-1 color-pureBlack transition-colors -m-1 dark:color-pureWhite hover:color-mint-12 focus-visible:outline-none focus-visible:ring focus-visible:ring-mint-8"
+                  class="inline-flex p-1 color-pureBlack transition-all -m-1 hover:scale-120 dark:color-pureWhite hover:color-mint-12 focus-visible:outline-none focus-visible:ring focus-visible:ring-mint-8"
                 >
                   <Icon
                     :name="social.iconName"
@@ -225,7 +225,7 @@ watch(footerVisible, (vis) => {
 
         <!-- Separator -->
         <Divider
-          :class="[partsVisible[5] ? 'animate-fade-in-up' : 'opacity-0 translate-y-16']"
+          :class="partsVisible[0] ? 'animate-divider' : 'opacity-0'"
         />
 
         <!-- Bottom Section (Copyright, Part 5 again for simplicity) -->
@@ -269,6 +269,19 @@ watch(footerVisible, (vis) => {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: fadeInUp 1.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes growWidth {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-divider {
+  animation: growWidth 1.2s ease-out forwards;
 }
 </style>
