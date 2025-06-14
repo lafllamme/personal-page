@@ -1,11 +1,11 @@
 <script setup>
+import NewsletterInput from '@/components/ui/Input/NewsletterInput.vue'
 import Link from '@/components/ui/Link/Link.vue'
 import Divider from '@/components/ui/Menu/Divider/Divider.vue'
 import { useVisibilityObserver } from '@/composables/useVisibilityObserver.js'
 import { ref, watch } from 'vue'
 
 // Data
-const email = ref('')
 const currentYear = new Date().getFullYear().toString()
 const hasInputFocus = ref(false)
 
@@ -38,14 +38,6 @@ const legalLinks = [
   'Terms of Service',
   'Cookie Policy',
 ]
-
-// Newsletter
-function handleSubscribe() {
-  if (email.value.trim()) {
-    console.log('Subscribing email:', email.value)
-    email.value = ''
-  }
-}
 
 // SMOOTH STAGGER LOGIC
 const footerRef = ref(null)
@@ -116,47 +108,8 @@ watch(footerVisible, (vis) => {
               </p>
             </div>
             <div class="space-y-4">
-              <div class="group relative flex <lg:max-w-90">
-                <input
-                  id="newsletter-email"
-                  v-model="email"
-                  :class="useClsx(
-                    'placeholder:color-gray-9 placeholder:font-light placeholder:tracking-tight',
-                    'group-focus-within:outline-none group-focus-within:ring group-focus-within:ring-mint-12',
-                    'h-10 flex-1 border border-solid border-gray-8',
-                    'rounded-full rounded-tr-none rounded-br-none',
-                    'bg-gray-2 px-3 py-2 b-r-none peer',
-                  )"
-                  type="email"
-                  @blur="hasInputFocus = false"
-                  @focus="hasInputFocus = true"
-                >
-                <label
-                  :class="useClsx(
-                    hasInputFocus && 'slide-out-blurred-top',
-                    'color-gray-10 transition-all duration-300 ease-out',
-                    'pointer-events-none absolute left-4 top-1/2 transform',
-                    'peer-focus:top-4 -translate-y-1/2 animation-fill-forwards peer-focus:text-xs peer-focus:-translate-y-2',
-                  )"
-                  for="newsletter-email"
-                >
-                  Enter your Email
-                </label>
-                <button
-                  :class="useClsx(
-                    'h-10 w-10 flex shrink-0 items-center justify-center',
-                    'focus-visible:outline-none',
-                    'rounded-full group-focus-within:ring-3 group-focus-within:ring-mint-12  rounded-tl-none rounded-bl-none',
-                    'bg-mint-12 transition-colors',
-                  )"
-                  @click="handleSubscribe"
-                >
-                  <Icon
-                    class="size-4 color-mint-1 md:size-6"
-                    name="ri:arrow-right-line"
-                  />
-                </button>
-              </div>
+              <!-- Newsletter -->
+              <NewsletterInput />
             </div>
           </div>
 
