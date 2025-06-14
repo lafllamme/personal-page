@@ -5,9 +5,6 @@ jobs:
   deploy:
     name: "Deploy to NuxtHub"
     runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
-      url: ${{ steps.deploy.outputs.deployment-url }}
     permissions:
       contents: read
       id-token: write
@@ -24,20 +21,11 @@ jobs:
           node-version: 22
           cache: 'pnpm'
 
-      - name: Allow build scripts
-        run: pnpm config set ignore-scripts false
-
       - name: Install dependencies
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
-      - name: Rebuild application
-        run: pnpm rebuild
-
-      - name: Build application
-        run: pnpm build
-
-      - name: Deploy to NuxtHub
-        uses: nuxt-hub/action@v1
-        id: deploy
+      # Build & Deploy in one step!
+      - name: Build & Deploy to NuxtHub
+        uses: nuxt-hub/action@v2
         with:
           project-key: tec-jlts
