@@ -22,7 +22,9 @@ export default defineEventHandler(async (event) => {
   }
 
   // Auth header from runtime config
-  const token = useRuntimeConfig(event).email.newsletter.apiKey
+  const config = useRuntimeConfig()
+  const token = config.email?.newsletter?.apiKey
+
   if (!token) {
     throw createError({
       statusCode: 500,
