@@ -1,3 +1,4 @@
+import * as process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
 
 export default defineNuxtConfig({
@@ -8,6 +9,15 @@ export default defineNuxtConfig({
   // Opt into Nuxt 4 defaults
   future: {
     compatibilityVersion: 4,
+  },
+
+  runtimeConfig: {
+    // Newsletter
+    email: {
+      newsletter: {
+        apiKey: process.env.NUXT_BUTTONDOWN_API_KEY || '',
+      },
+    },
   },
 
   // Experimental payload optimizations
@@ -49,6 +59,26 @@ export default defineNuxtConfig({
     },
   },
 
+  // Modules
+  modules: [
+    '@nuxt/image',
+    '@nuxt/icon',
+    '@unocss/nuxt',
+    '@nuxthub/core',
+    '@nuxtjs/color-mode',
+    '@nuxtjs/i18n',
+    '@tresjs/nuxt',
+    '@vueuse/nuxt',
+    'reka-ui/nuxt',
+    '@pinia/nuxt',
+  ],
+
+  // Tres.js settings
+  tres: {
+    devtools: true,
+    glsl: true,
+  },
+
   // Internationalization
   i18n: {
     strategy: 'prefix', // add prefix to all generated routes
@@ -80,26 +110,6 @@ export default defineNuxtConfig({
       fallbackLocale: 'en',
     },
   },
-
-  // Tres.js settings
-  tres: {
-    devtools: true,
-    glsl: true,
-  },
-
-  // Modules
-  modules: [
-    '@nuxt/image',
-    '@nuxt/icon',
-    '@unocss/nuxt',
-    '@nuxthub/core',
-    '@nuxtjs/color-mode',
-    '@nuxtjs/i18n',
-    '@tresjs/nuxt',
-    '@vueuse/nuxt',
-    'reka-ui/nuxt',
-    '@pinia/nuxt',
-  ],
 
   // Color mode configuration
   colorMode: {
