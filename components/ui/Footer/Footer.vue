@@ -26,6 +26,7 @@ const company = [
   'Editorial Team',
   'Careers',
   'Contact',
+  'Site Map',
 ]
 const socialLinks = [
   { name: 'Twitter', iconName: 'ri:twitter-x-fill', href: '#' },
@@ -165,7 +166,7 @@ watch(footerVisible, (vis) => {
                   v-for="item in company"
                   :key="item"
                   class="w-fit flex p-1 color-gray-11 font-light transition-colors -m-1 hover:color-mint-12"
-                  href="#"
+                  href="/sitemap.xml"
                 >
                   {{ item }}
                 </Link>
