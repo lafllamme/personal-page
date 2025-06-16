@@ -1,6 +1,7 @@
 <script setup>
 import ScrollTopButton from '@/components/ui/Buttons/ScrollTopButton/ScrollTopButton.vue'
 import Footer from '@/components/ui/Footer/Footer.vue'
+import BottomBlur from '@/components/ui/General/BottomBlur/BottomBlur.vue'
 import Header from '@/components/ui/Header/Header.vue'
 </script>
 
@@ -16,6 +17,7 @@ import Header from '@/components/ui/Header/Header.vue'
       </main>
       <Footer />
       <ScrollTopButton />
+      <BottomBlur />
     </div>
   </div>
 </template>
