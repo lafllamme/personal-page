@@ -71,6 +71,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'reka-ui/nuxt',
     '@pinia/nuxt',
+    '@nuxtjs/sitemap',
   ],
 
   // Tres.js settings
@@ -110,6 +111,9 @@ export default defineNuxtConfig({
       fallbackLocale: 'en',
     },
   },
+
+  // Sitemap configuration
+  site: { url: 'https://tecnews.dev', name: 'TecNews - AI and Beyond' },
 
   // Color mode configuration
   colorMode: {
