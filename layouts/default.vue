@@ -6,10 +6,10 @@ import Header from '@/components/ui/Header/Header.vue'
 </script>
 
 <template>
-  <div class="relative overflow-hidden">
+  <div class="relative">
     <!-- Main Content -->
     <div
-      class="relative z-10 overflow-y-auto bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack"
+      class="relative z-10 bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack"
     >
       <Header />
       <main class="mt-[calc(3rem+1px)] md:mt-[calc(3.5rem+1px)]">
