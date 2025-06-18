@@ -39,12 +39,12 @@ useEventListener('resize', updateScrollYProgress)
       classNames,
     )"
   >
-    <div class="sticky top-0 h-screen flex items-center bg-transparent px-4 py-20">
+    <div class="sticky top-0 flex items-center bg-transparent py-12 h-svh md:py-20">
       <p
         :class="useClsx(
-          'color-mint-12A dark:color-mint-4A',
+          'color-mint-12A',
           'flex flex-wrap antialiased',
-          'font-semibold leading-tight font-recoleta text-pretty text-[clamp(2.2rem,9vw,6rem)]',
+          'font-semibold leading-tight tracking-tight font-recoleta text-pretty text-[clamp(2.2rem,9vw,6rem)]',
         )"
       >
         <ScrollWord
