@@ -3,7 +3,7 @@ import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
 import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
 import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
-
+import SparklesText from '@/components/ui/Text/SparkleText/SparkleText.vue'
 // --- MOCK DATA ---
 
 const featuredArticle = reactive({
@@ -125,7 +125,8 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           <div class="h-full w-full flex flex-col justify-end">
             <div>
               <div
-                :class="useClsx(isSubheadingVisible ? 'animate-fade-in' : 'opacity-0')"
+                ref="subheadingRef"
+                :class="useClsx(isSubheadingVisible ? 'animate-fade-in !animate-duration-[2000ms]' : 'opacity-0')"
                 class="mb-6 flex items-center md:mb-10 space-x-2"
               >
                 <Icon
@@ -133,10 +134,13 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                   name="ri:speak-ai-line"
                 />
                 <h3
-                  ref="subheadingRef"
-                  class="figtree-regular text-xl color-pureBlack tracking-tight lg:text-3xl md:text-2xl dark:color-pureWhite !font-medium"
+                  class="figtree-regular text-xl color-pureBlack tracking-tight lg:text-4xl md:text-2xl dark:color-pureWhite !font-medium"
                 >
-                  Trending Topics
+                  <SparklesText
+                    :colors="{ first: '#9E7AFF', second: '#FE8BBB' }"
+                    :sparkles-count="5"
+                    text="Trending Topics"
+                  />
                 </h3>
               </div>
               <div class="flex flex-col gap-4">
