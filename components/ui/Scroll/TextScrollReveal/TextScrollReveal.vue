@@ -35,16 +35,16 @@ useEventListener('resize', updateScrollYProgress)
   <div
     ref="textScrollRevealRef"
     :class="useClsx(
-      'relative z-0 h-[200vh]',
+      'relative z-0 h-[300vh]',
       classNames,
     )"
   >
-    <div class="sticky top-0 h-screen max-w-4xl flex items-center bg-transparent px-4 py-20">
+    <div class="sticky top-0 h-screen flex items-center bg-transparent px-4 py-20">
       <p
         :class="useClsx(
-          'color-pureBlack/20 dark:color-pureWhite/20',
-          'flex flex-wrap p-5 text-2xl',
-          'font-bold lg:p-10 md:p-8 lg:text-4xl md:text-3xl xl:text-5xl',
+          'color-mint-12A dark:color-mint-4A',
+          'flex flex-wrap antialiased',
+          'font-semibold leading-tight font-recoleta text-pretty text-[clamp(2.2rem,9vw,6rem)]',
         )"
       >
         <ScrollWord
