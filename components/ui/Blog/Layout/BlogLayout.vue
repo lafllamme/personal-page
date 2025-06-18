@@ -162,7 +162,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
 
         <!-- Decorative Text Scroll Reveal -->
         <div
-          class="z-10 min-h-64 flex items-center justify-center border rounded-lg"
+          class="z-10 min-h-64 flex items-center justify-center"
         >
           <TextScrollReveal text="Driving digital change with creative energy." />
         </div>
