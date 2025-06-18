@@ -2,6 +2,7 @@
 import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
 import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
+import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
 
 // --- MOCK DATA ---
 
@@ -153,6 +154,13 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Decorative Text Scroll Reveal -->
+        <div
+          class="z-10 min-h-64 flex items-center justify-center border rounded-lg bg-pureWhite dark:bg-pureBlack"
+        >
+          <TextScrollReveal text="Driving digital change with creative energy." />
         </div>
 
         <!-- Below: REGULAR GRID of articles -->
