@@ -5,8 +5,26 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Recoleta';
+  font-style: normal;
+  font-weight: normal;
+  src: url('./Headline/Recoleta.woff') format('woff');
+}
+
+@font-face {
+  font-family: 'Electric';
+  src: url('./Headline/Electric.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .font-electric {
   font-family: 'Electric', sans-serif;
+}
+
+.font-recoleta {
+  font-family: 'Recoleta', sans-serif;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Figtree:ital,wght@0,300..900;1,300..900&family=Major+Mono+Display&display=swap');
