@@ -7,7 +7,6 @@ import { ref, watch } from 'vue'
 
 // Data
 const currentYear = new Date().getFullYear().toString()
-const hasInputFocus = ref(false)
 
 const categories = [
   'Artificial Intelligence',
@@ -23,7 +22,6 @@ const resources = [
 ]
 const company = [
   'About Us',
-  'Editorial Team',
   'Careers',
   'Contact',
   'Site Map',
@@ -67,7 +65,7 @@ watch(footerVisible, (vis) => {
 <template>
   <div ref="footerRef">
     <!-- Divider (Part 0) -->
-    <div class="px-8 md:px-12">
+    <div class="px-4 md:px-12">
       <Divider
         :class="partsVisible[0] ? 'animate-divider' : 'opacity-0'"
       />
