@@ -44,7 +44,7 @@ useEventListener('resize', updateScrollYProgress)
         :class="useClsx(
           'color-mint-12A',
           'flex flex-wrap antialiased',
-          'font-semibold leading-tight tracking-normal bruno-ace-sc-regular text-pretty text-[clamp(3rem,10vw,7rem)]',
+          'font-semibold uppercase leading-tight tracking-wide font-ginger text-pretty text-[clamp(3rem,10vw,8rem)]',
         )"
       >
         <ScrollWord
