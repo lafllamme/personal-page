@@ -24,12 +24,14 @@ interface LinkProps {
   tabindex?: number
   ariaLabel?: string
   underline?: boolean
+  underlineSize?: 'default' | 'big' | 'full'
 }
 
 // Define props and set a default tabindex for accessibility.
 const props = withDefaults(defineProps<LinkProps>(), {
   tabindex: 0,
   underline: true,
+  underlineSize: 'default',
 })
 
 const localePath = useLocalePath()
@@ -48,6 +50,7 @@ const linkProps = computed(() => {
       'title': props.title,
       'tabindex': props.tabindex,
       'aria-label': props.ariaLabel || props.title,
+      'underline-size': props.underlineSize,
     }
   }
   else {
@@ -58,6 +61,7 @@ const linkProps = computed(() => {
       'title': props.title,
       'tabindex': props.tabindex,
       'aria-label': props.ariaLabel || props.title,
+      'underline-size': props.underlineSize,
     }
   }
 })
@@ -78,7 +82,11 @@ const linkProps = computed(() => {
     <!-- Default slot for link content (text or inner HTML) -->
     <slot />
     <!-- Underline component appears on hover -->
-    <Underline v-show="underline" variant="left" />
+    <Underline
+      v-show="underline"
+      :size="underlineSize"
+      variant="left"
+    />
   </component>
 </template>
 
