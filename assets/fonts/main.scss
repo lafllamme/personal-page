@@ -10,6 +10,13 @@
 }
 
 @font-face {
+  font-family: 'Ginger';
+  src: url('./Headline/Ginger.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'Recoleta';
   font-style: normal;
   font-weight: normal;
@@ -29,6 +36,10 @@
 
 .font-recoleta {
   font-family: 'Recoleta', sans-serif;
+}
+
+.font-ginger {
+  font-family: 'Ginger', sans-serif;
 }
 
 .geist-regular {
