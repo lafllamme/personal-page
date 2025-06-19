@@ -2,6 +2,7 @@
 import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
 import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
+import Link from '@/components/ui/Link/Link.vue'
 import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
 import SparklesText from '@/components/ui/Text/SparkleText/SparkleText.vue'
 // --- MOCK DATA ---
@@ -90,20 +91,40 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             <p
               ref="hintRef"
               :class="useClsx(isHintVisible ? 'animate-fade-in' : 'opacity-0')"
-              class="geist-regular max-w-2xl text-gray-10 font-light md:text-xl"
+              class="geist-regular max-w-2xl text-gray-10 font-thin md:ml-1 md:text-xl"
             >
               The most insightful pieces from our expert contributors.
             </p>
           </div>
-          <a
+          <div
             ref="hintRef"
-            :class="useClsx(isHintVisible ? 'animate-fade-in' : 'opacity-0')"
-            class="geist-regular mt-4 flex items-center text-sm text-gray-12 font-medium md:mt-0 hover:text-gray-10"
-            href="#"
+            class="group mt-4 flex items-center justify-center"
           >
-            View all articles
-            <Icon class="ml-1 h-4 w-4" name="ri:arrow-right-s-line" />
-          </a>
+            <Link
+              :class="[
+                useClsx(
+                  'flex items-start gap-2 group',
+                  isHintVisible ? 'animate-fade-in' : 'opacity-0',
+                  'geist-regular text-base font-light uppercase',
+                  'color-gray-12  tracking-wide transition-color duration-150 hover:text-mint-11',
+                ),
+              ]"
+              aria-label="View all articles on our blog"
+              href="#"
+              underline-size="full"
+            >
+              View all articles
+              <Icon
+                :class="useClsx(
+                  'size-5 color-mint-11',
+                  'transition-transform duration-150 ease-out delay-75',
+                  'dark:group-hover:color-pureWhite group-hover:color-pureBlack',
+                  'group-hover:translate-x-0.5  group-hover:-translate-y-0.5',
+                )"
+                name="ri:arrow-right-up-line"
+              />
+            </Link>
+          </div>
         </div>
 
         <!-- Featured + Trending -->
@@ -134,7 +155,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                   name="ri:speak-ai-line"
                 />
                 <h3
-                  class="figtree-regular text-xl color-pureBlack tracking-tight lg:text-4xl md:text-2xl dark:color-pureWhite !font-medium"
+                  class="figtree-regular whitespace-nowrap text-xl color-pureBlack tracking-tight lg:text-4xl md:text-2xl dark:color-pureWhite !font-medium"
                 >
                   <SparklesText
                     :colors="{ first: '#9E7AFF', second: '#FE8BBB' }"
