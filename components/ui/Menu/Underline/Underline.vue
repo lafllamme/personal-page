@@ -7,7 +7,7 @@ const { className, color, variant, size } = props
 
 /* ------------------------------------------------------------------ */
 // 1.  For every size list the exact growth rules
-const sizeRules: Record<'default' | 'big', string[]> = {
+const sizeRules: Record<'default' | 'big' | 'full', string[]> = {
   default: [
     /* pointer hover – peer & group versions */
     'media-mouse:peer-[&:hover:not(:focus-visible)]:w-3/4',
@@ -16,6 +16,16 @@ const sizeRules: Record<'default' | 'big', string[]> = {
     /* mouse/touch focus (focus without focus-visible & without hover) */
     'peer-[&:focus:not(:focus-visible):not(:hover)]:w-3/4',
     'group-[&:focus:not(:focus-visible):not(:hover)]:w-3/4',
+  ],
+
+  full: [
+    /* pointer hover */
+    'media-mouse:peer-[&:hover:not(:focus-visible)]:w-4/4',
+    'media-mouse:group-[&:hover:not(:focus-visible)]:w-4/4',
+
+    /* mouse/touch focus */
+    'peer-[&:focus:not(:focus-visible):not(:hover)]:w-4/4',
+    'group-[&:focus:not(:focus-visible):not(:hover)]:w-4/4',
   ],
 
   big: [
