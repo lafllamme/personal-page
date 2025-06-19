@@ -80,7 +80,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             <h2
               ref="headlineRef"
               :class="useClsx(
-                'geist-regular mb-4 text-3xl md:text-5xl font-bold tracking-tight',
+                'figtree-regular mb-4 font-medium text-3xl md:text-6xl tracking-tight',
                 'color-mint-12',
                 isHeadingVisible ? 'animate-fade-in' : 'opacity-0',
               )"
@@ -90,7 +90,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             <p
               ref="hintRef"
               :class="useClsx(isHintVisible ? 'animate-fade-in' : 'opacity-0')"
-              class="geist-regular max-w-2xl text-gray-10"
+              class="geist-regular max-w-2xl text-gray-10 font-light md:text-xl"
             >
               The most insightful pieces from our expert contributors.
             </p>
