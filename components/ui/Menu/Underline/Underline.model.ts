@@ -1,4 +1,4 @@
-export type variant = 'center' | 'left' | 'right'
+export type variant = 'center' | 'left' | 'right' | 'full'
 export type size = 'default' | 'big'
 
 export interface UnderlineProps {
