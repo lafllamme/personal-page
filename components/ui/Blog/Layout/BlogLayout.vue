@@ -106,7 +106,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                   'flex items-start gap-2 group',
                   isHintVisible ? 'animate-fade-in' : 'opacity-0',
                   'geist-regular text-base font-light uppercase',
-                  'color-gray-12  tracking-wide transition-color duration-150 hover:text-mint-11',
+                  'color-gray-12 tracking-wide transition-color duration-150 hover:color-jade-8',
                 ),
               ]"
               aria-label="View all articles on our blog"
