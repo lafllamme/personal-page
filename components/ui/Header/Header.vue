@@ -82,15 +82,15 @@ watch(isSwitchOpen, (open) => {
           'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
           'border-b border-gray-5 border-solid dark:border-gray-4',
           'relative mx-auto flex items-center justify-between',
-          'px-4 py-2 md:py-3 sm:px-6',
+          'px-4 py-3 sm:px-6',
         )"
       >
         <div class="flex items-center">
           <NuxtLink
             :class="useClsx(
-              'transition-transform duration-300 ease-out hover:scale-105 md:text-3xl',
+              'transition-transform geist-regular duration-300 ease-out hover:scale-105 md:text-3xl',
               'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-              'absolute group px-2 text-xl font-bold tracking-tight antialiased',
+              'absolute group px-2 text-2xl font-bold tracking-tight antialiased',
               'focus-visible:outline-none focus-visible:ring-3',
             )"
             :to="homeLink"
@@ -102,10 +102,19 @@ watch(isSwitchOpen, (open) => {
             <Underline />
           </NuxtLink>
         </div>
-        <div class="flex">
-          <LanguageSwitcher v-model:open="isSwitchOpen" />
-          <ColorMode class="" />
-          <Menu />
+        <div class="relative flex items-center">
+          <div class="mr-8.5 flex items-center gap-1.5 md:mr-10.5">
+            <LanguageSwitcher
+              v-model:open="isSwitchOpen"
+              class="p-1.5"
+            />
+            <ColorMode
+              class="p-1.5"
+            />
+          </div>
+          <Menu
+            class="p-1.5"
+          />
         </div>
       </div>
     </header>
