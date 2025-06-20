@@ -41,7 +41,7 @@ onMounted(() => {
 <template>
   <template v-if="isLoading">
     <div class="flex items-center">
-      <div class="aspect-square size-6 animate-pulse rounded-full bg-gray-4A px-2 md:size-8" />
+      <div class="aspect-square size-5 animate-pulse rounded-full bg-gray-4A px-2 md:size-8" />
     </div>
   </template>
   <template v-else>
@@ -74,7 +74,7 @@ onMounted(() => {
               'transition-none',
             )"
             aria-hidden="true"
-            class="size-6 md:size-8"
+            class="size-5 md:size-8"
             viewBox="0 0 32 32"
             xmlns="http://www.w3.org/2000/svg"
           >
