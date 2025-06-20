@@ -148,7 +148,7 @@ const sortedLanguages = computed(() => {
       ref="buttonRef"
       :aria-expanded="open"
       :class="useClsx(
-        'cursor-pointer hover:text-mint-12 hover:bg-pureBlack/15 dark:hover:bg-pureWhite/30',
+        'cursor-pointer hover:text-mint-1 hover:bg-pureBlack/15 dark:hover:bg-pureWhite/30',
         'flex items-center rounded-full antialiased font-700 px-1 md:px-2 py-px',
         'focus:ring-pureBlack dark:focus:ring-pureWhite focus:outline-none focus:ring-2',
         'ring-offset-pureBlack dark:ring-offset-pureWhite',
@@ -200,11 +200,12 @@ const sortedLanguages = computed(() => {
         <li
           v-for="(lang, index) in sortedLanguages"
           :key="lang.code"
+          class="group"
         >
           <NuxtLinkLocale
             :class="useClsx(
-              'hover:bg-pureWhite/50 hover:dark:bg-pureBlack/50 hover:bg-op-50',
-              'hover:text-mint-12',
+              'group-hover:bg-pureBlack/50 dark:group-hover:bg-pureWhite/50 hover:bg-op-50',
+              'group-hover:color-mint-1',
               'focus:ring-pureBlack dark:focus:ring-pureWhite font-600 antialiased focus:outline-none focus:ring-2 focus:ring-inset',
               'block cursor-pointer px-4 py-2 text-sm font-mono uppercase text-center',
             )"
