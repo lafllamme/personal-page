@@ -165,7 +165,7 @@ const sortedLanguages = computed(() => {
       @touchstart="onTouchStart"
       @keydown.esc="emit('update:open', false)"
     >
-      <span class="figtree-regular text-sm font-semibold tracking-tight antialiased md:text-base">{{
+      <span class="font-recoleta text-sm font-semibold leading-tight tracking-tight antialiased md:text-xl">{{
         currentLanguageLabel
       }}</span>
       <Icon
