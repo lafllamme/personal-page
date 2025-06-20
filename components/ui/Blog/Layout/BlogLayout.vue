@@ -48,7 +48,7 @@ const trendingArticles = reactive([
 ])
 
 const regularArticles = reactive(
-  Array.from({ length: 12 }).map((_, i) => ({
+  Array.from({ length: 9 }).map((_, i) => ({
     id: `article-id-${i + 1}`,
     title: 'The Rise of AI in Modern Development',
     description: 'How artificial intelligence is transforming the way we build and interact with technology.',
