@@ -75,9 +75,9 @@ function handleGenerateComplete() {
       <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:px-6 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
-            'geist-regular text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl <md:whitespace-nowrap animate-clip-circle md:text-balance',
+            'font-prata text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl <md:whitespace-nowrap animate-clip-circle md:text-balance',
             'dark:text-pureWhite !font-bold',
-            'text-pureBlack leading-tight tracking-tighter antialiased',
+            'text-pureBlack leading-tight tracking-tight antialiased',
           )"
         >
           {{ t('hero.headline') }}
@@ -86,7 +86,7 @@ function handleGenerateComplete() {
           :class="useClsx(
             'max-w-3xl 2xl:max-w-4xl md:text-justify',
             'text-wrap text-[clamp(1rem,2vw,1.5rem)]',
-            'font-300',
+            'font-300 font-manrope',
           )"
           :delay="0.8"
           :duration="1.1"
