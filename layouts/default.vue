@@ -9,10 +9,16 @@ import Header from '@/components/ui/Header/Header.vue'
   <div class="relative">
     <!-- Main Content -->
     <div
-      class="relative z-10 bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack"
+      :class="useClsx(
+        'relative z-10',
+        'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
+        'bg-pureWhite  dark:bg-pureBlack',
+      )"
     >
       <Header />
-      <main class="mt-[calc(3rem+1px)] md:mt-[calc(3.5rem+1px)]">
+      <main
+        :class="useClsx('mt-[calc(3rem+1px+1rem)] md:mt-[calc(3.5rem+1px+1.5rem)]')"
+      >
         <slot name="default" />
       </main>
       <Footer />
