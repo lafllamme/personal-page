@@ -103,7 +103,7 @@ watch(isSwitchOpen, (open) => {
           </NuxtLink>
         </div>
         <div class="relative flex items-center">
-          <div class="mr-8.5 flex items-center gap-1.5 md:mr-10.5">
+          <div class="mr-6.5 flex items-center gap-0.5 md:mr-10.5">
             <LanguageSwitcher
               v-model:open="isSwitchOpen"
               class="p-1.5"
