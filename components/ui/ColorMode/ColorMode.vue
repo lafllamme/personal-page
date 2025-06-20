@@ -40,12 +40,12 @@ onMounted(() => {
 
 <template>
   <template v-if="isLoading">
-    <div class="mr-12 px-2 md:mr-10">
-      <div class="aspect-square h-8 w-8 animate-pulse rounded-full bg-gray-4A px-2" />
+    <div class="flex items-center">
+      <div class="aspect-square size-6 animate-pulse rounded-full bg-gray-4A px-2 md:size-8" />
     </div>
   </template>
   <template v-else>
-    <div class="relative mr-12 flex items-center px-2 md:mr-10">
+    <div class="relative flex items-center">
       <button
         ref="button"
         :aria-pressed="isPressed"
@@ -74,7 +74,7 @@ onMounted(() => {
               'transition-none',
             )"
             aria-hidden="true"
-            class="h-8 w-8"
+            class="size-6 md:size-8"
             viewBox="0 0 32 32"
             xmlns="http://www.w3.org/2000/svg"
           >
