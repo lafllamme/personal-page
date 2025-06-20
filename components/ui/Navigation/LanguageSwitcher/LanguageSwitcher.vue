@@ -149,7 +149,7 @@ const sortedLanguages = computed(() => {
       :aria-expanded="open"
       :class="useClsx(
         'cursor-pointer hover:text-mint-12 hover:bg-pureBlack/15 dark:hover:bg-pureWhite/30',
-        'flex items-center rounded-full px-2 py-1 antialiased font-700',
+        'flex items-center rounded-full antialiased font-700 px-1 md:px-2 py-px',
         'focus:ring-pureBlack dark:focus:ring-pureWhite focus:outline-none focus:ring-2',
         'ring-offset-pureBlack dark:ring-offset-pureWhite',
         'hover:shadow-[rgba(50,50,93,0.25)_0px_2px_27px_-5px,rgba(0,0,0,0.3)_0px_8px_27px_-8px]',
@@ -165,11 +165,13 @@ const sortedLanguages = computed(() => {
       @touchstart="onTouchStart"
       @keydown.esc="emit('update:open', false)"
     >
-      <span>{{ currentLanguageLabel }}</span>
+      <span class="figtree-regular text-sm font-semibold tracking-tight antialiased md:text-base">{{
+        currentLanguageLabel
+      }}</span>
       <Icon
         :class="useClsx(open ? 'rotate-180' : 'rotate-0')"
         aria-hidden="true"
-        class="ml-1 h-4 w-4 transition-transform duration-300 ease-in-out"
+        class="ml-px h-4 w-4 transition-transform duration-300 ease-in-out"
         name="ri:arrow-down-s-line"
       />
     </button>
