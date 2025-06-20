@@ -81,7 +81,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             <h2
               ref="headlineRef"
               :class="useClsx(
-                'figtree-regular mb-4 font-medium text-3xl md:text-6xl tracking-tight',
+                'font-recoleta mb-4 font-medium text-3xl md:text-6xl tracking-tight',
                 'color-mint-12',
                 isHeadingVisible ? 'animate-fade-in' : 'opacity-0',
               )"
