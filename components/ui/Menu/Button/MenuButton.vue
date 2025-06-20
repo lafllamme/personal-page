@@ -18,7 +18,7 @@ const { toggleMenu } = menuStore
     :class="useClsx(
       'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring-inset focus-visible:ring',
       'transition-transform focus:outline-none ease-in-out duration-300',
-      'absolute z-100 top-1.5 md:top-1.75 -translate-x-full absolute z-100',
+      'absolute z-100 top-1.5 md:top-1.5 -translate-x-full absolute z-100',
       isOpen && 'opened',
     )"
     aria-controls="mobile-menu"
@@ -27,7 +27,7 @@ const { toggleMenu } = menuStore
     @click="toggleMenu('toggle')"
   >
     <svg
-      class="size-6 transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] md:size-8"
+      class="size-5 transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] md:size-8"
       viewBox="0 0 100 100"
     >
       <path
