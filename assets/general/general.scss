@@ -1,14 +1,9 @@
-html {
-  scroll-behavior: smooth !important;
-}
 
 html,
 body {
-  @apply bg-pureWhite;
-  &.dark {
-    @apply bg-pureBlack;
-  }
+  @apply scroll-smooth
 }
+
 
 // page transitions
 /* Enhanced soft fade transition without scaling to avoid jumpiness */
