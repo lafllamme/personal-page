@@ -165,7 +165,7 @@ const sortedLanguages = computed(() => {
       @touchstart="onTouchStart"
       @keydown.esc="emit('update:open', false)"
     >
-      <span class="font-recoleta text-sm font-semibold leading-tight tracking-tight antialiased md:text-xl">{{
+      <span class="font-recoleta ml-1 text-sm font-semibold leading-tight tracking-tight antialiased md:text-xl">{{
         currentLanguageLabel
       }}</span>
       <Icon
@@ -200,14 +200,15 @@ const sortedLanguages = computed(() => {
         <li
           v-for="(lang, index) in sortedLanguages"
           :key="lang.code"
-          class="group"
+          :class="useClsx(
+            'group hover:bg-gray-8A hover:transition-delay-0',
+            'hover:color-mint-1 hover:bg-op-50',
+          )"
         >
           <NuxtLinkLocale
             :class="useClsx(
-              'group-hover:bg-pureBlack/50 dark:group-hover:bg-pureWhite/50 hover:bg-op-50',
-              'group-hover:color-mint-1',
-              'focus:ring-pureBlack dark:focus:ring-pureWhite font-600 antialiased focus:outline-none focus:ring-2 focus:ring-inset',
-              'block cursor-pointer px-4 py-2 text-sm font-mono uppercase text-center',
+              'focus:ring-pureBlack dark:focus:ring-pureWhite font-light antialiased focus:outline-none focus:ring-2 focus:ring-inset',
+              'block cursor-pointer px-4 py-2 text-xs md:text-sm font-baskerville tracking-tight uppercase text-center',
             )"
             :tabindex="open ? 0 : -1"
             role="menuitem"
