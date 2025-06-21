@@ -75,7 +75,7 @@ function handleGenerateComplete() {
       <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:px-6 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
-            'font-prata text-6vh 2xl:max-w-4xl text-balance animate-clip-circle md:text-balance',
+            'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance animate-clip-circle md:text-balance',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tight antialiased',
           )"
