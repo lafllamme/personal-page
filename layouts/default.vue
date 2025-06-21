@@ -17,7 +17,9 @@ import Header from '@/components/ui/Header/Header.vue'
     >
       <Header />
       <main
-        :class="useClsx('mt-[calc(4rem-1px+1rem)] md:mt-[calc(4rem+5px+1.5rem)]')"
+        :class="useClsx(
+          'pt-[calc(4rem-1px+1rem)] md:pt-[calc(4rem+5px+1.5rem)]',
+        )"
       >
         <slot name="default" />
       </main>
