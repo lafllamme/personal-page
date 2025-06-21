@@ -88,17 +88,18 @@ watch(isSwitchOpen, (open) => {
         <div class="flex items-center">
           <NuxtLink
             :class="useClsx(
-              'transition-transform geist-regular duration-300 ease-out hover:scale-105 md:text-3xl',
               'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-              'absolute group px-2 text-2xl font-bold tracking-tight antialiased',
+              'transition-transform duration-300 ease-out hover:scale-105',
               'focus-visible:outline-none focus-visible:ring-3',
+              'font-nova font-bold tracking-tight antialiased',
+              'absolute group px-2 text-2xl  md:text-3xl',
             )"
             :to="homeLink"
             aria-label="Tech News"
             tabindex="0"
           >
             <span class="text-pureBlack dark:text-pureWhite">Tec</span>
-            <span class="text-fg text-mint-8">News</span>
+            <span class="color-teal-10">News</span>
             <Underline />
           </NuxtLink>
         </div>
