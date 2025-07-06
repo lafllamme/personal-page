@@ -12,7 +12,12 @@
     "generate": "nuxt generate",
     "prepare": "nuxt prepare",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "strapi:setup": "./scripts/setup-strapi.sh",
+    "strapi:dev": "strapi develop",
+    "strapi:build": "strapi build",
+    "strapi:start": "strapi start",
+    "strapi:deploy": "strapi deploy"
   },
   "dependencies": {
     "@iconify-json/radix-icons": "^1.2.2",
@@ -25,6 +30,9 @@
     "@pinia/nuxt": "0.11.0",
     "@radix-ui/colors": "^3.0.0",
     "@splinetool/runtime": "^1.10.2",
+    "@strapi/plugin-i18n": "^4.25.13",
+    "@strapi/plugin-users-permissions": "^5.17.0",
+    "@strapi/strapi": "^5.17.0",
     "@theme-toggles/react": "^4.1.0",
     "@tresjs/cientos": "^4.1.0",
     "@tresjs/core": "^4.3.3",
