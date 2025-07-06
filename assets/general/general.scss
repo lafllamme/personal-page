@@ -1,7 +1,8 @@
 
 html,
 body {
-  @apply scroll-smooth
+  @apply scroll-smooth transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] bg-pureWhite;
+
 }
 
 
