@@ -67,11 +67,13 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     '@nuxtjs/color-mode',
     '@nuxtjs/i18n',
+    '@nuxtjs/strapi',
     '@tresjs/nuxt',
     '@vueuse/nuxt',
     'reka-ui/nuxt',
     '@pinia/nuxt',
     '@nuxtjs/sitemap',
+
   ],
 
   // Tres.js settings
