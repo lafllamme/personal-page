@@ -3,7 +3,7 @@ import ReviewMarquee from '@/components/ui/ReviewMarquee/ReviewMarquee.vue'
 </script>
 
 <template>
-  <div class="bg-puraeWhite dark:bg-pureBlack">
+  <div class="bg-pureWhite dark:bg-pureBlack">
     <ReviewMarquee />
   </div>
 </template>
