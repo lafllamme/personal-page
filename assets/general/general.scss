@@ -1,10 +1,18 @@
+@mixin theme-bg($light, $dark) {
+  @apply #{$light};
+  &.dark {
+    @apply #{$dark};
+  }
+}
 
 html,
 body {
-  @apply scroll-smooth transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] bg-pureWhite;
-
+  @apply scroll-smooth transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)];
 }
 
+html {
+  @include theme-bg(bg-pureWhite, bg-pureBlack);
+}
 
 // page transitions
 /* Enhanced soft fade transition without scaling to avoid jumpiness */
