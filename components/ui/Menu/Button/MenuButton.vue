@@ -16,7 +16,7 @@ const { toggleMenu } = menuStore
     :aria-expanded="isOpen"
     :aria-label="isOpen ? 'Close menu' : 'Open menu'"
     :class="useClsx(
-      'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring-inset focus-visible:ring',
+      'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring',
       'transition-transform focus:outline-none ease-in-out duration-300',
       'absolute z-100 top-1.5 md:top-1.5 -translate-x-full absolute z-100',
       isOpen && 'opened',
