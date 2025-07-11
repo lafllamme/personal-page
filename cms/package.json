@@ -30,7 +30,8 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sharp": "0.34.2",
-    "@payloadcms/db-postgres": "3.46.0"
+    "@payloadcms/db-postgres": "3.46.0",
+    "@lafllamme/personal-page-shared": "^1.0.0"
   },
   "devDependencies": {
     "@playwright/test": "1.50.0",

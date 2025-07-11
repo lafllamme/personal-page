@@ -183,8 +183,5 @@ export default defineNuxtConfig({
     ],
   },
 
-  // Path aliases for shared types
-  alias: {
-    '@shared': '../shared',
-  },
+
 })

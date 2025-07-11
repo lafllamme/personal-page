@@ -1,30 +1,84 @@
 {
-  "name": "@personal-page/shared",
+  "name": "@lafllamme/personal-page-shared",
   "version": "1.0.0",
-  "description": "Shared types and utilities for personal page monorepo",
-  "private": true,
+  "description": "Shared types and utilities for personal page applications",
+  "private": false,
   "type": "module",
-  "main": "./index.ts",
-  "types": "./index.ts",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": "./index.ts",
-    "./types": "./types/index.ts",
-    "./utils": "./utils/index.ts",
-    "./utils/access": "./utils/access.ts",
-    "./payload": "./payload/config.ts",
-    "./payload/collections/Users": "./payload/collections/Users.ts",
-    "./payload/collections/Media": "./payload/collections/Media.ts",
-    "./payload/collections/Pages": "./payload/collections/Pages.ts",
-    "./payload/collections/Posts": "./payload/collections/Posts.ts",
-    "./payload/collections/Categories": "./payload/collections/Categories.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./types": {
+      "import": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils/index.js",
+      "types": "./dist/utils/index.d.ts"
+    },
+    "./utils/access": {
+      "import": "./dist/utils/access.js",
+      "types": "./dist/utils/access.d.ts"
+    },
+    "./payload": {
+      "import": "./dist/payload/config.js",
+      "types": "./dist/payload/config.d.ts"
+    },
+    "./payload/collections/Users": {
+      "import": "./dist/payload/collections/Users.js",
+      "types": "./dist/payload/collections/Users.d.ts"
+    },
+    "./payload/collections/Media": {
+      "import": "./dist/payload/collections/Media.js",
+      "types": "./dist/payload/collections/Media.d.ts"
+    },
+    "./payload/collections/Pages": {
+      "import": "./dist/payload/collections/Pages.js",
+      "types": "./dist/payload/collections/Pages.d.ts"
+    },
+    "./payload/collections/Posts": {
+      "import": "./dist/payload/collections/Posts.js",
+      "types": "./dist/payload/collections/Posts.d.ts"
+    },
+    "./payload/collections/Categories": {
+      "import": "./dist/payload/collections/Categories.js",
+      "types": "./dist/payload/collections/Categories.d.ts"
+    }
   },
   "scripts": {
-    "build": "echo 'Shared package - no build needed'",
-    "type-check": "echo 'Shared package - types available'"
+    "build": "tsc --build",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "pnpm run clean && pnpm run build",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "payload": "3.46.0",
     "@payloadcms/db-postgres": "3.46.0",
-    "@payloadcms/richtext-lexical": "3.46.0"
-  }
+    "@payloadcms/richtext-lexical": "3.46.0",
+    "sharp": "0.34.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3",
+    "@types/node": "^22.5.4"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lafllamme/personal-page.git",
+    "directory": "shared"
+  },
+  "keywords": [
+    "payload",
+    "cms",
+    "types",
+    "shared"
+  ],
+  "author": "Dogan Teke",
+  "license": "MIT"
 } 

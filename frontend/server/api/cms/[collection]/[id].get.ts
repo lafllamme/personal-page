@@ -5,11 +5,11 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import sharp from 'sharp'
 
 // Import shared collections
-import { Users } from '@personal-page/shared/payload/collections/Users'
-import { Media } from '@personal-page/shared/payload/collections/Media'
-import { Pages } from '@personal-page/shared/payload/collections/Pages'
-import { Posts } from '@personal-page/shared/payload/collections/Posts'
-import { Categories } from '@personal-page/shared/payload/collections/Categories'
+import { Users } from '@lafllamme/personal-page-shared/payload/collections/Users'
+import { Media } from '@lafllamme/personal-page-shared/payload/collections/Media'
+import { Pages } from '@lafllamme/personal-page-shared/payload/collections/Pages'
+import { Posts } from '@lafllamme/personal-page-shared/payload/collections/Posts'
+import { Categories } from '@lafllamme/personal-page-shared/payload/collections/Categories'
 
 export default defineEventHandler(async (event) => {
   try {
