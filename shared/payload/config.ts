@@ -24,8 +24,8 @@ export const payloadConfig = buildConfig({
       createFirstUser: '/create-first-user',
       login: '/login',
       logout: '/logout',
-      resetPassword: '/reset-password',
-      forgotPassword: '/forgot-password',
+      reset: '/reset-password',
+      forgot: '/forgot-password',
     },
   },
   collections: [Users, Media, Pages, Posts, Categories],
@@ -42,10 +42,7 @@ export const payloadConfig = buildConfig({
     'http://localhost:3001', 
     process.env.FRONTEND_URL || 'http://localhost:3000',
   ],
-  i18n: {
-    supportedLanguages: { en: 'English' },
-    fallbackLanguage: 'en',
-  },
+
   typescript: {
     outputFile: path.resolve(dirname, '../types/payload-types.ts'),
   },

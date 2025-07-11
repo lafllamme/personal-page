@@ -24,7 +24,7 @@
     "@nuxtjs/color-mode": "3.5.2",
     "@nuxtjs/i18n": "9.2.1",
     "@nuxtjs/sitemap": "7.4.0",
-    "@personal-page/shared": "workspace:*",
+    "@lafllamme/personal-page-shared": "^1.0.0",
     "@pinia/nuxt": "0.11.0",
     "@radix-ui/colors": "^3.0.0",
     "@splinetool/runtime": "^1.10.2",

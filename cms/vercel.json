@@ -7,9 +7,5 @@
     "src/app/**/*.{js,ts}": {
       "maxDuration": 30
     }
-  },
-  "env": {
-    "DATABASE_URI": "@database_uri",
-    "PAYLOAD_SECRET": "@payload_secret"
   }
 } 

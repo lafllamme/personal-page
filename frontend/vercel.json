@@ -1,17 +1,7 @@
 {
   "version": 2,
   "framework": "nuxtjs",
-  "buildCommand": "pnpm build",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": ".vercel/output",
-  "functions": {
-    "server/**/*.{js,ts}": {
-      "maxDuration": 30
-    }
-  },
-  "env": {
-    "PAYLOAD_PUBLIC_SERVER_URL": "@payload_public_server_url",
-    "FRONTEND_URL": "@frontend_url",
-    "NUXT_BUTTONDOWN_API_KEY": "@nuxt_buttondown_api_key"
-  }
+  "buildCommand": "npm run build",
+  "installCommand": "npm ci",
+  "outputDirectory": ".vercel/output"
 } 
