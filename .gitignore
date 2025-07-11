@@ -11,6 +11,9 @@ personal-page.iml
 # Node dependencies
 node_modules
 
+# turbo related files
+.turbo
+
 # Logs
 logs
 *.log
