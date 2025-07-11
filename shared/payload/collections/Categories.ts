@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { publicRead, isEditor } from '../../utils/access'
 
 export const Categories: CollectionConfig = {
   slug: 'categories',
@@ -7,7 +8,10 @@ export const Categories: CollectionConfig = {
     defaultColumns: ['name', 'description', 'updatedAt'],
   },
   access: {
-    read: () => true,
+    read: publicRead, // Public can read categories
+    create: isEditor, // Only admin & editor can create
+    update: isEditor, // Only admin & editor can update
+    delete: isEditor, // Only admin & editor can delete
   },
   fields: [
     {

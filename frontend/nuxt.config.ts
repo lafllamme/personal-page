@@ -18,7 +18,10 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    payloadApiKey: process.env.PAYLOAD_SECRET,
+    // Database and Payload configuration for server-side API routes
+    databaseUri: process.env.NUXT_DATABASE_URI,
+    payloadSecret: process.env.NUXT_PAYLOAD_SECRET,
+    payloadApiKey: process.env.NUXT_PAYLOAD_SECRET,
     // Newsletter
     email: {
       newsletter: {
