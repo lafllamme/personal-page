@@ -29,9 +29,6 @@ importers:
       '@nuxtjs/sitemap':
         specifier: 7.4.0
         version: 7.4.0(h3@1.15.3)(magicast@0.3.5)(vite@6.1.0(@types/node@24.0.1)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.42.0)(tsx@4.19.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))
-      '@nuxtjs/strapi':
-        specifier: ^2.1.1
-        version: 2.1.1(magicast@0.3.5)
       '@pinia/nuxt':
         specifier: 0.11.0
         version: 0.11.0(magicast@0.3.5)(pinia@3.0.2(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3)))
@@ -83,6 +80,9 @@ importers:
       nuxt:
         specifier: ^3.15.2
         version: 3.15.4(@parcel/watcher@2.5.1)(@types/node@24.0.1)(better-sqlite3@11.9.1)(db0@0.2.4(better-sqlite3@11.9.1))(eslint@9.20.1(jiti@2.4.2))(ioredis@5.5.0)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.34.6)(sass-embedded@1.83.4)(terser@5.42.0)(tsx@4.19.2)(typescript@5.7.3)(vite@6.1.0(@types/node@24.0.1)(jiti@2.4.2)(sass-embedded@1.83.4)(terser@5.42.0)(tsx@4.19.2)(yaml@2.7.0))(yaml@2.7.0)
+      payload-rest-client:
+        specifier: ^3.0.5
+        version: 3.0.5
       pinia:
         specifier: ^3.0.2
         version: 3.0.2(typescript@5.7.3)(vue@3.5.13(typescript@5.7.3))
@@ -1466,9 +1466,6 @@ packages:
   '@nuxtjs/sitemap@7.4.0':
     resolution: {integrity: sha512-GMcwo8Ppo5MeG0CwldA6iQHhimybInWb1cFrvHDENF2wYBfSKWkt7JuUAiuIsF60LRpZm5bg/TMwXfiXqNjoeA==}
     engines: {node: '>=18.0.0'}
-
-  '@nuxtjs/strapi@2.1.1':
-    resolution: {integrity: sha512-CNcsEqkhto4P5SEA4ZuRrGdfOT7swsZp/hvR7SNG3OW3J8eHJythE68P1LaszCq5uvYlg7j90Iue534sEdedtQ==}
 
   '@nuxtjs/tailwindcss@6.13.1':
     resolution: {integrity: sha512-atL2SaPsxLfMTlXUQvr1UpDYdz6ocNOhH35H+t7M++g4r79QiQScJ7XuyyMR9AyBN19lkPA3nw7NXxazXmYxlA==}
@@ -4496,10 +4493,6 @@ packages:
   graphemer@1.4.0:
     resolution: {integrity: sha512-EtKwoO6kxCL9WO5xipiHTZlSzBm7WLT627TqC/uVRd0HKmq8NXyebnNYxDoBi7wt8eTWrUrKXCOVaFq9x1kgag==}
 
-  graphql@16.11.0:
-    resolution: {integrity: sha512-mS1lbMsxgQj6hge1XZ6p7GPhbrtFwUFYi3wRzXAC/FmYnyXMTvvI3td3rjmQ2u8ewXueaSvRPWaEcgVVOT9Jnw==}
-    engines: {node: ^12.22.0 || ^14.16.0 || ^16.0.0 || >=17.0.0}
-
   gzip-size@6.0.0:
     resolution: {integrity: sha512-ax7ZYomf6jqPTQ4+XCpUGyXKHk5WweS+e05MBO4/y3WJ5RkmPXNKvX+bx1behVILVwr6JSQvZAku021CHPXG3Q==}
     engines: {node: '>=10'}
@@ -5620,6 +5613,9 @@ packages:
 
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
+
+  payload-rest-client@3.0.5:
+    resolution: {integrity: sha512-4NZeYHwCkBD0s8hfP5i0WHYYSsZEzGARZsKSEfMDqjHapdwYCLZKUE48YhriTctivk4tE09qO2E4ZVhR1LiT+Q==}
 
   perfect-debounce@1.0.0:
     resolution: {integrity: sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==}
@@ -9242,16 +9238,6 @@ snapshots:
       - magicast
       - vite
       - vue
-
-  '@nuxtjs/strapi@2.1.1(magicast@0.3.5)':
-    dependencies:
-      '@nuxt/kit': 3.17.5(magicast@0.3.5)
-      defu: 6.1.4
-      graphql: 16.11.0
-      qs: 6.14.0
-      ufo: 1.6.1
-    transitivePeerDependencies:
-      - magicast
 
   '@nuxtjs/tailwindcss@6.13.1(magicast@0.3.5)':
     dependencies:
@@ -13678,8 +13664,6 @@ snapshots:
 
   graphemer@1.4.0: {}
 
-  graphql@16.11.0: {}
-
   gzip-size@6.0.0:
     dependencies:
       duplexer: 0.1.2
@@ -15247,6 +15231,8 @@ snapshots:
   pathe@1.1.2: {}
 
   pathe@2.0.3: {}
+
+  payload-rest-client@3.0.5: {}
 
   perfect-debounce@1.0.0: {}
 

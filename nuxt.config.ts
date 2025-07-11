@@ -12,11 +12,15 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    payloadApiKey: process.env.NUXT_PAYLOAD_API_KEY,
     // Newsletter
     email: {
       newsletter: {
         apiKey: process.env.NUXT_BUTTONDOWN_API_KEY || '',
       },
+    },
+    public: {
+      payloadBase: process.env.NUXT_PAYLOAD_API || '',
     },
   },
 
@@ -67,7 +71,6 @@ export default defineNuxtConfig({
     '@nuxthub/core',
     '@nuxtjs/color-mode',
     '@nuxtjs/i18n',
-    '@nuxtjs/strapi',
     '@tresjs/nuxt',
     '@vueuse/nuxt',
     'reka-ui/nuxt',
