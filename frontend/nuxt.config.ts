@@ -65,11 +65,28 @@ export default defineNuxtConfig({
     },
   },
 
-  // Nitro asset compression
+  // Nitro configuration for Vercel
   nitro: {
+    preset: 'vercel',
     compressPublicAssets: {
       gzip: true,
       brotli: true,
+    },
+    // Optimize for serverless
+    minify: true,
+    sourceMap: false,
+    // Handle native dependencies properly
+    experimental: {
+      wasm: false,
+    },
+    rollupConfig: {
+      external: ['sharp'],
+    },
+    // Vercel-specific settings
+    vercel: {
+      functions: {
+        maxDuration: 30, // 30 seconds max for server routes
+      },
     },
   },
 
@@ -85,7 +102,6 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/icon',
     '@unocss/nuxt',
-    '@nuxthub/core',
     '@nuxtjs/color-mode',
     '@nuxtjs/i18n',
     '@tresjs/nuxt',
@@ -103,7 +119,7 @@ export default defineNuxtConfig({
 
   // Internationalization
   i18n: {
-    strategy: 'prefix', // add prefix to all generated routes
+    strategy: 'prefix_except_default', // Default locale (en) won't have prefix, others will
     baseUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     defaultLocale: 'en',
     locales: [

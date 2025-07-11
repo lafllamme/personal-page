@@ -8,8 +8,9 @@ import { useEventListener, useWindowScroll } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
 // compute to destination for a home link
+const localePath = useLocalePath()
 const homeLink = computed(() => {
-  return { name: 'index' }
+  return localePath('/')
 })
 
 const { height } = useWindowSize()

@@ -28,6 +28,12 @@
       ],
       "@payload-config": [
         "./src/payload.config.ts"
+      ],
+      "@personal-page/shared": [
+        "../shared"
+      ],
+      "@personal-page/shared/*": [
+        "../shared/*"
       ]
     },
     "target": "ES2022",

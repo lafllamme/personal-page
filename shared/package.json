@@ -18,10 +18,13 @@
     "./payload/collections/Posts": "./payload/collections/Posts.ts",
     "./payload/collections/Categories": "./payload/collections/Categories.ts"
   },
+  "scripts": {
+    "build": "echo 'Shared package - no build needed'",
+    "type-check": "echo 'Shared package - types available'"
+  },
   "dependencies": {
-    "payload": "beta",
-    "@payloadcms/db-postgres": "beta",
-    "@payloadcms/richtext-lexical": "beta",
-    "sharp": "0.32.6"
+    "payload": "3.46.0",
+    "@payloadcms/db-postgres": "3.46.0",
+    "@payloadcms/richtext-lexical": "3.46.0"
   }
 } 
