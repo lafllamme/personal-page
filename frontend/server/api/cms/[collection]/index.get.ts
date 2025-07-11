@@ -14,32 +14,46 @@ import { Categories } from '@personal-page/shared/payload/collections/Categories
 export default defineEventHandler(async (event) => {
   try {
     const collection = getRouterParam(event, 'collection')
-    const slug = getRouterParam(event, 'slug')
     const query = getQuery(event)
     const config = useRuntimeConfig()
     
-    if (!collection || !slug) {
+    // Debug logging
+    console.log('🔍 DEBUG - Runtime config:', {
+      databaseUri: config.databaseUri ? '***EXISTS***' : 'MISSING',
+      payloadSecret: config.payloadSecret ? '***EXISTS***' : 'MISSING',
+      envDatabaseUri: process.env.DATABASE_URI ? '***EXISTS***' : 'MISSING',
+      envPayloadSecret: process.env.PAYLOAD_SECRET ? '***EXISTS***' : 'MISSING'
+    })
+    
+    if (!collection) {
       throw createError({
         statusCode: 400,
-        statusMessage: 'Collection and slug parameters are required'
+        statusMessage: 'Collection parameter is required'
       })
     }
 
-    if (!config.databaseUri) {
+    // Try fallback to process.env if runtime config doesn't work
+    const databaseUri = config.databaseUri || process.env.DATABASE_URI
+    const payloadSecret = config.payloadSecret || process.env.PAYLOAD_SECRET
+
+    if (!databaseUri) {
+      console.error('❌ No DATABASE_URI found in runtime config or process.env')
       throw createError({
         statusCode: 500,
         statusMessage: 'Database configuration missing'
       })
     }
 
+    console.log('✅ Using database URI and payload secret')
+
     // Create Payload config with runtime database URI
     const payloadConfig = buildConfig({
       collections: [Users, Media, Pages, Posts, Categories],
       editor: lexicalEditor(),
-      secret: config.payloadSecret || 'fallback-secret',
+      secret: payloadSecret || 'fallback-secret',
       db: postgresAdapter({
         pool: {
-          connectionString: config.databaseUri,
+          connectionString: databaseUri,
         },
       }),
       sharp: sharp as SharpDependency,
@@ -51,16 +65,21 @@ export default defineEventHandler(async (event) => {
     })
 
     // Parse query parameters
-    const options: any = {
-      where: {
-        slug: {
-          equals: slug,
-        },
-      },
-      limit: 1,
-    }
+    const options: any = {}
     
+    if (query.limit) options.limit = parseInt(query.limit as string)
+    if (query.page) options.page = parseInt(query.page as string)
+    if (query.sort) options.sort = query.sort
     if (query.depth) options.depth = parseInt(query.depth as string)
+    if (query.where) {
+      try {
+        options.where = JSON.parse(query.where as string)
+      } catch (e) {
+        // Invalid JSON, ignore where clause
+      }
+    }
+
+    console.log(`🚀 Fetching ${collection} with options:`, options)
 
     // Use Payload's local API directly
     const result = await payload.find({
@@ -68,19 +87,12 @@ export default defineEventHandler(async (event) => {
       ...options,
     })
 
-    // Return the first document if found
-    if (result.docs.length > 0) {
-      return result.docs[0]
-    } else {
-      throw createError({
-        statusCode: 404,
-        statusMessage: 'Document not found'
-      })
-    }
+    console.log(`✅ Successfully fetched ${result.docs.length} ${collection}`)
+    return result
   } catch (error) {
-    console.error('Local API Error:', error)
+    console.error('❌ Local API Error:', error)
     
-    // More specific error messages  
+    // More specific error messages
     if (error instanceof Error) {
       if (error.message.includes('ECONNREFUSED')) {
         throw createError({
@@ -96,12 +108,9 @@ export default defineEventHandler(async (event) => {
       }
     }
     
-    if (error && typeof error === 'object' && 'statusCode' in error) {
-      throw error
-    }
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch document by slug'
+      statusMessage: 'Failed to fetch collection data'
     })
   }
 }) 

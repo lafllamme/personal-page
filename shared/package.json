@@ -10,6 +10,7 @@
     ".": "./index.ts",
     "./types": "./types/index.ts",
     "./utils": "./utils/index.ts",
+    "./utils/access": "./utils/access.ts",
     "./payload": "./payload/config.ts",
     "./payload/collections/Users": "./payload/collections/Users.ts",
     "./payload/collections/Media": "./payload/collections/Media.ts",

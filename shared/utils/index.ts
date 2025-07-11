@@ -9,4 +9,7 @@ export const slugify = (text: string) => {
     .toLowerCase()
     .replace(/[^\w ]+/g, '')
     .replace(/ +/g, '-')
-} 
+}
+
+// Export access control utilities
+export * from './access' 
