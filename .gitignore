@@ -13,6 +13,8 @@ node_modules
 
 # turbo related files
 .turbo
+.turbo/preferences
+.turbo/cookies
 
 # Logs
 logs
