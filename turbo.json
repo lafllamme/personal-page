@@ -1,0 +1,41 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        ".nuxt/**",
+        ".output/**",
+        "dist/**"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "start": {
+      "dependsOn": ["build"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "type-check": {
+      "dependsOn": ["^type-check"]
+    },
+    "clean": {
+      "cache": false
+    },
+    "generate:types": {
+      "dependsOn": ["^build"],
+      "outputs": ["src/payload-types.ts", "../shared/types/payload-types.ts"]
+    }
+  },
+  "globalDependencies": [
+    ".env",
+    ".env.local",
+    ".env.production"
+  ]
+} 

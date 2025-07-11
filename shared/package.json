@@ -1,0 +1,26 @@
+{
+  "name": "@personal-page/shared",
+  "version": "1.0.0",
+  "description": "Shared types and utilities for personal page monorepo",
+  "private": true,
+  "type": "module",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "exports": {
+    ".": "./index.ts",
+    "./types": "./types/index.ts",
+    "./utils": "./utils/index.ts",
+    "./payload": "./payload/config.ts",
+    "./payload/collections/Users": "./payload/collections/Users.ts",
+    "./payload/collections/Media": "./payload/collections/Media.ts",
+    "./payload/collections/Pages": "./payload/collections/Pages.ts",
+    "./payload/collections/Posts": "./payload/collections/Posts.ts",
+    "./payload/collections/Categories": "./payload/collections/Categories.ts"
+  },
+  "dependencies": {
+    "payload": "beta",
+    "@payloadcms/db-postgres": "beta",
+    "@payloadcms/richtext-lexical": "beta",
+    "sharp": "0.32.6"
+  }
+} 

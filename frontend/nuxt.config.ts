@@ -6,13 +6,19 @@ export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
 
+  // Development server configuration
+  devServer: {
+    port: 3000,
+    host: 'localhost'
+  },
+
   // Opt into Nuxt 4 defaults
   future: {
     compatibilityVersion: 4,
   },
 
   runtimeConfig: {
-    payloadApiKey: process.env.NUXT_PAYLOAD_API_KEY,
+    payloadApiKey: process.env.PAYLOAD_SECRET,
     // Newsletter
     email: {
       newsletter: {
@@ -20,7 +26,15 @@ export default defineNuxtConfig({
       },
     },
     public: {
-      payloadBase: process.env.NUXT_PAYLOAD_API || '',
+      // Local development: direct API calls to Payload CMS on port 3001
+      // Production: API calls through same domain
+      payloadApiUrl: process.env.NODE_ENV === 'production' 
+        ? process.env.PAYLOAD_PUBLIC_SERVER_URL || '/api'
+        : 'http://localhost:3001/api',
+      payloadUrl: process.env.NODE_ENV === 'production'
+        ? process.env.PAYLOAD_PUBLIC_SERVER_URL || ''
+        : 'http://localhost:3001',
+      siteUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     },
   },
 
@@ -76,7 +90,6 @@ export default defineNuxtConfig({
     'reka-ui/nuxt',
     '@pinia/nuxt',
     '@nuxtjs/sitemap',
-
   ],
 
   // Tres.js settings
@@ -88,7 +101,7 @@ export default defineNuxtConfig({
   // Internationalization
   i18n: {
     strategy: 'prefix', // add prefix to all generated routes
-    baseUrl: 'https://tec.nuxt.dev', // ← replace with your site’s URL
+    baseUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     defaultLocale: 'en',
     locales: [
       { code: 'de', iso: 'de-DE', language: 'de-DE', name: 'Deutsch', dir: 'ltr' },
@@ -118,7 +131,10 @@ export default defineNuxtConfig({
   },
 
   // Sitemap configuration
-  site: { url: 'https://tecnews.dev', name: 'TecNews - AI and Beyond' },
+  site: { 
+    url: process.env.FRONTEND_URL || 'http://localhost:3000', 
+    name: 'Personal Page - Portfolio & Blog' 
+  },
 
   // Color mode configuration
   colorMode: {
@@ -146,5 +162,10 @@ export default defineNuxtConfig({
         imports: ['consola'],
       },
     ],
+  },
+
+  // Path aliases for shared types
+  alias: {
+    '@shared': '../shared',
   },
 })
