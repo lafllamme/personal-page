@@ -1,8 +1,7 @@
 {
   "version": 2,
-  "name": "personal-page-frontend",
   "buildCommand": "pnpm turbo build --filter=@personal-page/frontend",
   "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "frontend/.output",
-  "framework": null
+  "outputDirectory": "frontend/.vercel/output",
+  "framework": "nuxtjs"
 } 
