@@ -21,10 +21,10 @@
     "@iconify-json/radix-icons": "^1.2.2",
     "@nuxt/icon": "1.10.3",
     "@nuxt/image": "1.9.0",
-    "@nuxthub/core": "0.9.0",
     "@nuxtjs/color-mode": "3.5.2",
     "@nuxtjs/i18n": "9.2.1",
     "@nuxtjs/sitemap": "7.4.0",
+    "@personal-page/shared": "workspace:*",
     "@pinia/nuxt": "0.11.0",
     "@radix-ui/colors": "^3.0.0",
     "@splinetool/runtime": "^1.10.2",
@@ -50,6 +50,7 @@
     "reka-ui": "^2.0.2",
     "remark-parse": "^11.0.0",
     "remark-rehype": "^11.1.2",
+    "sharp": "0.34.2",
     "simplex-noise": "^4.0.3",
     "tailwind-merge": "^3.0.1",
     "theme-colors": "^0.1.0",
@@ -57,8 +58,7 @@
     "unified": "^11.0.5",
     "vue": "^3.4.21",
     "vue-i18n": "^11.1.1",
-    "vue-router": "^4.3.0",
-    "@personal-page/shared": "workspace:*"
+    "vue-router": "^4.3.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.1.0",

@@ -10,11 +10,31 @@
         ".nuxt/**",
         ".output/**",
         "dist/**"
+      ],
+      "env": [
+        "NUXT_DATABASE_URI",
+        "NUXT_PAYLOAD_SECRET", 
+        "NUXT_BUTTONDOWN_API_KEY",
+        "FRONTEND_URL",
+        "DATABASE_URI",
+        "PAYLOAD_SECRET",
+        "PAYLOAD_PUBLIC_SERVER_URL",
+        "NODE_ENV"
       ]
     },
     "dev": {
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "env": [
+        "NUXT_DATABASE_URI",
+        "NUXT_PAYLOAD_SECRET", 
+        "NUXT_BUTTONDOWN_API_KEY",
+        "FRONTEND_URL",
+        "DATABASE_URI",
+        "PAYLOAD_SECRET",
+        "PAYLOAD_PUBLIC_SERVER_URL",
+        "NODE_ENV"
+      ]
     },
     "start": {
       "dependsOn": ["build"]

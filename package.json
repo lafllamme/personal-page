@@ -25,7 +25,6 @@
   "dependencies": {
     "@payloadcms/db-postgres": "3.46.0",
     "@payloadcms/richtext-lexical": "3.46.0",
-    "payload": "3.46.0",
-    "sharp": "0.34.2"
+    "payload": "3.46.0"
   }
 }
