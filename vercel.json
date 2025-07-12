@@ -3,5 +3,5 @@
   "framework": "nuxtjs",
   "buildCommand": "cd frontend && pnpm build",
   "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "frontend/.vercel/output"
+  "outputDirectory": "frontend/.output"
 } 
