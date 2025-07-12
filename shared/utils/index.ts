@@ -12,4 +12,4 @@ export const slugify = (text: string) => {
 }
 
 // Export access control utilities
-export * from './access' 
+export * from './access.js' 

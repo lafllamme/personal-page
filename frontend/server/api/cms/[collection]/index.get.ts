@@ -17,14 +17,6 @@ export default defineEventHandler(async (event) => {
     const query = getQuery(event)
     const config = useRuntimeConfig()
     
-    // Debug logging
-    console.log('🔍 DEBUG - Runtime config:', {
-      databaseUri: config.databaseUri ? '***EXISTS***' : 'MISSING',
-      payloadSecret: config.payloadSecret ? '***EXISTS***' : 'MISSING',
-      envDatabaseUri: process.env.DATABASE_URI ? '***EXISTS***' : 'MISSING',
-      envPayloadSecret: process.env.PAYLOAD_SECRET ? '***EXISTS***' : 'MISSING'
-    })
-    
     if (!collection) {
       throw createError({
         statusCode: 400,
@@ -33,8 +25,8 @@ export default defineEventHandler(async (event) => {
     }
 
     // Try fallback to process.env if runtime config doesn't work
-    const databaseUri = config.databaseUri || process.env.DATABASE_URI
-    const payloadSecret = config.payloadSecret || process.env.PAYLOAD_SECRET
+    const databaseUri = config.databaseUri || process.env.NUXT_DATABASE_URI
+    const payloadSecret = config.payloadSecret || process.env.NUXT_PAYLOAD_SECRET
 
     if (!databaseUri) {
       console.error('❌ No DATABASE_URI found in runtime config or process.env')

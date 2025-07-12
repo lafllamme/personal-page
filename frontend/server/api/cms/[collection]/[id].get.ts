@@ -25,7 +25,10 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    if (!config.databaseUri) {
+    const databaseUri = config.databaseUri || process.env.NUXT_DATABASE_URI
+    const payloadSecret = config.payloadSecret || process.env.NUXT_PAYLOAD_SECRET
+
+    if (!databaseUri) {
       throw createError({
         statusCode: 500,
         statusMessage: 'Database configuration missing'
@@ -36,10 +39,10 @@ export default defineEventHandler(async (event) => {
     const payloadConfig = buildConfig({
       collections: [Users, Media, Pages, Posts, Categories],
       editor: lexicalEditor(),
-      secret: config.payloadSecret || 'fallback-secret',
+      secret: payloadSecret || 'fallback-secret',
       db: postgresAdapter({
         pool: {
-          connectionString: config.databaseUri,
+          connectionString: databaseUri,
         },
       }),
       sharp: sharp as SharpDependency,
