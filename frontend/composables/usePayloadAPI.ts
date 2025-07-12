@@ -113,6 +113,18 @@ export const usePayloadAPI = () => {
   const getPageBySlug = (slug: string) => findBySlug('pages', slug)
   const getPostBySlug = (slug: string) => findBySlug('posts', slug)
 
+  // Helper to get all posts including drafts (for admin purposes)
+  const getAllPosts = (options: PayloadFindOptions = {}) => 
+    findCollection<PayloadPost>('posts', { 
+      ...options, 
+      sort: options.sort || '-createdAt',
+      // Pass a special flag to override the default published filter
+      where: {
+        ...options.where,
+        _overridePublishedFilter: true
+      }
+    })
+
   return {
     findCollection,
     findById,
@@ -123,5 +135,6 @@ export const usePayloadAPI = () => {
     getCategories,
     getPageBySlug,
     getPostBySlug,
+    getAllPosts,
   }
 } 
