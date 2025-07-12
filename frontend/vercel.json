@@ -2,17 +2,12 @@
   "version": 2,
   "framework": "nuxtjs",
   "buildCommand": "pnpm run build",
-  "installCommand": "pnpm install --frozen-lockfile",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "outputDirectory": ".output",
-  "functions": {
-    "server/**/*.ts": {
-      "maxDuration": 30
-    }
-  },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    }
-  ]
+  "env": {
+    "SHARP_IGNORE_GLOBAL_LIBVIPS": "1",
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "NODE_ENV": "production",
+    "NITRO_PRESET": "vercel"
+  }
 } 

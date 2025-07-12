@@ -42,7 +42,10 @@
         "react": "19",
         "react-dom": "19",
         "vite": "6"
-      }
+      },
+      "ignorePatterns": [
+        "@theme-toggles/react"
+      ]
     }
   }
 }
