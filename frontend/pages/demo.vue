@@ -42,7 +42,7 @@ const fetchPosts = async () => {
     
     const result = await getPosts({ 
       limit: 10, 
-      sort: '-createdAt',
+      sort: '-createdAt', // Sort by creation date to get all posts
       depth: 2 // Include author and category details
     })
     
@@ -56,10 +56,9 @@ const fetchPosts = async () => {
   }
 }
 
-// Load posts on mount
-onMounted(() => {
+
   fetchPosts()
-})
+
 
 // SEO
 useHead({

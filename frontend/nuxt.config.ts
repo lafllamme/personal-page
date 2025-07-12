@@ -102,6 +102,16 @@ export default defineNuxtConfig({
   $production: {
     routeRules: {
       '/**': { isr: true },
+      // API routes should not be cached
+      '/api/**': { 
+        isr: false,
+        cache: false,
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      },
     },
   },
 

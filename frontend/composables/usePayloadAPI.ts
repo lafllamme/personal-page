@@ -1,5 +1,21 @@
 // import type { PayloadCollections } from '@shared/types/payload-types'
 
+export interface PayloadPost {
+  id: number
+  title: string
+  slug: string
+  excerpt?: string
+  content: any
+  featuredImage?: any
+  author: any
+  categories?: any[]
+  tags?: { tag: string }[]
+  publishedAt?: string
+  status: 'draft' | 'published'
+  createdAt: string
+  updatedAt: string
+}
+
 export interface PayloadResponse<T> {
   docs: T[]
   totalDocs: number
@@ -83,7 +99,10 @@ export const usePayloadAPI = () => {
     findCollection('pages', { ...options, sort: '-updatedAt' })
 
   const getPosts = (options: PayloadFindOptions = {}) => 
-    findCollection('posts', { ...options, sort: '-publishedAt' })
+    findCollection<PayloadPost>('posts', { 
+      ...options, 
+      sort: options.sort || '-publishedAt' // Only use default if no sort provided
+    })
 
   const getMedia = (options: PayloadFindOptions = {}) => 
     findCollection('media', options)
