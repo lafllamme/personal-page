@@ -123,10 +123,20 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // For posts collection, ensure we get all posts regardless of publishedAt
+    //TODO: Make this clean
+    // For posts collection, only show published posts by default
     if (collection === 'posts' && !options.where) {
-      // Don't filter by publishedAt - get all posts
-      console.log('📝 Posts collection detected - fetching all posts')
+      // Only show published posts
+      options.where = {
+        status: {
+          equals: 'published'
+        }
+      }
+      console.log('📝 Posts collection detected - filtering for published posts only')
+    } else if (collection === 'posts' && options.where && options.where._overridePublishedFilter) {
+      // Remove the override flag and don't apply the published filter
+      delete options.where._overridePublishedFilter
+      console.log('📝 Posts collection detected - showing all posts (including drafts)')
     }
 
     console.log(`🚀 Fetching ${collection} with options:`, options)
