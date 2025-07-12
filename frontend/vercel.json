@@ -2,6 +2,17 @@
   "version": 2,
   "framework": "nuxtjs",
   "buildCommand": "pnpm run build",
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "outputDirectory": ".vercel/output"
+  "installCommand": "pnpm install --frozen-lockfile",
+  "outputDirectory": ".output",
+  "functions": {
+    "server/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ]
 } 
