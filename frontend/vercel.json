@@ -1,7 +1,7 @@
 {
   "version": 2,
   "framework": "nuxtjs",
-  "buildCommand": "npm run build",
-  "installCommand": "npm ci",
+  "buildCommand": "pnpm run build",
+  "installCommand": "pnpm install --no-frozen-lockfile",
   "outputDirectory": ".vercel/output"
 } 

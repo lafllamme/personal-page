@@ -79,6 +79,10 @@ export default defineNuxtConfig({
     experimental: {
       wasm: false,
     },
+    // Proper sharp handling for Vercel serverless
+    externals: {
+      external: ['sharp'], // Keep sharp in node_modules for Vercel
+    },
     rollupConfig: {
       external: ['sharp'],
     },
