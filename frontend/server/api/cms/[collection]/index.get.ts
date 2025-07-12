@@ -82,6 +82,14 @@ export default defineEventHandler(async (event) => {
       }
     ]
 
+    // Debug: Log the Posts collection fields to see what we're creating
+    const postsCollection = minimalCollections.find(col => col.slug === 'posts')
+    if (postsCollection) {
+      console.log('📝 Posts collection fields:', postsCollection.fields.map(f => 
+        'name' in f ? f.name : 'unnamed field'
+      ))
+    }
+
     // Create Payload config WITHOUT lexical editor
     const payloadConfig = buildConfig({
       collections: minimalCollections,
@@ -115,6 +123,12 @@ export default defineEventHandler(async (event) => {
       }
     }
 
+    // For posts collection, ensure we get all posts regardless of publishedAt
+    if (collection === 'posts' && !options.where) {
+      // Don't filter by publishedAt - get all posts
+      console.log('📝 Posts collection detected - fetching all posts')
+    }
+
     console.log(`🚀 Fetching ${collection} with options:`, options)
 
     // Use Payload's local API directly
@@ -124,6 +138,27 @@ export default defineEventHandler(async (event) => {
     })
 
     console.log(`✅ Successfully fetched ${result.docs.length} ${collection}`)
+    console.log(`📊 Total docs: ${result.totalDocs}, Page: ${result.page}, Limit: ${result.limit}`)
+    
+    // Debug: Log the first few docs to see what we're getting
+    if (result.docs.length > 0) {
+      console.log(`📝 First doc:`, {
+        id: result.docs[0].id,
+        title: result.docs[0].title,
+        publishedAt: result.docs[0].publishedAt,
+        createdAt: result.docs[0].createdAt,
+        status: result.docs[0].status
+      })
+    }
+    
+    // Set cache control headers to prevent caching
+    setResponseHeaders(event, {
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0',
+      'X-Cache-Status': 'BYPASS'
+    })
+    
     return result
   } catch (error) {
     console.error('❌ Local API Error:', error)
