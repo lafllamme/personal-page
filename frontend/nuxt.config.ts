@@ -79,13 +79,17 @@ export default defineNuxtConfig({
     experimental: {
       wasm: false,
     },
-    // Proper sharp handling for Vercel serverless
-    externals: {
-      external: ['sharp'], // Keep sharp in node_modules for Vercel
-    },
+    // Bundle native modules properly for Vercel serverless
     rollupConfig: {
-      external: ['sharp'],
+      external: [],
+      output: {
+        format: 'esm',
+      },
     },
+    // Handle native modules - ensure they're bundled
+    nodeModulesDirs: ['node_modules'],
+    // Ensure shared package files are bundled
+    inlineDynamicImports: true,
     // Vercel-specific settings
     vercel: {
       functions: {

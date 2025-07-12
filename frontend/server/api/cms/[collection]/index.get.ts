@@ -1,10 +1,9 @@
 import { getPayload } from 'payload'
 import { buildConfig, type SharpDependency } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import sharp from 'sharp'
 
-// Import shared collections
+// Import shared collections but we'll create minimal versions
 import { Users } from '@lafllamme/personal-page-shared/payload/collections/Users'
 import { Media } from '@lafllamme/personal-page-shared/payload/collections/Media'
 import { Pages } from '@lafllamme/personal-page-shared/payload/collections/Pages'
@@ -38,10 +37,55 @@ export default defineEventHandler(async (event) => {
 
     console.log('✅ Using database URI and payload secret')
 
-    // Create Payload config with runtime database URI
+    // Create minimal collections without richText fields to avoid Lexical
+    const minimalCollections = [
+      {
+        ...Users,
+        // Remove any richText fields if they exist
+        fields: Users.fields.filter(field => 
+          !('name' in field) || (field.name !== 'richText' && field.name !== 'content')
+        )
+      },
+      {
+        ...Media,
+        fields: Media.fields.filter(field => 
+          !('name' in field) || (field.name !== 'richText' && field.name !== 'content')
+        )
+      },
+      {
+        ...Pages,
+        fields: Pages.fields.filter(field => 
+          !('name' in field) || (field.name !== 'richText' && field.name !== 'content')
+        )
+      },
+      {
+        ...Posts,
+        // For Posts, we need to keep most fields but replace richText content with simple textarea
+        fields: Posts.fields.map(field => {
+          if ('name' in field && field.name === 'content') {
+            return {
+              name: 'content',
+              type: 'textarea' as const,
+              required: false,
+            }
+          }
+          return field
+        }).filter(field => 
+          !('name' in field) || field.name !== 'richText'
+        )
+      },
+      {
+        ...Categories,
+        fields: Categories.fields.filter(field => 
+          !('name' in field) || (field.name !== 'richText' && field.name !== 'content')
+        )
+      }
+    ]
+
+    // Create Payload config WITHOUT lexical editor
     const payloadConfig = buildConfig({
-      collections: [Users, Media, Pages, Posts, Categories],
-      editor: lexicalEditor(),
+      collections: minimalCollections,
+      // NO EDITOR - this avoids the Lexical native module issue
       secret: payloadSecret || 'fallback-secret',
       db: postgresAdapter({
         pool: {
