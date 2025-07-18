@@ -3,7 +3,7 @@ import type { CollectionConfig } from 'payload'
 export const roleOptions = ['admin', 'editor', 'viewer'] as const
 export type Role = (typeof roleOptions)[number]
 
-export const Users: CollectionConfig = {
+const Users: CollectionConfig = {
   slug: 'users',
   auth: {
     useAPIKey: true, // Enable API key authentication
@@ -78,3 +78,5 @@ export const Users: CollectionConfig = {
     // email + password come from the Auth plugin automatically
   ],
 }
+
+export default Users
