@@ -1,5 +1,10 @@
 <template>
-  <a :href="node.url" target="_blank" rel="noopener" class="text-blue-600 underline hover:text-blue-800">
+  <a
+    :href="node.fields?.url || node.url || '#'"
+    :target="node.fields?.newTab ? '_blank' : '_self'"
+    :rel="node.fields?.newTab ? 'noopener' : undefined"
+    class="text-blue-600 underline hover:text-blue-800"
+  >
     <NodeRenderer v-for="(cn, i) in node.children" :key="i" :node="cn" />
   </a>
 </template>
