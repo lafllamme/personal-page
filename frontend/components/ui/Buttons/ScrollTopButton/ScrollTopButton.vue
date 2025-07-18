@@ -50,7 +50,7 @@ function scrollToTop() {
       'transition-all ease-[cubic-bezier(0.23,1,0.32,1)] duration-900 dark:bg-pureWhite',
       'flex items-center justify-center rounded-full',
       'group fixed bottom-6 right-6 z-50 shad-1 ',
-      'bg-pureBlack w-14 h-14',
+      'bg-pureBlack w-14 h-14 z-9999',
     )"
     aria-label="Scroll to top"
     @click="scrollToTop"
