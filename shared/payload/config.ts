@@ -4,11 +4,11 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 
-import { Users } from './collections/Users'
-import { Media } from './collections/Media'
-import { Pages } from './collections/Pages'
-import { Posts } from './collections/Posts'
-import { Categories } from './collections/Categories'
+import Media from './collections/Media'
+import Users from './collections/Users'
+import Pages from './collections/Pages'
+import Posts from './collections/Posts'
+import Categories from './collections/Categories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
