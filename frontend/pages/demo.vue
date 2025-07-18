@@ -99,6 +99,9 @@ const getCategoryNames = (categories: any[] = []) => {
     .filter(Boolean)
     .join(', ')
 }
+
+// Importiere ContentRenderer
+import ContentRenderer from '@/components/ui/ContentRenderer/ContentRenderer.vue'
 </script>
 
 <template>
@@ -152,86 +155,56 @@ const getCategoryNames = (categories: any[] = []) => {
           Posts ({{ posts.totalDocs }} total)
         </h2>
         
-        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <article 
-            v-for="post in posts.docs" 
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <article
+            v-for="post in posts.docs"
             :key="post.id"
-            class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+            class="relative flex flex-col bg-gray-2 dark:bg-pureBlack border border-gray-6 dark:border-pureWhite/10 rounded-xl shadow-gray-6A shadow-sm hover:shadow-lg transition-shadow duration-200 min-h-[320px]"
           >
+            <!-- Status Badge -->
+            <span
+              class="absolute right-5 top-5 px-2 py-0.5 text-xs font-semibold rounded-full uppercase tracking-wide bg-green-2 text-green-8 dark:bg-green-8/20 dark:text-green-3"
+              v-if="post.status === 'published'"
+            >
+              {{ post.status }}
+            </span>
+            <span
+              class="absolute right-5 top-5 px-2 py-0.5 text-xs font-semibold rounded-full uppercase tracking-wide bg-yellow-2 text-yellow-8 dark:bg-yellow-8/20 dark:text-yellow-3"
+              v-else
+            >
+              {{ post.status }}
+            </span>
+
             <!-- Featured Image -->
-            <div v-if="post.featuredImage" class="h-48 bg-gray-200 dark:bg-gray-700">
-              <img 
+            <div v-if="post.featuredImage" class="h-40 w-full bg-gray-3 dark:bg-gray-8 rounded-t-xl overflow-hidden">
+              <img
                 v-if="typeof post.featuredImage === 'object' && post.featuredImage.url"
-                :src="post.featuredImage.url" 
+                :src="post.featuredImage.url"
                 :alt="post.featuredImage.alt || post.title"
                 class="w-full h-full object-cover"
               />
             </div>
-            
+
             <!-- Content -->
-            <div class="p-6">
-              <!-- Status Badge -->
-              <div class="mb-3">
-                <span 
-                  class="inline-block px-2 py-1 text-xs font-semibold rounded-full"
-                  :class="{
-                    'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-300': post.status === 'published',
-                    'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300': post.status === 'draft'
-                  }"
-                >
-                  {{ post.status }}
-                </span>
-              </div>
-              
-              <!-- Title -->
-              <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+            <div class="flex-1 flex flex-col p-6 gap-2">
+              <h3 class="text-lg font-bold color-pureBlack dark:color-pureWhite mb-1">
                 {{ post.title }}
               </h3>
-              
-              <!-- Excerpt -->
-              <p v-if="post.excerpt" class="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+              <p v-if="post.excerpt" class="color-gray-10 dark:color-gray-4 mb-2 line-clamp-2">
                 {{ post.excerpt }}
               </p>
-              
-              <!-- Meta Info -->
-              <div class="space-y-2 text-sm text-gray-500 dark:text-gray-400">
-                <!-- Author -->
-                <div class="flex items-center">
-                  <span class="font-medium">👤 Author:</span>
-                  <span class="ml-2">{{ getAuthorName(post.author) }}</span>
-                </div>
-                
-                <!-- Categories -->
-                <div v-if="post.categories && post.categories.length > 0" class="flex items-center">
-                  <span class="font-medium">🏷️ Categories:</span>
-                  <span class="ml-2">{{ getCategoryNames(post.categories) }}</span>
-                </div>
-                
-                <!-- Tags -->
-                <div v-if="post.tags && post.tags.length > 0" class="flex items-center flex-wrap">
-                  <span class="font-medium">🏷️ Tags:</span>
-                  <div class="ml-2 flex flex-wrap gap-1">
-                    <span 
-                      v-for="tag in post.tags" 
-                      :key="tag.tag"
-                      class="px-2 py-1 bg-gray-100 dark:bg-gray-700 rounded text-xs"
-                    >
-                      {{ tag.tag }}
-                    </span>
-                  </div>
-                </div>
-                
-                <!-- Date -->
-                <div class="flex items-center">
-                  <span class="font-medium">📅 Created:</span>
-                  <span class="ml-2">{{ formatDate(post.createdAt) }}</span>
-                </div>
-                
-                <!-- Slug -->
-                <div class="flex items-center">
-                  <span class="font-medium">🔗 Slug:</span>
-                  <span class="ml-2 font-mono text-xs">{{ post.slug }}</span>
-                </div>
+              <div v-if="post.content && post.content.root && post.content.root.children" class="mb-2">
+                <ContentRenderer :content="post.content" />
+              </div>
+              <!-- Debug: Payload Content JSON -->
+              <pre class="mt-4 text-xs bg-gray-1 dark:bg-gray-8 rounded p-3 overflow-x-auto border border-gray-3 dark:border-gray-7/30 text-left whitespace-pre-wrap">
+                {{ JSON.stringify(post.content, null, 2) }}
+              </pre>
+              <div class="mt-auto flex flex-wrap gap-x-4 gap-y-1 text-xs color-gray-8 dark:color-gray-5 pt-2 border-t border-gray-3 dark:border-gray-7/30">
+                <span>{{ getAuthorName(post.author) }}</span>
+                <span v-if="post.categories && post.categories.length > 0">| {{ getCategoryNames(post.categories) }}</span>
+                <span>| {{ formatDate(post.createdAt) }}</span>
+                <span>| <span class="font-mono">{{ post.slug }}</span></span>
               </div>
             </div>
           </article>
