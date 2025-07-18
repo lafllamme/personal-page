@@ -1,13 +1,30 @@
 import type { CollectionConfig } from 'payload'
-import { publicRead, isEditor } from '../../utils/access.js'
+import { put } from '@vercel/blob'
 
-export const Media: CollectionConfig = {
+const Media: CollectionConfig = {
   slug: 'media',
-  access: {
-    read: publicRead, // Public can read/view media
-    create: isEditor, // Only admin & editor can upload
-    update: isEditor, // Only admin & editor can update
-    delete: isEditor, // Only admin & editor can delete
+  upload: true,
+  hooks: {
+    beforeChange: [
+      async (args: any) => {
+        const { data, file } = args
+        if (file) {
+          const { url } = await put(
+            `uploads/${file.originalname}`,
+            file.buffer,
+            {
+              access: 'public',
+              token: process.env.BLOB_READ_WRITE_TOKEN,
+            }
+          )
+          return {
+            ...data,
+            url, // set the url field to the blob URL
+          }
+        }
+        return data
+      },
+    ],
   },
   fields: [
     {
@@ -19,5 +36,6 @@ export const Media: CollectionConfig = {
       },
     },
   ],
-  upload: true,
 }
+
+export default Media
