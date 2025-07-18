@@ -12,6 +12,7 @@ import LinkNode from './LinkNode.vue'
 import ImageNode from './ImageNode.vue'
 import CodeNode from './CodeNode.vue'
 import QuoteNode from './QuoteNode.vue'
+import DividerNode from './DividerNode.vue'
 import { computed } from 'vue'
 
 const props = defineProps<{ node: any }>()
@@ -27,6 +28,7 @@ const component = computed(() => {
     case 'image': return ImageNode
     case 'code': return CodeNode
     case 'quote': return QuoteNode
+    case 'horizontalrule': return DividerNode
     default: return ParagraphNode
   }
 })
