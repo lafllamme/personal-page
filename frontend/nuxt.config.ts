@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   // Development server configuration
   devServer: {
     port: 3000,
-    host: 'localhost'
+    host: 'localhost',
   },
 
   // Opt into Nuxt 4 defaults
@@ -31,11 +31,11 @@ export default defineNuxtConfig({
     public: {
       // Local development: direct API calls to Payload CMS on port 3001
       // Production: API calls through same domain
-      payloadApiUrl: process.env.NODE_ENV === 'production' 
-        ? process.env.PAYLOAD_PUBLIC_SERVER_URL || '/api'
+      payloadApiUrl: process.env.NODE_ENV === 'production'
+        ? process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL || '/api'
         : 'http://localhost:3001/api',
       payloadUrl: process.env.NODE_ENV === 'production'
-        ? process.env.PAYLOAD_PUBLIC_SERVER_URL || ''
+        ? process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL || ''
         : 'http://localhost:3001',
       siteUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     },
@@ -103,14 +103,14 @@ export default defineNuxtConfig({
     routeRules: {
       '/**': { isr: true },
       // API routes should not be cached
-      '/api/**': { 
+      '/api/**': {
         isr: false,
         cache: false,
         headers: {
           'Cache-Control': 'no-cache, no-store, must-revalidate',
           'Pragma': 'no-cache',
-          'Expires': '0'
-        }
+          'Expires': '0',
+        },
       },
     },
   },
@@ -168,9 +168,9 @@ export default defineNuxtConfig({
   },
 
   // Sitemap configuration
-  site: { 
-    url: process.env.FRONTEND_URL || 'http://localhost:3000', 
-    name: 'Personal Page - Portfolio & Blog' 
+  site: {
+    url: process.env.FRONTEND_URL || 'http://localhost:3000',
+    name: 'Personal Page - Portfolio & Blog',
   },
 
   // Color mode configuration
@@ -200,6 +200,5 @@ export default defineNuxtConfig({
       },
     ],
   },
-
 
 })
