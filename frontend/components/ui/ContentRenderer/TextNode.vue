@@ -1,13 +1,21 @@
 <template>
-  <span :class="classes" :style="node.style">
+  <span v-if="!isSuper && !isSub" :class="classes" :style="node.style">
     {{ node.text }}
   </span>
+  <sup v-else-if="isSuper" :class="classes" :style="node.style">
+    {{ node.text }}
+  </sup>
+  <sub v-else :class="classes" :style="node.style">
+    {{ node.text }}
+  </sub>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue'
 const props = defineProps<{ node: any }>()
 const f = props.node.format || 0
+const isSuper = computed(() => Boolean(f & 64))
+const isSub = computed(() => Boolean(f & 32))
 const classes = computed(() => ({
   'font-bold': f & 1,
   italic: f & 2,

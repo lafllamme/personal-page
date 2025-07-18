@@ -1,9 +1,26 @@
-<template>
-  <blockquote :dir="node.direction" class="border-l-4 border-blue-400 pl-4 italic my-4 bg-blue-50 dark:bg-blue-900/20 rounded">
-    <NodeRenderer v-for="(cn, i) in node.children" :key="i" :node="cn" />
-  </blockquote>
-</template>
 <script setup lang="ts">
 import NodeRenderer from './NodeRenderer.vue'
-const props = defineProps<{ node: any }>()
-</script> 
+
+interface QuoteNodeProps {
+  node: {
+    direction?: string
+    children?: any[]
+  }
+}
+
+const props = defineProps<QuoteNodeProps>()
+const { node } = toRefs(props)
+</script>
+
+<template>
+  <blockquote
+    :dir="node.direction"
+    class="geist-regular my-4 rounded-2xl bg-mint-9 p-2 text-center text-xl color-gray-12 font-medium tracking-normal antialiased"
+  >
+    <NodeRenderer
+      v-for="(cn, i) in node.children"
+      :key="i"
+      :node="cn"
+    />
+  </blockquote>
+</template>
