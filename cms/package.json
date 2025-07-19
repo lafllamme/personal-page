@@ -18,7 +18,7 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
-    "@lafllamme/personal-page-shared": "^1.1.2",
+    "@lafllamme/personal-page-shared": "^1.1.6",
     "@payloadcms/db-postgres": "3.47.0",
     "@payloadcms/next": "3.47.0",
     "@payloadcms/payload-cloud": "3.47.0",
