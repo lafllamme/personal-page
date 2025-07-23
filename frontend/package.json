@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@iconify-json/radix-icons": "^1.2.2",
-    "@lafllamme/personal-page-shared": "^1.1.6",
+    "@lafllamme/personal-page-shared": "workspace:*",
     "@nuxt/icon": "^1.15.0",
     "@nuxt/image": "^1.10.0",
     "@nuxtjs/color-mode": "^3.5.2",
