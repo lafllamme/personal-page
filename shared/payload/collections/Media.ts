@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 import { put } from '@vercel/blob'
 
-const Media: CollectionConfig = {
+const MediaCollection: CollectionConfig = {
   slug: 'media',
   upload: true,
   hooks: {
@@ -38,4 +38,4 @@ const Media: CollectionConfig = {
   ],
 }
 
-export default Media
+export const Media = MediaCollection
