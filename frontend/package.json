@@ -13,9 +13,10 @@
     "prepare": "nuxt prepare",
     "preview": "nuxt preview --port 3000",
     "postinstall": "nuxt prepare",
-    "start": "nuxt preview --port 3000",
+    "start": "nuxt start --port 3000 --hostname 0.0.0.0",
     "clean": "rm -rf .nuxt .output dist",
-    "type-check": "nuxt typecheck"
+    "type-check": "nuxt typecheck",
+    "docker:start": "nuxt start --port 3000 --hostname 0.0.0.0"
   },
   "dependencies": {
     "@iconify-json/radix-icons": "^1.2.2",

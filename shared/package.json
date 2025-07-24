@@ -4,12 +4,17 @@
   "description": "Shared types, utilities, and Payload CMS collections for the personal-page monorepo. Includes types, access utils, and Payload collection configs for Posts, Pages, Media, Users, and Categories.",
   "private": true,
   "type": "module",
-  "main": "./dist/index.js",
+  "main": "./payload/config.cms.ts",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "import": "./payload/config.cms.ts"
+    },
+    "./frontend": {
+      "import": "./payload/config.frontend.ts"
+    },
+    "./cms": {
+      "import": "./payload/config.cms.ts"
     },
     "./types": {
       "import": "./dist/types/index.js",
