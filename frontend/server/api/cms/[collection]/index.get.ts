@@ -12,6 +12,7 @@ import consola from 'consola'
 import { buildConfig, getPayload } from 'payload'
 
 import sharp from 'sharp'
+import config from 'shared/payload/config.frontend'
 
 // Build config will be created inside the handler with runtime config
 

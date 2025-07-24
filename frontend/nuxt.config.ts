@@ -65,37 +65,26 @@ export default defineNuxtConfig({
     },
   },
 
-  // Nitro configuration for Vercel
+  // Nitro configuration for AWS App Runner
   nitro: {
-    preset: 'vercel',
+    preset: 'node-server',
     compressPublicAssets: {
       gzip: true,
       brotli: true,
     },
-    // Optimize for serverless
     minify: true,
     sourceMap: false,
-    // Handle native dependencies properly
     experimental: {
       wasm: false,
     },
-    // Bundle native modules properly for Vercel serverless
     rollupConfig: {
       external: [],
       output: {
         format: 'esm',
       },
     },
-    // Handle native modules - ensure they're bundled
     nodeModulesDirs: ['node_modules'],
-    // Ensure shared package files are bundled
     inlineDynamicImports: true,
-    // Vercel-specific settings
-    vercel: {
-      functions: {
-        maxDuration: 30, // 30 seconds max for server routes
-      },
-    },
   },
 
   // Environment-specific route rules
