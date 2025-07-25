@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { put } from '@vercel/blob'
-import { publicRead, isEditor } from '../../utils/access.js'
+import { publicRead, isEditor } from '../../utils'
 
 const MediaCollection: CollectionConfig = {
   slug: 'media',
