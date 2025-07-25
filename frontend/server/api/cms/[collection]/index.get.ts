@@ -1,28 +1,4 @@
-import type { Payload, SharpDependency } from 'payload'
-import { Categories } from '@lafllamme/personal-page-shared/payload/collections/Categories'
-import { Media } from '@lafllamme/personal-page-shared/payload/collections/Media'
-import { Pages } from '@lafllamme/personal-page-shared/payload/collections/Pages'
-import { Posts } from '@lafllamme/personal-page-shared/payload/collections/Posts'
-// Import shared collections but we'll create minimal versions
-import { Users } from '@lafllamme/personal-page-shared/payload/collections/Users'
-import { postgresAdapter } from '@payloadcms/db-postgres'
-
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import consola from 'consola'
-import { buildConfig, getPayload } from 'payload'
-
-import sharp from 'sharp'
-import config from 'shared/payload/config.frontend'
-
-// Build config will be created inside the handler with runtime config
-
-// Helper für Singleton-Instanz
-async function getPayloadInstance(payloadConfig: Parameters<typeof getPayload>[0]['config']): Promise<Payload> {
-  if (!(globalThis as any)._payloadInstance) {
-    (globalThis as any)._payloadInstance = await getPayload({ config: payloadConfig })
-  }
-  return (globalThis as any)._payloadInstance
-}
 
 export default defineEventHandler(async (event) => {
   try {
@@ -37,96 +13,76 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const databaseUri = config.databaseUri
-    const payloadSecret = config.payloadSecret
+    const payloadApiUrl = config.public.payloadApiUrl
 
-    if (!databaseUri) {
-      consola.error('❌ No DATABASE_URI found in runtime config')
+    if (!payloadApiUrl) {
+      consola.error('❌ No PAYLOAD_API_URL found in runtime config')
       throw createError({
         statusCode: 500,
-        statusMessage: 'Database configuration missing',
+        statusMessage: 'CMS API configuration missing',
       })
     }
 
-    consola.log('✅ Using database URI and payload secret')
+    consola.log('✅ Using CMS API URL:', payloadApiUrl)
 
-    // Statt minimalCollections einfach die originalen Collections verwenden
-    const collections = [Users, Media, Pages, Posts, Categories]
+    // Build query parameters for the CMS API
+    const queryParams = new URLSearchParams()
+    
+    if (query.limit) queryParams.append('limit', query.limit as string)
+    if (query.page) queryParams.append('page', query.page as string)
+    if (query.sort) queryParams.append('sort', query.sort as string)
+    if (query.depth) queryParams.append('depth', query.depth as string)
+    if (query.where) queryParams.append('where', query.where as string)
 
-    // Create Payload config mit allen Feldern
-    const payloadConfig = buildConfig({
-      collections,
-      editor: lexicalEditor(),
-      secret: payloadSecret || 'fallback-secret',
-      db: postgresAdapter({
-        pool: {
-          connectionString: databaseUri,
-        },
-      }),
-      sharp: sharp as SharpDependency,
-    })
-
-    // Get Payload instance using local API (Singleton)
-    const payload = await getPayloadInstance(payloadConfig)
-
-    // Parse query parameters
-    const options: any = {}
-
-    if (query.limit)
-      options.limit = Number.parseInt(query.limit as string)
-    if (query.page)
-      options.page = Number.parseInt(query.page as string)
-    if (query.sort)
-      options.sort = query.sort
-    if (query.depth)
-      options.depth = Number.parseInt(query.depth as string)
-    if (query.where) {
-      try {
-        options.where = JSON.parse(query.where as string)
-      }
-      catch (e) {
-        // Invalid JSON, ignore where clause
-      }
-    }
-
-    // TODO: Make this clean
     // For posts collection, only show published posts by default
-    if (collection === 'posts' && !options.where) {
-      // Only show published posts
-      options.where = {
+    if (collection === 'posts' && !query.where) {
+      const whereFilter = JSON.stringify({
         status: {
           equals: 'published',
         },
-      }
+      })
+      queryParams.append('where', whereFilter)
       consola.log('📝 Posts collection detected - filtering for published posts only')
     }
-    else if (collection === 'posts' && options.where && options.where._overridePublishedFilter) {
-      // Remove the override flag and don't apply the published filter
-      delete options.where._overridePublishedFilter
-      consola.log('📝 Posts collection detected - showing all posts (including drafts)')
+
+    // Ensure depth is set for proper relationship population
+    if (!query.depth) {
+      queryParams.append('depth', '3')
+      consola.log('🔍 No depth specified, defaulting to depth=3 for relationship population')
     }
 
-    consola.log(`🚀 Fetching ${collection} with options:`, options)
+    const apiUrl = `${payloadApiUrl}/${collection}?${queryParams.toString()}`
+    consola.log(`🚀 Fetching from CMS API: ${apiUrl}`)
 
-    // Use Payload's local API directly
-    const result = await payload.find({
-      collection,
-      ...options,
+    // Make HTTP request to CMS API
+    const response = await $fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
-    consola.log(`✅ Successfully fetched ${result.docs.length} ${collection}`)
-    consola.log(`📊 Total docs: ${result.totalDocs}, Page: ${result.page}, Limit: ${result.limit}`)
-
-    // Debug: Log the first few docs to see what we're getting
-    if (result.docs.length > 0) {
-      consola.log(`📝 First doc:`, {
-        id: result.docs[0].id,
-        title: result.docs[0].title,
-        publishedAt: result.docs[0].publishedAt,
-        createdAt: result.docs[0].createdAt,
-        status: result.docs[0].status,
-      })
+    // For posts collection, manually populate upload relationships if they're null
+    if (collection === 'posts' && (response as any).docs) {
+      for (const doc of (response as any).docs) {
+        if (doc.content && doc.content.root && doc.content.root.children) {
+          for (const child of doc.content.root.children) {
+            if (child.type === 'upload' && child.value === null && child.id) {
+              // Fetch the media document
+              try {
+                const mediaResponse = await $fetch(`${payloadApiUrl}/media/${child.id}`)
+                child.value = mediaResponse
+                consola.log(`✅ Populated upload relationship for media ID: ${child.id}`)
+              } catch (error) {
+                consola.error(`❌ Failed to populate upload relationship for media ID: ${child.id}`, error)
+              }
+            }
+          }
+        }
+      }
     }
+
+    consola.log(`✅ Successfully fetched ${collection} from CMS API`)
 
     // Set cache control headers to prevent caching
     setResponseHeaders(event, {
@@ -136,30 +92,30 @@ export default defineEventHandler(async (event) => {
       'X-Cache-Status': 'BYPASS',
     })
 
-    return result
+    return response
   }
   catch (error) {
-    consola.error('❌ Local API Error:', error)
+    consola.error('❌ CMS API Error:', error)
 
     // More specific error messages
     if (error instanceof Error) {
       if (error.message.includes('ECONNREFUSED')) {
         throw createError({
           statusCode: 503,
-          statusMessage: 'Database connection failed - check DATABASE_URI',
+          statusMessage: 'CMS API connection failed - check PAYLOAD_API_URL',
         })
       }
       if (error.message.includes('authentication')) {
         throw createError({
           statusCode: 503,
-          statusMessage: 'Database authentication failed',
+          statusMessage: 'CMS API authentication failed',
         })
       }
     }
 
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch collection data',
+      statusMessage: 'Failed to fetch collection data from CMS',
     })
   }
 })

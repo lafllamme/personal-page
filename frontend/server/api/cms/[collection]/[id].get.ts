@@ -1,27 +1,4 @@
-import type { Payload, SharpDependency } from 'payload'
-import { Categories } from '@lafllamme/personal-page-shared/payload/collections/Categories'
-import { Media } from '@lafllamme/personal-page-shared/payload/collections/Media'
-import { Pages } from '@lafllamme/personal-page-shared/payload/collections/Pages'
-import { Posts } from '@lafllamme/personal-page-shared/payload/collections/Posts'
-// Import shared collections but we'll create minimal versions
-import { Users } from '@lafllamme/personal-page-shared/payload/collections/Users'
-import { postgresAdapter } from '@payloadcms/db-postgres'
-
-import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import consola from 'consola'
-import { buildConfig, getPayload } from 'payload'
-import sharp from 'sharp'
-import config from 'shared/payload/config.frontend'
-
-// Build config will be created inside the handler with runtime config
-
-// Helper für Singleton-Instanz
-async function getPayloadInstance(payloadConfig: Parameters<typeof getPayload>[0]['config']): Promise<Payload> {
-  if (!(globalThis as any)._payloadInstance) {
-    (globalThis as any)._payloadInstance = await getPayload({ config: payloadConfig })
-  }
-  return (globalThis as any)._payloadInstance
-}
 
 export default defineEventHandler(async (event) => {
   try {
@@ -37,69 +14,52 @@ export default defineEventHandler(async (event) => {
       })
     }
 
-    const databaseUri = config.databaseUri
-    const payloadSecret = config.payloadSecret
+    const payloadApiUrl = config.public.payloadApiUrl
 
-    if (!databaseUri) {
-      consola.error('❌ No DATABASE_URI found in runtime config')
+    if (!payloadApiUrl) {
+      consola.error('❌ No PAYLOAD_API_URL found in runtime config')
       throw createError({
         statusCode: 500,
-        statusMessage: 'Database configuration missing',
+        statusMessage: 'CMS API configuration missing',
       })
     }
 
-    consola.log('✅ Using database URI and payload secret')
+    consola.log('✅ Using CMS API URL:', payloadApiUrl)
 
-            // Create Payload config with runtime config
-        const collections = [Users, Media, Pages, Posts, Categories]
-        const payloadConfig = buildConfig({
-          collections,
-          editor: lexicalEditor(),
-          secret: payloadSecret || 'fallback-secret',
-          db: postgresAdapter({
-            pool: {
-              connectionString: databaseUri,
-            },
-          }),
-          sharp: sharp as SharpDependency,
-        })
+    // Build query parameters for the CMS API
+    const queryParams = new URLSearchParams()
+    
+    if (query.depth) queryParams.append('depth', query.depth as string)
 
-        // Get Payload instance using local API (Singleton)
-        const payload = await getPayloadInstance(payloadConfig)
+    const apiUrl = `${payloadApiUrl}/${collection}/${id}?${queryParams.toString()}`
+    consola.log(`🚀 Fetching from CMS API: ${apiUrl}`)
 
-    // Parse query parameters
-    const options: any = {}
-
-    if (query.depth)
-      options.depth = Number.parseInt(query.depth as string)
-
-    consola.log(`🚀 Fetching ${collection} with ID ${id} and options:`, options)
-
-    // Use Payload's local API directly
-    const result = await payload.findByID({
-      collection,
-      id,
-      ...options,
+    // Make HTTP request to CMS API
+    const response = await $fetch(apiUrl, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     })
 
-    consola.log(`✅ Successfully fetched ${collection} with ID ${id}`)
-    return result
+    consola.log(`✅ Successfully fetched ${collection} with ID ${id} from CMS API`)
+    return response
   }
   catch (error: any) {
-    consola.error('❌ Local API Error:', error)
+    consola.error('❌ CMS API Error:', error)
 
     // More specific error messages
     if (error instanceof Error) {
       if (error.message.includes('ECONNREFUSED')) {
         throw createError({
           statusCode: 503,
-          statusMessage: 'Database connection failed - check DATABASE_URI',
+          statusMessage: 'CMS API connection failed - check PAYLOAD_API_URL',
         })
       }
       if (error.message.includes('authentication')) {
         throw createError({
           statusCode: 503,
-          statusMessage: 'Database authentication failed',
+          statusMessage: 'CMS API authentication failed',
         })
       }
       if (error.message.includes('not found')) {
@@ -112,7 +72,7 @@ export default defineEventHandler(async (event) => {
 
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch document',
+      statusMessage: 'Failed to fetch document from CMS',
     })
   }
 })
