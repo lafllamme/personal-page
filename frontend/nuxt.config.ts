@@ -5,6 +5,9 @@ export default defineNuxtConfig({
   // Base configuration
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  
+  // Explicitly enable SSR for App Runner
+  ssr: true,
 
   // Development server configuration
   devServer: {
