@@ -1,9 +1,16 @@
 import type { CollectionConfig } from 'payload'
 import { put } from '@vercel/blob'
+import { publicRead, isEditor } from '../../utils/access.js'
 
 const MediaCollection: CollectionConfig = {
   slug: 'media',
   upload: true,
+  access: {
+    read: publicRead, // Public can read media files
+    create: isEditor, // Only admin & editor can create
+    update: isEditor, // Only admin & editor can update
+    delete: isEditor, // Only admin & editor can delete
+  },
   hooks: {
     beforeChange: [
       async (args: any) => {
