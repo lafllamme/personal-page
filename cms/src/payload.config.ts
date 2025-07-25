@@ -13,7 +13,6 @@ import { Media } from '@lafllamme/personal-page-shared/payload/collections/Media
 import { Pages } from '@lafllamme/personal-page-shared/payload/collections/Pages'
 import { Posts } from '@lafllamme/personal-page-shared/payload/collections/Posts'
 import { Categories } from '@lafllamme/personal-page-shared/payload/collections/Categories'
-import config from 'shared/payload/config.cms'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
