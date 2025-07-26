@@ -16,9 +16,9 @@ export const useMenu = defineStore('menu', () => {
       id: 1,
       title: 'Technology',
       children: [
-        { id: 11, title: 'Gadgets', to: '/demo' },
-        { id: 12, title: 'Software', to: '/test' },
-        { id: 13, title: 'AI & Machine Learning', to: '/old' },
+        { id: 11, title: 'Articles', to: '/blog' },
+        { id: 12, title: 'Software Solutions', to: '/test' },
+        { id: 13, title: 'AI & Intelligent Systems', to: '/old' },
       ],
     },
     {
