@@ -21,7 +21,10 @@ function scrollToTop() {
   if (!main)
     return
 
-  const focusables
+  // scrol top top position of whole page
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+
+  /* const focusables
       = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]),'
         + 'select:not([disabled]), [tabindex]:not([tabindex="-1"])'
 
@@ -36,7 +39,7 @@ function scrollToTop() {
     behavior: 'smooth',
     block: 'end',
     inline: 'nearest',
-  })
+  }) */
 }
 </script>
 
