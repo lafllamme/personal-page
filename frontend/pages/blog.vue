@@ -73,7 +73,7 @@ onUnmounted(() => {
       <div class="grid grid-cols-12 gap-16">
         <!-- Left Sidebar -->
         <aside class="col-span-2 hidden xl:block">
-          <div class="sticky top-8 space-y-12">
+          <div class="sticky top-20 space-y-12">
             <!-- Issue Info -->
             <div class="text-center">
               <div class="mx-auto mb-4 h-32 w-24 flex items-center justify-center bg-pureBlack dark:bg-pureWhite">
@@ -95,7 +95,7 @@ onUnmounted(() => {
                     <a
                       :href="`#${item.id}`"
                       class="block py-1 color-gray-11 transition-colors hover:text-pureBlack"
-                      :class="{ 'text-pureBlack font-medium border-l-2 border-pureBlack pl-3 -ml-3': activeId === item.id }"
+                      :class="{ 'color-pureBlack dark:color-pureWhite font-medium border-l-2 border-mint-11 border-solid pl-3 -ml-3': activeId === item.id }"
                     >
                       {{ item.text }}
                     </a>
@@ -274,38 +274,38 @@ onUnmounted(() => {
                 </h4>
 
                 <ul class="mb-6 space-y-2">
-                  <li class="flex items-start gap-3 text-lg color-gray-12 leading-relaxed">
+                  <li class="flex items-center gap-3 text-lg color-gray-12 leading-relaxed">
                     <input
                       type="checkbox" checked readonly
-                      class="border-gray-300 mt-1 h-4 w-4 border-2 rounded bg-pureWhite text-pureBlack focus:ring-0"
+                      class="mt-1 h-4 w-4 border-2 border-gray-6 rounded border-solid bg-pureWhite text-pureBlack accent-mint-7 focus:ring-0"
                     >
                     <span class="flex-1">Deep knowledge of fundamental design principles</span>
                   </li>
-                  <li class="flex items-start gap-3 text-lg color-gray-12 leading-relaxed">
+                  <li class="flex items-center gap-3 text-lg color-gray-12 leading-relaxed">
                     <input
                       type="checkbox" checked readonly
-                      class="border-gray-300 mt-1 h-4 w-4 border-2 rounded bg-pureWhite text-pureBlack focus:ring-0"
+                      class="mt-1 h-4 w-4 border-2 border-gray-6 rounded border-solid bg-pureWhite text-pureBlack accent-mint-7 focus:ring-0"
                     >
                     <span class="flex-1">Understanding of human psychology and behavior</span>
                   </li>
-                  <li class="flex items-start gap-3 text-lg color-gray-12 leading-relaxed">
+                  <li class="flex items-center gap-3 text-lg color-gray-12 leading-relaxed">
                     <input
                       type="checkbox" checked readonly
-                      class="border-gray-300 mt-1 h-4 w-4 border-2 rounded bg-pureWhite text-pureBlack focus:ring-0"
+                      class="mt-1 h-4 w-4 border-2 border-gray-6 rounded border-solid bg-pureWhite text-pureBlack accent-mint-7 focus:ring-0"
                     >
                     <span class="flex-1">Proficiency in both digital and analog methods</span>
                   </li>
-                  <li class="flex items-start gap-3 text-lg color-gray-12 leading-relaxed">
+                  <li class="flex items-center gap-3 text-lg color-gray-12 leading-relaxed">
                     <input
                       type="checkbox" readonly
-                      class="border-gray-300 mt-1 h-4 w-4 border-2 rounded bg-pureWhite text-pureBlack focus:ring-0"
+                      class="mt-1 h-4 w-4 border-2 border-gray-6 rounded border-solid bg-pureWhite text-pureBlack accent-mint-7 focus:ring-0"
                     >
                     <span class="flex-1">Cultivation of aesthetic sensitivity through diverse experiences</span>
                   </li>
-                  <li class="flex items-start gap-3 text-lg color-gray-12 leading-relaxed">
+                  <li class="flex items-center gap-3 text-lg color-gray-12 leading-relaxed">
                     <input
                       type="checkbox" readonly
-                      class="border-gray-300 mt-1 h-4 w-4 border-2 rounded bg-pureWhite text-pureBlack focus:ring-0"
+                      class="mt-1 h-4 w-4 border-2 border-gray-6 rounded border-solid bg-pureWhite text-pureBlack accent-mint-7 focus:ring-0"
                     >
                     <span class="flex-1">Development of critical thinking and problem-solving skills</span>
                   </li>
@@ -398,7 +398,7 @@ onUnmounted(() => {
 
         <!-- Right Sidebar -->
         <aside class="col-span-12 xl:col-span-2">
-          <div class="sticky top-8 space-y-12">
+          <div class="sticky top-20 space-y-12">
             <!-- Current Issue -->
             <div class="text-center">
               <h3 class="mb-4 text-xs color-gray-12 tracking-[0.3em] uppercase">
