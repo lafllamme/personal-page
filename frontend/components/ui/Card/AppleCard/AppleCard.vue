@@ -4,6 +4,7 @@ import { AnimatePresence, Motion } from 'motion-v'
 import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import AppleBlurImage from '@/components/ui/Card/AppleCard/AppleBlurImage.vue'
 import { CarouselKey } from './AppleCarouselContext'
+import { useVisibilityObserver } from '@/composables/useVisibilityObserver'
 
 interface Card {
   src: string
@@ -23,6 +24,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const open = ref(false)
 const containerRef = ref<HTMLDivElement | null>(null)
+const cardRef = ref<HTMLDivElement | null>(null)
 const carouselContext = inject(CarouselKey)
 
 if (!carouselContext) {
@@ -30,6 +32,13 @@ if (!carouselContext) {
 }
 
 const { onCardClose, currentIndex } = carouselContext
+
+// Intersection observer for card visibility
+const isVisible = ref(false)
+useVisibilityObserver(cardRef, isVisible, 30)
+
+// Provide card index for staggered blur animation
+provide('cardIndex', props.index)
 
 function handleKeyDown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
@@ -95,7 +104,7 @@ function handleClose() {
           >
             <Icon
               name="tabler:x"
-              class="text-neutral-100 dark:text-neutral-900 size-6"
+              class="size-6 color-red-12"
             />
           </button>
           <Motion
@@ -121,8 +130,20 @@ function handleClose() {
   </Teleport>
 
   <Motion
+    ref="cardRef"
     :layout-id="layout ? `card-${card.title}` : undefined"
-    class="relative z-10 h-80 w-56 flex flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-11 md:h-[40rem] md:w-96"
+    :initial="{ opacity: 0, y: 50, scale: 0.95 }"
+    :animate="{ 
+      opacity: isVisible ? 1 : 0, 
+      y: isVisible ? 0 : 50, 
+      scale: isVisible ? 1 : 0.95 
+    }"
+    :transition="{ 
+      duration: 0.6, 
+      delay: isVisible ? index * 0.1 : 0,
+      ease: [0.25, 0.46, 0.45, 0.94] 
+    }"
+    class="relative z-10 h-80 w-56 flex flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-11 md:h-[40rem] md:w-96 cursor-pointer transform-gpu"
     @click="handleOpen"
   >
     <div

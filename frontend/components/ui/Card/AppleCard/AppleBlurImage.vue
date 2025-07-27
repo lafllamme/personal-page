@@ -21,6 +21,9 @@ const props = withDefaults(defineProps<Props>(), {
 const isLoading = ref(true)
 const imgRef = ref<HTMLImageElement | null>(null)
 
+// Get the card index from parent component
+const cardIndex = inject('cardIndex', 0)
+
 onMounted(() => {
   consola.debug('[AppleBlurImage] Component mounted [src]:', props.src)
 
@@ -28,14 +31,20 @@ onMounted(() => {
   if (imgRef.value) {
     if (imgRef.value.complete) {
       consola.debug('[AppleBlurImage] Image already loaded (cached) [src]:', props.src)
-      isLoading.value = false
+      // Delay the unblur to avoid conflict with card animation
+      setTimeout(() => {
+        isLoading.value = false
+      }, 2000 + (cardIndex * 200)) // 2s base + staggered delay
     }
   }
 })
 
 function handleLoad() {
   consola.debug('[AppleBlurImage] Image loaded [src]:', props.src)
-  isLoading.value = false
+  // Delay the unblur to avoid conflict with card animation
+  setTimeout(() => {
+    isLoading.value = false
+  }, 2000 + (cardIndex * 200)) // 2s base + staggered delay
 }
 </script>
 
@@ -44,7 +53,7 @@ function handleLoad() {
     ref="imgRef"
     :class="
       useClsx(
-        'transition duration-300',
+        'transition-[filter] duration-500 ease-out',
         isLoading ? 'blur-sm' : 'blur-0',
         props.class,
         fill ? 'h-full w-full' : '',
