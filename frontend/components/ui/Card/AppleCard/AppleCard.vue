@@ -44,7 +44,6 @@ watch(hasBeenVisible, (visible) => {
 
 // Track when this card's image loads
 function handleImageLoad() {
-  console.log(`🖼️ [Card ${props.index}] Image loaded`)
   onImageLoad(props.index)
 }
 

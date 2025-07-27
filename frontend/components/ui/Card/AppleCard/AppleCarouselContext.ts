@@ -26,11 +26,6 @@ export function createCarouselContext() {
   // Track initial cards separately
   const initialCards = ref<Set<number>>(new Set())
 
-  // Debug watch
-  watch(imagesReady, (newVal) => {
-    console.log('🔄 imagesReady changed to:', newVal)
-  })
-
   // Single computed for all image states
   const getImageState = computed(() => (index: number) => {
     const isInitial = !initialAnimationComplete.value
@@ -58,18 +53,6 @@ export function createCarouselContext() {
       blur: shouldBlur,
     }
 
-    console.log(`🎨 [Card ${index}] State:`, {
-      isInitial,
-      isInGrayPhase,
-      isNewCard,
-      isReadyToUnblur,
-      wasInitialCard,
-      imagesReady: imagesReady.value,
-      initialAnimationComplete: initialAnimationComplete.value,
-      shouldShow,
-      shouldBlur,
-    })
-
     return state
   })
 
@@ -81,22 +64,12 @@ export function createCarouselContext() {
     const loadedArray = Array.from(loadedImages.value)
     const missingCards = visibleArray.filter(cardIndex => !loadedArray.includes(cardIndex))
 
-    console.log('🔍 checkIfReadyToShowImages:', {
-      visibleArray,
-      loadedArray,
-      missingCards,
-      initialAnimationComplete: initialAnimationComplete.value,
-    })
-
     if (visibleArray.length > 0 && missingCards.length === 0) {
       const maxIndex = Math.max(...visibleArray)
       const maxDelay = 0.1 * maxIndex
       const totalAnimationTime = 600 + (maxDelay * 1000)
 
-      console.log('⏱️ Starting timer:', { maxIndex, maxDelay, totalAnimationTime })
-
       const { start } = useTimeoutFn(() => {
-        console.log('✨ Setting imagesReady to true')
         imagesReady.value = true
         
         // Wait a bit more before marking initial animation complete

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useVisibilityObserver } from '@/composables/useVisibilityObserver'
 import { CarouselKey, createCarouselContext } from './AppleCarouselContext'
 
 interface Props {
@@ -79,10 +80,49 @@ provide(CarouselKey, {
   getImageState,
   checkIfReadyToShowImages,
 })
+const isVisible = ref(false)
+const buttonRef = templateRef('buttonRef')
+useVisibilityObserver(buttonRef, isVisible, 100)
 </script>
 
 <template>
   <div class="relative w-full -mx-4">
+    <!-- Carousel Navigation Buttons - Positioned absolutely in top-right -->
+    <div
+      ref="buttonRef"
+      :class="isVisible ? 'animate-fade-in ease-out' : 'opacity-0'"
+      class="absolute right-0 z-50 flex gap-2 -top-5 -translate-y-full"
+    >
+      <button
+        :class="useClsx(
+          'relative z-40 size-10 flex items-center justify-center',
+          'rounded-full border-solid bg-sand-12',
+          'backdrop-blur-sm transition-colors disabled:opacity-50',
+        )"
+        :disabled="!canScrollLeft"
+        @click="scrollLeft"
+      >
+        <Icon
+          name="tabler:arrow-narrow-left"
+          class="size-5 color-sand-1"
+        />
+      </button>
+      <button
+        :class="useClsx(
+          'relative z-40 size-10 flex items-center justify-center',
+          'rounded-full border-solid bg-sand-12',
+          'backdrop-blur-sm transition-colors disabled:opacity-50',
+        )"
+        :disabled="!canScrollRight"
+        @click="scrollRight"
+      >
+        <Icon
+          name="tabler:arrow-narrow-right"
+          class="size-5 color-sand-1"
+        />
+      </button>
+    </div>
+
     <div
       ref="carouselRef"
       class="[scrollbar-width:none] w-full flex overflow-x-scroll overflow-y-hidden overscroll-x-auto scroll-smooth"
@@ -101,27 +141,5 @@ provide(CarouselKey, {
         <slot />
       </div>
     </div>
-    <!--    <div class="mr-10 flex justify-end gap-2">
-      <button
-        class="bg-gray-100 relative z-40 size-10 flex items-center justify-center rounded-full disabled:opacity-50"
-        :disabled="!canScrollLeft"
-        @click="scrollLeft"
-      >
-        <Icon
-          name="tabler:arrow-narrow-left"
-          class="text-gray-500 size-6"
-        />
-      </button>
-      <button
-        class="bg-gray-100 relative z-40 size-10 flex items-center justify-center rounded-full disabled:opacity-50"
-        :disabled="!canScrollRight"
-        @click="scrollRight"
-      >
-        <Icon
-          name="tabler:arrow-narrow-right"
-          class="text-gray-500 size-6"
-        />
-      </button>
-    </div> -->
   </div>
 </template>
