@@ -19,7 +19,7 @@ const canScrollRight = ref(true)
 
 // Use the smart context
 const context = createCarouselContext()
-const { currentIndex, onImageLoad, onCardVisible, getImageState } = context
+const { currentIndex, onImageLoad, onCardVisible, getImageState, checkIfReadyToShowImages } = context
 
 onMounted(() => {
   if (carouselRef.value) {
@@ -77,6 +77,7 @@ provide(CarouselKey, {
   onImageLoad,
   onCardVisible,
   getImageState,
+  checkIfReadyToShowImages,
 })
 </script>
 
@@ -84,7 +85,7 @@ provide(CarouselKey, {
   <div class="relative w-full -mx-4">
     <div
       ref="carouselRef"
-      class="[scrollbar-width:none] w-full flex overflow-x-scroll overscroll-x-auto scroll-smooth py-10 md:py-20"
+      class="[scrollbar-width:none] w-full flex overflow-x-scroll overflow-y-hidden overscroll-x-auto scroll-smooth"
       @scroll="checkScrollability"
     >
       <div
@@ -100,7 +101,7 @@ provide(CarouselKey, {
         <slot />
       </div>
     </div>
-    <div class="mr-10 flex justify-end gap-2">
+    <!--    <div class="mr-10 flex justify-end gap-2">
       <button
         class="bg-gray-100 relative z-40 size-10 flex items-center justify-center rounded-full disabled:opacity-50"
         :disabled="!canScrollLeft"
@@ -121,6 +122,6 @@ provide(CarouselKey, {
           class="text-gray-500 size-6"
         />
       </button>
-    </div>
+    </div> -->
   </div>
 </template>
