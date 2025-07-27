@@ -29,7 +29,7 @@ if (!carouselContext) {
   throw new Error('Card must be used within a Carousel')
 }
 
-const { onCardClose, imagesReady, onImageLoad, onCardVisible, cardsInGrayPhase, newCardsAfterReady, initialViewportCards, initialAnimationComplete } = carouselContext
+const { onCardClose, onImageLoad, onCardVisible, getImageState } = carouselContext
 
 // Intersection observer for card visibility
 const hasBeenVisible = ref(false)
@@ -141,11 +141,11 @@ function handleClose() {
       scale: hasBeenVisible ? 1 : 0.95,
     }"
     :transition="{
-      duration: initialViewportCards.has(props.index) ? 0.6 : 0.3,
-      delay: hasBeenVisible && initialViewportCards.has(props.index) ? Math.min(index, 3) * 0.1 : 0,
+      duration: 0.6,
+      delay: hasBeenVisible ? Math.min(index, 3) * 0.1 : 0,
       ease: [0.25, 0.46, 0.45, 0.94],
     }"
-    class="relative z-10 h-80 w-56 flex flex-col transform-gpu cursor-pointer items-start justify-start overflow-hidden rounded-3xl bg-gray-11 md:h-[40rem] md:w-96"
+    class="relative z-10 h-80 w-56 flex flex-col transform-gpu cursor-pointer items-start justify-start overflow-hidden rounded-3xl bg-gray-6 md:h-[40rem] md:w-96"
     @click="handleOpen"
   >
     <div
@@ -168,10 +168,8 @@ function handleClose() {
     <AppleBlurImage
       :src="card.src"
       :alt="card.title"
-      :images-ready="imagesReady"
       :card-index="props.index"
-      :cards-in-gray-phase="cardsInGrayPhase"
-      :new-cards-after-ready="newCardsAfterReady"
+      :image-state="getImageState(props.index)"
       class="absolute inset-0 z-10 object-cover"
       :fill="true"
       :on-load="handleImageLoad"
