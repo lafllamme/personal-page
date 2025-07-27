@@ -33,7 +33,7 @@ const { onCardClose, imagesReady, onImageLoad, onCardVisible, cardsInGrayPhase, 
 
 // Intersection observer for card visibility
 const hasBeenVisible = ref(false)
-useVisibilityObserver(cardRef, hasBeenVisible, 30)
+useVisibilityObserver(cardRef, hasBeenVisible, 15)
 
 // Watch for visibility changes
 watch(hasBeenVisible, (visible) => {
