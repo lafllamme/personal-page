@@ -80,6 +80,7 @@ function handleClose() {
 <template>
   <Teleport to="body">
     <AnimatePresence>
+      <!--  Card Overlay    -->
       <div
         v-if="open"
         class="fixed inset-0 z-50 h-screen overflow-auto"
@@ -98,10 +99,17 @@ function handleClose() {
           :animate="{ opacity: 1 }"
           :exit="{ opacity: 0 }"
           :layout-id="layout ? `card-${card.title}` : undefined"
-          class="relative z-[60] mx-auto my-10 h-fit max-w-5xl rounded-3xl bg-pureWhite p-4 font-sans dark:bg-pureBlack md:p-10"
+          :class="useClsx(
+            'relative z-[60] mx-auto my-10 h-fit max-w-5xl',
+            'rounded-3xl bg-pureWhite p-4 font-sans dark:bg-pureBlack md:p-10',
+          )"
         >
           <button
-            class="sticky right-0 top-4 ml-auto size-8 flex items-center justify-center rounded-full bg-pureBlack dark:bg-pureWhite"
+            :class="useClsx(
+              'flex items-center justify-center rounded-full',
+              'sticky right-0 top-4 ml-auto size-8',
+              'bg-pureBlack dark:bg-pureWhite',
+            )"
             @click="handleClose"
           >
             <Icon
@@ -145,22 +153,36 @@ function handleClose() {
       delay: hasBeenVisible ? Math.min(index, 3) * 0.1 : 0,
       ease: [0.25, 0.46, 0.45, 0.94],
     }"
-    class="relative z-10 h-80 w-56 flex flex-col transform-gpu cursor-pointer items-start justify-start overflow-hidden rounded-3xl bg-gray-6 md:h-[40rem] md:w-96"
+    :class="useClsx(
+      'relative z-10  group h-80 w-56 flex flex-col transform-gpu cursor-pointer',
+      'items-start justify-start overflow-hidden rounded-10 bg-gray-6 md:h-[40rem] md:w-96')"
     @click="handleOpen"
   >
+    <!--  Card Content  -->
     <div
-      class="from-black/50 pointer-events-none absolute inset-x-0 top-0 z-30 h-full via-transparent to-transparent bg-gradient-to-b"
+      :class="useClsx(
+        'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
+        'pointer-events-none absolute inset-x-0 top-0 z-30 h-full',
+        'from-mauve-3 via-transparent to-transparent bg-gradient-to-b dark:from-pureBlack/35',
+      )"
     />
     <div class="relative z-40 p-8">
       <Motion
         :layout-id="layout ? `category-${card.category}` : undefined"
-        class="text-left text-sm color-pureWhite font-medium font-sans md:text-base dark:color-pureWhite"
+        :class="useClsx(
+          'text-left text-sm color-gray-12',
+          'font-medium font-manrope transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] md:text-base dark:color-pureWhite',
+        )"
       >
         {{ card.category }}
       </Motion>
       <Motion
         :layout-id="layout ? `title-${card.title}` : undefined"
-        class="[text-wrap:balance] mt-2 max-w-xs text-left text-xl color-pureWhite font-semibold font-sans md:text-3xl dark:color-pureWhite"
+        :class="useClsx(
+          '[text-wrap:balance] mt-2 max-w-xs text-left text-xl',
+          'color-gray-12 font-semibold transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
+          'font-lora antialiased md:text-3xl dark:color-pureWhite tracking-tight',
+        )"
       >
         {{ card.title }}
       </Motion>
@@ -170,7 +192,7 @@ function handleClose() {
       :alt="card.title"
       :card-index="props.index"
       :image-state="getImageState(props.index)"
-      class="absolute inset-0 z-10 object-cover"
+      class="absolute inset-0 z-10 object-cover transition-transform duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110"
       :fill="true"
       :on-load="handleImageLoad"
     />
