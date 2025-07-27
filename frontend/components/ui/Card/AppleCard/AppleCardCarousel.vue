@@ -20,7 +20,7 @@ const canScrollRight = ref(true)
 
 // Use the smart context
 const context = createCarouselContext()
-const { currentIndex, onImageLoad, onCardVisible, getImageState, checkIfReadyToShowImages } = context
+const { currentIndex, onImageLoad, onCardVisible, getImageState, checkIfReadyToShowImages, setHoveredIndex, hoveredIndex } = context
 
 onMounted(() => {
   if (carouselRef.value) {
@@ -88,6 +88,8 @@ provide(CarouselKey, {
   onCardVisible,
   getImageState,
   checkIfReadyToShowImages,
+  setHoveredIndex,
+  hoveredIndex,
 })
 const isVisible = ref(false)
 const buttonRef = templateRef('buttonRef')
