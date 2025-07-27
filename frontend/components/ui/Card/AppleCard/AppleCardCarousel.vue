@@ -52,7 +52,7 @@ function scrollLeft() {
     const cardWidth = isMobile.value ? 230 : 384 // (md:w-96)
     const gap = isMobile.value ? 4 : 8
     const scrollAmount = cardWidth + gap
-    
+
     carouselRef.value.scrollLeft -= scrollAmount
     checkScrollability()
   }
@@ -63,7 +63,7 @@ function scrollRight() {
     const cardWidth = isMobile.value ? 230 : 384 // (md:w-96)
     const gap = isMobile.value ? 4 : 8
     const scrollAmount = cardWidth + gap
-    
+
     carouselRef.value.scrollLeft += scrollAmount
     checkScrollability()
   }
@@ -74,7 +74,7 @@ function handleCardClose(index: number) {
     const cardWidth = isMobile.value ? 230 : 384 // (md:w-96)
     const gap = isMobile.value ? 4 : 8
     const scrollPosition = (cardWidth + gap) * (index + 1)
-    
+
     carouselRef.value.scrollLeft = scrollPosition
     currentIndex.value = index
     checkScrollability()
@@ -105,8 +105,8 @@ useVisibilityObserver(buttonRef, isVisible, 100)
       <button
         :class="useClsx(
           'relative z-40 size-10 flex items-center justify-center',
-          'rounded-full border-solid bg-sand-12',
-          'backdrop-blur-sm transition-colors disabled:opacity-50',
+          'rounded-full border-solid bg-sand-12 hover:bg-sand-10 hover:scale-105',
+          'backdrop-blur-sm transition-all ease-out duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
         )"
         :disabled="!canScrollLeft"
         @click="scrollLeft"
@@ -119,8 +119,8 @@ useVisibilityObserver(buttonRef, isVisible, 100)
       <button
         :class="useClsx(
           'relative z-40 size-10 flex items-center justify-center',
-          'rounded-full border-solid bg-sand-12',
-          'backdrop-blur-sm transition-colors disabled:opacity-50',
+          'rounded-full border-solid bg-sand-12 hover:bg-sand-10 hover:scale-105',
+          'backdrop-blur-sm transition-all ease-out duration-200 disabled:opacity-50 disabled:cursor-not-allowed',
         )"
         :disabled="!canScrollRight"
         @click="scrollRight"
