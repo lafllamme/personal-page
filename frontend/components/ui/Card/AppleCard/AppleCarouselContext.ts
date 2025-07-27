@@ -47,8 +47,10 @@ export function createCarouselContext() {
       shouldBlur = true
     } else if (isNewCard && !isReadyToUnblur) {
       shouldBlur = true
-    } else if (imagesReady.value) {
-      shouldBlur = false // All cards unblur when images are ready
+    } else if (wasInitialCard && imagesReady.value) {
+      shouldBlur = false // Only initial cards unblur when images are ready
+    } else if (isNewCard && isReadyToUnblur) {
+      shouldBlur = false // New cards unblur only when their timeout is ready
     }
 
     const state = {
