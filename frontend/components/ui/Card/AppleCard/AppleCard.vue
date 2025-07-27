@@ -141,7 +141,7 @@ function handleClose() {
       scale: hasBeenVisible ? 1 : 0.95,
     }"
     :transition="{
-      duration: 0.6,
+      duration: initialViewportCards.has(props.index) ? 0.6 : 0.3,
       delay: hasBeenVisible && initialViewportCards.has(props.index) ? Math.min(index, 3) * 0.1 : 0,
       ease: [0.25, 0.46, 0.45, 0.94],
     }"
