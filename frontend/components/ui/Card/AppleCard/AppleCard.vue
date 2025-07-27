@@ -162,7 +162,7 @@ function handleClose() {
       :class="useClsx(
         'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
         'pointer-events-none absolute inset-x-0 top-0 z-30 h-full',
-        'from-mauve-3 via-transparent to-transparent bg-gradient-to-b dark:from-pureBlack/35',
+        'from-olive-6 via-transparent to-transparent bg-gradient-to-b dark:from-pureBlack/35',
       )"
     />
     <div class="relative z-40 p-8">
