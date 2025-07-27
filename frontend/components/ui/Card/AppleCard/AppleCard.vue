@@ -169,7 +169,7 @@ function handleClose() {
       <Motion
         :layout-id="layout ? `category-${card.category}` : undefined"
         :class="useClsx(
-          'text-left text-sm color-gray-12',
+          'text-left text-sm color-gray-12 tracking-tight',
           'font-medium font-manrope transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] md:text-base dark:color-pureWhite',
         )"
       >
