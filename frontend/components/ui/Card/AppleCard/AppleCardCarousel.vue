@@ -49,13 +49,23 @@ function checkScrollability() {
 
 function scrollLeft() {
   if (carouselRef.value) {
-    carouselRef.value.scrollBy({ left: -300, behavior: 'smooth' })
+    const cardWidth = isMobile.value ? 230 : 384 // (md:w-96)
+    const gap = isMobile.value ? 4 : 8
+    const scrollAmount = cardWidth + gap
+    
+    carouselRef.value.scrollLeft -= scrollAmount
+    checkScrollability()
   }
 }
 
 function scrollRight() {
   if (carouselRef.value) {
-    carouselRef.value.scrollBy({ left: 300, behavior: 'smooth' })
+    const cardWidth = isMobile.value ? 230 : 384 // (md:w-96)
+    const gap = isMobile.value ? 4 : 8
+    const scrollAmount = cardWidth + gap
+    
+    carouselRef.value.scrollLeft += scrollAmount
+    checkScrollability()
   }
 }
 
@@ -64,11 +74,10 @@ function handleCardClose(index: number) {
     const cardWidth = isMobile.value ? 230 : 384 // (md:w-96)
     const gap = isMobile.value ? 4 : 8
     const scrollPosition = (cardWidth + gap) * (index + 1)
-    carouselRef.value.scrollTo({
-      left: scrollPosition,
-      behavior: 'smooth',
-    })
+    
+    carouselRef.value.scrollLeft = scrollPosition
     currentIndex.value = index
+    checkScrollability()
   }
 }
 
@@ -125,7 +134,7 @@ useVisibilityObserver(buttonRef, isVisible, 100)
 
     <div
       ref="carouselRef"
-      class="[scrollbar-width:none] w-full flex overflow-x-scroll overflow-y-hidden overscroll-x-auto scroll-smooth"
+      class="[scrollbar-width:none] w-full flex overflow-x-scroll overflow-y-hidden overscroll-x-auto scroll-smooth will-change-scroll"
       @scroll="checkScrollability"
     >
       <div
