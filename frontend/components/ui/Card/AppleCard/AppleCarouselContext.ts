@@ -8,6 +8,8 @@ export interface CarouselContextType {
   onCardVisible: (index: number) => void
   cardsInGrayPhase: Ref<Set<number>>
   newCardsAfterReady: Ref<Set<number>>
+  initialViewportCards: Ref<Set<number>>
+  initialAnimationComplete: Ref<boolean>
 }
 
 export const CarouselKey = Symbol() as InjectionKey<CarouselContextType>

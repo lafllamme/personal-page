@@ -22,6 +22,8 @@ const visibleCards = ref<Set<number>>(new Set())
 const loadedImages = ref<Set<number>>(new Set())
 const cardsInGrayPhase = ref<Set<number>>(new Set())
 const newCardsAfterReady = ref<Set<number>>(new Set())
+const initialViewportCards = ref<Set<number>>(new Set())
+const initialAnimationComplete = ref(false)
 
 onMounted(() => {
   if (carouselRef.value) {
@@ -76,6 +78,12 @@ function handleCardClose(index: number) {
 function onCardVisible(index: number) {
   visibleCards.value.add(index)
   console.log(`👁️ Card ${index} visible | Total: ${visibleCards.value.size}`)
+  
+  // Track initial viewport cards (cards visible before first animation completes)
+  if (!initialAnimationComplete.value) {
+    initialViewportCards.value.add(index)
+    console.log(`🎯 Card ${index} added to initial viewport`)
+  }
   
   // Add to gray phase if images are not ready yet
   if (!imagesReady.value) {
@@ -136,6 +144,8 @@ provide(CarouselKey, {
   onCardVisible,
   cardsInGrayPhase,
   newCardsAfterReady,
+  initialViewportCards,
+  initialAnimationComplete,
 })
 </script>
 
