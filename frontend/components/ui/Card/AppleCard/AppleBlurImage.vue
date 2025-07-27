@@ -32,6 +32,9 @@ onMounted(() => {
 })
 
 function handleLoad() {
+  // Debug log
+  console.log(`🖼️ [Card ${props.cardIndex}] Image loaded, state:`, props.imageState)
+
   // Small delay to ensure the load event is properly processed
   const { start } = useTimeoutFn(() => {
     props.onLoad?.()
@@ -45,15 +48,17 @@ function handleLoad() {
     ref="imgRef"
     :class="
       useClsx(
-        'transition-all duration-1000 ease-out',
+        'transition-opacity duration-500 ease-out',
         props.imageState?.show ? 'opacity-100' : 'opacity-0',
-        props.imageState?.blur ? 'blur-md' : 'blur-0',
+        props.imageState?.blur ? 'blur-sm' : 'blur-0',
         props.class,
         fill ? 'h-full w-full' : '',
       )
     "
     :style="{
-      transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+      filter: props.imageState?.blur ? 'blur(16px)' : 'blur(0px)',
+      transition: `filter 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-out`,
+      transitionDelay: props.cardIndex !== undefined ? `${props.cardIndex * 200}ms` : '0ms',
     }"
     :src="src"
     :width="width"
