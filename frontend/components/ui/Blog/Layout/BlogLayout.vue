@@ -178,7 +178,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         <div class="flex flex-col gap-8 md:grid md:grid-cols-3 md:items-stretch md:gap-8">
           <!-- Featured Article (left, spans 2 cols on desktop) -->
           <div class="h-full w-full md:col-span-2 md:row-span-1">
-            <div class="py-12">
+            <div>
               <AppleCardCarousel>
                 <AppleCarouselItem
                   v-for="(card, index) in data"
