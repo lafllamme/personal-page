@@ -1,88 +1,80 @@
 <script lang="ts" setup>
-function handleEnter() {
-  navigateTo('/about')
-}
+import AppleCard from '@/components/ui/Card/AppleCard/AppleCard.vue'
+import AppleCardCarousel from '@/components/ui/Card/AppleCard/AppleCardCarousel.vue'
+import AppleCarouselItem from '@/components/ui/Card/AppleCard/AppleCarouselItem.vue'
 
-const { t } = useI18n()
+const data = [
+  {
+    category: 'Artificial Intelligence',
+    title: 'You can do more with AI.',
+    src: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=3556&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    category: 'Productivity',
+    title: 'Enhance your productivity.',
+    src: 'https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    // content: <DummyContent />,
+  },
+  {
+    category: 'Product',
+    title: 'Launching the new Apple Vision Pro.',
+    src: 'https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    // content: <DummyContent />,
+  },
+
+  {
+    category: 'Product',
+    title: 'Maps for your iPhone 15 Pro Max.',
+    src: 'https://images.unsplash.com/photo-1599202860130-f600f4948364?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    category: 'iOS',
+    title: 'Photography just got better.',
+    src: 'https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    category: 'Hiring',
+    title: 'Hiring for a Staff Software Engineer',
+    src: 'https://images.unsplash.com/photo-1511984804822-e16ba72f5848?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+]
 </script>
 
 <template>
-  <div class="flex items-center justify-center h-svh">
-    <div>
-      <button
-        :class="useClsx(
-          'flex items-center justify-center',
-          'border-pureBlack dark:border-pureWhite border-2',
-          'rounded-lg bg-pureWhite dark:bg-pureBlack px-4 py-2 text-2xl',
-          'text-mint-12',
-          'font-thin font-mono uppercase antialiased space-x-2',
-          'shadow-[6px_8px_100px_6px] shadow-mint-7',
-          'focus-visible:outline-none focus:ring-4 focus:ring-offset-2 focus:ring-black-12A',
-          'transition-colors duration-900 ease-[cubic-bezier(0.77,0,0.18,1)]',
-        )"
-        @click="handleEnter"
-        @keydown.enter="handleEnter"
+  <AppleCardCarousel>
+    <AppleCarouselItem
+      v-for="(card, index) in data"
+      :key="index"
+      :index="index"
+    >
+      <AppleCard
+        :card="card"
+        :index="index"
+        :layout="true"
       >
-        <NuxtLinkLocale
-          aria-label="My Projects"
-          tabindex="-1"
-          to="/about"
+        <div
+          :key="`dummy-content${index}`"
+          class="dark:bg-neutral-800 mb-4 rounded-3xl bg-[#F5F5F7] p-8 md:p-14"
         >
-          {{ t('projects') }}
-        </NuxtLinkLocale>
-        <Icon class="color-black" name="uil:github" />
-      </button>
-    </div>
-  </div>
+          <p
+            class="text-neutral-600 dark:text-neutral-400 mx-auto max-w-3xl text-base font-sans md:text-2xl"
+          >
+            <span class="text-neutral-700 dark:text-neutral-200 font-bold">
+              The first rule of Apple club is that you boast about Apple club.
+            </span>
+            Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to
+            convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to
+            capture every thought.
+          </p>
+          <img
+            src="https://assets.aceternity.com/macbook.png"
+            alt="Macbook mockup from Aceternity UI"
+            height="500"
+            width="500"
+            class="mx-auto size-full object-contain md:size-1/2"
+          >
+        </div>
+      </AppleCard>
+    </AppleCarouselItem>
+  </AppleCardCarousel>
 </template>
-
-<i18n lang="yaml">
-de:
-  hello: "Hallo Welt!"
-  projects: "Meine Projekte"
-en:
-  hello: "Hello world!"
-  projects: "My Projects"
-fr:
-  hello: "Bonjour le monde!"
-  projects: "Mes projets"
-ja:
-  hello: "こんにちは世界！"
-  projects: "私のプロジェクト"
-zh:
-  hello: "你好，世界！"
-  projects: "我的项目"
-pt:
-  hello: "Olá mundo!"
-  projects: "Meus Projetos"
-es:
-  hello: "¡Hola mundo!"
-  projects: "Mis Proyectos"
-pl:
-  hello: "Witaj świecie!"
-  projects: "Moje Projekty"
-da:
-  hello: "Hej verden!"
-  projects: "Mine Projekter"
-cs:
-  hello: "Ahoj světe!"
-  projects: "Moje Projekty"
-nl:
-  hello: "Hallo wereld!"
-  projects: "Mijn Projecten"
-el:
-  hello: "Γειά σου κόσμε!"
-  projects: "Τα έργα μου"
-tr:
-  hello: "Merhaba dünya!"
-  projects: "Projelerim"
-ko:
-  hello: "안녕하세요, 세계!"
-  projects: "내 프로젝트"
-uk:
-  hello: "Привіт, світ!"
-  projects: "Мої проекти"
-ar:
-  hello: "مرحبا بالعالم!"
-  projects: "مشاريعي"
-</i18n>
