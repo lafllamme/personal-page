@@ -1,4 +1,7 @@
 <script lang="ts" setup>
+import AppleCard from '@/components/ui/Card/AppleCard/AppleCard.vue'
+import AppleCardCarousel from '@/components/ui/Card/AppleCard/AppleCardCarousel.vue'
+import AppleCarouselItem from '@/components/ui/Card/AppleCard/AppleCarouselItem.vue'
 import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
 import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
@@ -7,6 +10,41 @@ import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScroll
 import SparklesText from '@/components/ui/Text/SparkleText/SparkleText.vue'
 // --- MOCK DATA ---
 
+const data = [
+  {
+    category: 'Artificial Intelligence',
+    title: 'You can do more with AI.',
+    src: 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=3556&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    category: 'Productivity',
+    title: 'Enhance your productivity.',
+    src: 'https://images.unsplash.com/photo-1531554694128-c4c6665f59c2?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    // content: <DummyContent />,
+  },
+  {
+    category: 'Product',
+    title: 'Launching the new Apple Vision Pro.',
+    src: 'https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    // content: <DummyContent />,
+  },
+
+  {
+    category: 'Product',
+    title: 'Maps for your iPhone 15 Pro Max.',
+    src: 'https://images.unsplash.com/photo-1599202860130-f600f4948364?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    category: 'iOS',
+    title: 'Photography just got better.',
+    src: 'https://images.unsplash.com/photo-1602081957921-9137a5d6eaee?q=80&w=2793&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+  {
+    category: 'Hiring',
+    title: 'Hiring for a Staff Software Engineer',
+    src: 'https://images.unsplash.com/photo-1511984804822-e16ba72f5848?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  },
+]
 const featuredArticle = reactive({
   id: 'spotlight',
   title: 'The Future of Web: AI, Serverless, and Beyond',
@@ -41,6 +79,15 @@ const trendingArticles = reactive([
     title: 'Exploring New Tech Paradigms Vol. 3',
     description: 'Infrastructure for the future.',
     date: 'June 6, 2025',
+    image: 'https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    author: 'Dr. Lex Icon',
+    href: '#',
+  },
+  {
+    id: 'trending-4',
+    title: 'Exploring New Tech Paradigms Vol. 4',
+    description: 'Infrastructure for the future.',
+    date: 'June 26, 2025',
     image: 'https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     author: 'Dr. Lex Icon',
     href: '#',
@@ -131,19 +178,48 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         <div class="flex flex-col gap-8 md:grid md:grid-cols-3 md:items-stretch md:gap-8">
           <!-- Featured Article (left, spans 2 cols on desktop) -->
           <div class="h-full w-full md:col-span-2 md:row-span-1">
-            <FeaturedCard
-              :id="featuredArticle.id"
-              :author="featuredArticle.author"
-              :date="featuredArticle.date"
-              :description="featuredArticle.description"
-              :href="featuredArticle.href"
-              :image="featuredArticle.image"
-              :title="featuredArticle.title"
-            />
+            <div class="py-12">
+              <AppleCardCarousel>
+                <AppleCarouselItem
+                  v-for="(card, index) in data"
+                  :key="index"
+                  :index="index"
+                >
+                  <AppleCard
+                    :card="card"
+                    :index="index"
+                    :layout="true"
+                  >
+                    <div
+                      :key="`dummy-content${index}`"
+                      class="dark:bg-neutral-800 mb-4 rounded-3xl bg-[#F5F5F7] p-8 md:p-14"
+                    >
+                      <p
+                        class="text-neutral-600 dark:text-neutral-400 mx-auto max-w-3xl text-base font-sans md:text-2xl"
+                      >
+                        <span class="text-neutral-700 dark:text-neutral-200 font-bold">
+                          The first rule of Apple club is that you boast about Apple club.
+                        </span>
+                        Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to
+                        convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to
+                        capture every thought.
+                      </p>
+                      <img
+                        src="https://assets.aceternity.com/macbook.png"
+                        alt="Macbook mockup from Aceternity UI"
+                        height="500"
+                        width="500"
+                        class="mx-auto size-full object-contain md:size-1/2"
+                      >
+                    </div>
+                  </AppleCard>
+                </AppleCarouselItem>
+              </AppleCardCarousel>
+            </div>
           </div>
 
           <!-- Trending Column (right) -->
-          <div class="h-full w-full flex flex-col justify-end">
+          <div class="h-full w-full flex flex-col justify-center">
             <div>
               <div
                 ref="subheadingRef"
@@ -188,6 +264,15 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           <TextScrollReveal text="Driving digital change with creative energy." />
         </div>
 
+        <FeaturedCard
+          :id="featuredArticle.id"
+          :author="featuredArticle.author"
+          :date="featuredArticle.date"
+          :description="featuredArticle.description"
+          :href="featuredArticle.href"
+          :image="featuredArticle.image"
+          :title="featuredArticle.title"
+        />
         <!-- Below: REGULAR GRID of articles -->
         <div class="grid mb-24 mt-12 gap-8 lg:grid-cols-3 sm:grid-cols-2">
           <!-- Regular Cards -->
