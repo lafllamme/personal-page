@@ -10,7 +10,7 @@ const props = defineProps<Props>()
 
 const itemRef = ref<HTMLDivElement | null>(null)
 const isVisible = ref(false)
-useVisibilityObserver(itemRef, isVisible, 30)
+useVisibilityObserver(itemRef, isVisible, 15)
 </script>
 
 <template>
