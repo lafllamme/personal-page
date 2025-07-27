@@ -187,14 +187,13 @@ function handleClose() {
         {{ card.title }}
       </Motion>
     </div>
-    <!-- Image wrapper to fix hover scale animation -->
-    <div class="absolute inset-0 z-10 overflow-hidden rounded-10">
+    <div class="absolute inset-0 z-10 overflow-hidden rounded-10 transition-transform duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110">
       <AppleBlurImage
         :src="card.src"
         :alt="card.title"
         :card-index="props.index"
         :image-state="getImageState(props.index)"
-        class="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110"
+        class="h-full w-full object-cover"
         :fill="true"
         :on-load="handleImageLoad"
       />
