@@ -177,7 +177,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         <!-- Featured + Trending -->
         <div class="flex flex-col gap-8 md:grid md:grid-cols-3 md:items-stretch md:gap-8">
           <!-- Featured Article (left, spans 2 cols on desktop) -->
-          <div class="h-full w-full md:col-span-2 md:row-span-1">
+          <div class="w-full md:col-span-2">
             <div>
               <AppleCardCarousel>
                 <AppleCarouselItem
@@ -219,8 +219,8 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           </div>
 
           <!-- Trending Column (right) -->
-          <div class="h-full w-full flex flex-col justify-center">
-            <div>
+          <div class="w-full flex flex-col h-full">
+            <div class="flex flex-col h-full">
               <div
                 ref="subheadingRef"
                 :class="useClsx(isSubheadingVisible ? 'animate-fade-in !animate-duration-[2000ms]' : 'opacity-0')"
@@ -240,7 +240,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                   />
                 </h3>
               </div>
-              <div class="flex flex-col gap-4">
+              <div class="flex flex-col gap-4 flex-1 justify-start">
                 <TrendingCard
                   v-for="article in trendingArticles"
                   :id="article.id"
