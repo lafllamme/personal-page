@@ -186,7 +186,13 @@ function handleClose() {
         {{ card.title }}
       </Motion>
     </div>
-    <div class="absolute inset-0 z-10 overflow-hidden rounded-10 transition-transform duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110">
+    <div
+      :class="
+        useClsx(
+          'absolute inset-0 z-10 overflow-hidden rounded-10 transition-transform',
+          'duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110',
+        )"
+    >
       <AppleBlurImage
         :src="card.src"
         :alt="card.title"
