@@ -100,7 +100,7 @@ useVisibilityObserver(buttonRef, isVisible, 100)
     <div
       ref="buttonRef"
       :class="isVisible ? 'animate-fade-in ease-out' : 'opacity-0'"
-      class="absolute right-0 z-50 flex gap-2 -top-5 -translate-y-full"
+      class="absolute right-0 z-20 flex gap-2 -top-5 -translate-y-full"
     >
       <button
         :class="useClsx(
