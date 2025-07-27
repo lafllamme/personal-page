@@ -17,6 +17,11 @@ const carouselRef = ref<HTMLDivElement | null>(null)
 const canScrollLeft = ref(false)
 const canScrollRight = ref(true)
 const currentIndex = ref(0)
+const imagesReady = ref(false)
+const visibleCards = ref<Set<number>>(new Set())
+const loadedImages = ref<Set<number>>(new Set())
+const cardsInGrayPhase = ref<Set<number>>(new Set())
+const newCardsAfterReady = ref<Set<number>>(new Set())
 
 onMounted(() => {
   if (carouselRef.value) {
@@ -68,9 +73,69 @@ function handleCardClose(index: number) {
   }
 }
 
+function onCardVisible(index: number) {
+  visibleCards.value.add(index)
+  console.log(`👁️ Card ${index} visible | Total: ${visibleCards.value.size}`)
+  
+  // Add to gray phase if images are not ready yet
+  if (!imagesReady.value) {
+    cardsInGrayPhase.value.add(index)
+    console.log(`🎭 Card ${index} added to gray phase`)
+  } else {
+    // This is a new card after imagesReady - show images immediately but still participate in unblur
+    newCardsAfterReady.value.add(index)
+    console.log(`🆕 Card ${index} - new card after imagesReady, showing images immediately`)
+  }
+  
+  checkIfReadyToShowImages()
+}
+
+function onImageLoad(index: number) {
+  loadedImages.value.add(index)
+  console.log(`🖼️ Image ${index} loaded | Total: ${loadedImages.value.size}`)
+  checkIfReadyToShowImages()
+}
+
+function checkIfReadyToShowImages() {
+  const visibleArray = Array.from(visibleCards.value)
+  const loadedArray = Array.from(loadedImages.value)
+  const missingCards = visibleArray.filter(cardIndex => !loadedArray.includes(cardIndex))
+  
+  if (visibleArray.length > 0 && missingCards.length === 0) {
+    // Calculate delay based on the highest index (last card to animate)
+    const maxIndex = Math.max(...visibleArray)
+    const maxDelay = 0.1 * maxIndex
+    const totalAnimationTime = 600 + (maxDelay * 1000)
+    
+    console.log(`⏱️ All ${visibleArray.length} visible cards loaded | Max index: ${maxIndex} | Waiting ${totalAnimationTime}ms`)
+    
+    // Use VueUse's useTimeoutFn for better timer management
+    const { start } = useTimeoutFn(() => {
+      console.log('✨ Swipe animations finished - switching to images')
+      imagesReady.value = true
+      // Clear new cards set since imagesReady is now true
+      newCardsAfterReady.value.clear()
+    }, totalAnimationTime)
+    
+    start()
+  } else if (missingCards.length > 0) {
+    console.log(`⏳ Waiting for cards: ${missingCards.join(', ')}`)
+  }
+}
+
+// Debug: log when imagesReady changes
+watch(imagesReady, (ready) => {
+  console.log('imagesReady changed to:', ready)
+})
+
 provide(CarouselKey, {
   onCardClose: handleCardClose,
   currentIndex,
+  imagesReady,
+  onImageLoad,
+  onCardVisible,
+  cardsInGrayPhase,
+  newCardsAfterReady,
 })
 </script>
 
