@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { onClickOutside } from '@vueuse/core'
 import { AnimatePresence, Motion } from 'motion-v'
-import { inject, onMounted, onUnmounted, ref, watch } from 'vue'
 import AppleBlurImage from '@/components/ui/Card/AppleCard/AppleBlurImage.vue'
-import { CarouselKey } from './AppleCarouselContext'
 import { useVisibilityObserver } from '@/composables/useVisibilityObserver'
+import { CarouselKey } from './AppleCarouselContext'
 
 interface Card {
   src: string
@@ -31,14 +29,24 @@ if (!carouselContext) {
   throw new Error('Card must be used within a Carousel')
 }
 
-const { onCardClose, currentIndex } = carouselContext
+const { onCardClose, imagesReady, onImageLoad, onCardVisible, cardsInGrayPhase, newCardsAfterReady } = carouselContext
 
 // Intersection observer for card visibility
-const isVisible = ref(false)
-useVisibilityObserver(cardRef, isVisible, 30)
+const hasBeenVisible = ref(false)
+useVisibilityObserver(cardRef, hasBeenVisible, 30)
 
-// Provide card index for staggered blur animation
-provide('cardIndex', props.index)
+// Watch for visibility changes
+watch(hasBeenVisible, (visible) => {
+  if (visible) {
+    onCardVisible(props.index)
+  }
+})
+
+// Track when this card's image loads
+function handleImageLoad() {
+  console.log(`🖼️ [Card ${props.index}] Image loaded`)
+  onImageLoad(props.index)
+}
 
 function handleKeyDown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
@@ -46,13 +54,7 @@ function handleKeyDown(event: KeyboardEvent) {
   }
 }
 
-onMounted(() => {
-  window.addEventListener('keydown', handleKeyDown)
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeyDown)
-})
+useEventListener(window, 'keydown', handleKeyDown)
 
 watch(open, (newVal) => {
   if (newVal) {
@@ -133,17 +135,17 @@ function handleClose() {
     ref="cardRef"
     :layout-id="layout ? `card-${card.title}` : undefined"
     :initial="{ opacity: 0, y: 50, scale: 0.95 }"
-    :animate="{ 
-      opacity: isVisible ? 1 : 0, 
-      y: isVisible ? 0 : 50, 
-      scale: isVisible ? 1 : 0.95 
+    :animate="{
+      opacity: hasBeenVisible ? 1 : 0,
+      y: hasBeenVisible ? 0 : 50,
+      scale: hasBeenVisible ? 1 : 0.95,
     }"
-    :transition="{ 
-      duration: 0.6, 
-      delay: isVisible ? index * 0.1 : 0,
-      ease: [0.25, 0.46, 0.45, 0.94] 
+    :transition="{
+      duration: 0.6,
+      delay: hasBeenVisible ? index * 0.1 : 0,
+      ease: [0.25, 0.46, 0.45, 0.94],
     }"
-    class="relative z-10 h-80 w-56 flex flex-col items-start justify-start overflow-hidden rounded-3xl bg-gray-11 md:h-[40rem] md:w-96 cursor-pointer transform-gpu"
+    class="relative z-10 h-80 w-56 flex flex-col transform-gpu cursor-pointer items-start justify-start overflow-hidden rounded-3xl bg-gray-11 md:h-[40rem] md:w-96"
     @click="handleOpen"
   >
     <div
@@ -166,8 +168,13 @@ function handleClose() {
     <AppleBlurImage
       :src="card.src"
       :alt="card.title"
+      :images-ready="imagesReady"
+      :card-index="props.index"
+      :cards-in-gray-phase="cardsInGrayPhase"
+      :new-cards-after-ready="newCardsAfterReady"
       class="absolute inset-0 z-10 object-cover"
       :fill="true"
+      :on-load="handleImageLoad"
     />
   </Motion>
 </template>
