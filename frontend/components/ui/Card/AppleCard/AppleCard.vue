@@ -142,10 +142,10 @@ function handleClose() {
   <Motion
     ref="cardRef"
     :layout-id="layout ? `card-${card.title}` : undefined"
-    :initial="{ opacity: 0, y: 240, scale: 0.95 }"
+    :initial="{ opacity: 0, y: 100, scale: 0.95 }"
     :animate="{
       opacity: hasBeenVisible ? 1 : 0,
-      y: hasBeenVisible ? 0 : 120,
+      y: hasBeenVisible ? 0 : 100,
       scale: hasBeenVisible ? 1 : 0.95,
     }"
     :transition="{
@@ -187,14 +187,17 @@ function handleClose() {
         {{ card.title }}
       </Motion>
     </div>
-    <AppleBlurImage
-      :src="card.src"
-      :alt="card.title"
-      :card-index="props.index"
-      :image-state="getImageState(props.index)"
-      class="absolute inset-0 z-10 object-cover transition-transform duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110"
-      :fill="true"
-      :on-load="handleImageLoad"
-    />
+    <!-- Image wrapper to fix hover scale animation -->
+    <div class="absolute inset-0 z-10 overflow-hidden rounded-10">
+      <AppleBlurImage
+        :src="card.src"
+        :alt="card.title"
+        :card-index="props.index"
+        :image-state="getImageState(props.index)"
+        class="h-full w-full object-cover transition-transform duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110"
+        :fill="true"
+        :on-load="handleImageLoad"
+      />
+    </div>
   </Motion>
 </template>
