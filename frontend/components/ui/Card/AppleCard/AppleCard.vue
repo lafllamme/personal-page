@@ -142,7 +142,7 @@ function handleClose() {
   <Motion
     ref="cardRef"
     :layout-id="layout ? `card-${card.title}` : undefined"
-    :initial="{ opacity: 0, y: 120, scale: 0.95 }"
+    :initial="{ opacity: 0, y: 240, scale: 0.95 }"
     :animate="{
       opacity: hasBeenVisible ? 1 : 0,
       y: hasBeenVisible ? 0 : 120,

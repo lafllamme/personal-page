@@ -26,6 +26,11 @@ export function createCarouselContext() {
   // Track initial cards separately
   const initialCards = ref<Set<number>>(new Set())
 
+  // Debug watch
+  watch(imagesReady, (newVal) => {
+    console.log('🔄 imagesReady changed to:', newVal)
+  })
+
   // Single computed for all image states
   const getImageState = computed(() => (index: number) => {
     const isInitial = !initialAnimationComplete.value
@@ -34,9 +39,21 @@ export function createCarouselContext() {
     const isReadyToUnblur = newCardsUnblurReady.value.has(index)
     const wasInitialCard = initialCards.value.has(index)
 
+    // Simplified logic
+    let shouldShow = true // Always show images
+    let shouldBlur = true // Default to blurred
+
+    if (isInGrayPhase) {
+      shouldBlur = true
+    } else if (isNewCard && !isReadyToUnblur) {
+      shouldBlur = true
+    } else if (imagesReady.value) {
+      shouldBlur = false // All cards unblur when images are ready
+    }
+
     const state = {
-      show: isInGrayPhase || isNewCard || isReadyToUnblur || (isInitial && imagesReady.value) || (wasInitialCard && imagesReady.value),
-      blur: (isInGrayPhase || (isNewCard && !isReadyToUnblur)),
+      show: shouldShow,
+      blur: shouldBlur,
     }
 
     console.log(`🎨 [Card ${index}] State:`, {
@@ -47,7 +64,8 @@ export function createCarouselContext() {
       wasInitialCard,
       imagesReady: imagesReady.value,
       initialAnimationComplete: initialAnimationComplete.value,
-      state,
+      shouldShow,
+      shouldBlur,
     })
 
     return state
@@ -78,7 +96,12 @@ export function createCarouselContext() {
       const { start } = useTimeoutFn(() => {
         console.log('✨ Setting imagesReady to true')
         imagesReady.value = true
-        initialAnimationComplete.value = true
+        
+        // Wait a bit more before marking initial animation complete
+        const { start: completeStart } = useTimeoutFn(() => {
+          initialAnimationComplete.value = true
+        }, 1000)
+        completeStart()
       }, totalAnimationTime)
 
       start()
