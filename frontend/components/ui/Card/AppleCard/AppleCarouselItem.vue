@@ -41,8 +41,8 @@ watch(isVisible, (visible) => {
       y: isVisible ? 0 : 160,
     }"
     :transition="{
-      duration: 0.8,
-      delay: 0.2 * props.index,
+      duration: 0.5,
+      delay: 0.05 * props.index,
       ease: [0.25, 0.46, 0.45, 0.94],
     }"
     class="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
