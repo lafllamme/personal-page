@@ -29,7 +29,7 @@ if (!carouselContext) {
   throw new Error('Card must be used within a Carousel')
 }
 
-const { onCardClose, onImageLoad, onCardVisible, getImageState } = carouselContext
+const { onCardClose, onImageLoad, onCardVisible, getImageState, setHoveredIndex } = carouselContext
 
 // Intersection observer for card visibility
 const hasBeenVisible = ref(false)
@@ -73,6 +73,14 @@ function handleOpen() {
 function handleClose() {
   open.value = false
   onCardClose(props.index)
+}
+
+function handleMouseEnter() {
+  setHoveredIndex(props.index)
+}
+
+function handleMouseLeave() {
+  setHoveredIndex(null)
 }
 </script>
 
@@ -156,6 +164,8 @@ function handleClose() {
       'relative z-10  group h-80 w-56 flex flex-col transform-gpu cursor-pointer',
       'items-start justify-start overflow-hidden rounded-10 bg-gray-6 md:h-[40rem] md:w-96')"
     @click="handleOpen"
+    @mouseenter="handleMouseEnter"
+    @mouseleave="handleMouseLeave"
   >
     <!--  Card Content  -->
     <div

@@ -8,7 +8,7 @@ interface Props {
   fill?: boolean
   onLoad?: () => void
   cardIndex?: number
-  imageState?: { show: boolean, blur: boolean }
+  imageState?: { show: boolean, blur: boolean, grayscale: boolean }
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -48,17 +48,16 @@ function handleLoad() {
     ref="imgRef"
     :class="
       useClsx(
-        'transition-opacity duration-500 ease-out',
+        'transition-all duration-300 ease-out',
         props.imageState?.show ? 'opacity-100' : 'opacity-0',
         props.imageState?.blur ? 'blur-sm' : 'blur-0',
+        props.imageState?.grayscale ? 'grayscale-25' : 'grayscale-0',
         props.class,
         fill ? 'h-full w-full' : '',
       )
     "
     :style="{
-      filter: props.imageState?.blur ? 'blur(16px)' : 'blur(0px)',
-      transition: `filter 1.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease-out`,
-      transitionDelay: props.cardIndex !== undefined ? `${props.cardIndex * 200}ms` : '0ms',
+      transitionDelay: props.cardIndex !== undefined ? `${props.cardIndex * 100}ms` : '0ms',
     }"
     :src="src"
     :width="width"

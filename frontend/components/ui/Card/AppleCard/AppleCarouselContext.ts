@@ -9,7 +9,10 @@ export interface CarouselContextType {
   onCardVisible: (index: number) => void
   checkIfReadyToShowImages: () => void
   // Computed properties for image states
-  getImageState: (index: number) => { show: boolean, blur: boolean }
+  getImageState: (index: number) => { show: boolean, blur: boolean, grayscale: boolean }
+  // Hover management
+  setHoveredIndex: (index: number | null) => void
+  hoveredIndex: Ref<number | null>
 }
 
 export const CarouselKey = Symbol() as InjectionKey<CarouselContextType>
@@ -22,6 +25,7 @@ export function createCarouselContext() {
   const loadedImages = ref<Set<number>>(new Set())
   const initialAnimationComplete = ref(false)
   const newCardsUnblurReady = ref<Set<number>>(new Set())
+  const hoveredIndex = ref<number | null>(null)
 
   // Track initial cards separately
   const initialCards = ref<Set<number>>(new Set())
@@ -37,6 +41,7 @@ export function createCarouselContext() {
     // Simplified logic
     let shouldShow = true // Always show images
     let shouldBlur = true // Default to blurred
+    let shouldGrayscale = false // Default to no grayscale
 
     if (isInGrayPhase) {
       shouldBlur = true
@@ -48,9 +53,15 @@ export function createCarouselContext() {
       shouldBlur = false // New cards unblur only when their timeout is ready
     }
 
+    // Grayscale logic: apply grayscale to all cards except the hovered one
+    if (hoveredIndex.value !== null && hoveredIndex.value !== index) {
+      shouldGrayscale = true
+    }
+
     const state = {
       show: shouldShow,
       blur: shouldBlur,
+      grayscale: shouldGrayscale,
     }
 
     return state
@@ -83,6 +94,10 @@ export function createCarouselContext() {
     }
   }
 
+  const setHoveredIndex = (index: number | null) => {
+    hoveredIndex.value = index
+  }
+
   return {
     currentIndex,
     onImageLoad: (index: number) => {
@@ -111,5 +126,7 @@ export function createCarouselContext() {
     },
     checkIfReadyToShowImages,
     getImageState: getImageState.value,
+    setHoveredIndex,
+    hoveredIndex,
   }
 }
