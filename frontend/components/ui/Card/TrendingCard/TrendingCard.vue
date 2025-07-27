@@ -31,7 +31,7 @@ useVisibilityObserver(trendingRef, isVisible)
       title="Essential"
       variant="secondary"
     />
-    <h4 class="mb-1 text-base font-semibold">
+    <h4 class="mb-1 text-base font-semibold lg:text-base md:text-xs">
       {{ title }}
     </h4>
     <div class="mt-2 text-xs text-gray-10 group-hover:hidden">
