@@ -9,7 +9,7 @@ export function useImageUrl() {
       consola.debug('[useImageUrl] No URL provided')
       return ''
     }
-    
+
     // If it's already a full URL, return as is
     if (url.startsWith('http')) {
       consola.debug('[useImageUrl] Full URL detected:', url)
@@ -18,7 +18,7 @@ export function useImageUrl() {
 
     // Handle relative URLs from Payload CMS
     let finalUrl = url
-    
+
     // If it starts with /api/media/file/, it's a Payload media URL
     if (url.startsWith('/api/media/file/')) {
       finalUrl = `${apiBase}${url}`
@@ -40,5 +40,33 @@ export function useImageUrl() {
     return finalUrl
   }
 
-  return { getImageUrl }
+  /**
+   * Extract the URL from a Payload media object
+   * @param image - The media object from Payload
+   * @returns The image URL or null if not available
+   */
+  const getImageUrlFromObject = (image: any): string | null => {
+    if (!image)
+      return null
+
+    // Handle different Payload media formats
+    if (typeof image === 'string') {
+      return getImageUrl(image)
+    }
+
+    if (image.url) {
+      return getImageUrl(image.url)
+    }
+
+    if (image.filename) {
+      return getImageUrl(image.filename)
+    }
+
+    return null
+  }
+
+  return {
+    getImageUrl,
+    getImageUrlFromObject,
+  }
 }
