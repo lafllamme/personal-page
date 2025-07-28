@@ -8,43 +8,140 @@ import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
 import Link from '@/components/ui/Link/Link.vue'
 import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
 import SparklesText from '@/components/ui/Text/SparkleText/SparkleText.vue'
-// --- MOCK DATA ---
 
-const data = [
-  {
-    category: 'Artificial Intelligence',
-    title: 'You can do more with AI.',
-    src: 'https://i.imgur.com/9EOfmtX.jpeg',
-  },
-  {
-    category: 'Productivity',
-    title: 'Enhance your productivity.',
-    src: 'https://i.imgur.com/OdC4wBG.jpeg',
-    // content: <DummyContent />,
-  },
-  {
-    category: 'Product',
-    title: 'Launching the new Apple Vision Pro.',
-    src: 'https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    // content: <DummyContent />,
-  },
+// Composables
+const { getImageUrlFromObject } = useImageUrl()
 
-  {
-    category: 'Product',
-    title: 'Maps for your iPhone 15 Pro Max.',
-    src: 'https://i.imgur.com/B1BZH7P.jpeg',
-  },
-  {
-    category: 'iOS',
-    title: 'Photography just got better.',
-    src: 'https://i.imgur.com/OxgUcYO.jpeg',
-  },
-  {
-    category: 'Hiring',
-    title: 'Hiring for a Staff Software Engineer',
-    src: 'https://i.imgur.com/UnI4RkM.jpeg',
-  },
-]
+// --- REAL DATA FROM PAYLOAD ---
+interface GalleryPost {
+  category: string
+  title: string
+  src: string
+  slug: string
+}
+
+// Composables
+const { getGalleryPosts } = usePayloadAPI()
+
+// Reactive state
+const galleryPosts = ref<GalleryPost[]>([])
+const loading = ref(true)
+const error = ref<string | null>(null)
+
+// Fetch gallery posts
+async function fetchGalleryPosts() {
+  try {
+    loading.value = true
+    error.value = null
+
+    const result = await getGalleryPosts({
+      limit: 6, // Limit to 6 posts for the gallery
+      depth: 2, // Include featuredImage and categories
+    })
+
+    if (result && result.docs.length > 0) {
+      galleryPosts.value = result.docs.map(post => ({
+        category: post.categories && post.categories.length > 0
+          ? post.categories[0].name
+          : 'Uncategorized',
+        title: post.title,
+        src: getImageUrlFromObject(post.featuredImage) || '',
+        slug: post.slug,
+      }))
+    }
+    else {
+      // Fallback to mock data if no posts found
+      galleryPosts.value = [
+        {
+          category: 'Artificial Intelligence',
+          title: 'You can do more with AI.',
+          src: 'https://i.imgur.com/9EOfmtX.jpeg',
+          slug: 'ai-enhancement',
+        },
+        {
+          category: 'Productivity',
+          title: 'Enhance your productivity.',
+          src: 'https://i.imgur.com/OdC4wBG.jpeg',
+          slug: 'productivity-tips',
+        },
+        {
+          category: 'Product',
+          title: 'Launching the new Apple Vision Pro.',
+          src: 'https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+          slug: 'apple-vision-pro',
+        },
+        {
+          category: 'Product',
+          title: 'Maps for your iPhone 15 Pro Max.',
+          src: 'https://i.imgur.com/B1BZH7P.jpeg',
+          slug: 'iphone-15-maps',
+        },
+        {
+          category: 'iOS',
+          title: 'Photography just got better.',
+          src: 'https://i.imgur.com/OxgUcYO.jpeg',
+          slug: 'ios-photography',
+        },
+        {
+          category: 'Hiring',
+          title: 'Hiring for a Staff Software Engineer',
+          src: 'https://i.imgur.com/UnI4RkM.jpeg',
+          slug: 'hiring-engineer',
+        },
+      ]
+    }
+  }
+  catch (err) {
+    error.value = err instanceof Error ? err.message : 'Failed to fetch gallery posts'
+    console.error('Error fetching gallery posts:', err)
+
+    // Fallback to mock data on error
+    galleryPosts.value = [
+      {
+        category: 'Artificial Intelligence',
+        title: 'You can do more with AI.',
+        src: 'https://i.imgur.com/9EOfmtX.jpeg',
+        slug: 'ai-enhancement',
+      },
+      {
+        category: 'Productivity',
+        title: 'Enhance your productivity.',
+        src: 'https://i.imgur.com/OdC4wBG.jpeg',
+        slug: 'productivity-tips',
+      },
+      {
+        category: 'Product',
+        title: 'Launching the new Apple Vision Pro.',
+        src: 'https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+        slug: 'apple-vision-pro',
+      },
+      {
+        category: 'Product',
+        title: 'Maps for your iPhone 15 Pro Max.',
+        src: 'https://i.imgur.com/B1BZH7P.jpeg',
+        slug: 'iphone-15-maps',
+      },
+      {
+        category: 'iOS',
+        title: 'Photography just got better.',
+        src: 'https://i.imgur.com/OxgUcYO.jpeg',
+        slug: 'ios-photography',
+      },
+      {
+        category: 'Hiring',
+        title: 'Hiring for a Staff Software Engineer',
+        src: 'https://i.imgur.com/UnI4RkM.jpeg',
+        slug: 'hiring-engineer',
+      },
+    ]
+  }
+  finally {
+    loading.value = false
+  }
+}
+
+// Fetch data on mount
+fetchGalleryPosts()
 const featuredArticle = reactive({
   id: 'spotlight',
   title: 'The Future of Web: AI, Serverless, and Beyond',
@@ -181,7 +278,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             <div>
               <AppleCardCarousel>
                 <AppleCarouselItem
-                  v-for="(card, index) in data"
+                  v-for="(card, index) in galleryPosts"
                   :key="index"
                   :index="index"
                 >
@@ -189,6 +286,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                     :card="card"
                     :index="index"
                     :layout="true"
+                    :enable-navigation="true"
                   >
                     <div
                       :key="`dummy-content${index}`"
@@ -219,8 +317,8 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           </div>
 
           <!-- Trending Column (right) -->
-          <div class="w-full flex flex-col h-full">
-            <div class="flex flex-col h-full">
+          <div class="h-full w-full flex flex-col">
+            <div class="h-full flex flex-col">
               <div
                 ref="subheadingRef"
                 :class="useClsx(isSubheadingVisible ? 'animate-fade-in !animate-duration-[2000ms]' : 'opacity-0')"
@@ -240,7 +338,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                   />
                 </h3>
               </div>
-              <div class="flex flex-col gap-4 flex-1 justify-start">
+              <div class="flex flex-1 flex-col justify-start gap-4">
                 <TrendingCard
                   v-for="article in trendingArticles"
                   :id="article.id"
