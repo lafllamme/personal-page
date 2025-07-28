@@ -8,16 +8,19 @@ interface Card {
   src: string
   title: string
   category: string
+  slug?: string
 }
 
 interface Props {
   card: Card
   index: number
   layout?: boolean
+  enableNavigation?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   layout: false,
+  enableNavigation: false,
 })
 
 const open = ref(false)
@@ -67,7 +70,13 @@ watch(open, (newVal) => {
 onClickOutside(containerRef, () => handleClose())
 
 function handleOpen() {
-  open.value = true
+  if (props.enableNavigation && props.card.slug) {
+    // Navigate to the blog post
+    navigateTo(`/blog/${props.card.slug}`)
+  } else {
+    // Open the modal overlay
+    open.value = true
+  }
 }
 
 function handleClose() {
