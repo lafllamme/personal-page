@@ -133,6 +133,21 @@ export function usePayloadAPI() {
       },
     })
 
+  // Helper to get posts for AppleCard gallery
+  const getGalleryPosts = (options: PayloadFindOptions = {}) =>
+    findCollection<PayloadPost>('posts', {
+      ...options,
+      sort: options.sort || '-publishedAt',
+      depth: 2, // Include featuredImage and categories
+      where: {
+        ...options.where,
+        status: 'published',
+        featuredImage: {
+          exists: true,
+        },
+      },
+    })
+
   return {
     findCollection,
     findById,
@@ -144,5 +159,6 @@ export function usePayloadAPI() {
     getPageBySlug,
     getPostBySlug,
     getAllPosts,
+    getGalleryPosts,
   }
 }
