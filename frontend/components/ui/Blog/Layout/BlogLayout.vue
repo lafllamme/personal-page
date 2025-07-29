@@ -46,7 +46,7 @@ async function fetchGalleryPosts() {
           : 'Uncategorized',
         title: post.title,
         src: getImageUrlFromObject(post.featuredImage) || '',
-        slug: post.slug,
+        slug: encodeURIComponent(post.slug),
       }))
     }
     else {
