@@ -47,6 +47,9 @@ const baseConfig = {
     },
   }),
   plugins: [],
+  graphQL: {
+    schemaOutputFile: path.resolve(dirname, '../types/graphql-schema.ts'),
+  },
 }
 
 export default baseConfig 
