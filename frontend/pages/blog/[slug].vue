@@ -1,12 +1,27 @@
 <script setup lang="ts">
+import { useAsyncState, useIntersectionObserver, whenever } from '@vueuse/core'
+import { useRouteParams } from '@vueuse/router'
 import ContentRenderer from '@/components/ui/ContentRenderer/ContentRenderer.vue'
+
+interface TOCItem {
+  id: string
+  text: string
+  level: number
+}
+
+interface LexicalNode {
+  type: string
+  tag?: string
+  children?: LexicalNode[]
+  text?: string
+}
 
 interface PayloadPost {
   id: number
   title: string
   slug: string
   excerpt?: string
-  content: any
+  content: { root: LexicalNode }
   featuredImage?: any
   author: any
   categories?: any[]
@@ -17,156 +32,170 @@ interface PayloadPost {
   updatedAt: string
 }
 
-// Get the slug from the route
-const route = useRoute()
-const slug = ref(decodeURIComponent(route.params.slug as string))
-
-// Composables
 const { getPostBySlug } = usePayloadAPI()
 const { getImageUrlFromObject } = useImageUrl()
 
-// Reactive state
-/*
-const post = ref<PayloadPost | null>(null)
-*/
-/*
-const error = ref<string | null>(null)
-*/
+/* -------------------------------------------------------------------------- */
+/*  Route slug (decoded)                                                       */
+/* -------------------------------------------------------------------------- */
 
-// Define TOC item interface
-interface TOCItem {
-  id: string
-  text: string
-  level: number
-}
-
-// Table of contents state
-const activeId = ref('')
-const tocItems = ref<TOCItem[]>([])
-
-// Archive issues (placeholder)
-const archiveIssues = ref(['Issue 46', 'Issue 45', 'Issue 44', 'Issue 43'])
-
-let observer = null
-
-/**
- * Watches route slug changes and updates content when needed.
- * Runs immediately on component creation.
- * @param {string} newSlug - The new slug from the route.
- * @returns {void}
- */
-
-const debugSlug = useRouteParams('slug', '', {
-  transform: (v: string) => decodeURIComponent(v || ''),
+const slug = useRouteParams('slug', '', {
+  transform: (v: string | undefined) =>
+    v ? decodeURIComponent(v) : '',
 }) as Ref<string>
 
-consola.debug('[XSlug] Name from route:', debugSlug.value)
+/* -------------------------------------------------------------------------- */
+/*  Post loading                                                               */
+/* -------------------------------------------------------------------------- */
 
-const { state: post, isLoading: loading, error, execute: fetchPost } = useAsyncState<PayloadPost | null>(
+const {
+  state: post,
+  isLoading: loading,
+  error,
+  execute: fetchPost,
+} = useAsyncState<PayloadPost | null>(
   () => getPostBySlug(slug.value),
-  {
-    initialState: null,
-    immediate: true,
-    onError: (err) => {
-      error.value = err instanceof Error ? err.message : 'Failed to fetch post'
-      consola.error('❌ Error fetching post:', err)
-    },
-    onSuccess: (result) => {
-      post.value = result
-      consola.debug('✅ Post fetched successfully:', result)
-      generateTOC()
-    },
-  },
+  null,
+  { immediate: false },
 )
 
-function generateTOC() {
-  if (!post.value?.content)
-    return
+whenever(slug, fetchPost, { immediate: true })
 
-  // This is a simplified TOC generation
-  // In a real implementation, you'd parse the rich text content for headings
-  tocItems.value = [
-    { id: 'introduction', text: 'Introduction', level: 1 },
-    { id: 'main-content', text: 'Main Content', level: 2 },
-    { id: 'conclusion', text: 'Conclusion', level: 1 },
-  ]
+/* -------------------------------------------------------------------------- */
+/*  Table of contents                                                          */
+/* -------------------------------------------------------------------------- */
+
+const tocItems = ref<TOCItem[]>([])
+const activeId = ref('')
+
+/** slug‑ify a heading text → id */
+function slugify(text: string) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 64) // keep it short
 }
 
-whenever(slug, () => fetchPost(), {
-  immediate: true,
-})
-
-// Intersection observer for TOC
-onMounted(() => {
-  // Set up intersection observer for headings
-  nextTick(() => {
-    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6')
-
-    observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            activeId.value = entry.target.id
-          }
-        })
-      },
-      { rootMargin: '-20% 0% -35% 0%' },
-    )
-
-    headings.forEach(heading => observer.observe(heading))
-  })
-})
-
-onUnmounted(() => {
-  if (observer) {
-    observer.disconnect()
+/** Extract headings from Lexical JSON */
+function extractHeadings(node: LexicalNode, list: TOCItem[] = []) {
+  if (node.type === 'heading' && node.tag?.match(/^h[1-6]$/)) {
+    const textNode = node.children?.find(c => c.text) as LexicalNode | undefined
+    if (textNode?.text) {
+      list.push({
+        id: slugify(textNode.text),
+        text: textNode.text,
+        level: Number(node.tag[1]),
+      })
+    }
   }
-})
+  node.children?.forEach(child => extractHeadings(child, list))
+  return list
+}
 
-// SEO
+/** Build TOC + inject ids into real DOM */
+async function buildTOC() {
+  if (!post.value?.content?.root)
+    return
+  // 1. Build the list from JSON
+  tocItems.value = extractHeadings(post.value.content.root)
+
+  await nextTick() // wait for ContentRenderer to finish
+
+  // 2. Inject ids so the links work
+  tocItems.value.forEach((item) => {
+    const el = document.querySelector(
+      `h1, h2, h3, h4, h5, h6`,
+    ) as HTMLElement | null
+    // find the first heading whose innerText matches (cheap match)
+    const target = Array.from(document.querySelectorAll<HTMLElement>(
+      'h1, h2, h3, h4, h5, h6',
+    )).find(h => h.innerText.trim() === item.text.trim())
+    if (target)
+      target.id = item.id
+  })
+
+  // 3. Track the active heading
+  trackHeadings()
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Active‑heading observer (VueUse)                                           */
+/* -------------------------------------------------------------------------- */
+
+function trackHeadings() {
+  const headings = Array.from(
+    document.querySelectorAll<HTMLElement>('h1, h2, h3, h4, h5, h6'),
+  )
+
+  headings.forEach((h) => {
+    useIntersectionObserver(
+      h,
+      ([e]) => {
+        if (e.isIntersecting)
+          activeId.value = h.id
+      },
+      { rootMargin: '-25% 0% -60% 0%' },
+    )
+  })
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Rebuild TOC every time the post changes                                    */
+/* -------------------------------------------------------------------------- */
+
+watch(
+  () => post.value?.content,
+  () => buildTOC(),
+  { flush: 'post' },
+)
+
+/* -------------------------------------------------------------------------- */
+/*  SEO                                                                        */
+/* -------------------------------------------------------------------------- */
+
 useHead(() => ({
-  title: post.value ? `${post.value.title} - Blog` : 'Blog Post',
+  title: post.value ? `${post.value.title} – Blog` : 'Blog Post',
   meta: [
     {
       name: 'description',
-      content: post.value?.excerpt || 'Blog post from our enhanced CMS',
+      content: post.value?.excerpt || 'Blog post',
     },
   ],
 }))
 
-// Format date helper
-function formatDate(dateString: string) {
-  return new Date(dateString).toLocaleDateString('en-US', {
+/* -------------------------------------------------------------------------- */
+/*  Small helpers                                                              */
+/* -------------------------------------------------------------------------- */
+
+function formatDate(date: string) {
+  return new Date(date).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
   })
 }
 
-// Get author name
 function getAuthorName(author: any) {
-  if (!author)
-    return 'Unknown Author'
-  return author.name || author.email || 'Unknown Author'
+  return author?.name || author?.email || 'Unknown Author'
 }
 
-// Get category name
 function getCategoryName(categories: any[]) {
-  if (!categories || categories.length === 0)
-    return 'Uncategorized'
-  return categories[0].name || 'Uncategorized'
+  return categories?.[0]?.name || 'Uncategorized'
 }
 
-// Calculate reading time (rough estimate)
-function getReadingTime(content: any) {
+function getReadingTime(content: unknown) {
   if (!content)
     return '5 minute read'
-
-  // This is a very rough estimate
-  const wordCount = JSON.stringify(content).split(' ').length
-  const readingTime = Math.ceil(wordCount / 200) // 200 words per minute
-  return `${readingTime} minute read`
+  const words = JSON.stringify(content).split(/\s+/).length
+  return `${Math.ceil(words / 200)} minute read`
 }
+
+/* -------------------------------------------------------------------------- */
+/*  Misc demo data                                                             */
+/* -------------------------------------------------------------------------- */
+
+const archiveIssues = ref(['Issue 46', 'Issue 45', 'Issue 44', 'Issue 43'])
 </script>
 
 <template>
