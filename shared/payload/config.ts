@@ -53,6 +53,9 @@ export const payloadConfig = buildConfig({
   plugins: [
     // Plugins can be added here
   ],
+  graphQL: {
+    schemaOutputFile: path.resolve(dirname, '../types/graphql-schema.ts'),
+  },
 })
 
 export default payloadConfig 
