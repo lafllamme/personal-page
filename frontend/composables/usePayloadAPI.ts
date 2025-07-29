@@ -93,8 +93,7 @@ export function usePayloadAPI() {
     try {
       // Use Nuxt's local API routes
       const url = `/api/cms/${collection}/slug/${slug}?depth=${depth}`
-      const data = await $fetch<T>(url)
-      return data
+      return await $fetch<T>(url)
     }
     catch (error) {
       console.error(`Error fetching ${collection} by slug ${slug}:`, error)
