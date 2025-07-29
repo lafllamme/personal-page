@@ -104,13 +104,10 @@ async function buildTOC() {
 
   // 2. Inject ids so the links work
   tocItems.value.forEach((item) => {
-    const el = document.querySelector(
-      `h1, h2, h3, h4, h5, h6`,
-    ) as HTMLElement | null
     // find the first heading whose innerText matches (cheap match)
     const target = Array.from(document.querySelectorAll<HTMLElement>(
       'h1, h2, h3, h4, h5, h6',
-    )).find(h => h.innerText.trim() === item.text.trim())
+    )).find(h => h.textContent.trim() === item.text.trim())
     if (target)
       target.id = item.id
   })
