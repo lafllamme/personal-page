@@ -45,7 +45,7 @@ watch(isVisible, (visible) => {
       delay: 0.05 * props.index,
       ease: [0.25, 0.46, 0.45, 0.94],
     }"
-    class="rounded-3xl last:pr-[5%] md:last:pr-[33%]"
+    class="rounded-3xl last:pr-[5%] md:last:pr-[24%]"
   >
     <slot />
   </Motion>
