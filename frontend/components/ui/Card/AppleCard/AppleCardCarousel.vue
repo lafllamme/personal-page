@@ -36,9 +36,10 @@ whenever(
 
 function checkScrollability() {
   if (carouselRef.value) {
+    const PIXEL_OFFSET = 32
     const { scrollLeft, scrollWidth, clientWidth } = carouselRef.value
     canScrollLeft.value = scrollLeft > 0
-    canScrollRight.value = scrollLeft < scrollWidth - clientWidth
+    canScrollRight.value = scrollLeft + PIXEL_OFFSET < scrollWidth - clientWidth
   }
 }
 
