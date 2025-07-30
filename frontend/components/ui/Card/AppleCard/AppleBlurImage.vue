@@ -35,6 +35,13 @@ whenever(
   },
   { immediate: true },
 )
+
+function handleLoad() {
+  const { start } = useTimeoutFn(() => {
+    props.onLoad?.()
+  }, 100)
+  start()
+}
 </script>
 
 <template>
@@ -59,5 +66,6 @@ whenever(
     loading="lazy"
     decoding="async"
     :alt="alt"
+    @load="handleLoad"
   >
 </template>

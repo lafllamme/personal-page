@@ -10,6 +10,8 @@ const props = withDefaults(defineProps<Props>(), {
   initialScroll: 0,
 })
 
+const { initialScroll } = toRefs(props)
+
 const isMobile = computed(() => {
   return window && window.innerWidth < 768
 })
@@ -18,25 +20,18 @@ const carouselRef = ref<HTMLDivElement | null>(null)
 const canScrollLeft = ref(false)
 const canScrollRight = ref(true)
 
-// Use the smart context
 const context = createCarouselContext()
 const { currentIndex, onImageLoad, onCardVisible, getImageState, checkIfReadyToShowImages, setHoveredIndex, hoveredIndex } = context
 
-onMounted(() => {
-  if (carouselRef.value) {
-    carouselRef.value.scrollLeft = props.initialScroll
-    checkScrollability()
-  }
-})
-
-watch(
-  () => props.initialScroll,
+whenever(
+  () => initialScroll.value,
   (newVal) => {
     if (carouselRef.value) {
       carouselRef.value.scrollLeft = newVal
       checkScrollability()
     }
   },
+  { immediate: true },
 )
 
 function checkScrollability() {
@@ -73,9 +68,7 @@ function handleCardClose(index: number) {
   if (carouselRef.value) {
     const cardWidth = isMobile.value ? 230 : 384 // (md:w-96)
     const gap = isMobile.value ? 4 : 8
-    const scrollPosition = (cardWidth + gap) * (index + 1)
-
-    carouselRef.value.scrollLeft = scrollPosition
+    carouselRef.value.scrollLeft = (cardWidth + gap) * (index + 1)
     currentIndex.value = index
     checkScrollability()
   }
@@ -92,7 +85,7 @@ provide(CarouselKey, {
   hoveredIndex,
 })
 const isVisible = ref(false)
-const buttonRef = templateRef('buttonRef')
+const buttonRef = useTemplateRef('buttonRef')
 useVisibilityObserver(buttonRef, isVisible, 100)
 </script>
 
