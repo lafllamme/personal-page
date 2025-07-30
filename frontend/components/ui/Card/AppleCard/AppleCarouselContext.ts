@@ -39,17 +39,20 @@ export function createCarouselContext() {
     const wasInitialCard = initialCards.value.has(index)
 
     // Simplified logic
-    let shouldShow = true // Always show images
+    const shouldShow = true // Always show images
     let shouldBlur = true // Default to blurred
     let shouldGrayscale = false // Default to no grayscale
 
     if (isInGrayPhase) {
       shouldBlur = true
-    } else if (isNewCard && !isReadyToUnblur) {
+    }
+    else if (isNewCard && !isReadyToUnblur) {
       shouldBlur = true
-    } else if (wasInitialCard && imagesReady.value) {
+    }
+    else if (wasInitialCard && imagesReady.value) {
       shouldBlur = false // Only initial cards unblur when images are ready
-    } else if (isNewCard && isReadyToUnblur) {
+    }
+    else if (isNewCard && isReadyToUnblur) {
       shouldBlur = false // New cards unblur only when their timeout is ready
     }
 
@@ -58,13 +61,11 @@ export function createCarouselContext() {
       shouldGrayscale = true
     }
 
-    const state = {
+    return {
       show: shouldShow,
       blur: shouldBlur,
       grayscale: shouldGrayscale,
     }
-
-    return state
   })
 
   const checkIfReadyToShowImages = () => {
@@ -82,7 +83,7 @@ export function createCarouselContext() {
 
       const { start } = useTimeoutFn(() => {
         imagesReady.value = true
-        
+
         // Wait a bit more before marking initial animation complete
         const { start: completeStart } = useTimeoutFn(() => {
           initialAnimationComplete.value = true
