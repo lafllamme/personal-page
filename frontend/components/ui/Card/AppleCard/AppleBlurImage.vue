@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useTimeoutFn, whenever } from '@vueuse/core'
+
 interface Props {
   height?: number | string
   width?: number | string
@@ -19,28 +21,20 @@ const props = withDefaults(defineProps<Props>(), {
   fill: false,
 })
 
-const imgRef = ref<HTMLImageElement | null>(null)
+const { src, height, width, alt, fill, onLoad } = toRefs(props)
 
-onMounted(() => {
-  // Check if image is already loaded (cached)
-  if (imgRef.value?.complete) {
+const imgRef = useTemplateRef('imgRef')
+
+whenever(
+  () => imgRef.value?.complete,
+  () => {
     const { start } = useTimeoutFn(() => {
-      props.onLoad?.()
+      onLoad.value!()
     }, 100)
     start()
-  }
-})
-
-function handleLoad() {
-  // Debug log
-  console.log(`🖼️ [Card ${props.cardIndex}] Image loaded, state:`, props.imageState)
-
-  // Small delay to ensure the load event is properly processed
-  const { start } = useTimeoutFn(() => {
-    props.onLoad?.()
-  }, 100)
-  start()
-}
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -48,10 +42,10 @@ function handleLoad() {
     ref="imgRef"
     :class="
       useClsx(
-        'transition-all duration-300 ease-out',
+        'transition-all duration-400 ease-out',
         props.imageState?.show ? 'opacity-100' : 'opacity-0',
         props.imageState?.blur ? 'blur-sm' : 'blur-0',
-        props.imageState?.grayscale ? 'grayscale-25' : 'grayscale-0',
+        props.imageState?.grayscale ? 'grayscale-25' : 'grayscale-0 saturate-115',
         props.class,
         fill ? 'h-full w-full' : '',
       )
@@ -65,6 +59,5 @@ function handleLoad() {
     loading="lazy"
     decoding="async"
     :alt="alt"
-    @load="handleLoad"
   >
 </template>
