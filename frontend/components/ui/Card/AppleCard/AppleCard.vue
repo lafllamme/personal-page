@@ -73,7 +73,8 @@ function handleOpen() {
   if (props.enableNavigation && props.card.slug) {
     // Navigate to the blog post
     navigateTo(`/blog/${props.card.slug}`)
-  } else {
+  }
+  else {
     // Open the modal overlay
     open.value = true
   }
