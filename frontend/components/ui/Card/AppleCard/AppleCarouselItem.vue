@@ -34,11 +34,11 @@ watch(isVisible, (visible) => {
     as="div"
     :initial="{
       opacity: 0,
-      y: 160,
+      y: 200,
     }"
     :animate="{
       opacity: isVisible ? 1 : 0,
-      y: isVisible ? 0 : 160,
+      y: isVisible ? 0 : 200,
     }"
     :transition="{
       duration: 0.5,
