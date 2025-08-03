@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   // Base configuration
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
-  
+
   // Explicitly enable SSR for App Runner
   ssr: true,
 
@@ -25,6 +25,10 @@ export default defineNuxtConfig({
     databaseUri: process.env.NUXT_DATABASE_URI,
     payloadSecret: process.env.NUXT_PAYLOAD_SECRET,
     payloadApiKey: process.env.NUXT_PAYLOAD_SECRET,
+    // Alpha Vantage API for stock data
+    api: {
+      alphaVantage: process.env.NUXT_ALPHA_VANTAGE_API_KEY || '',
+    },
     // Newsletter
     email: {
       newsletter: {
@@ -122,6 +126,7 @@ export default defineNuxtConfig({
   ],
 
   // Tres.js settings
+  // @ts-expect-error We know this is a valid Tres.js config
   tres: {
     devtools: true,
     glsl: true,
