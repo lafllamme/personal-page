@@ -14,10 +14,10 @@ const variantClasses = {
     text: 'space-grotesk-regular color-purple-11',
   },
   primary: {
-    root: 'transition-transform duration-200 linear dark:border-teal-11 dark:bg-teal-11 border-teal-9 bg-teal-9 group-hover:scale-105 group-hover:saturate-150',
-    icon: 'color-mint-1 dark:color-pureBlack',
+    root: 'transition-transform duration-200 linear border-mint-9 bg-mint-9 dark:border-mint-4 dark:bg-mint-4 group-hover:scale-105 group-hover:saturate-150',
+    icon: 'color-pureBlack dark:color-mint-12',
     iconName: 'ri:flashlight-line',
-    text: 'space-grotesk-regular  color-mint-1 dark:color-pureBlack',
+    text: 'space-grotesk-regular  color-pureBlack dark:color-mint-12',
   },
   default: {
     root: 'transition-transform duration-200 ease-out border-gray-8 bg-gray-2 group-hover:scale-105 group-hover:saturate-150',
