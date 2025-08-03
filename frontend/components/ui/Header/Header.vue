@@ -1,11 +1,11 @@
 <script lang="ts" setup>
+import { useEventListener, useWindowScroll } from '@vueuse/core'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 // Import external components and utilities
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import Menu from '@/components/ui/Menu/Menu.vue'
 import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
-import { useEventListener, useWindowScroll } from '@vueuse/core'
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 
 // compute to destination for a home link
 const localePath = useLocalePath()
