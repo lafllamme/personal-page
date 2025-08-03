@@ -38,7 +38,7 @@ const borderAnimation = computed(() => isCurrentlyVisible?.value ? 'glow-border'
     ref="glowBorderRef"
     :class="
       useClsx(
-        'relative grid min-h-[60px] w-fit min-w-[300px] place-items-center',
+        'relative grid min-h-[60px] h-full min-w-[300px] place-items-center',
         'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
         classNames,
         borderAnimation,
