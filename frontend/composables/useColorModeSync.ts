@@ -1,3 +1,9 @@
 export function useColorModeSync() {
-  return useState<string>('color-mode')
+  interface ColorMode {
+    forced: boolean
+    preference: string
+    unknown: boolean
+    value: string
+  }
+  return useState<ColorMode>('color-mode')
 }
