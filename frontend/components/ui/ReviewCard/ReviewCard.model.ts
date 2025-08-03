@@ -1,6 +1,6 @@
 export interface ReviewCardProps {
   index: number
-  max: number
+  max?: number
   img: string
   name: string
   username: string
