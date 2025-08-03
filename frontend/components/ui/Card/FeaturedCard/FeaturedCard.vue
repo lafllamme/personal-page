@@ -9,12 +9,12 @@ const props = withDefaults(defineProps<CardProps>(), CardPropsDefaults)
 const { id, title, image, description, date, author, href } = props
 
 const colorMode = useColorModeSync()
-const isDarkMode = computed(() => colorMode.value === 'dark')
+const isDarkMode = computed(() => colorMode.value.preference === 'dark')
 
 const glowBorderColor = computed(() => {
   return isDarkMode.value
-    ? ['#c0fdfb, #07beb8, #7400b8']
-    : ['#2f4550, #07beb8, #7400b8']
+    ? ['#d9d9d9', '#284b63', '#3c6e71']
+    : ['#2f4550', '#07beb8', '#7400b8']
 })
 
 const isVisible = ref(false)
@@ -28,78 +28,92 @@ useVisibilityObserver(featuredRef, isVisible)
     ref="featuredRef"
     :class="useClsx(
       isVisible && 'ethereal-cascade',
-      'relative max-w-lg overflow-hidden rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
+      'relative max-w-lg aspect-[3/4] overflow-hidden',
+      'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
       'opacity-0 shadow-2xl transition-all group bg-transparent',
     )"
   >
+    <!-- Background Cover -->
+    <img
+      :alt="title"
+      :src="image"
+      class="absolute inset-0 z-0 h-full w-full object-cover"
+    >
+    <!-- Gradient-Overlay -->
+    <div
+      :class="useClsx(
+        'dark:from-pureBlack/80 dark:via-pureBlack/30',
+        'from-[#E2E1DEcc] via-[#E2E1DE4d]',
+        'absolute inset-0 z-10 to-transparent bg-gradient-to-t',
+      )"
+    />
+    <!-- GlowBorder for Overlay -->
     <GlowBorder
       :color="glowBorderColor"
-      class="aspect-[3/4] h-full bg-red-9"
+      class="pointer-events-none absolute inset-0 z-20"
+    />
+
+    <!-- Wave Blur Section -->
+    <div
+      class="absolute bottom-0 left-0 right-0 z-40 flex flex-col backdrop-blur-sm"
     >
-      <!-- Background image absolut -->
-      <img
-        :alt="title"
-        :src="image"
-        :class="useClsx(
-          'absolute inset-0 z-0 h-full w-full',
-          'object-cover transition-transform duration-500 group-hover:scale-110',
-        )"
+      <!-- The wave SVG sits at the top of this section -->
+      <svg
+        class="w-full"
+        height="46"
+        viewBox="0 0 400 46"
+        xmlns="http://www.w3.org/2000/svg"
+        preserveAspectRatio="none"
       >
-      <!-- Gradient-Overlay -->
-      <div
-        :class="useClsx(
-          'absolute inset-0 z-10 dark:focus-visible:ring-pureWhite',
-          'dark:from-pureBlack/70 dark:via-pureBlack/30',
-          'from-pureWhite/70 via-pureWhite/30',
-          'to-transparent bg-gradient-to-t',
-        )"
-      />
-      <!-- Overlay-Content -->
-      <div
-        :class="useClsx('relative z-20 h-full flex flex-col justify-end p-6')"
-      >
-        <ArticleBadge
-          align="right"
-          class="absolute -left-2 -top-1/4 -translate-y-full !color-pureBlack dark:!color-pureWhite"
-          radius-type="half"
-          size="large"
-          title="Featured"
-          variant="primary"
+        <path
+          d="M0,30 Q100,0 200,30 Q300,60 400,30 L400,46 L0,46Z"
+          class="fill-pureWhite/30 dark:fill-pureBlack/40"
         />
+      </svg>
+      <!-- The actual blurred, dark, semi-transparent layer -->
+      <div
+        class="relative h-full w-full bg-pureWhite/30 px-6 pb-6 pt-4 dark:bg-pureBlack/40"
+        style="border-radius: 0 0 42px 38px;"
+      >
+        <!-- Card Content INSIDE blur -->
         <h3
           :class="useClsx(
-            'mb-2 text-2xl color-pureBlack',
-            'font-baskerville text-balance drop-shadow dark:color-pureWhite',
+            'font-baskerville mb-2 text-balance text-3xl color-pureBlack',
+            'tracking-tight drop-shadow dark:color-pureWhite',
           )"
         >
           {{ title }}
         </h3>
         <p
           :class="useClsx(
-            'mb-2 text-pretty dark:color-gray-11 color-olive-12',
-            'font-light drop-shadow',
+            'figtree-regular mb-2 text-pretty text-lg color-sand-11',
+            'font-light tracking-wide drop-shadow dark:color-gray-11',
           )"
         >
           {{ description }}
         </p>
-        <div class="mb-2 flex animate-duration-300 text-xs color-gray-12 opacity-0 duration-300 ease-out space-x-4 group-hover:opacity-100">
+        <div
+          :class="useClsx(
+            'mb-2 flex animate-duration-300 text-xs color-gray-12',
+            'opacity-0 duration-300 ease-out space-x-4 group-hover:opacity-100',
+          )"
+        >
           <div class="flex items-center space-x-2">
-            <Icon
-              class="size-4"
-              name="ri:calendar-2-line"
-            />
+            <Icon class="size-4" name="ri:calendar-2-line" />
             <p>{{ date }}</p>
           </div>
           <span>·</span>
           <div class="flex items-center space-x-2">
-            <Icon
-              class="size-4"
-              name="ri:user-3-line"
-            />
+            <Icon class="size-4" name="ri:user-3-line" />
             <p>{{ author }}</p>
           </div>
         </div>
-        <div class="flex animate-duration-300 items-center opacity-0 duration-300 ease-out space-x-1.5 group-hover:opacity-100">
+        <div
+          :class="useClsx(
+            'flex animate-duration-300 items-center opacity-0',
+            'duration-300 ease-out space-x-1.5 group-hover:opacity-100',
+          )"
+        >
           <Link
             :href="href"
             :underline="false"
@@ -109,14 +123,23 @@ useVisibilityObserver(featuredRef, isVisible)
           </Link>
           <Icon
             :class="useClsx(
-              'size-5 color-gray-8 transition-all',
-              'duration-200 group-focus-visible:color-mint-11A',
-              'group-hover:translate-x-1 group-hover:color-mint-11A',
+              'size-5 color-gray-8 transition-all duration-200 group-hover:translate-x-1',
+              'group-focus-visible:color-mint-11A group-hover:color-mint-11A',
             )"
             name="ri:arrow-right-line"
           />
         </div>
       </div>
-    </GlowBorder>
+    </div>
+
+    <!-- BADGE stays above -->
+    <ArticleBadge
+      align="right"
+      class="absolute left-0 top-12 z-50 translate-y-full"
+      radius-type="half"
+      size="large"
+      title="Featured"
+      variant="primary"
+    />
   </div>
 </template>
