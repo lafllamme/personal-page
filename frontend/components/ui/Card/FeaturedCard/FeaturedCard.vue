@@ -9,13 +9,9 @@ import { CardPropsDefaults } from '../Card.model'
 const props = withDefaults(defineProps<CardProps>(), CardPropsDefaults)
 const { id, title, image, description, date, author, href } = props
 
-// TODO: Put color mode in a store, so we don't have to import it in every component
-const colorMode = useColorMode()
-const isDarkMode = computed(() => {
-  if (import.meta.server)
-    return false
-  return colorMode.value === 'dark'
-})
+// Using synchronized color mode for hydration safety
+const colorMode = useColorModeSync()
+const isDarkMode = computed(() => colorMode.value === 'dark')
 
 const glowBorderColor = computed(() => {
   return isDarkMode.value
