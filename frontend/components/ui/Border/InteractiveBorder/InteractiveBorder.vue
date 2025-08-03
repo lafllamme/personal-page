@@ -22,7 +22,7 @@ const lastPosition = ref({
   y: 0,
 })
 const animationFrame = ref(0)
-const colorMode = useColorMode()
+const colorMode = useColorModeSync()
 const isDark = computed(() => colorMode.value === 'dark')
 
 const containerStyles = computed(() => {
