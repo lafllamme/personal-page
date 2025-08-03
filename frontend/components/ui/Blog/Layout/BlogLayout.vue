@@ -148,7 +148,7 @@ const featuredArticle = reactive({
   description: 'A deep dive into the transformative technologies shaping the next generation of web development, from intelligent UIs to hyper-scalable infrastructures.',
   date: 'June 2, 2025',
   author: 'Dr. Lex Icon',
-  image: 'https://images.pexels.com/photos/159045/the-interior-of-the-repair-interior-design-159045.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+  image: 'https://i.imgur.com/7sjlIgq.jpeg',
   href: '#',
 })
 
@@ -362,15 +362,19 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           <TextScrollReveal text="Driving digital change with creative energy." />
         </div>
 
-        <FeaturedCard
-          :id="featuredArticle.id"
-          :author="featuredArticle.author"
-          :date="featuredArticle.date"
-          :description="featuredArticle.description"
-          :href="featuredArticle.href"
-          :image="featuredArticle.image"
-          :title="featuredArticle.title"
-        />
+        <div class="flex">
+          <div>
+            <FeaturedCard
+              :id="featuredArticle.id"
+              :author="featuredArticle.author"
+              :date="featuredArticle.date"
+              :description="featuredArticle.description"
+              :href="featuredArticle.href"
+              :image="featuredArticle.image"
+              :title="featuredArticle.title"
+            />
+          </div>
+        </div>
         <!-- Below: REGULAR GRID of articles -->
         <div class="grid mb-24 mt-12 gap-8 lg:grid-cols-3 sm:grid-cols-2">
           <!-- Regular Cards -->
