@@ -363,7 +363,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         </div>
 
         <div class="flex">
-          <div>
+          <div class="w-full">
             <FeaturedCard
               :id="featuredArticle.id"
               :author="featuredArticle.author"
