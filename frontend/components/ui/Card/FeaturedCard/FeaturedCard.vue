@@ -28,22 +28,34 @@ useVisibilityObserver(featuredRef, isVisible)
     ref="featuredRef"
     :class="useClsx(
       isVisible && 'ethereal-cascade',
-      'relative aspect-[3/4] overflow-hidden',
+      'relative aspect-[3/4]',
       'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
       'opacity-0 shadow-2xl transition-all group bg-transparent',
     )"
   >
-    <!-- Background Cover -->
-    <img
-      :alt="title"
-      :src="image"
-      class="absolute inset-0 z-0 h-full w-full object-cover"
+    <!-- Image Container with overflow hidden -->
+    <div
+      :class="useClsx(
+        'absolute inset-0 overflow-hidden',
+        'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
+      )"
     >
+      <!-- Background Cover -->
+      <img
+        :alt="title"
+        :src="image"
+        :class="useClsx(
+          'absolute inset-0 z-0 h-full w-full object-cover',
+          'transition-transform duration-500 ease-out group-hover:scale-110',
+        )"
+      >
+    </div>
     <!-- Gradient-Overlay -->
     <div
       :class="useClsx(
         'dark:from-pureBlack/80 dark:via-pureBlack/30',
         'from-[#E2E1DEcc] via-[#E2E1DE4d]',
+        'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
         'absolute inset-0 z-10 to-transparent bg-gradient-to-t',
       )"
     />
@@ -55,7 +67,10 @@ useVisibilityObserver(featuredRef, isVisible)
 
     <!-- Wave Blur Section -->
     <div
-      class="absolute bottom-0 left-0 right-0 z-40 flex flex-col backdrop-blur-sm"
+      :class="useClsx(
+        'absolute bottom-0 left-0 right-0 z-40 flex flex-col',
+        'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px] backdrop-blur-sm',
+      )"
     >
       <!-- The wave SVG sits at the top of this section -->
       <svg
