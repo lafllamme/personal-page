@@ -28,7 +28,7 @@ useVisibilityObserver(featuredRef, isVisible)
     ref="featuredRef"
     :class="useClsx(
       isVisible && 'ethereal-cascade',
-      'relative max-w-lg aspect-[3/4] overflow-hidden',
+      'relative aspect-[3/4] overflow-hidden',
       'rounded-bl-[42px] rounded-br-[38px] rounded-tl-[36px] rounded-tr-[40px]',
       'opacity-0 shadow-2xl transition-all group bg-transparent',
     )"
