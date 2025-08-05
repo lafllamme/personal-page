@@ -143,7 +143,7 @@ function getChangeIcon(change: number | null) {
           </div>
 
           <div class="font-manrope text-3xl color-pureBlack font-thin dark:color-pureWhite">
-            {{ stock.price ? `$${stock.price.toFixed(2)}` : 'N/A' }}
+            <span>{{ stock.price ? `$${stock.price.toFixed(2)}` : 'N/A' }}</span>
           </div>
 
           <!-- Change Info -->
