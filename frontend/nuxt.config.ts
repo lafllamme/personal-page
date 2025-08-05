@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     payloadApiKey: process.env.NUXT_PAYLOAD_SECRET,
     // Alpha Vantage API for stock data
     api: {
-      alphaVantage: process.env.NUXT_ALPHA_VANTAGE_API_KEY || '',
+      finnHub: process.env.NUXT_FINNHUB_API_KEY || '',
     },
     // Newsletter
     email: {
