@@ -6,6 +6,7 @@ import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
 import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
 import Link from '@/components/ui/Link/Link.vue'
+import Stocklist from '@/components/ui/Lists/Stocklist/Stocklist.vue'
 import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
 import SparklesText from '@/components/ui/Text/SparkleText/SparkleText.vue'
 
@@ -362,8 +363,8 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           <TextScrollReveal text="Driving digital change with creative energy." />
         </div>
 
-        <div class="flex">
-          <div class="w-full">
+        <div class="grid grid-cols-1 gap-12 md:grid-cols-[3fr_5fr]">
+          <div>
             <FeaturedCard
               :id="featuredArticle.id"
               :author="featuredArticle.author"
@@ -373,6 +374,9 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
               :image="featuredArticle.image"
               :title="featuredArticle.title"
             />
+          </div>
+          <div>
+            <Stocklist />
           </div>
         </div>
         <!-- Below: REGULAR GRID of articles -->
