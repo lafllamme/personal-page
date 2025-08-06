@@ -1,100 +1,31 @@
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue'
-
 interface StockData {
   symbol: string
-  price: number
-  change: number
-  changePercent: number
-  open: number
-  dayRange: { low: number, high: number }
-  name: string
-  industry: string
-  marketCap: number
-  exchange: string
+  price: number | null
+  change: number | null
+  changePercent: number | null
+  fetchedAt: string
+  open: number | null
+  dayRange: { low: number | null, high: number | null }
 }
-
-const stockData: StockData[] = [
-  {
-    symbol: 'MSFT',
-    price: 527.75,
-    change: -7.89,
-    changePercent: -1.473,
-    open: 537.18,
-    dayRange: { low: 527.24, high: 537.3 },
-    name: 'Microsoft Corp',
-    industry: 'Technology',
-    marketCap: 3982393.3950418625,
-    exchange: 'NASDAQ',
-  },
-  {
-    symbol: 'GOOGL',
-    price: 194.67,
-    change: -0.37,
-    changePercent: -0.1897,
-    open: 194.71,
-    dayRange: { low: 193.885, high: 197.8599 },
-    name: 'Alphabet Inc',
-    industry: 'Media',
-    marketCap: 2388865.6778581655,
-    exchange: 'NASDAQ',
-  },
-  {
-    symbol: 'NVDA',
-    price: 178.26,
-    change: -1.74,
-    changePercent: -0.9667,
-    open: 179.62,
-    dayRange: { low: 175.9, high: 180.26 },
-    name: 'NVIDIA Corp',
-    industry: 'Semiconductors',
-    marketCap: 4382118,
-    exchange: 'NASDAQ',
-  },
-  {
-    symbol: 'META',
-    price: 763.46,
-    change: -12.91,
-    changePercent: -1.6629,
-    open: 776.445,
-    dayRange: { low: 763, high: 783.1299 },
-    name: 'Meta Platforms Inc',
-    industry: 'Media',
-    marketCap: 1948453.8643714185,
-    exchange: 'NASDAQ',
-  },
-  {
-    symbol: 'AMZN',
-    price: 213.75,
-    change: 2.1,
-    changePercent: 0.9922,
-    open: 213.05,
-    dayRange: { low: 212.87, high: 216.3 },
-    name: 'Amazon.com Inc',
-    industry: 'Retail',
-    marketCap: 2295728.914460584,
-    exchange: 'NASDAQ',
-  },
-  {
-    symbol: 'AAPL',
-    price: 202.92,
-    change: -0.43,
-    changePercent: -0.2115,
-    open: 203.4,
-    dayRange: { low: 202.16, high: 205.34 },
-    name: 'Apple Inc',
-    industry: 'Technology',
-    marketCap: 3027193.339376485,
-    exchange: 'NASDAQ',
-  },
-]
 
 const currentPair = ref(0)
 const isTransitioning = ref(false)
 let intervalId: number | null = null
 
-const leftStock = computed(() => stockData[currentPair.value])
-const rightStock = computed(() => stockData[(currentPair.value + 1) % stockData.length])
+// Use Nuxt's useAsyncData for automatic loading, error handling, and caching
+const { data: stockData, pending, error, refresh } = useAsyncData<StockData[]>(
+  'stockcard-data',
+  () => $fetch<StockData[]>('/api/stocks/ai'),
+  {
+    server: true, // Fetch on server for SSR
+    lazy: false, // Fetch immediately
+    default: () => [], // Default to empty array
+  }
+)
+
+const leftStock = computed(() => stockData.value?.[currentPair.value] || null)
+const rightStock = computed(() => stockData.value?.[(currentPair.value + 1) % (stockData.value?.length || 0)] || null)
 
 function formatMarketCap(cap: number): string {
   if (cap > 1000000)
@@ -108,13 +39,16 @@ function startInterval() {
   intervalId = window.setInterval(() => {
     isTransitioning.value = true
     setTimeout(() => {
-      currentPair.value = (currentPair.value + 2) % stockData.length
+      if (stockData.value.length > 0) {
+        currentPair.value = (currentPair.value + 2) % stockData.value.length
+      }
       isTransitioning.value = false
     }, 800)
   }, 4500)
 }
 
 onMounted(() => {
+  // Start the rotation interval
   startInterval()
 })
 
@@ -134,9 +68,65 @@ onUnmounted(() => {
       <div class="h-px w-24 bg-gray-12" />
     </div>
 
-    <div class="space-y-6">
+    <!-- Loading State -->
+    <div v-if="pending" class="space-y-6">
+      <div
+        :class="useClsx(
+          'dark:shadow-[0_8px_25px_rgba(255,255,255,0.12),0_3px_10px_rgba(255,255,255,0.08)]',
+          'shadow-[0_8px_25px_rgba(0,0,0,0.12),0_3px_10px_rgba(0,0,0,0.08)]',
+          'rounded-3xl p-8 backdrop-blur-sm bg-sand-1 dark:bg-sand-10',
+        )"
+      >
+        <div class="animate-pulse">
+          <div class="grid grid-cols-12 items-center gap-6">
+            <div class="col-span-3">
+              <div class="mb-2 h-8 bg-gray-200 rounded dark:bg-gray-700" />
+              <div class="h-4 bg-gray-200 rounded dark:bg-gray-700" />
+            </div>
+            <div class="col-span-4">
+              <div class="mb-2 h-8 bg-gray-200 rounded dark:bg-gray-700" />
+              <div class="h-4 bg-gray-200 rounded dark:bg-gray-700" />
+            </div>
+            <div class="col-span-3">
+              <div class="mb-2 h-6 bg-gray-200 rounded dark:bg-gray-700" />
+              <div class="h-4 bg-gray-200 rounded dark:bg-gray-700" />
+            </div>
+            <div class="col-span-2">
+              <div class="mb-1 h-6 bg-gray-200 rounded dark:bg-gray-700" />
+              <div class="h-3 bg-gray-200 rounded dark:bg-gray-700" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div v-else-if="error" class="space-y-6">
+      <div
+        :class="useClsx(
+          'dark:shadow-[0_8px_25px_rgba(255,255,255,0.12),0_3px_10px_rgba(255,255,255,0.08)]',
+          'shadow-[0_8px_25px_rgba(0,0,0,0.12),0_3px_10px_rgba(0,0,0,0.08)]',
+          'rounded-3xl p-8 backdrop-blur-sm bg-sand-1 dark:bg-sand-10',
+        )"
+      >
+        <div class="text-center">
+          <Icon name="ri:error-warning-line" class="mx-auto mb-4 size-12 color-gray-10" />
+          <p class="text-lg color-gray-12 mb-2">{{ error }}</p>
+          <button
+            @click="() => refresh()"
+            class="px-4 py-2 bg-sand-12 color-pureWhite rounded-lg hover:bg-sand-11 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stock Data -->
+    <div v-else-if="stockData.length > 0" class="space-y-6">
       <!-- Top Stock Card - Elegant Fade -->
       <div
+        v-if="leftStock"
         class="transition-all duration-800 ease-out"
         :class="[
           isTransitioning
@@ -158,62 +148,72 @@ onUnmounted(() => {
                 {{ leftStock.symbol }}
               </div>
               <div class="text-sm color-gray-10 tracking-widest uppercase">
-                {{ leftStock.exchange }}
+                NASDAQ
               </div>
             </div>
 
             <div class="col-span-4">
               <div class="mb-2 text-4xl color-gray-12 font-light">
-                ${{ leftStock.price }}
+                ${{ leftStock.price?.toFixed(2) || 'N/A' }}
               </div>
               <div class="text-sm color-gray-10 font-light">
-                {{ leftStock.name }}
+                {{ leftStock.symbol }}
               </div>
-              <!--              <div class="mt-1 text-xs color-gray-8 tracking-wider uppercase">
-                {{ leftStock.industry }}
-              </div> -->
             </div>
 
             <div class="col-span-3">
               <div
-                class="mb-2 flex items-center space-x-3" :class="[
-                  leftStock.change < 0 ? 'text-red-500' : 'text-green-500',
+                v-if="leftStock.change !== null"
+                class="mb-2 flex items-center space-x-3"
+                :class="[
+                  leftStock.change < 0 ? 'color-crimson-10' : 'color-mint-10',
                 ]"
               >
+                <Icon
+                  v-if="leftStock.change < 0"
+                  name="tabler:trending-down"
+                  class="size-5"
+                />
+                <Icon
+                  v-else
+                  name="tabler:trending-up"
+                  class="size-5"
+                />
                 <span class="text-2xl font-light">
-                  {{ leftStock.change > 0 ? '+' : '' }}{{ leftStock.change }}
+                  {{ leftStock.change > 0 ? '+' : '' }}{{ leftStock.change?.toFixed(2) }}
                 </span>
               </div>
-              <div class="text-gray-500 text-sm">
-                ({{ leftStock.changePercent.toFixed(2) }}%)
+              <div class="text-sm color-gray-10">
+                ({{ leftStock.changePercent?.toFixed(2) || '0.00' }}%)
               </div>
             </div>
 
             <div class="col-span-2 text-right">
               <div class="mb-1 text-lg color-gray-12 font-light">
-                ${{ formatMarketCap(leftStock.marketCap) }}
+                ${{ leftStock.open?.toFixed(2) || 'N/A' }}
               </div>
               <div class="text-xs color-gray-10 tracking-wider uppercase">
-                Cap
+                Open
               </div>
             </div>
           </div>
 
-          <div class="mt-6 border-t border-gray-7 border-solid pt-6">
+          <div v-if="leftStock.dayRange.low !== null && leftStock.dayRange.high !== null" class="mt-6 border-t border-gray-7 border-solid pt-6">
             <div class="mb-3 text-xs color-gray-10 tracking-wider uppercase">
               Day Range
             </div>
             <div class="relative">
-              <div class="bg-gray-200 h-1 rounded-full" />
+              <div class="bg-gray-200 h-1 rounded-full dark:bg-gray-700" />
               <div
+                v-if="leftStock.price && leftStock.dayRange.low && leftStock.dayRange.high"
                 class="absolute top-0 h-1 rounded-full from-olive-12 to-sand-5 bg-gradient-to-r transition-all duration-500"
                 :style="{
                   width: `${((leftStock.price - leftStock.dayRange.low) / (leftStock.dayRange.high - leftStock.dayRange.low)) * 100}%`,
                 }"
               />
               <div class="text-gray-500 mt-2 flex justify-between text-xs">
-                <span>${{ leftStock.dayRange.low }}</span>
-                <span>${{ leftStock.dayRange.high }}</span>
+                <span>${{ leftStock.dayRange.low?.toFixed(2) || 'N/A' }}</span>
+                <span>${{ leftStock.dayRange.high?.toFixed(2) || 'N/A' }}</span>
               </div>
             </div>
           </div>
@@ -222,7 +222,9 @@ onUnmounted(() => {
 
       <!-- Bottom Stock Card - Elegant Fade -->
       <div
-        class="transition-all duration-800 ease-out" :class="[
+        v-if="rightStock"
+        class="transition-all duration-800 ease-out"
+        :class="[
           isTransitioning
             ? 'opacity-0 transform scale-95 blur-sm'
             : 'opacity-100 transform scale-100 blur-0',
@@ -242,24 +244,22 @@ onUnmounted(() => {
                 {{ rightStock.symbol }}
               </div>
               <div class="text-sm color-gray-10 tracking-widest uppercase">
-                {{ rightStock.exchange }}
+                NASDAQ
               </div>
             </div>
 
             <div class="col-span-4">
               <div class="mb-2 text-4xl color-gray-12 font-light">
-                ${{ rightStock.price }}
+                ${{ rightStock.price?.toFixed(2) || 'N/A' }}
               </div>
               <div class="text-sm color-gray-10 font-light">
-                {{ rightStock.name }}
+                {{ rightStock.symbol }}
               </div>
-              <!--              <div class="text-gray-500 mt-1 text-xs tracking-wider uppercase">
-                {{ rightStock.industry }}
-              </div> -->
             </div>
 
             <div class="col-span-3">
               <div
+                v-if="rightStock.change !== null"
                 class="mb-2 flex items-center space-x-3"
                 :class="[
                   rightStock.change < 0 ? 'color-crimson-10' : 'color-mint-10',
@@ -276,39 +276,40 @@ onUnmounted(() => {
                   class="size-5"
                 />
                 <span class="text-2xl font-light">
-                  {{ rightStock.change > 0 ? '+' : '' }}{{ rightStock.change }}
+                  {{ rightStock.change > 0 ? '+' : '' }}{{ rightStock.change?.toFixed(2) }}
                 </span>
               </div>
               <div class="text-sm color-gray-10">
-                ({{ rightStock.changePercent.toFixed(2) }}%)
+                ({{ rightStock.changePercent?.toFixed(2) || '0.00' }}%)
               </div>
             </div>
 
             <div class="col-span-2 text-right">
               <div class="mb-1 text-lg font-light">
-                ${{ formatMarketCap(rightStock.marketCap) }}
+                ${{ rightStock.open?.toFixed(2) || 'N/A' }}
               </div>
               <div class="text-gray-500 text-xs tracking-wider uppercase">
-                Cap
+                Open
               </div>
             </div>
           </div>
 
-          <div class="mt-6 border-t border-gray-7 border-solid pt-6">
+          <div v-if="rightStock.dayRange.low !== null && rightStock.dayRange.high !== null" class="mt-6 border-t border-gray-7 border-solid pt-6">
             <div class="text-gray-500 mb-3 text-xs tracking-wider uppercase">
               Day Range
             </div>
             <div class="relative">
               <div class="bg-gray-700 h-1 rounded-full" />
               <div
+                v-if="rightStock.price && rightStock.dayRange.low && rightStock.dayRange.high"
                 class="absolute top-0 h-1 rounded-full from-olive-12 to-sand-5 bg-gradient-to-r transition-all duration-500"
                 :style="{
                   width: `${((rightStock.price - rightStock.dayRange.low) / (rightStock.dayRange.high - rightStock.dayRange.low)) * 100}%`,
                 }"
               />
               <div class="mt-2 flex justify-between text-xs color-gray-10">
-                <span>${{ rightStock.dayRange.low }}</span>
-                <span>${{ rightStock.dayRange.high }}</span>
+                <span>${{ rightStock.dayRange.low?.toFixed(2) || 'N/A' }}</span>
+                <span>${{ rightStock.dayRange.high?.toFixed(2) || 'N/A' }}</span>
               </div>
             </div>
           </div>
@@ -317,11 +318,12 @@ onUnmounted(() => {
     </div>
 
     <!-- Animated Progress Indicators -->
-    <div class="mt-8 flex justify-center space-x-3">
+    <div v-if="stockData.length > 0" class="mt-8 flex justify-center space-x-3">
       <div
         v-for="(_, index) in Math.ceil(stockData.length / 2)"
         :key="index"
-        class="h-2 rounded-full transition-all duration-800 ease-out" :class="[
+        class="h-2 rounded-full transition-all duration-800 ease-out"
+        :class="[
           index === Math.floor(currentPair / 2)
             ? 'bg-sand-12 w-8 scale-110 shadow-lg'
             : 'bg-gray-8 w-2',
