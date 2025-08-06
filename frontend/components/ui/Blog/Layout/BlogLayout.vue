@@ -4,9 +4,9 @@ import AppleCardCarousel from '@/components/ui/Card/AppleCard/AppleCardCarousel.
 import AppleCarouselItem from '@/components/ui/Card/AppleCard/AppleCarouselItem.vue'
 import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
+import StockCard from '@/components/ui/Card/StockCard/StockCard.vue'
 import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
 import Link from '@/components/ui/Link/Link.vue'
-import Stocklist from '@/components/ui/Lists/Stocklist/Stocklist.vue'
 import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
 import SparklesText from '@/components/ui/Text/SparkleText/SparkleText.vue'
 
@@ -363,7 +363,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           <TextScrollReveal text="Driving digital change with creative energy." />
         </div>
 
-        <div class="grid grid-cols-1 gap-12 md:grid-cols-[3fr_5fr]">
+        <div class="md:grid-temp grid md:grid-cols-[3fr_5fr]">
           <div>
             <FeaturedCard
               :id="featuredArticle.id"
@@ -376,7 +376,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             />
           </div>
           <div>
-            <Stocklist />
+            <StockCard />
           </div>
         </div>
         <!-- Below: REGULAR GRID of articles -->
