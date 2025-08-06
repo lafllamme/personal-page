@@ -363,7 +363,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           <TextScrollReveal text="Driving digital change with creative energy." />
         </div>
 
-        <div class="md:grid-temp grid md:grid-cols-[3fr_5fr]">
+        <div class="md:grid-temp grid gap-x-16 md:grid-cols-[3fr_5fr]">
           <div>
             <FeaturedCard
               :id="featuredArticle.id"
