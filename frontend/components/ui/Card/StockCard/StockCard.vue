@@ -127,11 +127,11 @@ onUnmounted(() => {
 
 <template>
   <div class="flex flex-col justify-center space-y-6">
-    <div class="mb-8">
-      <h2 class="text-gray-900 mb-4 text-4xl font-light tracking-wide">
+    <div class="mb-4">
+      <h2 class="font-ginger mb-2 text-5xl font-light tracking-wide uppercase">
         MARKET PULSE
       </h2>
-      <div class="bg-gray-300 h-px w-24" />
+      <div class="h-px w-24 bg-gray-12" />
     </div>
 
     <div class="space-y-6">
@@ -145,27 +145,33 @@ onUnmounted(() => {
         ]"
         :style="{ transitionDelay: '0ms' }"
       >
-        <div class="bg-white border-gray-100 border rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+        <div
+          :class="useClsx(
+            'dark:shadow-[0_8px_25px_rgba(255,255,255,0.12),0_3px_10px_rgba(255,255,255,0.08)]',
+            'shadow-[0_8px_25px_rgba(0,0,0,0.12),0_3px_10px_rgba(0,0,0,0.08)]',
+            'rounded-3xl p-8 color-pureBlack backdrop-blur-sm bg-sand-1 dark:bg-sand-10',
+          )"
+        >
           <div class="grid grid-cols-12 items-center gap-6">
             <div class="col-span-3">
-              <div class="text-gray-900 mb-2 text-4xl font-light tracking-wider">
+              <div class="mb-2 text-4xl color-gray-12 font-light tracking-wider">
                 {{ leftStock.symbol }}
               </div>
-              <div class="text-gray-400 text-sm tracking-widest uppercase">
+              <div class="text-sm color-gray-10 tracking-widest uppercase">
                 {{ leftStock.exchange }}
               </div>
             </div>
 
             <div class="col-span-4">
-              <div class="text-gray-900 mb-2 text-4xl font-light">
+              <div class="mb-2 text-4xl color-gray-12 font-light">
                 ${{ leftStock.price }}
               </div>
-              <div class="text-gray-600 text-sm font-light">
+              <div class="text-sm color-gray-10 font-light">
                 {{ leftStock.name }}
               </div>
-              <div class="text-gray-400 mt-1 text-xs tracking-wider uppercase">
+              <!--              <div class="mt-1 text-xs color-gray-8 tracking-wider uppercase">
                 {{ leftStock.industry }}
-              </div>
+              </div> -->
             </div>
 
             <div class="col-span-3">
@@ -184,23 +190,23 @@ onUnmounted(() => {
             </div>
 
             <div class="col-span-2 text-right">
-              <div class="text-gray-900 mb-1 text-lg font-light">
+              <div class="mb-1 text-lg color-gray-12 font-light">
                 ${{ formatMarketCap(leftStock.marketCap) }}
               </div>
-              <div class="text-gray-400 text-xs tracking-wider uppercase">
+              <div class="text-xs color-gray-10 tracking-wider uppercase">
                 Cap
               </div>
             </div>
           </div>
 
-          <div class="border-gray-100 mt-6 border-t pt-6">
-            <div class="text-gray-400 mb-3 text-xs tracking-wider uppercase">
+          <div class="mt-6 border-t border-gray-7 border-solid pt-6">
+            <div class="mb-3 text-xs color-gray-10 tracking-wider uppercase">
               Day Range
             </div>
             <div class="relative">
               <div class="bg-gray-200 h-1 rounded-full" />
               <div
-                class="from-blue-500 to-purple-500 absolute top-0 h-1 rounded-full bg-gradient-to-r transition-all duration-500"
+                class="absolute top-0 h-1 rounded-full from-olive-12 to-sand-5 bg-gradient-to-r transition-all duration-500"
                 :style="{
                   width: `${((leftStock.price - leftStock.dayRange.low) / (leftStock.dayRange.high - leftStock.dayRange.low)) * 100}%`,
                 }"
@@ -223,42 +229,57 @@ onUnmounted(() => {
         ]"
         :style="{ transitionDelay: '200ms' }"
       >
-        <div class="bg-gray-900 text-white rounded-3xl p-8 shadow-xl backdrop-blur-sm">
+        <div
+          :class="useClsx(
+            'dark:shadow-[0_8px_25px_rgba(255,255,255,0.12),0_3px_10px_rgba(255,255,255,0.08)]',
+            'shadow-[0_8px_25px_rgba(0,0,0,0.12),0_3px_10px_rgba(0,0,0,0.08)]',
+            'rounded-3xl p-8 color-pureBlack backdrop-blur-sm bg-sand-1 dark:bg-sand-10',
+          )"
+        >
           <div class="grid grid-cols-12 items-center gap-6">
             <div class="col-span-3">
               <div class="mb-2 text-4xl font-light tracking-wider">
                 {{ rightStock.symbol }}
               </div>
-              <div class="text-gray-400 text-sm tracking-widest uppercase">
+              <div class="text-sm color-gray-10 tracking-widest uppercase">
                 {{ rightStock.exchange }}
               </div>
             </div>
 
             <div class="col-span-4">
-              <div class="mb-2 text-4xl font-light">
+              <div class="mb-2 text-4xl color-gray-12 font-light">
                 ${{ rightStock.price }}
               </div>
-              <div class="text-gray-300 text-sm font-light">
+              <div class="text-sm color-gray-10 font-light">
                 {{ rightStock.name }}
               </div>
-              <div class="text-gray-500 mt-1 text-xs tracking-wider uppercase">
+              <!--              <div class="text-gray-500 mt-1 text-xs tracking-wider uppercase">
                 {{ rightStock.industry }}
-              </div>
+              </div> -->
             </div>
 
             <div class="col-span-3">
               <div
-                class="mb-2 flex items-center space-x-3" :class="[
-                  rightStock.change < 0 ? 'text-red-400' : 'text-green-400',
+                class="mb-2 flex items-center space-x-3"
+                :class="[
+                  rightStock.change < 0 ? 'color-crimson-10' : 'color-mint-10',
                 ]"
               >
-                <TrendingDown v-if="rightStock.change < 0" class="h-5 w-5" />
-                <TrendingUp v-else class="h-5 w-5" />
+                <Icon
+                  v-if="rightStock.change < 0"
+                  name="tabler:trending-down"
+                  class="size-5"
+                />
+                <Icon
+                  v-else
+                  name="tabler:trending-up"
+                  class="size-5"
+                />
                 <span class="text-2xl font-light">
                   {{ rightStock.change > 0 ? '+' : '' }}{{ rightStock.change }}
                 </span>
               </div>
-              <div class="text-gray-400 text-sm">
+              <div class="text-sm color-gray-10">
                 ({{ rightStock.changePercent.toFixed(2) }}%)
               </div>
             </div>
@@ -273,19 +294,19 @@ onUnmounted(() => {
             </div>
           </div>
 
-          <div class="border-gray-700 mt-6 border-t pt-6">
+          <div class="mt-6 border-t border-gray-7 border-solid pt-6">
             <div class="text-gray-500 mb-3 text-xs tracking-wider uppercase">
               Day Range
             </div>
             <div class="relative">
               <div class="bg-gray-700 h-1 rounded-full" />
               <div
-                class="from-green-400 to-blue-400 absolute top-0 h-1 rounded-full bg-gradient-to-r transition-all duration-500"
+                class="absolute top-0 h-1 rounded-full from-olive-12 to-sand-5 bg-gradient-to-r transition-all duration-500"
                 :style="{
                   width: `${((rightStock.price - rightStock.dayRange.low) / (rightStock.dayRange.high - rightStock.dayRange.low)) * 100}%`,
                 }"
               />
-              <div class="text-gray-400 mt-2 flex justify-between text-xs">
+              <div class="mt-2 flex justify-between text-xs color-gray-10">
                 <span>${{ rightStock.dayRange.low }}</span>
                 <span>${{ rightStock.dayRange.high }}</span>
               </div>
@@ -302,8 +323,8 @@ onUnmounted(() => {
         :key="index"
         class="h-2 rounded-full transition-all duration-800 ease-out" :class="[
           index === Math.floor(currentPair / 2)
-            ? 'bg-gradient-to-r from-blue-500 to-purple-500 w-8 scale-110 shadow-lg'
-            : 'bg-gray-300 w-2',
+            ? 'bg-sand-12 w-8 scale-110 shadow-lg'
+            : 'bg-gray-8 w-2',
         ]"
         :style="{ transitionDelay: `${index * 100}ms` }"
       />
