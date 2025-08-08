@@ -11,6 +11,21 @@ interface StockData {
 
 const currentPair = ref(0)
 const isTransitioning = ref(false)
+const animationKey = ref(0)
+
+function handleTransition(newPair: number) {
+  isTransitioning.value = true
+  setTimeout(() => {
+    currentPair.value = newPair
+    animationKey.value += 1 // restart progress animation
+    isTransitioning.value = false
+  }, 800) // matches your existing 800ms card fade
+}
+
+function handlePairClick(pairIndex: number) {
+  if (pairIndex !== currentPair.value)
+    handleTransition(pairIndex)
+}
 
 // Use Nuxt's useAsyncData for automatic loading, error handling, and caching
 const { data: stockData, pending, error, refresh } = useAsyncData<StockData[]>(
@@ -24,15 +39,22 @@ const { data: stockData, pending, error, refresh } = useAsyncData<StockData[]>(
 )
 
 const leftStock = computed(() => stockData.value?.[currentPair.value] || null)
-const rightStock = computed(() => stockData.value?.[(currentPair.value + 1) % (stockData.value?.length || 0)] || null)
+const rightStock = computed(() => stockData.value?.[(currentPair.value + 1) % (stockData.value?.length || 1)] || null)
 
-function formatMarketCap(cap: number): string {
-  if (cap > 1000000)
-    return `${(cap / 1000000).toFixed(1)}T`
-  if (cap > 1000)
-    return `${(cap / 1000).toFixed(1)}B`
-  return `${cap.toFixed(1)}M`
-}
+const pairs = computed(() => {
+  const list = stockData.value || []
+  if (!list.length)
+    return []
+  const result: { index: number, stocks: [StockData, StockData] }[] = []
+  for (let i = 0; i < list.length; i += 2) {
+    result.push({
+      index: i,
+      // if odd, wrap the right stock to the start so UI never breaks
+      stocks: [list[i], list[(i + 1) % list.length]],
+    })
+  }
+  return result
+})
 
 const { pause, resume } = useIntervalFn(
   () => {
@@ -40,6 +62,7 @@ const { pause, resume } = useIntervalFn(
     setTimeout(() => {
       if (stockData.value?.length) {
         currentPair.value = (currentPair.value + 2) % stockData.value.length
+        animationKey.value += 1 // NEW: sync progress animation with autoplay
       }
       isTransitioning.value = false
     }, 800)
@@ -64,6 +87,101 @@ onUnmounted(() => {
         MARKET PULSE
       </h2>
       <div class="h-px w-24 bg-gray-12" />
+    </div>
+
+    <!-- Pair Navigation - Minimal Lines Style with Smooth Progress -->
+    <div v-if="pairs.length" class="mb-2">
+      <div class="flex items-center justify-center space-x-12">
+        <button
+          v-for="(pair, pairIndex) in pairs"
+          :key="pairIndex"
+          :class="useClsx(
+            'relative group transition-all duration-500 ease-out',
+            pair.index === currentPair ? 'scale-105' : 'hover:scale-[1.02]',
+          )"
+          @click="handlePairClick(pair.index)"
+        >
+          <div class="flex items-center space-x-8">
+            <!-- Left Stock -->
+            <div
+              :class="useClsx(
+                'text-center transition-all duration-300',
+                pair.index === currentPair ? 'transform -translate-y-1' : '',
+              )"
+            >
+              <div
+                :class="useClsx(
+                  'text-sm font-light tracking-wider transition-colors duration-300',
+                  pair.index === currentPair ? 'color-pureBlack dark:color-pureWhite' : 'color-gray-10 group-hover:color-gray-12',
+                )"
+              >
+                {{ pair.stocks[0]?.symbol }}
+              </div>
+              <!-- Underline for active -->
+              <div
+                :class="useClsx(
+                  'mt-2 h-px transition-all duration-300',
+                  pair.index === currentPair ? 'w-full bg-pureBlack dark:bg-pureWhite' : 'w-0 bg-gray-6 group-hover:w-full',
+                )"
+              />
+            </div>
+
+            <!-- Connection Line with Smooth Progress -->
+            <div class="relative h-px w-16">
+              <!-- Background line -->
+              <div
+                :class="useClsx(
+                  'absolute top-0 left-0 h-px transition-all duration-300',
+                  pair.index === currentPair ? 'w-16 bg-gray-200 dark:bg-gray-700' : 'w-12 bg-gray-300 group-hover:bg-gray-400 dark:bg-gray-600',
+                )"
+              />
+              <!-- Progress line that grows smoothly -->
+              <div
+                v-if="pair.index === currentPair"
+                :key="`line-${animationKey}`"
+                class="progress-line dark:bg-white absolute left-0 top-0 h-px bg-pureBlack dark:color-pureWhite"
+              />
+              <!-- Moving dot that travels smoothly -->
+              <div
+                v-if="pair.index === currentPair"
+                :key="`dot-${animationKey}`"
+                class="progress-dot absolute top-1/2 h-1.5 w-1.5 transform rounded-full bg-pureBlack -translate-y-1/2 dark:bg-pureWhite"
+              />
+            </div>
+
+            <!-- Right Stock -->
+            <div
+              :class="useClsx(
+                'text-center transition-all duration-300',
+                pair.index === currentPair ? 'transform -translate-y-1' : '',
+              )"
+            >
+              <div
+                :class="useClsx(
+                  'text-sm font-light tracking-wider transition-colors duration-300',
+                  pair.index === currentPair ? 'color-pureBlack dark:color-pureWhite' : 'color-gray-10 group-hover:color-gray-12',
+                )"
+              >
+                {{ pair.stocks[1]?.symbol }}
+              </div>
+              <!-- Underline for active -->
+              <div
+                :class="useClsx(
+                  'mt-2 h-px transition-all duration-300',
+                  pair.index === currentPair ? 'w-full bg-pureBlack dark:bg-pureWhite' : 'w-0 bg-gray-6 group-hover:w-full',
+                )"
+              />
+            </div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Current pair info -->
+      <div class="mt-4 text-center">
+        <span class="text-sm color-gray-10 font-light">
+          Pair {{ Math.floor(currentPair / 2) + 1 }} of {{ pairs.length }}
+        </span>
+      </div>
     </div>
 
     <!-- Loading State -->
@@ -122,11 +240,8 @@ onUnmounted(() => {
       </div>
     </div>
 
-    <!-- Stock Data -->
-    <div
-      v-else-if="stockData.length > 0"
-      class="space-y-6"
-    >
+    <!-- Actual Stock Data -->
+    <div v-else-if="stockData.length > 0" class="space-y-6">
       <!-- Top Stock Card - Elegant Fade -->
       <div
         v-if="leftStock"
@@ -342,3 +457,31 @@ onUnmounted(() => {
     </div>
   </div>
 </template>
+
+<style scoped>
+@keyframes growLine {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 4rem;
+  }
+}
+
+@keyframes moveDot {
+  0% {
+    left: -3px;
+  }
+  100% {
+    left: calc(4rem - 3px);
+  }
+}
+
+.progress-line {
+  animation: growLine 4.5s linear forwards;
+}
+
+.progress-dot {
+  animation: moveDot 4.5s linear forwards;
+}
+</style>
