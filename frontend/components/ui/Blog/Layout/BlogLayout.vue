@@ -364,7 +364,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         </div>
 
         <div class="md:grid-temp grid gap-x-16 md:grid-cols-[3fr_5fr]">
-          <div>
+          <div class="min-w-lg">
             <FeaturedCard
               :id="featuredArticle.id"
               :author="featuredArticle.author"
