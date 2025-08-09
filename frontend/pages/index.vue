@@ -1,6 +1,7 @@
 <script lang="ts" setup>
+import { useElementVisibility, useIdle } from '@vueuse/core'
+import { defineAsyncComponent } from 'vue'
 import Spline from '@/components/ui/Background/Spline/Spline.vue'
-import BlogLayout from '@/components/ui/Blog/Layout/BlogLayout.vue'
 import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
 import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
 import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
@@ -33,7 +34,6 @@ function handleClick() {
 }
 
 watch(sceneLoaded, (v) => {
-  consola.debug('[Index] Scene loaded ?', v)
   if (v) {
     setTimeout(() => {
       renderBackground.value = true
@@ -42,6 +42,21 @@ watch(sceneLoaded, (v) => {
 })
 
 const animate = ref(false)
+const shouldMountBlog = ref(false)
+const blogSentinel = useTemplateRef('blogSentinel')
+const blogVisible = useElementVisibility(blogSentinel)
+const { idle } = useIdle(2500)
+
+watch([blogVisible, idle], ([visible, isIdle]) => {
+  if (!shouldMountBlog.value && (visible || isIdle)) {
+    shouldMountBlog.value = true
+  }
+})
+
+const BlogLayout = defineAsyncComponent({
+  loader: () => import('@/components/ui/Blog/Layout/BlogLayout.vue'),
+  suspensible: true,
+})
 
 function handleGenerateComplete() {
   animate.value = true
@@ -112,7 +127,16 @@ function handleGenerateComplete() {
         </div>
       </div>
     </div>
-    <BlogLayout />
+    <!-- Blog mount control: visible or idle, with placeholder to avoid CLS -->
+    <div ref="blogSentinel" />
+    <ClientOnly>
+      <Suspense>
+        <BlogLayout v-if="shouldMountBlog" />
+        <template #fallback>
+          <div class="my-8 min-h-[60vh]" />
+        </template>
+      </Suspense>
+    </ClientOnly>
   </div>
 </template>
 
