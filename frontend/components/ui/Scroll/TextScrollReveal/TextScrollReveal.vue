@@ -7,6 +7,7 @@ const props = withDefaults(defineProps<TextScrollRevealProps>(), TextScrollRevea
 const { height } = useWindowSize()
 const { class: classNames, text } = toRefs(props)
 const textScrollRevealRef = useTemplateRef('textScrollRevealRef')
+const isVisible = useElementVisibility(textScrollRevealRef)
 
 const words = computed(() => text.value.split(' '))
 const scrollYProgress = ref(0)
@@ -17,6 +18,8 @@ const scrollYProgress = ref(0)
 function updateScrollYProgress() {
   if (!textScrollRevealRef.value)
     return
+  if (!isVisible.value)
+    return
 
   const el = textScrollRevealRef.value
   const rect = el.getBoundingClientRect()
@@ -26,9 +29,10 @@ function updateScrollYProgress() {
   progress = Math.max(0, Math.min(1, progress))
   scrollYProgress.value = progress
 }
-
-useEventListener('scroll', updateScrollYProgress)
-useEventListener('resize', updateScrollYProgress)
+// Passive listeners to avoid main-thread blocking
+useEventListener(window, 'scroll', updateScrollYProgress, { passive: true })
+useEventListener(window, 'resize', updateScrollYProgress, { passive: true })
+onMounted(() => updateScrollYProgress())
 </script>
 
 <template>
