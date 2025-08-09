@@ -20,7 +20,7 @@ function handleTransition(newPair: number) {
     currentPair.value = newPair
     animationKey.value += 1 // restart progress animation
     isTransitioning.value = false
-  }, 800) // matches your existing 800ms card fade
+  }, 500) // brief pause so the dot doesn't linger too long
 }
 
 function handlePairClick(pairIndex: number) {
@@ -65,9 +65,9 @@ const { pause, resume } = useIntervalFn(
         animationKey.value += 1
       }
       isTransitioning.value = false
-    }, 800)
+    }, 350) // keep pause very short to minimize end-hold
   },
-  4500,
+  6500,
   { immediate: false },
 )
 
@@ -84,7 +84,7 @@ const boxShadowClass = useClsx(
 )
 
 const cardSurfaceLight = useClsx('bg-sand-1')
-const cardSurfaceDark = useClsx('dark:bg-olive-3')
+const cardSurfaceDark = useClsx('dark:bg-olive-2')
 </script>
 
 <template>
@@ -108,7 +108,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-3')
           v-for="(pair, pairIndex) in pairs"
           :key="pairIndex"
           :class="useClsx(
-            'relative group transition-all duration-500 ease-out',
+            'relative group transition-all focus-visible:outline-none focus-visible:ring-red-12 group duration-500 ease-out',
             pair.index === currentPair ? 'scale-105' : 'hover:scale-[1.02]',
           )"
           @click="handlePairClick(pair.index)"
@@ -145,21 +145,30 @@ const cardSurfaceDark = useClsx('dark:bg-olive-3')
             <div :class="useClsx('relative w-8 h-px')">
               <div
                 :class="useClsx(
-                  'absolute top-0 left-0 h-px transition-all duration-300',
+                  'absolute top-0 left-0 h-px transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]',
                   pair.index === currentPair
-                    ? 'w-8 bg-gray-8 dark:bg-pureWhite'
-                    : 'w-6 bg-gray-8 group-hover:bg-gray-10',
+                    ? 'w-8 bg-gray-8 dark:bg-gray-6'
+                    : 'w-6 bg-gray-8 dark:bg-gray-6 group-hover:bg-gray-10 dark:group-hover:bg-gray-5',
                 )"
               />
+              <!-- Progress line that grows smoothly -->
               <div
                 v-if="pair.index === currentPair"
                 :key="`line-${animationKey}`"
-                :class="useClsx('absolute top-0 left-0 h-px bg-pureBlack dark:bg-pureWhite progress-line')"
+                :class="useClsx('absolute top-0 left-0 h-px w-8 bg-pureBlack/90 dark:bg-pureWhite/90 progress-line')"
               />
+              <!-- Moving dot that travels smoothly -->
               <div
                 v-if="pair.index === currentPair"
                 :key="`dot-${animationKey}`"
-                :class="useClsx('absolute top-1/2 w-1 h-1 bg-pureBlack dark:bg-pureWhite rounded-full transform -translate-y-1/2 progress-dot')"
+                :class="useClsx(
+                  'absolute top-1/2 -translate-y-1/2 z-10',
+                  'h-1.5 w-1.5 rounded-full',
+                  'bg-pureBlack dark:bg-pureWhite',
+                  'text-pureBlack dark:text-pureWhite',
+                  'progress-dot',
+                )"
+                style="left:0; --dot-distance: calc(2rem - 0.375rem)"
               />
             </div>
 
@@ -253,7 +262,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-3')
       <div
         v-if="leftStock"
         :class="useClsx(
-          'transition-all duration-800 ease-out',
+          'transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]',
           isTransitioning ? 'opacity-0 transform scale-95 blur-sm' : 'opacity-100 transform scale-100 blur-0',
         )"
         :style="{ transitionDelay: '0ms' }"
@@ -340,7 +349,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-3')
       <div
         v-if="rightStock"
         :class="useClsx(
-          'transition-all duration-800 ease-out',
+          'transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]',
           isTransitioning ? 'opacity-0 transform scale-95 blur-sm' : 'opacity-100 transform scale-100 blur-0',
         )"
         :style="{ transitionDelay: '200ms' }"
@@ -398,7 +407,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-3')
             v-if="rightStock.dayRange.low !== null && rightStock.dayRange.high !== null"
             :class="useClsx('mt-6 border-t border-gray-7 border-solid pt-6')"
           >
-            <div :class="useClsx('font-manrope mb-3 text-xs tracking-wider uppercase text-gray-500')">
+            <div :class="useClsx('font-manrope color-gray-10 mb-3 text-xs tracking-wider uppercase text-gray-500')">
               Day Range
             </div>
             <div :class="useClsx('relative')">
@@ -442,30 +451,71 @@ const cardSurfaceDark = useClsx('dark:bg-olive-3')
 </template>
 
 <style scoped>
+/* Smoother, GPU-accelerated animations using transforms */
+/* Grow with ease-out, then brief hold at the end */
 @keyframes growLine {
   0% {
-    width: 0;
+    transform: scaleX(0);
   }
+  96% {
+    transform: scaleX(1);
+  }
+  /* very short hold to avoid long stall */
   100% {
-    width: 2rem;
+    transform: scaleX(1);
   }
-  /* compact variant */
 }
 
+/* Dot glides and eases out; timeline is 6.5s with ~0.5s hold at the end */
 @keyframes moveDot {
   0% {
-    left: -2px;
+    transform: translateY(-50%) translateX(0);
   }
+  96% {
+    transform: translateY(-50%) translateX(var(--dot-distance, 2rem));
+  }
+  /* very short hold */
   100% {
-    left: calc(2rem - 2px);
+    transform: translateY(-50%) translateX(var(--dot-distance, 2rem));
   }
 }
 
 .progress-line {
-  animation: growLine 4.5s linear forwards;
+  transform-origin: left center;
+  will-change: transform;
+  animation: growLine 6.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; /* gentle ease-out */
 }
 
 .progress-dot {
-  animation: moveDot 4.5s linear forwards;
+  will-change: transform;
+  animation: moveDot 6.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  position: relative;
+}
+
+/* subtle pulsing halo around the active dot */
+.progress-dot::after {
+  content: '';
+  position: absolute;
+  inset: -6px; /* halo radius */
+  border-radius: 9999px;
+  background: currentColor;
+  opacity: 0.08;
+  transform: scale(0.85);
+  animation: pulseHalo 1.8s ease-in-out infinite;
+}
+
+@keyframes pulseHalo {
+  0% {
+    opacity: 0.04;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.12;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0.04;
+    transform: scale(0.85);
+  }
 }
 </style>
