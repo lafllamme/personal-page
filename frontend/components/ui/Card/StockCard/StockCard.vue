@@ -56,6 +56,9 @@ const pairs = computed(() => {
   return result
 })
 
+const hostRef = useTemplateRef('hostRef')
+const inView = useElementVisibility(hostRef)
+
 const { pause, resume } = useIntervalFn(
   () => {
     isTransitioning.value = true
@@ -71,7 +74,16 @@ const { pause, resume } = useIntervalFn(
   { immediate: false },
 )
 
-onMounted(resume)
+watch(inView, (v) => {
+  if (v)
+    resume()
+  else pause()
+})
+
+onMounted(() => {
+  if (inView.value)
+    resume()
+})
 onUnmounted(pause)
 
 /** Shared classes */
@@ -88,7 +100,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
 </script>
 
 <template>
-  <div :class="useClsx('flex flex-col justify-center space-y-6')">
+  <div ref="hostRef" :class="useClsx('flex flex-col justify-center space-y-6')">
     <div :class="useClsx('mb-4')">
       <h2
         :class="useClsx(
