@@ -357,10 +357,10 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         </div>
 
         <!-- Decorative Text Scroll Reveal -->
-        <div
-          class="z-10 min-h-64 flex items-center justify-center"
-        >
-          <TextScrollReveal text="Driving digital change with creative energy." />
+        <div>
+          <TextScrollReveal
+            text="Driving digital change with creative energy."
+          />
         </div>
 
         <div class="md:grid-temp grid gap-x-16 md:grid-cols-[3fr_5fr]">
