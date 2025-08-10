@@ -8,6 +8,8 @@ interface StockData {
   fetchedAt: string
   open: number | null
   dayRange: { low: number | null, high: number | null }
+  name: string | null
+  industry: string | null
 }
 
 const currentPair = ref(0)
@@ -50,7 +52,7 @@ const pairs = computed(() => {
   for (let i = 0; i < list.length; i += 2) {
     result.push({
       index: i,
-      stocks: [list[i], list[(i + 1) % list.length]],
+      stocks: [list[i]!, list[(i + 1) % list.length]!],
     })
   }
   return result
@@ -114,13 +116,17 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
     </div>
 
     <!-- Pair Navigation - Compact Minimal Lines -->
-    <div v-if="pairs.length" :class="useClsx('mb-2')">
+    <div
+      v-if="pairs.length"
+      :class="useClsx('mb-2')"
+    >
       <div :class="useClsx('flex items-center justify-center space-x-6')">
         <button
           v-for="(pair, pairIndex) in pairs"
           :key="pairIndex"
           :class="useClsx(
-            'relative group transition-all focus-visible:outline-none focus-visible:ring-red-12 group duration-500 ease-out',
+            'relative group rounded-full focus-visible:transition-none transition-all focus-visible:ring duration-500 ease-out',
+            'focus-visible:outline-none p-1 px-1.5 focus-visible:ring-1.5 focus-focus-visible:ring-mint-8',
             pair.index === currentPair ? 'scale-105' : 'hover:scale-[1.02]',
           )"
           @click="handlePairClick(pair.index)"
@@ -213,12 +219,6 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           </div>
         </button>
       </div>
-
-      <div :class="useClsx('text-center mt-4')">
-        <span :class="useClsx('text-xs font-light text-gray-400 dark:text-gray-500')">
-          Pair {{ Math.floor(currentPair / 2) + 1 }} of {{ pairs.length }}
-        </span>
-      </div>
     </div>
 
     <!-- Loading -->
@@ -286,7 +286,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                 {{ leftStock.symbol }}
               </div>
               <div :class="useClsx('font-manrope text-sm tracking-widest uppercase color-gray-10')">
-                NASDAQ
+                {{ leftStock.name || leftStock.symbol }}
               </div>
             </div>
 
@@ -295,7 +295,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                 ${{ leftStock.price?.toFixed(2) || 'N/A' }}
               </div>
               <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
-                {{ leftStock.symbol }}
+                {{ leftStock.industry || '—' }}
               </div>
             </div>
 
@@ -373,7 +373,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                 {{ rightStock.symbol }}
               </div>
               <div :class="useClsx('font-manrope text-sm tracking-widest uppercase color-gray-10')">
-                NASDAQ
+                {{ rightStock.name || rightStock.symbol }}
               </div>
             </div>
 
@@ -382,7 +382,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                 ${{ rightStock.price?.toFixed(2) || 'N/A' }}
               </div>
               <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
-                {{ rightStock.symbol }}
+                {{ rightStock.industry || '—' }}
               </div>
             </div>
 
@@ -513,7 +513,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
   background: currentColor;
   opacity: 0.08;
   transform: scale(0.85);
-  animation: pulseHalo 1.8s ease-in-out infinite;
+  animation: pulseHalo 2.8s ease-in-out infinite;
 }
 
 @keyframes pulseHalo {
