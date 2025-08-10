@@ -3,29 +3,13 @@ import type { ScrollWordProps } from './ScrollWord.model'
 import { ScrollWordPropsDefaults } from './ScrollWord.model'
 
 const props = withDefaults(defineProps<ScrollWordProps>(), ScrollWordPropsDefaults)
-
-const { word, progress, range } = toRefs(props)
-
-const computedOpacity = computed(() => {
-  const [start, end] = range.value
-
-  // Calculate opacity based on the progress and range
-  if (progress.value < start!)
-    return 0
-  if (progress.value > end!)
-    return 1
-
-  // Linear interpolation for opacity between 0 and 1
-  return (progress.value - start!) / (end! - start!)
-})
+const { word, opacity, activeClass } = toRefs(props)
 </script>
 
 <template>
   <span class="relative mx-1 lg:mx-2.5">
     <span class="absolute opacity-30">{{ word }}</span>
-    <span
-      :style="{ opacity: computedOpacity }"
-    >
+    <span :class="activeClass" :style="{ '--o': String(opacity) }">
       {{ word }}
     </span>
   </span>
