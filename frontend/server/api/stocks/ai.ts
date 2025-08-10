@@ -8,6 +8,8 @@ interface StockQuote {
   fetchedAt: string
   open: number | null
   dayRange: { low: number | null, high: number | null }
+  name: string | null
+  industry: string | null
   debug?: {
     quote: any
     profile: any
@@ -93,6 +95,8 @@ export default defineEventHandler(async (event): Promise<StockQuote[]> => {
         fetchedAt: new Date().toISOString(),
         open: quote?.o ?? null,
         dayRange: { low: quote?.l ?? null, high: quote?.h ?? null },
+        name: (profile as any)?.name ?? null,
+        industry: (profile as any)?.finnhubIndustry ?? null,
         ...(isDebug && { debug: { quote, profile } }),
       }
 
@@ -108,6 +112,8 @@ export default defineEventHandler(async (event): Promise<StockQuote[]> => {
         fetchedAt: new Date().toISOString(),
         open: null,
         dayRange: { low: null, high: null },
+        name: null,
+        industry: null,
       })
     }
   }
