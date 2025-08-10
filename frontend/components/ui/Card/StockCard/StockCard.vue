@@ -13,21 +13,14 @@ interface StockData {
 }
 
 const currentPair = ref(0)
-const isTransitioning = ref(false)
 const animationKey = ref(0)
-
-function handleTransition(newPair: number) {
-  isTransitioning.value = true
-  setTimeout(() => {
-    currentPair.value = newPair
-    animationKey.value += 1 // restart progress animation
-    isTransitioning.value = false
-  }, 500) // brief pause so the dot doesn't linger too long
-}
 
 function handlePairClick(pairIndex: number) {
   if (pairIndex !== currentPair.value)
-    handleTransition(pairIndex)
+    {
+      currentPair.value = pairIndex
+      animationKey.value += 1
+    }
 }
 
 // Nuxt useAsyncData
@@ -61,16 +54,32 @@ const pairs = computed(() => {
 const hostRef = useTemplateRef('hostRef')
 const inView = useElementVisibility(hostRef)
 
+// Keep card heights stable during transitions
+const leftMinHeight = ref(0)
+const rightMinHeight = ref(0)
+
+function beforeLeaveLeft(el: Element) {
+  leftMinHeight.value = (el as HTMLElement).offsetHeight
+}
+function afterEnterLeft(el: Element) {
+  leftMinHeight.value = (el as HTMLElement).offsetHeight
+}
+function beforeLeaveRight(el: Element) {
+  rightMinHeight.value = (el as HTMLElement).offsetHeight
+}
+function afterEnterRight(el: Element) {
+  rightMinHeight.value = (el as HTMLElement).offsetHeight
+}
+
+const leftCardContentRef = useTemplateRef('leftCardContentRef')
+const rightCardContentRef = useTemplateRef('rightCardContentRef')
+
 const { pause, resume } = useIntervalFn(
   () => {
-    isTransitioning.value = true
-    setTimeout(() => {
-      if (stockData.value?.length) {
-        currentPair.value = (currentPair.value + 2) % stockData.value.length
-        animationKey.value += 1
-      }
-      isTransitioning.value = false
-    }, 350) // keep pause very short to minimize end-hold
+    if (stockData.value?.length) {
+      currentPair.value = (currentPair.value + 2) % stockData.value.length
+      animationKey.value += 1
+    }
   },
   6500,
   { immediate: false },
@@ -85,6 +94,11 @@ watch(inView, (v) => {
 onMounted(() => {
   if (inView.value)
     resume()
+  // initialize min-heights to prevent initial shrink during first transition
+  if (leftCardContentRef.value)
+    leftMinHeight.value = (leftCardContentRef.value as HTMLElement).offsetHeight
+  if (rightCardContentRef.value)
+    rightMinHeight.value = (rightCardContentRef.value as HTMLElement).offsetHeight
 })
 onUnmounted(pause)
 
@@ -271,16 +285,21 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
     <!-- Data -->
     <div v-else-if="stockData.length > 0" :class="useClsx('space-y-6')">
       <!-- Top card -->
-      <div
-        v-if="leftStock"
-        :class="useClsx(
-          'transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]',
-          isTransitioning ? 'opacity-0 transform scale-95 blur-sm' : 'opacity-100 transform scale-100 blur-0',
-        )"
-        :style="{ transitionDelay: '0ms' }"
-      >
-        <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack')">
-          <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
+      <div :style="{ minHeight: leftMinHeight ? `${leftMinHeight}px` : undefined }">
+        <Transition
+          mode="out-in"
+          enter-active-class="transition-opacity duration-500 ease-out"
+          leave-active-class="transition-opacity duration-500 ease-in"
+          enter-from-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+          @before-leave="beforeLeaveLeft"
+          @after-enter="afterEnterLeft"
+        >
+          <div v-if="leftStock" :key="leftStock.symbol" ref="leftCardContentRef">
+            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack')">
+              <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
             <div :class="useClsx('col-span-3')">
               <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
                 {{ leftStock.symbol }}
@@ -353,21 +372,28 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                 </span>
               </div>
             </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </Transition>
       </div>
 
       <!-- Bottom card -->
-      <div
-        v-if="rightStock"
-        :class="useClsx(
-          'transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)]',
-          isTransitioning ? 'opacity-0 transform scale-95 blur-sm' : 'opacity-100 transform scale-100 blur-0',
-        )"
-        :style="{ transitionDelay: '200ms' }"
-      >
-        <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack')">
-          <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
+      <div :style="{ minHeight: rightMinHeight ? `${rightMinHeight}px` : undefined }">
+        <Transition
+          mode="out-in"
+          enter-active-class="transition-opacity duration-500 ease-out"
+          leave-active-class="transition-opacity duration-500 ease-in"
+          enter-from-class="opacity-0"
+          enter-to-class="opacity-100"
+          leave-from-class="opacity-100"
+          leave-to-class="opacity-0"
+          @before-leave="beforeLeaveRight"
+          @after-enter="afterEnterRight"
+        >
+          <div v-if="rightStock" :key="rightStock.symbol" ref="rightCardContentRef">
+            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack')">
+              <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
             <div :class="useClsx('col-span-3')">
               <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
                 {{ rightStock.symbol }}
@@ -440,8 +466,10 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                 </span>
               </div>
             </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </Transition>
       </div>
     </div>
 
