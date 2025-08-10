@@ -5,8 +5,9 @@ import { TextScrollRevealPropsDefaults } from './TextScrollReveal.model'
 
 const props = withDefaults(defineProps<TextScrollRevealProps>(), TextScrollRevealPropsDefaults)
 const { height } = useWindowSize()
-const { class: classNames, text, heightClass, outroSpacingClass, smoothingMs } = toRefs(props)
+const { class: classNames, text, heightClass, progressHeightClass, smoothingMs } = toRefs(props)
 const textScrollRevealRef = useTemplateRef('textScrollRevealRef')
+const progressRef = useTemplateRef('progressRef')
 const isVisible = useElementVisibility(textScrollRevealRef)
 
 const words = computed(() => text.value.split(' '))
@@ -41,7 +42,7 @@ function updateScrollYProgress() {
   if (!isVisible.value)
     return
 
-  const el = textScrollRevealRef.value
+  const el = progressRef.value ?? textScrollRevealRef.value
   const rect = el.getBoundingClientRect()
   const totalScroll = rect.height - height.value
 
@@ -102,6 +103,12 @@ onUnmounted(() => {
     ref="textScrollRevealRef"
     :class="useClsx('relative z-0', heightClass, classNames)"
   >
+    <!-- Invisible progress sentinel that defines reveal length without affecting layout -->
+    <div
+      ref="progressRef"
+      :class="useClsx('pointer-events-none select-none opacity-0 absolute left-0 right-0 top-0', progressHeightClass)"
+      aria-hidden="true"
+    />
     <div class="max-w-8xl sticky top-0 flex items-center bg-transparent py-12 h-svh md:py-20">
       <p
         :class="useClsx(
@@ -120,8 +127,6 @@ onUnmounted(() => {
       </p>
     </div>
   </div>
-  <!-- Outro spacing applied below wrapper to guarantee height contribution -->
-  <div :class="useClsx(outroSpacingClass)" aria-hidden="true" />
 </template>
 
 <style>
