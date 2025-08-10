@@ -285,7 +285,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
               <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
                 {{ leftStock.symbol }}
               </div>
-              <div :class="useClsx('font-manrope text-sm tracking-widest uppercase color-gray-10')">
+              <div :class="useClsx('text-nowrap text-truncate font-manrope text-sm tracking-widest uppercase color-gray-10')">
                 {{ leftStock.name || leftStock.symbol }}
               </div>
             </div>
@@ -372,7 +372,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
               <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
                 {{ rightStock.symbol }}
               </div>
-              <div :class="useClsx('font-manrope text-sm tracking-widest uppercase color-gray-10')">
+              <div :class="useClsx('text-nowrap text-truncate font-manrope text-sm tracking-widest uppercase color-gray-10')">
                 {{ rightStock.name || rightStock.symbol }}
               </div>
             </div>
