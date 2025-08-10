@@ -203,7 +203,7 @@ const archiveIssues = ref(['Issue 46', 'Issue 45', 'Issue 44', 'Issue 43'])
     )"
   >
     <!-- DEBUG SECTION -->
-    <div v-if="post" class="bg-yellow-100 dark:bg-yellow-900 border-yellow-500 border-b-2 p-4">
+    <div v-if="false && post" class="bg-yellow-100 dark:bg-yellow-900 border-yellow-500 border-b-2 p-4">
       <h3 class="text-yellow-800 dark:text-yellow-200 mb-2 font-bold">
         DEBUG INFO:
       </h3>
