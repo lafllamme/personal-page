@@ -360,8 +360,8 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         <div>
           <TextScrollReveal
             text="Driving digital change with creative energy."
-            heightClass="h-[550vh]"
-            progressHeightClass="h-[300vh]"
+            height-class="h-[500vh]"
+            progress-height-class="h-[300vh]"
           />
         </div>
 
