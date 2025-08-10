@@ -1,10 +1,10 @@
 export interface ScrollWordProps {
   word: string
-  progress: number
-  range: Array<number>
+  opacity?: number
+  activeClass?: string
 }
 
-export const ScrollWordPropsDefaults = {
+export const ScrollWordPropsDefaults: Required<Pick<ScrollWordProps, 'word' | 'opacity'>> = {
   word: '',
-  progress: 0,
+  opacity: 0,
 }
