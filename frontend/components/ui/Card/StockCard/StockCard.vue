@@ -126,7 +126,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           :key="pairIndex"
           :class="useClsx(
             'relative group rounded-full focus-visible:transition-none transition-all focus-visible:ring duration-500 ease-out',
-            'focus-visible:outline-none p-1 px-1.5 focus-visible:ring-1.5 focus-focus-visible:ring-mint-8',
+            'focus-visible:outline-none p-1 px-2 focus-visible:ring-1.5 focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
             pair.index === currentPair ? 'scale-105' : 'hover:scale-[1.02]',
           )"
           @click="handlePairClick(pair.index)"
