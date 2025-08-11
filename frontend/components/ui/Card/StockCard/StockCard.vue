@@ -1,5 +1,7 @@
 <!-- StockCard.vue -->
 <script setup lang="ts">
+import NumberTicker from '@/components/ui/Text/NumberTicker/NumberTicker.vue'
+
 interface StockData {
   symbol: string
   price: number | null
@@ -16,11 +18,10 @@ const currentPair = ref(0)
 const animationKey = ref(0)
 
 function handlePairClick(pairIndex: number) {
-  if (pairIndex !== currentPair.value)
-    {
-      currentPair.value = pairIndex
-      animationKey.value += 1
-    }
+  if (pairIndex !== currentPair.value) {
+    currentPair.value = pairIndex
+    animationKey.value += 1
+  }
 }
 
 // Nuxt useAsyncData
@@ -61,18 +62,71 @@ const rightMinHeight = ref(0)
 function beforeLeaveLeft(el: Element) {
   leftMinHeight.value = (el as HTMLElement).offsetHeight
 }
+
 function afterEnterLeft(el: Element) {
   leftMinHeight.value = (el as HTMLElement).offsetHeight
+  animateLeftBar()
 }
+
 function beforeLeaveRight(el: Element) {
   rightMinHeight.value = (el as HTMLElement).offsetHeight
 }
+
 function afterEnterRight(el: Element) {
   rightMinHeight.value = (el as HTMLElement).offsetHeight
+  animateRightBar()
 }
 
 const leftCardContentRef = useTemplateRef('leftCardContentRef')
 const rightCardContentRef = useTemplateRef('rightCardContentRef')
+
+// Day range bar widths (animate on card enter)
+const leftBarWidth = ref('0%')
+const rightBarWidth = ref('0%')
+
+function computeRangeWidth(stock: StockData | null): string {
+  if (
+    !stock
+    || stock.price === null
+    || stock.dayRange.low === null
+    || stock.dayRange.high === null
+    || stock.dayRange.high === stock.dayRange.low
+  ) {
+    return '0%'
+  }
+
+  const ratio = (stock.price - stock.dayRange.low) / (stock.dayRange.high - stock.dayRange.low)
+  const clamped = Math.min(1, Math.max(0, ratio))
+  return `${(clamped * 100).toFixed(2)}%`
+}
+
+function animateLeftBar() {
+  const target = computeRangeWidth(leftStock.value)
+  if (!import.meta.client) {
+    leftBarWidth.value = target
+    return
+  }
+  leftBarWidth.value = '0%'
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      leftBarWidth.value = target
+    })
+  })
+}
+
+function animateRightBar() {
+  const target = computeRangeWidth(rightStock.value)
+  if (!import.meta.client) {
+    rightBarWidth.value = target
+    return
+  }
+  rightBarWidth.value = '0%'
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      rightBarWidth.value = target
+    })
+  })
+}
 
 const { pause, resume } = useIntervalFn(
   () => {
@@ -300,78 +354,83 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           <div v-if="leftStock" :key="leftStock.symbol" ref="leftCardContentRef">
             <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack')">
               <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
-            <div :class="useClsx('col-span-3')">
-              <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
-                {{ leftStock.symbol }}
-              </div>
-              <div :class="useClsx('text-nowrap text-truncate font-manrope text-sm tracking-widest uppercase color-gray-10')">
-                {{ leftStock.name || leftStock.symbol }}
-              </div>
-            </div>
+                <div :class="useClsx('col-span-3')">
+                  <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
+                    {{ leftStock.symbol }}
+                  </div>
+                  <div
+                    :class="useClsx('text-nowrap text-truncate font-manrope text-sm tracking-widest uppercase color-gray-10')"
+                  >
+                    {{ leftStock.name || leftStock.symbol }}
+                  </div>
+                </div>
 
-            <div :class="useClsx('col-span-4')">
-              <div :class="useClsx('font-manrope mb-2 text-4xl font-light color-gray-12')">
-                ${{ leftStock.price?.toFixed(2) || 'N/A' }}
-              </div>
-              <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
-                {{ leftStock.industry || '—' }}
-              </div>
-            </div>
+                <div :class="useClsx('col-span-4')">
+                  <div :class="useClsx('font-manrope mb-2 text-4xl font-light color-gray-12')">
+                    $<NumberTicker
+                      :value="leftStock.price!"
+                    />
+                  </div>
+                  <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
+                    {{ leftStock.industry || '—' }}
+                  </div>
+                </div>
 
-            <div :class="useClsx('col-span-3')">
+                <div :class="useClsx('col-span-3')">
+                  <div
+                    v-if="leftStock.change !== null"
+                    :class="useClsx(
+                      'mb-2 flex items-center space-x-3',
+                      leftStock.change < 0 ? 'color-crimson-10' : 'color-jade-9',
+                    )"
+                  >
+                    <Icon v-if="leftStock.change < 0" name="tabler:trending-down" :class="useClsx('size-5 md:size-6')" />
+                    <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
+                    <span :class="useClsx('font-manrope text-2xl font-light')">
+                      {{ leftStock.change > 0 ? '+' : '' }}
+                      <NumberTicker
+                        :value="leftStock.change"
+                      />
+                    </span>
+                  </div>
+                  <div :class="useClsx('font-manrope text-sm color-gray-10')">
+                    ({{ leftStock.changePercent?.toFixed(2) || '0.00' }}%)
+                  </div>
+                </div>
+
+                <div :class="useClsx('col-span-2 text-right')">
+                  <div :class="useClsx('font-manrope mb-1 text-lg font-light color-gray-12')">
+                    ${{ leftStock.open?.toFixed(2) || 'N/A' }}
+                  </div>
+                  <div :class="useClsx('font-manrope text-xs tracking-wider uppercase color-gray-10')">
+                    Open
+                  </div>
+                </div>
+              </div>
+
               <div
-                v-if="leftStock.change !== null"
-                :class="useClsx(
-                  'mb-2 flex items-center space-x-3',
-                  leftStock.change < 0 ? 'color-crimson-10' : 'color-jade-9',
-                )"
+                v-if="leftStock.dayRange.low !== null && leftStock.dayRange.high !== null"
+                :class="useClsx('mt-6 border-t border-gray-7 border-solid pt-6')"
               >
-                <Icon v-if="leftStock.change < 0" name="tabler:trending-down" :class="useClsx('size-5 md:size-6')" />
-                <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
-                <span :class="useClsx('font-manrope text-2xl font-light')">
-                  {{ leftStock.change > 0 ? '+' : '' }}{{ leftStock.change?.toFixed(2) }}
-                </span>
-              </div>
-              <div :class="useClsx('font-manrope text-sm color-gray-10')">
-                ({{ leftStock.changePercent?.toFixed(2) || '0.00' }}%)
-              </div>
-            </div>
-
-            <div :class="useClsx('col-span-2 text-right')">
-              <div :class="useClsx('font-manrope mb-1 text-lg font-light color-gray-12')">
-                ${{ leftStock.open?.toFixed(2) || 'N/A' }}
-              </div>
-              <div :class="useClsx('font-manrope text-xs tracking-wider uppercase color-gray-10')">
-                Open
-              </div>
-            </div>
-          </div>
-
-          <div
-            v-if="leftStock.dayRange.low !== null && leftStock.dayRange.high !== null"
-            :class="useClsx('mt-6 border-t border-gray-7 border-solid pt-6')"
-          >
-            <div :class="useClsx('font-manrope mb-3 text-xs tracking-wider uppercase color-gray-10')">
-              Day Range
-            </div>
-            <div :class="useClsx('relative')">
-              <div :class="useClsx('h-1 rounded-full bg-gray-6 dark:bg-gray-700')" />
-              <div
-                v-if="leftStock.price && leftStock.dayRange.low && leftStock.dayRange.high"
-                :class="useClsx('absolute top-0 h-1 rounded-full from-olive-12 to-mint-11 bg-gradient-to-r transition-all duration-500')"
-                :style="{
-                  width: `${((leftStock.price - leftStock.dayRange.low) / (leftStock.dayRange.high - leftStock.dayRange.low)) * 100}%`,
-                }"
-              />
-              <div :class="useClsx('mt-2 flex justify-between text-xs')">
-                <span :class="useClsx('font-manrope color-gray-11')">
-                  ${{ leftStock.dayRange.low?.toFixed(2) || 'N/A' }}
-                </span>
-                <span :class="useClsx('font-manrope color-gray-11')">
-                  ${{ leftStock.dayRange.high?.toFixed(2) || 'N/A' }}
-                </span>
-              </div>
-            </div>
+                <div :class="useClsx('font-manrope mb-3 text-xs tracking-wider uppercase color-gray-10')">
+                  Day Range
+                </div>
+                <div :class="useClsx('relative')">
+                  <div :class="useClsx('h-1 rounded-full bg-gray-6 dark:bg-gray-700')" />
+                  <div
+                    v-if="leftStock.price !== null && leftStock.dayRange.low !== null && leftStock.dayRange.high !== null"
+                    :class="useClsx('absolute top-0 left-0 h-1 rounded-full from-olive-12 to-mint-11 bg-gradient-to-r transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]')"
+                    :style="{ width: leftBarWidth }"
+                  />
+                  <div :class="useClsx('mt-2 flex justify-between text-xs')">
+                    <span :class="useClsx('font-manrope color-gray-11')">
+                      ${{ leftStock.dayRange.low?.toFixed(2) || 'N/A' }}
+                    </span>
+                    <span :class="useClsx('font-manrope color-gray-11')">
+                      ${{ leftStock.dayRange.high?.toFixed(2) || 'N/A' }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -394,78 +453,86 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           <div v-if="rightStock" :key="rightStock.symbol" ref="rightCardContentRef">
             <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack')">
               <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
-            <div :class="useClsx('col-span-3')">
-              <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
-                {{ rightStock.symbol }}
-              </div>
-              <div :class="useClsx('text-nowrap text-truncate font-manrope text-sm tracking-widest uppercase color-gray-10')">
-                {{ rightStock.name || rightStock.symbol }}
-              </div>
-            </div>
+                <div :class="useClsx('col-span-3')">
+                  <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
+                    {{ rightStock.symbol }}
+                  </div>
+                  <div
+                    :class="useClsx('text-nowrap text-truncate font-manrope text-sm tracking-widest uppercase color-gray-10')"
+                  >
+                    {{ rightStock.name || rightStock.symbol }}
+                  </div>
+                </div>
 
-            <div :class="useClsx('col-span-4')">
-              <div :class="useClsx('font-manrope mb-2 text-4xl font-light color-gray-12')">
-                ${{ rightStock.price?.toFixed(2) || 'N/A' }}
-              </div>
-              <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
-                {{ rightStock.industry || '—' }}
-              </div>
-            </div>
+                <div :class="useClsx('col-span-4')">
+                  <div :class="useClsx('font-manrope mb-2 text-4xl font-light color-gray-12')">
+                    $<NumberTicker
+                      :value="rightStock.price!"
+                    />
+                  </div>
+                  <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
+                    {{ rightStock.industry || '—' }}
+                  </div>
+                </div>
 
-            <div :class="useClsx('col-span-3')">
+                <div :class="useClsx('col-span-3')">
+                  <div
+                    v-if="rightStock.change !== null"
+                    :class="useClsx(
+                      'mb-2 flex items-center space-x-3',
+                      rightStock.change < 0 ? 'color-crimson-10' : 'color-jade-9',
+                    )"
+                  >
+                    <Icon
+                      v-if="rightStock.change < 0" name="tabler:trending-down"
+                      :class="useClsx('size-5 md:size-6')"
+                    />
+                    <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
+                    <span :class="useClsx('font-manrope text-2xl font-light')">
+                      {{ rightStock.change > 0 ? '+' : '' }}
+                      <NumberTicker
+                        :value="rightStock.change"
+                      />
+                    </span>
+                  </div>
+                  <div :class="useClsx('font-manrope text-sm color-gray-10')">
+                    ({{ rightStock.changePercent?.toFixed(2) || '0.00' }}%)
+                  </div>
+                </div>
+
+                <div :class="useClsx('col-span-2 text-right')">
+                  <div :class="useClsx('font-manrope mb-1 text-lg font-light color-gray-12')">
+                    ${{ rightStock.open?.toFixed(2) || 'N/A' }}
+                  </div>
+                  <div :class="useClsx('font-manrope text-xs tracking-wider uppercase color-gray-10')">
+                    Open
+                  </div>
+                </div>
+              </div>
+
               <div
-                v-if="rightStock.change !== null"
-                :class="useClsx(
-                  'mb-2 flex items-center space-x-3',
-                  rightStock.change < 0 ? 'color-crimson-10' : 'color-jade-9',
-                )"
+                v-if="rightStock.dayRange.low !== null && rightStock.dayRange.high !== null"
+                :class="useClsx('mt-6 border-t border-gray-7 border-solid pt-6')"
               >
-                <Icon v-if="rightStock.change < 0" name="tabler:trending-down" :class="useClsx('size-5 md:size-6')" />
-                <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
-                <span :class="useClsx('font-manrope text-2xl font-light')">
-                  {{ rightStock.change > 0 ? '+' : '' }}{{ rightStock.change?.toFixed(2) }}
-                </span>
-              </div>
-              <div :class="useClsx('font-manrope text-sm color-gray-10')">
-                ({{ rightStock.changePercent?.toFixed(2) || '0.00' }}%)
-              </div>
-            </div>
-
-            <div :class="useClsx('col-span-2 text-right')">
-              <div :class="useClsx('font-manrope mb-1 text-lg font-light color-gray-12')">
-                ${{ rightStock.open?.toFixed(2) || 'N/A' }}
-              </div>
-              <div :class="useClsx('font-manrope text-xs tracking-wider uppercase color-gray-10')">
-                Open
-              </div>
-            </div>
-          </div>
-
-          <div
-            v-if="rightStock.dayRange.low !== null && rightStock.dayRange.high !== null"
-            :class="useClsx('mt-6 border-t border-gray-7 border-solid pt-6')"
-          >
-            <div :class="useClsx('font-manrope color-gray-10 mb-3 text-xs tracking-wider uppercase text-gray-500')">
-              Day Range
-            </div>
-            <div :class="useClsx('relative')">
-              <div :class="useClsx('h-1 rounded-full bg-gray-6 dark:bg-gray-700')" />
-              <div
-                v-if="rightStock.price && rightStock.dayRange.low && rightStock.dayRange.high"
-                :class="useClsx('absolute top-0 h-1 rounded-full from-olive-12 to-mint-11 bg-gradient-to-r transition-all duration-500')"
-                :style="{
-                  width: `${((rightStock.price - rightStock.dayRange.low) / (rightStock.dayRange.high - rightStock.dayRange.low)) * 100}%`,
-                }"
-              />
-              <div :class="useClsx('mt-2 flex justify-between text-xs')">
-                <span :class="useClsx('font-manrope color-gray-11')">
-                  ${{ rightStock.dayRange.low?.toFixed(2) || 'N/A' }}
-                </span>
-                <span :class="useClsx('font-manrope color-gray-11')">
-                  ${{ rightStock.dayRange.high?.toFixed(2) || 'N/A' }}
-                </span>
-              </div>
-            </div>
+                <div :class="useClsx('font-manrope color-gray-10 mb-3 text-xs tracking-wider uppercase text-gray-500')">
+                  Day Range
+                </div>
+                <div :class="useClsx('relative')">
+                  <div :class="useClsx('h-1 rounded-full bg-gray-6 dark:bg-gray-700')" />
+                  <div
+                    v-if="rightStock.price !== null && rightStock.dayRange.low !== null && rightStock.dayRange.high !== null"
+                    :class="useClsx('absolute top-0 left-0 h-1 rounded-full from-olive-12 to-mint-11 bg-gradient-to-r transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]')"
+                    :style="{ width: rightBarWidth }"
+                  />
+                  <div :class="useClsx('mt-2 flex justify-between text-xs')">
+                    <span :class="useClsx('font-manrope color-gray-11')">
+                      ${{ rightStock.dayRange.low?.toFixed(2) || 'N/A' }}
+                    </span>
+                    <span :class="useClsx('font-manrope color-gray-11')">
+                      ${{ rightStock.dayRange.high?.toFixed(2) || 'N/A' }}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
