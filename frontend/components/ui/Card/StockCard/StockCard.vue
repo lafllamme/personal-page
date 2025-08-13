@@ -162,7 +162,7 @@ const boxShadowClass = useClsx(
   'shadow-[0_8px_25px_rgba(0,0,0,0.12),0_3px_10px_rgba(0,0,0,0.08)]',
   'dark:shadow-[0_8px_25px_rgba(255,255,255,0.12),0_3px_10px_rgba(255,255,255,0.08)]',
   // common card chrome
-  'rounded-3xl p-8 backdrop-blur-sm',
+  'rounded-3xl p-5 sm:p-6 md:p-8 backdrop-blur-sm',
 )
 
 const cardSurfaceLight = useClsx('bg-sand-1')
@@ -170,11 +170,11 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
 </script>
 
 <template>
-  <div ref="hostRef" :class="useClsx('flex flex-col justify-center space-y-6')">
+  <div ref="hostRef" :class="useClsx('flex flex-col justify-center space-y-4 sm:space-y-6 w-full min-w-0')">
     <div :class="useClsx('mb-4')">
       <h2
         :class="useClsx(
-          'font-ginger mb-2 text-5xl font-light tracking-wide uppercase',
+          'font-ginger mb-2 text-[clamp(28px,4.2vw,48px)] font-light tracking-wide uppercase',
           'color-pureBlack dark:color-pureWhite',
         )"
       >
@@ -184,22 +184,19 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
     </div>
 
     <!-- Pair Navigation - Compact Minimal Lines -->
-    <div
-      v-if="pairs.length"
-      :class="useClsx('mb-2')"
-    >
-      <div :class="useClsx('flex items-center justify-center space-x-6')">
+      <div v-if="pairs.length" :class="useClsx('mb-1 sm:mb-2')">
+        <div :class="useClsx('flex items-center overflow-x-auto whitespace-nowrap justify-start sm:justify-center gap-3 sm:gap-5 px-2 -mx-2')">
         <button
           v-for="(pair, pairIndex) in pairs"
           :key="pairIndex"
           :class="useClsx(
             'relative group rounded-full focus-visible:transition-none transition-all focus-visible:ring duration-500 ease-out',
-            'focus-visible:outline-none p-1 px-2 focus-visible:ring-1.5 focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+              'focus-visible:outline-none p-0.5 px-1.5 sm:p-1 sm:px-2 focus-visible:ring-1.5 focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
             pair.index === currentPair ? 'scale-105' : 'hover:scale-[1.02]',
           )"
           @click="handlePairClick(pair.index)"
         >
-          <div :class="useClsx('flex items-center space-x-4')">
+            <div :class="useClsx('flex items-center gap-3 sm:gap-4')">
             <!-- Left Stock -->
             <div
               :class="useClsx(
@@ -209,7 +206,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
             >
               <div
                 :class="useClsx(
-                  'text-xs font-light tracking-wider transition-colors duration-300',
+                  'text-[10px] sm:text-xs font-light tracking-wider transition-colors duration-300',
                   pair.index === currentPair
                     ? 'color-pureBlack dark:color-pureWhite'
                     : 'color-gray-10 group-hover:color-gray-12',
@@ -219,7 +216,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
               </div>
               <div
                 :class="useClsx(
-                  'mt-1 h-px transition-all duration-300',
+                  'mt-0.5 sm:mt-1 h-px transition-all duration-300',
                   pair.index === currentPair
                     ? 'w-full bg-pureBlack dark:bg-pureWhite'
                     : 'w-0 bg-gray-8 group-hover:w-full',
@@ -228,7 +225,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
             </div>
 
             <!-- Connector with progress -->
-            <div :class="useClsx('relative w-8 h-px')">
+            <div :class="useClsx('relative w-7 sm:w-8 h-px shrink-0')">
               <div
                 :class="useClsx(
                   'absolute top-0 left-0 h-px transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]',
@@ -241,7 +238,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
               <div
                 v-if="pair.index === currentPair"
                 :key="`line-${animationKey}`"
-                :class="useClsx('absolute top-0 left-0 h-px w-8 bg-pureBlack/90 dark:bg-pureWhite/90 progress-line')"
+                :class="useClsx('absolute top-0 left-0 h-px w-7 sm:w-8 bg-pureBlack/90 dark:bg-pureWhite/90 progress-line')"
               />
               <!-- Moving dot that travels smoothly -->
               <div
@@ -254,7 +251,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   'text-pureBlack dark:text-pureWhite',
                   'progress-dot',
                 )"
-                style="left:0; --dot-distance: calc(2rem - 0.375rem)"
+                style="left:0; --dot-distance: calc(1.75rem - 0.375rem)"
               />
             </div>
 
@@ -267,7 +264,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
             >
               <div
                 :class="useClsx(
-                  'text-xs font-light tracking-wider transition-colors duration-300',
+                  'text-[10px] sm:text-xs font-light tracking-wider transition-colors duration-300',
                   pair.index === currentPair
                     ? 'color-pureBlack dark:color-pureWhite'
                     : 'color-gray-10 group-hover:color-gray-12',
@@ -277,7 +274,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
               </div>
               <div
                 :class="useClsx(
-                  'mt-1 h-px transition-all duration-300',
+                  'mt-0.5 sm:mt-1 h-px transition-all duration-300',
                   pair.index === currentPair
                     ? 'w-full bg-pureBlack dark:bg-pureWhite'
                     : 'w-0 bg-gray-8 group-hover:w-full',
@@ -352,10 +349,10 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           @after-enter="afterEnterLeft"
         >
           <div v-if="leftStock" :key="leftStock.symbol" ref="leftCardContentRef">
-            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack')">
-              <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
-                <div :class="useClsx('col-span-3')">
-                  <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
+            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack w-full min-w-0')">
+              <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
+                <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
+                  <div :class="useClsx('font-manrope mb-2 text-[clamp(20px,2.4vw,36px)] font-light tracking-wider color-gray-12')">
                     {{ leftStock.symbol }}
                   </div>
                   <div
@@ -365,8 +362,8 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-4')">
-                  <div :class="useClsx('font-manrope mb-2 text-4xl font-light color-gray-12')">
+                <div :class="useClsx('col-span-12 sm:col-span-4 min-w-0')">
+                  <div :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] font-light color-gray-12')">
                     $<NumberTicker
                       :value="leftStock.price!"
                     />
@@ -376,7 +373,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-3')">
+                <div :class="useClsx('col-span-6 sm:col-span-3 min-w-0')">
                   <div
                     v-if="leftStock.change !== null"
                     :class="useClsx(
@@ -398,8 +395,8 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-2 text-right')">
-                  <div :class="useClsx('font-manrope mb-1 text-lg font-light color-gray-12')">
+                <div :class="useClsx('col-span-6 sm:col-span-2 text-left sm:text-right min-w-0')">
+                  <div :class="useClsx('font-manrope mb-1 text-base sm:text-lg font-light color-gray-12')">
                     ${{ leftStock.open?.toFixed(2) || 'N/A' }}
                   </div>
                   <div :class="useClsx('font-manrope text-xs tracking-wider uppercase color-gray-10')">
@@ -451,10 +448,10 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           @after-enter="afterEnterRight"
         >
           <div v-if="rightStock" :key="rightStock.symbol" ref="rightCardContentRef">
-            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack')">
-              <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
-                <div :class="useClsx('col-span-3')">
-                  <div :class="useClsx('font-manrope mb-2 text-4xl font-light tracking-wider color-gray-12')">
+            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack w-full min-w-0')">
+              <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
+                <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
+                  <div :class="useClsx('font-manrope mb-2 text-[clamp(20px,2.4vw,36px)] font-light tracking-wider color-gray-12')">
                     {{ rightStock.symbol }}
                   </div>
                   <div
@@ -464,8 +461,8 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-4')">
-                  <div :class="useClsx('font-manrope mb-2 text-4xl font-light color-gray-12')">
+                <div :class="useClsx('col-span-12 sm:col-span-4 min-w-0')">
+                  <div :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] font-light color-gray-12')">
                     $<NumberTicker
                       :value="rightStock.price!"
                     />
@@ -475,7 +472,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-3')">
+                <div :class="useClsx('col-span-6 sm:col-span-3 min-w-0')">
                   <div
                     v-if="rightStock.change !== null"
                     :class="useClsx(
@@ -500,8 +497,8 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-2 text-right')">
-                  <div :class="useClsx('font-manrope mb-1 text-lg font-light color-gray-12')">
+                <div :class="useClsx('col-span-6 sm:col-span-2 text-left sm:text-right min-w-0')">
+                  <div :class="useClsx('font-manrope mb-1 text-base sm:text-lg font-light color-gray-12')">
                     ${{ rightStock.open?.toFixed(2) || 'N/A' }}
                   </div>
                   <div :class="useClsx('font-manrope text-xs tracking-wider uppercase color-gray-10')">
@@ -541,7 +538,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
     </div>
 
     <!-- Pager dots -->
-    <div v-if="stockData.length > 0" :class="useClsx('mt-8 flex justify-center space-x-3')">
+    <div v-if="stockData.length > 0" :class="useClsx('mt-6 md:mt-8 flex justify-center space-x-3')">
       <div
         v-for="(_, index) in Math.ceil(stockData.length / 2)"
         :key="index"
