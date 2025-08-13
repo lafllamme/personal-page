@@ -365,8 +365,8 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           />
         </div>
 
-        <div class="md:grid-temp grid gap-x-16 md:grid-cols-[3fr_5fr]">
-          <div class="min-w-lg">
+        <div class="md:grid-temp grid items-start gap-x-12 md:grid-cols-[3fr_5fr]">
+          <div class="w-full min-w-0">
             <FeaturedCard
               :id="featuredArticle.id"
               :author="featuredArticle.author"
@@ -377,7 +377,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
               :title="featuredArticle.title"
             />
           </div>
-          <div>
+          <div class="w-full min-w-0">
             <StockCard />
           </div>
         </div>
