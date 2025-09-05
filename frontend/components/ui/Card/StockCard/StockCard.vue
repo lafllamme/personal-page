@@ -170,7 +170,10 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
 </script>
 
 <template>
-  <div ref="hostRef" :class="useClsx('flex flex-col justify-center space-y-4 sm:space-y-6 w-full min-w-0')">
+  <div
+    ref="hostRef"
+    :class="useClsx('flex flex-col justify-center space-y-4 sm:space-y-6 w-full min-w-0')"
+  >
     <div :class="useClsx('mb-4')">
       <h2
         :class="useClsx(
@@ -184,19 +187,28 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
     </div>
 
     <!-- Pair Navigation - Compact Minimal Lines -->
-      <div v-if="pairs.length" :class="useClsx('mb-1 sm:mb-2')">
-        <div :class="useClsx('flex items-center overflow-x-auto whitespace-nowrap justify-start sm:justify-center gap-3 sm:gap-5 px-2 -mx-2')">
+    <div
+      v-if="pairs.length"
+      :class="useClsx('mb-1 sm:mb-2')"
+    >
+      <div
+        :class="useClsx(
+          'flex [scrollbar-width:none] items-center overflow-x-auto',
+          'sm:justify-center gap-3 sm:gap-5 px-2 -mx-2',
+          'whitespace-nowrap justify-start',
+        )"
+      >
         <button
           v-for="(pair, pairIndex) in pairs"
           :key="pairIndex"
           :class="useClsx(
             'relative group rounded-full focus-visible:transition-none transition-all focus-visible:ring duration-500 ease-out',
-              'focus-visible:outline-none p-0.5 px-1.5 sm:p-1 sm:px-2 focus-visible:ring-1.5 focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+            'focus-visible:outline-none p-0.5 px-1.5 sm:p-1 sm:px-2 focus-visible:ring-1.5 focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
             pair.index === currentPair ? 'scale-105' : 'hover:scale-[1.02]',
           )"
           @click="handlePairClick(pair.index)"
         >
-            <div :class="useClsx('flex items-center gap-3 sm:gap-4')">
+          <div :class="useClsx('flex items-center gap-3 sm:gap-4')">
             <!-- Left Stock -->
             <div
               :class="useClsx(
@@ -352,7 +364,9 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
             <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack w-full min-w-0')">
               <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
                 <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
-                  <div :class="useClsx('font-manrope mb-2 text-[clamp(20px,2.4vw,36px)] font-light tracking-wider color-gray-12')">
+                  <div
+                    :class="useClsx('whitespace-nowrap font-manrope mb-2 text-[clamp(20px,2.4vw,36px)] font-light tracking-wider color-gray-12')"
+                  >
                     {{ leftStock.symbol }}
                   </div>
                   <div
@@ -363,8 +377,9 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                 </div>
 
                 <div :class="useClsx('col-span-12 sm:col-span-4 min-w-0')">
-                  <div :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] font-light color-gray-12')">
-                    $<NumberTicker
+                  <div :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] whitespace-nowrap font-light color-gray-12')">
+                    $
+                    <NumberTicker
                       :value="leftStock.price!"
                     />
                   </div>
@@ -383,7 +398,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   >
                     <Icon v-if="leftStock.change < 0" name="tabler:trending-down" :class="useClsx('size-5 md:size-6')" />
                     <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
-                    <span :class="useClsx('font-manrope text-2xl font-light')">
+                    <span :class="useClsx('font-manrope text-2xl font-light whitespace-nowrap')">
                       {{ leftStock.change > 0 ? '+' : '' }}
                       <NumberTicker
                         :value="leftStock.change"
@@ -395,7 +410,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-6 sm:col-span-2 text-left sm:text-right min-w-0')">
+                <div :class="useClsx('col-span-6 md:hidden sm:col-span-2 text-left sm:text-right min-w-0')">
                   <div :class="useClsx('font-manrope mb-1 text-base sm:text-lg font-light color-gray-12')">
                     ${{ leftStock.open?.toFixed(2) || 'N/A' }}
                   </div>
@@ -451,7 +466,9 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
             <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack w-full min-w-0')">
               <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
                 <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
-                  <div :class="useClsx('font-manrope mb-2 text-[clamp(20px,2.4vw,36px)] font-light tracking-wider color-gray-12')">
+                  <div
+                    :class="useClsx('whitespace-nowrap font-manrope mb-2 text-[clamp(20px,2.4vw,36px)] font-light tracking-wider color-gray-12')"
+                  >
                     {{ rightStock.symbol }}
                   </div>
                   <div
@@ -462,8 +479,9 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                 </div>
 
                 <div :class="useClsx('col-span-12 sm:col-span-4 min-w-0')">
-                  <div :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] font-light color-gray-12')">
-                    $<NumberTicker
+                  <div :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] whitespace-nowrap font-light color-gray-12')">
+                    $
+                    <NumberTicker
                       :value="rightStock.price!"
                     />
                   </div>
@@ -485,7 +503,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                       :class="useClsx('size-5 md:size-6')"
                     />
                     <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
-                    <span :class="useClsx('font-manrope text-2xl font-light')">
+                    <span :class="useClsx('font-manrope text-2xl font-light whitespace-nowrap')">
                       {{ rightStock.change > 0 ? '+' : '' }}
                       <NumberTicker
                         :value="rightStock.change"
@@ -497,7 +515,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-6 sm:col-span-2 text-left sm:text-right min-w-0')">
+                <div :class="useClsx('md:hidden col-span-6 sm:col-span-2 text-left sm:text-right min-w-0')">
                   <div :class="useClsx('font-manrope mb-1 text-base sm:text-lg font-light color-gray-12')">
                     ${{ rightStock.open?.toFixed(2) || 'N/A' }}
                   </div>
