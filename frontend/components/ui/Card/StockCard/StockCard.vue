@@ -167,6 +167,7 @@ const boxShadowClass = useClsx(
 
 const cardSurfaceLight = useClsx('bg-sand-1')
 const cardSurfaceDark = useClsx('dark:bg-olive-2')
+const baseClass = useClsx('max-w-5xl')
 </script>
 
 <template>
@@ -174,20 +175,8 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
     ref="hostRef"
     :class="useClsx('flex flex-col justify-center space-y-4 sm:space-y-6 w-full min-w-0')"
   >
-    <div :class="useClsx('mb-4')">
-      <h2
-        :class="useClsx(
-          'font-ginger mb-2 text-[clamp(28px,4.2vw,48px)] font-light tracking-wide uppercase',
-          'color-pureBlack dark:color-pureWhite',
-        )"
-      >
-        MARKET PULSE
-      </h2>
-      <div :class="useClsx('h-px w-24 bg-gray-12')" />
-    </div>
-
     <!-- Pair Navigation - Compact Minimal Lines -->
-    <div
+    <!--    <div
       v-if="pairs.length"
       :class="useClsx('mb-1 sm:mb-2')"
     >
@@ -209,7 +198,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           @click="handlePairClick(pair.index)"
         >
           <div :class="useClsx('flex items-center gap-3 sm:gap-4')">
-            <!-- Left Stock -->
+            &lt;!&ndash; Left Stock &ndash;&gt;
             <div
               :class="useClsx(
                 'text-center transition-all duration-300',
@@ -236,7 +225,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
               />
             </div>
 
-            <!-- Connector with progress -->
+            &lt;!&ndash; Connector with progress &ndash;&gt;
             <div :class="useClsx('relative w-7 sm:w-8 h-px shrink-0')">
               <div
                 :class="useClsx(
@@ -246,13 +235,13 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                     : 'w-6 bg-gray-8 dark:bg-gray-6 group-hover:bg-gray-10 dark:group-hover:bg-gray-5',
                 )"
               />
-              <!-- Progress line that grows smoothly -->
+              &lt;!&ndash; Progress line that grows smoothly &ndash;&gt;
               <div
                 v-if="pair.index === currentPair"
                 :key="`line-${animationKey}`"
                 :class="useClsx('absolute top-0 left-0 h-px w-7 sm:w-8 bg-pureBlack/90 dark:bg-pureWhite/90 progress-line')"
               />
-              <!-- Moving dot that travels smoothly -->
+              &lt;!&ndash; Moving dot that travels smoothly &ndash;&gt;
               <div
                 v-if="pair.index === currentPair"
                 :key="`dot-${animationKey}`"
@@ -263,11 +252,11 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
                   'text-pureBlack dark:text-pureWhite',
                   'progress-dot',
                 )"
-                style="left:0; --dot-distance: calc(1.75rem - 0.375rem)"
+                style="left:0; &#45;&#45;dot-distance: calc(1.75rem - 0.375rem)"
               />
             </div>
 
-            <!-- Right Stock -->
+            &lt;!&ndash; Right Stock &ndash;&gt;
             <div
               :class="useClsx(
                 'text-center transition-all duration-300',
@@ -296,7 +285,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           </div>
         </button>
       </div>
-    </div>
+    </div> -->
 
     <!-- Loading -->
     <div v-if="pending" :class="useClsx('space-y-6')">
@@ -361,7 +350,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           @after-enter="afterEnterLeft"
         >
           <div v-if="leftStock" :key="leftStock.symbol" ref="leftCardContentRef">
-            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack w-full min-w-0')">
+            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0')">
               <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
                 <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
                   <div
@@ -463,7 +452,7 @@ const cardSurfaceDark = useClsx('dark:bg-olive-2')
           @after-enter="afterEnterRight"
         >
           <div v-if="rightStock" :key="rightStock.symbol" ref="rightCardContentRef">
-            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, 'color-pureBlack w-full min-w-0')">
+            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0')">
               <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
                 <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
                   <div
