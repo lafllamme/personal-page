@@ -87,13 +87,12 @@ useVisibilityObserver(featuredRef, isVisible)
       </svg>
       <!-- The actual blurred, dark, semi-transparent layer -->
       <div
-        class="relative h-full w-full bg-pureWhite/30 px-6 pb-6 pt-4 dark:bg-pureBlack/40"
-        style="border-radius: 0 0 42px 38px;"
+        class="relative h-full w-full rounded-bl-[42px] rounded-br-[38px] rounded-tl-0 rounded-tr-0 bg-pureWhite/30 px-6 pb-6 pt-4 dark:bg-pureBlack/40"
       >
         <!-- Card Content INSIDE blur -->
         <h3
           :class="useClsx(
-            'font-baskerville mb-2 text-balance text-3xl color-pureBlack',
+            'font-baskerville mb-2 text-balance text-xl md:text-2xl lg:text-3xl color-pureBlack',
             'tracking-tight drop-shadow dark:color-pureWhite',
           )"
         >
@@ -101,7 +100,7 @@ useVisibilityObserver(featuredRef, isVisible)
         </h3>
         <p
           :class="useClsx(
-            'figtree-regular mb-2 text-pretty text-lg color-sand-11',
+            'figtree-regular mb-2 text-pretty text-base lg:text-lg color-sand-11',
             'font-light tracking-wide drop-shadow dark:color-gray-11',
           )"
         >
