@@ -365,7 +365,18 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           />
         </div>
 
-        <div class="md:grid-temp grid items-start gap-x-8 xl:grid-cols-[3fr_5fr] md:grid-cols-2 <md:gap-y-8 lg:gap-x-12">
+        <div :class="useClsx('mb-4')">
+          <h2
+            :class="useClsx(
+              'font-ginger mb-2 text-[clamp(28px,4.2vw,48px)] leading-none md:text-[clamp(48px,6vw,96px)] font-light tracking-wide uppercase',
+              'color-pureBlack dark:color-pureWhite',
+            )"
+          >
+            MARKET PULSE
+          </h2>
+          <div :class="useClsx('h-px w-full bg-gray-6')" />
+        </div>
+        <div class="md:grid-temp grid my-8 items-start gap-x-8 xl:grid-cols-[3fr_5fr] md:grid-cols-2 md:my-10 <md:gap-y-8 lg:gap-x-12">
           <div class="min-w-0 w-full">
             <FeaturedCard
               :id="featuredArticle.id"
