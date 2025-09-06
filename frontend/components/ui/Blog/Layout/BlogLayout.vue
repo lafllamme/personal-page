@@ -13,6 +13,8 @@ import SparklesText from '@/components/ui/Text/SparkleText/SparkleText.vue'
 // Composables
 const { getImageUrlFromObject } = useImageUrl()
 
+const tickers = ['MSFT', 'GOOGL', 'NVDA', 'META', 'AMZN', 'AAPL', 'CRM', 'PLTR', 'ADBE', 'NOW']
+
 // --- REAL DATA FROM PAYLOAD ---
 interface GalleryPost {
   category: string
@@ -366,18 +368,34 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
         </div>
 
         <div :class="useClsx('mb-4')">
-          <h2
-            :class="useClsx(
-              'font-ginger mb-2 text-[clamp(28px,4.2vw,48px)] leading-none md:text-[clamp(48px,6vw,96px)] font-light tracking-wide uppercase',
-              'color-pureBlack dark:color-pureWhite',
-            )"
-          >
-            MARKET PULSE
-          </h2>
+          <div class="flex justify-between">
+            <h2
+              :class="useClsx(
+                'font-ginger text-[clamp(28px,4.2vw,48px)] leading-none md:text-[clamp(38px,4.2vw,56px)] font-light tracking-wide uppercase',
+                'color-pureBlack dark:color-pureWhite',
+              )"
+            >
+              MARKET PULSE
+            </h2>
+            <div class="flex items-center">
+              <button
+                v-for="stock in tickers"
+                :key="stock"
+                :class="useClsx(
+                  'text-cursor font-manrope rounded-full px-3 py-2',
+                  'text-xs color-mint-12 font-light hover:bg-mint-5',
+                  'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+                  'focus-visible:outline-none focus-visible:ring',
+                )"
+              >
+                {{ stock }}
+              </button>
+            </div>
+          </div>
           <div :class="useClsx('h-px w-full bg-gray-6')" />
         </div>
-        <div class="md:grid-temp grid my-8 items-start gap-x-8 xl:grid-cols-[3fr_5fr] md:grid-cols-2 md:my-10 <md:gap-y-8 lg:gap-x-12">
-          <div class="min-w-0 w-full">
+        <div class="md:grid-temp grid my-8 items-stretch gap-x-8 md:grid-cols-[3fr_5fr] md:my-10 <md:gap-y-8 lg:gap-x-12">
+          <div class="h-full min-w-0 w-full">
             <FeaturedCard
               :id="featuredArticle.id"
               :author="featuredArticle.author"
@@ -388,7 +406,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
               :title="featuredArticle.title"
             />
           </div>
-          <div class="min-w-0 w-full">
+          <div class="h-full min-w-0 w-full">
             <StockCard />
           </div>
         </div>
