@@ -167,177 +167,47 @@ const boxShadowClass = useClsx(
 
 const cardSurfaceLight = useClsx('bg-sand-1')
 const cardSurfaceDark = useClsx('dark:bg-olive-2')
-const baseClass = useClsx('max-w-5xl')
+const baseClass = useClsx('max-w-5xl h-full')
 </script>
 
 <template>
+  <!-- Root is a fixed-height grid with two equal rows. This makes each card exactly 50% of the column. -->
   <div
     ref="hostRef"
-    :class="useClsx('flex flex-col justify-center space-y-4 sm:space-y-6 w-full min-w-0')"
+    :class="useClsx('relative grid h-full min-h-0 w-full min-w-0 grid-rows-[1fr_1fr] gap-6')"
   >
-    <!-- Pair Navigation - Compact Minimal Lines -->
-    <!--    <div
-      v-if="pairs.length"
-      :class="useClsx('mb-1 sm:mb-2')"
-    >
-      <div
-        :class="useClsx(
-          'flex [scrollbar-width:none] items-center overflow-x-auto',
-          'sm:justify-center gap-3 sm:gap-5 px-2 -mx-2',
-          'whitespace-nowrap justify-start',
-        )"
-      >
-        <button
-          v-for="(pair, pairIndex) in pairs"
-          :key="pairIndex"
-          :class="useClsx(
-            'relative group rounded-full focus-visible:transition-none transition-all focus-visible:ring duration-500 ease-out',
-            'focus-visible:outline-none p-0.5 px-1.5 sm:p-1 sm:px-2 focus-visible:ring-1.5 focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-            pair.index === currentPair ? 'scale-105' : 'hover:scale-[1.02]',
-          )"
-          @click="handlePairClick(pair.index)"
-        >
-          <div :class="useClsx('flex items-center gap-3 sm:gap-4')">
-            &lt;!&ndash; Left Stock &ndash;&gt;
-            <div
-              :class="useClsx(
-                'text-center transition-all duration-300',
-                pair.index === currentPair ? 'transform -translate-y-0.5' : '',
-              )"
-            >
-              <div
-                :class="useClsx(
-                  'text-[10px] sm:text-xs font-light tracking-wider transition-colors duration-300',
-                  pair.index === currentPair
-                    ? 'color-pureBlack dark:color-pureWhite'
-                    : 'color-gray-10 group-hover:color-gray-12',
-                )"
-              >
-                {{ pair.stocks[0]?.symbol }}
-              </div>
-              <div
-                :class="useClsx(
-                  'mt-0.5 sm:mt-1 h-px transition-all duration-300',
-                  pair.index === currentPair
-                    ? 'w-full bg-pureBlack dark:bg-pureWhite'
-                    : 'w-0 bg-gray-8 group-hover:w-full',
-                )"
-              />
-            </div>
-
-            &lt;!&ndash; Connector with progress &ndash;&gt;
-            <div :class="useClsx('relative w-7 sm:w-8 h-px shrink-0')">
-              <div
-                :class="useClsx(
-                  'absolute top-0 left-0 h-px transition-all duration-400 ease-[cubic-bezier(0.22,1,0.36,1)]',
-                  pair.index === currentPair
-                    ? 'w-8 bg-gray-8 dark:bg-gray-6'
-                    : 'w-6 bg-gray-8 dark:bg-gray-6 group-hover:bg-gray-10 dark:group-hover:bg-gray-5',
-                )"
-              />
-              &lt;!&ndash; Progress line that grows smoothly &ndash;&gt;
-              <div
-                v-if="pair.index === currentPair"
-                :key="`line-${animationKey}`"
-                :class="useClsx('absolute top-0 left-0 h-px w-7 sm:w-8 bg-pureBlack/90 dark:bg-pureWhite/90 progress-line')"
-              />
-              &lt;!&ndash; Moving dot that travels smoothly &ndash;&gt;
-              <div
-                v-if="pair.index === currentPair"
-                :key="`dot-${animationKey}`"
-                :class="useClsx(
-                  'absolute top-1/2 -translate-y-1/2 z-10',
-                  'h-1.5 w-1.5 rounded-full',
-                  'bg-pureBlack dark:bg-pureWhite',
-                  'text-pureBlack dark:text-pureWhite',
-                  'progress-dot',
-                )"
-                style="left:0; &#45;&#45;dot-distance: calc(1.75rem - 0.375rem)"
-              />
-            </div>
-
-            &lt;!&ndash; Right Stock &ndash;&gt;
-            <div
-              :class="useClsx(
-                'text-center transition-all duration-300',
-                pair.index === currentPair ? 'transform -translate-y-0.5' : '',
-              )"
-            >
-              <div
-                :class="useClsx(
-                  'text-[10px] sm:text-xs font-light tracking-wider transition-colors duration-300',
-                  pair.index === currentPair
-                    ? 'color-pureBlack dark:color-pureWhite'
-                    : 'color-gray-10 group-hover:color-gray-12',
-                )"
-              >
-                {{ pair.stocks[1]?.symbol }}
-              </div>
-              <div
-                :class="useClsx(
-                  'mt-0.5 sm:mt-1 h-px transition-all duration-300',
-                  pair.index === currentPair
-                    ? 'w-full bg-pureBlack dark:bg-pureWhite'
-                    : 'w-0 bg-gray-8 group-hover:w-full',
-                )"
-              />
-            </div>
-          </div>
-        </button>
-      </div>
-    </div> -->
-
     <!-- Loading -->
-    <div v-if="pending" :class="useClsx('space-y-6')">
-      <div :class="useClsx(boxShadowClass, cardSurfaceLight, 'dark:bg-sand-10')">
-        <div :class="useClsx('animate-pulse')">
-          <div :class="useClsx('grid grid-cols-12 items-center gap-6')">
-            <div :class="useClsx('col-span-3')">
-              <div :class="useClsx('mb-2 h-8 rounded bg-gray-6 dark:bg-gray-700')" />
-              <div :class="useClsx('h-4 rounded bg-gray-6 dark:bg-gray-700')" />
-            </div>
-            <div :class="useClsx('col-span-4')">
-              <div :class="useClsx('mb-2 h-8 rounded bg-gray-6 dark:bg-gray-700')" />
-              <div :class="useClsx('h-4 rounded bg-gray-6 dark:bg-gray-700')" />
-            </div>
-            <div :class="useClsx('col-span-3')">
-              <div :class="useClsx('mb-2 h-6 rounded bg-gray-6 dark:bg-gray-700')" />
-              <div :class="useClsx('h-4 rounded bg-gray-6 dark:bg-gray-700')" />
-            </div>
-            <div :class="useClsx('col-span-2')">
-              <div :class="useClsx('mb-1 h-6 rounded bg-gray-6 dark:bg-gray-700')" />
-              <div :class="useClsx('h-3 rounded bg-gray-6 dark:bg-gray-700')" />
-            </div>
-          </div>
-        </div>
-      </div>
+    <div v-if="pending" :class="useClsx('space-y-6 col-span-1 row-span-2')">
+      <div :class="useClsx(boxShadowClass, cardSurfaceLight, 'dark:bg-sand-10 h-full')" />
     </div>
 
     <!-- Error -->
-    <div v-else-if="error" :class="useClsx('space-y-6')">
-      <div :class="useClsx(boxShadowClass, cardSurfaceLight, 'dark:bg-sand-10')">
-        <div :class="useClsx('text-center')">
-          <Icon name="ri:error-warning-line" :class="useClsx('mx-auto mb-4 size-12 color-gray-10')" />
-          <p :class="useClsx('font-manrope mb-2 text-lg color-gray-12')">
-            {{ error }}
-          </p>
-          <button
-            :class="useClsx(
-              'font-manrope rounded-lg px-4 py-2 transition-colors',
-              'bg-sand-12 hover:bg-sand-11 color-pureWhite',
-            )"
-            @click="() => refresh()"
-          >
-            Retry
-          </button>
+    <div v-else-if="error" :class="useClsx('space-y-6 col-span-1 row-span-2')">
+      <div :class="useClsx(boxShadowClass, cardSurfaceLight, 'dark:bg-sand-10 h-full')">
+        <div :class="useClsx('h-full flex items-center justify-center text-center p-6')">
+          <div>
+            <Icon name="ri:error-warning-line" :class="useClsx('mx-auto mb-4 size-12 color-gray-10')" />
+            <p :class="useClsx('font-manrope mb-2 text-lg color-gray-12')">
+              {{ error }}
+            </p>
+            <button
+              :class="useClsx(
+                'font-manrope rounded-lg px-4 py-2 transition-colors',
+                'bg-sand-12 hover:bg-sand-11 color-pureWhite',
+              )"
+              @click="() => refresh()"
+            >
+              Retry
+            </button>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Data -->
-    <div v-else-if="stockData.length > 0" :class="useClsx('space-y-6')">
-      <!-- Top card -->
-      <div :style="{ minHeight: leftMinHeight ? `${leftMinHeight}px` : undefined }">
+    <template v-else>
+      <!-- Top card (row 1) -->
+      <div class="h-full min-h-0">
         <Transition
           mode="out-in"
           enter-active-class="transition-opacity duration-500 ease-out"
@@ -349,8 +219,10 @@ const baseClass = useClsx('max-w-5xl')
           @before-leave="beforeLeaveLeft"
           @after-enter="afterEnterLeft"
         >
-          <div v-if="leftStock" :key="leftStock.symbol" ref="leftCardContentRef">
-            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0')">
+          <div v-if="leftStock" :key="leftStock.symbol" ref="leftCardContentRef" class="h-full min-h-0">
+            <div
+              :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0 h-full overflow-hidden')"
+            >
               <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
                 <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
                   <div
@@ -366,11 +238,11 @@ const baseClass = useClsx('max-w-5xl')
                 </div>
 
                 <div :class="useClsx('col-span-12 sm:col-span-4 min-w-0')">
-                  <div :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] whitespace-nowrap font-light color-gray-12')">
+                  <div
+                    :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] whitespace-nowrap font-light color-gray-12')"
+                  >
                     $
-                    <NumberTicker
-                      :value="leftStock.price!"
-                    />
+                    <NumberTicker :value="leftStock.price!" />
                   </div>
                   <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
                     {{ leftStock.industry || '—' }}
@@ -380,18 +252,13 @@ const baseClass = useClsx('max-w-5xl')
                 <div :class="useClsx('col-span-6 sm:col-span-3 min-w-0')">
                   <div
                     v-if="leftStock.change !== null"
-                    :class="useClsx(
-                      'mb-2 flex items-center space-x-3',
-                      leftStock.change < 0 ? 'color-crimson-10' : 'color-jade-9',
-                    )"
+                    :class="useClsx('mb-2 flex items-center space-x-3', leftStock.change < 0 ? 'color-crimson-10' : 'color-jade-9')"
                   >
                     <Icon v-if="leftStock.change < 0" name="tabler:trending-down" :class="useClsx('size-5 md:size-6')" />
                     <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
                     <span :class="useClsx('font-manrope text-2xl font-light whitespace-nowrap')">
                       {{ leftStock.change > 0 ? '+' : '' }}
-                      <NumberTicker
-                        :value="leftStock.change"
-                      />
+                      <NumberTicker :value="leftStock.change" />
                     </span>
                   </div>
                   <div :class="useClsx('font-manrope text-sm color-gray-10')">
@@ -424,12 +291,12 @@ const baseClass = useClsx('max-w-5xl')
                     :style="{ width: leftBarWidth }"
                   />
                   <div :class="useClsx('mt-2 flex justify-between text-xs')">
-                    <span :class="useClsx('font-manrope color-gray-11')">
-                      ${{ leftStock.dayRange.low?.toFixed(2) || 'N/A' }}
-                    </span>
-                    <span :class="useClsx('font-manrope color-gray-11')">
-                      ${{ leftStock.dayRange.high?.toFixed(2) || 'N/A' }}
-                    </span>
+                    <span :class="useClsx('font-manrope color-gray-11')">${{
+                      leftStock.dayRange.low?.toFixed(2) || 'N/A'
+                    }}</span>
+                    <span :class="useClsx('font-manrope color-gray-11')">${{
+                      leftStock.dayRange.high?.toFixed(2) || 'N/A'
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -438,8 +305,8 @@ const baseClass = useClsx('max-w-5xl')
         </Transition>
       </div>
 
-      <!-- Bottom card -->
-      <div :style="{ minHeight: rightMinHeight ? `${rightMinHeight}px` : undefined }">
+      <!-- Bottom card (row 2) -->
+      <div class="h-full min-h-0">
         <Transition
           mode="out-in"
           enter-active-class="transition-opacity duration-500 ease-out"
@@ -451,8 +318,10 @@ const baseClass = useClsx('max-w-5xl')
           @before-leave="beforeLeaveRight"
           @after-enter="afterEnterRight"
         >
-          <div v-if="rightStock" :key="rightStock.symbol" ref="rightCardContentRef">
-            <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0')">
+          <div v-if="rightStock" :key="rightStock.symbol" ref="rightCardContentRef" class="h-full min-h-0">
+            <div
+              :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0 h-full overflow-hidden')"
+            >
               <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
                 <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
                   <div
@@ -468,11 +337,11 @@ const baseClass = useClsx('max-w-5xl')
                 </div>
 
                 <div :class="useClsx('col-span-12 sm:col-span-4 min-w-0')">
-                  <div :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] whitespace-nowrap font-light color-gray-12')">
+                  <div
+                    :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] whitespace-nowrap font-light color-gray-12')"
+                  >
                     $
-                    <NumberTicker
-                      :value="rightStock.price!"
-                    />
+                    <NumberTicker :value="rightStock.price!" />
                   </div>
                   <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
                     {{ rightStock.industry || '—' }}
@@ -482,10 +351,7 @@ const baseClass = useClsx('max-w-5xl')
                 <div :class="useClsx('col-span-6 sm:col-span-3 min-w-0')">
                   <div
                     v-if="rightStock.change !== null"
-                    :class="useClsx(
-                      'mb-2 flex items-center space-x-3',
-                      rightStock.change < 0 ? 'color-crimson-10' : 'color-jade-9',
-                    )"
+                    :class="useClsx('mb-2 flex items-center space-x-3', rightStock.change < 0 ? 'color-crimson-10' : 'color-jade-9')"
                   >
                     <Icon
                       v-if="rightStock.change < 0" name="tabler:trending-down"
@@ -494,9 +360,7 @@ const baseClass = useClsx('max-w-5xl')
                     <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
                     <span :class="useClsx('font-manrope text-2xl font-light whitespace-nowrap')">
                       {{ rightStock.change > 0 ? '+' : '' }}
-                      <NumberTicker
-                        :value="rightStock.change"
-                      />
+                      <NumberTicker :value="rightStock.change" />
                     </span>
                   </div>
                   <div :class="useClsx('font-manrope text-sm color-gray-10')">
@@ -529,12 +393,12 @@ const baseClass = useClsx('max-w-5xl')
                     :style="{ width: rightBarWidth }"
                   />
                   <div :class="useClsx('mt-2 flex justify-between text-xs')">
-                    <span :class="useClsx('font-manrope color-gray-11')">
-                      ${{ rightStock.dayRange.low?.toFixed(2) || 'N/A' }}
-                    </span>
-                    <span :class="useClsx('font-manrope color-gray-11')">
-                      ${{ rightStock.dayRange.high?.toFixed(2) || 'N/A' }}
-                    </span>
+                    <span :class="useClsx('font-manrope color-gray-11')">${{
+                      rightStock.dayRange.low?.toFixed(2) || 'N/A'
+                    }}</span>
+                    <span :class="useClsx('font-manrope color-gray-11')">${{
+                      rightStock.dayRange.high?.toFixed(2) || 'N/A'
+                    }}</span>
                   </div>
                 </div>
               </div>
@@ -542,10 +406,13 @@ const baseClass = useClsx('max-w-5xl')
           </div>
         </Transition>
       </div>
-    </div>
+    </template>
 
-    <!-- Pager dots -->
-    <div v-if="stockData.length > 0" :class="useClsx('mt-6 md:mt-8 flex justify-center space-x-3')">
+    <!-- Pager dots (aus dem Flow, beeinflusst die Höhe NICHT) -->
+    <div
+      v-if="stockData.length > 0"
+      :class="useClsx('pointer-events-none absolute -bottom-2 left-1/2 -translate-x-1/2 flex justify-center space-x-3')"
+    >
       <div
         v-for="(_, index) in Math.ceil(stockData.length / 2)"
         :key="index"
@@ -562,8 +429,6 @@ const baseClass = useClsx('max-w-5xl')
 </template>
 
 <style scoped>
-/* Smoother, GPU-accelerated animations using transforms */
-/* Grow with ease-out, then brief hold at the end */
 @keyframes growLine {
   0% {
     transform: scaleX(0);
@@ -571,13 +436,11 @@ const baseClass = useClsx('max-w-5xl')
   96% {
     transform: scaleX(1);
   }
-  /* very short hold to avoid long stall */
   100% {
     transform: scaleX(1);
   }
 }
 
-/* Dot glides and eases out; timeline is 6.5s with ~0.5s hold at the end */
 @keyframes moveDot {
   0% {
     transform: translateY(-50%) translateX(0);
@@ -585,7 +448,6 @@ const baseClass = useClsx('max-w-5xl')
   96% {
     transform: translateY(-50%) translateX(var(--dot-distance, 2rem));
   }
-  /* very short hold */
   100% {
     transform: translateY(-50%) translateX(var(--dot-distance, 2rem));
   }
@@ -594,7 +456,7 @@ const baseClass = useClsx('max-w-5xl')
 .progress-line {
   transform-origin: left center;
   will-change: transform;
-  animation: growLine 6.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; /* gentle ease-out */
+  animation: growLine 6.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .progress-dot {
@@ -603,11 +465,10 @@ const baseClass = useClsx('max-w-5xl')
   position: relative;
 }
 
-/* subtle pulsing halo around the active dot */
 .progress-dot::after {
   content: '';
   position: absolute;
-  inset: -6px; /* halo radius */
+  inset: -6px;
   border-radius: 9999px;
   background: currentColor;
   opacity: 0.08;
