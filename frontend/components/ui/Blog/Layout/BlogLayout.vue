@@ -372,18 +372,20 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             <h2
               :class="useClsx(
                 'font-ginger text-[clamp(28px,4.2vw,48px)] leading-none md:text-[clamp(38px,4.2vw,56px)] font-light tracking-wide uppercase',
-                'color-pureBlack dark:color-pureWhite',
+                'color-pureBlack dark:color-pureWhite whitespace-nowrap',
               )"
             >
               MARKET PULSE
             </h2>
-            <div class="flex items-center">
+            <div
+              class="[scrollbar-width:none] max-w-1/2 flex items-center overflow-y-auto"
+            >
               <button
                 v-for="stock in tickers"
                 :key="stock"
                 :class="useClsx(
                   'text-cursor font-manrope rounded-full px-3 py-2',
-                  'text-xs color-mint-12 font-light hover:bg-mint-5',
+                  'text-[10px] md:text-xs lg:text-base color-mint-12 font-light hover:bg-mint-5',
                   'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
                   'focus-visible:outline-none focus-visible:ring',
                 )"
