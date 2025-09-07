@@ -25,112 +25,74 @@ const galleryPosts = ref<GalleryPost[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
 
+// DRY helpers/constants
+const GALLERY_QUERY = { limit: 6, depth: 2 } as const
+
+const FALLBACK_GALLERY_POSTS: GalleryPost[] = [
+  {
+    category: 'Artificial Intelligence',
+    title: 'You can do more with AI.',
+    src: 'https://i.imgur.com/9EOfmtX.jpeg',
+    slug: 'ai-enhancement',
+  },
+  {
+    category: 'Productivity',
+    title: 'Enhance your productivity.',
+    src: 'https://i.imgur.com/OdC4wBG.jpeg',
+    slug: 'productivity-tips',
+  },
+  {
+    category: 'Product',
+    title: 'Launching the new Apple Vision Pro.',
+    src: 'https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    slug: 'apple-vision-pro',
+  },
+  {
+    category: 'Product',
+    title: 'Maps for your iPhone 15 Pro Max.',
+    src: 'https://i.imgur.com/B1BZH7P.jpeg',
+    slug: 'iphone-15-maps',
+  },
+  {
+    category: 'iOS',
+    title: 'Photography just got better.',
+    src: 'https://i.imgur.com/OxgUcYO.jpeg',
+    slug: 'ios-photography',
+  },
+  {
+    category: 'Hiring',
+    title: 'Hiring for a Staff Software Engineer',
+    src: 'https://i.imgur.com/UnI4RkM.jpeg',
+    slug: 'hiring-engineer',
+  },
+]
+
+function mapDocToGalleryPost(post: any): GalleryPost {
+  return {
+    category: post?.categories?.[0]?.name ?? 'Uncategorized',
+    title: post?.title ?? '',
+    src: getImageUrlFromObject(post?.featuredImage) || '',
+    slug: encodeURIComponent(post?.slug ?? ''),
+  }
+}
+
 // Fetch gallery posts
 async function fetchGalleryPosts() {
   try {
     loading.value = true
     error.value = null
 
-    const result = await getGalleryPosts({
-      limit: 6,
-      depth: 2,
-    })
+    const result = await getGalleryPosts(GALLERY_QUERY)
+    const docs = result?.docs ?? []
 
-    if (result && result.docs.length > 0) {
-      galleryPosts.value = result.docs.map(post => ({
-        category: post.categories && post.categories.length > 0
-          ? post.categories[0].name
-          : 'Uncategorized',
-        title: post.title,
-        src: getImageUrlFromObject(post.featuredImage) || '',
-        slug: encodeURIComponent(post.slug),
-      }))
-    }
-    else {
-      // Fallback to mock data if no posts found
-      galleryPosts.value = [
-        {
-          category: 'Artificial Intelligence',
-          title: 'You can do more with AI.',
-          src: 'https://i.imgur.com/9EOfmtX.jpeg',
-          slug: 'ai-enhancement',
-        },
-        {
-          category: 'Productivity',
-          title: 'Enhance your productivity.',
-          src: 'https://i.imgur.com/OdC4wBG.jpeg',
-          slug: 'productivity-tips',
-        },
-        {
-          category: 'Product',
-          title: 'Launching the new Apple Vision Pro.',
-          src: 'https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-          slug: 'apple-vision-pro',
-        },
-        {
-          category: 'Product',
-          title: 'Maps for your iPhone 15 Pro Max.',
-          src: 'https://i.imgur.com/B1BZH7P.jpeg',
-          slug: 'iphone-15-maps',
-        },
-        {
-          category: 'iOS',
-          title: 'Photography just got better.',
-          src: 'https://i.imgur.com/OxgUcYO.jpeg',
-          slug: 'ios-photography',
-        },
-        {
-          category: 'Hiring',
-          title: 'Hiring for a Staff Software Engineer',
-          src: 'https://i.imgur.com/UnI4RkM.jpeg',
-          slug: 'hiring-engineer',
-        },
-      ]
-    }
+    galleryPosts.value = docs.length > 0
+      ? docs.map(mapDocToGalleryPost)
+      : FALLBACK_GALLERY_POSTS
   }
   catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to fetch gallery posts'
     console.error('Error fetching gallery posts:', err)
-
-    // Fallback to mock data on error
-    galleryPosts.value = [
-      {
-        category: 'Artificial Intelligence',
-        title: 'You can do more with AI.',
-        src: 'https://i.imgur.com/9EOfmtX.jpeg',
-        slug: 'ai-enhancement',
-      },
-      {
-        category: 'Productivity',
-        title: 'Enhance your productivity.',
-        src: 'https://i.imgur.com/OdC4wBG.jpeg',
-        slug: 'productivity-tips',
-      },
-      {
-        category: 'Product',
-        title: 'Launching the new Apple Vision Pro.',
-        src: 'https://images.unsplash.com/photo-1713869791518-a770879e60dc?q=80&w=2333&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        slug: 'apple-vision-pro',
-      },
-      {
-        category: 'Product',
-        title: 'Maps for your iPhone 15 Pro Max.',
-        src: 'https://i.imgur.com/B1BZH7P.jpeg',
-        slug: 'iphone-15-maps',
-      },
-      {
-        category: 'iOS',
-        title: 'Photography just got better.',
-        src: 'https://i.imgur.com/OxgUcYO.jpeg',
-        slug: 'ios-photography',
-      },
-      {
-        category: 'Hiring',
-        title: 'Hiring for a Staff Software Engineer',
-        src: 'https://i.imgur.com/UnI4RkM.jpeg',
-        slug: 'hiring-engineer',
-      },
-    ]
+    galleryPosts.value = FALLBACK_GALLERY_POSTS
   }
   finally {
     loading.value = false
@@ -140,7 +102,7 @@ async function fetchGalleryPosts() {
 // Fetch data on mount
 fetchGalleryPosts()
 
-const trendingArticles = reactive([
+const trendingArticles = [
   {
     id: 'trending-1',
     title: 'Exploring New Tech Paradigms Vol. 1',
@@ -177,7 +139,7 @@ const trendingArticles = reactive([
     author: 'Dr. Lex Icon',
     href: '#',
   },
-])
+]
 
 const isHeadingVisible = ref(false)
 const isHintVisible = ref(false)
