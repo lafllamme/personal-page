@@ -29,7 +29,7 @@ export const useStocks = defineStore('stocks', () => {
   const selectedSymbol = ref<string | null>(null)
 
   // --- autoplay state ---
-  const autoplayStepMs = ref(6500)
+  const autoplayStepMs = ref(4500)
   const idleResumeMs = ref(1200)
   const isUserInteracting = ref(false)
   const isAutoplayRunning = ref(false)
