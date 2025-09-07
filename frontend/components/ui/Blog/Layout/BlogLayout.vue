@@ -18,7 +18,7 @@ const tickers = ['MSFT', 'GOOGL', 'NVDA', 'META', 'AMZN', 'AAPL', 'CRM', 'PLTR',
 
 // Stocks store controls for header buttons
 const stocks = useStocks()
-const { currentTopSymbol } = storeToRefs(stocks)
+const { activeButtonSymbol } = storeToRefs(stocks)
 const { selectSymbol, ensureLoaded } = stocks
 ensureLoaded()
 
@@ -391,13 +391,12 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                 v-for="stock in tickers"
                 :key="stock"
                 :class="useClsx(
+                  'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
                   'text-cursor font-manrope rounded-full px-3 py-2',
                   'text-[10px] md:text-xs lg:text-base font-light',
-                  currentTopSymbol === stock
-                    ? 'bg-mint-5 color-mint-12'
-                    : 'color-mint-12 hover:bg-mint-5',
-                  'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
                   'focus-visible:outline-none focus-visible:ring',
+                  activeButtonSymbol === stock && 'bg-mint-5',
+                  'hover:!bg-mint-2 color-mint-12',
                 )"
                 @click="() => selectSymbol(stock)"
               >
@@ -407,7 +406,9 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           </div>
           <div :class="useClsx('h-px w-full bg-gray-6')" />
         </div>
-        <div class="md:grid-temp grid my-8 items-stretch gap-x-8 md:grid-cols-[3fr_5fr] md:my-10 <md:gap-y-8 lg:gap-x-12">
+        <div
+          class="md:grid-temp grid my-8 items-stretch gap-x-8 md:grid-cols-[3fr_5fr] md:my-10 <md:gap-y-8 lg:gap-x-12"
+        >
           <div class="h-full min-w-0 w-full">
             <FeaturedCard
               :id="featuredArticle.id"
