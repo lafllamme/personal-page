@@ -28,6 +28,14 @@ export const useStocks = defineStore('stocks', () => {
   // symbol whose button is visually selected (can be second item of the pair)
   const selectedSymbol = ref<string | null>(null)
 
+  // --- autoplay state ---
+  const autoplayStepMs = ref(6500)
+  const idleResumeMs = ref(1200)
+  const isUserInteracting = ref(false)
+  const isAutoplayRunning = ref(false)
+  let autoplayInterval: ReturnType<typeof setInterval> | null = null
+  let resumeTimeout: ReturnType<typeof setTimeout> | null = null
+
   // --- getters ---
   const symbols = computed(() => quotes.value.map(q => q.symbol))
 
@@ -58,8 +66,32 @@ export const useStocks = defineStore('stocks', () => {
   // Which ticker button should appear active
   const activeButtonSymbol = computed(() => selectedSymbol.value || currentTopSymbol.value)
 
+  // --- debug watchers ---
+  watch(quotes, (v) => {
+    const syms = v.map(s => s.symbol).join(', ')
+    consola.info('[Stocks] quotes loaded:', v.length, syms)
+  })
+  watch(activeStartIndex, (idx) => {
+    const left = leftStock.value?.symbol
+    const right = rightStock.value?.symbol
+    consola.info('[Stocks] activeStartIndex ->', idx, `(${left} / ${right})`)
+  })
+  watch(selectedSymbol, (sym) => {
+    consola.info('[Stocks] selectedSymbol ->', sym)
+  })
+  watch(activeButtonSymbol, (sym) => {
+    consola.info('[Stocks] activeButtonSymbol ->', sym)
+  })
+  watch(isAutoplayRunning, (r) => {
+    consola.info('[Stocks] autoplay running ->', r)
+  })
+  watch(isUserInteracting, (u) => {
+    consola.info('[Stocks] user interacting ->', u)
+  })
+
   // --- actions ---
   function setActiveStartIndex(index: number) {
+    consola.debug('[Stocks] setActiveStartIndex called with', index)
     if (!quotes.value.length) {
       activeStartIndex.value = 0
       return
@@ -71,6 +103,7 @@ export const useStocks = defineStore('stocks', () => {
   }
 
   function selectSymbol(symbol: string) {
+    consola.info('[Stocks] selectSymbol ->', symbol)
     const idx = symbolToIndex.value.get(symbol)
     if (typeof idx === 'number') {
       setActiveStartIndex(idx)
@@ -78,10 +111,20 @@ export const useStocks = defineStore('stocks', () => {
     }
   }
 
+  // UI-intent: User wählt aktiv → Autoplay pausieren + Auswahl setzen
+  function userSelectSymbol(symbol: string) {
+    consola.info('[Stocks] userSelectSymbol ->', symbol)
+    onInteractStart()
+    selectSymbol(symbol)
+  }
+
   function nextPair() {
+    const before = activeStartIndex.value
     setActiveStartIndex(activeStartIndex.value + 2)
     // On autoplay, sync the highlighted button with the top symbol of the pair
     selectedSymbol.value = quotes.value[activeStartIndex.value]?.symbol || null
+    const after = activeStartIndex.value
+    consola.info('[Stocks] nextPair', before, '->', after)
   }
 
   function prevPair() {
@@ -91,6 +134,7 @@ export const useStocks = defineStore('stocks', () => {
     const next = (activeStartIndex.value - 2 + len) % len
     setActiveStartIndex(next)
     selectedSymbol.value = quotes.value[activeStartIndex.value]?.symbol || null
+    consola.info('[Stocks] prevPair ->', activeStartIndex.value)
   }
 
   function isTopSymbol(symbol: string) {
@@ -99,6 +143,51 @@ export const useStocks = defineStore('stocks', () => {
 
   function isActiveButton(symbol: string) {
     return activeButtonSymbol.value === symbol
+  }
+
+  // --- Autoplay Steuerung ---
+  function startAutoplay(stepMs?: number) {
+    if (typeof stepMs === 'number')
+      autoplayStepMs.value = stepMs
+    stopAutoplay()
+    isAutoplayRunning.value = true
+    consola.info('[Stocks] startAutoplay with stepMs =', autoplayStepMs.value)
+    autoplayInterval = setInterval(() => {
+      if (isUserInteracting.value)
+        return
+      consola.debug('[Stocks] autoplay tick')
+      nextPair()
+    }, autoplayStepMs.value)
+  }
+
+  function stopAutoplay() {
+    consola.info('[Stocks] stopAutoplay')
+    if (autoplayInterval)
+      clearInterval(autoplayInterval)
+    autoplayInterval = null
+    isAutoplayRunning.value = false
+  }
+
+  function scheduleAutoplayResume(delay = idleResumeMs.value) {
+    consola.debug('[Stocks] scheduleAutoplayResume in', delay, 'ms')
+    if (resumeTimeout)
+      clearTimeout(resumeTimeout)
+    resumeTimeout = setTimeout(() => {
+      if (!isUserInteracting.value)
+        startAutoplay()
+    }, delay)
+  }
+
+  function onInteractStart() {
+    consola.debug('[Stocks] onInteractStart')
+    isUserInteracting.value = true
+    stopAutoplay()
+  }
+
+  function onInteractStop(delay = idleResumeMs.value) {
+    consola.debug('[Stocks] onInteractStop; will resume after', delay, 'ms')
+    isUserInteracting.value = false
+    scheduleAutoplayResume(delay)
   }
 
   async function fetchQuotes(options: FetchOptions = {}) {
@@ -123,6 +212,7 @@ export const useStocks = defineStore('stocks', () => {
 
       // default highlighted button
       selectedSymbol.value = quotes.value[activeStartIndex.value]?.symbol || null
+      consola.info('[Stocks] fetchQuotes done; active symbol =', selectedSymbol.value)
     }
     catch (err: any) {
       error.value = err?.message || 'Failed to load stock quotes'
@@ -154,14 +244,26 @@ export const useStocks = defineStore('stocks', () => {
     isTopSymbol,
     activeButtonSymbol,
     isActiveButton,
+    symbolToIndex,
 
     // actions
     fetchQuotes,
     ensureLoaded,
     setActiveStartIndex,
     selectSymbol,
+    userSelectSymbol,
     nextPair,
     prevPair,
     selectedSymbol,
+
+    // autoplay controls
+    autoplayStepMs,
+    idleResumeMs,
+    isUserInteracting,
+    isAutoplayRunning,
+    startAutoplay,
+    stopAutoplay,
+    onInteractStart,
+    onInteractStop,
   }
 })
