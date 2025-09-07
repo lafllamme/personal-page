@@ -9,11 +9,18 @@ import TrendingCard from '@/components/ui/Card/TrendingCard/TrendingCard.vue'
 import Link from '@/components/ui/Link/Link.vue'
 import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
 import SparklesText from '@/components/ui/Text/SparkleText/SparkleText.vue'
+import { useStocks } from '@/stores/stocks'
 
 // Composables
 const { getImageUrlFromObject } = useImageUrl()
 
 const tickers = ['MSFT', 'GOOGL', 'NVDA', 'META', 'AMZN', 'AAPL', 'CRM', 'PLTR', 'ADBE', 'NOW']
+
+// Stocks store controls for header buttons
+const stocks = useStocks()
+const { currentTopSymbol } = storeToRefs(stocks)
+const { selectSymbol, ensureLoaded } = stocks
+ensureLoaded()
 
 // --- REAL DATA FROM PAYLOAD ---
 interface GalleryPost {
@@ -378,17 +385,21 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
               MARKET PULSE
             </h2>
             <div
-              class="[scrollbar-width:none] max-w-1/2 flex items-center overflow-y-auto"
+              class="[scrollbar-width:none] max-w-1/2 flex items-center overflow-y-auto px-1"
             >
               <button
                 v-for="stock in tickers"
                 :key="stock"
                 :class="useClsx(
                   'text-cursor font-manrope rounded-full px-3 py-2',
-                  'text-[10px] md:text-xs lg:text-base color-mint-12 font-light hover:bg-mint-5',
+                  'text-[10px] md:text-xs lg:text-base font-light',
+                  currentTopSymbol === stock
+                    ? 'bg-mint-5 color-mint-12'
+                    : 'color-mint-12 hover:bg-mint-5',
                   'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
                   'focus-visible:outline-none focus-visible:ring',
                 )"
+                @click="() => selectSymbol(stock)"
               >
                 {{ stock }}
               </button>
