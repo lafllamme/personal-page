@@ -2,7 +2,7 @@
 import type { SplineProps } from './Spline.model'
 import { useMenu } from '@/stores/menu'
 import { Application } from '@splinetool/runtime'
-import { useEventListener } from '@vueuse/core'
+import { useDocumentVisibility, useEventListener, useIntersectionObserver } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, ref, shallowRef, toRefs, watch } from 'vue'
 import ParentSize from './ParentSize/ParentSize.vue'
 import { SplinePropsDefaults } from './Spline.model'
@@ -34,12 +34,11 @@ const emit = defineEmits([
 
 const menuStore = useMenu()
 const { isOpen } = storeToRefs(menuStore)
-const { scene, onLoad, renderOnDemand, style } = toRefs(props)
+const { scene, onLoad, renderOnDemand, style, debug } = toRefs(props)
 
 const canvasRef = useTemplateRef('canvasRef')
 const isLoading = ref(false)
 const splineApp = shallowRef<Application | null>(null)
-const isVisible = ref(true)
 const shouldAnimate = ref(false)
 
 watch(isLoading, (loading) => {
@@ -117,30 +116,57 @@ function setupEventListeners() {
   })
 }
 
-const isVisibleParent = ref(false)
+// Viewport visibility of the canvas (>= 30% visible)
+const intersectionVisible = ref(false)
+useIntersectionObserver(
+  canvasRef,
+  ([entry]) => {
+    const ratio = entry?.intersectionRatio ?? 0
+    intersectionVisible.value = !!entry && entry.isIntersecting && ratio >= 0.5
+  },
+  { threshold: Array.from({ length: 101 }, (_, i) => i / 100) },
+)
 
-const isCurrentlyVisible = useVisibilityObserver(canvasRef, isVisibleParent, 30, true)
+// Page/tab visibility
+const pageVisibility = useDocumentVisibility()
+
+// Helpers to stop/play with reasoned debug logs
+function stopAnimation(reason: string) {
+  const app = splineApp.value
+  if (!app)
+    return
+  if (!app.isStopped) {
+    if (debug.value)
+      console.log('[Spline] stopAnimation:', reason)
+    app.stop()
+  }
+}
+
+function playAnimation(reason: string) {
+  const app = splineApp.value
+  if (!app)
+    return
+  if (app.isStopped) {
+    if (debug.value)
+      console.log('[Spline] playAnimation:', reason)
+    app.play()
+  }
+}
 
 // ---- 3. Pause / play ONLY, never reload scene! ----
 watch(
-  [isOpen, isCurrentlyVisible],
-  ([open, visible]) => { //      new values arrive in the same order
-    const app = splineApp.value
-    if (!app)
-      return
+  [isOpen, intersectionVisible, pageVisibility],
+  ([open, visible, docVis]) => {
+    if (open)
+      return stopAnimation('menu: open')
+    if (!visible)
+      return stopAnimation('viewport: out-of-view')
+    if (docVis !== 'visible')
+      return stopAnimation(`doc-visibility: ${docVis}`)
 
-    // If the dialog is open OR the canvas is off-screen → pause
-    if (open || !visible) {
-      if (!app.isStopped)
-        app.stop()
-      return
-    }
-
-    // Otherwise (dialog closed & canvas visible) → resume
-    if (app.isStopped)
-      app.play()
+    playAnimation('conditions-met: visible & menu-closed & tab-visible')
   },
-  { immediate: true }, // fire once right away (optional)
+  { immediate: true },
 )
 
 onMounted(() => {
