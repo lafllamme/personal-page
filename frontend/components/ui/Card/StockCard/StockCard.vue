@@ -2,6 +2,7 @@
 <script setup lang="ts">
 import NumberTicker from '@/components/ui/Text/NumberTicker/NumberTicker.vue'
 import { useStocks } from '@/stores/stocks'
+import type { StockQuote } from '@/stores/stocks'
 
 const stocksStore = useStocks()
 const { quotes, isLoading, error, leftStock, rightStock, activeStartIndex } = storeToRefs(stocksStore)
@@ -39,6 +40,8 @@ function afterEnterRight(el: Element) {
 
 const leftCardContentRef = useTemplateRef('leftCardContentRef')
 const rightCardContentRef = useTemplateRef('rightCardContentRef')
+
+type StockData = StockQuote
 
 // Day range bar widths (animate on card enter)
 const leftBarWidth = ref('0%')
@@ -88,16 +91,9 @@ function animateRightBar() {
   })
 }
 
-const { pause, resume } = useIntervalFn(
-  () => {
-    if (quotes.value.length) {
-      nextPair()
-      animationKey.value += 1
-    }
-  },
-  6500,
-  { immediate: false },
-)
+// Remove local autoplay to avoid double-advance; rely on store autoplay controlled in layout
+const pause = () => {}
+const resume = () => {}
 
 watch(inView, (v) => {
   if (v)
