@@ -14,12 +14,23 @@ import { useStocks } from '@/stores/stocks'
 // Composables
 const { getImageUrlFromObject } = useImageUrl()
 
-const tickers = ['MSFT', 'GOOGL', 'NVDA', 'META', 'AMZN', 'AAPL', 'CRM', 'PLTR', 'ADBE', 'NOW']
-
-// Stocks store controls for header buttons
+// --- Store ---
 const stocks = useStocks()
-const { activeButtonSymbol } = storeToRefs(stocks)
-const { selectSymbol, ensureLoaded } = stocks
+const {
+  symbols, // dynamische Ticker aus API
+  activeButtonSymbol,
+  idleResumeMs,
+  isUserInteracting,
+  isAutoplayRunning,
+} = storeToRefs(stocks)
+const {
+  userSelectSymbol,
+  ensureLoaded,
+  startAutoplay,
+  stopAutoplay,
+  onInteractStart,
+  onInteractStop,
+} = stocks
 ensureLoaded()
 
 // --- REAL DATA FROM PAYLOAD ---
@@ -223,6 +234,119 @@ const subheadingRef = useTemplateRef('subheadingRef')
 useVisibilityObserver(hintRef, isHintVisible)
 useVisibilityObserver(subheadingRef, isSubheadingVisible)
 useVisibilityObserver(headlineRef, isHeadingVisible)
+
+/* -----------------------------------------
+   Sliding highlight + Autoplay-friendly behavior
+----------------------------------------- */
+const tickerContainer = ref<HTMLElement | null>(null)
+const tickerBtnRefs = ref<HTMLElement[]>([])
+const hoverIdx = ref<number | null>(null)
+
+const activeIdx = computed(() =>
+  symbols.value.findIndex(s => s === activeButtonSymbol.value),
+)
+const currentIdx = computed(() => hoverIdx.value ?? activeIdx.value)
+
+const indicator = reactive({
+  x: 0,
+  y: 0,
+  w: 0,
+  h: 0,
+  visible: false,
+})
+
+function setTickerBtnRef(el: HTMLElement | null, i: number) {
+  if (el)
+    tickerBtnRefs.value[i] = el
+}
+
+function moveIndicatorToIndex(idx: number | null) {
+  const c = tickerContainer.value
+  if (!c || idx == null || idx < 0) {
+    indicator.visible = false
+    return
+  }
+  const el = tickerBtnRefs.value[idx]
+  if (!el) {
+    indicator.visible = false
+    return
+  }
+  indicator.x = el.offsetLeft - c.scrollLeft
+  indicator.y = el.offsetTop - c.scrollTop
+  indicator.w = el.offsetWidth
+  indicator.h = el.offsetHeight
+  indicator.visible = true
+}
+
+const recalc = () => moveIndicatorToIndex(currentIdx.value)
+
+// Center active button on autoplay so the pill never sprints across the whole row
+function centerButton(idx: number, behavior: ScrollBehavior = 'smooth') {
+  const c = tickerContainer.value
+  const el = tickerBtnRefs.value[idx]
+  if (!c || !el)
+    return
+  const target = el.offsetLeft - (c.clientWidth - el.offsetWidth) / 2
+  c.scrollTo({ left: target, behavior })
+}
+
+// rAF-throttled scroll handler (prevents jank)
+let rafId = 0
+
+function onScrollRaf() {
+  if (rafId)
+    return
+  rafId = requestAnimationFrame(() => {
+    rafId = 0
+    recalc()
+  })
+}
+
+// debounce for scroll idle → resume autoplay
+let scrollIdleHandle: ReturnType<typeof setTimeout> | null = null
+
+watch(currentIdx, (idx, prev) => {
+  nextTick(() => {
+    recalc()
+    // Only center automatically when NOT hovering (autoplay path)
+    if (hoverIdx.value == null && typeof idx === 'number' && idx >= 0) {
+      centerButton(idx, 'smooth')
+    }
+  })
+})
+
+onMounted(() => {
+  nextTick(() => {
+    recalc()
+    startAutoplay()
+  })
+  // Recalc after fonts load (avoids subpixel drift)
+  // @ts-expect-error Fonts API optional
+  document.fonts?.ready?.then?.(() => recalc())
+
+  window.addEventListener('resize', recalc, { passive: true })
+
+  tickerContainer.value?.addEventListener('scroll', () => {
+    // mark interaction while user scrolls (or while we smooth-scroll)
+    onScrollRaf()
+    if (scrollIdleHandle)
+      clearTimeout(scrollIdleHandle)
+    // If the user is actually interacting, pause; if smooth-scroll, we don't want to hard-stop,
+    // but pausing avoids race glitches; resume shortly after scrolling stops.
+    onInteractStart()
+    scrollIdleHandle = setTimeout(() => onInteractStop(), idleResumeMs.value)
+  }, { passive: true })
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', recalc)
+  tickerContainer.value?.removeEventListener('scroll', onScrollRaf as any)
+  if (scrollIdleHandle)
+    clearTimeout(scrollIdleHandle)
+  if (rafId)
+    cancelAnimationFrame(rafId)
+  stopAutoplay()
+})
 </script>
 
 <template>
@@ -334,16 +458,12 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
                 :class="useClsx(isSubheadingVisible ? 'animate-fade-in !animate-duration-[2000ms]' : 'opacity-0')"
                 class="mb-6 flex items-center md:mb-10 space-x-2"
               >
-                <Icon
-                  class="size-8 color-mint-8 md:size-12"
-                  name="ri:speak-ai-line"
-                />
+                <Icon class="size-8 color-mint-8 md:size-12" name="ri:speak-ai-line" />
                 <h3
                   class="figtree-regular whitespace-nowrap text-xl color-pureBlack tracking-tight lg:text-4xl md:text-2xl dark:color-pureWhite !font-medium"
                 >
                   <SparklesText
-                    :colors="{ first: '#9E7AFF', second: '#FE8BBB' }"
-                    :sparkles-count="5"
+                    :colors="{ first: '#9E7AFF', second: '#FE8BBB' }" :sparkles-count="5"
                     text="Trending Topics"
                   />
                 </h3>
@@ -384,21 +504,48 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
             >
               MARKET PULSE
             </h2>
+
+            <!-- Button strip mit Sliding Indicator; Store steuert Autoplay/Interaktion -->
             <div
-              class="[scrollbar-width:none] max-w-1/2 flex items-center overflow-y-auto px-1"
+              ref="tickerContainer"
+              class="[scrollbar-width:none] relative max-w-1/2 flex items-center overflow-x-auto px-1" :class="[
+                isAutoplayRunning ? 'autoplaying' : '',
+                isUserInteracting ? 'user-interacting' : '',
+              ]"
+              @pointerenter="onInteractStart"
+              @pointerleave="() => { hoverIdx = null; onInteractStop() }"
+              @focusin="onInteractStart"
+              @focusout="() => { hoverIdx = null; onInteractStop() }"
+              @touchstart.passive="onInteractStart"
             >
+              <!-- Sliding highlight pill -->
+              <div
+                v-show="indicator.visible"
+                class="ticker-indicator absolute rounded-full bg-mint-2 dark:bg-mint-5/30"
+                :style="{
+                  top: '0px',
+                  left: '0px',
+                  transform: `translate3d(${indicator.x}px, ${indicator.y}px, 0)`,
+                  width: `${indicator.w}px`,
+                  height: `${indicator.h}px`,
+                }"
+                aria-hidden="true"
+              />
+              <!-- Ticker buttons -->
               <button
-                v-for="stock in tickers"
+                v-for="(stock, i) in symbols"
                 :key="stock"
+                :ref="(el) => setTickerBtnRef(el as HTMLElement | null, i)"
                 :class="useClsx(
-                  'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-                  'text-cursor font-manrope rounded-full px-3 py-2',
+                  'relative z-10 text-cursor font-manrope rounded-full px-3 py-2',
                   'text-[10px] md:text-xs lg:text-base font-light',
                   'focus-visible:outline-none focus-visible:ring',
-                  activeButtonSymbol === stock && 'bg-mint-5',
-                  'hover:!bg-mint-2 color-mint-12',
+                  'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+                  'color-mint-12',
                 )"
-                @click="() => selectSymbol(stock)"
+                @mouseenter="() => { hoverIdx = i; userSelectSymbol(stock) }"
+                @focusin="() => { hoverIdx = i; userSelectSymbol(stock) }"
+                @click="() => userSelectSymbol(stock)"
               >
                 {{ stock }}
               </button>
@@ -406,6 +553,7 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
           </div>
           <div :class="useClsx('h-px w-full bg-gray-6')" />
         </div>
+
         <div
           class="md:grid-temp grid my-8 items-stretch gap-x-8 md:grid-cols-[3fr_5fr] md:my-10 <md:gap-y-8 lg:gap-x-12"
         >
@@ -490,6 +638,33 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
     opacity: 1;
     transform: translateY(0) rotateX(0);
     filter: blur(0);
+  }
+}
+
+/* Sliding indicator animation with mode-aware durations */
+.ticker-indicator {
+  pointer-events: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  transition:
+    transform var(--pill-dur, 320ms) cubic-bezier(0.22, 1, 0.36, 1),
+    width var(--pill-dur, 320ms) cubic-bezier(0.22, 1, 0.36, 1),
+    height var(--pill-dur, 320ms) cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, width, height;
+}
+
+/* Slower, smoother when autoplaying to avoid “too fast” sprints */
+.autoplaying .ticker-indicator {
+  --pill-dur: 520ms;
+}
+
+/* Snappier on user interaction */
+.user-interacting .ticker-indicator {
+  --pill-dur: 220ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-indicator {
+    transition: none;
   }
 }
 </style>
