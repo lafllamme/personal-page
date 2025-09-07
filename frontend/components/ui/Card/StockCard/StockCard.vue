@@ -1,56 +1,16 @@
 <!-- StockCard.vue -->
 <script setup lang="ts">
 import NumberTicker from '@/components/ui/Text/NumberTicker/NumberTicker.vue'
+import { useStocks } from '@/stores/stocks'
 
-interface StockData {
-  symbol: string
-  price: number | null
-  change: number | null
-  changePercent: number | null
-  fetchedAt: string
-  open: number | null
-  dayRange: { low: number | null, high: number | null }
-  name: string | null
-  industry: string | null
-}
+const stocksStore = useStocks()
+const { quotes, isLoading, error, leftStock, rightStock, activeStartIndex } = storeToRefs(stocksStore)
+const { ensureLoaded, fetchQuotes, nextPair, setActiveStartIndex } = stocksStore
 
-const currentPair = ref(0)
 const animationKey = ref(0)
 
-function handlePairClick(pairIndex: number) {
-  if (pairIndex !== currentPair.value) {
-    currentPair.value = pairIndex
-    animationKey.value += 1
-  }
-}
-
-// Nuxt useAsyncData
-const { data: stockData, pending, error, refresh } = useAsyncData<StockData[]>(
-  'stockcard-data',
-  () => $fetch<StockData[]>('/api/stocks/ai'),
-  {
-    server: true,
-    lazy: false,
-    default: () => [],
-  },
-)
-
-const leftStock = computed(() => stockData.value?.[currentPair.value] || null)
-const rightStock = computed(() => stockData.value?.[(currentPair.value + 1) % (stockData.value?.length || 1)] || null)
-
-const pairs = computed(() => {
-  const list = stockData.value || []
-  if (!list.length)
-    return []
-  const result: { index: number, stocks: [StockData, StockData] }[] = []
-  for (let i = 0; i < list.length; i += 2) {
-    result.push({
-      index: i,
-      stocks: [list[i]!, list[(i + 1) % list.length]!],
-    })
-  }
-  return result
-})
+// Keep computed aliases for template compatibility
+const stockData = computed(() => quotes.value)
 
 const hostRef = useTemplateRef('hostRef')
 const inView = useElementVisibility(hostRef)
@@ -130,8 +90,8 @@ function animateRightBar() {
 
 const { pause, resume } = useIntervalFn(
   () => {
-    if (stockData.value?.length) {
-      currentPair.value = (currentPair.value + 2) % stockData.value.length
+    if (quotes.value.length) {
+      nextPair()
       animationKey.value += 1
     }
   },
@@ -145,7 +105,8 @@ watch(inView, (v) => {
   else pause()
 })
 
-onMounted(() => {
+onMounted(async () => {
+  await ensureLoaded()
   if (inView.value)
     resume()
   // initialize min-heights to prevent initial shrink during first transition
@@ -155,6 +116,11 @@ onMounted(() => {
     rightMinHeight.value = (rightCardContentRef.value as HTMLElement).offsetHeight
 })
 onUnmounted(pause)
+
+watch(activeStartIndex, () => {
+  // trigger progress bar animation when pair changes externally
+  animationKey.value += 1
+})
 
 /** Shared classes */
 const boxShadowClass = useClsx(
@@ -177,7 +143,7 @@ const baseClass = useClsx('max-w-5xl h-full')
     :class="useClsx('relative grid h-full min-h-0 w-full min-w-0 grid-rows-[1fr_1fr] gap-6')"
   >
     <!-- Loading -->
-    <div v-if="pending" :class="useClsx('space-y-6 col-span-1 row-span-2')">
+    <div v-if="isLoading" :class="useClsx('space-y-6 col-span-1 row-span-2')">
       <div :class="useClsx(boxShadowClass, cardSurfaceLight, 'dark:bg-sand-10 h-full')" />
     </div>
 
@@ -195,7 +161,7 @@ const baseClass = useClsx('max-w-5xl h-full')
                 'font-manrope rounded-lg px-4 py-2 transition-colors',
                 'bg-sand-12 hover:bg-sand-11 color-pureWhite',
               )"
-              @click="() => refresh()"
+              @click="() => fetchQuotes({ refresh: true })"
             >
               Retry
             </button>
@@ -418,7 +384,7 @@ const baseClass = useClsx('max-w-5xl h-full')
         :key="index"
         :class="useClsx(
           'h-2 rounded-full transition-all duration-800 ease-out',
-          index === Math.floor(currentPair / 2)
+          index === Math.floor(activeStartIndex / 2)
             ? 'bg-sand-12 w-8 scale-110 shadow-lg'
             : 'bg-gray-8 w-2',
         )"
