@@ -290,20 +290,9 @@ function centerButton(idx: number, behavior: ScrollBehavior = 'smooth') {
   c.scrollTo({ left: target, behavior })
 }
 
-// rAF-throttled scroll handler (prevents jank)
-let rafId = 0
-
-function onScrollRaf() {
-  if (rafId)
-    return
-  rafId = requestAnimationFrame(() => {
-    rafId = 0
-    recalc()
-  })
-}
-
-// debounce for scroll idle → resume autoplay
-let scrollIdleHandle: ReturnType<typeof setTimeout> | null = null
+const scrollThrottled = useThrottleFn(() => recalc(), 16, true, true)
+const debouncedStop = useDebounceFn(() => onInteractStop(), idleResumeMs.value)
+useResizeObserver(tickerContainer, () => recalc())
 
 watch(currentIdx, (idx, _prev) => {
   nextTick(() => {
@@ -323,27 +312,14 @@ onMounted(() => {
   // Recalc after fonts load (avoids subpixel drift)
   document.fonts?.ready?.then?.(() => recalc())
 
-  window.addEventListener('resize', recalc, { passive: true })
-
-  tickerContainer.value?.addEventListener('scroll', () => {
-    // mark interaction while user scrolls (or while we smooth-scroll)
-    onScrollRaf()
-    if (scrollIdleHandle)
-      clearTimeout(scrollIdleHandle)
-    // If the user is actually interacting, pause; if smooth-scroll, we don't want to hard-stop,
-    // but pausing avoids race glitches; resume shortly after scrolling stops.
+  useEventListener(tickerContainer, 'scroll', () => {
+    scrollThrottled()
     onInteractStart()
-    scrollIdleHandle = setTimeout(() => onInteractStop(), idleResumeMs.value)
+    debouncedStop()
   }, { passive: true })
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', recalc)
-  tickerContainer.value?.removeEventListener('scroll', onScrollRaf as any)
-  if (scrollIdleHandle)
-    clearTimeout(scrollIdleHandle)
-  if (rafId)
-    cancelAnimationFrame(rafId)
   stopAutoplay()
 })
 </script>
