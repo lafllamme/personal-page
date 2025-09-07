@@ -213,7 +213,7 @@ const trendingArticles = reactive([
 ])
 
 const regularArticles = reactive(
-  Array.from({ length: 9 }).map((_, i) => ({
+  Array.from({ length: 6 }).map((_, i) => ({
     id: `article-id-${i + 1}`,
     title: 'The Rise of AI in Modern Development',
     description: 'How artificial intelligence is transforming the way we build and interact with technology.',
@@ -305,7 +305,7 @@ function onScrollRaf() {
 // debounce for scroll idle → resume autoplay
 let scrollIdleHandle: ReturnType<typeof setTimeout> | null = null
 
-watch(currentIdx, (idx, prev) => {
+watch(currentIdx, (idx, _prev) => {
   nextTick(() => {
     recalc()
     // Only center automatically when NOT hovering (autoplay path)
@@ -321,7 +321,6 @@ onMounted(() => {
     startAutoplay()
   })
   // Recalc after fonts load (avoids subpixel drift)
-  // @ts-expect-error Fonts API optional
   document.fonts?.ready?.then?.(() => recalc())
 
   window.addEventListener('resize', recalc, { passive: true })
