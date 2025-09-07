@@ -5,6 +5,7 @@ import Spline from '@/components/ui/Background/Spline/Spline.vue'
 import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
 import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
 import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
+import FeaturedSection from '@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'
 
 const { t } = useI18n()
 
@@ -127,6 +128,7 @@ function handleGenerateComplete() {
         </div>
       </div>
     </div>
+    <FeaturedSection />
     <!-- Blog mount control: visible or idle, with placeholder to avoid CLS -->
     <div ref="blogSentinel" />
     <Suspense>
