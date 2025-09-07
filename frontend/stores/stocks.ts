@@ -25,6 +25,8 @@ export const useStocks = defineStore('stocks', () => {
 
   // index of the first item of the currently active pair (even number)
   const activeStartIndex = ref(0)
+  // symbol whose button is visually selected (can be second item of the pair)
+  const selectedSymbol = ref<string | null>(null)
 
   // --- getters ---
   const symbols = computed(() => quotes.value.map(q => q.symbol))
@@ -53,6 +55,9 @@ export const useStocks = defineStore('stocks', () => {
     return map
   })
 
+  // Which ticker button should appear active
+  const activeButtonSymbol = computed(() => selectedSymbol.value || currentTopSymbol.value)
+
   // --- actions ---
   function setActiveStartIndex(index: number) {
     if (!quotes.value.length) {
@@ -67,12 +72,16 @@ export const useStocks = defineStore('stocks', () => {
 
   function selectSymbol(symbol: string) {
     const idx = symbolToIndex.value.get(symbol)
-    if (typeof idx === 'number')
+    if (typeof idx === 'number') {
       setActiveStartIndex(idx)
+      selectedSymbol.value = symbol
+    }
   }
 
   function nextPair() {
     setActiveStartIndex(activeStartIndex.value + 2)
+    // On autoplay, sync the highlighted button with the top symbol of the pair
+    selectedSymbol.value = quotes.value[activeStartIndex.value]?.symbol || null
   }
 
   function prevPair() {
@@ -81,10 +90,15 @@ export const useStocks = defineStore('stocks', () => {
       return
     const next = (activeStartIndex.value - 2 + len) % len
     setActiveStartIndex(next)
+    selectedSymbol.value = quotes.value[activeStartIndex.value]?.symbol || null
   }
 
   function isTopSymbol(symbol: string) {
     return currentTopSymbol.value === symbol
+  }
+
+  function isActiveButton(symbol: string) {
+    return activeButtonSymbol.value === symbol
   }
 
   async function fetchQuotes(options: FetchOptions = {}) {
@@ -106,6 +120,9 @@ export const useStocks = defineStore('stocks', () => {
         activeStartIndex.value = 0
       else
         setActiveStartIndex(activeStartIndex.value)
+
+      // default highlighted button
+      selectedSymbol.value = quotes.value[activeStartIndex.value]?.symbol || null
     }
     catch (err: any) {
       error.value = err?.message || 'Failed to load stock quotes'
@@ -135,6 +152,8 @@ export const useStocks = defineStore('stocks', () => {
     currentTopSymbol,
     currentPairIndex,
     isTopSymbol,
+    activeButtonSymbol,
+    isActiveButton,
 
     // actions
     fetchQuotes,
@@ -143,5 +162,6 @@ export const useStocks = defineStore('stocks', () => {
     selectSymbol,
     nextPair,
     prevPair,
+    selectedSymbol,
   }
 })
