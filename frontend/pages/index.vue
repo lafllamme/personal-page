@@ -129,14 +129,12 @@ function handleGenerateComplete() {
     </div>
     <!-- Blog mount control: visible or idle, with placeholder to avoid CLS -->
     <div ref="blogSentinel" />
-    <ClientOnly>
-      <Suspense>
-        <BlogLayout v-if="shouldMountBlog" />
-        <template #fallback>
-          <div class="my-8 min-h-[60vh]" />
-        </template>
-      </Suspense>
-    </ClientOnly>
+    <Suspense>
+      <BlogLayout v-if="shouldMountBlog" />
+      <template #fallback>
+        <div class="my-8 min-h-[60vh]" />
+      </template>
+    </Suspense>
   </div>
 </template>
 
