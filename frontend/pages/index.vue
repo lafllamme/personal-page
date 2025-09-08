@@ -1,10 +1,11 @@
 <script lang="ts" setup>
 import Spline from '@/components/ui/Background/Spline/Spline.vue'
-import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
-import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
-import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
 import FeaturedSection from '@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'
 import BlogLayout from '@/components/ui/Blog/Layout/BlogLayout.vue'
+import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
+import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
+import SkewMarquee from '@/components/ui/Section/SkewMarquee/SkewMarquee.vue'
+import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
 
 const { t } = useI18n()
 
@@ -114,6 +115,9 @@ function handleGenerateComplete() {
     </div>
     <FeaturedSection />
     <BlogLayout />
+    <div class="mb-12 mt-6 md:mb-32 md:mt-12">
+      <SkewMarquee />
+    </div>
   </div>
 </template>
 
