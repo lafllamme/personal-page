@@ -75,7 +75,7 @@ const regularArticles = reactive(
           </div>
         </div>
         <!-- Below: REGULAR GRID of articles -->
-        <div class="grid mb-24 mt-12 gap-8 lg:grid-cols-3 sm:grid-cols-2">
+        <div class="grid my-12 mb-24 mt-12 gap-8 lg:grid-cols-3 sm:grid-cols-2 md:my-32">
           <!-- Regular Cards -->
           <RegularCard
             v-for="(article, idx) in regularArticles"
