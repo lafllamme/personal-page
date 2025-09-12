@@ -29,6 +29,12 @@ const currentIdx = computed(() => hoverIdx.value ?? activeIdx.value)
 
 const indicator = reactive({ x: 0, y: 0, w: 0, h: 0, visible: false })
 
+// Gentle debounce to avoid instant switching when hovering across buttons
+const scheduleHover = useDebounceFn((i: number, stock: string) => {
+  hoverIdx.value = i
+  userSelectSymbol(stock)
+}, 150)
+
 function setTickerBtnRef(el: HTMLElement | null, i: number) {
   if (el)
     tickerBtnRefs.value[i] = el
@@ -138,8 +144,8 @@ onBeforeUnmount(() => {
         'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
         'color-mint-12',
       )"
-      @mouseenter="() => { hoverIdx = i; userSelectSymbol(stock) }"
-      @focusin="() => { hoverIdx = i; userSelectSymbol(stock) }"
+      @mouseenter="() => scheduleHover(i, stock)"
+      @focusin="() => scheduleHover(i, stock)"
       @click="() => userSelectSymbol(stock)"
     >
       {{ stock }}
@@ -153,21 +159,21 @@ onBeforeUnmount(() => {
   pointer-events: none;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   transition:
-    transform var(--pill-dur, 320ms) cubic-bezier(0.22, 1, 0.36, 1),
-    width var(--pill-dur, 320ms) cubic-bezier(0.22, 1, 0.36, 1),
-    height var(--pill-dur, 320ms) cubic-bezier(0.22, 1, 0.36, 1);
+    transform var(--pill-dur, 420ms) cubic-bezier(0.22, 1, 0.36, 1),
+    width var(--pill-dur, 420ms) cubic-bezier(0.22, 1, 0.36, 1),
+    height var(--pill-dur, 420ms) cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform, width, height;
 }
 
-/* Slower, smoother when autoplaying to avoid “too fast” sprints */
+/* Slower when autoplaying, snappier while interacting */
 .autoplaying .ticker-indicator {
-  --pill-dur: 520ms;
+  --pill-dur: 640ms;
+}
+.user-interacting .ticker-indicator {
+  --pill-dur: 320ms;
 }
 
-/* Snappier on user interaction */
-.user-interacting .ticker-indicator {
-  --pill-dur: 220ms;
-}
+/* Durations handled in JS transitions now */
 
 @media (prefers-reduced-motion: reduce) {
   .ticker-indicator {
