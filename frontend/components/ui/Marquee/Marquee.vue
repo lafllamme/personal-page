@@ -6,11 +6,13 @@ withDefaults(
     pauseOnHover?: boolean
     vertical?: boolean
     repeat?: number
+    isPaused?: boolean
   }>(),
   {
     pauseOnHover: false,
     vertical: false,
     repeat: 4,
+    isPaused: false,
   },
 )
 </script>
@@ -21,6 +23,7 @@ withDefaults(
       useClsx(
         'group flex overflow-hidden p-2 [--duration:40s] [--gap:1rem] [gap:var(--gap)]',
         vertical ? 'flex-col' : 'flex-row',
+        isPaused && 'is-paused',
         $props.class,
       )
     "
@@ -32,6 +35,7 @@ withDefaults(
         useClsx(
           'flex shrink-0 justify-around [gap:var(--gap)]',
           vertical ? 'animate-marquee-vertical flex-col' : 'animate-marquee flex-row',
+          'group-[.is-paused]:[animation-play-state:paused]',
           pauseOnHover ? 'group-hover:[animation-play-state:paused]' : '',
         )
       "
