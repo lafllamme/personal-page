@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import Marquee from '@/components/ui/Marquee/Marquee.vue'
 import ReviewCard from '@/components/ui/ReviewCard/ReviewCard.vue'
+import { useVisibilityObserver } from '@/composables/useVisibilityObserver'
 
 const isDark = computed(() => useColorMode().value === 'dark')
+const target = useTemplateRef('target')
+const isVisible = ref(false)
+const isCurrentlyVisible = useVisibilityObserver(target, isVisible, 40, true)
 
 // Reviews data
 // Reviews data (fictional, realistic — 7 items)
@@ -51,12 +55,19 @@ const reviews = [
   },
 ]
 
+watch(isCurrentlyVisible, (now) => {
+  consola.debug('isCurrentlyVisible:', now)
+})
+
 // Rows
 const firstRow = ref(reviews)
 </script>
 
 <template>
-  <div class="my-12 w-full flex flex-col items-center justify-center">
+  <div
+    ref="target"
+    class="my-12 w-full flex flex-col items-center justify-center"
+  >
     <div
       class="relative h-[430px] w-full overflow-hidden border bg-pureWhite dark:bg-background"
     >
@@ -80,6 +91,7 @@ const firstRow = ref(reviews)
         <Marquee
           :style="{ transform: 'translateY(-11.5rem) rotate(-16deg)' }"
           class="marquee"
+          :is-paused="!isCurrentlyVisible"
           :pause-on-hover="false"
         >
           <ReviewCard
@@ -97,6 +109,7 @@ const firstRow = ref(reviews)
           :style="{ transform: 'translateY(1rem) rotate(-16deg)' }"
           reverse
           class="marquee"
+          :is-paused="!isCurrentlyVisible"
           :pause-on-hover="false"
         >
           <ReviewCard
@@ -113,6 +126,7 @@ const firstRow = ref(reviews)
         <Marquee
           :style="{ transform: 'translateY(13.5rem) rotate(-16deg)' }"
           class="marquee"
+          :is-paused="!isCurrentlyVisible"
           :pause-on-hover="false"
         >
           <ReviewCard
@@ -130,6 +144,7 @@ const firstRow = ref(reviews)
           :style="{ transform: 'translateY(26rem) rotate(-16deg)' }"
           reverse
           class="marquee"
+          :is-paused="!isCurrentlyVisible"
           :pause-on-hover="false"
         >
           <ReviewCard
