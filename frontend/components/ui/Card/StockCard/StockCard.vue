@@ -136,7 +136,7 @@ const baseClass = useClsx('max-w-5xl h-full')
   <!-- Root is a fixed-height grid with two equal rows. This makes each card exactly 50% of the column. -->
   <div
     ref="hostRef"
-    :class="useClsx('relative grid h-full min-h-0 w-full min-w-0 grid-rows-[1fr_1fr] gap-6')"
+    :class="useClsx('relative grid h-full min-h-0 w-full min-w-0 grid-rows-[1fr_1fr] gap-8 md:gap-10 lg:gap-14')"
   >
     <!-- Loading -->
     <div v-if="isLoading" :class="useClsx('space-y-6 col-span-1 row-span-2')">
@@ -373,7 +373,7 @@ const baseClass = useClsx('max-w-5xl h-full')
     <!-- Pager dots (aus dem Flow, beeinflusst die Höhe NICHT) -->
     <div
       v-if="stockData.length > 0"
-      :class="useClsx('pointer-events-none absolute -bottom-2 left-1/2 -translate-x-1/2 flex justify-center space-x-3')"
+      :class="useClsx('pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center space-x-3')"
     >
       <div
         v-for="(_, index) in Math.ceil(stockData.length / 2)"
