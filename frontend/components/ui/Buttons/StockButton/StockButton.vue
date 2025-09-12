@@ -45,8 +45,9 @@ function moveIndicatorToIndex(idx: number | null) {
     indicator.visible = false
     return
   }
-  indicator.x = el.offsetLeft - c.scrollLeft
-  indicator.y = el.offsetTop - c.scrollTop
+  // Place the pill in the container's content coordinate space so scrolling doesn't skew it
+  indicator.x = el.offsetLeft
+  indicator.y = el.offsetTop
   indicator.w = el.offsetWidth
   indicator.h = el.offsetHeight
   indicator.visible = true
