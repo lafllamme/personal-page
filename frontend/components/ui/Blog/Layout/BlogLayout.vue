@@ -4,6 +4,7 @@ import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
 import StockCard from '@/components/ui/Card/StockCard/StockCard.vue'
 import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
+import { useElementSize } from '@vueuse/core'
 
 const featuredArticle = reactive({
   id: 'spotlight',
@@ -26,6 +27,10 @@ const regularArticles = reactive(
     href: '#',
   })),
 )
+
+// Match the right column height to the featured card so the 2x2 grid can split space evenly
+const leftColRef = useTemplateRef('leftColRef')
+const { height: leftColHeight } = useElementSize(leftColRef as any)
 </script>
 
 <template>
@@ -59,7 +64,7 @@ const regularArticles = reactive(
         <div
           class="md:grid-temp grid my-8 items-stretch gap-x-8 md:grid-cols-[3fr_5fr] md:my-10 <md:gap-y-8 lg:gap-x-12"
         >
-          <div class="h-full min-w-0 w-full">
+          <div ref="leftColRef" class="h-full min-w-0 w-full">
             <FeaturedCard
               :id="featuredArticle.id"
               :author="featuredArticle.author"
@@ -70,7 +75,7 @@ const regularArticles = reactive(
               :title="featuredArticle.title"
             />
           </div>
-          <div class="h-full min-w-0 w-full">
+          <div class="h-full min-w-0 w-full" :style="{ height: leftColHeight ? `${leftColHeight}px` : undefined }">
             <StockCard />
           </div>
         </div>
