@@ -130,13 +130,31 @@ const boxShadowClass = useClsx(
 const cardSurfaceLight = useClsx('bg-sand-1')
 const cardSurfaceDark = useClsx('dark:bg-olive-2')
 const baseClass = useClsx('max-w-5xl h-full')
+
+// Additional stocks to support 2x2 layout on lg+
+const thirdStock = computed(() => {
+  const list = stockData.value
+  if (!list.length)
+    return null
+  return list[(activeStartIndex.value + 2) % list.length] || null
+})
+
+const fourthStock = computed(() => {
+  const list = stockData.value
+  if (!list.length)
+    return null
+  return list[(activeStartIndex.value + 3) % list.length] || null
+})
+
+// Progress widths for extra cards
+const thirdBarWidth = computed(() => computeRangeWidth(thirdStock.value as any))
+const fourthBarWidth = computed(() => computeRangeWidth(fourthStock.value as any))
 </script>
 
 <template>
-  <!-- Root is a fixed-height grid with two equal rows. This makes each card exactly 50% of the column. -->
   <div
     ref="hostRef"
-    :class="useClsx('relative grid h-full min-h-0 w-full min-w-0 grid-rows-[1fr_1fr] gap-8 md:gap-10 lg:gap-14')"
+    :class="useClsx('relative grid h-full min-h-0 w-full min-w-0 grid-rows-[1fr_1fr] gap-8 md:gap-10 lg:gap-14 lg:grid-cols-2 lg:grid-rows-[1fr_1fr]')"
   >
     <!-- Loading -->
     <div v-if="isLoading" :class="useClsx('space-y-6 col-span-1 row-span-2')">
@@ -168,8 +186,8 @@ const baseClass = useClsx('max-w-5xl h-full')
 
     <!-- Data -->
     <template v-else>
-      <!-- Top card (row 1) -->
-      <div class="h-full min-h-0">
+      <!-- Top-left (lg)/Top (sm-md) -->
+      <div class="h-full min-h-0 lg:col-start-1 lg:row-start-1">
         <Transition
           mode="out-in"
           enter-active-class="transition-opacity duration-500 ease-out"
@@ -185,62 +203,37 @@ const baseClass = useClsx('max-w-5xl h-full')
             <div
               :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0 h-full overflow-hidden')"
             >
-              <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
-                <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
-                  <div
-                    :class="useClsx('whitespace-nowrap font-manrope mb-2 text-[clamp(20px,2.4vw,36px)] font-light tracking-wider color-gray-12')"
-                  >
+              <div :class="useClsx('min-w-0 flex items-start justify-between gap-4 md:gap-6')">
+                <div :class="useClsx('min-w-0')">
+                  <div :class="useClsx('font-manrope mb-1 text-[clamp(16px,1.6vw,24px)] font-light tracking-tight color-gray-12 leading-tight')">
                     {{ leftStock.symbol }}
                   </div>
-                  <div
-                    :class="useClsx('text-nowrap text-truncate font-manrope text-sm tracking-widest uppercase color-gray-10')"
-                  >
+                  <div :class="useClsx('truncate font-manrope text-xs md:text-sm tracking-widest uppercase color-gray-10')">
                     {{ leftStock.name || leftStock.symbol }}
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-12 sm:col-span-4 min-w-0')">
-                  <div
-                    :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] whitespace-nowrap font-light color-gray-12')"
-                  >
-                    $
-                    <NumberTicker :value="leftStock.price!" />
-                  </div>
-                  <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
-                    {{ leftStock.industry || '—' }}
-                  </div>
-                </div>
-
-                <div :class="useClsx('col-span-6 sm:col-span-3 min-w-0')">
-                  <div
-                    v-if="leftStock.change !== null"
-                    :class="useClsx('mb-2 flex items-center space-x-3', leftStock.change < 0 ? 'color-crimson-10' : 'color-jade-9')"
-                  >
-                    <Icon v-if="leftStock.change < 0" name="tabler:trending-down" :class="useClsx('size-5 md:size-6')" />
-                    <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
-                    <span :class="useClsx('font-manrope text-2xl font-light whitespace-nowrap')">
-                      {{ leftStock.change > 0 ? '+' : '' }}
-                      <NumberTicker :value="leftStock.change" />
+                <div :class="useClsx('text-right min-w-0')">
+                  <div :class="useClsx('font-manrope mb-1 flex items-baseline justify-end gap-1 md:gap-1.5 leading-none')">
+                    <span :class="useClsx('align-baseline text-[clamp(14px,1.2vw,18px)] opacity-70')">$</span>
+                    <span :class="useClsx('text-[clamp(20px,2vw,30px)] tabular-nums')">
+                      <NumberTicker :value="leftStock.price!" />
+                    </span>
+                    <span
+                      v-if="leftStock.change !== null"
+                      :class="useClsx('ml-1 flex items-center gap-1 text-[clamp(12px,1.1vw,14px)]', leftStock.change < 0 ? 'color-crimson-10' : 'color-jade-9')"
+                    >
+                      <Icon :name="leftStock.change < 0 ? 'tabler:trending-down' : 'tabler:trending-up'" :class="useClsx('size-4')" />
+                      <span class="tabular-nums">{{ leftStock.change > 0 ? '+' : '' }}<NumberTicker :value="leftStock.change" /></span>
                     </span>
                   </div>
-                  <div :class="useClsx('font-manrope text-sm color-gray-10')">
-                    ({{ leftStock.changePercent?.toFixed(2) || '0.00' }}%)
-                  </div>
-                </div>
-
-                <div :class="useClsx('col-span-6 md:hidden sm:col-span-2 text-left sm:text-right min-w-0')">
-                  <div :class="useClsx('font-manrope mb-1 text-base sm:text-lg font-light color-gray-12')">
-                    ${{ leftStock.open?.toFixed(2) || 'N/A' }}
-                  </div>
-                  <div :class="useClsx('font-manrope text-xs tracking-wider uppercase color-gray-10')">
-                    Open
-                  </div>
+                  <div :class="useClsx('font-manrope text-xs md:text-sm font-light color-gray-10 truncate')">{{ leftStock.industry || '—' }}</div>
                 </div>
               </div>
 
               <div
                 v-if="leftStock.dayRange.low !== null && leftStock.dayRange.high !== null"
-                :class="useClsx('mt-6 border-t border-gray-7 border-solid pt-6')"
+                :class="useClsx('mt-4 border-t border-gray-7 border-solid pt-4')"
               >
                 <div :class="useClsx('font-manrope mb-3 text-xs tracking-wider uppercase color-gray-10')">
                   Day Range
@@ -267,8 +260,8 @@ const baseClass = useClsx('max-w-5xl h-full')
         </Transition>
       </div>
 
-      <!-- Bottom card (row 2) -->
-      <div class="h-full min-h-0">
+      <!-- Top-right (lg)/Bottom (sm-md) -->
+      <div class="h-full min-h-0 lg:col-start-2 lg:row-start-1">
         <Transition
           mode="out-in"
           enter-active-class="transition-opacity duration-500 ease-out"
@@ -284,65 +277,37 @@ const baseClass = useClsx('max-w-5xl h-full')
             <div
               :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0 h-full overflow-hidden')"
             >
-              <div :class="useClsx('grid grid-cols-12 items-start gap-3 sm:gap-6 min-w-0')">
-                <div :class="useClsx('col-span-12 sm:col-span-3 min-w-0')">
-                  <div
-                    :class="useClsx('whitespace-nowrap font-manrope mb-2 text-[clamp(20px,2.4vw,36px)] font-light tracking-wider color-gray-12')"
-                  >
+              <div :class="useClsx('min-w-0 flex items-start justify-between gap-4 md:gap-6')">
+                <div :class="useClsx('min-w-0')">
+                  <div :class="useClsx('font-manrope mb-1 text-[clamp(16px,1.6vw,24px)] font-light tracking-tight color-gray-12 leading-tight')">
                     {{ rightStock.symbol }}
                   </div>
-                  <div
-                    :class="useClsx('text-nowrap text-truncate font-manrope text-sm tracking-widest uppercase color-gray-10')"
-                  >
+                  <div :class="useClsx('truncate font-manrope text-xs md:text-sm tracking-widest uppercase color-gray-10')">
                     {{ rightStock.name || rightStock.symbol }}
                   </div>
                 </div>
 
-                <div :class="useClsx('col-span-12 sm:col-span-4 min-w-0')">
-                  <div
-                    :class="useClsx('font-manrope mb-2 text-[clamp(24px,2.6vw,40px)] whitespace-nowrap font-light color-gray-12')"
-                  >
-                    $
-                    <NumberTicker :value="rightStock.price!" />
-                  </div>
-                  <div :class="useClsx('font-manrope text-sm font-light color-gray-10')">
-                    {{ rightStock.industry || '—' }}
-                  </div>
-                </div>
-
-                <div :class="useClsx('col-span-6 sm:col-span-3 min-w-0')">
-                  <div
-                    v-if="rightStock.change !== null"
-                    :class="useClsx('mb-2 flex items-center space-x-3', rightStock.change < 0 ? 'color-crimson-10' : 'color-jade-9')"
-                  >
-                    <Icon
-                      v-if="rightStock.change < 0" name="tabler:trending-down"
-                      :class="useClsx('size-5 md:size-6')"
-                    />
-                    <Icon v-else name="tabler:trending-up" :class="useClsx('size-5 md:size-6')" />
-                    <span :class="useClsx('font-manrope text-2xl font-light whitespace-nowrap')">
-                      {{ rightStock.change > 0 ? '+' : '' }}
-                      <NumberTicker :value="rightStock.change" />
+                <div :class="useClsx('text-right min-w-0')">
+                  <div :class="useClsx('font-manrope mb-1 flex items-baseline justify-end gap-1 md:gap-1.5 leading-none')">
+                    <span :class="useClsx('align-baseline text-[clamp(14px,1.2vw,18px)] opacity-70')">$</span>
+                    <span :class="useClsx('text-[clamp(20px,2vw,30px)] tabular-nums')">
+                      <NumberTicker :value="rightStock.price!" />
+                    </span>
+                    <span
+                      v-if="rightStock.change !== null"
+                      :class="useClsx('ml-1 flex items-center gap-1 text-[clamp(12px,1.1vw,14px)]', rightStock.change < 0 ? 'color-crimson-10' : 'color-jade-9')"
+                    >
+                      <Icon :name="rightStock.change < 0 ? 'tabler:trending-down' : 'tabler:trending-up'" :class="useClsx('size-4')" />
+                      <span class="tabular-nums">{{ rightStock.change > 0 ? '+' : '' }}<NumberTicker :value="rightStock.change" /></span>
                     </span>
                   </div>
-                  <div :class="useClsx('font-manrope text-sm color-gray-10')">
-                    ({{ rightStock.changePercent?.toFixed(2) || '0.00' }}%)
-                  </div>
-                </div>
-
-                <div :class="useClsx('md:hidden col-span-6 sm:col-span-2 text-left sm:text-right min-w-0')">
-                  <div :class="useClsx('font-manrope mb-1 text-base sm:text-lg font-light color-gray-12')">
-                    ${{ rightStock.open?.toFixed(2) || 'N/A' }}
-                  </div>
-                  <div :class="useClsx('font-manrope text-xs tracking-wider uppercase color-gray-10')">
-                    Open
-                  </div>
+                  <div :class="useClsx('font-manrope text-xs md:text-sm font-light color-gray-10 truncate')">{{ rightStock.industry || '—' }}</div>
                 </div>
               </div>
 
               <div
                 v-if="rightStock.dayRange.low !== null && rightStock.dayRange.high !== null"
-                :class="useClsx('mt-6 border-t border-gray-7 border-solid pt-6')"
+                :class="useClsx('mt-4 border-t border-gray-7 border-solid pt-4')"
               >
                 <div :class="useClsx('font-manrope color-gray-10 mb-3 text-xs tracking-wider uppercase text-gray-500')">
                   Day Range
@@ -368,22 +333,81 @@ const baseClass = useClsx('max-w-5xl h-full')
           </div>
         </Transition>
       </div>
+      <!-- Bottom row (only lg): third and fourth cards -->
+      <template v-if="stockData.length > 0">
+        <div v-if="thirdStock" class="h-full min-h-0 lg:col-start-1 lg:row-start-2">
+          <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0 h-full overflow-hidden')">
+            <div :class="useClsx('min-w-0 flex items-start justify-between gap-4 md:gap-6')">
+              <div :class="useClsx('min-w-0')">
+                <div :class="useClsx('font-manrope mb-1 text-[clamp(16px,1.6vw,24px)] font-light tracking-tight color-gray-12 leading-tight')">{{ thirdStock.symbol }}</div>
+                <div :class="useClsx('truncate font-manrope text-xs md:text-sm tracking-widest uppercase color-gray-10')">{{ thirdStock.name || thirdStock.symbol }}</div>
+              </div>
+              <div :class="useClsx('text-right min-w-0')">
+                <div :class="useClsx('font-manrope mb-1 flex items-baseline justify-end gap-1 md:gap-1.5 leading-none')">
+                  <span :class="useClsx('align-baseline text-[clamp(14px,1.2vw,18px)] opacity-70')">$</span>
+                  <span :class="useClsx('text-[clamp(20px,2vw,30px)] tabular-nums')"><NumberTicker :value="thirdStock.price!" /></span>
+                  <span v-if="thirdStock.change !== null" :class="useClsx('ml-1 flex items-center gap-1 text-[clamp(12px,1.1vw,14px)]', thirdStock.change < 0 ? 'color-crimson-10' : 'color-jade-9')">
+                    <Icon :name="thirdStock.change < 0 ? 'tabler:trending-down' : 'tabler:trending-up'" :class="useClsx('size-4')" />
+                    <span class="tabular-nums">{{ thirdStock.change > 0 ? '+' : '' }}<NumberTicker :value="thirdStock.change" /></span>
+                  </span>
+                </div>
+                <div :class="useClsx('font-manrope text-xs md:text-sm font-light color-gray-10 truncate')">{{ thirdStock.industry || '—' }}</div>
+              </div>
+            </div>
+            <div v-if="thirdStock.dayRange.low !== null && thirdStock.dayRange.high !== null" :class="useClsx('mt-4 border-t border-gray-7 border-solid pt-4')">
+              <div :class="useClsx('font-manrope mb-3 text-xs tracking-wider uppercase color-gray-10')">Day Range</div>
+              <div :class="useClsx('relative')">
+                <div :class="useClsx('h-1 rounded-full bg-gray-6 dark:bg-gray-700')" />
+                <div v-if="thirdStock.price !== null && thirdStock.dayRange.low !== null && thirdStock.dayRange.high !== null" :class="useClsx('absolute top-0 left-0 h-1 rounded-full from-olive-12 to-mint-11 bg-gradient-to-r transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]')" :style="{ width: thirdBarWidth }" />
+                <div :class="useClsx('mt-2 flex justify-between text-xs')">
+                  <span :class="useClsx('font-manrope color-gray-11')">${{ thirdStock.dayRange.low?.toFixed(2) || 'N/A' }}</span>
+                  <span :class="useClsx('font-manrope color-gray-11')">${{ thirdStock.dayRange.high?.toFixed(2) || 'N/A' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="fourthStock" class="h-full min-h-0 lg:col-start-2 lg:row-start-2">
+          <div :class="useClsx(boxShadowClass, cardSurfaceLight, cardSurfaceDark, baseClass, 'color-pureBlack w-full min-w-0 h-full overflow-hidden')">
+            <div :class="useClsx('min-w-0 flex items-start justify-between gap-4 md:gap-6')">
+              <div :class="useClsx('min-w-0')">
+                <div :class="useClsx('font-manrope mb-1 text-[clamp(16px,1.6vw,24px)] font-light tracking-tight color-gray-12 leading-tight')">{{ fourthStock.symbol }}</div>
+                <div :class="useClsx('truncate font-manrope text-xs md:text-sm tracking-widest uppercase color-gray-10')">{{ fourthStock.name || fourthStock.symbol }}</div>
+              </div>
+              <div :class="useClsx('text-right min-w-0')">
+                <div :class="useClsx('font-manrope mb-1 flex items-baseline justify-end gap-1 md:gap-1.5 leading-none')">
+                  <span :class="useClsx('align-baseline text-[clamp(14px,1.2vw,18px)] opacity-70')">$</span>
+                  <span :class="useClsx('text-[clamp(20px,2vw,30px)] tabular-nums')"><NumberTicker :value="fourthStock.price!" /></span>
+                  <span v-if="fourthStock.change !== null" :class="useClsx('ml-1 flex items-center gap-1 text-[clamp(12px,1.1vw,14px)]', fourthStock.change < 0 ? 'color-crimson-10' : 'color-jade-9')">
+                    <Icon :name="fourthStock.change < 0 ? 'tabler:trending-down' : 'tabler:trending-up'" :class="useClsx('size-4')" />
+                    <span class="tabular-nums">{{ fourthStock.change > 0 ? '+' : '' }}<NumberTicker :value="fourthStock.change" /></span>
+                  </span>
+                </div>
+                <div :class="useClsx('font-manrope text-xs md:text-sm font-light color-gray-10 truncate')">{{ fourthStock.industry || '—' }}</div>
+              </div>
+            </div>
+            <div v-if="fourthStock.dayRange.low !== null && fourthStock.dayRange.high !== null" :class="useClsx('mt-4 border-t border-gray-7 border-solid pt-4')">
+              <div :class="useClsx('font-manrope color-gray-10 mb-3 text-xs tracking-wider uppercase text-gray-500')">Day Range</div>
+              <div :class="useClsx('relative')">
+                <div :class="useClsx('h-1 rounded-full bg-gray-6 dark:bg-gray-700')" />
+                <div v-if="fourthStock.price !== null && fourthStock.dayRange.low !== null && fourthStock.dayRange.high !== null" :class="useClsx('absolute top-0 left-0 h-1 rounded-full from-olive-12 to-mint-11 bg-gradient-to-r transition-[width] duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]')" :style="{ width: fourthBarWidth }" />
+                <div :class="useClsx('mt-2 flex justify-between text-xs')">
+                  <span :class="useClsx('font-manrope color-gray-11')">${{ fourthStock.dayRange.low?.toFixed(2) || 'N/A' }}</span>
+                  <span :class="useClsx('font-manrope color-gray-11')">${{ fourthStock.dayRange.high?.toFixed(2) || 'N/A' }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
     </template>
 
-    <!-- Pager dots (aus dem Flow, beeinflusst die Höhe NICHT) -->
-    <div
-      v-if="stockData.length > 0"
-      :class="useClsx('pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center space-x-3')"
-    >
+    <!-- Dots centered between the two rows/columns -->
+    <div v-if="stockData.length > 0" :class="useClsx('pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center space-x-3')">
       <div
         v-for="(_, index) in Math.ceil(stockData.length / 2)"
         :key="index"
-        :class="useClsx(
-          'h-2 rounded-full transition-all duration-800 ease-out',
-          index === Math.floor(activeStartIndex / 2)
-            ? 'bg-sand-12 w-8 scale-110 shadow-lg'
-            : 'bg-gray-8 w-2',
-        )"
+        :class="useClsx('h-2 rounded-full transition-all duration-800 ease-out', index === Math.floor(activeStartIndex / 2) ? 'bg-sand-12 w-8 scale-110 shadow-lg' : 'bg-gray-8 w-2')"
         :style="{ transitionDelay: `${index * 100}ms` }"
       />
     </div>
