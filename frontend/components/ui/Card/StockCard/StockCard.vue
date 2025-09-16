@@ -1,13 +1,12 @@
 <!-- StockCard.vue -->
 <script setup lang="ts">
-import NumberTicker from '@/components/ui/Text/NumberTicker/NumberTicker.vue'
+import type { StockQuote } from '@/stores/stocks'
 import StockCardItem from '@/components/ui/Card/StockCard/StockCardItem.vue'
 import { useStocks } from '@/stores/stocks'
-import type { StockQuote } from '@/stores/stocks'
 
 const stocksStore = useStocks()
 const { quotes, isLoading, error, leftStock, rightStock, activeStartIndex } = storeToRefs(stocksStore)
-const { ensureLoaded, fetchQuotes, nextPair, setActiveStartIndex } = stocksStore
+const { ensureLoaded, fetchQuotes } = stocksStore
 
 const animationKey = ref(0)
 
@@ -93,8 +92,10 @@ function animateRightBar() {
 }
 
 // Remove local autoplay to avoid double-advance; rely on store autoplay controlled in layout
-const pause = () => {}
-const resume = () => {}
+function pause() {
+}
+function resume() {
+}
 
 watch(inView, (v) => {
   if (v)
@@ -236,7 +237,10 @@ const fourthBarWidth = computed(() => computeRangeWidth(fourthStock.value as any
     </template>
 
     <!-- Dots centered between the two rows/columns -->
-    <div v-if="stockData.length > 0" :class="useClsx('pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center space-x-3')">
+    <div
+      v-if="stockData.length > 0"
+      :class="useClsx('pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center justify-center space-x-3')"
+    >
       <div
         v-for="(_, index) in Math.ceil(stockData.length / 2)"
         :key="index"
