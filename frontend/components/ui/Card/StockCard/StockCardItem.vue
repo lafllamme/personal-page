@@ -63,9 +63,6 @@ const rangeWidth = computed(() => computeRangeWidth(props.stock))
         </div>
       </div>
 
-      <!-- Spacer to naturally push the range section to the bottom on tall cards -->
-      <div class="flex-1" />
-
       <!-- Bottom: day range anchored to the bottom for consistent visual balance -->
       <div
         v-if="stock.dayRange.low !== null && stock.dayRange.high !== null"
