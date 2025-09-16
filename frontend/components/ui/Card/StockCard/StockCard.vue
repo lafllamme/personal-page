@@ -156,15 +156,15 @@ const fourthBarWidth = computed(() => computeRangeWidth(fourthStock.value as any
 <template>
   <div
     ref="hostRef"
-    :class="useClsx('relative grid h-full min-h-0 w-full min-w-0 grid-cols-1 gap-8 md:gap-10 lg:grid-cols-2 lg:gap-14 lg:grid-rows-[1fr_1fr]')"
+    :class="useClsx('relative grid h-full min-h-0 w-full min-w-0 grid-cols-1 gap-8 md:gap-10 xl:grid-cols-2 xl:gap-14 xl:grid-rows-[1fr_1fr]')"
   >
     <!-- Loading -->
-    <div v-if="isLoading" :class="useClsx('space-y-6 col-span-1 lg:row-span-2')">
+    <div v-if="isLoading" :class="useClsx('space-y-6 col-span-1 xl:row-span-2')">
       <div :class="useClsx(boxShadowClass, cardSurfaceLight, 'dark:bg-sand-10 h-full')" />
     </div>
 
     <!-- Error -->
-    <div v-else-if="error" :class="useClsx('space-y-6 col-span-1 lg:row-span-2')">
+    <div v-else-if="error" :class="useClsx('space-y-6 col-span-1 xl:row-span-2')">
       <div :class="useClsx(boxShadowClass, cardSurfaceLight, 'dark:bg-sand-10 h-full')">
         <div :class="useClsx('h-full flex items-center justify-center text-center p-6')">
           <div>
@@ -225,12 +225,12 @@ const fourthBarWidth = computed(() => computeRangeWidth(fourthStock.value as any
           </div>
         </Transition>
       </div>
-      <!-- Third and fourth cards (only visible on lg+ screens) -->
+      <!-- Third and fourth cards (only visible on xl+ screens) -->
       <template v-if="stockData.length > 0">
-        <div v-if="thirdStock" class="hidden h-full min-h-0 lg:block lg:col-start-1 lg:row-start-2">
+        <div v-if="thirdStock" class="hidden h-full min-h-0 xl:block xl:col-start-1 xl:row-start-2">
           <StockCardItem :stock="thirdStock as any" />
         </div>
-        <div v-if="fourthStock" class="hidden h-full min-h-0 lg:block lg:col-start-2 lg:row-start-2">
+        <div v-if="fourthStock" class="hidden h-full min-h-0 xl:block xl:col-start-2 xl:row-start-2">
           <StockCardItem :stock="fourthStock as any" />
         </div>
       </template>
