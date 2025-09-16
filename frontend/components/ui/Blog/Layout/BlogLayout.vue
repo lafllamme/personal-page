@@ -4,7 +4,6 @@ import FeaturedCard from '@/components/ui/Card/FeaturedCard/FeaturedCard.vue'
 import RegularCard from '@/components/ui/Card/RegularCard/RegularCard.vue'
 import StockCard from '@/components/ui/Card/StockCard/StockCard.vue'
 import TextScrollReveal from '@/components/ui/Scroll/TextScrollReveal/TextScrollReveal.vue'
-import { useElementSize } from '@vueuse/core'
 
 const featuredArticle = reactive({
   id: 'spotlight',
@@ -27,10 +26,6 @@ const regularArticles = reactive(
     href: '#',
   })),
 )
-
-// Match the right column height to the featured card so the 2x2 grid can split space evenly
-const leftColRef = useTemplateRef('leftColRef')
-const { height: leftColHeight } = useElementSize(leftColRef as any)
 </script>
 
 <template>
@@ -49,7 +44,7 @@ const { height: leftColHeight } = useElementSize(leftColRef as any)
           <div class="flex justify-between">
             <h2
               :class="useClsx(
-                'font-ginger text-[clamp(28px,4.2vw,48px)] leading-none md:text-[clamp(38px,4.2vw,56px)] font-light tracking-wide uppercase',
+                'font-ginger text-[clamp(24px,3.4vw,36px)] leading-none md:text-[clamp(38px,4.2vw,56px)] font-light tracking-wide uppercase',
                 'color-pureBlack dark:color-pureWhite whitespace-nowrap',
               )"
             >
@@ -62,9 +57,9 @@ const { height: leftColHeight } = useElementSize(leftColRef as any)
         </div>
 
         <div
-          class="md:grid-temp grid my-8 items-stretch gap-x-8 md:grid-cols-[3fr_5fr] md:my-10 <md:gap-y-8 lg:gap-x-12"
+          class="grid my-8 gap-8 md:grid-cols-[3fr_5fr] md:my-10 lg:gap-x-12"
         >
-          <div ref="leftColRef" class="h-full min-w-0 w-full">
+          <div class="min-w-[390px] w-full">
             <FeaturedCard
               :id="featuredArticle.id"
               :author="featuredArticle.author"
@@ -75,7 +70,7 @@ const { height: leftColHeight } = useElementSize(leftColRef as any)
               :title="featuredArticle.title"
             />
           </div>
-          <div class="h-full min-w-0 w-full" :style="{ height: leftColHeight ? `${leftColHeight}px` : undefined }">
+          <div class="min-w-0 w-full">
             <StockCard />
           </div>
         </div>
