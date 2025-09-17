@@ -81,7 +81,9 @@ const firstRow = ref(reviews)
         <p class="space-grotesk-regular m-4 text-base sm:text-lg">
           The essential tech news in under 3 minutes.
         </p>
-        <button class="space-grotesk-regular rounded-full bg-pureBlack px-4 py-1 color-pureWhite font-medium tracking-tight dark:bg-pureWhite dark:color-pureBlack">
+        <button
+          class="space-grotesk-regular rounded-full bg-pureBlack px-4 py-1 color-pureWhite font-medium tracking-tight dark:bg-pureWhite dark:color-pureBlack"
+        >
           Dive in →
         </button>
       </div>
@@ -89,8 +91,7 @@ const firstRow = ref(reviews)
       <!-- Tilted Marquees -->
       <div class="absolute inset-0 overflow-hidden bg-pureWhite dark:bg-pureBlack">
         <Marquee
-          :style="{ transform: 'translateY(-11.5rem) rotate(-16deg)' }"
-          class="marquee"
+          class="marquee rotate-[-16deg] -translate-y-46 md:-translate-y-46 sm:-translate-y-46"
           :is-paused="!isCurrentlyVisible"
           :pause-on-hover="false"
         >
@@ -106,9 +107,8 @@ const firstRow = ref(reviews)
         </Marquee>
 
         <Marquee
-          :style="{ transform: 'translateY(1rem) rotate(-16deg)' }"
+          class="marquee translate-y-4 rotate-[-16deg] md:translate-y-4 sm:translate-y-4"
           reverse
-          class="marquee"
           :is-paused="!isCurrentlyVisible"
           :pause-on-hover="false"
         >
@@ -124,8 +124,7 @@ const firstRow = ref(reviews)
         </Marquee>
 
         <Marquee
-          :style="{ transform: 'translateY(13.5rem) rotate(-16deg)' }"
-          class="marquee"
+          class="marquee translate-y-32 rotate-[-16deg] md:translate-y-54 sm:translate-y-36"
           :is-paused="!isCurrentlyVisible"
           :pause-on-hover="false"
         >
@@ -141,9 +140,8 @@ const firstRow = ref(reviews)
         </Marquee>
 
         <Marquee
-          :style="{ transform: 'translateY(26rem) rotate(-16deg)' }"
+          class="marquee translate-y-64 rotate-[-16deg] md:translate-y-104 sm:translate-y-80"
           reverse
-          class="marquee"
           :is-paused="!isCurrentlyVisible"
           :pause-on-hover="false"
         >
