@@ -7,6 +7,11 @@ import Menu from '@/components/ui/Menu/Menu.vue'
 import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 
+// Configurable thresholds (percent of page scrolled) with sensible defaults
+const props = withDefaults(defineProps<{ minimizeAtPercent?: number, activateAtPercent?: number }>(), {
+  minimizeAtPercent: 0.08, // minimize a bit earlier (25%)
+  activateAtPercent: 0.02, // start subtle effects earlier (2%)
+})
 // compute to destination for a home link
 const localePath = useLocalePath()
 const homeLink = computed(() => {
@@ -22,16 +27,19 @@ const headerRef = ref<HTMLElement | null>(null)
 
 const { y } = useWindowScroll()
 
-// TODO: improve this here
-const hasScrolledEnough = computed(() => {
+// Compute how far the user has scrolled relative to total scrollable height
+const scrolledPercent = computed(() => {
   if (import.meta.server)
-    return false
+    return 0
 
   const scrollY = y.value
   const docHeight = document.documentElement.scrollHeight - height.value
-  const scrolledPercent = docHeight > 0 ? scrollY / docHeight : 0
-  return scrolledPercent >= 0.2
+  return docHeight > 0 ? scrollY / docHeight : 0
 })
+
+// Scroll-based animation states driven by percentage thresholds
+const hasScrolledEnough = computed(() => scrolledPercent.value >= props.activateAtPercent)
+const isHeaderMinimized = computed(() => scrolledPercent.value >= props.minimizeAtPercent)
 
 // Close menu and language switcher on Escape key press
 useEventListener('keydown', (e: KeyboardEvent) => {
@@ -65,58 +73,86 @@ watch(isSwitchOpen, (open) => {
     <!-- Main Header container with dynamic style and classes -->
     <header
       ref="headerRef"
-      class="fixed left-0 top-0 z-50 w-full"
+      :class="useClsx(
+        'fixed inset-x-0 top-0 z-50 w-full',
+        'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+      )"
       role="banner"
     >
-      <!-- Background layer for consistent backdrop filter (Glass morphism) -->
       <div
         :class="useClsx(
-          hasScrolledEnough && 'backdrop-saturate-150',
-          'pointer-events-none absolute inset-0',
-          'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
-          'backdrop-blur-[8px] bg-pureWhite/50 dark:bg-pureBlack/50',
-        )"
-      />
-      <!-- Inner container for logo and right-side items -->
-      <div
-        :class="useClsx(
-          'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
-          'border-b border-gray-5 border-solid dark:border-gray-4',
-          'relative mx-auto flex items-center justify-between',
-          'px-4 py-3 sm:px-6',
+          'relative mx-auto',
+          'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+          isHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw]' : 'mt-0 max-w-full',
         )"
       >
-        <div class="flex items-center">
-          <NuxtLink
-            :class="useClsx(
-              'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-              'transition-transform duration-300 ease-out hover:scale-105',
-              'focus-visible:outline-none focus-visible:ring-3',
-              'font-nova font-bold tracking-tight antialiased',
-              'absolute group px-2 text-2xl  md:text-3xl',
-            )"
-            :to="homeLink"
-            aria-label="Tech News"
-            tabindex="0"
-          >
-            <span class="text-pureBlack dark:text-pureWhite">Tec</span>
-            <span class="color-teal-10">News</span>
-            <Underline />
-          </NuxtLink>
-        </div>
-        <div class="relative flex items-center">
-          <div class="mr-6.5 flex items-center gap-0.5 md:mr-10.5">
-            <LanguageSwitcher
-              v-model:open="isSwitchOpen"
-              class="p-1.5"
-            />
-            <ColorMode
-              class="p-1.5"
+        <!-- Background layer for consistent backdrop filter (Glass morphism) -->
+        <div
+          :class="useClsx(
+            hasScrolledEnough && 'backdrop-saturate-150',
+            'pointer-events-none absolute inset-0',
+            'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+            'backdrop-blur-[8px] bg-pureWhite/50 dark:bg-pureBlack/50',
+            isHeaderMinimized ? 'rounded-full' : 'rounded-none',
+          )"
+        />
+        <!-- Inner container for logo and right-side items -->
+        <div
+          :class="useClsx(
+            'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+            'relative flex items-center justify-between',
+            isHeaderMinimized ? 'px-8 py-4' : 'px-4 py-3 sm:px-6',
+            isHeaderMinimized ? 'border-none' : 'border-b',
+            !isHeaderMinimized && 'border-b border-gray-5 border-solid dark:border-gray-4',
+          )"
+        >
+          <div class="flex items-center">
+            <NuxtLink
+              :class="useClsx(
+                'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+                'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
+                'focus-visible:outline-none focus-visible:ring-3',
+                'font-nova font-bold tracking-tight antialiased',
+                'absolute group px-2',
+                isHeaderMinimized ? 'text-xl' : 'text-2xl md:text-3xl',
+              )"
+              :to="homeLink"
+              aria-label="Tech News"
+              tabindex="0"
+            >
+              <span class="text-pureBlack dark:text-pureWhite">Tec</span>
+              <span class="color-teal-10">News</span>
+              <Underline />
+            </NuxtLink>
+          </div>
+          <div class="relative flex items-center">
+            <div
+              :class="useClsx(
+                'flex items-center gap-0.5 transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                isHeaderMinimized ? 'mr-4' : 'mr-6.5 md:mr-10.5',
+              )"
+            >
+              <LanguageSwitcher
+                v-model:open="isSwitchOpen"
+                :class="useClsx(
+                  'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                  isHeaderMinimized ? 'p-1' : 'p-1.5',
+                )"
+              />
+              <ColorMode
+                :class="useClsx(
+                  'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                  isHeaderMinimized ? 'p-1' : 'p-1.5',
+                )"
+              />
+            </div>
+            <Menu
+              :class="useClsx(
+                'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                isHeaderMinimized ? 'p-1' : 'p-1.5',
+              )"
             />
           </div>
-          <Menu
-            class="p-1.5"
-          />
         </div>
       </div>
     </header>
