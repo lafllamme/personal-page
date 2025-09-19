@@ -83,7 +83,7 @@ watch(isSwitchOpen, (open) => {
         :class="useClsx(
           'relative mx-auto',
           'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-          isHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw]' : 'mt-0 max-w-full',
+          isHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] md:max-w-[50vw]' : 'mt-0 max-w-full',
         )"
       >
         <!-- Background layer for consistent backdrop filter (Glass morphism) -->
@@ -92,7 +92,10 @@ watch(isSwitchOpen, (open) => {
             hasScrolledEnough && 'backdrop-saturate-150',
             'pointer-events-none absolute inset-0',
             'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-            'backdrop-blur-[8px] bg-pureWhite/50 dark:bg-pureBlack/50',
+            // Glass background: default subtle glass, minimized = pure liquid glass (blur only)
+            isHeaderMinimized
+              ? 'backdrop-blur-[12px] backdrop-saturate-180 backdrop-contrast-115 bg-transparent ring-1 ring-mint-12 shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+              : 'backdrop-blur-[6px] bg-pureWhite/45 dark:bg-pureBlack/35 ring-0',
             isHeaderMinimized ? 'rounded-full' : 'rounded-none',
           )"
         />
@@ -101,7 +104,7 @@ watch(isSwitchOpen, (open) => {
           :class="useClsx(
             'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'relative flex items-center justify-between',
-            isHeaderMinimized ? 'px-8 py-4' : 'px-4 py-3 sm:px-6',
+            isHeaderMinimized ? 'px-8 py-4' : 'px-6 py-4 md:px-8',
             isHeaderMinimized ? 'border-none' : 'border-b',
             !isHeaderMinimized && 'border-b border-gray-5 border-solid dark:border-gray-4',
           )"
