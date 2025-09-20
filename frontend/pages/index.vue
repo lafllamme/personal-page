@@ -1,11 +1,39 @@
 <script lang="ts" setup>
-import Spline from '@/components/ui/Background/Spline/Spline.vue'
-import FeaturedSection from '@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'
-import BlogLayout from '@/components/ui/Blog/Layout/BlogLayout.vue'
-import InteractiveButton from '@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'
-import RippleButton from '@/components/ui/Buttons/RippleButton/RippleButton.vue'
-import SkewMarquee from '@/components/ui/Section/SkewMarquee/SkewMarquee.vue'
-import TextGenerate from '@/components/ui/Text/TextGenerate/TextGenerate.vue'
+// Lazy hydration components for better performance
+const LazySpline = defineLazyHydrationComponent(
+  'visible',
+  () => import('@/components/ui/Background/Spline/Spline.vue')
+)
+
+const LazyFeaturedSection = defineLazyHydrationComponent(
+  'visible',
+  () => import('@/components/ui/Blog/FeaturedSection/FeaturedSection.vue')
+)
+
+const LazyBlogLayout = defineLazyHydrationComponent(
+  'visible',
+  () => import('@/components/ui/Blog/Layout/BlogLayout.vue')
+)
+
+const LazyInteractiveButton = defineLazyHydrationComponent(
+  'idle',
+  () => import('@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue')
+)
+
+const LazyRippleButton = defineLazyHydrationComponent(
+  'idle',
+  () => import('@/components/ui/Buttons/RippleButton/RippleButton.vue')
+)
+
+const LazySkewMarquee = defineLazyHydrationComponent(
+  'visible',
+  () => import('@/components/ui/Section/SkewMarquee/SkewMarquee.vue')
+)
+
+const LazyTextGenerate = defineLazyHydrationComponent(
+  'idle',
+  () => import('@/components/ui/Text/TextGenerate/TextGenerate.vue')
+)
 
 const { t } = useI18n()
 
@@ -64,10 +92,11 @@ function handleGenerateComplete() {
           :class="useClsx(renderBackground && '!bg-mint-8')"
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full bg-gray-4A transition-colors duration-[2000ms] ease-in-out"
         >
-          <Spline
+          <LazySpline
             :on-load="handleLoad"
             :scene="sceneUrl"
             render-on-demand
+            :hydrate-on-visible="{ rootMargin: '50px' }"
           />
         </div>
       </div>
@@ -83,7 +112,7 @@ function handleGenerateComplete() {
         >
           {{ t('hero.headline') }}
         </h1>
-        <TextGenerate
+        <LazyTextGenerate
           :class="useClsx(
             'max-w-3xl 2xl:max-w-4xl md:text-justify',
             'text-wrap text-[clamp(1rem,2vw,1.5rem)]',
@@ -92,6 +121,7 @@ function handleGenerateComplete() {
           :delay="0.8"
           :duration="1.1"
           :words="t('hero.text')"
+          :hydrate-on-idle="500"
           @generate="handleGenerateComplete"
         />
         <div
@@ -103,20 +133,28 @@ function handleGenerateComplete() {
             animate ? 'opacity-100 animate-fade-in' : 'opacity-0',
           )"
         >
-          <InteractiveButton
+          <LazyInteractiveButton
             :text="t('buttons.latest')"
+            :hydrate-on-idle="1000"
             @click="handleClick"
           />
-          <RippleButton
+          <LazyRippleButton
             :text="t('buttons.subscribe')"
+            :hydrate-on-idle="1000"
           />
         </div>
       </div>
     </div>
-    <FeaturedSection />
-    <BlogLayout />
+    <LazyFeaturedSection
+      :hydrate-on-visible="{ rootMargin: '100px' }"
+    />
+    <LazyBlogLayout
+      :hydrate-on-visible="{ rootMargin: '100px' }"
+    />
     <div class="mb-12 mt-6 md:mb-32 md:mt-12">
-      <SkewMarquee />
+      <LazySkewMarquee
+        :hydrate-on-visible="{ rootMargin: '150px' }"
+      />
     </div>
   </div>
 </template>
