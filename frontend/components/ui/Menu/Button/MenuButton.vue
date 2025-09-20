@@ -7,7 +7,7 @@ withDefaults(defineProps<MenuButtonProps>(), MenuButtonDefaults)
 defineEmits<MenuButtonEmits>()
 
 const menuStore = useMenu()
-const { isOpen } = storeToRefs(menuStore)
+const { isOpen, isHeaderMinimized } = storeToRefs(menuStore)
 const { toggleMenu } = menuStore
 </script>
 
@@ -18,8 +18,9 @@ const { toggleMenu } = menuStore
     :class="useClsx(
       'group focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite focus-visible:ring',
       'transition-transform focus:outline-none ease-in-out duration-300',
-      'absolute z-100 top-1.5 md:top-1.5 -translate-x-full absolute z-100',
+      'absolute z-100 -translate-x-full absolute',
       isOpen && 'opened',
+      isHeaderMinimized ? 'top-1 ml-6' : 'top-1.5 md:top-1.5',
     )"
     aria-controls="mobile-menu"
     tabindex="0"
