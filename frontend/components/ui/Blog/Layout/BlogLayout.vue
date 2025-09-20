@@ -59,7 +59,7 @@ const regularArticles = reactive(
         <div
           class="grid my-8 gap-8 md:grid-cols-[3fr_5fr] md:my-10 lg:gap-x-12"
         >
-          <div class="min-w-[390px] w-full">
+          <div class="w-full md:min-w-[390px]">
             <FeaturedCard
               :id="featuredArticle.id"
               :author="featuredArticle.author"
