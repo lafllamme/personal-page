@@ -92,7 +92,7 @@ watch(isSwitchOpen, (open) => {
         :class="useClsx(
           'relative mx-auto',
           'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-          isHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] md:max-w-[50vw]' : 'mt-0 max-w-full',
+          isHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] !min-w-[330px] md:max-w-[55vw]' : 'mt-0 max-w-full',
         )"
       >
         <!-- Background layer for consistent backdrop filter (Glass morphism) -->
@@ -113,7 +113,7 @@ watch(isSwitchOpen, (open) => {
           :class="useClsx(
             'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'relative flex items-center justify-between',
-            isHeaderMinimized ? 'px-8 py-4' : 'px-6 py-4 md:px-8',
+            isHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-6 py-4 md:px-8',
             isHeaderMinimized ? 'border-none' : 'border-b',
             !isHeaderMinimized && 'border-b border-gray-5 border-solid dark:border-gray-4',
           )"
@@ -126,7 +126,7 @@ watch(isSwitchOpen, (open) => {
                 'focus-visible:outline-none focus-visible:ring-3',
                 'font-nova font-bold tracking-tight antialiased',
                 'absolute group px-2',
-                isHeaderMinimized ? 'text-xl' : 'text-2xl md:text-3xl',
+                isHeaderMinimized ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl',
               )"
               :to="homeLink"
               aria-label="Tech News"
@@ -137,7 +137,10 @@ watch(isSwitchOpen, (open) => {
               <Underline />
             </NuxtLink>
           </div>
-          <div class="relative flex items-center">
+          <div
+            :class="isHeaderMinimized && 'pr-7'"
+            class="relative flex items-center"
+          >
             <div
               :class="useClsx(
                 'flex items-center gap-0.5 transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
@@ -154,7 +157,7 @@ watch(isSwitchOpen, (open) => {
               <ColorMode
                 :class="useClsx(
                   'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-                  isHeaderMinimized ? 'p-1' : 'p-1.5',
+                  isHeaderMinimized ? '<md:hidden' : 'p-1.5',
                 )"
               />
             </div>
