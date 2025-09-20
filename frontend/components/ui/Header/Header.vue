@@ -6,10 +6,11 @@ import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import Menu from '@/components/ui/Menu/Menu.vue'
 import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
+import { useMenu } from '@/stores/menu/menu'
 
 // Configurable thresholds (percent of page scrolled) with sensible defaults
 const props = withDefaults(defineProps<{ minimizeAtPercent?: number, activateAtPercent?: number }>(), {
-  minimizeAtPercent: 0.08, // minimize a bit earlier (25%)
+  minimizeAtPercent: 0.05, // minimize a bit earlier (5%)
   activateAtPercent: 0.02, // start subtle effects earlier (2%)
 })
 // compute to destination for a home link
@@ -19,6 +20,10 @@ const homeLink = computed(() => {
 })
 
 const { height } = useWindowSize()
+
+// Menu store
+const menuStore = useMenu()
+const { isHeaderMinimized } = storeToRefs(menuStore)
 
 // Reactive state variables
 const isOpen = ref(false) // Drives Navigation.vue visibility
@@ -39,7 +44,11 @@ const scrolledPercent = computed(() => {
 
 // Scroll-based animation states driven by percentage thresholds
 const hasScrolledEnough = computed(() => scrolledPercent.value >= props.activateAtPercent)
-const isHeaderMinimized = computed(() => scrolledPercent.value >= props.minimizeAtPercent)
+
+// Update header minimized state in store based on scroll percentage
+watch(scrolledPercent, (percent) => {
+  menuStore.setHeaderMinimized(percent >= props.minimizeAtPercent)
+}, { immediate: true })
 
 // Close menu and language switcher on Escape key press
 useEventListener('keydown', (e: KeyboardEvent) => {
