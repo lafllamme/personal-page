@@ -3,6 +3,9 @@ import { defineStore } from 'pinia'
 export const useMenu = defineStore('menu', () => {
   // Open/close state
   const isOpen = ref(false)
+  
+  // Header minimized state
+  const isHeaderMinimized = ref(false)
 
   // Logging function
   function _log(message: string) {
@@ -132,6 +135,11 @@ export const useMenu = defineStore('menu', () => {
     }
   }
 
+  // Setter for header minimized state
+  function setHeaderMinimized(minimized: boolean) {
+    isHeaderMinimized.value = minimized
+  }
+
   // Computed properties for search results
   const searchResults = computed(() => {
     // If search query is empty, return null
@@ -189,6 +197,10 @@ export const useMenu = defineStore('menu', () => {
     closeMenu,
     openMenu,
     toggleMenu,
+
+    // Header state
+    isHeaderMinimized,
+    setHeaderMinimized,
 
     // Menu items
     items,
