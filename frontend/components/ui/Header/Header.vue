@@ -126,7 +126,7 @@ watch(isSwitchOpen, (open) => {
                 'focus-visible:outline-none focus-visible:ring-3',
                 'font-nova font-bold tracking-tight antialiased',
                 'absolute group px-2',
-                isHeaderMinimized ? 'text-xl md:text-2xl' : 'text-2xl md:text-3xl',
+                isHeaderMinimized ? 'text-xl md:text-2xl ts-contrast' : 'text-2xl md:text-3xl',
               )"
               :to="homeLink"
               aria-label="Tech News"

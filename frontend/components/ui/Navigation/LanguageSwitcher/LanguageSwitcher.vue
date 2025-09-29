@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { LanguageSwitcherProps } from './LanguageSwitcher.model'
-import { languages } from '@/types/i18n'
 import { onClickOutside } from '@vueuse/core'
 import { computed, ref, toRefs, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { languages } from '@/types/i18n'
 import { LanguageSwitcherDefaults } from './LanguageSwitcher.model'
 
 const props = withDefaults(defineProps<LanguageSwitcherProps>(), LanguageSwitcherDefaults)
@@ -165,7 +165,9 @@ const sortedLanguages = computed(() => {
       @touchstart="onTouchStart"
       @keydown.esc="emit('update:open', false)"
     >
-      <span class="font-recoleta ml-1 text-sm font-semibold leading-tight tracking-tight antialiased md:text-xl">{{
+      <span
+        class="font-recoleta ml-1 text-sm font-semibold leading-tight tracking-tight antialiased md:text-xl"
+      >{{
         currentLanguageLabel
       }}</span>
       <Icon
