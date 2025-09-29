@@ -92,7 +92,7 @@ watch(isSwitchOpen, (open) => {
         :class="useClsx(
           'relative mx-auto',
           'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-          isHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] min-w-0 md:max-w-[55vw]' : 'mt-0 max-w-full',
+          isHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] min-w-0 md:max-w-[45vw]' : 'mt-0 max-w-full',
         )"
       >
         <!-- Background layer for consistent backdrop filter (Glass morphism) -->
