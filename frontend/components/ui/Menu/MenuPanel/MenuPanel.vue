@@ -20,7 +20,7 @@ const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
       'transform-gpu will-change-[transform,opacity] backface-hidden',
       // Layout: dropdown matches minimized header width; sidebar widths otherwise
       isHeaderMinimized
-        ? 'fixed left-1/2 top-0 z-50 -translate-x-1/2 bg-pureWhite w-[65vw] md:w-[45vw]'
+        ? 'fixed left-1/2 top-4 md:top-6 z-50 -translate-x-1/2 bg-pureWhite w-[65vw] md:w-[45vw]'
         : 'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
       isHeaderMinimized
         ? ''
