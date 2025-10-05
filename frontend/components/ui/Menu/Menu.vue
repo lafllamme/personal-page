@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { MenuProps } from './Menu.model'
+import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import MenuButton from '@/components/ui/Menu/Button/MenuButton.vue'
 import Footer from '@/components/ui/Menu/Footer/Footer.vue'
 import MenuAccordion from '@/components/ui/Menu/MenuAccordion/MenuAccordion.vue'
@@ -9,7 +10,6 @@ import MenuPanel from '@/components/ui/Menu/MenuPanel/MenuPanel.vue'
 import MenuSearch from '@/components/ui/Menu/Search/MenuSearch.vue'
 import SearchResults from '@/components/ui/Menu/SearchResults/SearchResults.vue'
 import { useMenu } from '@/stores/menu'
-import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 import { MenuPropsDefault } from './Menu.model'
 
 withDefaults(defineProps<MenuProps>(), MenuPropsDefault)
@@ -70,7 +70,7 @@ watch(isOpen, (open) => {
         :class="useClsx(
           'color-pureBlack h-svh dark:color-pureWhite',
           'relative z-10 h-full flex flex-col p-6',
-          isHeaderMinimized && 'pt-14'
+          isHeaderMinimized && 'pt-14',
         )"
       >
         <!-- Search -->
