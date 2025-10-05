@@ -25,6 +25,32 @@ const { height } = useWindowSize()
 const menuStore = useMenu()
 const { isHeaderMinimized } = storeToRefs(menuStore)
 
+// Track minimized header container width to match dropdown width
+const headerContainerRef = ref<HTMLElement | null>(null)
+
+function updateHeaderMinWidthVar() {
+  if (import.meta.server)
+    return
+  const el = headerContainerRef.value
+  if (!el)
+    return
+  const { width } = el.getBoundingClientRect()
+  document.documentElement.style.setProperty('--header-minimized-width', `${Math.round(width)}px`)
+}
+
+onMounted(() => {
+  updateHeaderMinWidthVar()
+})
+
+useEventListener(window, 'resize', () => {
+  updateHeaderMinWidthVar()
+})
+
+watch(isHeaderMinimized, (min) => {
+  if (min)
+    updateHeaderMinWidthVar()
+})
+
 // Reactive state variables
 const isOpen = ref(false) // Drives Navigation.vue visibility
 const isSwitchOpen = ref(false) // Controls language switcher
@@ -89,6 +115,7 @@ watch(isSwitchOpen, (open) => {
       role="banner"
     >
       <div
+        ref="headerContainerRef"
         :class="useClsx(
           'relative mx-auto',
           'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
