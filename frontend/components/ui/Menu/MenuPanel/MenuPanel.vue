@@ -23,7 +23,7 @@ const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
         ? 'fixed left-1/2 top-4 md:top-6 z-50 -translate-x-1/2 bg-pureWhite w-[65vw] md:w-[45vw]'
         : 'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
       isHeaderMinimized
-        ? ''
+        ? 'rounded-3xl'
         : 'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
     )"
     :inert="isOpen ? undefined : 'true'"
