@@ -18,12 +18,12 @@ const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
         ? (isOpen ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0')
         : (isOpen ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'),
       'transform-gpu will-change-[transform,opacity] backface-hidden',
-      // Layout: full-width dropdown when minimized; sidebar widths otherwise
+      // Layout: dropdown matches minimized header width; sidebar widths otherwise
       isHeaderMinimized
-        ? 'fixed inset-0 z-50 w-full bg-pureWhite'
+        ? 'fixed left-1/2 top-0 z-50 -translate-x-1/2 bg-pureWhite w-[65vw] md:w-[45vw]'
         : 'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite',
       isHeaderMinimized
-        ? 'w-full !max-w-none'
+        ? ''
         : 'w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]',
     )"
     :inert="isOpen ? undefined : 'true'"

@@ -15,7 +15,7 @@ import { MenuPropsDefault } from './Menu.model'
 withDefaults(defineProps<MenuProps>(), MenuPropsDefault)
 
 const menuStore = useMenu()
-const { isOpen } = storeToRefs(menuStore)
+const { isOpen, isHeaderMinimized } = storeToRefs(menuStore)
 const { toggleMenu } = menuStore
 
 const menu = useTemplateRef('menu')
@@ -70,6 +70,7 @@ watch(isOpen, (open) => {
         :class="useClsx(
           'color-pureBlack h-svh dark:color-pureWhite',
           'relative z-10 h-full flex flex-col p-6',
+          isHeaderMinimized && 'pt-14'
         )"
       >
         <!-- Search -->
