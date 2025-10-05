@@ -33,7 +33,7 @@ watch(isOpen, (open) => {
         'text-[18vh] color-gray-12A font-thin leading-none tracking-wider',
         'absolute top-12 origin-right transform animate-glow',
         'uppercase opacity-10 -translate-y-1/2 -rotate-90 font-electric',
-        isHeaderMinimized ? 'right-18' : 'right-8 md:right-15',
+        isHeaderMinimized ? 'right-14' : 'right-8 md:right-15',
       )"
       aria-hidden="true"
     >
