@@ -159,12 +159,9 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      alwaysRedirect: false, // Fix hydration mismatch
+      alwaysRedirect: true,
       fallbackLocale: 'en',
     },
-    // Add SSR-safe configuration
-    differentDomains: false,
-    skipSettingLocaleOnNavigate: true,
   },
 
   // Sitemap configuration
