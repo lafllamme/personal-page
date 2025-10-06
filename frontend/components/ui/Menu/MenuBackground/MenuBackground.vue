@@ -30,10 +30,11 @@ watch(isOpen, (open) => {
   >
     <div
       :class="useClsx(
-        'text-[18vh] color-gray-12A font-thin leading-none tracking-wider',
-        'absolute top-12 origin-right transform animate-glow',
-        'uppercase opacity-10 -translate-y-1/2 -rotate-90 font-electric',
-        isHeaderMinimized ? 'right-14' : 'right-8 md:right-15',
+        'top-30 right-14',
+        'absolute origin-right transform animate-glow',
+        isHeaderMinimized ? 'text-[16vh]' : 'text-[18vh]',
+        'color-gray-12A font-thin leading-none tracking-wider',
+        'uppercase opacity-10 -translate-y-full -rotate-90 font-electric',
       )"
       aria-hidden="true"
     >
