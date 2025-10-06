@@ -68,8 +68,10 @@ watch(isOpen, (open) => {
       <!-- Content -->
       <div
         :class="useClsx(
-          'color-pureBlack h-svh dark:color-pureWhite',
-          'relative z-10 h-full flex flex-col p-6',
+          'color-pureBlack dark:color-pureWhite',
+          // Limit height when header is minimized
+          isHeaderMinimized ? 'h-[90svh]' : 'h-svh',
+          'relative z-10 flex flex-col p-6',
           isHeaderMinimized && 'pt-14',
         )"
       >
