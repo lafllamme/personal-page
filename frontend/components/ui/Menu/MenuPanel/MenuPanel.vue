@@ -26,7 +26,7 @@ const animationClasses = computed(() =>
 
 // Layout styles depending on header state
 const minimizedLayout
-    = 'fixed left-1/2 top-4 md:top-6 z-50 -translate-x-1/2 w-[65vw] md:w-[45vw] overflow-hidden rounded-[36px] max-h-[90svh]'
+    = 'fixed left-1/2 top-4 md:top-6 -translate-y-px z-50 -translate-x-1/2 w-[65vw] md:w-[45vw] overflow-hidden rounded-[36px] max-h-[90svh]'
 const borderLayout = 'ring ring-mint-12 ring-inset ring-1'
 const sidebarLayout = 'fixed inset-y-0 right-0 z-50 w-full w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]'
 const layoutClasses = computed(() =>
