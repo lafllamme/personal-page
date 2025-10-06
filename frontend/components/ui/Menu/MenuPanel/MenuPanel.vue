@@ -9,7 +9,7 @@ const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
 
 // Base styles applied in all states
 const basePanelClasses
-    = 'shadow-xl transition-[clip-path,opacity,transform] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack transform-gpu will-change-[transform,opacity,clip-path] backface-hidden'
+    = 'transition-[clip-path,opacity,transform] duration-500 bg-pureWhite dark:bg-pureBlack ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack transform-gpu will-change-[transform,opacity,clip-path] backface-hidden'
 
 // Animation styles depending on header state
 const minimizedAnimation = computed(() =>
@@ -26,10 +26,11 @@ const animationClasses = computed(() =>
 
 // Layout styles depending on header state
 const minimizedLayout
-    = 'fixed left-1/2 top-4 md:top-6 z-50 dark: border-solid dark:border-mint-12 dark:border -translate-x-1/2 bg-pureWhite w-[65vw] md:w-[45vw] overflow-hidden rounded-[36px] max-h-[90svh]'
-const sidebarLayout = 'fixed inset-y-0 right-0 z-50 w-full bg-pureWhite w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]'
+    = 'fixed left-1/2 top-4 md:top-6 z-50 -translate-x-1/2 w-[65vw] md:w-[45vw] overflow-hidden rounded-[36px] max-h-[90svh]'
+const borderLayout = 'ring ring-mint-12 ring-inset ring-1'
+const sidebarLayout = 'fixed inset-y-0 right-0 z-50 w-full w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]'
 const layoutClasses = computed(() =>
-  isHeaderMinimized.value ? minimizedLayout : sidebarLayout,
+  isHeaderMinimized.value ? [minimizedLayout, borderLayout] : sidebarLayout,
 )
 
 // Final class binding
