@@ -9,7 +9,7 @@ const { toggleMenu } = menuStore
 <template>
   <div
     :class="useClsx(
-      'fixed inset-0 z-40 bg-pureBlack/40 dark:bg-olive-6A backdrop-blur-sm grayscale-40',
+      'sm:hidden fixed inset-0 z-40 bg-pureBlack/40 dark:bg-olive-6A backdrop-blur-sm grayscale-40',
       isOpen ? 'opacity-100' : 'pointer-events-none opacity-0',
       'transition-opacity duration-300 ease-in-out',
     )"
