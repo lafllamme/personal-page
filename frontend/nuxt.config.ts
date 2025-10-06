@@ -37,7 +37,7 @@ export default defineNuxtConfig({
     },
     public: {
       // Use environment variables or fallback to localhost for development
-      payloadApiUrl: process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL 
+      payloadApiUrl: process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL
         ? `${process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL}/api`
         : 'http://localhost:3001/api',
       payloadUrl: process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3001',
@@ -159,7 +159,7 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      alwaysRedirect: true
+      alwaysRedirect: true,
       fallbackLocale: 'en',
     },
   },
