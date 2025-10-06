@@ -11,6 +11,13 @@ personal-page.iml
 # Node dependencies
 node_modules
 
+#turbo tui settings and tui.json
+/.turbo
+
+
+#ignore import map from cms
+/cms/src/app/\(payload\)/admin/importMap.js
+
 # turbo related files
 .turbo
 .turbo/preferences
