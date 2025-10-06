@@ -69,9 +69,9 @@ export default defineNuxtConfig({
     },
   },
 
-  // Nitro configuration for AWS App Runner
+  // Nitro configuration for Netlify
   nitro: {
-    preset: 'node-server',
+    preset: 'netlify',
     compressPublicAssets: {
       gzip: true,
       brotli: true,
@@ -161,6 +161,10 @@ export default defineNuxtConfig({
       cookieKey: 'i18n_redirected',
       alwaysRedirect: false, // Fix hydration mismatch
       fallbackLocale: 'en',
+      // Disable browser language detection during SSR to prevent hydration mismatch
+      serverSidePreference: 'no-prefix',
+      // Disable browser language detection completely during SSR
+      useHeader: false,
     },
     // Add SSR-safe configuration
     differentDomains: false,
