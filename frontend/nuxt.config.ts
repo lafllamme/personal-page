@@ -36,14 +36,11 @@ export default defineNuxtConfig({
       },
     },
     public: {
-      // Local development: direct API calls to Payload CMS on port 3001
-      // Production: API calls through same domain
-      payloadApiUrl: process.env.NODE_ENV === 'production'
-        ? process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL || '/api'
+      // Use environment variables or fallback to localhost for development
+      payloadApiUrl: process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL 
+        ? `${process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL}/api`
         : 'http://localhost:3001/api',
-      payloadUrl: process.env.NODE_ENV === 'production'
-        ? process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL || ''
-        : 'http://localhost:3001',
+      payloadUrl: process.env.NUXT_PAYLOAD_PUBLIC_SERVER_URL || 'http://localhost:3001',
       siteUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     },
   },
@@ -137,6 +134,9 @@ export default defineNuxtConfig({
     strategy: 'prefix_except_default', // Default locale (en) won't have prefix, others will
     baseUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
     defaultLocale: 'en',
+    bundle: {
+      optimizeTranslationDirective: false, // Fix i18n warning
+    },
     locales: [
       { code: 'de', iso: 'de-DE', language: 'de-DE', name: 'Deutsch', dir: 'ltr' },
       { code: 'en', iso: 'en-US', language: 'en-US', name: 'English', dir: 'ltr' },
@@ -159,9 +159,12 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       useCookie: true,
       cookieKey: 'i18n_redirected',
-      alwaysRedirect: true,
+      alwaysRedirect: false, // Fix hydration mismatch
       fallbackLocale: 'en',
     },
+    // Add SSR-safe configuration
+    differentDomains: false,
+    skipSettingLocaleOnNavigate: true,
   },
 
   // Sitemap configuration
