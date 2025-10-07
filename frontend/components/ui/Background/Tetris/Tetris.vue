@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 interface Props {
   class?: string
   squareColor: string
-  base: number
+  base?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
