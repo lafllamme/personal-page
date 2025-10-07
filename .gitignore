@@ -16,7 +16,7 @@ node_modules
 
 
 #ignore import map from cms
-/cms/src/app/\(payload\)/admin/importMap.js
+/cms/src/app/\(payload\)/admin
 
 # turbo related files
 .turbo
@@ -39,3 +39,6 @@ logs
 !.env.example
 !.env.aws.example
 .vercel
+
+# Local Netlify folder
+.netlify
