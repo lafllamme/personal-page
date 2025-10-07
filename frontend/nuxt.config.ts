@@ -94,7 +94,7 @@ export default defineNuxtConfig({
   // Environment-specific route rules
   $production: {
     routeRules: {
-      '/**': { isr: false },
+      '/**': { isr: true },
       // API routes should not be cached
       '/api/**': {
         isr: false,
