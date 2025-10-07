@@ -16,7 +16,7 @@ node_modules
 
 
 #ignore import map from cms
-/cms/src/app/\(payload\)/admin
+/cms/src/app/(payload)/admin/
 
 # turbo related files
 .turbo
