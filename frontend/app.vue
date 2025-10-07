@@ -17,26 +17,21 @@ else {
 }
 
 // 1) HTML lang and dir attributes for i18n SEO
-// Use safe i18n head configuration to prevent hydration mismatches
+// 1) Compute htmlAttrs from i18n
 const head = useLocaleHead({
   dir: true,
   lang: true,
   seo: { canonicalQueries: ['ref'] },
   key: 'i18n',
-  addSeoAttributes: false, // Disable SEO attributes that can cause hydration issues
 })
-
 // 2) Custom viewport meta tag to allow fullscreen on iOS devices
 useHead(() => {
-  // Safely access head properties with fallbacks
-  const headValue = head.value || {}
-  const { htmlAttrs = {}, link = [], meta: i18nMeta = [] } = headValue
-  
+  const { htmlAttrs, link, meta: i18nMeta } = head.value
   return {
     htmlAttrs,
     link,
     meta: [
-      ...(i18nMeta || []),
+      ...(i18nMeta ?? []),
       {
         name: 'viewport',
         content: meta.viewport,
