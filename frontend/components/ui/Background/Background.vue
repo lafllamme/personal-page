@@ -1,5 +1,5 @@
 <script setup>
-import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
+import { useWindowSize } from '@vueuse/core'
 import {
   Mesh,
   PerspectiveCamera,
@@ -21,16 +21,8 @@ const isLoaded = ref(true)
 const colorMode = useColorMode()
 const isDark = computed(() => colorMode.value === 'dark')
 
-const breakpoints = useBreakpoints(breakpointsTailwind)
 const aspectRatio = computed(() => width.value / height.value)
-
-const smallerMD = breakpoints.smaller('md')
 const isSafari = computed(() => /^(?:(?!chrome|android).)*safari/i.test(navigator.userAgent))
-
-watch(() => smallerMD.value, (value) => {
-  console.debug('[Background] => smallerMD:', value)
-})
-console.debug('[Background] => isDark:', isDark.value)
 
 /**
  * Computes dynamic offset based on aspect ratio.
@@ -40,12 +32,10 @@ function computeDynamicOffset() {
   let baseOffsetY = 0.35 // Base vertical offset
 
   if (isSafari.value) {
-    console.log('[Background] => Safari detected, adjusting offset')
     baseOffsetX *= 0.65
     baseOffsetY *= 0.65
   }
 
-  console.log('[Background] => aspectRatio:', aspectRatio.value)
   // Dynamically adjust based on aspect ratio
   if (aspectRatio.value > 1.5) {
     return [baseOffsetX, baseOffsetY] // Desktop widescreen
