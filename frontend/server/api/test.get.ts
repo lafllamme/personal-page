@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 export const GET = defineEventHandler(async (event) => {
   const config = useRuntimeConfig()
 
