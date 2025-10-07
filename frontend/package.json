@@ -1,11 +1,12 @@
 {
   "name": "@personal-page/frontend",
+  "type": "module",
   "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac",
   "description": "Personal page frontend built with Nuxt 3",
   "author": "Dogan Teke",
   "license": "MIT",
-  "private": true,
-  "type": "module",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --port 3000",
@@ -84,6 +85,5 @@
     "unocss-preset-animations": "^1.1.1",
     "unocss-preset-radix": "^2.8.0",
     "wrangler": "^3.109.0"
-  },
-  "packageManager": "pnpm@10.12.1+sha512.f0dda8580f0ee9481c5c79a1d927b9164f2c478e90992ad268bbb2465a736984391d6333d2c327913578b2804af33474ca554ba29c04a8b13060a717675ae3ac"
+  }
 }

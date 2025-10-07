@@ -227,10 +227,10 @@ const fourthBarWidth = computed(() => computeRangeWidth(fourthStock.value as any
       </div>
       <!-- Third and fourth cards (only visible on xl+ screens) -->
       <template v-if="stockData.length > 0">
-        <div v-if="thirdStock" class="hidden h-full min-h-0 xl:block xl:col-start-1 xl:row-start-2">
+        <div v-if="thirdStock" class="hidden h-full min-h-0 xl:col-start-1 xl:row-start-2 xl:block">
           <StockCardItem :stock="thirdStock as any" />
         </div>
-        <div v-if="fourthStock" class="hidden h-full min-h-0 xl:block xl:col-start-2 xl:row-start-2">
+        <div v-if="fourthStock" class="hidden h-full min-h-0 xl:col-start-2 xl:row-start-2 xl:block">
           <StockCardItem :stock="fourthStock as any" />
         </div>
       </template>

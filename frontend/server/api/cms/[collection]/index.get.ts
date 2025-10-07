@@ -27,12 +27,17 @@ export default defineEventHandler(async (event) => {
 
     // Build query parameters for the CMS API
     const queryParams = new URLSearchParams()
-    
-    if (query.limit) queryParams.append('limit', query.limit as string)
-    if (query.page) queryParams.append('page', query.page as string)
-    if (query.sort) queryParams.append('sort', query.sort as string)
-    if (query.depth) queryParams.append('depth', query.depth as string)
-    if (query.where) queryParams.append('where', query.where as string)
+
+    if (query.limit)
+      queryParams.append('limit', query.limit as string)
+    if (query.page)
+      queryParams.append('page', query.page as string)
+    if (query.sort)
+      queryParams.append('sort', query.sort as string)
+    if (query.depth)
+      queryParams.append('depth', query.depth as string)
+    if (query.where)
+      queryParams.append('where', query.where as string)
 
     // For posts collection, only show published posts by default
     if (collection === 'posts' && !query.where) {
@@ -73,7 +78,8 @@ export default defineEventHandler(async (event) => {
                 const mediaResponse = await $fetch(`${payloadApiUrl}/media/${child.id}`)
                 child.value = mediaResponse
                 consola.log(`✅ Populated upload relationship for media ID: ${child.id}`)
-              } catch (error) {
+              }
+              catch (error) {
                 consola.error(`❌ Failed to populate upload relationship for media ID: ${child.id}`, error)
               }
             }

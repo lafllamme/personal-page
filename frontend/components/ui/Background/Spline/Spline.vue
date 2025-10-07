@@ -1,22 +1,22 @@
 <script lang="ts" setup>
 import type { SplineProps } from './Spline.model'
-import { useMenu } from '@/stores/menu'
 import { Application } from '@splinetool/runtime'
 import { useDocumentVisibility, useEventListener, useIntersectionObserver } from '@vueuse/core'
 import { computed, onMounted, onUnmounted, ref, shallowRef, toRefs, watch } from 'vue'
+import { useMenu } from '@/stores/menu'
 import ParentSize from './ParentSize/ParentSize.vue'
 import { SplinePropsDefaults } from './Spline.model'
 
-type SplineEventName =
-  | 'mouseDown'
-  | 'mouseUp'
-  | 'mouseHover'
-  | 'keyDown'
-  | 'keyUp'
-  | 'start'
-  | 'lookAt'
-  | 'follow'
-  | 'scroll'
+type SplineEventName
+  = | 'mouseDown'
+    | 'mouseUp'
+    | 'mouseHover'
+    | 'keyDown'
+    | 'keyUp'
+    | 'start'
+    | 'lookAt'
+    | 'follow'
+    | 'scroll'
 
 const props = withDefaults(defineProps<SplineProps>(), SplinePropsDefaults)
 const emit = defineEmits([

@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 export const useMenu = defineStore('menu', () => {
   // Open/close state
   const isOpen = ref(false)
-  
+
   // Header minimized state
   const isHeaderMinimized = ref(false)
 

@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import BentoGrid from '@/components/ui/Grid/BentoGrid.vue'
 import GridItem from '@/components/ui/Grid/GridItem/GridItem.vue'
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
