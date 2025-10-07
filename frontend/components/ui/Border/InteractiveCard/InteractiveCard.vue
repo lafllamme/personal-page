@@ -3,9 +3,7 @@ import type { InteractiveCardProps } from './InteractiveCard.model'
 import InteractiveBorder from '@/components/ui/Border/InteractiveBorder/InteractiveBorder.vue'
 import { InteractiveCardDefaultProps } from './InteractiveCard.model'
 
-const props = withDefaults(defineProps<InteractiveCardProps>(), InteractiveCardDefaultProps)
-
-const { containerClass, contentClass } = toRefs(props)
+withDefaults(defineProps<InteractiveCardProps>(), InteractiveCardDefaultProps)
 </script>
 
 <template>
