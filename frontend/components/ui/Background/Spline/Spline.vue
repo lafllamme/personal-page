@@ -48,7 +48,7 @@ watch(isLoading, (loading) => {
         shouldAnimate.value = loading
       })
       .catch((err) => {
-        console.error('Error during wait:', err)
+        consola.error('Error during wait:', err)
       })
   }
 })
@@ -78,7 +78,7 @@ async function initSpline() {
     setupEventListeners()
   }
   catch (err) {
-    console.error('Spline initialization error:', err)
+    consola.error('Spline initialization error:', err)
     emit('error', err)
     isLoading.value = false
   }
@@ -137,7 +137,7 @@ function stopAnimation(reason: string) {
     return
   if (!app.isStopped) {
     if (debug.value)
-      console.log('[Spline] stopAnimation:', reason)
+      consola.debug('[Spline] stopAnimation:', reason)
     app.stop()
   }
 }
@@ -148,7 +148,7 @@ function playAnimation(reason: string) {
     return
   if (app.isStopped) {
     if (debug.value)
-      console.log('[Spline] playAnimation:', reason)
+      consola.debug('[Spline] playAnimation:', reason)
     app.play()
   }
 }
