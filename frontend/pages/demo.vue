@@ -50,7 +50,7 @@ async function fetchPosts() {
     })
 
     posts.value = result
-    console.log('Posts fetched successfully:', result)
+    consola.debug('Posts fetched successfully:', result)
   }
   catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to fetch posts'

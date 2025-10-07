@@ -15,9 +15,6 @@ const isVisible = useElementVisibility(target, { threshold: 0, rootMargin: '0px'
 // Track if this card is focused
 const isFocused = ref(false)
 
-// Compute next index, wrapping around
-const nextIdx = computed(() => (index.value < max.value ? index.value + 1 : 0))
-
 // Only tabbable when visible
 const tabIndex = computed(() => (isVisible.value ? 0 : -1))
 

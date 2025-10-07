@@ -3,7 +3,6 @@ import Marquee from '@/components/ui/Marquee/Marquee.vue'
 import ReviewCard from '@/components/ui/ReviewCard/ReviewCard.vue'
 import { useVisibilityObserver } from '@/composables/useVisibilityObserver'
 
-const isDark = computed(() => useColorMode().value === 'dark')
 const target = useTemplateRef('target')
 const isVisible = ref(false)
 const isCurrentlyVisible = useVisibilityObserver(target, isVisible, 40, true)
