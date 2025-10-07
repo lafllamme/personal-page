@@ -31,9 +31,9 @@ const { data: refreshedStocks, pending, error: fetchError, execute: refreshStock
 
 // Watch for refreshed data and update stocks
 watch(refreshedStocks, (newData) => {
-  console.log('🔄 Stocklist: received data from API:', newData)
+  consola.debug('🔄 Stocklist: received data from API:', newData)
   if (newData) {
-    console.log('✅ Stocklist: updating stocks with', newData.length, 'items')
+    consola.debug('✅ Stocklist: updating stocks with', newData.length, 'items')
     stocks.value = newData
   }
 })
@@ -54,7 +54,7 @@ const { pause, resume } = useIntervalFn(
 )
 
 onMounted(() => {
-  console.log('🎯 Stocklist: component mounted, initial stocks:', stocks.value)
+  consola.debug('🎯 Stocklist: component mounted, initial stocks:', stocks.value)
   resume() // Start auto-refresh
 })
 

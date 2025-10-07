@@ -232,7 +232,7 @@ const sampleTexts = {
               <div
                 class="text-2xl color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]"
               >
-                !@#$%^&*()_+-=[]{}|;':",./<>?
+                {{ `!@#$ % ^ & * ()_ + -= []{}|;':",./<>?` }}
               </div>
             </div>
           </div>

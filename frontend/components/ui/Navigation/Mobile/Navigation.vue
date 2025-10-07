@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 // Import utilities from Vue and VueUse
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { computed, ref, toRefs } from 'vue'
 
 interface MenuItem {
@@ -21,8 +20,6 @@ const emit = defineEmits<{
 }>()
 
 const { isOpen } = toRefs(props)
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const smallerMD = computed(() => breakpoints.smaller('md').value)
 
 // Common transition settings must match the Header component
 const transitionDuration = 'duration-900'

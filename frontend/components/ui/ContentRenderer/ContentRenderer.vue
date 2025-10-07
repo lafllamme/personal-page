@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import NodeRenderer from './NodeRenderer.vue'
 
-const props = defineProps<{ content: any }>()
+defineProps<{ content: any }>()
 </script>
 
 <template>
