@@ -4,7 +4,7 @@ import { ReviewCardDefaultProps } from './ReviewCard.model'
 
 // Props & defaults
 const props = withDefaults(defineProps<ReviewCardProps>(), ReviewCardDefaultProps)
-const { max, index, img, name, username, body } = toRefs(props)
+const { index, img, name, username, body } = toRefs(props)
 
 // Reference to this card's DOM node
 const target = useTemplateRef<HTMLElement>('target')
