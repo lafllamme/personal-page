@@ -82,7 +82,7 @@ export default defineEventHandler(async (event) => {
       }) as any
     }
     catch (error) {
-      consola.log(`❌ First query failed, trying simple filter...`)
+      consola.error(`❌ Initial query failed, trying simple filter:`, error)
 
       // Try with simple filter
       const simpleQueryParams = new URLSearchParams()
