@@ -28,8 +28,9 @@ export default defineEventHandler(async (event) => {
 
     // Build query parameters for the CMS API
     const queryParams = new URLSearchParams()
-    
-    if (query.depth) queryParams.append('depth', query.depth as string)
+
+    if (query.depth)
+      queryParams.append('depth', query.depth as string)
 
     const apiUrl = `${payloadApiUrl}/${collection}/${id}?${queryParams.toString()}`
     consola.log(`🚀 Fetching from CMS API: ${apiUrl}`)

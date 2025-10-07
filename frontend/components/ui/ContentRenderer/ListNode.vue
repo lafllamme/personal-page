@@ -1,14 +1,6 @@
-<template>
-  <component
-    :is="node.tag || 'ul'"
-    :dir="node.direction"
-    :class="listClass"
-  >
-    <NodeRenderer v-for="(child, i) in node.children" :key="i" :node="child" />
-  </component>
-</template>
 <script setup lang="ts">
 import NodeRenderer from './NodeRenderer.vue'
+
 const props = defineProps<{ node: any }>()
 
 const listClass = computed(() => {
@@ -20,4 +12,14 @@ const listClass = computed(() => {
   }
   return 'my-4 pl-6 list-disc list-inside'
 })
-</script> 
+</script>
+
+<template>
+  <component
+    :is="node.tag || 'ul'"
+    :dir="node.direction"
+    :class="listClass"
+  >
+    <NodeRenderer v-for="(child, i) in node.children" :key="i" :node="child" />
+  </component>
+</template>

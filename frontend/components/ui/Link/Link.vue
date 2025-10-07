@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import Underline from '@/components/ui/Menu/Underline/Underline.vue'
 
 /**
  * Interface for our link component props.

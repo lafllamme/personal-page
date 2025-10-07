@@ -23,5 +23,3 @@ export function computeRangeWidth(stock: StockQuote | null): string {
   const clamped = Math.min(1, Math.max(0, ratio))
   return `${(clamped * 100).toFixed(2)}%`
 }
-
-

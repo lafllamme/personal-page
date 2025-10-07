@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { cn } from '@/lib/utils'
 import { useElementSize } from '@vueuse/core'
 import { getColors } from 'theme-colors'
+import { cn } from '@/lib/utils'
 
 interface Props {
   class?: string

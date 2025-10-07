@@ -2,37 +2,37 @@
 // Lazy hydration components for better performance
 const LazySpline = defineLazyHydrationComponent(
   'visible',
-  () => import('@/components/ui/Background/Spline/Spline.vue')
+  () => import('@/components/ui/Background/Spline/Spline.vue'),
 )
 
 const LazyFeaturedSection = defineLazyHydrationComponent(
   'visible',
-  () => import('@/components/ui/Blog/FeaturedSection/FeaturedSection.vue')
+  () => import('@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'),
 )
 
 const LazyBlogLayout = defineLazyHydrationComponent(
   'visible',
-  () => import('@/components/ui/Blog/Layout/BlogLayout.vue')
+  () => import('@/components/ui/Blog/Layout/BlogLayout.vue'),
 )
 
 const LazyInteractiveButton = defineLazyHydrationComponent(
   'idle',
-  () => import('@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue')
+  () => import('@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'),
 )
 
 const LazyRippleButton = defineLazyHydrationComponent(
   'idle',
-  () => import('@/components/ui/Buttons/RippleButton/RippleButton.vue')
+  () => import('@/components/ui/Buttons/RippleButton/RippleButton.vue'),
 )
 
 const LazySkewMarquee = defineLazyHydrationComponent(
   'visible',
-  () => import('@/components/ui/Section/SkewMarquee/SkewMarquee.vue')
+  () => import('@/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
 )
 
 const LazyTextGenerate = defineLazyHydrationComponent(
   'idle',
-  () => import('@/components/ui/Text/TextGenerate/TextGenerate.vue')
+  () => import('@/components/ui/Text/TextGenerate/TextGenerate.vue'),
 )
 
 const { t } = useI18n()

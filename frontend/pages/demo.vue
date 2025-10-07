@@ -112,7 +112,7 @@ function getCategoryNames(categories: any[] = []) {
         <h1 class="mb-4 text-4xl text-pureBlack font-bold md:text-6xl dark:text-pureWhite">
           🚀 Enhanced CMS Demo
         </h1>
-        <p class="text-gray-600 dark:text-gray-400 mx-auto max-w-2xl text-xl">
+        <p class="dark:text-gray-400 text-gray-600 mx-auto max-w-2xl text-xl">
           Testing our adapted collections from TecNews with role-based access control
         </p>
       </div>
@@ -137,7 +137,7 @@ function getCategoryNames(categories: any[] = []) {
             ❌ Error: {{ error }}
           </p>
           <button
-            class="bg-red-600 text-white hover:bg-red-700 rounded px-4 py-2 transition-colors"
+            class="text-white bg-red-600 hover:bg-red-700 rounded px-4 py-2 transition-colors"
             @click="fetchPosts"
           >
             Try Again
@@ -222,7 +222,7 @@ function getCategoryNames(categories: any[] = []) {
         <div class="mb-4 text-6xl">
           📝
         </div>
-        <h3 class="text-gray-900 dark:text-white mb-2 text-xl font-semibold">
+        <h3 class="dark:text-white text-gray-900 mb-2 text-xl font-semibold">
           No posts found
         </h3>
         <p class="text-gray-600 dark:text-gray-400 mb-6">

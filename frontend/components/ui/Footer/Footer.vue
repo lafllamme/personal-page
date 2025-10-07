@@ -1,9 +1,9 @@
 <script setup>
+import { ref, watch } from 'vue'
 import NewsletterInput from '@/components/ui/Input/NewsletterInput/NewsletterInput.vue'
 import Link from '@/components/ui/Link/Link.vue'
 import Divider from '@/components/ui/Menu/Divider/Divider.vue'
 import { useVisibilityObserver } from '@/composables/useVisibilityObserver.js'
-import { ref, watch } from 'vue'
 
 // Data
 const currentYear = new Date().getFullYear().toString()

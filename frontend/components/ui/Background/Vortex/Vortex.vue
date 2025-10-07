@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { cn } from '@/lib/utils'
 import { useDebounceFn } from '@vueuse/core'
 import { createNoise3D } from 'simplex-noise'
+import { cn } from '@/lib/utils'
 
 const props = withDefaults(defineProps<VortexProps>(), {
   particleCount: 700,
