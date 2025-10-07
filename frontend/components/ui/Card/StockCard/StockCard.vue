@@ -130,8 +130,6 @@ const boxShadowClass = useClsx(
 )
 
 const cardSurfaceLight = useClsx('bg-sand-1')
-const cardSurfaceDark = useClsx('dark:bg-olive-2')
-const baseClass = useClsx('max-w-5xl h-full')
 
 // Additional stocks to support 2x2 layout on lg+
 const thirdStock = computed(() => {
@@ -147,10 +145,6 @@ const fourthStock = computed(() => {
     return null
   return list[(activeStartIndex.value + 3) % list.length] || null
 })
-
-// Progress widths for extra cards
-const thirdBarWidth = computed(() => computeRangeWidth(thirdStock.value as any))
-const fourthBarWidth = computed(() => computeRangeWidth(fourthStock.value as any))
 </script>
 
 <template>
