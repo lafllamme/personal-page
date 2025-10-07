@@ -14,8 +14,7 @@ export interface CarouselContextType {
   setHoveredIndex: (index: number | null) => void
   hoveredIndex: Ref<number | null>
 }
-
-export const CarouselKey = Symbol() as InjectionKey<CarouselContextType>
+export const CarouselKey = Symbol('CarouselContext') as InjectionKey<CarouselContextType>
 
 // Smart state management
 export function createCarouselContext() {
@@ -122,7 +121,7 @@ export function createCarouselContext() {
 
       checkIfReadyToShowImages()
     },
-    onCardClose: (index: number) => {
+    onCardClose: (_index: number) => {
       // Implementation in carousel
     },
     checkIfReadyToShowImages,
