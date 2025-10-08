@@ -2,8 +2,8 @@
 import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-const radius = ref(180)
-const dim = ref(0.85)
+const radius = ref(265)
+const dim = ref(0.93)
 const mouseX = ref<number | null>(null)
 const mouseY = ref<number | null>(null)
 
@@ -98,6 +98,19 @@ function onKeyDown(e: KeyboardEvent) {
     radius.value = Math.max(radius.value - 10, 30)
 }
 
+function onRadiusInput(e: Event) {
+  const value = Number((e.target as HTMLInputElement).value)
+  radius.value = value
+  // consola is auto-imported via nuxt imports preset
+  consola.debug('[flashlight] radius', value)
+}
+
+function onDimInput(e: Event) {
+  const value = Number((e.target as HTMLInputElement).value)
+  dim.value = value
+  consola.debug('[flashlight] dim', value)
+}
+
 onMounted(() => {
   const canvas = canvasRef.value
   if (!canvas)
@@ -134,33 +147,33 @@ watch([radius, dim], () => {
   <canvas ref="canvasRef" class="pointer-events-none fixed inset-0 z-50 block h-screen w-screen" />
 
   <div
-    class="fixed right-8 top-1/2 z-50 flex flex-col items-center gap-4 rounded-3xl bg-gray-8 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm -translate-y-1/2 dark:bg-gray-4"
+    class="fixed right-8 top-1/2 z-50 flex flex-col items-center gap-4 rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px] bg-gray-8 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm -translate-y-1/2 dark:bg-gray-4"
     role="group"
     aria-label="Flashlight options"
   >
     <div class="flex flex-col items-start gap-1">
-      <label for="radius" class="color-gray-12">Radius</label>
+      <label for="radius" class="space-grotesk-regular color-gray-12">Radius</label>
       <input
         id="radius"
-        class="w-32 accent-mint-11"
+        class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
         type="range"
         min="60"
         max="400"
         :value="radius"
-        @input="(e:any) => radius = Number(e.target.value)"
+        @input="onRadiusInput"
       >
     </div>
     <div class="flex flex-col items-start gap-1">
-      <label for="dim" class="color-gray-12">Dim</label>
+      <label for="dim" class="space-grotesk-regular color-gray-12">Dim</label>
       <input
         id="dim"
-        class="w-32 accent-mint-11"
+        class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
         type="range"
         min="0.4"
         max="0.98"
         step="0.01"
         :value="dim"
-        @input="(e:any) => dim = Number(e.target.value)"
+        @input="onDimInput"
       >
     </div>
   </div>
