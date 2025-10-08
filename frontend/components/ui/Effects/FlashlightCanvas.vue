@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const radius = ref(180)
@@ -12,7 +12,8 @@ let dpr = 1
 
 function draw() {
   const canvas = canvasRef.value
-  if (!canvas || !ctx) return
+  if (!canvas || !ctx)
+    return
 
   const width = canvas.width
   const height = canvas.height
@@ -49,7 +50,8 @@ function draw() {
 
 function resize() {
   const canvas = canvasRef.value
-  if (!canvas || !ctx) return
+  if (!canvas || !ctx)
+    return
   const width = window.innerWidth
   const height = window.innerHeight
   canvas.width = Math.floor(width * dpr)
@@ -73,12 +75,14 @@ function onMouseMove(e: MouseEvent) {
 
 function onTouchMove(e: TouchEvent) {
   const t = e.touches[0] || e.changedTouches[0]
-  if (t) updatePointer(t.clientX, t.clientY)
+  if (t)
+    updatePointer(t.clientX, t.clientY)
 }
 
 function onTouchStart(e: TouchEvent) {
   const t = e.touches[0] || e.changedTouches[0]
-  if (t) updatePointer(t.clientX, t.clientY)
+  if (t)
+    updatePointer(t.clientX, t.clientY)
 }
 
 function onMouseLeave() {
@@ -88,15 +92,19 @@ function onMouseLeave() {
 }
 
 function onKeyDown(e: KeyboardEvent) {
-  if (e.key === '+' || e.key === '=') radius.value = Math.min(radius.value + 10, 600)
-  if (e.key === '-' || e.key === '_') radius.value = Math.max(radius.value - 10, 30)
+  if (e.key === '+' || e.key === '=')
+    radius.value = Math.min(radius.value + 10, 600)
+  if (e.key === '-' || e.key === '_')
+    radius.value = Math.max(radius.value - 10, 30)
 }
 
 onMounted(() => {
   const canvas = canvasRef.value
-  if (!canvas) return
+  if (!canvas)
+    return
   ctx = canvas.getContext('2d')
-  if (!ctx) return
+  if (!ctx)
+    return
   dpr = window.devicePixelRatio || 1
   resize()
 
@@ -123,40 +131,36 @@ watch([radius, dim], () => {
 </script>
 
 <template>
-  <>
-    <canvas ref="canvasRef" class="pointer-events-none fixed inset-0 z-50 block h-screen w-screen" />
+  <canvas ref="canvasRef" class="pointer-events-none fixed inset-0 z-50 block h-screen w-screen" />
 
-    <div
-      class="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/8 bg-gray-9/60 px-3 py-2 text-sm shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-[10px]"
-      role="group"
-      aria-label="Flashlight options"
+  <div
+    class="border-white/8 fixed bottom-4 left-1/2 z-50 flex items-center gap-3 border rounded-full bg-gray-9/60 px-3 py-2 text-sm shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-[10px] -translate-x-1/2"
+    role="group"
+    aria-label="Flashlight options"
+  >
+    <label for="radius" class="opacity-80">Radius</label>
+    <input
+      id="radius"
+      type="range"
+      min="60"
+      max="400"
+      :value="radius"
+      class="w-[min(48vw,420px)]"
+      @input="(e:any) => radius = Number(e.target.value)"
     >
-      <label for="radius" class="opacity-80">Radius</label>
-      <input
-        id="radius"
-        type="range"
-        min="60"
-        max="400"
-        :value="radius"
-        @input="(e:any)=> radius = Number(e.target.value)"
-        class="w-[min(48vw,420px)]"
-      />
-      <label for="dim" class="opacity-80">Dim</label>
-      <input
-        id="dim"
-        type="range"
-        min="0.4"
-        max="0.98"
-        step="0.01"
-        :value="dim"
-        @input="(e:any)=> dim = Number(e.target.value)"
-        class="w-[min(48vw,420px)]"
-      />
-    </div>
-  
+    <label for="dim" class="opacity-80">Dim</label>
+    <input
+      id="dim"
+      type="range"
+      min="0.4"
+      max="0.98"
+      step="0.01"
+      :value="dim"
+      class="w-[min(48vw,420px)]"
+      @input="(e:any) => dim = Number(e.target.value)"
+    >
+  </div>
 </template>
 
 <style scoped>
 </style>
-
-
