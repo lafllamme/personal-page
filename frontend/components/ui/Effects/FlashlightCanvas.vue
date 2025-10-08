@@ -134,31 +134,35 @@ watch([radius, dim], () => {
   <canvas ref="canvasRef" class="pointer-events-none fixed inset-0 z-50 block h-screen w-screen" />
 
   <div
-    class="border-white/8 fixed bottom-4 left-1/2 z-50 flex items-center gap-3 border rounded-full bg-gray-9/60 px-3 py-2 text-sm shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-[10px] -translate-x-1/2"
+    class="fixed right-8 top-1/2 z-50 flex flex-col items-center gap-4 rounded-3xl bg-gray-8 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm -translate-y-1/2 dark:bg-gray-4"
     role="group"
     aria-label="Flashlight options"
   >
-    <label for="radius" class="opacity-80">Radius</label>
-    <input
-      id="radius"
-      type="range"
-      min="60"
-      max="400"
-      :value="radius"
-      class="w-[min(48vw,420px)]"
-      @input="(e:any) => radius = Number(e.target.value)"
-    >
-    <label for="dim" class="opacity-80">Dim</label>
-    <input
-      id="dim"
-      type="range"
-      min="0.4"
-      max="0.98"
-      step="0.01"
-      :value="dim"
-      class="w-[min(48vw,420px)]"
-      @input="(e:any) => dim = Number(e.target.value)"
-    >
+    <div class="flex flex-col items-start gap-1">
+      <label for="radius" class="color-gray-12">Radius</label>
+      <input
+        id="radius"
+        class="w-32 accent-mint-11"
+        type="range"
+        min="60"
+        max="400"
+        :value="radius"
+        @input="(e:any) => radius = Number(e.target.value)"
+      >
+    </div>
+    <div class="flex flex-col items-start gap-1">
+      <label for="dim" class="color-gray-12">Dim</label>
+      <input
+        id="dim"
+        class="w-32 accent-mint-11"
+        type="range"
+        min="0.4"
+        max="0.98"
+        step="0.01"
+        :value="dim"
+        @input="(e:any) => dim = Number(e.target.value)"
+      >
+    </div>
   </div>
 </template>
 
