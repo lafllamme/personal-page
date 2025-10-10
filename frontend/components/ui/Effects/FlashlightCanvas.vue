@@ -3,15 +3,19 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 interface Props {
   modelValue?: boolean
+  radius?: number
+  dim?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: true, // Default: flashlight is ON
+  radius: 265,
+  dim: 0.93,
 })
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-const radius = ref(265)
-const dim = ref(0.93)
+const radius = computed(() => props.radius)
+const dim = computed(() => props.dim)
 const mouseX = ref<number | null>(null)
 const mouseY = ref<number | null>(null)
 
@@ -103,25 +107,8 @@ function onMouseLeave() {
   draw()
 }
 
-function onKeyDown(e: KeyboardEvent) {
-  if (e.key === '+' || e.key === '=')
-    radius.value = Math.min(radius.value + 10, 600)
-  if (e.key === '-' || e.key === '_')
-    radius.value = Math.max(radius.value - 10, 30)
-}
+// Keyboard controls removed - now handled by parent component
 
-function onRadiusInput(e: Event) {
-  const value = Number((e.target as HTMLInputElement).value)
-  radius.value = value
-  // consola is auto-imported via nuxt imports preset
-  consola.debug('[flashlight] radius', value)
-}
-
-function onDimInput(e: Event) {
-  const value = Number((e.target as HTMLInputElement).value)
-  dim.value = value
-  consola.debug('[flashlight] dim', value)
-}
 
 onMounted(() => {
   const canvas = canvasRef.value
@@ -138,7 +125,6 @@ onMounted(() => {
   window.addEventListener('touchmove', onTouchMove, { passive: true })
   window.addEventListener('touchstart', onTouchStart, { passive: true })
   window.addEventListener('mouseleave', onMouseLeave)
-  window.addEventListener('keydown', onKeyDown)
 })
 
 onBeforeUnmount(() => {
@@ -147,7 +133,6 @@ onBeforeUnmount(() => {
   window.removeEventListener('touchmove', onTouchMove as any)
   window.removeEventListener('touchstart', onTouchStart as any)
   window.removeEventListener('mouseleave', onMouseLeave as any)
-  window.removeEventListener('keydown', onKeyDown as any)
 })
 
 watch([radius, dim], () => {
@@ -162,43 +147,6 @@ watch([radius, dim], () => {
     :style="{ opacity: canvasOpacity }"
   />
 
-  <div
-    :class="useClsx(
-      'fixed right-8 top-1/2 z-50',
-      'flex flex-col items-center gap-4',
-      'rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px]',
-      'bg-gray-8  dark:bg-gray-4 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)]',
-      'backdrop-blur-sm -translate-y-1/2', 'transition-opacity duration-500')"
-    :style="{ opacity: controlsOpacity, pointerEvents: modelValue ? 'auto' : 'none' }"
-    role="group"
-    aria-label="Flashlight options"
-  >
-    <div class="flex flex-col items-start gap-1">
-      <label for="radius" class="space-grotesk-regular color-gray-12">Radius</label>
-      <input
-        id="radius"
-        class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
-        type="range"
-        min="60"
-        max="400"
-        :value="radius"
-        @input="onRadiusInput"
-      >
-    </div>
-    <div class="flex flex-col items-start gap-1">
-      <label for="dim" class="space-grotesk-regular color-gray-12">Dim</label>
-      <input
-        id="dim"
-        class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
-        type="range"
-        min="0.4"
-        max="0.98"
-        step="0.01"
-        :value="dim"
-        @input="onDimInput"
-      >
-    </div>
-  </div>
 </template>
 
 <style scoped>
