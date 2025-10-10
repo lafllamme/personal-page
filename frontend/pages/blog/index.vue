@@ -15,7 +15,7 @@ const flashlightEnabled = ref(true)
     <!-- Glass Switch to toggle flashlight effect - sticky positioned at top -->
     <div class="sticky top-14 z-10 w-fit flex flex-col translate-y-1/2 items-center gap-3 md:left-8">
       <GlassSwitch v-model="flashlightEnabled" />
-      <span class="space-grotesk-regular text-xs color-gray-11 font-light tracking-normal uppercase">
+      <span class="space-grotesk-regular text-xs color-gray-11 font-medium tracking-normal uppercase">
         {{ flashlightEnabled ? 'Flashlight' : 'Normal' }}
       </span>
     </div>
