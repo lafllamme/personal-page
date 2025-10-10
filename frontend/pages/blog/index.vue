@@ -1,17 +1,25 @@
 <script setup lang="ts">
-import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 import GlassSwitch from '@/components/ui/Buttons/GlassSwitch.vue'
+import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 
 const flashlightEnabled = ref(true)
 </script>
 
 <template>
-  <main
+  <div
     :class="useClsx(
-      'relative overflow-auto',
+      'relative min-h-screen',
       'bg-pureWhite dark:bg-pureBlack',
     )"
   >
+    <!-- Glass Switch to toggle flashlight effect - sticky positioned at top -->
+    <div class="sticky top-14 z-10 w-fit flex flex-col translate-y-1/2 items-center gap-3 md:left-8">
+      <GlassSwitch v-model="flashlightEnabled" />
+      <span class="space-grotesk-regular text-xs color-gray-11 font-light tracking-normal uppercase">
+        {{ flashlightEnabled ? 'Flashlight' : 'Normal' }}
+      </span>
+    </div>
+
     <article
       class="mx-auto max-w-3xl px-6 py-16"
     >
@@ -147,14 +155,6 @@ const flashlightEnabled = ref(true)
       </footer>
     </article>
 
-    <!-- Glass Switch to toggle flashlight effect -->
-    <div class="fixed left-8 top-1/2 z-50 flex flex-col items-center gap-3 -translate-y-1/2">
-      <GlassSwitch v-model="flashlightEnabled" />
-      <span class="font-space-grotesk text-xs color-gray-11">
-        {{ flashlightEnabled ? 'Flashlight' : 'Normal' }}
-      </span>
-    </div>
-
     <FlashlightCanvas v-model="flashlightEnabled" />
-  </main>
+  </div>
 </template>
