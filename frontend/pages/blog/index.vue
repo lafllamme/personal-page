@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
+import GlassSwitch from '@/components/ui/Buttons/GlassSwitch.vue'
+
+const flashlightEnabled = ref(true)
 </script>
 
 <template>
@@ -144,6 +147,14 @@ import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
       </footer>
     </article>
 
-    <FlashlightCanvas />
+    <!-- Glass Switch to toggle flashlight effect -->
+    <div class="fixed left-8 top-1/2 z-50 flex flex-col items-center gap-3 -translate-y-1/2">
+      <GlassSwitch v-model="flashlightEnabled" />
+      <span class="font-space-grotesk text-xs color-gray-11">
+        {{ flashlightEnabled ? 'Flashlight' : 'Normal' }}
+      </span>
+    </div>
+
+    <FlashlightCanvas v-model="flashlightEnabled" />
   </main>
 </template>
