@@ -1,11 +1,23 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+
+interface Props {
+  modelValue?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  modelValue: true, // Default: flashlight is ON
+})
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const radius = ref(265)
 const dim = ref(0.93)
 const mouseX = ref<number | null>(null)
 const mouseY = ref<number | null>(null)
+
+// Computed opacity for fade transitions
+const canvasOpacity = computed(() => props.modelValue ? 1 : 0)
+const controlsOpacity = computed(() => props.modelValue ? 1 : 0)
 
 let ctx: CanvasRenderingContext2D | null = null
 let dpr = 1
@@ -144,10 +156,15 @@ watch([radius, dim], () => {
 </script>
 
 <template>
-  <canvas ref="canvasRef" class="pointer-events-none fixed inset-0 z-50 block h-screen w-screen" />
+  <canvas
+    ref="canvasRef"
+    class="pointer-events-none fixed inset-0 z-50 block h-screen w-screen transition-opacity duration-500"
+    :style="{ opacity: canvasOpacity }"
+  />
 
   <div
-    class="fixed right-8 top-1/2 z-50 flex flex-col items-center gap-4 rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px] bg-gray-8 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm -translate-y-1/2 dark:bg-gray-4"
+    class="fixed right-8 top-1/2 z-50 flex flex-col items-center gap-4 rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px] bg-gray-8 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm -translate-y-1/2 transition-opacity duration-500 dark:bg-gray-4"
+    :style="{ opacity: controlsOpacity, pointerEvents: modelValue ? 'auto' : 'none' }"
     role="group"
     aria-label="Flashlight options"
   >
