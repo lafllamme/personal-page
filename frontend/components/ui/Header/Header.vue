@@ -10,8 +10,8 @@ import { useMenu } from '@/stores/menu/menu'
 
 // Configurable thresholds (percent of page scrolled) with sensible defaults
 const props = withDefaults(defineProps<{ minimizeAtPercent?: number, activateAtPercent?: number }>(), {
-  minimizeAtPercent: 0.05, // minimize a bit earlier (5%)
-  activateAtPercent: 0.02, // start subtle effects earlier (2%)
+  minimizeAtPercent: 0.025, // minimize a bit earlier (5%)
+  activateAtPercent: 0.01, // start subtle effects earlier (2%)
 })
 // compute to destination for a home link
 const localePath = useLocalePath()
