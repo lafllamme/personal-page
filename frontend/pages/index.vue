@@ -55,11 +55,8 @@ function handleLoad() {
 }
 
 function handleClick() {
-  // scroll to item with id "article-id-1"
-  const element = document.getElementById('article-id-1')
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }
+  // navigate to /blog page
+  navigateTo('/blog')
 }
 
 watch(sceneLoaded, (v) => {
