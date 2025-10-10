@@ -26,6 +26,8 @@ const controlsOpacity = computed(() => props.modelValue ? 1 : 0)
 let ctx: CanvasRenderingContext2D | null = null
 let dpr = 1
 
+const { pause: pauseAnimation, resume: resumeAnimation } = useRafFn(draw)
+
 function draw() {
   const canvas = canvasRef.value
   if (!canvas || !ctx)
@@ -82,7 +84,7 @@ function resize() {
 function updatePointer(x: number, y: number) {
   mouseX.value = x
   mouseY.value = y
-  requestAnimationFrame(draw)
+  resumeAnimation()
 }
 
 function onMouseMove(e: MouseEvent) {
@@ -104,6 +106,7 @@ function onTouchStart(e: TouchEvent) {
 function onMouseLeave() {
   mouseX.value = null
   mouseY.value = null
+  pauseAnimation()
   draw()
 }
 
@@ -136,7 +139,7 @@ onBeforeUnmount(() => {
 })
 
 watch([radius, dim], () => {
-  requestAnimationFrame(draw)
+  resumeAnimation()
 })
 </script>
 
