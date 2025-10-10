@@ -130,7 +130,7 @@ watch(isSwitchOpen, (open) => {
             'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
             // Glass background: default subtle glass, minimized = pure liquid glass (blur only)
             isHeaderMinimized
-              ? 'backdrop-blur-[12px] backdrop-saturate-180 backdrop-contrast-115 bg-transparent ring-1 ring-mint-12 shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+              ? 'backdrop-blur-[12px] backdrop-saturate-180 backdrop-contrast-115 bg-transparent ring-1 ring-mint-12 dark:shadow-[0_8px_30px_rgba(255,255,255,0.12)] shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
               : 'backdrop-blur-[6px] bg-pureWhite/45 dark:bg-pureBlack/35 ring-0',
             isHeaderMinimized ? 'rounded-full' : 'rounded-none',
           )"
