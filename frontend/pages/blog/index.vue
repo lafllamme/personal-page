@@ -6,9 +6,18 @@ const flashlightEnabled = ref(true)
 const flashlightRadius = ref(265)
 const flashlightDim = ref(0.93)
 
+// Debounced values to prevent flickering
+const debouncedRadius = ref(265)
+
+// VueUse debounced function for radius only
+const updateRadius = useDebounceFn((value: number) => {
+  debouncedRadius.value = value
+}, 0) // ~60fps
+
 function onRadiusInput(e: Event) {
   const value = Number((e.target as HTMLInputElement).value)
   flashlightRadius.value = value
+  updateRadius(value)
   consola.debug('[flashlight] radius', value)
 }
 
@@ -172,9 +181,8 @@ function onDimInput(e: Event) {
 
     <FlashlightCanvas 
       v-model="flashlightEnabled" 
-      :radius="flashlightRadius" 
+      :radius="debouncedRadius" 
       :dim="flashlightDim"
-      :key="`${flashlightRadius}-${flashlightDim}`"
     />
   </div>
 
