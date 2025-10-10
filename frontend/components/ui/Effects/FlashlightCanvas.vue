@@ -112,7 +112,6 @@ function onMouseLeave() {
 
 // Keyboard controls removed - now handled by parent component
 
-
 onMounted(() => {
   const canvas = canvasRef.value
   if (!canvas)
@@ -149,7 +148,6 @@ watch([radius, dim], () => {
     class="pointer-events-none fixed inset-0 z-50 block h-screen w-screen transition-opacity duration-500"
     :style="{ opacity: canvasOpacity }"
   />
-
 </template>
 
 <style scoped>
