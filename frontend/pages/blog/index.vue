@@ -3,6 +3,20 @@ import GlassSwitch from '@/components/ui/Buttons/GlassSwitch.vue'
 import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 
 const flashlightEnabled = ref(true)
+const flashlightRadius = ref(265)
+const flashlightDim = ref(0.93)
+
+function onRadiusInput(e: Event) {
+  const value = Number((e.target as HTMLInputElement).value)
+  flashlightRadius.value = value
+  consola.debug('[flashlight] radius', value)
+}
+
+function onDimInput(e: Event) {
+  const value = Number((e.target as HTMLInputElement).value)
+  flashlightDim.value = value
+  consola.debug('[flashlight] dim', value)
+}
 </script>
 
 <template>
@@ -19,6 +33,7 @@ const flashlightEnabled = ref(true)
         {{ flashlightEnabled ? 'Flashlight' : 'Normal' }}
       </span>
     </div>
+
 
     <article
       class="mx-auto max-w-3xl px-6 py-16"
@@ -155,6 +170,48 @@ const flashlightEnabled = ref(true)
       </footer>
     </article>
 
-    <FlashlightCanvas v-model="flashlightEnabled" />
+    <FlashlightCanvas 
+      v-model="flashlightEnabled" 
+      :radius="flashlightRadius" 
+      :dim="flashlightDim"
+      :key="`${flashlightRadius}-${flashlightDim}`"
+    />
+  </div>
+
+  <!-- Flashlight Controls - fixed positioned on the right -->
+  <div 
+    v-show="flashlightEnabled"
+    class="fixed top-14 right-8 z-10 w-fit flex flex-col items-center gap-4 translate-y-1/2 transition-opacity duration-500"
+    :class="useClsx(
+      'rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px]',
+      'bg-gray-8 dark:bg-gray-4 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)]',
+      'backdrop-blur-sm'
+    )"
+  >
+    <div class="flex flex-col items-start gap-1">
+      <label for="radius" class="space-grotesk-regular color-gray-12">Radius</label>
+      <input
+        id="radius"
+        class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
+        type="range"
+        min="60"
+        max="400"
+        :value="flashlightRadius"
+        @input="onRadiusInput"
+      >
+    </div>
+    <div class="flex flex-col items-start gap-1">
+      <label for="dim" class="space-grotesk-regular color-gray-12">Dim</label>
+      <input
+        id="dim"
+        class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
+        type="range"
+        min="0.4"
+        max="0.98"
+        step="0.01"
+        :value="flashlightDim"
+        @input="onDimInput"
+      >
+    </div>
   </div>
 </template>
