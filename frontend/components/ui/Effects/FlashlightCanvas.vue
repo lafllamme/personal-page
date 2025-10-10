@@ -163,7 +163,12 @@ watch([radius, dim], () => {
   />
 
   <div
-    class="fixed right-8 top-1/2 z-50 flex flex-col items-center gap-4 rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px] bg-gray-8 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-sm -translate-y-1/2 transition-opacity duration-500 dark:bg-gray-4"
+    :class="useClsx(
+      'fixed right-8 top-1/2 z-50',
+      'flex flex-col items-center gap-4',
+      'rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px]',
+      'bg-gray-8  dark:bg-gray-4 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)]',
+      'backdrop-blur-sm -translate-y-1/2', 'transition-opacity duration-500')"
     :style="{ opacity: controlsOpacity, pointerEvents: modelValue ? 'auto' : 'none' }"
     role="group"
     aria-label="Flashlight options"
