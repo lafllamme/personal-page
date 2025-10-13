@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import GlassSwitch from '@/components/ui/Buttons/GlassSwitch.vue'
 import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
+import LightSwitch from '@/components/ui/Effects/LightSwitch.vue'
 
 const flashlightEnabled = ref(true)
 const flashlightRadius = ref(265)
@@ -35,15 +35,6 @@ function onDimInput(e: Event) {
       'bg-pureWhite dark:bg-pureBlack',
     )"
   >
-    <!-- Glass Switch to toggle flashlight effect - sticky positioned at top -->
-    <div class="sticky top-14 z-10 w-fit flex flex-col translate-y-1/2 items-center gap-3 md:left-8">
-      <GlassSwitch v-model="flashlightEnabled" />
-      <span class="space-grotesk-regular text-xs color-gray-11 font-medium tracking-normal uppercase">
-        {{ flashlightEnabled ? 'Flashlight' : 'Normal' }}
-      </span>
-    </div>
-
-
     <article
       class="mx-auto max-w-3xl px-6 py-16"
     >
@@ -179,22 +170,28 @@ function onDimInput(e: Event) {
       </footer>
     </article>
 
-    <FlashlightCanvas 
-      v-model="flashlightEnabled" 
-      :radius="debouncedRadius" 
+    <FlashlightCanvas
+      v-model="flashlightEnabled"
+      :radius="debouncedRadius"
       :dim="flashlightDim"
     />
   </div>
 
-  <!-- Flashlight Controls - fixed positioned on the right -->
-  <div 
+  <!-- Light Switch - fixed positioned on the right -->
+  <div class="fixed right-0 top-14 z-10 w-fit translate-y-full -translate-x-full">
+    <LightSwitch v-model="flashlightEnabled" />
+  </div>
+
+  <!-- Flashlight Controls - fixed positioned below the switch -->
+  <div
     v-show="flashlightEnabled"
-    class="fixed top-14 right-8 z-10 w-fit flex flex-col items-center gap-4 translate-y-1/2 transition-opacity duration-500"
+    class="fixed right-8 z-10 w-fit flex flex-col items-center gap-4 transition-opacity duration-500"
     :class="useClsx(
       'rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px]',
       'bg-gray-8 dark:bg-gray-4 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)]',
-      'backdrop-blur-sm'
+      'backdrop-blur-sm',
     )"
+    style="top: calc(14rem + 2rem); transform: translateY(50%);"
   >
     <div class="flex flex-col items-start gap-1">
       <label for="radius" class="space-grotesk-regular color-gray-12">Radius</label>
