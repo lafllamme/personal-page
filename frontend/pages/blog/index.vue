@@ -183,23 +183,13 @@ function toggleControls() {
   </div>
 
   <!-- Light Switch - fixed positioned at top right -->
-  <div class="fixed right-4 top-20 z-10 w-fit translate-y-full flex items-center gap-2">
+  <div class="fixed right-4 top-20 z-10 w-fit translate-y-full">
     <LightSwitch v-model="flashlightEnabled" />
-    
-    <!-- Show controls button (when controls are hidden) -->
-    <button
-      v-show="flashlightEnabled && !controlsVisible"
-      @click="toggleControls"
-      class="w-8 h-8 rounded-full bg-gray-8 dark:bg-gray-4 flex items-center justify-center text-gray-12 dark:text-gray-11 hover:bg-gray-9 dark:hover:bg-gray-3 transition-colors"
-      title="Show controls"
-    >
-      <span class="text-sm">⚙</span>
-    </button>
   </div>
 
   <!-- Flashlight Controls - fixed positioned below the switch -->
   <div
-    v-show="flashlightEnabled && controlsVisible"
+    v-show="flashlightEnabled"
     class="fixed right-4 top-36 z-10 w-fit flex flex-col translate-y-full items-center gap-4 transition-opacity duration-500"
     :class="useClsx(
       'rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px]',
@@ -207,14 +197,28 @@ function toggleControls() {
       'backdrop-blur-sm',
     )"
   >
-    <!-- Close button -->
+    <!-- Show controls button (when controls are hidden) -->
     <button
+      v-show="!controlsVisible"
       @click="toggleControls"
-      class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gray-10 dark:bg-gray-2 flex items-center justify-center text-gray-12 dark:text-gray-11 hover:bg-gray-11 dark:hover:bg-gray-1 transition-colors"
-      title="Close controls"
+      class="w-8 h-8 rounded-full bg-gray-8 dark:bg-gray-4 flex items-center justify-center text-gray-12 dark:text-gray-11 hover:bg-gray-9 dark:hover:bg-gray-3 transition-colors"
+      title="Show controls"
     >
-      <span class="text-xs font-bold">×</span>
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+      </svg>
     </button>
+
+    <!-- Controls content (when visible) -->
+    <div v-show="controlsVisible" class="flex flex-col items-center gap-4">
+      <!-- Close button -->
+      <button
+        @click="toggleControls"
+        class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gray-10 dark:bg-gray-2 flex items-center justify-center text-gray-12 dark:text-gray-11 hover:bg-gray-11 dark:hover:bg-gray-1 transition-colors"
+        title="Close controls"
+      >
+        <span class="text-xs font-bold">×</span>
+      </button>
     <div class="flex flex-col items-start gap-1">
       <label for="radius" class="space-grotesk-regular color-gray-12">Radius</label>
       <input
@@ -239,6 +243,7 @@ function toggleControls() {
         :value="flashlightDim"
         @input="onDimInput"
       >
+    </div>
     </div>
   </div>
 </template>
