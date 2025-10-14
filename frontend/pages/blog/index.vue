@@ -3,6 +3,7 @@ import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 import LightSwitch from '@/components/ui/Effects/LightSwitch.vue'
 
 const flashlightEnabled = ref(true)
+const controlsVisible = ref(true)
 const flashlightRadius = ref(265)
 const flashlightDim = ref(0.93)
 
@@ -25,6 +26,10 @@ function onDimInput(e: Event) {
   const value = Number((e.target as HTMLInputElement).value)
   flashlightDim.value = value
   consola.debug('[flashlight] dim', value)
+}
+
+function toggleControls() {
+  controlsVisible.value = !controlsVisible.value
 }
 </script>
 
@@ -177,22 +182,39 @@ function onDimInput(e: Event) {
     />
   </div>
 
-  <!-- Light Switch - fixed positioned on the right -->
-  <div class="fixed right-0 top-14 z-10 w-fit translate-y-full -translate-x-full">
+  <!-- Light Switch - fixed positioned at top right -->
+  <div class="fixed right-4 top-20 z-10 w-fit translate-y-full flex items-center gap-2">
     <LightSwitch v-model="flashlightEnabled" />
+    
+    <!-- Show controls button (when controls are hidden) -->
+    <button
+      v-show="flashlightEnabled && !controlsVisible"
+      @click="toggleControls"
+      class="w-8 h-8 rounded-full bg-gray-8 dark:bg-gray-4 flex items-center justify-center text-gray-12 dark:text-gray-11 hover:bg-gray-9 dark:hover:bg-gray-3 transition-colors"
+      title="Show controls"
+    >
+      <span class="text-sm">⚙</span>
+    </button>
   </div>
 
   <!-- Flashlight Controls - fixed positioned below the switch -->
   <div
-    v-show="flashlightEnabled"
-    class="fixed right-8 z-10 w-fit flex flex-col items-center gap-4 transition-opacity duration-500"
+    v-show="flashlightEnabled && controlsVisible"
+    class="fixed right-4 top-36 z-10 w-fit flex flex-col translate-y-full items-center gap-4 transition-opacity duration-500"
     :class="useClsx(
       'rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px]',
       'bg-gray-8 dark:bg-gray-4 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)]',
       'backdrop-blur-sm',
     )"
-    style="top: calc(14rem + 2rem); transform: translateY(50%);"
   >
+    <!-- Close button -->
+    <button
+      @click="toggleControls"
+      class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gray-10 dark:bg-gray-2 flex items-center justify-center text-gray-12 dark:text-gray-11 hover:bg-gray-11 dark:hover:bg-gray-1 transition-colors"
+      title="Close controls"
+    >
+      <span class="text-xs font-bold">×</span>
+    </button>
     <div class="flex flex-col items-start gap-1">
       <label for="radius" class="space-grotesk-regular color-gray-12">Radius</label>
       <input
