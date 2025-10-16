@@ -18,7 +18,7 @@ function toggle() {
 
 <template>
   <button
-    class="border-white/35 bg-white/12 dark:border-white/18 dark:bg-black/30 relative h-32 w-16 overflow-hidden border-2 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-3xl"
+    class="bg-white/12 border-white/35 dark:bg-black/30 dark:border-white/18 relative h-32 w-16 overflow-hidden border-2 rounded-3xl shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-3xl"
     @click="toggle"
   >
     <div class="from-white/5 absolute inset-0 to-transparent bg-gradient-to-b" />
@@ -27,7 +27,7 @@ function toggle() {
       :style="{ transform: modelValue ? 'translateY(100%)' : 'translateY(0%)' }"
     >
       <div
-        class="border-white/45 bg-white/25 dark:border-white/22 dark:bg-white/12 relative h-16 w-11 border-2 rounded-2xl shadow-xl backdrop-blur-xl"
+        class="bg-white/25 border-white/45 dark:bg-white/12 dark:border-white/22 relative h-16 w-11 border-2 rounded-2xl shadow-xl backdrop-blur-xl"
       >
         <div class="from-white/20 absolute inset-2 rounded-xl to-transparent bg-gradient-to-b" />
       </div>
