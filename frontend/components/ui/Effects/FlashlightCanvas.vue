@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useRafFn } from '@vueuse/core'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 interface Props {
@@ -16,17 +17,30 @@ const props = withDefaults(defineProps<Props>(), {
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const radius = computed(() => props.radius)
 const dim = computed(() => props.dim)
-const mouseX = ref<number | null>(null)
-const mouseY = ref<number | null>(null)
+
+// Smooth mouse tracking with interpolation
+const targetMouseX = ref<number | null>(null)
+const targetMouseY = ref<number | null>(null)
+const currentMouseX = ref<number | null>(null)
+const currentMouseY = ref<number | null>(null)
 
 // Computed opacity for fade transitions
 const canvasOpacity = computed(() => props.modelValue ? 1 : 0)
-const controlsOpacity = computed(() => props.modelValue ? 1 : 0)
 
 let ctx: CanvasRenderingContext2D | null = null
 let dpr = 1
 
-const { pause: pauseAnimation, resume: resumeAnimation } = useRafFn(draw)
+// Smooth easing function for natural movement
+function easeOutCubic(t: number): number {
+  return 1 - (1 - t) ** 3
+}
+
+// Interpolation function for smooth mouse following
+function lerp(start: number, end: number, factor: number): number {
+  return start + (end - start) * factor
+}
+
+const { pause: pauseAnimation, resume: resumeAnimation } = useRafFn(draw, { immediate: false })
 
 function draw() {
   const canvas = canvasRef.value
@@ -43,14 +57,37 @@ function draw() {
   ctx.fillStyle = `rgba(0,0,0,${dim.value})`
   ctx.fillRect(0, 0, width, height)
 
-  if (mouseX.value !== null && mouseY.value !== null) {
+  // Smooth interpolation of mouse position
+  if (targetMouseX.value !== null && targetMouseY.value !== null) {
+    // Initialize current position if not set
+    if (currentMouseX.value === null || currentMouseY.value === null) {
+      currentMouseX.value = targetMouseX.value
+      currentMouseY.value = targetMouseY.value
+    }
+
+    // Smooth interpolation with easing (adjust factor for more/less smoothness)
+    const lerpFactor = 0.08 // Lower = smoother, higher = more responsive
+    currentMouseX.value = lerp(currentMouseX.value, targetMouseX.value, lerpFactor)
+    currentMouseY.value = lerp(currentMouseY.value, targetMouseY.value, lerpFactor)
+
+    // Check if we're close enough to target to stop animation
+    const distance = Math.sqrt(
+      (targetMouseX.value - currentMouseX.value) ** 2
+      + (targetMouseY.value - currentMouseY.value) ** 2,
+    )
+
+    // Continue animation if we're still moving
+    if (distance > 0.5) {
+      resumeAnimation()
+    }
+
     const r = radius.value
     const grad = ctx.createRadialGradient(
-      mouseX.value,
-      mouseY.value,
+      currentMouseX.value,
+      currentMouseY.value,
       r * 0.35,
-      mouseX.value,
-      mouseY.value,
+      currentMouseX.value,
+      currentMouseY.value,
       r,
     )
     grad.addColorStop(0, 'rgba(0,0,0,1)')
@@ -59,7 +96,7 @@ function draw() {
     ctx.globalCompositeOperation = 'destination-out'
     ctx.fillStyle = grad
     ctx.beginPath()
-    ctx.arc(mouseX.value, mouseY.value, r, 0, Math.PI * 2)
+    ctx.arc(currentMouseX.value, currentMouseY.value, r, 0, Math.PI * 2)
     ctx.fill()
 
     ctx.globalCompositeOperation = 'source-over'
@@ -82,30 +119,38 @@ function resize() {
 }
 
 function updatePointer(x: number, y: number) {
-  mouseX.value = x
-  mouseY.value = y
+  targetMouseX.value = x
+  targetMouseY.value = y
   resumeAnimation()
 }
 
 function onMouseMove(e: MouseEvent) {
+  if (!props.modelValue)
+    return
   updatePointer(e.clientX, e.clientY)
 }
 
 function onTouchMove(e: TouchEvent) {
+  if (!props.modelValue)
+    return
   const t = e.touches[0] || e.changedTouches[0]
   if (t)
     updatePointer(t.clientX, t.clientY)
 }
 
 function onTouchStart(e: TouchEvent) {
+  if (!props.modelValue)
+    return
   const t = e.touches[0] || e.changedTouches[0]
   if (t)
     updatePointer(t.clientX, t.clientY)
 }
 
 function onMouseLeave() {
-  mouseX.value = null
-  mouseY.value = null
+  targetMouseX.value = null
+  targetMouseY.value = null
+  currentMouseX.value = null
+  currentMouseY.value = null
   pauseAnimation()
   draw()
 }
@@ -139,6 +184,17 @@ onBeforeUnmount(() => {
 
 watch([radius, dim], () => {
   resumeAnimation()
+})
+
+// Watch for flashlight toggle to reset positions
+watch(() => props.modelValue, (newValue) => {
+  if (!newValue) {
+    targetMouseX.value = null
+    targetMouseY.value = null
+    currentMouseX.value = null
+    currentMouseY.value = null
+    pauseAnimation()
+  }
 })
 </script>
 
