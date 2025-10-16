@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRafFn } from '@vueuse/core'
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useEventListener, useMediaQuery, useRafFn } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
 
 interface Props {
   modelValue?: boolean
@@ -21,6 +21,12 @@ const ANIMATION_CONFIG = {
   GRADIENT_INNER_RATIO: 0.35, // Inner radius ratio for gradient
 } as const
 
+// Touch drag interaction constants
+const TOUCH_DRAG_CONFIG = {
+  HOLD_MS: 160,
+  MOVE_THRESHOLD_PX: 12,
+} as const
+
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const radius = computed(() => props.radius)
 const dim = computed(() => props.dim)
@@ -30,6 +36,14 @@ const targetMouseX = ref<number | null>(null)
 const targetMouseY = ref<number | null>(null)
 const currentMouseX = ref<number | null>(null)
 const currentMouseY = ref<number | null>(null)
+
+// Detect touch devices (coarse pointer with no hover)
+const isTouchMode = useMediaQuery('(hover: none) and (pointer: coarse)')
+
+// Touch drag state
+const isDragging = ref(false)
+const dragHoldTimer = ref<number | null>(null)
+const dragStartPos = ref<{ x: number; y: number } | null>(null)
 
 // Computed opacity for fade transitions
 const canvasOpacity = computed(() => props.modelValue ? 1 : 0)
@@ -119,6 +133,10 @@ function resize() {
   draw()
 }
 
+function centerPointer() {
+  updatePointer(window.innerWidth / 2, window.innerHeight / 2)
+}
+
 function updatePointer(x: number, y: number) {
   targetMouseX.value = x
   targetMouseY.value = y
@@ -135,16 +153,47 @@ function onTouchMove(e: TouchEvent) {
   if (!props.modelValue)
     return
   const t = e.touches[0] || e.changedTouches[0]
-  if (t)
+  if (!t)
+    return
+
+  // If not dragging yet, check if user is scrolling (large move before hold)
+  if (!isDragging.value && dragStartPos.value) {
+    const dx = t.clientX - dragStartPos.value.x
+    const dy = t.clientY - dragStartPos.value.y
+    const moved = Math.hypot(dx, dy)
+    if (moved > TOUCH_DRAG_CONFIG.MOVE_THRESHOLD_PX) {
+      // Consider this a scroll, cancel pending drag
+      if (dragHoldTimer.value !== null) {
+        clearTimeout(dragHoldTimer.value)
+        dragHoldTimer.value = null
+      }
+      return
+    }
+  }
+
+  // While dragging, prevent scrolling and update pointer
+  if (isDragging.value) {
+    e.preventDefault()
     updatePointer(t.clientX, t.clientY)
+  }
 }
 
 function onTouchStart(e: TouchEvent) {
   if (!props.modelValue)
     return
   const t = e.touches[0] || e.changedTouches[0]
-  if (t)
+  if (!t)
+    return
+  dragStartPos.value = { x: t.clientX, y: t.clientY }
+  // Schedule drag activation after a short hold
+  if (dragHoldTimer.value !== null) {
+    clearTimeout(dragHoldTimer.value)
+    dragHoldTimer.value = null
+  }
+  dragHoldTimer.value = window.setTimeout(() => {
+    isDragging.value = true
     updatePointer(t.clientX, t.clientY)
+  }, TOUCH_DRAG_CONFIG.HOLD_MS)
 }
 
 function onMouseLeave() {
@@ -154,6 +203,15 @@ function onMouseLeave() {
   currentMouseY.value = null
   pauseAnimation()
   draw()
+}
+
+function onTouchEnd() {
+  if (dragHoldTimer.value !== null) {
+    clearTimeout(dragHoldTimer.value)
+    dragHoldTimer.value = null
+  }
+  isDragging.value = false
+  dragStartPos.value = null
 }
 
 // Keyboard controls removed - now handled by parent component
@@ -167,21 +225,19 @@ onMounted(() => {
     return
   dpr = window.devicePixelRatio || 1
   resize()
+  // For touch devices, start centered for a better default experience
+  if (isTouchMode.value && targetMouseX.value === null && targetMouseY.value === null)
+    centerPointer()
 
-  window.addEventListener('resize', resize)
-  window.addEventListener('mousemove', onMouseMove, { passive: true })
-  window.addEventListener('touchmove', onTouchMove, { passive: true })
-  window.addEventListener('touchstart', onTouchStart, { passive: true })
-  window.addEventListener('mouseleave', onMouseLeave)
+  useEventListener(window, 'resize', resize)
+  useEventListener(window, 'mousemove', onMouseMove, { passive: true })
+  useEventListener(window, 'touchmove', onTouchMove, { passive: false })
+  useEventListener(window, 'touchstart', onTouchStart, { passive: true })
+  useEventListener(window, 'touchend', onTouchEnd, { passive: true })
+  useEventListener(window, 'mouseleave', onMouseLeave)
 })
 
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', resize)
-  window.removeEventListener('mousemove', onMouseMove as any)
-  window.removeEventListener('touchmove', onTouchMove as any)
-  window.removeEventListener('touchstart', onTouchStart as any)
-  window.removeEventListener('mouseleave', onMouseLeave as any)
-})
+
 
 watch([radius, dim], () => {
   resumeAnimation()
@@ -195,6 +251,10 @@ watch(() => props.modelValue, (newValue) => {
     currentMouseX.value = null
     currentMouseY.value = null
     pauseAnimation()
+  } else {
+    // On mobile, auto-center when turning back on and no position set
+    if (isTouchMode.value && targetMouseX.value === null && targetMouseY.value === null)
+      centerPointer()
   }
 })
 </script>
