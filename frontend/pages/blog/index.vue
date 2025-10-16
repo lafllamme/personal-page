@@ -200,12 +200,15 @@ function toggleControls() {
     <!-- Show controls button (when controls are hidden) -->
     <button
       v-show="!controlsVisible"
-      @click="toggleControls"
-      class="w-8 h-8 rounded-full bg-gray-8 dark:bg-gray-4 flex items-center justify-center text-gray-12 dark:text-gray-11 hover:bg-gray-9 dark:hover:bg-gray-3 transition-colors"
+      class="h-8 w-8 flex items-center justify-center rounded-full bg-gray-8 text-gray-12 transition-colors dark:bg-gray-4 hover:bg-gray-9 dark:text-gray-11 dark:hover:bg-gray-3"
       title="Show controls"
+      @click="toggleControls"
     >
-      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4" />
+      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"
+        />
       </svg>
     </button>
 
@@ -213,37 +216,37 @@ function toggleControls() {
     <div v-show="controlsVisible" class="flex flex-col items-center gap-4">
       <!-- Close button -->
       <button
-        @click="toggleControls"
-        class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gray-10 dark:bg-gray-2 flex items-center justify-center text-gray-12 dark:text-gray-11 hover:bg-gray-11 dark:hover:bg-gray-1 transition-colors"
+        class="absolute h-6 w-6 flex items-center justify-center rounded-full bg-gray-10 text-gray-12 transition-colors -right-2 -top-2 dark:bg-gray-2 hover:bg-gray-11 dark:text-gray-11 dark:hover:bg-gray-1"
         title="Close controls"
+        @click="toggleControls"
       >
         <span class="text-xs font-bold">×</span>
       </button>
-    <div class="flex flex-col items-start gap-1">
-      <label for="radius" class="space-grotesk-regular color-gray-12">Radius</label>
-      <input
-        id="radius"
-        class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
-        type="range"
-        min="60"
-        max="400"
-        :value="flashlightRadius"
-        @input="onRadiusInput"
-      >
-    </div>
-    <div class="flex flex-col items-start gap-1">
-      <label for="dim" class="space-grotesk-regular color-gray-12">Dim</label>
-      <input
-        id="dim"
-        class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
-        type="range"
-        min="0.4"
-        max="0.98"
-        step="0.01"
-        :value="flashlightDim"
-        @input="onDimInput"
-      >
-    </div>
+      <div class="flex flex-col items-start gap-1">
+        <label for="radius" class="space-grotesk-regular color-gray-12">Radius</label>
+        <input
+          id="radius"
+          class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
+          type="range"
+          min="60"
+          max="400"
+          :value="flashlightRadius"
+          @input="onRadiusInput"
+        >
+      </div>
+      <div class="flex flex-col items-start gap-1">
+        <label for="dim" class="space-grotesk-regular color-gray-12">Dim</label>
+        <input
+          id="dim"
+          class="h-2 w-32 appearance-none rounded-full bg-sand-10 accent-mint-11"
+          type="range"
+          min="0.4"
+          max="0.98"
+          step="0.01"
+          :value="flashlightDim"
+          @input="onDimInput"
+        >
+      </div>
     </div>
   </div>
 </template>
