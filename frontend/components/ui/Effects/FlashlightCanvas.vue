@@ -14,6 +14,13 @@ const props = withDefaults(defineProps<Props>(), {
   dim: 0.93,
 })
 
+// Animation constants
+const ANIMATION_CONFIG = {
+  LERP_FACTOR: 0.05, // Lower = smoother movement (was 0.08)
+  MIN_DISTANCE: 0.3, // Minimum distance to continue animation (was 0.5)
+  GRADIENT_INNER_RATIO: 0.35, // Inner radius ratio for gradient
+} as const
+
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const radius = computed(() => props.radius)
 const dim = computed(() => props.dim)
@@ -29,11 +36,6 @@ const canvasOpacity = computed(() => props.modelValue ? 1 : 0)
 
 let ctx: CanvasRenderingContext2D | null = null
 let dpr = 1
-
-// Smooth easing function for natural movement
-function easeOutCubic(t: number): number {
-  return 1 - (1 - t) ** 3
-}
 
 // Interpolation function for smooth mouse following
 function lerp(start: number, end: number, factor: number): number {
@@ -65,10 +67,9 @@ function draw() {
       currentMouseY.value = targetMouseY.value
     }
 
-    // Smooth interpolation with easing (adjust factor for more/less smoothness)
-    const lerpFactor = 0.08 // Lower = smoother, higher = more responsive
-    currentMouseX.value = lerp(currentMouseX.value, targetMouseX.value, lerpFactor)
-    currentMouseY.value = lerp(currentMouseY.value, targetMouseY.value, lerpFactor)
+    // Smooth interpolation with easing
+    currentMouseX.value = lerp(currentMouseX.value, targetMouseX.value, ANIMATION_CONFIG.LERP_FACTOR)
+    currentMouseY.value = lerp(currentMouseY.value, targetMouseY.value, ANIMATION_CONFIG.LERP_FACTOR)
 
     // Check if we're close enough to target to stop animation
     const distance = Math.sqrt(
@@ -77,7 +78,7 @@ function draw() {
     )
 
     // Continue animation if we're still moving
-    if (distance > 0.5) {
+    if (distance > ANIMATION_CONFIG.MIN_DISTANCE) {
       resumeAnimation()
     }
 
@@ -85,7 +86,7 @@ function draw() {
     const grad = ctx.createRadialGradient(
       currentMouseX.value,
       currentMouseY.value,
-      r * 0.35,
+      r * ANIMATION_CONFIG.GRADIENT_INNER_RATIO,
       currentMouseX.value,
       currentMouseY.value,
       r,
