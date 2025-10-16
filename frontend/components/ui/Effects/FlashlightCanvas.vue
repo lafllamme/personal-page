@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useRafFn } from '@vueuse/core'
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useEventListener, useMediaQuery, useRafFn } from '@vueuse/core'
+import { computed, onMounted, ref, watch } from 'vue'
 
 interface Props {
   modelValue?: boolean
@@ -30,6 +30,14 @@ const targetMouseX = ref<number | null>(null)
 const targetMouseY = ref<number | null>(null)
 const currentMouseX = ref<number | null>(null)
 const currentMouseY = ref<number | null>(null)
+
+// Mobile touch handling with VueUse
+const isTouchDevice = useMediaQuery('(hover: none) and (pointer: coarse)')
+const touchStartTime = ref(0)
+const touchStartPosition = ref<{ x: number; y: number } | null>(null)
+const isScrolling = ref(false)
+const scrollThreshold = 10 // pixels
+const touchTimeThreshold = 150 // ms
 
 // Computed opacity for fade transitions
 const canvasOpacity = computed(() => props.modelValue ? 1 : 0)
@@ -131,20 +139,76 @@ function onMouseMove(e: MouseEvent) {
   updatePointer(e.clientX, e.clientY)
 }
 
-function onTouchMove(e: TouchEvent) {
-  if (!props.modelValue)
-    return
-  const t = e.touches[0] || e.changedTouches[0]
-  if (t)
-    updatePointer(t.clientX, t.clientY)
-}
-
 function onTouchStart(e: TouchEvent) {
   if (!props.modelValue)
     return
-  const t = e.touches[0] || e.changedTouches[0]
-  if (t)
+  
+  const t = e.touches[0]
+  if (!t) return
+  
+  touchStartTime.value = Date.now()
+  touchStartPosition.value = { x: t.clientX, y: t.clientY }
+  isScrolling.value = false
+  
+  // Only update flashlight on touch devices if it's a quick tap
+  if (isTouchDevice.value) {
+    // Don't immediately update - wait to see if it's a scroll gesture
+    return
+  }
+  
+  updatePointer(t.clientX, t.clientY)
+}
+
+function onTouchMove(e: TouchEvent) {
+  if (!props.modelValue)
+    return
+  
+  const t = e.touches[0]
+  if (!t) return
+  
+  // Detect if this is a scroll gesture
+  if (touchStartPosition.value) {
+    const deltaX = Math.abs(t.clientX - touchStartPosition.value.x)
+    const deltaY = Math.abs(t.clientY - touchStartPosition.value.y)
+    
+    // If movement is significant, it's probably scrolling
+    if (deltaX > scrollThreshold || deltaY > scrollThreshold) {
+      isScrolling.value = true
+      // Clear flashlight position during scrolling
+      targetMouseX.value = null
+      targetMouseY.value = null
+      currentMouseX.value = null
+      currentMouseY.value = null
+      pauseAnimation()
+      return
+    }
+  }
+  
+  // Only update flashlight if not scrolling and it's a quick interaction
+  const touchDuration = Date.now() - touchStartTime.value
+  if (!isScrolling.value && touchDuration < touchTimeThreshold) {
     updatePointer(t.clientX, t.clientY)
+  }
+}
+
+function onTouchEnd(e: TouchEvent) {
+  if (!props.modelValue)
+    return
+  
+  // Reset scroll detection
+  isScrolling.value = false
+  touchStartPosition.value = null
+  touchStartTime.value = 0
+  
+  // On mobile, fade out flashlight after touch ends
+  if (isTouchDevice.value) {
+    setTimeout(() => {
+      targetMouseX.value = null
+      targetMouseY.value = null
+      pauseAnimation()
+      draw()
+    }, 500) // Fade out after 500ms
+  }
 }
 
 function onMouseLeave() {
@@ -167,21 +231,15 @@ onMounted(() => {
     return
   dpr = window.devicePixelRatio || 1
   resize()
-
-  window.addEventListener('resize', resize)
-  window.addEventListener('mousemove', onMouseMove, { passive: true })
-  window.addEventListener('touchmove', onTouchMove, { passive: true })
-  window.addEventListener('touchstart', onTouchStart, { passive: true })
-  window.addEventListener('mouseleave', onMouseLeave)
 })
 
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', resize)
-  window.removeEventListener('mousemove', onMouseMove as any)
-  window.removeEventListener('touchmove', onTouchMove as any)
-  window.removeEventListener('touchstart', onTouchStart as any)
-  window.removeEventListener('mouseleave', onMouseLeave as any)
-})
+// VueUse event listeners with automatic cleanup
+useEventListener('resize', resize)
+useEventListener('mousemove', onMouseMove, { passive: true })
+useEventListener('touchmove', onTouchMove, { passive: true })
+useEventListener('touchstart', onTouchStart, { passive: true })
+useEventListener('touchend', onTouchEnd, { passive: true })
+useEventListener('mouseleave', onMouseLeave)
 
 watch([radius, dim], () => {
   resumeAnimation()
