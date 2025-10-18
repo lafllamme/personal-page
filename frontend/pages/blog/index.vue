@@ -190,8 +190,8 @@ function toggleControls() {
 
     <FlashlightCanvas
       v-model="flashlightEnabled"
-      :radius="debouncedRadius.value"
-      :dim="flashlightDim.value"
+      :radius="debouncedRadius"
+      :dim="flashlightDim"
       @update:radius="onRadiusUpdate"
     />
   </div>
