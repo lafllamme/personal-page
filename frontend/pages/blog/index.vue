@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
+import { ref, watch } from 'vue'
 import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 import LightSwitch from '@/components/ui/Effects/LightSwitch.vue'
 
@@ -16,7 +16,6 @@ const debouncedRadius = ref(265)
 const updateRadius = useDebounceFn((value: number) => {
   debouncedRadius.value = value
 }, 0) // ~60fps
-
 
 function onRadiusInput(e: Event) {
   const value = Number((e.target as HTMLInputElement).value)
