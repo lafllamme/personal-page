@@ -263,7 +263,7 @@ importers:
         specifier: ^24.8.1
         version: 24.8.1
       '@types/three':
-        specifier: ^0.178.0
+        specifier: ^0.178.1
         version: 0.178.1
       '@unocss/eslint-plugin':
         specifier: 66.3.3
