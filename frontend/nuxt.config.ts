@@ -131,7 +131,7 @@ export default defineNuxtConfig({
   // Internationalization
   i18n: {
     strategy: 'prefix_except_default', // Default locale (en) won't have prefix, others will
-    baseUrl: process.env.FRONTEND_URL || 'http://localhost:3000',
+    baseUrl: process.env.NUXT_FRONTEND_URL || 'http://localhost:3000',
     defaultLocale: 'en',
     bundle: {
       optimizeTranslationDirective: false, // Fix i18n warning
