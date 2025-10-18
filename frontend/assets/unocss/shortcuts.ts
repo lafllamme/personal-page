@@ -1,4 +1,6 @@
-export const shortcuts = [
+import type { UserShortcuts } from '@unocss/core'
+
+export const shortcuts: UserShortcuts = [
   // ['btn', 'px-4 py-2 rounded bg-primary text-white'],
   [
     'ts-contrast',

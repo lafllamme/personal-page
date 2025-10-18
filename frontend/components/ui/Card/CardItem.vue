@@ -2,7 +2,7 @@
 import type { Ref } from 'vue'
 import type { useMouseState } from '@/composables/useMouseState'
 import { inject, ref, watch } from 'vue'
-import { cn } from '~~/lib/utils'
+import { cn } from '@/lib/utils'
 
 const props = defineProps({
   as: { type: String, default: 'div' },
@@ -19,7 +19,7 @@ const refElement = ref<HTMLElement | null>(null)
 
 const mouseState = inject('use3DCardMouseState') as ReturnType<typeof useMouseState>
 
-function handleAnimation(isMouseEntered: Readonly<Ref<boolean, boolean>>) {
+function handleAnimation(isMouseEntered: Readonly<Ref<boolean>>) {
   if (!refElement.value)
     return
 

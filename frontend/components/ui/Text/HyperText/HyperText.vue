@@ -16,11 +16,12 @@ const props = withDefaults(
 )
 
 const alphabets = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-const displayText = ref(props.text.split(''))
+const displayText = ref<string[]>(props.text.split(''))
 const iterations = ref(0)
 
-function getRandomLetter() {
-  return alphabets[Math.floor(Math.random() * alphabets.length)]
+function getRandomLetter(): string {
+  const idx = Math.floor(Math.random() * alphabets.length)
+  return alphabets.charAt(idx)
 }
 
 function triggerAnimation() {
@@ -31,9 +32,12 @@ function triggerAnimation() {
 const { pause, resume } = useIntervalFn(
   () => {
     if (iterations.value < props.text.length) {
-      displayText.value = displayText.value.map((l, i) =>
-        l === ' ' ? l : i <= iterations.value ? props.text[i] : getRandomLetter(),
-      )
+      const chars = [...props.text]
+      displayText.value = chars.map((ch, i): string => {
+        if (ch === ' ')
+          return ' '
+        return i <= iterations.value ? ch : getRandomLetter()
+      })
       iterations.value += 0.1
     }
     else {

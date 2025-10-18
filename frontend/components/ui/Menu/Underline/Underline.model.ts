@@ -1,5 +1,5 @@
 export type variant = 'center' | 'left' | 'right' | 'full'
-export type size = 'default' | 'big'
+export type size = 'default' | 'big' | 'full'
 
 export interface UnderlineProps {
   className?: string

@@ -22,7 +22,6 @@ const head = useLocaleHead({
   dir: true,
   lang: true,
   seo: { canonicalQueries: ['ref'] },
-  key: 'i18n',
 })
 // 2) Custom viewport meta tag to allow fullscreen on iOS devices
 useHead(() => {

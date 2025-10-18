@@ -15,7 +15,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const theme = getColors(props.squareColor)
 
-const el = ref(null)
+const el = ref<HTMLElement | null>(null)
 const grid = ref<(boolean | null)[][]>([])
 const rows = ref(0)
 const cols = ref(0)
@@ -32,44 +32,54 @@ function createGrid() {
 
 function createNewCell() {
   const x = Math.floor(Math.random() * cols.value)
-
+  if (!Array.isArray(grid.value[0]))
+    return
   grid.value[0][x] = true
 }
 
 function moveCellsDown() {
   for (let row = rows.value - 1; row >= 0; row--) {
     for (let col = 0; col < cols.value; col++) {
-      const cell = grid.value[row][col]
-      const nextCell = Array.isArray(grid.value[row + 1]) ? grid.value[row + 1][col] : cell
+      const rowArr = grid.value[row] as (boolean | null)[] | undefined
+      const nextRowArr = grid.value[row + 1] as (boolean | null)[] | undefined
+      if (!Array.isArray(rowArr)) continue
+      const cell = rowArr[col] ?? null
+      const nextCell = Array.isArray(nextRowArr) ? (nextRowArr[col] ?? null) : cell
       if (cell !== null && nextCell === null) {
-        grid.value[row + 1][col] = grid.value[row][col]
-        grid.value[row][col] = null
+        if (Array.isArray(nextRowArr)) (nextRowArr as (boolean | null)[])[col] = cell as boolean | null
+        rowArr[col] = null
       }
     }
   }
 
   setTimeout(() => {
-    const isFilled = grid.value[rows.value - 1].every(cell => cell !== null)
-    if (Array.isArray(grid.value[rows.value]) && isFilled) {
+    const lastRow = grid.value[rows.value - 1] as (boolean | null)[] | undefined
+    if (!Array.isArray(lastRow)) return
+    const isFilled = lastRow.every(cell => cell !== null)
+    if (isFilled) {
       for (let col = 0; col < cols.value; col++) {
-        grid.value[rows.value][col] = null
+        (lastRow as (boolean | null)[])[col] = null
       }
     }
   }, 500)
 }
 
 function clearColumn() {
-  const isFilled = grid.value[rows.value - 1].every(cell => cell === true)
+  const lastRow = grid.value[rows.value - 1] as (boolean | null)[] | undefined
+  if (!Array.isArray(lastRow)) return
+  const isFilled = lastRow.every(cell => cell === true)
   if (!isFilled)
     return
 
   for (let col = 0; col < cols.value; col++) {
-    grid.value[rows.value - 1][col] = null
+    (lastRow as (boolean | null)[])[col] = null
   }
 }
 
 function removeCell(row: number, col: number) {
-  grid.value[row][col] = null
+  const rowArr = grid.value[row]
+  if (!Array.isArray(rowArr)) return
+  rowArr[col] = null
 }
 
 function calcGrid() {

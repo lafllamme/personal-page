@@ -10,8 +10,8 @@ const props = withDefaults(defineProps<CardProps>(), CardPropsDefaults)
 
 const { id, title, date, author, href, image: _image } = toRefs(props)
 const isVisible = ref(false)
-const trendingRef = useTemplateRef('trendingRef')
-useVisibilityObserver(trendingRef, isVisible)
+const trendingRef = useTemplateRef<HTMLElement | null>('trendingRef')
+useVisibilityObserver(trendingRef as unknown as Ref<HTMLElement | HTMLElement[] | null>, isVisible)
 </script>
 
 <template>
