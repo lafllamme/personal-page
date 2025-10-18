@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { breakpointsTailwind } from '@vueuse/core'
+import { breakpointsTailwind, useDebounceFn, useDocumentVisibility, useRafFn, useWindowSize } from '@vueuse/core'
+// Removed useRenderLoop to avoid type issues; we update iTime via useRafFn
 import consola from 'consola'
 import { Vector3 } from 'three'
 
@@ -30,7 +31,7 @@ const shader = computed(() => {
 })
 
 // Shader reference
-const shaderRef = shallowRef<TresObject | null>(null)
+const shaderRef = shallowRef<any | null>(null)
 const { width, height } = useWindowSize()
 const aspectRatio = computed(() => width.value / height.value)
 
@@ -108,16 +109,13 @@ function monitorFrameRate() {
 // Use requestAnimationFrame to monitor frame rate
 useRafFn(monitorFrameRate)
 
-// Update iTime uniform
-const { onLoop } = useRenderLoop()
-
-onLoop(({ elapsed }) => {
-  if (!isVisible.value)
+// Update iTime uniform with RAF
+const startTime = performance.now()
+useRafFn(() => {
+  if (!isVisible.value || !shaderRef.value)
     return
-  if (shaderRef.value) {
-    shaderRef.value.uniforms.iTime.value = elapsed
-    // consola.debug(`[onLoop] elapsed: ${elapsed}, iTime: ${shaderRef.value.uniforms.iTime.value}`)
-  }
+  const elapsed = (performance.now() - startTime) / 1000
+  shaderRef.value.uniforms.iTime.value = elapsed
 })
 </script>
 

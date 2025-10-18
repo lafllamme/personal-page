@@ -54,12 +54,12 @@ const {
   error,
   execute: fetchPost,
 } = useAsyncState<PayloadPost | null>(
-  () => getPostBySlug(slug.value),
+  async () => await getPostBySlug(slug.value) as unknown as PayloadPost | null,
   null,
   { immediate: false },
 )
 
-whenever(slug, fetchPost, { immediate: true })
+whenever(slug as unknown as Ref<number | false | null | undefined>, fetchPost, { immediate: true })
 
 /* -------------------------------------------------------------------------- */
 /*  Table of contents                                                          */
@@ -129,7 +129,7 @@ function trackHeadings() {
     useIntersectionObserver(
       h,
       ([e]) => {
-        if (e.isIntersecting)
+        if (e && (e as IntersectionObserverEntry).isIntersecting)
           activeId.value = h.id
       },
       { rootMargin: '-25% 0% -60% 0%' },
@@ -345,7 +345,7 @@ const archiveIssues = ref(['Issue 46', 'Issue 45', 'Issue 44', 'Issue 43'])
                 <figure class="-mx-4 md:-mx-8 sm:-mx-6">
                   <div class="relative overflow-hidden">
                     <img
-                      :src="getImageUrlFromObject(post.featuredImage)"
+                      :src="getImageUrlFromObject(post.featuredImage) || undefined"
                       :alt="post.title"
                       class="h-auto w-full object-cover"
                     >

@@ -5,6 +5,12 @@
     "baseUrl": ".",
     // Important for path aliases
     "paths": {
+      "~/*": [
+        "./*"
+      ],
+      "~~/*": [
+        "./*"
+      ],
       "@/*": [
         "./*"
       ],
@@ -14,6 +20,12 @@
       "@shared-types/*": [
         "types/*"
       ]
-    }
-  }
+    },
+    "skipLibCheck": true
+  },
+  "exclude": [
+    "node_modules",
+    ".output",
+    "dist"
+  ]
 }

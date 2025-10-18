@@ -5,7 +5,7 @@ import { useVisibilityObserver } from '@/composables/useVisibilityObserver'
 
 const target = useTemplateRef('target')
 const isVisible = ref(false)
-const isCurrentlyVisible = useVisibilityObserver(target, isVisible, 40, true)
+const isCurrentlyVisible = useVisibilityObserver(target as unknown as Ref<HTMLElement | HTMLElement[] | null>, isVisible, 40, true)
 
 // Reviews data
 // Reviews data (fictional, realistic — 7 items)
@@ -54,7 +54,7 @@ const reviews = [
   },
 ]
 
-watch(isCurrentlyVisible, (now) => {
+watch(isCurrentlyVisible as unknown as Ref<boolean>, (now) => {
   consola.debug('isCurrentlyVisible:', now)
 })
 

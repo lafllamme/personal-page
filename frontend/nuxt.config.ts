@@ -123,7 +123,6 @@ export default defineNuxtConfig({
   ],
 
   // Tres.js settings
-  // @ts-expect-error We know this is a valid Tres.js config
   tres: {
     devtools: true,
     glsl: true,

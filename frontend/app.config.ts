@@ -2,6 +2,7 @@
 export default defineAppConfig({
   pageTransition: { name: 'page', mode: 'out-in' },
   meta: {
+    title: 'TecNews – Tech News & Trends',
     viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
     description: 'TecNews is your source for the latest technology news, trends, and analysis. Stay updated with fresh articles, expert insights, and more.',
     themeColor: '#5EAEA5',

@@ -14,7 +14,7 @@ const BASE_TRANSITION = {
   ease: 'linear',
 }
 
-const BASE_ITEM_VARIANTS = {
+const BASE_ITEM_VARIANTS: Record<string, any> = {
   hidden: { opacity: 1 },
   visible: { opacity: 1 },
 }
@@ -37,10 +37,10 @@ const letters = computed(() => {
   letters.push(' ')
   return letters
 })
-const finalTransition = computed(() => ({
-  ...BASE_TRANSITION,
-  ...transition.value,
-  duration: transition.value?.duration ?? duration.value,
+const finalTransition = computed<Transition | undefined>(() => ({
+  ...(BASE_TRANSITION as any),
+  ...(transition.value as any),
+  duration: (transition.value?.duration as number | undefined) ?? duration.value,
 }))
 
 const containerVariants = computed(() => ({
@@ -48,9 +48,9 @@ const containerVariants = computed(() => ({
   // ...props.variants?.container,
 }))
 
-const itemVariants = computed(() => ({
-  hidden: { ...BASE_ITEM_VARIANTS.hidden, ...(variants.value?.item?.hidden || {}) },
-  visible: { ...BASE_ITEM_VARIANTS.visible, ...(variants.value?.item?.visible || {}) },
+const itemVariants = computed<Record<string, any>>(() => ({
+  hidden: { ...BASE_ITEM_VARIANTS.hidden, ...(variants.value?.item as any)?.hidden || {} },
+  visible: { ...BASE_ITEM_VARIANTS.visible, ...(variants.value?.item as any)?.visible || {} },
 }))
 </script>
 

@@ -31,7 +31,7 @@ function focusNextCard() {
   consola.debug('Focused card', idx)
   const next = cards[idx + 1] ?? cards[0] // wrap to first if needed
   consola.debug('Next card', next)
-  next.focus()
+  next?.focus()
 }
 
 // When a focused card leaves view, blur it and focus next (unless skipping)
