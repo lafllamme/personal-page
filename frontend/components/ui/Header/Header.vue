@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { useEventListener, useWindowScroll } from '@vueuse/core'
+import { useCssVar, useEventListener, useResizeObserver, useThrottleFn, useWindowScroll } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 // Import external components and utilities
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
@@ -28,27 +28,47 @@ const { isHeaderMinimized } = storeToRefs(menuStore)
 // Track minimized header container width to match dropdown width
 const headerContainerRef = ref<HTMLElement | null>(null)
 
-function updateHeaderMinWidthVar() {
+const lastWidth = ref<number | null>(null)
+// Bind CSS var to the header container element
+const headerWidthVar = useCssVar('--header-minimized-width', headerContainerRef)
+
+function writeHeaderMinWidthVar(width: number) {
+  const el = headerContainerRef.value
+  if (!el)
+    return
+  if (lastWidth.value === width)
+    return
+  lastWidth.value = width
+  headerWidthVar.value = `${Math.round(width)}px`
+}
+
+function measureAndWrite() {
   if (import.meta.server)
     return
   const el = headerContainerRef.value
   if (!el)
     return
   const { width } = el.getBoundingClientRect()
-  document.documentElement.style.setProperty('--header-minimized-width', `${Math.round(width)}px`)
+  // Write once per measurement (throttled by caller)
+  writeHeaderMinWidthVar(width)
 }
 
+// Throttle measurements to reduce layout work during rapid resizes
+const throttledMeasure = useThrottleFn(measureAndWrite, 100, true)
+
 onMounted(() => {
-  updateHeaderMinWidthVar()
+  throttledMeasure()
 })
 
-useEventListener(window, 'resize', () => {
-  updateHeaderMinWidthVar()
+// Observe only the header container for size changes
+useResizeObserver(headerContainerRef, () => {
+  throttledMeasure()
 })
 
+// If the header transitions into minimized state, recalc once
 watch(isHeaderMinimized, (min) => {
   if (min)
-    updateHeaderMinWidthVar()
+    throttledMeasure()
 })
 
 // Reactive state variables
@@ -56,7 +76,7 @@ const isOpen = ref(false) // Drives Navigation.vue visibility
 const isSwitchOpen = ref(false) // Controls language switcher
 const headerRef = ref<HTMLElement | null>(null)
 
-const { y } = useWindowScroll()
+const { y } = useWindowScroll({ throttle: 100 })
 
 // Compute how far the user has scrolled relative to total scrollable height
 const scrolledPercent = computed(() => {
@@ -142,7 +162,7 @@ watch(isSwitchOpen, (open) => {
             'relative flex items-center justify-between',
             isHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-6 py-4 md:px-8',
             isHeaderMinimized ? 'border-none' : 'border-b',
-            !isHeaderMinimized && 'border-b border-gray-5 border-solid dark:border-gray-4',
+            isHeaderMinimized ? '' : 'border-b border-gray-5 border-solid dark:border-gray-4',
           )"
         >
           <div class="flex items-center">
@@ -165,7 +185,7 @@ watch(isSwitchOpen, (open) => {
             </NuxtLink>
           </div>
           <div
-            :class="isHeaderMinimized && 'pr-7'"
+            :class="useClsx(isHeaderMinimized ? 'pr-7' : '')"
             class="relative flex items-center"
           >
             <div
@@ -175,11 +195,12 @@ watch(isSwitchOpen, (open) => {
               )"
             >
               <LanguageSwitcher
-                v-model:open="isSwitchOpen"
+                :open="!!isSwitchOpen"
                 :class="useClsx(
                   'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
                   isHeaderMinimized ? 'p-1' : 'p-1.5',
                 )"
+                @update:open="(v: boolean) => { isSwitchOpen.value = v }"
               />
               <ColorMode
                 :class="useClsx(
