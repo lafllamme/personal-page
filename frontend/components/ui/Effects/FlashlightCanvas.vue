@@ -9,17 +9,17 @@ interface Props {
   scrollSensitivity?: number
 }
 
-const emit = defineEmits<{
-  'update:modelValue': [value: boolean]
-  'update:radius': [value: number]
-}>()
-
 const props = withDefaults(defineProps<Props>(), {
   modelValue: true, // Default: flashlight is ON
   radius: 265,
   dim: 0.93,
   scrollSensitivity: 10,
 })
+
+const emit = defineEmits<{
+  'update:modelValue': [value: boolean]
+  'update:radius': [value: number]
+}>()
 
 // Animation constants
 const ANIMATION_CONFIG = {
@@ -232,16 +232,16 @@ function onWheel(e: WheelEvent) {
   // Only handle when flashlight is on and Cmd key is pressed
   if (!props.modelValue || !e.metaKey)
     return
-  
+
   e.preventDefault()
-  
+
   // Calculate new radius based on scroll direction
   const delta = e.deltaY > 0 ? -props.scrollSensitivity : props.scrollSensitivity
   const newRadius = currentRadius.value + delta
-  
+
   // Only prevent negative radius (minimum of 1px)
   currentRadius.value = Math.max(1, newRadius)
-  
+
   // Emit the radius change to update the control panel
   emit('update:radius', currentRadius.value)
   resumeAnimation()
