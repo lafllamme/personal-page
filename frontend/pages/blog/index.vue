@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { useDebounceFn } from '@vueuse/core'
 import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 import LightSwitch from '@/components/ui/Effects/LightSwitch.vue'
 
@@ -15,6 +17,7 @@ const updateRadius = useDebounceFn((value: number) => {
   debouncedRadius.value = value
 }, 0) // ~60fps
 
+
 function onRadiusInput(e: Event) {
   const value = Number((e.target as HTMLInputElement).value)
   flashlightRadius.value = value
@@ -27,6 +30,17 @@ function onDimInput(e: Event) {
   flashlightDim.value = value
   consola.debug('[flashlight] dim', value)
 }
+
+function onRadiusUpdate(newRadius: number) {
+  flashlightRadius.value = newRadius
+  debouncedRadius.value = newRadius
+  consola.debug('[flashlight] radius updated from scroll', newRadius)
+}
+
+// Debug flashlight state changes
+watch(flashlightEnabled, (newValue) => {
+  consola.debug('[flashlight] enabled state changed:', newValue)
+})
 
 function toggleControls() {
   controlsVisible.value = !controlsVisible.value
@@ -177,8 +191,9 @@ function toggleControls() {
 
     <FlashlightCanvas
       v-model="flashlightEnabled"
-      :radius="debouncedRadius"
-      :dim="flashlightDim"
+      :radius="debouncedRadius.value"
+      :dim="flashlightDim.value"
+      @update:radius="onRadiusUpdate"
     />
   </div>
 
