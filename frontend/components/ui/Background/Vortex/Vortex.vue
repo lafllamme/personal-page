@@ -126,9 +126,9 @@ function updateParticle(i: number) {
   particleCache.hue = props[i + 8] ?? 0
 
   const n
-      = noise3D(particleCache.x * X_OFF, particleCache.y * Y_OFF, tick.value * Z_OFF)
-        * NOISE_STEPS
-        * TAU
+    = noise3D(particleCache.x * X_OFF, particleCache.y * Y_OFF, tick.value * Z_OFF)
+      * NOISE_STEPS
+      * TAU
 
   const nextVx = lerp(particleCache.vx, Math.cos(n), 0.5)
   const nextVy = lerp(particleCache.vy, Math.sin(n), 0.5)

@@ -9,15 +9,15 @@ export function useVisibilityObserver(
 ) {
   // ⬇ dynamic flag(s) – created only if caller asks for them
   const dynamicRef
-        = isDynamic
-          ? (Array.isArray(refList.value) ? ref([] as boolean[]) : ref(false))
-          : undefined
+    = isDynamic
+      ? (Array.isArray(refList.value) ? ref([] as boolean[]) : ref(false))
+      : undefined
 
   onMounted(() => {
     // ── single element ──────────────────────────────────────────────────
     if (refList.value && !Array.isArray(refList.value)) {
       const { hasBeenVisible, isVisible }
-                = useElementVisiblePercent(refList.value, threshold)
+        = useElementVisiblePercent(refList.value, threshold)
 
       watch(
         hasBeenVisible,
@@ -43,7 +43,7 @@ export function useVisibilityObserver(
       if (!el)
         return
       const { hasBeenVisible, isVisible }
-                = useElementVisiblePercent(el, threshold)
+        = useElementVisiblePercent(el, threshold)
 
       watch(
         hasBeenVisible,

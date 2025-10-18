@@ -21,7 +21,7 @@ const props = withDefaults(
 
 /* ----------------------------------------------------------- reactive bits */
 const { class: classNames, slotClass, gradientSize, gradientOpacity, variant }
-    = toRefs(props)
+  = toRefs(props)
 
 const mouseX = ref(-gradientSize.value * 10)
 const mouseY = ref(-gradientSize.value * 10)

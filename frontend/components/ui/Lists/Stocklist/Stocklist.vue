@@ -119,7 +119,7 @@ function getChangeIcon(change: number | null) {
           {{ error }}
         </p>
         <button
-          class="text-white bg-blue-600 hover:bg-blue-700 mt-2 rounded-lg px-4 py-2"
+          class="bg-blue-600 text-white hover:bg-blue-700 mt-2 rounded-lg px-4 py-2"
           @click="() => refreshStocks()"
         >
           Retry

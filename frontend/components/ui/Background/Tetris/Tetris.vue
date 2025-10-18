@@ -42,11 +42,13 @@ function moveCellsDown() {
     for (let col = 0; col < cols.value; col++) {
       const rowArr = grid.value[row] as (boolean | null)[] | undefined
       const nextRowArr = grid.value[row + 1] as (boolean | null)[] | undefined
-      if (!Array.isArray(rowArr)) continue
+      if (!Array.isArray(rowArr))
+        continue
       const cell = rowArr[col] ?? null
       const nextCell = Array.isArray(nextRowArr) ? (nextRowArr[col] ?? null) : cell
       if (cell !== null && nextCell === null) {
-        if (Array.isArray(nextRowArr)) (nextRowArr as (boolean | null)[])[col] = cell as boolean | null
+        if (Array.isArray(nextRowArr))
+          (nextRowArr as (boolean | null)[])[col] = cell as boolean | null
         rowArr[col] = null
       }
     }
@@ -54,7 +56,8 @@ function moveCellsDown() {
 
   setTimeout(() => {
     const lastRow = grid.value[rows.value - 1] as (boolean | null)[] | undefined
-    if (!Array.isArray(lastRow)) return
+    if (!Array.isArray(lastRow))
+      return
     const isFilled = lastRow.every(cell => cell !== null)
     if (isFilled) {
       for (let col = 0; col < cols.value; col++) {
@@ -66,7 +69,8 @@ function moveCellsDown() {
 
 function clearColumn() {
   const lastRow = grid.value[rows.value - 1] as (boolean | null)[] | undefined
-  if (!Array.isArray(lastRow)) return
+  if (!Array.isArray(lastRow))
+    return
   const isFilled = lastRow.every(cell => cell === true)
   if (!isFilled)
     return
@@ -78,7 +82,8 @@ function clearColumn() {
 
 function removeCell(row: number, col: number) {
   const rowArr = grid.value[row]
-  if (!Array.isArray(rowArr)) return
+  if (!Array.isArray(rowArr))
+    return
   rowArr[col] = null
 }
 

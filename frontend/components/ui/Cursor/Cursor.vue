@@ -120,16 +120,16 @@ function checkElementType(e: MouseEvent) {
 
   // 2. Normal detection
   const isClickable
-      = clickableElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
-        || clickableClasses.value.some(cls =>
-          target.classList.contains(cls.replace('.', '')) || !!target.closest(cls),
-        )
+    = clickableElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
+      || clickableClasses.value.some(cls =>
+        target.classList.contains(cls.replace('.', '')) || !!target.closest(cls),
+      )
 
   const isText
-      = textElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
-        || textClasses.value.some(cls =>
-          target.classList.contains(cls.replace('.', '')) || !!target.closest(cls),
-        )
+    = textElements.value.some(sel => target.matches(sel) || !!target.closest(sel))
+      || textClasses.value.some(cls =>
+        target.classList.contains(cls.replace('.', '')) || !!target.closest(cls),
+      )
 
   if (isClickable) {
     cursorType.value = 'click'
