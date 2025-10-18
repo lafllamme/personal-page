@@ -6,12 +6,19 @@ interface Props {
   modelValue?: boolean
   radius?: number
   dim?: number
+  scrollSensitivity?: number
 }
+
+const emit = defineEmits<{
+  'update:modelValue': [value: boolean]
+  'update:radius': [value: number]
+}>()
 
 const props = withDefaults(defineProps<Props>(), {
   modelValue: true, // Default: flashlight is ON
   radius: 265,
   dim: 0.93,
+  scrollSensitivity: 10,
 })
 
 // Animation constants
@@ -28,7 +35,8 @@ const TOUCH_DRAG_CONFIG = {
 } as const
 
 const canvasRef = ref<HTMLCanvasElement | null>(null)
-const radius = computed(() => props.radius)
+const currentRadius = ref(props.radius)
+const radius = computed(() => currentRadius.value)
 const dim = computed(() => props.dim)
 
 // Smooth mouse tracking with interpolation
@@ -68,53 +76,59 @@ function draw() {
 
   ctx.clearRect(0, 0, width, height)
 
-  // Dark overlay
-  ctx.globalCompositeOperation = 'source-over'
-  ctx.fillStyle = `rgba(0,0,0,${dim.value})`
-  ctx.fillRect(0, 0, width, height)
-
-  // Smooth interpolation of mouse position
-  if (targetMouseX.value !== null && targetMouseY.value !== null) {
-    // Initialize current position if not set
-    if (currentMouseX.value === null || currentMouseY.value === null) {
-      currentMouseX.value = targetMouseX.value
-      currentMouseY.value = targetMouseY.value
-    }
-
-    // Smooth interpolation with easing
-    currentMouseX.value = lerp(currentMouseX.value, targetMouseX.value, ANIMATION_CONFIG.LERP_FACTOR)
-    currentMouseY.value = lerp(currentMouseY.value, targetMouseY.value, ANIMATION_CONFIG.LERP_FACTOR)
-
-    // Check if we're close enough to target to stop animation
-    const distance = Math.sqrt(
-      (targetMouseX.value - currentMouseX.value) ** 2
-      + (targetMouseY.value - currentMouseY.value) ** 2,
-    )
-
-    // Continue animation if we're still moving
-    if (distance > ANIMATION_CONFIG.MIN_DISTANCE) {
-      resumeAnimation()
-    }
-
-    const r = radius.value
-    const grad = ctx.createRadialGradient(
-      currentMouseX.value,
-      currentMouseY.value,
-      r * ANIMATION_CONFIG.GRADIENT_INNER_RATIO,
-      currentMouseX.value,
-      currentMouseY.value,
-      r,
-    )
-    grad.addColorStop(0, 'rgba(0,0,0,1)')
-    grad.addColorStop(1, 'rgba(0,0,0,0)')
-
-    ctx.globalCompositeOperation = 'destination-out'
-    ctx.fillStyle = grad
-    ctx.beginPath()
-    ctx.arc(currentMouseX.value, currentMouseY.value, r, 0, Math.PI * 2)
-    ctx.fill()
-
+  // Only draw dark overlay if flashlight is enabled
+  if (props.modelValue) {
+    // Dark overlay
     ctx.globalCompositeOperation = 'source-over'
+    ctx.fillStyle = `rgba(0,0,0,${dim.value})`
+    ctx.fillRect(0, 0, width, height)
+  }
+
+  // Only draw flashlight effect if flashlight is enabled
+  if (props.modelValue) {
+    // Smooth interpolation of mouse position
+    if (targetMouseX.value !== null && targetMouseY.value !== null) {
+      // Initialize current position if not set
+      if (currentMouseX.value === null || currentMouseY.value === null) {
+        currentMouseX.value = targetMouseX.value
+        currentMouseY.value = targetMouseY.value
+      }
+
+      // Smooth interpolation with easing
+      currentMouseX.value = lerp(currentMouseX.value, targetMouseX.value, ANIMATION_CONFIG.LERP_FACTOR)
+      currentMouseY.value = lerp(currentMouseY.value, targetMouseY.value, ANIMATION_CONFIG.LERP_FACTOR)
+
+      // Check if we're close enough to target to stop animation
+      const distance = Math.sqrt(
+        (targetMouseX.value - currentMouseX.value) ** 2
+        + (targetMouseY.value - currentMouseY.value) ** 2,
+      )
+
+      // Continue animation if we're still moving
+      if (distance > ANIMATION_CONFIG.MIN_DISTANCE) {
+        resumeAnimation()
+      }
+
+      const r = radius.value
+      const grad = ctx.createRadialGradient(
+        currentMouseX.value,
+        currentMouseY.value,
+        r * ANIMATION_CONFIG.GRADIENT_INNER_RATIO,
+        currentMouseX.value,
+        currentMouseY.value,
+        r,
+      )
+      grad.addColorStop(0, 'rgba(0,0,0,1)')
+      grad.addColorStop(1, 'rgba(0,0,0,0)')
+
+      ctx.globalCompositeOperation = 'destination-out'
+      ctx.fillStyle = grad
+      ctx.beginPath()
+      ctx.arc(currentMouseX.value, currentMouseY.value, r, 0, Math.PI * 2)
+      ctx.fill()
+
+      ctx.globalCompositeOperation = 'source-over'
+    }
   }
 }
 
@@ -214,6 +228,25 @@ function onTouchEnd() {
   dragStartPos.value = null
 }
 
+function onWheel(e: WheelEvent) {
+  // Only handle when flashlight is on and Cmd key is pressed
+  if (!props.modelValue || !e.metaKey)
+    return
+  
+  e.preventDefault()
+  
+  // Calculate new radius based on scroll direction
+  const delta = e.deltaY > 0 ? -props.scrollSensitivity : props.scrollSensitivity
+  const newRadius = currentRadius.value + delta
+  
+  // Only prevent negative radius (minimum of 1px)
+  currentRadius.value = Math.max(1, newRadius)
+  
+  // Emit the radius change to update the control panel
+  emit('update:radius', currentRadius.value)
+  resumeAnimation()
+}
+
 // Keyboard controls removed - now handled by parent component
 
 onMounted(() => {
@@ -235,9 +268,16 @@ onMounted(() => {
   useEventListener(window, 'touchstart', onTouchStart, { passive: true })
   useEventListener(window, 'touchend', onTouchEnd, { passive: true })
   useEventListener(window, 'mouseleave', onMouseLeave)
+  useEventListener(window, 'wheel', onWheel, { passive: false })
 })
 
 watch([radius, dim], () => {
+  resumeAnimation()
+})
+
+// Watch for external radius prop changes (from control panel)
+watch(() => props.radius, (newRadius) => {
+  currentRadius.value = newRadius
   resumeAnimation()
 })
 
@@ -251,10 +291,14 @@ watch(() => props.modelValue, (newValue) => {
     pauseAnimation()
   }
   else {
+    // Reset radius to initial value when turning back on
+    currentRadius.value = props.radius
     // On mobile, auto-center when turning back on and no position set
     if (isTouchMode.value && targetMouseX.value === null && targetMouseY.value === null)
       centerPointer()
   }
+  // Always redraw when modelValue changes
+  draw()
 })
 </script>
 
