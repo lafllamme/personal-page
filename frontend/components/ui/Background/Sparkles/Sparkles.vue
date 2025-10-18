@@ -100,15 +100,15 @@ function updateAndDrawParticles() {
     const opacity = 0.3 + (Math.sin(newPhase) * 0.3 + 0.3)
 
     // Draw particle
-  ctx.value!.beginPath()
-  ctx.value!.arc(
+    ctx.value!.beginPath()
+    ctx.value!.arc(
       (newX * canvas.width) / 100,
       (newY * canvas.height) / 100,
       particle.size,
       0,
       Math.PI * 2,
     )
-  ctx.value!.fillStyle = `${props.particleColor}${Math.floor(opacity * 255)
+    ctx.value!.fillStyle = `${props.particleColor}${Math.floor(opacity * 255)
       .toString(16)
       .padStart(2, '0')}`
     ctx.value!.fill()

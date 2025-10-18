@@ -134,10 +134,10 @@ function handleMove(e?: MouseEvent | PointerEvent | { x: number, y: number }) {
     }
 
     const isActive
-        = mouseX > left - proximity.value
-          && mouseX < left + width + proximity.value
-          && mouseY > top - proximity.value
-          && mouseY < top + height + proximity.value
+      = mouseX > left - proximity.value
+        && mouseX < left + width + proximity.value
+        && mouseY > top - proximity.value
+        && mouseY < top + height + proximity.value
 
     element.style.setProperty('--active', isActive ? '1' : '0')
 

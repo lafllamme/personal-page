@@ -43,7 +43,7 @@ const isTouchMode = useMediaQuery('(hover: none) and (pointer: coarse)')
 // Touch drag state
 const isDragging = ref(false)
 const dragHoldTimer = ref<number | null>(null)
-const dragStartPos = ref<{ x: number; y: number } | null>(null)
+const dragStartPos = ref<{ x: number, y: number } | null>(null)
 
 // Computed opacity for fade transitions
 const canvasOpacity = computed(() => props.modelValue ? 1 : 0)
@@ -237,8 +237,6 @@ onMounted(() => {
   useEventListener(window, 'mouseleave', onMouseLeave)
 })
 
-
-
 watch([radius, dim], () => {
   resumeAnimation()
 })
@@ -251,7 +249,8 @@ watch(() => props.modelValue, (newValue) => {
     currentMouseX.value = null
     currentMouseY.value = null
     pauseAnimation()
-  } else {
+  }
+  else {
     // On mobile, auto-center when turning back on and no position set
     if (isTouchMode.value && targetMouseX.value === null && targetMouseY.value === null)
       centerPointer()

@@ -9,5 +9,3 @@ declare module '#app/nuxt' {
   export default NuxtApp
   export const useNuxtApp: any
 }
-
-

@@ -71,7 +71,7 @@ watch(footerVisible, (vis) => {
       />
     </div>
 
-    <footer class="from-gray-900 via-gray-900 to-black text-white bg-gradient-to-br">
+    <footer class="text-white from-gray-900 via-gray-900 to-black bg-gradient-to-br">
       <div class="px-4 py-8 md:px-12">
         <!-- Main Footer Content -->
         <div class="grid grid-cols-1 mb-8 gap-12 lg:grid-cols-12">
