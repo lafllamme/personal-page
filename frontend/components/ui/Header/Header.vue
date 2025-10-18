@@ -200,7 +200,7 @@ watch(isSwitchOpen, (open) => {
                   'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
                   isHeaderMinimized ? 'p-1' : 'p-1.5',
                 )"
-                @update:open="(v: boolean) => { isSwitchOpen.value = v }"
+                @update:open="(v: boolean) => { isSwitchOpen = v }"
               />
               <ColorMode
                 :class="useClsx(
