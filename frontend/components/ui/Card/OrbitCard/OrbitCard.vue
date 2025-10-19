@@ -49,8 +49,8 @@ const startPos = computed(() => gridPositions[props.index] || { x: 0, y: 0 })
 // Boundary check + bounce
 function checkBoundaries() {
   const maybe = cardRef.value as any
-  const el: HTMLElement | null =
-    maybe instanceof HTMLElement
+  const el: HTMLElement | null
+    = maybe instanceof HTMLElement
       ? maybe
       : (maybe && maybe.$el instanceof HTMLElement)
           ? (maybe.$el as HTMLElement)
