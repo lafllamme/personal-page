@@ -1,17 +1,32 @@
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'
+import { useClsx } from '@/composables/useClsx'
 import OrbitCards from '@/components/ui/Card/OrbitCard/OrbitCards.vue'
 import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 import LightSwitch from '@/components/ui/Effects/LightSwitch.vue'
 
-const flashlightEnabled = ref(true)
+// Persistent user preference (30 days)
+type UserPreferences = { flashlight: boolean, radius: number, dim: number }
+const userPreferences = useCookie<UserPreferences>('userPreferences', {
+  maxAge: 60 * 60 * 24 * 30,
+  sameSite: 'lax',
+  path: '/',
+})
+
+// Ensure cookie exists; if not, create with default
+if (!userPreferences.value) {
+  userPreferences.value = { flashlight: true, radius: 265, dim: 0.93 }
+}
+
+// Initialize state from cookie value (fallback true)
+const flashlightEnabled = ref(userPreferences.value?.flashlight ?? true)
 const controlsVisible = ref(true)
-const flashlightRadius = ref(265)
-const flashlightDim = ref(0.93)
+const flashlightRadius = ref(userPreferences.value?.radius ?? 265)
+const flashlightDim = ref(userPreferences.value?.dim ?? 0.93)
 
 // Debounced values to prevent flickering
-const debouncedRadius = ref(265)
+const debouncedRadius = ref(userPreferences.value?.radius ?? 265)
 
 // VueUse debounced function for radius only
 const updateRadius = useDebounceFn((value: number) => {
@@ -22,24 +37,49 @@ function onRadiusInput(e: Event) {
   const value = Number((e.target as HTMLInputElement).value)
   flashlightRadius.value = value
   updateRadius(value)
-  consola.debug('[flashlight] radius', value)
+  console.debug('[flashlight] radius', value)
 }
 
 function onDimInput(e: Event) {
   const value = Number((e.target as HTMLInputElement).value)
   flashlightDim.value = value
-  consola.debug('[flashlight] dim', value)
+  console.debug('[flashlight] dim', value)
 }
 
 function onRadiusUpdate(newRadius: number) {
   flashlightRadius.value = newRadius
   debouncedRadius.value = newRadius
-  consola.debug('[flashlight] radius updated from scroll', newRadius)
+  console.debug('[flashlight] radius updated from scroll', newRadius)
 }
 
 // Debug flashlight state changes
 watch(flashlightEnabled, (newValue) => {
-  consola.debug('[flashlight] enabled state changed:', newValue)
+  console.debug('[flashlight] enabled state changed:', newValue)
+  userPreferences.value = {
+    flashlight: newValue,
+    radius: userPreferences.value?.radius ?? debouncedRadius.value,
+    dim: userPreferences.value?.dim ?? flashlightDim.value,
+  }
+})
+
+// Persist radius when it changes (debounced value drives canvas)
+watch(debouncedRadius, (newValue) => {
+  console.debug('[flashlight] radius -> cookie', newValue)
+  userPreferences.value = {
+    flashlight: userPreferences.value?.flashlight ?? flashlightEnabled.value,
+    radius: newValue,
+    dim: userPreferences.value?.dim ?? flashlightDim.value,
+  }
+})
+
+// Persist dim when it changes
+watch(flashlightDim, (newValue) => {
+  console.debug('[flashlight] dim -> cookie', newValue)
+  userPreferences.value = {
+    flashlight: userPreferences.value?.flashlight ?? flashlightEnabled.value,
+    radius: userPreferences.value?.radius ?? debouncedRadius.value,
+    dim: newValue,
+  }
 })
 
 function toggleControls() {
