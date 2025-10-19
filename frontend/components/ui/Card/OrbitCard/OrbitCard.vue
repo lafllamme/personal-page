@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { useEventListener, useThrottleFn } from '@vueuse/core'
 import { Motion, useAnimationControls, useMotionValue } from 'motion-v'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useThrottleFn, useEventListener } from '@vueuse/core'
 
 interface Post {
   id: number
@@ -159,11 +159,11 @@ function startFloating() {
 
 onMounted(async () => {
   consola.debug(`[OrbitCard ${props.index}] onMounted - initializing card`)
-  
+
   // Use VueUse event listeners for better performance and automatic cleanup
   useEventListener(window, 'pointermove', handlePointerActivity, { passive: true })
   useEventListener(window, 'pointerdown', handlePointerActivity, { passive: true })
-  
+
   await nextTick()
   // Only start once DOM element is available
   checkBoundaries()
@@ -321,7 +321,11 @@ const isOtherHovered = computed(() => {
         <Motion
           tag="h2"
           class="text-left text-balance text-4xl text-foreground font-extralight leading-[1.1] tracking-tight md:text-5xl"
-          :animate="{ opacity: isHovered ? 0 : 1 }"
+          :animate="{
+            opacity: isHovered ? 0 : 1,
+            height: isHovered ? 0 : 'auto',
+            marginBottom: isHovered ? 0 : 'auto',
+          }"
           :transition="{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }"
           :style="{
             position: 'relative',
@@ -331,6 +335,7 @@ const isOtherHovered = computed(() => {
             width: '100%',
             paddingLeft: '2rem',
             paddingRight: '2rem',
+            overflow: 'hidden',
           }"
         >
           {{ props.post.title }}
