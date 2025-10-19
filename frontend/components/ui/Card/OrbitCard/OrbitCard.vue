@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Motion, useAnimationControls, useMotionValue } from 'motion-v'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 interface Post {
   id: number
@@ -32,7 +32,8 @@ const isHoverActive = ref(false)
 const hoverTimerRef = ref<ReturnType<typeof setTimeout> | null>(null)
 const floatIntervalRef = ref<ReturnType<typeof setInterval> | null>(null)
 const boundaryCheckIntervalRef = ref<ReturnType<typeof setInterval> | null>(null)
-const cardRef = ref<HTMLElement | null>(null)
+// Motion component ref may be a component instance; resolve to DOM before use
+const cardRef = ref<any>(null)
 const velocityRef = ref({ x: 0, y: 0 })
 
 // Grid starting positions (same as React)
