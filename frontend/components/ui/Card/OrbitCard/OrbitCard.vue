@@ -269,18 +269,19 @@ const isOtherHovered = computed(() => {
     <Motion
       class="relative h-[340px] overflow-hidden border border-border bg-card/95 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md"
       :style="{ borderRadius: '32px 8px 32px 8px' }"
+      :initial="{ opacity: 0, scale: 0.94 }"
       :animate="{
-        opacity: isOtherHovered ? 0.08 : 1,
-        scale: isOtherHovered ? 0.88 : 1,
-        filter: isOtherHovered ? 'blur(16px)' : 'blur(0px)',
+        opacity: isOtherHovered ? 0.6 : 1,
+        scale: isOtherHovered ? 0.96 : 1,
+        filter: isOtherHovered ? 'blur(4px)' : 'blur(0px)',
         borderColor: isHovered ? 'hsl(var(--foreground) / 0.5)' : 'hsl(var(--border))',
         boxShadow: isHovered
           ? '0 20px 60px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.1), 0 0 0 1px hsl(var(--foreground) / 0.15)'
           : '0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
       }"
       :transition="{
-        opacity: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-        scale: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+        opacity: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: props.index * 0.12 },
+        scale: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: props.index * 0.12 },
         filter: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
         borderColor: { duration: 0.5 },
         boxShadow: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
