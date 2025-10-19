@@ -279,7 +279,7 @@ const isOtherHovered = computed(() => {
     <Motion
       class="relative h-[340px] overflow-hidden border border-border bg-card/95 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md"
       :style="{ borderRadius: '32px 8px 32px 8px' }"
-      :initial="{ opacity: 0, scale: 0.94 }"
+      :initial="{ opacity: 0, scale: 0.8 }"
       :animate="{
         opacity: isOtherHovered ? 0.6 : 1,
         scale: isOtherHovered ? 0.96 : 1,
@@ -290,8 +290,8 @@ const isOtherHovered = computed(() => {
           : '0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
       }"
       :transition="{
-        opacity: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: props.index * 0.12 },
-        scale: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: props.index * 0.12 },
+        opacity: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: (props.index * 150 + 50) / 1000 },
+        scale: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: (props.index * 150 + 50) / 1000 },
         filter: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
         borderColor: { duration: 0.5 },
         boxShadow: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
