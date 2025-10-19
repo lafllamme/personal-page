@@ -342,6 +342,7 @@ const isOtherHovered = computed(() => {
         </Motion>
 
         <Motion
+          v-if="isHovered"
           class="flex flex-1 flex-col justify-center space-y-8"
           :initial="{ opacity: 0 }"
           :animate="{ opacity: isHovered ? 1 : 0 }"
