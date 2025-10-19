@@ -47,7 +47,13 @@ const startPos = computed(() => gridPositions[props.index] || { x: 0, y: 0 })
 
 // Boundary check + bounce
 function checkBoundaries() {
-  const el = cardRef.value
+  const maybe = cardRef.value as any
+  const el: HTMLElement | null =
+    maybe instanceof HTMLElement
+      ? maybe
+      : (maybe && maybe.$el instanceof HTMLElement)
+          ? (maybe.$el as HTMLElement)
+          : null
   if (!el)
     return
 
@@ -123,7 +129,10 @@ function startFloating() {
   hoverTimerRef.value = initialDelay as unknown as ReturnType<typeof setTimeout>
 }
 
-onMounted(() => {
+onMounted(async () => {
+  await nextTick()
+  // Only start once DOM element is available
+  checkBoundaries()
   boundaryCheckIntervalRef.value = setInterval(checkBoundaries, 500) as unknown as ReturnType<typeof setInterval>
   startFloating()
 })
