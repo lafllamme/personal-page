@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Motion, useAnimationControls, useMotionValue } from 'motion-v'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { useThrottleFn, useEventListener } from '@vueuse/core'
 
 interface Post {
   id: number
@@ -40,9 +41,10 @@ const velocityRef = ref({ x: 0, y: 0 })
 const lastPointerMoveAt = ref(0)
 const HOVER_GUARD_MS = 300
 
-function handlePointerActivity() {
+// Throttled pointer activity handler for performance
+const handlePointerActivity = useThrottleFn(() => {
   lastPointerMoveAt.value = performance.now()
-}
+}, 100)
 
 // Grid starting positions (same as React)
 const gridPositions = [
@@ -118,6 +120,12 @@ function checkBoundaries() {
 function startFloating() {
   consola.debug(`[OrbitCard ${props.index}] startFloating - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   const float = () => {
+    // Don't float if this card is currently hovered
+    if (isHoverActive.value && props.hoveredId === props.post.id) {
+      consola.debug(`[OrbitCard ${props.index}] skipping float - card is hovered`)
+      return
+    }
+
     const currentX = x.get()
     const currentY = y.get()
 
@@ -151,8 +159,11 @@ function startFloating() {
 
 onMounted(async () => {
   consola.debug(`[OrbitCard ${props.index}] onMounted - initializing card`)
-  window.addEventListener('pointermove', handlePointerActivity, { passive: true })
-  window.addEventListener('pointerdown', handlePointerActivity, { passive: true })
+  
+  // Use VueUse event listeners for better performance and automatic cleanup
+  useEventListener(window, 'pointermove', handlePointerActivity, { passive: true })
+  useEventListener(window, 'pointerdown', handlePointerActivity, { passive: true })
+  
   await nextTick()
   // Only start once DOM element is available
   checkBoundaries()
@@ -169,8 +180,6 @@ onBeforeUnmount(() => {
     clearInterval(floatIntervalRef.value)
   if (boundaryCheckIntervalRef.value)
     clearInterval(boundaryCheckIntervalRef.value)
-  window.removeEventListener('pointermove', handlePointerActivity)
-  window.removeEventListener('pointerdown', handlePointerActivity)
   consola.debug(`[OrbitCard ${props.index}] onBeforeUnmount - cleanup complete`)
 })
 
@@ -217,13 +226,14 @@ function handleMouseEnter() {
   }
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
+  // Reduced hover delay for faster response
   hoverTimerRef.value = setTimeout(() => {
     consola.debug(`[OrbitCard ${props.index}] hover timeout triggered - setting hover active`)
     isHoverActive.value = true
     emit('update:hoveredId', props.post.id)
     consola.debug(`[OrbitCard ${props.index}] emitted hoveredId: ${props.post.id}, isHoverActive: ${isHoverActive.value}`)
-  }, 2000)
-  consola.debug(`[OrbitCard ${props.index}] hover timeout set for 2000ms`)
+  }, 800) // Reduced from 2000ms to 800ms
+  consola.debug(`[OrbitCard ${props.index}] hover timeout set for 800ms`)
 }
 
 function handleMouseLeave() {
