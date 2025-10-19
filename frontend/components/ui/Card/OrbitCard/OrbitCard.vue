@@ -66,7 +66,6 @@ function checkBoundaries() {
           ? (maybe.$el as HTMLElement)
           : null
   if (!el) {
-    consola.debug(`[OrbitCard ${props.index}] checkBoundaries - no element found`)
     return
   }
 
@@ -80,29 +79,24 @@ function checkBoundaries() {
     newX = x.get() + (margin - rect.left) * 1.5
     velocityRef.value.x = Math.abs(velocityRef.value.x) * 0.6
     needsBounce = true
-    consola.debug(`[OrbitCard ${props.index}] boundary bounce LEFT - rect.left: ${rect.left}, newX: ${newX}`)
   }
   if (rect.right > window.innerWidth - margin) {
     newX = x.get() - (rect.right - (window.innerWidth - margin)) * 1.5
     velocityRef.value.x = -Math.abs(velocityRef.value.x) * 0.6
     needsBounce = true
-    consola.debug(`[OrbitCard ${props.index}] boundary bounce RIGHT - rect.right: ${rect.right}, window.innerWidth: ${window.innerWidth}, newX: ${newX}`)
   }
   if (rect.top < margin) {
     newY = y.get() + (margin - rect.top) * 1.5
     velocityRef.value.y = Math.abs(velocityRef.value.y) * 0.6
     needsBounce = true
-    consola.debug(`[OrbitCard ${props.index}] boundary bounce TOP - rect.top: ${rect.top}, newY: ${newY}`)
   }
   if (rect.bottom > window.innerHeight - margin) {
     newY = y.get() - (rect.bottom - (window.innerHeight - margin)) * 1.5
     velocityRef.value.y = -Math.abs(velocityRef.value.y) * 0.6
     needsBounce = true
-    consola.debug(`[OrbitCard ${props.index}] boundary bounce BOTTOM - rect.bottom: ${rect.bottom}, window.innerHeight: ${window.innerHeight}, newY: ${newY}`)
   }
 
   if (needsBounce) {
-    consola.debug(`[OrbitCard ${props.index}] boundary bounce triggered - newX: ${newX}, newY: ${newY}, isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
     controls.start({
       x: newX,
       y: newY,
@@ -118,11 +112,9 @@ function checkBoundaries() {
 
 // Floating loop
 function startFloating() {
-  consola.debug(`[OrbitCard ${props.index}] startFloating - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   const float = () => {
     // Don't float if this card is currently hovered
     if (isHoverActive.value && props.hoveredId === props.post.id) {
-      consola.debug(`[OrbitCard ${props.index}] skipping float - card is hovered`)
       return
     }
 
@@ -132,8 +124,6 @@ function startFloating() {
     const moveRange = 165 + (Math.random() - 0.5) * 30
     const targetX = currentX + (Math.random() - 0.5) * moveRange
     const targetY = currentY + (Math.random() - 0.5) * moveRange
-
-    consola.debug(`[OrbitCard ${props.index}] float movement - current: (${currentX}, ${currentY}) -> target: (${targetX}, ${targetY}), isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
 
     controls.start({
       x: targetX,
@@ -149,7 +139,6 @@ function startFloating() {
   }
 
   const initialDelay = setTimeout(() => {
-    consola.debug(`[OrbitCard ${props.index}] initial float starting - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
     float()
     floatIntervalRef.value = setInterval(float, 18000)
   }, 2500 + props.index * 200)
@@ -158,8 +147,6 @@ function startFloating() {
 }
 
 onMounted(async () => {
-  consola.debug(`[OrbitCard ${props.index}] onMounted - initializing card`)
-
   // Use VueUse event listeners for better performance and automatic cleanup
   useEventListener(window, 'pointermove', handlePointerActivity, { passive: true })
   useEventListener(window, 'pointerdown', handlePointerActivity, { passive: true })
@@ -169,18 +156,15 @@ onMounted(async () => {
   checkBoundaries()
   boundaryCheckIntervalRef.value = setInterval(checkBoundaries, 500) as unknown as ReturnType<typeof setInterval>
   startFloating()
-  consola.debug(`[OrbitCard ${props.index}] onMounted - card initialized`)
 })
 
 onBeforeUnmount(() => {
-  consola.debug(`[OrbitCard ${props.index}] onBeforeUnmount - cleaning up timers`)
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
   if (floatIntervalRef.value)
     clearInterval(floatIntervalRef.value)
   if (boundaryCheckIntervalRef.value)
     clearInterval(boundaryCheckIntervalRef.value)
-  consola.debug(`[OrbitCard ${props.index}] onBeforeUnmount - cleanup complete`)
 })
 
 // Drag handlers
@@ -189,7 +173,6 @@ interface PanInfo {
 }
 
 function handleDragStart() {
-  consola.debug(`[OrbitCard ${props.index}] handleDragStart - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   isDragging.value = true
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
@@ -197,11 +180,9 @@ function handleDragStart() {
   emit('update:hoveredId', null)
   if (floatIntervalRef.value)
     clearInterval(floatIntervalRef.value)
-  consola.debug(`[OrbitCard ${props.index}] handleDragStart - isDragging: ${isDragging.value}, isHoverActive: ${isHoverActive.value}`)
 }
 
 function handleDragEnd(_: any, info: PanInfo) {
-  consola.debug(`[OrbitCard ${props.index}] handleDragEnd - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   isDragging.value = false
   emit('update:hoveredId', null)
 
@@ -212,49 +193,37 @@ function handleDragEnd(_: any, info: PanInfo) {
 
   setTimeout(checkBoundaries, 50)
   startFloating()
-  consola.debug(`[OrbitCard ${props.index}] handleDragEnd - isDragging: ${isDragging.value}, isHoverActive: ${isHoverActive.value}`)
 }
 
 // Hover with native mouse events (robust across SSR/builds)
 function handleMouseEnter() {
-  consola.debug(`[OrbitCard ${props.index}] handleMouseEnter - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   const now = performance.now()
   const delta = now - lastPointerMoveAt.value
   if (delta > HOVER_GUARD_MS) {
-    consola.debug(`[OrbitCard ${props.index}] handleMouseEnter - ignored (stale pointer, delta=${Math.round(delta)}ms)`)
     return
   }
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
   // Reduced hover delay for faster response
   hoverTimerRef.value = setTimeout(() => {
-    consola.debug(`[OrbitCard ${props.index}] hover timeout triggered - setting hover active`)
     isHoverActive.value = true
     emit('update:hoveredId', props.post.id)
-    consola.debug(`[OrbitCard ${props.index}] emitted hoveredId: ${props.post.id}, isHoverActive: ${isHoverActive.value}`)
   }, 800) // Reduced from 2000ms to 800ms
-  consola.debug(`[OrbitCard ${props.index}] hover timeout set for 800ms`)
 }
 
 function handleMouseLeave() {
-  consola.debug(`[OrbitCard ${props.index}] handleMouseLeave - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
   isHoverActive.value = false
   emit('update:hoveredId', null)
-  consola.debug(`[OrbitCard ${props.index}] emitted hoveredId: null, isHoverActive: ${isHoverActive.value}`)
 }
 
 const isHovered = computed(() => {
-  const result = isHoverActive.value && props.hoveredId === props.post.id
-  consola.debug(`[OrbitCard ${props.index}] isHovered computed - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}, post.id: ${props.post.id}, result: ${result}`)
-  return result
+  return isHoverActive.value && props.hoveredId === props.post.id
 })
 
 const isOtherHovered = computed(() => {
-  const result = props.hoveredId !== null && props.hoveredId !== props.post.id
-  consola.debug(`[OrbitCard ${props.index}] isOtherHovered computed - hoveredId: ${props.hoveredId}, post.id: ${props.post.id}, result: ${result}`)
-  return result
+  return props.hoveredId !== null && props.hoveredId !== props.post.id
 })
 </script>
 
@@ -277,14 +246,13 @@ const isOtherHovered = computed(() => {
     @mouseleave="handleMouseLeave"
   >
     <Motion
-      class="relative h-[340px] overflow-hidden border border-border bg-card/95 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md"
+      class="relative h-[340px] overflow-hidden border border-1 border-mint-12 border-solid bg-gray-3 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md"
       :style="{ borderRadius: '32px 8px 32px 8px' }"
       :initial="{ opacity: 0, scale: 0.8 }"
       :animate="{
         opacity: isOtherHovered ? 0.6 : 1,
         scale: isOtherHovered ? 0.96 : 1,
         filter: isOtherHovered ? 'blur(4px)' : 'blur(0px)',
-        borderColor: isHovered ? 'hsl(var(--foreground) / 0.5)' : 'hsl(var(--border))',
         boxShadow: isHovered
           ? '0 20px 60px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.1), 0 0 0 1px hsl(var(--foreground) / 0.15)'
           : '0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
