@@ -36,6 +36,14 @@ const boundaryCheckIntervalRef = ref<ReturnType<typeof setInterval> | null>(null
 const cardRef = ref<any>(null)
 const velocityRef = ref({ x: 0, y: 0 })
 
+// Guard hover so idle cursor doesn't trigger hover when cards float under it
+const lastPointerMoveAt = ref(0)
+const HOVER_GUARD_MS = 300
+
+function handlePointerActivity() {
+  lastPointerMoveAt.value = performance.now()
+}
+
 // Grid starting positions (same as React)
 const gridPositions = [
   { x: 0, y: 0 },
@@ -143,6 +151,8 @@ function startFloating() {
 
 onMounted(async () => {
   consola.debug(`[OrbitCard ${props.index}] onMounted - initializing card`)
+  window.addEventListener('pointermove', handlePointerActivity, { passive: true })
+  window.addEventListener('pointerdown', handlePointerActivity, { passive: true })
   await nextTick()
   // Only start once DOM element is available
   checkBoundaries()
@@ -159,6 +169,8 @@ onBeforeUnmount(() => {
     clearInterval(floatIntervalRef.value)
   if (boundaryCheckIntervalRef.value)
     clearInterval(boundaryCheckIntervalRef.value)
+  window.removeEventListener('pointermove', handlePointerActivity)
+  window.removeEventListener('pointerdown', handlePointerActivity)
   consola.debug(`[OrbitCard ${props.index}] onBeforeUnmount - cleanup complete`)
 })
 
@@ -197,6 +209,12 @@ function handleDragEnd(_: any, info: PanInfo) {
 // Hover with native mouse events (robust across SSR/builds)
 function handleMouseEnter() {
   consola.debug(`[OrbitCard ${props.index}] handleMouseEnter - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
+  const now = performance.now()
+  const delta = now - lastPointerMoveAt.value
+  if (delta > HOVER_GUARD_MS) {
+    consola.debug(`[OrbitCard ${props.index}] handleMouseEnter - ignored (stale pointer, delta=${Math.round(delta)}ms)`)
+    return
+  }
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
   hoverTimerRef.value = setTimeout(() => {
@@ -291,21 +309,17 @@ const isOtherHovered = computed(() => {
       <div class="pointer-events-none relative z-10 h-full flex flex-col">
         <Motion
           tag="h2"
-          class="text-balance text-4xl text-foreground font-extralight leading-[1.1] tracking-tight md:text-5xl"
-          :animate="{
-            opacity: isHovered ? 0 : 1,
-            y: isHovered ? -40 : 0,
-            textAlign: isHovered ? 'left' : 'center',
-          }"
+          class="text-left text-balance text-4xl text-foreground font-extralight leading-[1.1] tracking-tight md:text-5xl"
+          :animate="{ opacity: isHovered ? 0 : 1 }"
           :transition="{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }"
           :style="{
-            position: isHovered ? 'relative' : 'absolute',
-            top: isHovered ? '0' : '50%',
-            left: isHovered ? '0' : '50%',
-            transform: isHovered ? 'none' : 'translate(-50%, -50%)',
+            position: 'relative',
+            top: '0',
+            left: '0',
+            transform: 'none',
             width: '100%',
-            paddingLeft: isHovered ? '0' : '2rem',
-            paddingRight: isHovered ? '0' : '2rem',
+            paddingLeft: '2rem',
+            paddingRight: '2rem',
           }"
         >
           {{ props.post.title }}
