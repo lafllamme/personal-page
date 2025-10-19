@@ -55,8 +55,10 @@ function checkBoundaries() {
       : (maybe && maybe.$el instanceof HTMLElement)
           ? (maybe.$el as HTMLElement)
           : null
-  if (!el)
+  if (!el) {
+    consola.debug(`[OrbitCard ${props.index}] checkBoundaries - no element found`)
     return
+  }
 
   const rect = el.getBoundingClientRect()
   const margin = 50
@@ -68,24 +70,29 @@ function checkBoundaries() {
     newX = x.get() + (margin - rect.left) * 1.5
     velocityRef.value.x = Math.abs(velocityRef.value.x) * 0.6
     needsBounce = true
+    consola.debug(`[OrbitCard ${props.index}] boundary bounce LEFT - rect.left: ${rect.left}, newX: ${newX}`)
   }
   if (rect.right > window.innerWidth - margin) {
     newX = x.get() - (rect.right - (window.innerWidth - margin)) * 1.5
     velocityRef.value.x = -Math.abs(velocityRef.value.x) * 0.6
     needsBounce = true
+    consola.debug(`[OrbitCard ${props.index}] boundary bounce RIGHT - rect.right: ${rect.right}, window.innerWidth: ${window.innerWidth}, newX: ${newX}`)
   }
   if (rect.top < margin) {
     newY = y.get() + (margin - rect.top) * 1.5
     velocityRef.value.y = Math.abs(velocityRef.value.y) * 0.6
     needsBounce = true
+    consola.debug(`[OrbitCard ${props.index}] boundary bounce TOP - rect.top: ${rect.top}, newY: ${newY}`)
   }
   if (rect.bottom > window.innerHeight - margin) {
     newY = y.get() - (rect.bottom - (window.innerHeight - margin)) * 1.5
     velocityRef.value.y = -Math.abs(velocityRef.value.y) * 0.6
     needsBounce = true
+    consola.debug(`[OrbitCard ${props.index}] boundary bounce BOTTOM - rect.bottom: ${rect.bottom}, window.innerHeight: ${window.innerHeight}, newY: ${newY}`)
   }
 
   if (needsBounce) {
+    consola.debug(`[OrbitCard ${props.index}] boundary bounce triggered - newX: ${newX}, newY: ${newY}, isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
     controls.start({
       x: newX,
       y: newY,
@@ -101,6 +108,7 @@ function checkBoundaries() {
 
 // Floating loop
 function startFloating() {
+  consola.debug(`[OrbitCard ${props.index}] startFloating - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   const float = () => {
     const currentX = x.get()
     const currentY = y.get()
@@ -108,6 +116,8 @@ function startFloating() {
     const moveRange = 165 + (Math.random() - 0.5) * 30
     const targetX = currentX + (Math.random() - 0.5) * moveRange
     const targetY = currentY + (Math.random() - 0.5) * moveRange
+
+    consola.debug(`[OrbitCard ${props.index}] float movement - current: (${currentX}, ${currentY}) -> target: (${targetX}, ${targetY}), isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
 
     controls.start({
       x: targetX,
@@ -123,6 +133,7 @@ function startFloating() {
   }
 
   const initialDelay = setTimeout(() => {
+    consola.debug(`[OrbitCard ${props.index}] initial float starting - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
     float()
     floatIntervalRef.value = setInterval(float, 18000)
   }, 2500 + props.index * 200)
@@ -131,20 +142,24 @@ function startFloating() {
 }
 
 onMounted(async () => {
+  consola.debug(`[OrbitCard ${props.index}] onMounted - initializing card`)
   await nextTick()
   // Only start once DOM element is available
   checkBoundaries()
   boundaryCheckIntervalRef.value = setInterval(checkBoundaries, 500) as unknown as ReturnType<typeof setInterval>
   startFloating()
+  consola.debug(`[OrbitCard ${props.index}] onMounted - card initialized`)
 })
 
 onBeforeUnmount(() => {
+  consola.debug(`[OrbitCard ${props.index}] onBeforeUnmount - cleaning up timers`)
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
   if (floatIntervalRef.value)
     clearInterval(floatIntervalRef.value)
   if (boundaryCheckIntervalRef.value)
     clearInterval(boundaryCheckIntervalRef.value)
+  consola.debug(`[OrbitCard ${props.index}] onBeforeUnmount - cleanup complete`)
 })
 
 // Drag handlers
@@ -153,6 +168,7 @@ interface PanInfo {
 }
 
 function handleDragStart() {
+  consola.debug(`[OrbitCard ${props.index}] handleDragStart - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   isDragging.value = true
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
@@ -160,9 +176,11 @@ function handleDragStart() {
   emit('update:hoveredId', null)
   if (floatIntervalRef.value)
     clearInterval(floatIntervalRef.value)
+  consola.debug(`[OrbitCard ${props.index}] handleDragStart - isDragging: ${isDragging.value}, isHoverActive: ${isHoverActive.value}`)
 }
 
 function handleDragEnd(_: any, info: PanInfo) {
+  consola.debug(`[OrbitCard ${props.index}] handleDragEnd - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   isDragging.value = false
   emit('update:hoveredId', null)
 
@@ -173,27 +191,43 @@ function handleDragEnd(_: any, info: PanInfo) {
 
   setTimeout(checkBoundaries, 50)
   startFloating()
+  consola.debug(`[OrbitCard ${props.index}] handleDragEnd - isDragging: ${isDragging.value}, isHoverActive: ${isHoverActive.value}`)
 }
 
 // Hover with native mouse events (robust across SSR/builds)
 function handleMouseEnter() {
+  consola.debug(`[OrbitCard ${props.index}] handleMouseEnter - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
   hoverTimerRef.value = setTimeout(() => {
+    consola.debug(`[OrbitCard ${props.index}] hover timeout triggered - setting hover active`)
     isHoverActive.value = true
     emit('update:hoveredId', props.post.id)
+    consola.debug(`[OrbitCard ${props.index}] emitted hoveredId: ${props.post.id}, isHoverActive: ${isHoverActive.value}`)
   }, 2000)
+  consola.debug(`[OrbitCard ${props.index}] hover timeout set for 2000ms`)
 }
 
 function handleMouseLeave() {
+  consola.debug(`[OrbitCard ${props.index}] handleMouseLeave - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}`)
   if (hoverTimerRef.value)
     clearTimeout(hoverTimerRef.value)
   isHoverActive.value = false
   emit('update:hoveredId', null)
+  consola.debug(`[OrbitCard ${props.index}] emitted hoveredId: null, isHoverActive: ${isHoverActive.value}`)
 }
 
-const isHovered = computed(() => isHoverActive.value && props.hoveredId === props.post.id)
-const isOtherHovered = computed(() => props.hoveredId !== null && props.hoveredId !== props.post.id)
+const isHovered = computed(() => {
+  const result = isHoverActive.value && props.hoveredId === props.post.id
+  consola.debug(`[OrbitCard ${props.index}] isHovered computed - isHoverActive: ${isHoverActive.value}, hoveredId: ${props.hoveredId}, post.id: ${props.post.id}, result: ${result}`)
+  return result
+})
+
+const isOtherHovered = computed(() => {
+  const result = props.hoveredId !== null && props.hoveredId !== props.post.id
+  consola.debug(`[OrbitCard ${props.index}] isOtherHovered computed - hoveredId: ${props.hoveredId}, post.id: ${props.post.id}, result: ${result}`)
+  return result
+})
 </script>
 
 <template>
@@ -205,12 +239,7 @@ const isOtherHovered = computed(() => props.hoveredId !== null && props.hoveredI
     :drag-transition="{ power: 0.15, timeConstant: 400, modifyTarget: undefined }"
     :style="{ x, y }"
     :animate="controls"
-    :initial="{ opacity: 0, scale: 0.8, x: startPos.x, y: startPos.y }"
-    :while-in-view="{
-      opacity: 1,
-      scale: 1,
-      transition: { duration: 0.8, delay: props.index * 0.15, ease: [0.22, 1, 0.36, 1] },
-    }"
+    :initial="{ opacity: 1, scale: 1, x: startPos.x, y: startPos.y }"
     class="absolute w-[420px] cursor-grab active:cursor-grabbing"
     :while-hover="{ scale: 1.02, zIndex: 50 }"
     :while-tap="{ scale: 0.98, cursor: 'grabbing' }"
