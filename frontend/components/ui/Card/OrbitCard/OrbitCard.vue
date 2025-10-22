@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener, useThrottleFn } from '@vueuse/core'
+import { useElementSize, useEventListener, useThrottleFn, useWindowScroll } from '@vueuse/core'
 import { Motion, useAnimationControls, useMotionValue } from 'motion-v'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
@@ -46,6 +46,12 @@ const handlePointerActivity = useThrottleFn(() => {
   lastPointerMoveAt.value = performance.now()
 }, 100)
 
+// Use VueUse for scroll position with optimized throttling
+const { x: scrollX, y: scrollY } = useWindowScroll({
+  throttle: 100,
+  idle: 300,
+})
+
 // Grid starting positions (same as React)
 const gridPositions = [
   { x: 0, y: 0 },
@@ -56,8 +62,8 @@ const gridPositions = [
 ]
 const startPos = computed(() => gridPositions[props.index] || { x: 0, y: 0 })
 
-// Boundary check + bounce
-function checkBoundaries() {
+// Throttled boundary check with VueUse for better performance
+const checkBoundaries = useThrottleFn(() => {
   const maybe = cardRef.value as any
   const el: HTMLElement | null
     = maybe instanceof HTMLElement
@@ -69,29 +75,36 @@ function checkBoundaries() {
     return
   }
 
-  const rect = el.getBoundingClientRect()
+  // Use motion values directly (already in document coordinates)
+  const currentX = x.get()
+  const currentY = y.get()
+
+  // Use cached element size instead of getBoundingClientRect
+  const { width: elementWidth, height: elementHeight } = useElementSize(el)
+
   const margin = 50
   let needsBounce = false
-  let newX = x.get()
-  let newY = y.get()
+  let newX = currentX
+  let newY = currentY
 
-  if (rect.left < margin) {
-    newX = x.get() + (margin - rect.left) * 1.5
+  // Check boundaries using motion values (document coordinates)
+  if (currentX < margin) {
+    newX = margin
     velocityRef.value.x = Math.abs(velocityRef.value.x) * 0.6
     needsBounce = true
   }
-  if (rect.right > window.innerWidth - margin) {
-    newX = x.get() - (rect.right - (window.innerWidth - margin)) * 1.5
+  if (currentX + elementWidth.value > window.innerWidth - margin) {
+    newX = window.innerWidth - elementWidth.value - margin
     velocityRef.value.x = -Math.abs(velocityRef.value.x) * 0.6
     needsBounce = true
   }
-  if (rect.top < margin) {
-    newY = y.get() + (margin - rect.top) * 1.5
+  if (currentY < margin) {
+    newY = margin
     velocityRef.value.y = Math.abs(velocityRef.value.y) * 0.6
     needsBounce = true
   }
-  if (rect.bottom > window.innerHeight - margin) {
-    newY = y.get() - (rect.bottom - (window.innerHeight - margin)) * 1.5
+  if (currentY + elementHeight.value > window.innerHeight - margin) {
+    newY = window.innerHeight - elementHeight.value - margin
     velocityRef.value.y = -Math.abs(velocityRef.value.y) * 0.6
     needsBounce = true
   }
@@ -108,7 +121,11 @@ function checkBoundaries() {
       },
     })
   }
-}
+}, {
+  throttle: 200,
+  leading: true,
+  trailing: false,
+})
 
 // Floating loop
 function startFloating() {
