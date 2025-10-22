@@ -125,7 +125,7 @@ const hoveredPost = computed(() => posts.find(p => p.id === displayedHoverId.val
       </Motion>
     </Motion>
 
-    <div class="relative h-[900px]">
+    <div class="relative h-[600px] sm:h-[700px] md:h-[800px] lg:h-[900px] xl:h-[900px]">
       <OrbitCard
         v-for="(post, index) in posts"
         :key="post.id"
