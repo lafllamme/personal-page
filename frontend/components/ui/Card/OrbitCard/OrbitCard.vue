@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useElementSize, useEventListener, useThrottleFn, useWindowScroll } from '@vueuse/core'
+import { breakpointsTailwind, useBreakpoints, useElementSize, useEventListener, useThrottleFn, useWindowScroll } from '@vueuse/core'
 import { Motion, useAnimationControls, useMotionValue } from 'motion-v'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
@@ -52,15 +52,60 @@ const { x: scrollX, y: scrollY } = useWindowScroll({
   idle: 300,
 })
 
-// Grid starting positions (same as React)
-const gridPositions = [
-  { x: 0, y: 0 },
-  { x: 360, y: 0 },
-  { x: 720, y: 0 },
-  { x: 180, y: 300 },
-  { x: 540, y: 300 },
-]
-const startPos = computed(() => gridPositions[props.index] || { x: 0, y: 0 })
+// Use VueUse breakpoints with Tailwind preset
+const breakpoints = useBreakpoints(breakpointsTailwind)
+
+// Responsive grid positions based on Tailwind breakpoints
+const gridPositions = computed(() => {
+  if (breakpoints['2xl'].value) {
+    // Large screens: 3 columns
+    return [
+      { x: 0, y: 0 },
+      { x: 360, y: 0 },
+      { x: 720, y: 0 },
+      { x: 180, y: 300 },
+      { x: 540, y: 300 },
+    ]
+  } else if (breakpoints.xl.value) {
+    // Extra large screens: 3 columns, smaller spacing
+    return [
+      { x: 0, y: 0 },
+      { x: 300, y: 0 },
+      { x: 600, y: 0 },
+      { x: 150, y: 250 },
+      { x: 450, y: 250 },
+    ]
+  } else if (breakpoints.lg.value) {
+    // Large screens: 2 columns
+    return [
+      { x: 0, y: 0 },
+      { x: 400, y: 0 },
+      { x: 200, y: 300 },
+      { x: 0, y: 600 },
+      { x: 400, y: 600 },
+    ]
+  } else if (breakpoints.md.value) {
+    // Medium screens: 2 columns, smaller spacing
+    return [
+      { x: 0, y: 0 },
+      { x: 320, y: 0 },
+      { x: 160, y: 250 },
+      { x: 0, y: 500 },
+      { x: 320, y: 500 },
+    ]
+  } else {
+    // Small screens: 1 column (sm and below)
+    return [
+      { x: 0, y: 0 },
+      { x: 0, y: 200 },
+      { x: 0, y: 400 },
+      { x: 0, y: 600 },
+      { x: 0, y: 800 },
+    ]
+  }
+})
+
+const startPos = computed(() => gridPositions.value[props.index] || { x: 0, y: 0 })
 
 // Throttled boundary check with VueUse for better performance
 const checkBoundaries = useThrottleFn(() => {
@@ -121,11 +166,7 @@ const checkBoundaries = useThrottleFn(() => {
       },
     })
   }
-}, {
-  throttle: 200,
-  leading: true,
-  trailing: false,
-})
+}, 200)
 
 // Floating loop
 function startFloating() {
@@ -254,7 +295,10 @@ const isOtherHovered = computed(() => {
     :style="{ x, y }"
     :animate="controls"
     :initial="{ opacity: 1, scale: 1, x: startPos.x, y: startPos.y }"
-    class="absolute w-[420px] cursor-grab active:cursor-grabbing"
+    :class="useClsx(
+      'absolute cursor-grab active:cursor-grabbing',
+      'w-[320px] sm:w-[360px] md:w-[400px] lg:w-[420px] xl:w-[420px]'
+    )"
     :while-hover="{ scale: 1.02, zIndex: 50 }"
     :while-tap="{ scale: 0.98, cursor: 'grabbing' }"
     @drag-start="handleDragStart"
@@ -263,7 +307,10 @@ const isOtherHovered = computed(() => {
     @mouseleave="handleMouseLeave"
   >
     <Motion
-      class="relative h-[340px] overflow-hidden border border-1 border-mint-12 border-solid bg-gray-3 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md"
+      :class="useClsx(
+        'relative overflow-hidden border border-1 border-mint-12 border-solid bg-gray-3 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md',
+        'h-[280px] p-6 sm:h-[300px] sm:p-7 md:h-[320px] md:p-8 lg:h-[340px] xl:h-[340px]'
+      )"
       :style="{ borderRadius: '32px 8px 32px 8px' }"
       :initial="{ opacity: 0, scale: 0.8 }"
       :animate="{
