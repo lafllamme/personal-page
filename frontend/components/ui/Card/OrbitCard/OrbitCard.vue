@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints, useElementSize, useEventListener, useThrottleFn, useWindowScroll } from '@vueuse/core'
-import { Motion, useAnimationControls, useMotionValue } from 'motion-v'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { animate, Motion, useMotionValue } from 'motion-v'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 
 interface Post {
   id: number
@@ -11,278 +10,154 @@ interface Post {
   description: string
 }
 
-interface Props {
+const props = defineProps<{
   post: Post
   index: number
   hoveredId: number | null
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<{
-  (e: 'update:hoveredId', value: number | null): void
+  setHoveredId: (id: number | null) => void
 }>()
 
-// Motion state
-const x = useMotionValue(0)
-const y = useMotionValue(0)
-const controls = useAnimationControls()
+// Starting grid positions
+const gridPositions = [
+  { x: 0, y: 0 },
+  { x: 360, y: 0 },
+  { x: 720, y: 0 },
+  { x: 180, y: 300 },
+  { x: 540, y: 300 },
+]
+const startPos = gridPositions[props.index] ?? { x: 0, y: 0 }
 
+// Motion values
+const x = useMotionValue(startPos.x)
+const y = useMotionValue(startPos.y)
+const motionState = ref({ x: startPos.x, y: startPos.y })
+
+// UI/interaction states
 const isDragging = ref(false)
 const isHoverActive = ref(false)
-
-const hoverTimerRef = ref<ReturnType<typeof setTimeout> | null>(null)
-const floatIntervalRef = ref<ReturnType<typeof setInterval> | null>(null)
-const boundaryCheckIntervalRef = ref<ReturnType<typeof setInterval> | null>(null)
-// Motion component ref may be a component instance; resolve to DOM before use
-const cardRef = ref<any>(null)
+const hoverTimer = ref<ReturnType<typeof setTimeout> | null>(null)
+const floatInterval = ref<ReturnType<typeof setInterval> | null>(null)
 const velocityRef = ref({ x: 0, y: 0 })
+const cardRef = ref<HTMLElement | null>(null)
 
-// Guard hover so idle cursor doesn't trigger hover when cards float under it
-const lastPointerMoveAt = ref(0)
-const HOVER_GUARD_MS = 300
-
-// Throttled pointer activity handler for performance
-const handlePointerActivity = useThrottleFn(() => {
-  lastPointerMoveAt.value = performance.now()
-}, 100)
-
-// Use VueUse for scroll position with optimized throttling
-const { x: scrollX, y: scrollY } = useWindowScroll({
-  throttle: 100,
-  idle: 300,
-})
-
-// Use VueUse breakpoints with Tailwind preset
-const breakpoints = useBreakpoints(breakpointsTailwind)
-
-// Responsive grid positions based on Tailwind breakpoints
-const gridPositions = computed(() => {
-  if (breakpoints['2xl'].value) {
-    // Large screens: 3 columns
-    return [
-      { x: 0, y: 0 },
-      { x: 360, y: 0 },
-      { x: 720, y: 0 },
-      { x: 180, y: 300 },
-      { x: 540, y: 300 },
-    ]
-  } else if (breakpoints.xl.value) {
-    // Extra large screens: 3 columns, smaller spacing
-    return [
-      { x: 0, y: 0 },
-      { x: 300, y: 0 },
-      { x: 600, y: 0 },
-      { x: 150, y: 250 },
-      { x: 450, y: 250 },
-    ]
-  } else if (breakpoints.lg.value) {
-    // Large screens: 2 columns
-    return [
-      { x: 0, y: 0 },
-      { x: 400, y: 0 },
-      { x: 200, y: 300 },
-      { x: 0, y: 600 },
-      { x: 400, y: 600 },
-    ]
-  } else if (breakpoints.md.value) {
-    // Medium screens: 2 columns, smaller spacing
-    return [
-      { x: 0, y: 0 },
-      { x: 320, y: 0 },
-      { x: 160, y: 250 },
-      { x: 0, y: 500 },
-      { x: 320, y: 500 },
-    ]
-  } else {
-    // Small screens: 1 column (sm and below)
-    return [
-      { x: 0, y: 0 },
-      { x: 0, y: 200 },
-      { x: 0, y: 400 },
-      { x: 0, y: 600 },
-      { x: 0, y: 800 },
-    ]
-  }
-})
-
-const startPos = computed(() => gridPositions.value[props.index] || { x: 0, y: 0 })
-
-// Throttled boundary check with VueUse for better performance
-const checkBoundaries = useThrottleFn(() => {
-  const maybe = cardRef.value as any
-  const el: HTMLElement | null
-    = maybe instanceof HTMLElement
-      ? maybe
-      : (maybe && maybe.$el instanceof HTMLElement)
-          ? (maybe.$el as HTMLElement)
-          : null
-  if (!el) {
+// --- Boundary check + bounce logic ---
+function checkBoundaries() {
+  if (!cardRef.value)
     return
-  }
-
-  // Use motion values directly (already in document coordinates)
-  const currentX = x.get()
-  const currentY = y.get()
-
-  // Use cached element size instead of getBoundingClientRect
-  const { width: elementWidth, height: elementHeight } = useElementSize(el)
-
+  const rect = cardRef.value.getBoundingClientRect()
   const margin = 50
   let needsBounce = false
-  let newX = currentX
-  let newY = currentY
+  let newX = x.get()
+  let newY = y.get()
 
-  // Check boundaries using motion values (document coordinates)
-  if (currentX < margin) {
-    newX = margin
+  if (rect.left < margin) {
+    newX = x.get() + (margin - rect.left) * 1.5
     velocityRef.value.x = Math.abs(velocityRef.value.x) * 0.6
     needsBounce = true
   }
-  if (currentX + elementWidth.value > window.innerWidth - margin) {
-    newX = window.innerWidth - elementWidth.value - margin
+  if (rect.right > window.innerWidth - margin) {
+    newX = x.get() - (rect.right - (window.innerWidth - margin)) * 1.5
     velocityRef.value.x = -Math.abs(velocityRef.value.x) * 0.6
     needsBounce = true
   }
-  if (currentY < margin) {
-    newY = margin
+  if (rect.top < margin) {
+    newY = y.get() + (margin - rect.top) * 1.5
     velocityRef.value.y = Math.abs(velocityRef.value.y) * 0.6
     needsBounce = true
   }
-  if (currentY + elementHeight.value > window.innerHeight - margin) {
-    newY = window.innerHeight - elementHeight.value - margin
+  if (rect.bottom > window.innerHeight - margin) {
+    newY = y.get() - (rect.bottom - (window.innerHeight - margin)) * 1.5
     velocityRef.value.y = -Math.abs(velocityRef.value.y) * 0.6
     needsBounce = true
   }
 
   if (needsBounce) {
-    controls.start({
-      x: newX,
-      y: newY,
-      transition: {
-        type: 'spring',
-        stiffness: 80,
-        damping: 25,
-        mass: 1.5,
-      },
+    animate(motionState.value, { x: newX, y: newY }, {
+      type: 'spring',
+      stiffness: 80,
+      damping: 25,
+      mass: 1.5,
     })
   }
-}, 200)
+}
 
-// Floating loop
-function startFloating() {
-  const float = () => {
-    // Don't float if this card is currently hovered
-    if (isHoverActive.value && props.hoveredId === props.post.id) {
-      return
-    }
+// --- Floating motion ---
+onMounted(() => {
+  if (isDragging.value)
+    return
 
-    const currentX = x.get()
-    const currentY = y.get()
+  const startFloating = () => {
+    const float = () => {
+      const currentX = x.get()
+      const currentY = y.get()
+      const moveRange = 165 + (Math.random() - 0.5) * 30
+      const targetX = currentX + (Math.random() - 0.5) * moveRange
+      const targetY = currentY + (Math.random() - 0.5) * moveRange
 
-    const moveRange = 165 + (Math.random() - 0.5) * 30
-    const targetX = currentX + (Math.random() - 0.5) * moveRange
-    const targetY = currentY + (Math.random() - 0.5) * moveRange
-
-    controls.start({
-      x: targetX,
-      y: targetY,
-      transition: {
+      animate(motionState.value, { x: targetX, y: targetY }, {
         duration: 16 + Math.random() * 2,
         ease: [0.16, 0.84, 0.44, 1],
-      },
-    })
+      })
 
-    const localCheck = setInterval(checkBoundaries, 100)
-    setTimeout(() => clearInterval(localCheck), 18000)
+      const boundaryCheck = setInterval(checkBoundaries, 100)
+      setTimeout(() => clearInterval(boundaryCheck), 18000)
+    }
+
+    const initialDelay = setTimeout(() => {
+      float()
+      floatInterval.value = setInterval(float, 18000)
+    }, 2500 + props.index * 200)
+
+    onBeforeUnmount(() => {
+      clearTimeout(initialDelay)
+      if (floatInterval.value)
+        clearInterval(floatInterval.value)
+    })
   }
 
-  const initialDelay = setTimeout(() => {
-    float()
-    floatIntervalRef.value = setInterval(float, 18000)
-  }, 2500 + props.index * 200)
-
-  hoverTimerRef.value = initialDelay as unknown as ReturnType<typeof setTimeout>
-}
-
-onMounted(async () => {
-  // Use VueUse event listeners for better performance and automatic cleanup
-  useEventListener(window, 'pointermove', handlePointerActivity, { passive: true })
-  useEventListener(window, 'pointerdown', handlePointerActivity, { passive: true })
-
-  await nextTick()
-  // Only start once DOM element is available
-  checkBoundaries()
-  boundaryCheckIntervalRef.value = setInterval(checkBoundaries, 500) as unknown as ReturnType<typeof setInterval>
   startFloating()
 })
 
-onBeforeUnmount(() => {
-  if (hoverTimerRef.value)
-    clearTimeout(hoverTimerRef.value)
-  if (floatIntervalRef.value)
-    clearInterval(floatIntervalRef.value)
-  if (boundaryCheckIntervalRef.value)
-    clearInterval(boundaryCheckIntervalRef.value)
-})
-
-// Drag handlers
-interface PanInfo {
-  velocity: { x: number, y: number }
-}
-
+// --- Interaction handlers ---
 function handleDragStart() {
   isDragging.value = true
-  if (hoverTimerRef.value)
-    clearTimeout(hoverTimerRef.value)
+  if (hoverTimer.value)
+    clearTimeout(hoverTimer.value)
   isHoverActive.value = false
-  emit('update:hoveredId', null)
-  if (floatIntervalRef.value)
-    clearInterval(floatIntervalRef.value)
+  props.setHoveredId(null)
+  if (floatInterval.value)
+    clearInterval(floatInterval.value)
 }
 
-function handleDragEnd(_: any, info: PanInfo) {
+function handleDragEnd(_e: any, info: any) {
   isDragging.value = false
-  emit('update:hoveredId', null)
-
-  velocityRef.value = {
-    x: info.velocity.x,
-    y: info.velocity.y,
-  }
-
+  props.setHoveredId(null)
+  velocityRef.value = { x: info.velocity.x, y: info.velocity.y }
   setTimeout(checkBoundaries, 50)
-  startFloating()
 }
 
-// Hover with native mouse events (robust across SSR/builds)
-function handleMouseEnter() {
-  const now = performance.now()
-  const delta = now - lastPointerMoveAt.value
-  if (delta > HOVER_GUARD_MS) {
-    return
-  }
-  if (hoverTimerRef.value)
-    clearTimeout(hoverTimerRef.value)
-  // Reduced hover delay for faster response
-  hoverTimerRef.value = setTimeout(() => {
+function handleHoverStart() {
+  if (hoverTimer.value)
+    clearTimeout(hoverTimer.value)
+  hoverTimer.value = setTimeout(() => {
     isHoverActive.value = true
-    emit('update:hoveredId', props.post.id)
-  }, 800) // Reduced from 2000ms to 800ms
+    props.setHoveredId(props.post.id)
+  }, 2000)
 }
 
-function handleMouseLeave() {
-  if (hoverTimerRef.value)
-    clearTimeout(hoverTimerRef.value)
+function handleHoverEnd() {
+  if (hoverTimer.value)
+    clearTimeout(hoverTimer.value)
   isHoverActive.value = false
-  emit('update:hoveredId', null)
+  props.setHoveredId(null)
 }
 
-const isHovered = computed(() => {
-  return isHoverActive.value && props.hoveredId === props.post.id
-})
-
-const isOtherHovered = computed(() => {
-  return props.hoveredId !== null && props.hoveredId !== props.post.id
-})
+const isHovered = computed(
+  () => isHoverActive.value && props.hoveredId === props.post.id,
+)
+const isOtherHovered = computed(
+  () => props.hoveredId !== null && props.hoveredId !== props.post.id,
+)
 </script>
 
 <template>
@@ -291,39 +166,43 @@ const isOtherHovered = computed(() => {
     :drag="true"
     :drag-momentum="true"
     :drag-elastic="0.05"
-    :drag-transition="{ power: 0.15, timeConstant: 400, modifyTarget: undefined }"
+    :drag-transition="{ power: 0.15, timeConstant: 400 }"
     :style="{ x, y }"
-    :animate="controls"
-    :initial="{ opacity: 1, scale: 1, x: startPos.x, y: startPos.y }"
-    :class="useClsx(
-      'absolute cursor-grab active:cursor-grabbing',
-      'w-[320px] sm:w-[360px] md:w-[400px] lg:w-[420px] xl:w-[420px]'
-    )"
+    :animate="motionState"
+    :initial="{ opacity: 0, scale: 0.8, x: startPos.x, y: startPos.y + 100 }"
+    :while-in-view="{
+      opacity: 1,
+      scale: 1,
+      x: startPos.x,
+      y: startPos.y,
+      transition: { duration: 0.8, delay: props.index * 0.15, ease: [0.22, 1, 0.36, 1] },
+    }"
+    class="absolute w-[420px] cursor-grab active:cursor-grabbing"
     :while-hover="{ scale: 1.02, zIndex: 50 }"
     :while-tap="{ scale: 0.98, cursor: 'grabbing' }"
     @drag-start="handleDragStart"
     @drag-end="handleDragEnd"
-    @mouseenter="handleMouseEnter"
-    @mouseleave="handleMouseLeave"
+    @hover-start="handleHoverStart"
+    @hover-end="handleHoverEnd"
   >
+    <!-- Card surface -->
     <Motion
-      :class="useClsx(
-        'relative overflow-hidden border border-1 border-mint-12 border-solid bg-gray-3 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md',
-        'h-[280px] p-6 sm:h-[300px] sm:p-7 md:h-[320px] md:p-8 lg:h-[340px] xl:h-[340px]'
-      )"
+      class="relative h-[340px] overflow-hidden border border-border bg-card/95 p-8 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md"
       :style="{ borderRadius: '32px 8px 32px 8px' }"
-      :initial="{ opacity: 0, scale: 0.8 }"
       :animate="{
-        opacity: isOtherHovered ? 0.6 : 1,
-        scale: isOtherHovered ? 0.96 : 1,
-        filter: isOtherHovered ? 'blur(4px)' : 'blur(0px)',
+        opacity: isOtherHovered ? 0.08 : 1,
+        scale: isOtherHovered ? 0.88 : 1,
+        filter: isOtherHovered ? 'blur(16px)' : 'blur(0px)',
+        borderColor: isHovered
+          ? 'hsl(var(--foreground) / 0.5)'
+          : 'hsl(var(--border))',
         boxShadow: isHovered
           ? '0 20px 60px rgba(0,0,0,0.15), 0 8px 24px rgba(0,0,0,0.1), 0 0 0 1px hsl(var(--foreground) / 0.15)'
           : '0 8px 32px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04)',
       }"
       :transition="{
-        opacity: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: (props.index * 150 + 50) / 1000 },
-        scale: { duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: (props.index * 150 + 50) / 1000 },
+        opacity: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+        scale: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
         filter: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
         borderColor: { duration: 0.5 },
         boxShadow: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
@@ -335,7 +214,6 @@ const isOtherHovered = computed(() => {
         :animate="{ opacity: isHovered ? 1 : 0 }"
         :transition="{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }"
       />
-
       <Motion
         class="absolute right-6 top-6 select-none text-[120px] text-foreground/[0.08] font-extralight leading-none"
         :animate="{
@@ -346,35 +224,32 @@ const isOtherHovered = computed(() => {
         }"
         :transition="{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }"
       >
-        {{ String(props.index + 1).padStart(2, '0') }}
+        {{ String(props.index + 1).padStart(2, "0") }}
       </Motion>
 
       <div class="pointer-events-none relative z-10 h-full flex flex-col">
         <Motion
-          tag="h2"
-          class="text-left text-balance text-4xl text-foreground font-extralight leading-[1.1] tracking-tight md:text-5xl"
+          class="text-balance text-4xl text-foreground font-extralight leading-[1.1] tracking-tight md:text-5xl"
           :animate="{
             opacity: isHovered ? 0 : 1,
-            height: isHovered ? 0 : 'auto',
-            marginBottom: isHovered ? 0 : 'auto',
+            y: isHovered ? -40 : 0,
+            textAlign: isHovered ? 'left' : 'center',
           }"
           :transition="{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }"
           :style="{
-            position: 'relative',
-            top: '0',
-            left: '0',
-            transform: 'none',
+            position: isHovered ? 'relative' : 'absolute',
+            top: isHovered ? '0' : '50%',
+            left: isHovered ? '0' : '50%',
+            transform: isHovered ? 'none' : 'translate(-50%, -50%)',
             width: '100%',
-            paddingLeft: '2rem',
-            paddingRight: '2rem',
-            overflow: 'hidden',
+            paddingLeft: isHovered ? '0' : '2rem',
+            paddingRight: isHovered ? '0' : '2rem',
           }"
         >
           {{ props.post.title }}
         </Motion>
 
         <Motion
-          v-if="isHovered"
           class="flex flex-1 flex-col justify-center space-y-8"
           :initial="{ opacity: 0 }"
           :animate="{ opacity: isHovered ? 1 : 0 }"
@@ -382,7 +257,6 @@ const isOtherHovered = computed(() => {
         >
           <div class="flex items-center gap-4">
             <Motion
-              tag="span"
               class="text-xl text-foreground/90 font-light tracking-[0.2em] uppercase"
               :initial="{ opacity: 0, x: -20 }"
               :animate="{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }"
@@ -391,7 +265,6 @@ const isOtherHovered = computed(() => {
               {{ props.post.category }}
             </Motion>
             <Motion
-              tag="span"
               class="text-lg text-foreground/50"
               :initial="{ opacity: 0 }"
               :animate="{ opacity: isHovered ? 1 : 0 }"
@@ -400,7 +273,6 @@ const isOtherHovered = computed(() => {
               •
             </Motion>
             <Motion
-              tag="span"
               class="text-lg text-foreground/70 font-light tracking-wide"
               :initial="{ opacity: 0, x: -20 }"
               :animate="{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : -20 }"
@@ -411,7 +283,6 @@ const isOtherHovered = computed(() => {
           </div>
 
           <Motion
-            tag="p"
             class="text-pretty text-xl text-foreground/85 font-light leading-relaxed tracking-wide md:text-2xl"
             :initial="{ opacity: 0, y: 20 }"
             :animate="{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }"
