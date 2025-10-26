@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { breakpointsTailwind, useBreakpoints, useElementBounding, useThrottleFn, useWindowSize } from '@vueuse/core'
+import { consola } from 'consola'
 import { animate, Motion, useMotionValue } from 'motion-v'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { consola } from 'consola'
-import { breakpointsTailwind, useBreakpoints, useElementBounding, useThrottleFn, useWindowSize } from '@vueuse/core'
 
 interface Post {
   id: number
@@ -62,9 +62,9 @@ const { left, right, top, bottom } = useElementBounding(cardRef)
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
 // Responsive starting grid positions
-const getGridPositions = () => {
+function getGridPositions() {
   const width = windowWidth.value
-  
+
   if (width < 768) {
     // Mobile: 1 column, single card per row (< 768px)
     return [
@@ -74,7 +74,8 @@ const getGridPositions = () => {
       { x: 20, y: 560 },
       { x: 20, y: 740 },
     ]
-  } else if (width < 1024) {
+  }
+  else if (width < 1024) {
     // Tablet: 2 columns, medium spacing (768px - 1024px)
     return [
       { x: 30, y: 30 },
@@ -83,7 +84,8 @@ const getGridPositions = () => {
       { x: 250, y: 250 },
       { x: 30, y: 470 },
     ]
-  } else {
+  }
+  else {
     // Desktop: 3 columns, full spacing (>= 1024px)
     return defaultGridPositions
   }
@@ -104,72 +106,83 @@ watch(startPos, (newPos) => {
 // Responsive card dimensions
 const cardWidth = computed(() => {
   const width = windowWidth.value
-  if (width < 768) return 320 // Mobile: smaller cards
-  if (width < 1024) return 360 // Tablet: medium cards
+  if (width < 768)
+    return 320 // Mobile: smaller cards
+  if (width < 1024)
+    return 360 // Tablet: medium cards
   return 420 // Desktop: full size
 })
 
 const cardHeight = computed(() => {
   const width = windowWidth.value
-  if (width < 768) return 260 // Mobile: smaller height
-  if (width < 1024) return 300 // Tablet: medium height
+  if (width < 768)
+    return 260 // Mobile: smaller height
+  if (width < 1024)
+    return 300 // Tablet: medium height
   return 340 // Desktop: full height
 })
 
 const softZone = computed(() => {
   const width = windowWidth.value
-  if (width < 768) return 40 // Mobile: smaller soft zone
-  if (width < 1024) return 50 // Tablet: medium soft zone
+  if (width < 768)
+    return 40 // Mobile: smaller soft zone
+  if (width < 1024)
+    return 50 // Tablet: medium soft zone
   return 60 // Desktop: full soft zone
 })
 
 const hardBoundary = computed(() => {
   const width = windowWidth.value
-  if (width < 768) return 15 // Mobile: smaller hard boundary
-  if (width < 1024) return 18 // Tablet: medium hard boundary
+  if (width < 768)
+    return 15 // Mobile: smaller hard boundary
+  if (width < 1024)
+    return 18 // Tablet: medium hard boundary
   return 20 // Desktop: full hard boundary
 })
 
 // Throttled boundary check for performance
 const checkBoundaries = useThrottleFn(() => {
-  if (!cardRef.value) return
-  
+  if (!cardRef.value)
+    return
+
   const currentX = x.get()
   const currentY = y.get()
-  
+
   // Use VueUse reactive bounding values (much more efficient)
-  const isVisuallyCutOff = 
-    left.value < 0 || 
-    right.value > windowWidth.value || 
-    top.value < 0 || 
-    bottom.value > windowHeight.value
-  
+  const isVisuallyCutOff
+    = left.value < 0
+      || right.value > windowWidth.value
+      || top.value < 0
+      || bottom.value > windowHeight.value
+
   if (isVisuallyCutOff) {
     consola.debug(`[Card ${props.post.id}] VISUALLY CUT OFF:`, {
       visualPos: { left: left.value, right: right.value, top: top.value, bottom: bottom.value },
       viewport: { width: windowWidth.value, height: windowHeight.value },
-      motionPos: { x: currentX, y: currentY }
+      motionPos: { x: currentX, y: currentY },
     })
-    
+
     // Calculate correction needed
     let correctionX = 0
     let correctionY = 0
-    
+
     if (left.value < 0) {
       correctionX = -left.value + hardBoundary.value
-    } else if (right.value > windowWidth.value) {
+    }
+    else if (right.value > windowWidth.value) {
       correctionX = windowWidth.value - right.value - hardBoundary.value
     }
-    
+
     if (top.value < 0) {
       correctionY = -top.value + hardBoundary.value
-    } else if (bottom.value > windowHeight.value) {
+    }
+    else if (bottom.value > windowHeight.value) {
       correctionY = windowHeight.value - bottom.value - hardBoundary.value
     }
-    
+
     const newX = currentX + correctionX
     const newY = currentY + correctionY
-    
+
     // Immediate correction
     x.set(newX)
     y.set(newY)
@@ -177,23 +190,23 @@ const checkBoundaries = useThrottleFn(() => {
     velocityRef.value = { x: 0, y: 0 }
     return
   }
-  
+
   // Motion-based soft resistance (only when visually safe)
   const minX = hardBoundary.value
   const maxX = windowWidth.value - cardWidth.value - hardBoundary.value
   const minY = hardBoundary.value
   const maxY = windowHeight.value - cardHeight.value - hardBoundary.value
-  
+
   const softMinX = softZone.value
   const softMaxX = windowWidth.value - cardWidth.value - softZone.value
   const softMinY = softZone.value
   const softMaxY = windowHeight.value - cardHeight.value - softZone.value
-  
+
   let needsAdjustment = false
   let adjustmentX = 0
   let adjustmentY = 0
   let velocityDamping = 1
-  
+
   // Soft resistance calculations
   if (currentX < softMinX) {
     const penetration = softMinX - currentX
@@ -201,46 +214,49 @@ const checkBoundaries = useThrottleFn(() => {
     adjustmentX = penetration * 0.15
     velocityDamping *= (0.95 - resistance * 0.1)
     needsAdjustment = true
-  } else if (currentX > softMaxX) {
+  }
+  else if (currentX > softMaxX) {
     const penetration = currentX - softMaxX
     const resistance = Math.min(penetration / softZone.value, 1)
     adjustmentX = -penetration * 0.15
     velocityDamping *= (0.95 - resistance * 0.1)
     needsAdjustment = true
   }
-  
+
   if (currentY < softMinY) {
     const penetration = softMinY - currentY
     const resistance = Math.min(penetration / softZone.value, 1)
     adjustmentY = penetration * 0.15
     velocityDamping *= (0.95 - resistance * 0.1)
     needsAdjustment = true
-  } else if (currentY > softMaxY) {
+  }
+  else if (currentY > softMaxY) {
     const penetration = currentY - softMaxY
     const resistance = Math.min(penetration / softZone.value, 1)
     adjustmentY = -penetration * 0.15
     velocityDamping *= (0.95 - resistance * 0.1)
     needsAdjustment = true
   }
-  
+
   // Hard boundary check
   const isHardOutOfBounds = currentX < minX || currentX > maxX || currentY < minY || currentY > maxY
-  
+
   if (isHardOutOfBounds) {
     const newX = Math.max(minX, Math.min(maxX, currentX))
     const newY = Math.max(minY, Math.min(maxY, currentY))
-    
+
     x.set(newX)
     y.set(newY)
     motionState.value = { x: newX, y: newY }
     velocityRef.value = { x: 0, y: 0 }
-  } else if (needsAdjustment) {
+  }
+  else if (needsAdjustment) {
     const newX = currentX + adjustmentX
     const newY = currentY + adjustmentY
-    
+
     velocityRef.value.x *= velocityDamping
     velocityRef.value.y *= velocityDamping
-    
+
     animate(motionState.value, { x: newX, y: newY }, {
       type: 'spring',
       stiffness: 15,
@@ -269,7 +285,10 @@ onMounted(() => {
 
       // Only log float motion occasionally
       if (Math.random() < 0.1) { // 10% chance to log
-        consola.debug(`[Card ${props.post.id}] Float motion:`, { from: { x: currentX, y: currentY }, to: { x: targetX, y: targetY } })
+        consola.debug(`[Card ${props.post.id}] Float motion:`, {
+          from: { x: currentX, y: currentY },
+          to: { x: targetX, y: targetY },
+        })
       }
 
       animate(motionState.value, { x: targetX, y: targetY }, {
@@ -300,9 +319,9 @@ onMounted(() => {
 function handleDragStart() {
   consola.debug(`[Card ${props.post.id}] DRAG START:`, {
     position: { x: x.get(), y: y.get() },
-    velocity: { x: velocityRef.value.x, y: velocityRef.value.y }
+    velocity: { x: velocityRef.value.x, y: velocityRef.value.y },
   })
-  
+
   isDragging.value = true
   if (hoverTimer.value)
     clearTimeout(hoverTimer.value)
@@ -310,13 +329,13 @@ function handleDragStart() {
   props.setHoveredId(null)
   if (floatInterval.value)
     clearInterval(floatInterval.value)
-  
-  
+
   // Optimized boundary checks during drag (throttled function handles the throttling)
   const dragBoundaryCheck = setInterval(() => {
     if (isDragging.value) {
       checkBoundaries()
-    } else {
+    }
+    else {
       clearInterval(dragBoundaryCheck)
     }
   }, 8) // High frequency calls, but throttled function limits execution
@@ -326,36 +345,36 @@ function handleDragEnd(_e: any, info: any) {
   consola.debug(`[Card ${props.post.id}] DRAG END:`, {
     position: { x: x.get(), y: y.get() },
     dragVelocity: { x: info.velocity.x, y: info.velocity.y },
-    currentVelocity: { x: velocityRef.value.x, y: velocityRef.value.y }
+    currentVelocity: { x: velocityRef.value.x, y: velocityRef.value.y },
   })
-  
+
   isDragging.value = false
   props.setHoveredId(null)
-  
-  
+
   // Check boundaries immediately after drag ends
   checkBoundaries()
-  
+
   // Apply velocity only if card is within soft bounds
   const currentX = x.get()
   const currentY = y.get()
-  
-  const isWithinSoftBounds = 
-    currentX >= softZone.value && 
-    currentX <= windowWidth.value - cardWidth.value - softZone.value &&
-    currentY >= softZone.value && 
-    currentY <= windowHeight.value - cardHeight.value - softZone.value
-  
+  a
+  const isWithinSoftBounds
+    = currentX >= softZone.value
+      && currentX <= windowWidth.value - cardWidth.value - softZone.value
+      && currentY >= softZone.value
+      && currentY <= windowHeight.value - cardHeight.value - softZone.value
+
   consola.debug(`[Card ${props.post.id}] DRAG END BOUNDS CHECK:`, {
     position: { x: currentX, y: currentY },
     softZone,
-    isWithinSoftBounds
+    isWithinSoftBounds,
   })
-  
+
   if (isWithinSoftBounds) {
     velocityRef.value = { x: info.velocity.x, y: info.velocity.y }
     consola.debug(`[Card ${props.post.id}] Applied drag velocity:`, velocityRef.value)
-  } else {
+  }
+  else {
     velocityRef.value = { x: 0, y: 0 }
     consola.debug(`[Card ${props.post.id}] Reset velocity to 0 (in soft resistance zone)`)
   }
@@ -392,11 +411,11 @@ const isOtherHovered = computed(
     :drag-momentum="true"
     :drag-elastic="0.05"
     :drag-transition="{ power: 0.15, timeConstant: 400 }"
-    :style="{ 
-      x, 
+    :style="{
+      x,
       y,
       width: `${cardWidth}px`,
-      height: `${cardHeight}px`
+      height: `${cardHeight}px`,
     }"
     :animate="motionState"
     :initial="{ opacity: 0, scale: 0.8, x: startPos.x, y: startPos.y + 100 }"
@@ -418,10 +437,10 @@ const isOtherHovered = computed(
     <!-- Card surface -->
     <Motion
       class="relative overflow-hidden border border-border bg-card/95 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md"
-      :style="{ 
+      :style="{
         height: `${cardHeight}px`,
         padding: windowWidth < 768 ? '1rem' : windowWidth < 1024 ? '1.5rem' : '2rem',
-        borderRadius: '32px 8px 32px 8px'
+        borderRadius: '32px 8px 32px 8px',
       }"
       :animate="{
         opacity: isOtherHovered ? 0.08 : 1,
@@ -464,7 +483,7 @@ const isOtherHovered = computed(
       <div class="pointer-events-none relative z-10 h-full flex flex-col">
         <Motion
           class="text-balance text-foreground font-extralight leading-[1.1] tracking-tight"
-          :style="{ 
+          :style="{
             fontSize: windowWidth < 768 ? '1.5rem' : windowWidth < 1024 ? '2rem' : '2.5rem',
             position: isHovered ? 'relative' : 'absolute',
             top: isHovered ? '0' : '50%',
@@ -519,8 +538,8 @@ const isOtherHovered = computed(
 
           <Motion
             class="text-pretty text-foreground/85 font-light leading-relaxed tracking-wide"
-            :style="{ 
-              fontSize: windowWidth < 768 ? '0.875rem' : windowWidth < 1024 ? '1rem' : '1.25rem'
+            :style="{
+              fontSize: windowWidth < 768 ? '0.875rem' : windowWidth < 1024 ? '1rem' : '1.25rem',
             }"
             :initial="{ opacity: 0, y: 20 }"
             :animate="{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }"
