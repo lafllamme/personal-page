@@ -61,11 +61,25 @@ const { left, right, top, bottom } = useElementBounding(cardRef)
 // Tailwind default breakpoints
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
+// Computed breakpoint properties that mirror the windowWidth logic
+const isMobile = computed(() => breakpoints.smaller('md').value) // < 768px
+const isTablet = computed(() => breakpoints.greaterOrEqual('md').value && breakpoints.smaller('lg').value) // 768px - 1024px
+const isDesktop = computed(() => breakpoints.greaterOrEqual('lg').value) // >= 1024px
+
+// Simple breakpoint watcher
+watch([() => breakpoints.active().value, () => breakpoints.smaller('md').value, () => breakpoints.smaller('lg').value, () => breakpoints.smaller('xl').value], 
+  ([active, smallerMD, smallerLG, smallerXL]) => {
+    consola.debug('Breakpoints:', {
+      active,
+      smallerMD,
+      smallerLG,
+      smallerXL
+    })
+  }, { immediate: true })
+
 // Responsive starting grid positions
 function getGridPositions() {
-  const width = windowWidth.value
-
-  if (width < 768) {
+  if (isMobile.value) {
     // Mobile: 1 column, single card per row (< 768px)
     return [
       { x: 20, y: 20 },
@@ -75,7 +89,7 @@ function getGridPositions() {
       { x: 20, y: 740 },
     ]
   }
-  else if (width < 1024) {
+  else if (isTablet.value) {
     // Tablet: 2 columns, medium spacing (768px - 1024px)
     return [
       { x: 30, y: 30 },
@@ -105,37 +119,33 @@ watch(startPos, (newPos) => {
 
 // Responsive card dimensions
 const cardWidth = computed(() => {
-  const width = windowWidth.value
-  if (width < 768)
+  if (isMobile.value)
     return 320 // Mobile: smaller cards
-  if (width < 1024)
+  if (isTablet.value)
     return 360 // Tablet: medium cards
   return 420 // Desktop: full size
 })
 
 const cardHeight = computed(() => {
-  const width = windowWidth.value
-  if (width < 768)
+  if (isMobile.value)
     return 260 // Mobile: smaller height
-  if (width < 1024)
+  if (isTablet.value)
     return 300 // Tablet: medium height
   return 340 // Desktop: full height
 })
 
 const softZone = computed(() => {
-  const width = windowWidth.value
-  if (width < 768)
+  if (isMobile.value)
     return 40 // Mobile: smaller soft zone
-  if (width < 1024)
+  if (isTablet.value)
     return 50 // Tablet: medium soft zone
   return 60 // Desktop: full soft zone
 })
 
 const hardBoundary = computed(() => {
-  const width = windowWidth.value
-  if (width < 768)
+  if (isMobile.value)
     return 15 // Mobile: smaller hard boundary
-  if (width < 1024)
+  if (isTablet.value)
     return 18 // Tablet: medium hard boundary
   return 20 // Desktop: full hard boundary
 })
@@ -276,9 +286,8 @@ onMounted(() => {
     const float = () => {
       const currentX = x.get()
       const currentY = y.get()
-      // Responsive move range based on window width
-      const width = windowWidth.value
-      const baseRange = width < 768 ? 80 : width < 1024 ? 120 : 165
+      // Responsive move range based on breakpoints
+      const baseRange = isMobile.value ? 80 : isTablet.value ? 120 : 165
       const moveRange = baseRange + (Math.random() - 0.5) * 30
       const targetX = currentX + (Math.random() - 0.5) * moveRange
       const targetY = currentY + (Math.random() - 0.5) * moveRange
@@ -357,7 +366,7 @@ function handleDragEnd(_e: any, info: any) {
   // Apply velocity only if card is within soft bounds
   const currentX = x.get()
   const currentY = y.get()
-  a
+
   const isWithinSoftBounds
     = currentX >= softZone.value
       && currentX <= windowWidth.value - cardWidth.value - softZone.value
@@ -439,7 +448,7 @@ const isOtherHovered = computed(
       class="relative overflow-hidden border border-border bg-card/95 shadow-[0_8px_32px_rgba(0,0,0,0.08),0_2px_8px_rgba(0,0,0,0.04)] backdrop-blur-md"
       :style="{
         height: `${cardHeight}px`,
-        padding: windowWidth < 768 ? '1rem' : windowWidth < 1024 ? '1.5rem' : '2rem',
+        padding: isMobile ? '1rem' : isTablet ? '1.5rem' : '2rem',
         borderRadius: '32px 8px 32px 8px',
       }"
       :animate="{
@@ -484,7 +493,7 @@ const isOtherHovered = computed(
         <Motion
           class="text-balance text-foreground font-extralight leading-[1.1] tracking-tight"
           :style="{
-            fontSize: windowWidth < 768 ? '1.5rem' : windowWidth < 1024 ? '2rem' : '2.5rem',
+            fontSize: isMobile ? '1.5rem' : isTablet ? '2rem' : '2.5rem',
             position: isHovered ? 'relative' : 'absolute',
             top: isHovered ? '0' : '50%',
             left: isHovered ? '0' : '50%',
@@ -539,7 +548,7 @@ const isOtherHovered = computed(
           <Motion
             class="text-pretty text-foreground/85 font-light leading-relaxed tracking-wide"
             :style="{
-              fontSize: windowWidth < 768 ? '0.875rem' : windowWidth < 1024 ? '1rem' : '1.25rem',
+              fontSize: isMobile ? '0.875rem' : isTablet ? '1rem' : '1.25rem',
             }"
             :initial="{ opacity: 0, y: 20 }"
             :animate="{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 20 }"
