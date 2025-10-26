@@ -68,7 +68,7 @@ function setHoveredId(id: number | null) {
 
 <template>
   <Motion
-    class="min-h-screen bg-background p-8 lg:p-24 md:p-16"
+    class="min-h-screen bg-background p-4 sm:p-8 md:p-16 lg:p-24"
     :animate="{ backgroundColor: displayedHoverId ? 'hsl(var(--muted) / 0.25)' : 'hsl(var(--background))' }"
     :transition="{ duration: 1, ease: [0.22, 1, 0.36, 1] }"
   >
@@ -76,7 +76,7 @@ function setHoveredId(id: number | null) {
       :initial="{ opacity: 0, y: 20 }"
       :animate="{ opacity: 1, y: 0 }"
       :transition="{ duration: 0.8 }"
-      class="relative mb-20 h-32"
+      class="relative mb-8 sm:mb-12 md:mb-20 h-20 sm:h-24 md:h-32"
     >
       <Motion
         class="absolute left-0 top-0"
@@ -87,10 +87,10 @@ function setHoveredId(id: number | null) {
         }"
         :transition="{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }"
       >
-        <h1 class="mb-4 text-balance text-6xl font-extralight tracking-tight md:text-8xl">
+        <h1 class="mb-2 sm:mb-4 text-balance text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-extralight tracking-tight">
           Orbital Grid
         </h1>
-        <p class="max-w-2xl text-pretty text-lg text-foreground/70 font-light">
+        <p class="max-w-2xl text-pretty text-sm sm:text-base md:text-lg text-foreground/70 font-light">
           Drag, throw, and watch cards float autonomously in elegant orbital motion
         </p>
       </Motion>
@@ -106,18 +106,18 @@ function setHoveredId(id: number | null) {
         :transition="{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: displayedHoverId ? 0.2 : 0 }"
         class="absolute left-0 top-0"
       >
-        <div class="flex items-baseline gap-8">
-          <span class="text-7xl text-foreground/20 font-extralight leading-none tracking-tight md:text-9xl">
+        <div class="flex items-baseline gap-2 sm:gap-4 md:gap-8">
+          <span class="text-4xl sm:text-5xl md:text-7xl lg:text-9xl text-foreground/20 font-extralight leading-none tracking-tight">
             {{ String(displayedHoverId).padStart(2, "0") }}
           </span>
-          <h2 class="text-balance text-5xl text-foreground font-extralight leading-[1.1] tracking-tight md:text-7xl">
+          <h2 class="text-balance text-2xl sm:text-3xl md:text-5xl lg:text-7xl text-foreground font-extralight leading-[1.1] tracking-tight">
             {{ posts.find((p) => p.id === displayedHoverId)?.title }}
           </h2>
         </div>
       </Motion>
     </Motion>
 
-    <div class="relative h-[900px]">
+    <div class="relative h-[600px] sm:h-[700px] md:h-[800px] lg:h-[900px]">
       <OrbitCard
         v-for="(post, index) in posts"
         :key="post.id"
