@@ -68,7 +68,7 @@ function toggleControls() {
 <template>
   <div
     :class="useClsx(
-      'relative min-h-screen',
+      'relative min-h-screen overflow-x-hidden',
       'bg-pureWhite dark:bg-pureBlack',
     )"
   >
