@@ -29,7 +29,7 @@ const regularArticles = reactive(
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col overflow-x-hidden">
+  <div class="min-h-screen flex flex-col">
     <section>
       <div class="mx-auto px-4 md:px-10">
         <!-- Decorative Text Scroll Reveal -->
