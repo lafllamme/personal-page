@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useEventListener } from '@vueuse/core'
 import SpiralCard from '@/components/ui/Card/Spiral/SpiralCard.vue'
 import SpiralControls from '@/components/ui/Card/Spiral/SpiralControls.vue'
 import { useMenu } from '@/stores/menu/menu'
@@ -57,6 +58,51 @@ function handleWheel(event: WheelEvent) {
   const clampedDelta = Math.max(Math.min(rawDelta, 120), -120)
   const delta = clampedDelta * ROTATION_SPEED * -1
   velocity.value += delta * 0.1
+}
+
+// Touch handler for mobile scrolling
+const touchStartY = ref(0)
+const touchStartTime = ref(0)
+
+function handleTouchStart(event: TouchEvent) {
+  const touch = event.touches[0]
+  if (!touch)
+    return
+  touchStartY.value = touch.clientY
+  touchStartTime.value = Date.now()
+}
+
+function handleTouchMove(event: TouchEvent) {
+  event.preventDefault()
+  const touch = event.touches[0]
+  if (!touch)
+    return
+
+  const currentY = touch.clientY
+  const deltaY = touchStartY.value - currentY
+  const clampedDelta = Math.max(Math.min(deltaY, 120), -120)
+  const delta = clampedDelta * ROTATION_SPEED * -1
+  velocity.value += delta * 0.1
+
+  // Update start position for smooth continuous scrolling
+  touchStartY.value = currentY
+}
+
+function handleTouchEnd(event: TouchEvent) {
+  const touch = event.changedTouches[0]
+  if (!touch)
+    return
+
+  const currentY = touch.clientY
+  const deltaY = touchStartY.value - currentY
+  const timeDelta = Date.now() - touchStartTime.value
+
+  // If it was a quick swipe, add momentum
+  if (timeDelta < 300 && Math.abs(deltaY) > 10) {
+    const clampedDelta = Math.max(Math.min(deltaY, 120), -120)
+    const delta = clampedDelta * ROTATION_SPEED * -1
+    velocity.value += delta * 0.15
+  }
 }
 
 // Utility to wrap degrees to the 0–360 range
@@ -132,11 +178,18 @@ function getCardStyle(index: number) {
   }
 }
 
-// Animation loop and event listeners
+// Force header minimized state on mount
 onMounted(() => {
-  // Force header minimized state when spiral layout is mounted
   menuStore.setForceMinimized(true)
-  
+})
+
+// Reset header minimized state on unmount
+onUnmounted(() => {
+  menuStore.setForceMinimized(null)
+})
+
+// Animation loop
+onMounted(() => {
   let frame: number
   const tick = () => {
     // Apply friction to velocity
@@ -152,21 +205,18 @@ onMounted(() => {
     frame = requestAnimationFrame(tick)
   }
   frame = requestAnimationFrame(tick)
-  // Attach wheel listener
-  const container = containerRef.value
-  if (container) {
-    container.addEventListener('wheel', handleWheel, { passive: false })
-  }
-  // Clean up on unmount
+
+  // Clean up animation on unmount
   onUnmounted(() => {
     cancelAnimationFrame(frame)
-    if (container) {
-      container.removeEventListener('wheel', handleWheel)
-    }
-    // Reset header minimized state when spiral layout is unmounted
-    menuStore.setForceMinimized(null)
   })
 })
+
+// Attach wheel and touch listeners using VueUse
+useEventListener(containerRef, 'wheel', handleWheel, { passive: false })
+useEventListener(containerRef, 'touchstart', handleTouchStart, { passive: false })
+useEventListener(containerRef, 'touchmove', handleTouchMove, { passive: false })
+useEventListener(containerRef, 'touchend', handleTouchEnd, { passive: false })
 </script>
 
 <template>
@@ -182,7 +232,9 @@ onMounted(() => {
       :on-next="handleNext"
     />
     <div class="fixed inset-0 flex items-center justify-center">
-      <div class="relative h-full w-full flex scale-70 preserve-3d items-center justify-center 2xl:scale-90 md:scale-75 xl:scale-85">
+      <div
+        class="relative h-full w-full flex scale-70 preserve-3d items-center justify-center 2xl:scale-90 md:scale-75 xl:scale-85"
+      >
         <div
           v-for="(post, index) in posts"
           :key="post.id"
