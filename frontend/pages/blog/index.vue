@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'
-import OrbitCards from '@/components/ui/Card/OrbitCard/OrbitCards.vue'
 import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 import LightSwitch from '@/components/ui/Effects/LightSwitch.vue'
 import { useClsx } from '@/composables/useClsx'
@@ -72,7 +71,6 @@ function toggleControls() {
       'bg-pureWhite dark:bg-pureBlack',
     )"
   >
-    <OrbitCards />
     <article
       class="mx-auto max-w-3xl px-6 py-16"
     >
