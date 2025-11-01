@@ -7,7 +7,7 @@ withDefaults(defineProps<MenuButtonProps>(), MenuButtonDefaults)
 defineEmits<MenuButtonEmits>()
 
 const menuStore = useMenu()
-const { isOpen, isHeaderMinimized } = storeToRefs(menuStore)
+const { isOpen, effectiveHeaderMinimized } = storeToRefs(menuStore)
 const { toggleMenu } = menuStore
 </script>
 
@@ -20,7 +20,7 @@ const { toggleMenu } = menuStore
       'transition-transform focus:outline-none ease-in-out duration-300',
       'absolute z-100 -translate-x-full absolute',
       isOpen && 'opened',
-      isHeaderMinimized ? 'top-1 ml-6' : 'top-1.5 md:top-1.5',
+      effectiveHeaderMinimized ? 'top-1 ml-6' : 'top-1.5 md:top-1.5',
     )"
     aria-controls="mobile-menu"
     tabindex="0"
