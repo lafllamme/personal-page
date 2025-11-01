@@ -173,7 +173,7 @@ onMounted(() => {
       :on-next="handleNext"
     />
     <div class="fixed inset-0 flex items-center justify-center">
-      <div class="relative h-full w-full flex preserve-3d items-center justify-center">
+      <div class="relative h-full w-full flex preserve-3d items-center justify-center -perspective-[90000px]">
         <div
           v-for="(post, index) in posts"
           :key="post.id"
