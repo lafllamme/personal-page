@@ -9,9 +9,10 @@ import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/Langua
 import { useMenu } from '@/stores/menu/menu'
 
 // Configurable thresholds (percent of page scrolled) with sensible defaults
-const props = withDefaults(defineProps<{ minimizeAtPercent?: number, activateAtPercent?: number }>(), {
+const props = withDefaults(defineProps<{ minimizeAtPercent?: number, activateAtPercent?: number, forceMinimized?: boolean | null }>(), {
   minimizeAtPercent: 0.025, // minimize a bit earlier (5%)
   activateAtPercent: 0.01, // start subtle effects earlier (2%)
+  forceMinimized: null,
 })
 // compute to destination for a home link
 const localePath = useLocalePath()
@@ -23,7 +24,12 @@ const { height } = useWindowSize()
 
 // Menu store
 const menuStore = useMenu()
-const { isHeaderMinimized } = storeToRefs(menuStore)
+const { effectiveHeaderMinimized } = storeToRefs(menuStore)
+
+// Sync prop with store
+watch(() => props.forceMinimized, (value) => {
+  menuStore.setForceMinimized(value)
+}, { immediate: true })
 
 // Track minimized header container width to match dropdown width
 const headerContainerRef = ref<HTMLElement | null>(null)
@@ -66,7 +72,7 @@ useResizeObserver(headerContainerRef, () => {
 })
 
 // If the header transitions into minimized state, recalc once
-watch(isHeaderMinimized, (min) => {
+watch(effectiveHeaderMinimized, (min) => {
   if (min)
     throttledMeasure()
 })
@@ -139,7 +145,7 @@ watch(isSwitchOpen, (open) => {
         :class="useClsx(
           'relative mx-auto',
           'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-          isHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] min-w-0 md:max-w-[45vw]' : 'mt-0 max-w-full',
+          effectiveHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] min-w-0 md:max-w-[45vw]' : 'mt-0 max-w-full',
         )"
       >
         <!-- Background layer for consistent backdrop filter (Glass morphism) -->
@@ -149,10 +155,10 @@ watch(isSwitchOpen, (open) => {
             'pointer-events-none absolute inset-0',
             'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
             // Glass background: default subtle glass, minimized = pure liquid glass (blur only)
-            isHeaderMinimized
+            effectiveHeaderMinimized
               ? 'backdrop-blur-[12px] backdrop-saturate-180 backdrop-contrast-115 bg-transparent ring-1 ring-mint-12 dark:shadow-[0_8px_30px_rgba(255,255,255,0.12)] shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
               : 'backdrop-blur-[6px] bg-pureWhite/45 dark:bg-pureBlack/35 ring-0',
-            isHeaderMinimized ? 'rounded-full' : 'rounded-none',
+            effectiveHeaderMinimized ? 'rounded-full' : 'rounded-none',
           )"
         />
         <!-- Inner container for logo and right-side items -->
@@ -160,9 +166,9 @@ watch(isSwitchOpen, (open) => {
           :class="useClsx(
             'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'relative flex items-center justify-between',
-            isHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-6 py-4 md:px-8',
-            isHeaderMinimized ? 'border-none' : 'border-b',
-            isHeaderMinimized ? '' : 'border-b border-gray-5 border-solid dark:border-gray-4',
+            effectiveHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-6 py-4 md:px-8',
+            effectiveHeaderMinimized ? 'border-none' : 'border-b',
+            effectiveHeaderMinimized ? '' : 'border-b border-gray-5 border-solid dark:border-gray-4',
           )"
         >
           <div class="flex items-center">
@@ -173,7 +179,7 @@ watch(isSwitchOpen, (open) => {
                 'focus-visible:outline-none focus-visible:ring-3',
                 'font-nova font-bold tracking-tight antialiased',
                 'absolute group px-2',
-                isHeaderMinimized ? 'text-xl md:text-2xl ts-contrast' : 'text-2xl md:text-3xl',
+                effectiveHeaderMinimized ? 'text-xl md:text-2xl ts-contrast' : 'text-2xl md:text-3xl',
               )"
               :to="homeLink"
               aria-label="Tech News"
@@ -185,34 +191,34 @@ watch(isSwitchOpen, (open) => {
             </NuxtLink>
           </div>
           <div
-            :class="useClsx(isHeaderMinimized ? 'pr-7' : '')"
+            :class="useClsx(effectiveHeaderMinimized ? 'pr-7' : '')"
             class="relative flex items-center"
           >
             <div
               :class="useClsx(
                 'flex items-center gap-0.5 transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-                isHeaderMinimized ? 'mr-4' : 'mr-6.5 md:mr-10.5',
+                effectiveHeaderMinimized ? 'mr-4' : 'mr-6.5 md:mr-10.5',
               )"
             >
               <LanguageSwitcher
                 :open="!!isSwitchOpen"
                 :class="useClsx(
                   'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-                  isHeaderMinimized ? 'p-1' : 'p-1.5',
+                  effectiveHeaderMinimized ? 'p-1' : 'p-1.5',
                 )"
                 @update:open="(v: boolean) => { isSwitchOpen = v }"
               />
               <ColorMode
                 :class="useClsx(
                   'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-                  isHeaderMinimized ? '<md:hidden' : 'p-1.5',
+                  effectiveHeaderMinimized ? '<md:hidden' : 'p-1.5',
                 )"
               />
             </div>
             <Menu
               :class="useClsx(
                 'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-                isHeaderMinimized ? 'p-1' : 'p-1.5',
+                effectiveHeaderMinimized ? 'p-1' : 'p-1.5',
               )"
             />
           </div>

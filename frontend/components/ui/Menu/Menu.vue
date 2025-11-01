@@ -15,7 +15,7 @@ import { MenuPropsDefault } from './Menu.model'
 withDefaults(defineProps<MenuProps>(), MenuPropsDefault)
 
 const menuStore = useMenu()
-const { isOpen, isHeaderMinimized } = storeToRefs(menuStore)
+const { isOpen, effectiveHeaderMinimized } = storeToRefs(menuStore)
 const { toggleMenu } = menuStore
 
 const menu = useTemplateRef('menu')
@@ -70,9 +70,9 @@ watch(isOpen, (open) => {
         :class="useClsx(
           'color-pureBlack dark:color-pureWhite',
           // Limit height when header is minimized
-          isHeaderMinimized ? 'h-[90svh]' : 'h-svh',
+          effectiveHeaderMinimized ? 'h-[90svh]' : 'h-svh',
           'relative z-10 flex flex-col p-6',
-          isHeaderMinimized && 'pt-14',
+          effectiveHeaderMinimized && 'pt-14',
         )"
       >
         <!-- Search -->

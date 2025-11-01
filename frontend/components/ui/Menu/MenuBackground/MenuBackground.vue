@@ -2,7 +2,7 @@
 import { useMenu } from '@/stores/menu'
 
 const menuStore = useMenu()
-const { isOpen, isHeaderMinimized } = storeToRefs(menuStore)
+const { isOpen, effectiveHeaderMinimized } = storeToRefs(menuStore)
 
 const isAnimating = ref(false)
 
@@ -32,7 +32,7 @@ watch(isOpen, (open) => {
       :class="useClsx(
         'top-30 right-14',
         'absolute origin-right transform animate-glow',
-        isHeaderMinimized ? 'text-[16vh]' : 'text-[18vh]',
+        effectiveHeaderMinimized ? 'text-[16vh]' : 'text-[18vh]',
         'color-gray-12A font-thin leading-none tracking-wider',
         'uppercase opacity-10 -translate-y-full -rotate-90 font-electric',
       )"

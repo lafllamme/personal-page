@@ -6,6 +6,7 @@ export const useMenu = defineStore('menu', () => {
 
   // Header minimized state
   const isHeaderMinimized = ref(false)
+  const forceMinimized = ref<boolean | null>(null)
 
   // Logging function
   function _log(message: string) {
@@ -135,9 +136,21 @@ export const useMenu = defineStore('menu', () => {
     }
   }
 
+  // Computed for effective header minimized state
+  const effectiveHeaderMinimized = computed(() => {
+    if (forceMinimized.value !== null)
+      return forceMinimized.value
+    return isHeaderMinimized.value
+  })
+
   // Setter for header minimized state
   function setHeaderMinimized(minimized: boolean) {
     isHeaderMinimized.value = minimized
+  }
+
+  // Setter for force minimized state
+  function setForceMinimized(minimized: boolean | null) {
+    forceMinimized.value = minimized
   }
 
   // Computed properties for search results
@@ -201,6 +214,9 @@ export const useMenu = defineStore('menu', () => {
     // Header state
     isHeaderMinimized,
     setHeaderMinimized,
+    forceMinimized,
+    effectiveHeaderMinimized,
+    setForceMinimized,
 
     // Menu items
     items,

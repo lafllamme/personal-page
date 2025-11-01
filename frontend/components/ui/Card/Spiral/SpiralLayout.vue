@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import SpiralCard from '@/components/ui/Card/Spiral/SpiralCard.vue'
 import SpiralControls from '@/components/ui/Card/Spiral/SpiralControls.vue'
+import { useMenu } from '@/stores/menu/menu'
 
 // Blog post definitions used to populate the spiral layout.  This
 // matches the mock data from the original React application and
@@ -16,6 +17,9 @@ interface BlogPost {
 
 // Props
 const props = defineProps<{ posts: BlogPost[] }>()
+
+// Menu store for forcing header minimized state
+const menuStore = useMenu()
 
 // Constants matching those in the React implementation.
 const RADIUS = 600
@@ -124,12 +128,15 @@ function getCardStyle(index: number) {
     transform: `rotateY(${baseAngle + wrappedRotation.value}deg) translateZ(${RADIUS}px) rotateY(-${baseAngle + wrappedRotation.value}deg) scale(${scaleFactor})`,
     opacity: combinedOpacity.toString(),
     filter: `blur(${blurAmount}px)`,
-    pointerEvents: combinedOpacity < 0.1 ? 'none' : 'auto',
+    pointerEvents: (combinedOpacity < 0.1 ? 'none' : 'auto') as 'none' | 'auto',
   }
 }
 
 // Animation loop and event listeners
 onMounted(() => {
+  // Force header minimized state when spiral layout is mounted
+  menuStore.setForceMinimized(true)
+  
   let frame: number
   const tick = () => {
     // Apply friction to velocity
@@ -156,6 +163,8 @@ onMounted(() => {
     if (container) {
       container.removeEventListener('wheel', handleWheel)
     }
+    // Reset header minimized state when spiral layout is unmounted
+    menuStore.setForceMinimized(null)
   })
 })
 </script>
@@ -173,7 +182,7 @@ onMounted(() => {
       :on-next="handleNext"
     />
     <div class="fixed inset-0 flex items-center justify-center">
-      <div class="relative h-full w-full flex preserve-3d items-center justify-center -perspective-[90000px]">
+      <div class="relative h-full w-full flex scale-70 preserve-3d items-center justify-center 2xl:scale-90 md:scale-75 xl:scale-85">
         <div
           v-for="(post, index) in posts"
           :key="post.id"

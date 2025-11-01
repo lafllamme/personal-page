@@ -3,7 +3,7 @@ import MenuBackground from '@/components/ui/Menu/MenuBackground/MenuBackground.v
 import { useMenu } from '@/stores/menu'
 
 const menuStore = useMenu()
-const { isOpen, isHeaderMinimized } = storeToRefs(menuStore)
+const { isOpen, effectiveHeaderMinimized } = storeToRefs(menuStore)
 
 const isAriaHidden = computed(() => (isOpen.value ? 'false' : 'true'))
 
@@ -21,7 +21,7 @@ const sidebarAnimation = computed(() =>
   isOpen.value ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
 )
 const animationClasses = computed(() =>
-  isHeaderMinimized.value ? minimizedAnimation.value : sidebarAnimation.value,
+  effectiveHeaderMinimized.value ? minimizedAnimation.value : sidebarAnimation.value,
 )
 
 // Layout styles depending on header state
@@ -30,7 +30,7 @@ const minimizedLayout
 const borderLayout = 'sm:ring sm:ring-mint-12 sm:ring-inset sm:ring-1'
 const sidebarLayout = 'fixed inset-y-0 right-0 z-50 w-full w-full sm:w-[60vw] xl:w-[35vw] !max-w-[450px]'
 const layoutClasses = computed(() =>
-  isHeaderMinimized.value ? [minimizedLayout, borderLayout] : sidebarLayout,
+  effectiveHeaderMinimized.value ? [minimizedLayout, borderLayout] : sidebarLayout,
 )
 
 // Final class binding
