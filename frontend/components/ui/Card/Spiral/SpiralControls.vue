@@ -24,7 +24,7 @@ function handleNext() {
 </script>
 
 <template>
-  <div class="absolute right-8 top-22 z-40 flex flex-col items-end space-y-6">
+  <div class="absolute right-8 top-20 z-40 flex flex-col items-end md:top-22 space-y-3 md:space-y-6">
     <!-- Floating controls for navigating the spiral -->
     <div
       :class="useClsx(
@@ -32,10 +32,10 @@ function handleNext() {
         'transition-opacity duration-300',
       )"
     >
-      <span class="block text-7xl font-extrabold leading-none">
+      <span class="block text-4xl font-extrabold leading-none md:text-7xl">
         {{ paddedCurrent }}
       </span>
-      <span class="mt-1 block text-xl opacity-70">
+      <span class="mt-1 block text-base opacity-70 md:text-xl">
         / {{ paddedTotal }}
       </span>
     </div>
@@ -43,8 +43,8 @@ function handleNext() {
     <div class="flex space-x-4">
       <button
         :class="useClsx(
-          'size-16 flex items-center justify-center',
-          'border-2 border-solid border-pureBlack dark:border-pureWhite rounded-full',
+          'size-12 md:size-16 flex items-center justify-center',
+          'border-2 border-solid  backdrop-blur-xl border-pureBlack dark:border-pureWhite rounded-full',
           'transition-all duration-300 hover:bg-sand-7',
         )"
         @click="handlePrev"
@@ -52,20 +52,20 @@ function handleNext() {
         <!-- Left arrow icon -->
         <Icon
           name="mdi:arrow-left"
-          class="size-10 color-pureBlack dark:color-pureWhite"
+          class="size-6 color-pureBlack md:size-10 dark:color-pureWhite"
         />
       </button>
       <button
         :class="useClsx(
-          'size-16 flex items-center justify-center',
-          'border-2 border-solid border-pureBlack dark:border-pureWhite rounded-full',
+          'size-12 md:size-16 flex items-center justify-center',
+          'border-2 border-solid  backdrop-blur-xl border-pureBlack dark:border-pureWhite rounded-full',
           'transition-all duration-300 hover:bg-sand-7',
         )"
         @click="handleNext"
       >
         <Icon
           name="mdi:arrow-right"
-          class="size-10 color-pureBlack dark:color-pureWhite"
+          class="size-6 color-pureBlack md:size-10 dark:color-pureWhite"
         />
       </button>
     </div>
