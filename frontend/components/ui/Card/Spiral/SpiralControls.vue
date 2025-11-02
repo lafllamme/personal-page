@@ -24,11 +24,11 @@ function handleNext() {
 </script>
 
 <template>
-  <div class="absolute right-8 top-20 z-40 flex flex-col items-end md:top-22 space-y-3 md:space-y-6">
+  <div class="jetbrains-mono-regular absolute right-8 top-20 z-40 flex flex-col items-end md:top-22 space-y-3 md:space-y-6">
     <!-- Floating controls for navigating the spiral -->
     <div
       :class="useClsx(
-        'text-center color-pureBlack dark:color-pureWhite font-mono',
+        'text-center color-pureBlack dark:color-pureWhite',
         'transition-opacity duration-300',
       )"
     >

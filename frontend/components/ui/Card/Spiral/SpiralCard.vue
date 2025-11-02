@@ -21,24 +21,24 @@ defineProps<{ post: BlogPost }>()
     )"
   >
     <div class="p-6 pb-2">
-      <p class="text-sm color-gray-11 tracking-widest uppercase">
+      <p class="font-manrope text-sm color-gray-11 font-light tracking-widest uppercase">
         {{ post.category }}
       </p>
-      <h3 class="mt-2 text-4xl font-extrabold leading-tight">
+      <h3 class="geist-regular mt-2 text-4xl font-bold leading-tight tracking-tight">
         {{ post.title }}
       </h3>
     </div>
     <div class="flex flex-grow flex-col justify-between p-6 pt-0">
       <div class="flex flex-grow items-center justify-center overflow-hidden">
         <!-- Placeholder for immersive image/visual -->
-        <div class="bg-gray-100 dark:bg-gray-900 h-full w-full flex items-center justify-center">
-          <span class="text-black/10 dark:text-white/10 text-8xl font-serif">
+        <div class="h-full w-full flex items-center justify-center bg-sand-6">
+          <span class="text-8xl color-gray-10 font-serif">
             {{ post.id }}
           </span>
         </div>
       </div>
       <!-- Horizontal separator -->
-      <div class="bg-black dark:bg-white my-4 h-[1px] w-full" />
+      <div class="my-4 h-[1px] w-full bg-pureBlack dark:bg-pureWhite" />
       <div class="flex items-center justify-between text-sm">
         <span class="font-mono">{{ post.date }}</span>
         <span class="text-lg font-bold">#{{ post.id }}</span>
