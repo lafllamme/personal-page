@@ -18,7 +18,7 @@ defineProps<{ post: BlogPost }>()
       'hover:shadow-black/50 dark:hover:shadow-white/50',
       'h-[550px] w-[400px] flex flex-col',
       'overflow-hidden border border-pureBlack border-solid',
-      'bg-sand-4 shadow-2xl transition-all duration-500',
+      'bg-sand-1 dark:bg-olive-2 shadow-2xl transition-all duration-500',
       'rounded-tl-[48px] rounded-tr-[20px] rounded-br-[42px] rounded-bl-[18px]',
     )"
   >
@@ -36,7 +36,7 @@ defineProps<{ post: BlogPost }>()
       >
         <!-- Placeholder for immersive image/visual -->
         <div class="h-full w-full flex items-center justify-center bg-sand-6">
-          <span class="text-8xl color-gray-10 font-serif">
+          <span class="font-prata text-8xl color-gray-10">
             {{ post.id }}
           </span>
         </div>
