@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useDebounceFn } from '@vueuse/core'
 import { ref, watch } from 'vue'
+import SpiralLayout from '@/components/ui/Card/Spiral/SpiralLayout.vue'
 import FlashlightCanvas from '@/components/ui/Effects/FlashlightCanvas.vue'
 import LightSwitch from '@/components/ui/Effects/LightSwitch.vue'
 import { useClsx } from '@/composables/useClsx'
@@ -62,6 +63,66 @@ watch(flashlightDim, (newValue) => {
 function toggleControls() {
   controlsVisible.value = !controlsVisible.value
 }
+
+// SpiralLayout posts data
+const posts = [
+  {
+    id: 1,
+    title: 'The Monochrome Revolution',
+    date: 'October 26, 2024',
+    category: 'Design',
+    imageUrl: '/placeholder.svg',
+  },
+  {
+    id: 2,
+    title: 'Sleek Minimalism in Web Development',
+    date: 'October 20, 2024',
+    category: 'Tech',
+    imageUrl: '/placeholder.svg',
+  },
+  {
+    id: 3,
+    title: 'Depth and Creativity through Animation',
+    date: 'October 15, 2024',
+    category: 'Animation',
+    imageUrl: '/placeholder.svg',
+  },
+  {
+    id: 4,
+    title: 'The Art of Subtle Interaction',
+    date: 'October 10, 2024',
+    category: 'UX/UI',
+    imageUrl: '/placeholder.svg',
+  },
+  {
+    id: 5,
+    title: 'Cinematic Scrolling Experiences',
+    date: 'October 5, 2024',
+    category: 'Design',
+    imageUrl: '/placeholder.svg',
+  },
+  {
+    id: 6,
+    title: 'Eight Ways to Engage Your Reader',
+    date: 'September 30, 2024',
+    category: 'Content',
+    imageUrl: '/placeholder.svg',
+  },
+  {
+    id: 7,
+    title: 'Fixed Elements and Fluid Motion',
+    date: 'September 25, 2024',
+    category: 'Tech',
+    imageUrl: '/placeholder.svg',
+  },
+  {
+    id: 8,
+    title: 'Beyond the Scrollbar: New Navigation',
+    date: 'September 20, 2024',
+    category: 'UX/UI',
+    imageUrl: '/placeholder.svg',
+  },
+]
 </script>
 
 <template>
@@ -71,140 +132,7 @@ function toggleControls() {
       'bg-pureWhite dark:bg-pureBlack',
     )"
   >
-    <article
-      class="mx-auto max-w-3xl px-6 py-16"
-    >
-      <header class="mb-12">
-        <h1
-          class="font-recoleta mb-4 text-[clamp(2rem,4vw,3rem)] color-pureBlack font-700 leading-tight dark:color-pureWhite"
-        >
-          The Art of Digital Exploration: Navigating the Web in Darkness
-        </h1>
-        <div
-          class="flex items-center gap-4 text-sm color-gray-9"
-        >
-          <span>By Sarah Chen</span>
-          <span>•</span>
-          <time>March 15, 2024</time>
-          <span>•</span>
-          <span>8 min read</span>
-        </div>
-      </header>
-
-      <div class="font-manrope text-lg color-gray-12 leading-relaxed space-y-6">
-        <p class="text-xl color-gray-10">
-          In the vast expanse of the digital world, we often take for granted the ability to see everything at once.
-          But what if we could only illuminate small portions of our screen, like exploring a cave with nothing but a
-          flashlight?
-        </p>
-
-        <p>
-          This concept isn't just a novelty—it's a fascinating exploration of how we consume information. When forced
-          to focus on small sections of content, our reading patterns change dramatically. We become more deliberate,
-          more intentional with our attention.
-        </p>
-
-        <h2 class="mb-6 mt-12 text-3xl color-pureBlack font-700 dark:color-pureWhite">
-          The Psychology of Limited Vision
-        </h2>
-
-        <p>
-          Research in cognitive psychology has shown that constraints can actually enhance creativity and focus. When
-          we limit our field of view, we're forced to slow down and truly absorb what we're reading. The flashlight
-          effect creates a natural spotlight, drawing our attention to specific words and phrases.
-        </p>
-
-        <blockquote class="my-8 border-l-4 border-mint-5 border-solid pl-6 text-gray-4 italic">
-          "Constraints are not the enemy of creativity—they are the very foundation upon which innovation is built."
-          <footer class="mt-2 text-sm not-italic">
-            — Dr. Marcus Webb, Cognitive Scientist
-          </footer>
-        </blockquote>
-
-        <p>
-          This phenomenon extends beyond just reading. In user interface design, progressive disclosure—revealing
-          information gradually—has long been recognized as an effective way to prevent cognitive overload. The
-          flashlight effect takes this principle to its logical extreme.
-        </p>
-
-        <h2 class="mb-6 mt-12 text-3xl color-pureBlack font-700 dark:color-pureWhite">
-          Technical Implementation
-        </h2>
-
-        <p>
-          Creating this effect requires a delicate balance of canvas manipulation and performance optimization. The key
-          lies in using the HTML5 Canvas API's composite operations, specifically the
-          <code class="rounded bg-gray-8 px-2 py-1 text-sm color-mint-11">destination-out</code> mode.
-        </p>
-
-        <p>
-          This compositing mode allows us to "erase" portions of a dark overlay, creating the illusion of light
-          piercing through darkness. By applying a radial gradient to the erased area, we achieve soft, feathered edges
-          that mimic the natural falloff of light.
-        </p>
-
-        <h3 class="mb-4 mt-8 text-2xl color-pureBlack font-600 dark:color-pureWhite">
-          Performance Considerations
-        </h3>
-
-        <p>
-          One might assume that constantly redrawing a full-screen canvas would be computationally expensive. However,
-          modern browsers are remarkably efficient at handling canvas operations. The key is to minimize unnecessary
-          redraws and leverage hardware acceleration wherever possible.
-        </p>
-
-        <p>
-          By using <code class="rounded bg-gray-8 px-2 py-1 text-sm color-mint-11">requestAnimationFrame</code>, we
-          ensure our drawing operations are synchronized with the browser's refresh rate, resulting in smooth, 60fps
-          animations even on modest hardware.
-        </p>
-
-        <h2 class="mb-6 mt-12 text-3xl color-pureBlack font-700 dark:color-pureWhite">
-          Practical Applications
-        </h2>
-
-        <p>
-          While this effect might seem purely aesthetic, it has genuine practical applications. Educational platforms
-          could use it to help students with focus issues by reducing visual distractions. Reading apps might implement
-          it as an optional "focus mode" for users who find themselves easily distracted by surrounding content.
-        </p>
-
-        <p>
-          Game developers have long used similar techniques to create atmosphere and tension. Horror games, in
-          particular, leverage limited visibility to create suspense and encourage careful exploration. The same
-          principles can be applied to web experiences to create memorable, engaging interactions.
-        </p>
-
-        <h2 class="mb-6 mt-12 text-3xl color-pureBlack font-700 dark:color-pureWhite">
-          The Future of Interactive Reading
-        </h2>
-
-        <p>
-          As we move further into an age of digital content consumption, experiments like this remind us that the web
-          is still a canvas for innovation. We're not limited to static pages and predictable interactions. Every
-          element of the reading experience can be reimagined and enhanced.
-        </p>
-
-        <p>
-          The flashlight effect is just one example of how we can transform mundane activities—like reading a blog
-          post—into something more engaging and memorable. It challenges our assumptions about how content should be
-          presented and consumed.
-        </p>
-
-        <p class="text-xl color-gray-10">
-          So the next time you're designing a digital experience, ask yourself: what if we could only see part of it at
-          a time? What would that reveal about how we interact with information? Sometimes, the most interesting
-          insights come from the shadows.
-        </p>
-      </div>
-
-      <footer class="mt-16 border-t border-gray-8 pt-8">
-        <p class="text-sm text-gray-5">
-          This article was written to demonstrate the flashlight canvas effect. Move your cursor around to explore the
-          content in a unique way.
-        </p>
-      </footer>
-    </article>
+    <SpiralLayout :posts="posts" />
 
     <FlashlightCanvas
       v-model="flashlightEnabled"
@@ -214,15 +142,15 @@ function toggleControls() {
     />
   </div>
 
-  <!-- Light Switch - fixed positioned at top right -->
-  <div class="fixed right-4 top-20 z-10 w-fit translate-y-full">
+  <!-- Light Switch - fixed positioned at bottom right -->
+  <div class="fixed bottom-5 left-8 z-10 w-fit -translate-y-full">
     <LightSwitch v-model="flashlightEnabled" />
   </div>
 
-  <!-- Flashlight Controls - fixed positioned below the switch -->
+  <!-- Flashlight Controls - fixed positioned above the switch -->
   <div
     v-show="flashlightEnabled"
-    class="fixed right-4 top-36 z-10 w-fit flex flex-col translate-y-full items-center gap-4 transition-opacity duration-500"
+    class="fixed bottom-10 left-8 z-10 w-fit flex flex-col items-center gap-4 transition-opacity duration-500 -translate-y-full"
     :class="useClsx(
       'rounded-bl-[10px] rounded-br-[28px] rounded-tl-[30px] rounded-tr-[8px]',
       'bg-gray-8 dark:bg-gray-4 p-4 text-xs shadow-[0_10px_30px_rgba(0,0,0,0.35)]',
