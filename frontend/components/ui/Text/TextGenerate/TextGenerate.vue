@@ -66,7 +66,8 @@ watch(shouldAnimate, (visible) => {
   <div
     ref="el"
     :class="useClsx(
-      'leading-snug tracking-wide',
+      'leading-snug tracking-wide tg-container',
+      'invisible', // Hide by default - prevents flash during SSR/hydration
       shouldAnimate && 'is-visible',
       classNames,
     )"
@@ -99,6 +100,17 @@ watch(shouldAnimate, (visible) => {
        and fades out synchronously. Because it's absolute-positioned, it
        doesn't influence line-height, so no layout shift.
 ------------------------------------------------------------------------- */
+
+/* Additional safety: hide container by default - prevents flash during SSR and hydration */
+/* UnoCSS 'invisible' class handles the initial hiding, this is a fallback */
+.tg-container:not(.is-visible) {
+  visibility: hidden !important;
+}
+
+/* Ensure container is visible when ready to animate */
+.tg-container.is-visible {
+  visibility: visible !important;
+}
 
 /* main span ------------------------------------------------------------- */
 .tg-word {
@@ -159,4 +171,3 @@ watch(shouldAnimate, (visible) => {
   }
 }
 </style>
-  
