@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { TextGenerateProps } from './TextGenerate.model'
 import { useElementVisibility } from '@vueuse/core'
-import { computed, ref, toRefs, watch } from 'vue'
+import { computed, onMounted, ref, toRefs, watch } from 'vue'
 import { TextGenerateDefaultProps } from './TextGenerate.model'
 
 /* props ------------------------------------------------------------------ */
@@ -15,7 +15,16 @@ const { delay, duration, filter, class: classNames } = toRefs(props)
 
 /* visibility (IntersectionObserver) -------------------------------------- */
 const el = useTemplateRef('el')
+const isMounted = ref(false)
 const isVisible = useElementVisibility(el, { threshold: 0.01 }) // runs only in browser
+
+// Ensure component is mounted before allowing visibility to trigger
+onMounted(() => {
+  // Small delay to ensure IntersectionObserver is initialized
+  requestAnimationFrame(() => {
+    isMounted.value = true
+  })
+})
 
 /* words & per-word CSS vars ---------------------------------------------- */
 const words = computed(() => props.words.trim().split(/\s+/))
@@ -31,8 +40,11 @@ function vars(i: number) {
   } as Record<string, string>
 }
 
+// Track when animation should start
+const shouldAnimate = computed(() => isMounted.value && isVisible.value)
+
 // Watch for visibility and calculate when animation should complete
-watch(isVisible, (visible) => {
+watch(shouldAnimate, (visible) => {
   if (visible) {
     // Calculate time for last word's animation to complete
     const lastWordDelay = (delay.value / 1000) + ((words.value.length - 1) * step)
@@ -55,7 +67,7 @@ watch(isVisible, (visible) => {
     ref="el"
     :class="useClsx(
       'leading-snug tracking-wide',
-      isVisible && 'is-visible',
+      shouldAnimate && 'is-visible',
       classNames,
     )"
     aria-hidden="true"
@@ -92,6 +104,7 @@ watch(isVisible, (visible) => {
 .tg-word {
   position: relative; /* containing block for ::after */
   opacity: 0;
+  visibility: hidden; /* prevent flash during hydration */
   animation: tg-text var(--tg-duration) ease forwards;
   animation-delay: var(--tg-delay);
   animation-play-state: paused;
@@ -111,6 +124,7 @@ watch(isVisible, (visible) => {
 
 /* start animations only when visible ----------------------------------- */
 .is-visible .tg-word {
+  visibility: visible; /* show when ready to animate */
   animation-play-state: running;
 }
 
@@ -145,3 +159,4 @@ watch(isVisible, (visible) => {
   }
 }
 </style>
+  
