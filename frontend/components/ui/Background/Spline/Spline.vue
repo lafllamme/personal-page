@@ -32,6 +32,10 @@ const emit = defineEmits([
   'splineScroll',
 ])
 
+const LCP_PADDING_MS = 200
+const RIC_TIMEOUT_MS = 2500
+const NO_RIC_DELAY_MS = 2000
+
 const menuStore = useMenu()
 const { isOpen } = storeToRefs(menuStore)
 const { scene, onLoad, renderOnDemand, style, debug } = toRefs(props)
@@ -63,11 +67,18 @@ const canvasStyle = computed(() => ({
   height: '100%',
 }))
 
+// Track if initialization has been scheduled to prevent multiple calls
+const initScheduled = ref(false)
+
 // ---- 1. Only initialize Spline ONCE, and NEVER re-dispose/load unless remounting ----
 async function initSpline() {
   if (!canvasRef.value || splineApp.value)
     return
+
+  // initScheduled is already set to true in scheduleInit() to prevent multiple calls
+  // We don't need to check it here - it's just to prevent multiple scheduleInit() calls
   isLoading.value = true
+
   try {
     splineApp.value = new Application(canvasRef.value, {
       renderOnDemand: renderOnDemand.value,
@@ -81,6 +92,30 @@ async function initSpline() {
     consola.error('Spline initialization error:', err)
     emit('error', err)
     isLoading.value = false
+    initScheduled.value = false // Allow retry on error
+  }
+}
+
+function scheduleInit() {
+  if (initScheduled.value || splineApp.value)
+    return
+
+  initScheduled.value = true
+
+  const hasWindow = typeof window !== 'undefined'
+  const hasRIC = hasWindow && 'requestIdleCallback' in window
+
+  if (hasRIC) {
+    const ric = window.requestIdleCallback as typeof requestIdleCallback
+    ric(
+      () => {
+        setTimeout(initSpline, LCP_PADDING_MS)
+      },
+      { timeout: RIC_TIMEOUT_MS },
+    )
+  }
+  else {
+    setTimeout(initSpline, NO_RIC_DELAY_MS)
   }
 }
 
@@ -170,7 +205,17 @@ watch(
 )
 
 onMounted(() => {
-  initSpline()
+  // Always schedule initialization when mounted
+  // The deferred approach (requestIdleCallback) ensures it doesn't block LCP
+  // The intersection observer will handle pausing/playing after initialization
+  requestAnimationFrame(() => {
+    // Small delay to ensure canvas ref is ready
+    setTimeout(() => {
+      if (!splineApp.value && !initScheduled.value) {
+        scheduleInit()
+      }
+    }, 50)
+  })
 })
 
 onUnmounted(() => {
