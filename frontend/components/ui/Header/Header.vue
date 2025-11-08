@@ -177,7 +177,7 @@ watch(isSwitchOpen, (open) => {
                 'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
                 'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
                 'focus-visible:outline-none focus-visible:ring-3',
-                'font-nova tracking-tight antialiased',
+                'font-nova font-bold tracking-tight antialiased',
                 'absolute group px-2',
                 effectiveHeaderMinimized ? 'text-xl md:text-2xl ts-contrast' : 'text-2xl md:text-3xl',
               )"
