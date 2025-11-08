@@ -1,10 +1,3 @@
-/* Nuxt Fonts provides @font-face; avoid double-loading via Google CSS imports. */
-
-/* Prevent synthetic weight/style to avoid flicker when a family lacks bold/italic */
-html {
-  font-synthesis: none;
-}
-
 @font-face {
   font-family: 'Electric';
   src: url('./Headline/Electric.ttf') format('truetype');
