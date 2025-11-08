@@ -1,5 +1,39 @@
+import type { ModuleOptions as NuxtFontsOptions } from '@nuxt/fonts'
+// nuxt.config.ts
 import * as process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
+
+const fonts: NuxtFontsOptions = {
+  provider: 'google',
+  defaults: {
+    preload: true,
+    weights: ['400'],
+    styles: ['normal'],
+    subsets: ['latin', 'latin-ext'],
+  },
+  families: [
+    // Variable / multi-weight families – Range syntax uses SPACE, not '..'
+    { name: 'Figtree', weights: ['300 900'], styles: ['normal', 'italic'] },
+    { name: 'Space Grotesk', weights: ['300 700'], styles: ['normal'] },
+    { name: 'Manrope', weights: ['200 800'], styles: ['normal', 'italic'] },
+    { name: 'JetBrains Mono', weights: ['100 800'], styles: ['normal', 'italic'] },
+    { name: 'EB Garamond', weights: ['400 800'], styles: ['normal', 'italic'] },
+    { name: 'Lora', weights: ['400 700'], styles: ['normal', 'italic'] },
+    { name: 'Cormorant Garamond', weights: ['300 700'], styles: ['normal', 'italic'] },
+
+    // Multi/static weights
+    { name: 'Crimson Text', weights: ['400', '600', '700'], styles: ['normal', 'italic'] },
+    { name: 'Libre Baskerville', weights: ['400', '700'], styles: ['normal', 'italic'] },
+
+    // Single-weight display families (avoid synthetic bold in CSS via font-synthesis: none)
+    { name: 'Prata', weights: ['400'], styles: ['normal'] },
+    { name: 'Nova Square', weights: ['400'], styles: ['normal'] },
+    { name: 'Audiowide', weights: ['400'], styles: ['normal'] },
+    { name: 'Zen Dots', weights: ['400'], styles: ['normal'] },
+    { name: 'Bruno Ace SC', weights: ['400'], styles: ['normal'] },
+    { name: 'Major Mono Display', weights: ['400'], styles: ['normal'] },
+  ],
+}
 
 export default defineNuxtConfig({
   // Base configuration
@@ -114,6 +148,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@unocss/nuxt',
     '@nuxtjs/color-mode',
+    '@nuxt/fonts',
     '@nuxtjs/i18n',
     '@tresjs/nuxt',
     '@vueuse/nuxt',
@@ -130,11 +165,11 @@ export default defineNuxtConfig({
 
   // Internationalization
   i18n: {
-    strategy: 'prefix_except_default', // Default locale (en) won't have prefix, others will
+    strategy: 'prefix_except_default',
     baseUrl: process.env.NUXT_FRONTEND_URL || 'http://localhost:3000',
     defaultLocale: 'en',
     bundle: {
-      optimizeTranslationDirective: false, // Fix i18n warning
+      optimizeTranslationDirective: false,
     },
     locales: [
       { code: 'de', iso: 'de-DE', language: 'de-DE', name: 'Deutsch', dir: 'ltr' },
@@ -190,11 +225,9 @@ export default defineNuxtConfig({
   // Auto-imports
   imports: {
     presets: [
-      {
-        from: 'consola',
-        imports: ['consola'],
-      },
+      { from: 'consola', imports: ['consola'] },
     ],
   },
 
+  fonts,
 })

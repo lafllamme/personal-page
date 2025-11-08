@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Bruno+Ace+SC&family=Figtree:ital,wght@0,300..900;1,300..900&family=Major+Mono+Display&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Boldonse&family=Zen+Dots&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Space+Grotesk:wght@300..700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Prata&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Nova+Square&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&display=swap');
+/* Nuxt Fonts provides @font-face; avoid double-loading via Google CSS imports. */
+
+/* Prevent synthetic weight/style to avoid flicker when a family lacks bold/italic */
+html {
+  font-synthesis: none;
+}
 
 @font-face {
   font-family: 'Electric';
@@ -108,7 +108,7 @@
 }
 
 .font-nova {
-  font-family: 'Nova Square', sans-serif;
+  font-family: 'Nova Square', 'Space Grotesk', system-ui, sans-serif;
   font-weight: 400;
   font-style: normal;
 }
