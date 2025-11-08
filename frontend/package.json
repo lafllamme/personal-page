@@ -69,6 +69,7 @@
     "@iconify-json/ri": "^1.2.6",
     "@iconify-json/uil": "^1.2.3",
     "@inspira-ui/plugins": "^0.0.1",
+    "@nuxt/fonts": "^0.12.1",
     "@types/node": "^24.8.1",
     "@types/three": "^0.178.1",
     "@unocss/eslint-plugin": "66.3.3",
