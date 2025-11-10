@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 // Lazy hydration components for better performance
 const LazySpline = defineLazyHydrationComponent(
-  'visible',
+  'idle',
   () => import('@/components/ui/Background/Spline/Spline.vue'),
 )
 
@@ -38,6 +38,7 @@ const LazyTextGenerate = defineLazyHydrationComponent(
 const { t } = useI18n()
 
 const sceneUrl = 'https://prod.spline.design/gXj2nQHDWLqDw9ik/scene.splinecode'
+const splinePoster = computed(() => sceneUrl.replace('/scene.splinecode', '/thumbnail.png'))
 
 useHead({
   title: t('head.title'),
@@ -49,6 +50,12 @@ useHead({
 
 const sceneLoaded = ref(false)
 const renderBackground = ref(false)
+const heroRef = useTemplateRef<HTMLElement>('heroRef')
+const heroVisible = useElementVisibility(heroRef, { threshold: 0.4 })
+const hasUserInteracted = ref(false)
+const idleReady = ref(false)
+const shouldLoadSpline = ref(false)
+const shouldMountSpline = computed(() => hasUserInteracted.value || (heroVisible.value && idleReady.value))
 
 function handleLoad() {
   sceneLoaded.value = true
@@ -72,6 +79,34 @@ const animate = ref(false)
 function handleGenerateComplete() {
   animate.value = true
 }
+
+if (import.meta.client) {
+  useEventListener(window, 'pointerdown', () => {
+    hasUserInteracted.value = true
+  }, { once: true })
+
+  useEventListener(window, 'keydown', () => {
+    hasUserInteracted.value = true
+  }, { once: true })
+
+  onMounted(() => {
+    if ('requestIdleCallback' in window) {
+      window.requestIdleCallback(() => {
+        idleReady.value = true
+      }, { timeout: 4000 })
+    }
+    else {
+      setTimeout(() => {
+        idleReady.value = true
+      }, 4000)
+    }
+  })
+}
+
+watch(shouldMountSpline, (value) => {
+  if (value)
+    shouldLoadSpline.value = true
+}, { immediate: true })
 </script>
 
 <template>
@@ -83,17 +118,28 @@ function handleGenerateComplete() {
     >
       <!-- Circle Wrapper -->
       <div
+        ref="heroRef"
         class="animate-top-to-bottom-reveal mx-auto max-w-[450px] w-full md:order-last md:max-w-[700px] md:w-1/2 min-[1900px]:!max-w-[1200px]"
       >
         <div
           :class="useClsx(renderBackground && '!bg-mint-8')"
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full bg-gray-4A transition-colors duration-[2000ms] ease-in-out"
         >
+          <NuxtImg
+            v-if="!shouldLoadSpline"
+            :src="splinePoster"
+            alt="TecNews hero illustration"
+            format="webp"
+            loading="lazy"
+            class="pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
+            :class="renderBackground || !shouldLoadSpline ? 'opacity-100' : 'opacity-0'"
+          />
           <LazySpline
+            v-else
             :on-load="handleLoad"
             :scene="sceneUrl"
             render-on-demand
-            :hydrate-on-visible="{ rootMargin: '50px' }"
+            :hydrate-on-idle="true"
           />
         </div>
       </div>
