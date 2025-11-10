@@ -132,7 +132,8 @@ function checkElementType(e: MouseEvent) {
       )
 
   if (isClickable) {
-    cursorType.value = 'click'
+    if (cursorType.value !== 'click')
+      cursorType.value = 'click'
   }
   else if (isText) {
     const textEl = textElements.value
@@ -141,7 +142,8 @@ function checkElementType(e: MouseEvent) {
     setTextCursor(textEl)
   }
   else {
-    cursorType.value = 'default'
+    if (cursorType.value !== 'default')
+      cursorType.value = 'default'
   }
 }
 
@@ -153,8 +155,12 @@ function updateCursorPosition(e: MouseEvent) {
 }
 
 function initListeners() {
-  useEventListener('mousemove', updateCursorPosition, { passive: true })
-  useEventListener('mousemove', checkElementType, { passive: true })
+  if (!isPointer.value)
+    return
+  const throttledPosition = useThrottleFn(updateCursorPosition, 16)
+  const throttledTypeCheck = useThrottleFn(checkElementType, 32)
+  useEventListener('mousemove', throttledPosition, { passive: true })
+  useEventListener('mousemove', throttledTypeCheck, { passive: true })
 }
 
 // ========== FADE/SPINNING TEXT HELPERS ==========
