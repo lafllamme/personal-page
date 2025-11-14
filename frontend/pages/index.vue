@@ -38,7 +38,6 @@ const LazyTextGenerate = defineLazyHydrationComponent(
 const { t } = useI18n()
 
 const sceneUrl = 'https://prod.spline.design/gXj2nQHDWLqDw9ik/scene.splinecode'
-const splinePoster = computed(() => sceneUrl.replace('/scene.splinecode', '/thumbnail.png'))
 
 useHead({
   title: t('head.title'),
@@ -122,20 +121,16 @@ watch(shouldMountSpline, (value) => {
         class="animate-top-to-bottom-reveal mx-auto max-w-[450px] w-full md:order-last md:max-w-[700px] md:w-1/2 min-[1900px]:!max-w-[1200px]"
       >
         <div
-          :class="useClsx(renderBackground && '!bg-mint-8')"
-          class="relative aspect-square w-full touch-none overflow-hidden rounded-full bg-gray-4A transition-colors duration-[2000ms] ease-in-out"
+          class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
         >
           <NuxtImg
-            v-if="!shouldLoadSpline"
-            :src="splinePoster"
+            src="https://i.imgur.com/Sc94RCm.jpeg"
             alt="TecNews hero illustration"
             format="webp"
             loading="lazy"
-            class="pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-700"
-            :class="renderBackground || !shouldLoadSpline ? 'opacity-100' : 'opacity-0'"
+            class="pointer-events-none absolute inset-0 h-full w-full object-cover"
           />
           <LazySpline
-            v-else
             :on-load="handleLoad"
             :scene="sceneUrl"
             render-on-demand
