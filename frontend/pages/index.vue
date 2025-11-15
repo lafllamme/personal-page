@@ -39,6 +39,8 @@ const { t } = useI18n()
 
 const sceneUrl = 'https://prod.spline.design/gXj2nQHDWLqDw9ik/scene.splinecode'
 
+const heroImageUrl = 'https://i.imgur.com/nGHQpdo.jpeg'
+
 useHead({
   title: t('head.title'),
   meta: [
@@ -124,10 +126,12 @@ watch(shouldMountSpline, (value) => {
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
         >
           <NuxtImg
-            src="https://i.imgur.com/Sc94RCm.jpeg"
+            :src="heroImageUrl"
             alt="TecNews hero illustration"
             format="webp"
-            loading="lazy"
+            loading="eager"
+            fetchpriority="high"
+            preload
             class="pointer-events-none absolute inset-0 h-full w-full object-cover"
           />
           <LazySpline
