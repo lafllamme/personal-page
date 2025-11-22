@@ -7,7 +7,6 @@
   "scripts": {
     "prebuild": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
-    "cf:build": "pnpm dlx @cloudflare/next-on-pages@latest",
     "predev": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation PORT=3001 next dev -p 3001",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation PORT=3001 next dev -p 3001",
