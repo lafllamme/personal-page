@@ -1,8 +1,0 @@
-name = "personal-page-cms"
-compatibility_date = "2025-11-22"
-compatibility_flags = ["nodejs_compat"]
-
-# Cloudflare Pages output directory produced by @opennextjs/cloudflare
-pages_build_output_dir = ".open-next/static"
-
-
