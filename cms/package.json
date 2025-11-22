@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "prebuild": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=4096\" next build",
+    "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
     "predev": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation PORT=3001 next dev -p 3001",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation PORT=3001 next dev -p 3001",
