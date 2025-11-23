@@ -182,6 +182,8 @@ function handleMouseLeave() {
       :class="useClsx(
         'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
         'pointer-events-none absolute inset-x-0 top-0 z-30 h-full',
+        // Ensure the overlay respects rounded corners in Safari
+        'rounded-10 overflow-hidden',
         'from-olive-6 via-transparent to-transparent bg-gradient-to-b dark:from-pureBlack/35',
       )"
     />
@@ -211,6 +213,8 @@ function handleMouseLeave() {
         useClsx(
           'absolute inset-0 z-10 overflow-hidden rounded-10 transition-transform',
           'duration-500 ease-[cubic-bezier(0.4,0.8,0.6,1)] group-hover:scale-110',
+          // Promote to its own layer so Safari clips filters/edges correctly
+          'transform-gpu [will-change:transform] backface-hidden',
         )"
     >
       <AppleBlurImage
