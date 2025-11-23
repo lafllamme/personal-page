@@ -14380,7 +14380,7 @@ snapshots:
   '@unocss/rule-utils@66.5.4':
     dependencies:
       '@unocss/core': 66.5.4
-      magic-string: 0.30.19
+      magic-string: 0.30.21
 
   '@unocss/transformer-attributify-jsx@66.3.3':
     dependencies:
