@@ -76,6 +76,7 @@
     "@unocss/nuxt": "66.3.3",
     "@unocss/preset-mini": "66.3.3",
     "animated-unocss": "^0.0.6",
+    "baseline-browser-mapping": "^2.8.31",
     "eslint": "^9.38.0",
     "eslint-plugin-format": "^1.0.2",
     "sass-embedded": "^1.93.2",
