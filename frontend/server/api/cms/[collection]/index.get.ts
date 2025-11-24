@@ -1,5 +1,54 @@
 import consola from 'consola'
 
+const FOUR_HOURS_IN_SECONDS = 60 * 60 * 4
+
+interface CollectionFetchOptions {
+  payloadApiUrl: string
+  collection: string
+  queryString: string
+}
+
+async function fetchCollectionFromCMS(options: CollectionFetchOptions) {
+  const { payloadApiUrl, collection, queryString } = options
+  const apiUrl = `${payloadApiUrl}/${collection}?${queryString}`
+  consola.log(`🚀 Fetching from CMS API: ${apiUrl}`)
+
+  const response = await $fetch(apiUrl, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+
+  if (collection === 'posts' && (response as any).docs) {
+    for (const doc of (response as any).docs) {
+      if (doc.content && doc.content.root && doc.content.root.children) {
+        for (const child of doc.content.root.children) {
+          if (child.type === 'upload' && child.value === null && child.id) {
+            try {
+              child.value = await $fetch(`${payloadApiUrl}/media/${child.id}`)
+              consola.log(`✅ Populated upload relationship for media ID: ${child.id}`)
+            }
+            catch (error) {
+              consola.error(`❌ Failed to populate upload relationship for media ID: ${child.id}`, error)
+            }
+          }
+        }
+      }
+    }
+  }
+
+  return response
+}
+
+const fetchCollectionCached = cachedFunction(fetchCollectionFromCMS, {
+  name: 'payload-collection-cache',
+  maxAge: FOUR_HOURS_IN_SECONDS,
+  swr: true,
+  getKey: (options: CollectionFetchOptions) =>
+    `${options.payloadApiUrl}:${options.collection}?${options.queryString}`,
+})
+
 export default defineEventHandler(async (event) => {
   try {
     const collection = getRouterParam(event, 'collection')
@@ -56,47 +105,36 @@ export default defineEventHandler(async (event) => {
       consola.log('🔍 No depth specified, defaulting to depth=3 for relationship population')
     }
 
-    const apiUrl = `${payloadApiUrl}/${collection}?${queryParams.toString()}`
-    consola.log(`🚀 Fetching from CMS API: ${apiUrl}`)
+    const queryString = queryParams.toString()
+    const shouldBypassCache
+      = query.cache === '0'
+        || query.cache === 'false'
+        || query.cache === 'no'
+        || query.cache === 'bypass'
 
-    // Make HTTP request to CMS API
-    const response = await $fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-
-    // For posts collection, manually populate upload relationships if they're null
-    if (collection === 'posts' && (response as any).docs) {
-      for (const doc of (response as any).docs) {
-        if (doc.content && doc.content.root && doc.content.root.children) {
-          for (const child of doc.content.root.children) {
-            if (child.type === 'upload' && child.value === null && child.id) {
-              // Fetch the media document
-              try {
-                const mediaResponse = await $fetch(`${payloadApiUrl}/media/${child.id}`)
-                child.value = mediaResponse
-                consola.log(`✅ Populated upload relationship for media ID: ${child.id}`)
-              }
-              catch (error) {
-                consola.error(`❌ Failed to populate upload relationship for media ID: ${child.id}`, error)
-              }
-            }
-          }
-        }
-      }
+    const fetchOptions: CollectionFetchOptions = {
+      payloadApiUrl,
+      collection,
+      queryString,
     }
+
+    const response = shouldBypassCache
+      ? await fetchCollectionFromCMS(fetchOptions)
+      : await fetchCollectionCached(fetchOptions)
 
     consola.log(`✅ Successfully fetched ${collection} from CMS API`)
 
-    // Set cache control headers to prevent caching
-    setResponseHeaders(event, {
-      'Cache-Control': 'no-cache, no-store, must-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0',
-      'X-Cache-Status': 'BYPASS',
-    })
+    setResponseHeaders(event, shouldBypassCache
+      ? {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0',
+          'X-Cache-Status': 'BYPASS',
+        }
+      : {
+          'Cache-Control': `public, max-age=0, s-maxage=${FOUR_HOURS_IN_SECONDS}, stale-while-revalidate=60`,
+          'X-Cache-Status': 'ENABLED',
+        })
 
     return response
   }
