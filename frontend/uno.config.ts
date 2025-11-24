@@ -1,5 +1,5 @@
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
-import { extendTheme, presets, shortcuts, theme } from './assets/unocss/index'
+import { extendTheme, presets, shortcuts, theme } from './app/assets/unocss/index'
 
 export default defineConfig({
   shortcuts,

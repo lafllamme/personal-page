@@ -6,19 +6,19 @@
     // Important for path aliases
     "paths": {
       "~/*": [
-        "./*"
+        "./app/*"
       ],
       "~~/*": [
         "./*"
       ],
       "@/*": [
-        "./*"
+        "./app/*"
       ],
       "@shared-types": [
-        "types/index.ts"
+        "app/types/index.ts"
       ],
       "@shared-types/*": [
-        "types/*"
+        "app/types/*"
       ]
     },
     "skipLibCheck": true
