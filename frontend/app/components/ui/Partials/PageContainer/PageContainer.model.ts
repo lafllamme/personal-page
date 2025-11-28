@@ -1,0 +1,31 @@
+export type PageContainerMax = '5xl' | '6xl' | '7xl' | 'full'
+export type PageContainerGutter = 'none' | 'sm' | 'md' | 'lg'
+export type PageContainerTag = 'div' | 'section' | 'main' | 'article'
+
+export interface PageContainerProps {
+  as?: PageContainerTag
+  max?: PageContainerMax
+  gutter?: PageContainerGutter
+  bleed?: boolean
+}
+
+export const PageContainerDefaults: PageContainerProps = {
+  as: 'div',
+  max: 'full',
+  gutter: 'md',
+  bleed: false,
+}
+
+export const PageContainerMaxClasses: Record<PageContainerMax, string> = {
+  '5xl': 'max-w-5xl',
+  '6xl': 'max-w-6xl',
+  '7xl': 'max-w-7xl',
+  'full': 'max-w-full',
+}
+
+export const PageContainerGutterClasses: Record<PageContainerGutter, string> = {
+  none: '',
+  sm: 'px-4 sm:px-5',
+  md: 'px-4 sm:px-6 md:px-8',
+  lg: 'px-5 sm:px-8 md:px-12',
+}
