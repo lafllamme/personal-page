@@ -2,6 +2,7 @@
 import ScrollTopButton from '~/components/ui/Buttons/ScrollTopButton/ScrollTopButton.vue'
 import Footer from '~/components/ui/Footer/Footer.vue'
 import Header from '~/components/ui/Header/Header.vue'
+import PageContainer from '~/components/ui/Partials/PageContainer/PageContainer.vue'
 </script>
 
 <template>
@@ -20,7 +21,9 @@ import Header from '~/components/ui/Header/Header.vue'
           'pt-[calc(4rem-1px+1rem)] md:pt-[calc(4rem+5px+1.5rem)]',
         )"
       >
-        <slot name="default" />
+        <PageContainer>
+          <slot name="default" />
+        </PageContainer>
       </main>
       <Footer />
       <ScrollTopButton />
