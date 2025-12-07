@@ -109,12 +109,12 @@ onUnmounted(() => {
       :class="useClsx('pointer-events-none select-none opacity-0 absolute left-0 right-0 top-0', progressHeightClass)"
       aria-hidden="true"
     />
-    <div class="max-w-8xl sticky top-0 flex items-center bg-transparent py-12 h-svh">
+    <div class="max-w-8xl sticky top-0 flex items-center bg-transparent h-svh">
       <p
         :class="useClsx(
           'color-mint-12A',
           'flex flex-wrap antialiased',
-          'font-semibold uppercase leading-tight tracking-wide font-ginger text-pretty md:text-8vw text-8vh',
+          'font-semibold uppercase leading-normal tracking-wide font-ginger text-pretty md:text-8vw text-8vh',
         )"
       >
         <ScrollWord

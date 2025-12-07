@@ -115,12 +115,12 @@ watch(shouldMountSpline, (value) => {
     class="bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack"
   >
     <div
-      class="flex flex-col items-center justify-center md:flex-row"
+      class="mb-12 flex flex-col items-center md:flex-row"
     >
       <!-- Circle Wrapper -->
       <div
         ref="heroRef"
-        class="animate-top-to-bottom-reveal mx-auto max-w-[450px] w-full md:order-last md:max-w-[700px] md:w-1/2 min-[1900px]:!max-w-[1200px]"
+        class="animate-top-to-bottom-reveal max-w-[450px] w-full md:order-last md:max-w-[700px] md:w-1/2 min-[1900px]:!max-w-[1200px]"
       >
         <div
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
@@ -144,7 +144,7 @@ watch(shouldMountSpline, (value) => {
       </div>
 
       <!-- Text Wrapper -->
-      <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:text-left md:space-y-8">
+      <div class="w-full text-center md:w-1/2 space-y-4 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
             'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance animate-clip-circle md:text-balance',
@@ -158,7 +158,7 @@ watch(shouldMountSpline, (value) => {
           :class="useClsx(
             'max-w-3xl 2xl:max-w-4xl md:text-justify',
             'text-wrap text-[clamp(1rem,2vw,1.5rem)]',
-            'font-300 font-manrope',
+            'font-light leading-normal tracking-normal font-manrope',
           )"
           :delay="0.8"
           :duration="1.1"
@@ -170,7 +170,7 @@ watch(shouldMountSpline, (value) => {
           :class="useClsx(
             'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'dark:bg-pureBlack lg:text-xl sm:text-lg',
-            'bg-pureWhite !my-6 lg:!my-16 !min-w-3/4 md:justify-start',
+            'bg-pureWhite !min-w-3/4 md:justify-start',
             'max-[400px]:text-sm text-base flex justify-center gap-4 whitespace-nowrap',
             animate ? 'opacity-100 animate-fade-in' : 'opacity-0',
           )"

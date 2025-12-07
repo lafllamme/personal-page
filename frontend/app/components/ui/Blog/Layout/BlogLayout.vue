@@ -31,65 +31,62 @@ const regularArticles = reactive(
 <template>
   <div class="min-h-screen flex flex-col">
     <section>
-      <div class="mx-auto px-4 md:px-10">
-        <!-- Decorative Text Scroll Reveal -->
-        <div>
-          <TextScrollReveal
-            text="Driving digital change with creative energy."
-            height-class="h-[500vh]"
-            progress-height-class="h-[300vh]"
+      <!-- Decorative Text Scroll Reveal -->
+      <TextScrollReveal
+        text="Driving digital change with creative energy."
+        height-class="h-[500vh]"
+        progress-height-class="h-[300vh]"
+      />
+
+      <div :class="useClsx('mb-4')">
+        <div class="flex justify-between">
+          <h2
+            :class="useClsx(
+              'font-ginger text-[clamp(24px,3.4vw,36px)] leading-none md:text-[clamp(38px,4.2vw,56px)] font-light tracking-wide uppercase',
+              'color-pureBlack dark:color-pureWhite whitespace-nowrap',
+            )"
+          >
+            MARKET PULSE
+          </h2>
+
+          <StockButton />
+        </div>
+        <div :class="useClsx('h-px w-full bg-gray-6')" />
+      </div>
+
+      <div
+        class="grid my-8 gap-8 md:grid-cols-[3fr_5fr] md:my-10 lg:gap-x-12"
+      >
+        <div class="w-full md:min-w-[390px]">
+          <FeaturedCard
+            :id="featuredArticle.id"
+            :author="featuredArticle.author"
+            :date="featuredArticle.date"
+            :description="featuredArticle.description"
+            :href="featuredArticle.href"
+            :image="featuredArticle.image"
+            :title="featuredArticle.title"
           />
         </div>
-        <div :class="useClsx('mb-4')">
-          <div class="flex justify-between">
-            <h2
-              :class="useClsx(
-                'font-ginger text-[clamp(24px,3.4vw,36px)] leading-none md:text-[clamp(38px,4.2vw,56px)] font-light tracking-wide uppercase',
-                'color-pureBlack dark:color-pureWhite whitespace-nowrap',
-              )"
-            >
-              MARKET PULSE
-            </h2>
-
-            <StockButton />
-          </div>
-          <div :class="useClsx('h-px w-full bg-gray-6')" />
+        <div class="min-w-0 w-full">
+          <StockCard />
         </div>
-
-        <div
-          class="grid my-8 gap-8 md:grid-cols-[3fr_5fr] md:my-10 lg:gap-x-12"
-        >
-          <div class="w-full md:min-w-[390px]">
-            <FeaturedCard
-              :id="featuredArticle.id"
-              :author="featuredArticle.author"
-              :date="featuredArticle.date"
-              :description="featuredArticle.description"
-              :href="featuredArticle.href"
-              :image="featuredArticle.image"
-              :title="featuredArticle.title"
-            />
-          </div>
-          <div class="min-w-0 w-full">
-            <StockCard />
-          </div>
-        </div>
-        <!-- Below: REGULAR GRID of articles -->
-        <div class="grid my-12 mb-24 mt-12 gap-8 lg:grid-cols-3 sm:grid-cols-2 md:my-32">
-          <!-- Regular Cards -->
-          <RegularCard
-            v-for="(article, idx) in regularArticles"
-            :id="article.id"
-            :key="article.id"
-            :author="article.author"
-            :date="article.date"
-            :description="article.description"
-            :href="article.href"
-            :image="article.image"
-            :style="`animation-delay:${(idx % 3) * 0.12 + 0.1}s`"
-            :title="article.title"
-          />
-        </div>
+      </div>
+      <!-- Below: REGULAR GRID of articles -->
+      <div class="grid my-12 mb-24 mt-12 gap-8 lg:grid-cols-3 sm:grid-cols-2 md:my-32">
+        <!-- Regular Cards -->
+        <RegularCard
+          v-for="(article, idx) in regularArticles"
+          :id="article.id"
+          :key="article.id"
+          :author="article.author"
+          :date="article.date"
+          :description="article.description"
+          :href="article.href"
+          :image="article.image"
+          :style="`animation-delay:${(idx % 3) * 0.12 + 0.1}s`"
+          :title="article.title"
+        />
       </div>
     </section>
   </div>
