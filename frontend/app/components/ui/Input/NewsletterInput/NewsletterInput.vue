@@ -58,9 +58,9 @@ async function handleSubscribe() {
         v-show="!emailModel"
         :class="useClsx(
           hasInputFocus && 'slide-out-blurred-top',
-          'color-gray-10 transition-all duration-300 ease-out',
+          'color-gray-10 transition-all font-geist font-medium duration-300 ease-out',
           'pointer-events-none absolute left-4 top-1/2 transform',
-          'peer-focus:top-4 -translate-y-1/2 animation-fill-forwards peer-focus:text-xs peer-focus:-translate-y-2',
+          'peer-focus:top-4 uppercase -translate-y-1/2  text-xs animation-fill-forwards peer-focus:text-xs peer-focus:-translate-y-2',
         )"
         for="newsletter-email"
       >

@@ -88,7 +88,7 @@ watch(footerVisible, (vis) => {
               </h3>
             </div>
             <div class="flex flex-col space-y-1">
-              <h4 class="geist-regular text-4xl font-bold leading-tight tracking-tight">
+              <h4 class="text-4xl font-bold leading-tight tracking-tight">
                 <!-- Mobile: single line -->
                 <span class="block md:hidden">
                   The future of tech, <span class="color-teal-10">delivered weekly</span>

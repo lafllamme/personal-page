@@ -26,6 +26,6 @@ export const PageContainerMaxClasses: Record<PageContainerMax, string> = {
 export const PageContainerGutterClasses: Record<PageContainerGutter, string> = {
   none: '',
   sm: 'px-4 sm:px-5',
-  md: 'px-4 sm:px-6 md:px-8',
+  md: 'px-4 md:px-12',
   lg: 'px-5 sm:px-8 md:px-12',
 }
