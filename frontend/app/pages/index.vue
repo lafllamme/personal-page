@@ -115,7 +115,7 @@ watch(shouldMountSpline, (value) => {
     class="bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack"
   >
     <div
-      class="flex flex-col items-center justify-center px-2 md:flex-row md:px-4"
+      class="flex flex-col items-center justify-center md:flex-row"
     >
       <!-- Circle Wrapper -->
       <div
@@ -144,7 +144,7 @@ watch(shouldMountSpline, (value) => {
       </div>
 
       <!-- Text Wrapper -->
-      <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:px-6 md:text-left md:space-y-8">
+      <div class="w-full pt-6 text-center md:w-1/2 space-y-4 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
             'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance animate-clip-circle md:text-balance',
