@@ -120,7 +120,7 @@ watch(shouldMountSpline, (value) => {
       <!-- Circle Wrapper -->
       <div
         ref="heroRef"
-        class="animate-top-to-bottom-reveal max-w-[450px] w-full md:order-last md:max-w-[700px] md:w-1/2 min-[1900px]:!max-w-[1200px]"
+        class="animate-top-to-bottom-reveal max-w-[450px] w-full md:order-last md:max-w-none md:w-1/2 min-[1900px]:!max-w-[1200px]"
       >
         <div
           class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
