@@ -66,7 +66,7 @@ watch(shouldAnimate, (visible) => {
   <div
     ref="el"
     :class="useClsx(
-      'leading-snug tracking-wide tg-container',
+      'tg-container md:pr-24',
       'invisible', // Hide by default - prevents flash during SSR/hydration
       shouldAnimate && 'is-visible',
       classNames,
@@ -79,8 +79,7 @@ watch(shouldAnimate, (visible) => {
       :class="useClsx(
         !filter && 'tg-no-blur',
         'bg-clip-text text-transparent',
-        'bg-gradient-to-r from-gray-12 to-mint-12',
-        'tg-word inline-block leading-tight tracking-wider',
+        'color-sand-12 tg-word inline-block',
       )"
       :data-word="word"
       :style="vars(i)"

@@ -155,134 +155,131 @@ useVisibilityObserver(headlineRef, isHeadingVisible)
 
 <template>
   <section>
-    <div class="mx-auto px-4 md:px-10">
-      <div class="mb-12 flex flex-col items-start justify-between md:flex-row md:items-end">
-        <div>
-          <h2
-            ref="headlineRef"
-            :class="useClsx(
-              'font-recoleta mb-4 font-medium text-3xl md:text-6xl tracking-tight',
-              'color-mint-12',
-              isHeadingVisible ? 'animate-fade-in' : 'opacity-0',
-            )"
-          >
-            Featured Articles
-          </h2>
-          <p
-            ref="hintRef"
-            :class="useClsx(isHintVisible ? 'animate-fade-in' : 'opacity-0')"
-            class="geist-regular max-w-2xl text-gray-10 font-thin md:ml-1 md:text-xl"
-          >
-            The most insightful pieces from our expert contributors.
-          </p>
-        </div>
-        <div
-          ref="hintRef"
-          class="group mt-4 flex items-center justify-center"
+    <div class="mb-12 flex flex-col items-start justify-between md:flex-row md:items-end">
+      <div>
+        <h2
+          ref="headlineRef"
+          :class="useClsx(
+            'font-recoleta mb-4 font-medium text-3xl md:text-6xl tracking-tight',
+            'color-mint-12',
+            isHeadingVisible ? 'animate-fade-in' : 'opacity-0',
+          )"
         >
-          <Link
-            :class="[
-              useClsx(
-                'flex items-start gap-2 group',
-                isHintVisible ? 'animate-fade-in' : 'opacity-0',
-                'geist-regular text-base font-light uppercase',
-                'color-gray-12 tracking-wide transition-color duration-150 hover:color-jade-8',
-              ),
-            ]"
-            aria-label="View all articles on our blog"
-            href="#"
-            underline-size="full"
-          >
-            View all articles
-            <Icon
-              :class="useClsx(
-                'size-5 color-mint-11',
-                'transition-transform duration-150 ease-out delay-75',
-                'dark:group-hover:color-pureWhite group-hover:color-pureBlack',
-                'group-hover:translate-x-0.5  group-hover:-translate-y-0.5',
-              )"
-              name="ri:arrow-right-up-line"
-            />
-          </Link>
+          Featured Articles
+        </h2>
+        <p
+          ref="hintRef"
+          :class="useClsx(isHintVisible ? 'animate-fade-in' : 'opacity-0')"
+          class="geist-regular max-w-2xl text-gray-10 font-thin md:ml-1 md:text-xl"
+        >
+          The most insightful pieces from our expert contributors.
+        </p>
+      </div>
+      <div
+        ref="hintRef"
+        class="group mt-4 flex items-center justify-center"
+      >
+        <Link
+          :class="[
+            useClsx(
+              'flex items-start gap-2 group',
+              isHintVisible ? 'animate-fade-in' : 'opacity-0',
+              'geist-regular text-base font-light uppercase',
+              'color-gray-12 tracking-wide transition-color duration-150 hover:color-jade-8',
+            ),
+          ]"
+          aria-label="View all articles on our blog"
+          href="#"
+          underline-size="full"
+        >
+          View all articles
+          <Icon
+            :class="useClsx(
+              'size-5 color-mint-11',
+              'transition-transform duration-150 ease-out delay-75',
+              'dark:group-hover:color-pureWhite group-hover:color-pureBlack',
+              'group-hover:translate-x-0.5  group-hover:-translate-y-0.5',
+            )"
+            name="ri:arrow-right-up-line"
+          />
+        </Link>
+      </div>
+    </div>
+    <!-- Featured + Trending -->
+    <div class="flex flex-col gap-8 md:grid md:grid-cols-3 md:items-stretch md:gap-8">
+      <!-- Featured Article (left, spans 2 cols on desktop) -->
+      <div class="w-full md:col-span-2">
+        <div>
+          <AppleCardCarousel>
+            <AppleCarouselItem
+              v-for="(card, index) in galleryPosts"
+              :key="index"
+              :index="index"
+            >
+              <AppleCard
+                :card="card"
+                :index="index"
+                :layout="true"
+                :enable-navigation="true"
+              >
+                <div
+                  :key="`dummy-content${index}`"
+                  class="dark:bg-neutral-800 mb-4 rounded-3xl bg-[#F5F5F7] p-8 md:p-14"
+                >
+                  <p
+                    class="text-neutral-600 dark:text-neutral-400 mx-auto max-w-3xl text-base font-sans md:text-2xl"
+                  >
+                    <span class="text-neutral-700 dark:text-neutral-200 font-bold">
+                      The first rule of Apple club is that you boast about Apple club.
+                    </span>
+                    Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to
+                    convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to
+                    capture every thought.
+                  </p>
+                  <img
+                    src="https://assets.aceternity.com/macbook.png"
+                    alt="Macbook mockup from Aceternity UI"
+                    height="500"
+                    width="500"
+                    class="mx-auto size-full object-contain md:size-1/2"
+                  >
+                </div>
+              </AppleCard>
+            </AppleCarouselItem>
+          </AppleCardCarousel>
         </div>
       </div>
 
-      <!-- Featured + Trending -->
-      <div class="flex flex-col gap-8 md:grid md:grid-cols-3 md:items-stretch md:gap-8">
-        <!-- Featured Article (left, spans 2 cols on desktop) -->
-        <div class="w-full md:col-span-2">
-          <div>
-            <AppleCardCarousel>
-              <AppleCarouselItem
-                v-for="(card, index) in galleryPosts"
-                :key="index"
-                :index="index"
-              >
-                <AppleCard
-                  :card="card"
-                  :index="index"
-                  :layout="true"
-                  :enable-navigation="true"
-                >
-                  <div
-                    :key="`dummy-content${index}`"
-                    class="dark:bg-neutral-800 mb-4 rounded-3xl bg-[#F5F5F7] p-8 md:p-14"
-                  >
-                    <p
-                      class="text-neutral-600 dark:text-neutral-400 mx-auto max-w-3xl text-base font-sans md:text-2xl"
-                    >
-                      <span class="text-neutral-700 dark:text-neutral-200 font-bold">
-                        The first rule of Apple club is that you boast about Apple club.
-                      </span>
-                      Keep a journal, quickly jot down a grocery list, and take amazing class notes. Want to
-                      convert those notes to text? No problem. Langotiya jeetu ka mara hua yaar is ready to
-                      capture every thought.
-                    </p>
-                    <img
-                      src="https://assets.aceternity.com/macbook.png"
-                      alt="Macbook mockup from Aceternity UI"
-                      height="500"
-                      width="500"
-                      class="mx-auto size-full object-contain md:size-1/2"
-                    >
-                  </div>
-                </AppleCard>
-              </AppleCarouselItem>
-            </AppleCardCarousel>
-          </div>
-        </div>
-
-        <!-- Trending Column (right) -->
-        <div class="h-full w-full flex flex-col">
-          <div class="h-full flex flex-col">
-            <div
-              ref="subheadingRef"
-              :class="useClsx(isSubheadingVisible ? 'animate-fade-in !animate-duration-[2000ms]' : 'opacity-0')"
-              class="mb-6 flex items-center md:mb-10 space-x-2"
+      <!-- Trending Column (right) -->
+      <div class="h-full w-full flex flex-col">
+        <div class="h-full flex flex-col">
+          <div
+            ref="subheadingRef"
+            :class="useClsx(isSubheadingVisible ? 'animate-fade-in !animate-duration-[2000ms]' : 'opacity-0')"
+            class="mb-6 flex items-center md:mb-10 space-x-2"
+          >
+            <Icon class="size-8 color-mint-8 md:size-12" name="ri:speak-ai-line" />
+            <h3
+              class="figtree-regular whitespace-nowrap text-xl color-pureBlack tracking-tight lg:text-4xl md:text-2xl dark:color-pureWhite !font-medium"
             >
-              <Icon class="size-8 color-mint-8 md:size-12" name="ri:speak-ai-line" />
-              <h3
-                class="figtree-regular whitespace-nowrap text-xl color-pureBlack tracking-tight lg:text-4xl md:text-2xl dark:color-pureWhite !font-medium"
-              >
-                <SparklesText
-                  :colors="{ first: '#9E7AFF', second: '#FE8BBB' }" :sparkles-count="5"
-                  text="Trending Topics"
-                />
-              </h3>
-            </div>
-            <div class="flex flex-1 flex-col justify-start gap-4">
-              <TrendingCard
-                v-for="article in trendingArticles"
-                :id="article.id"
-                :key="article.id"
-                :author="article.author"
-                :date="article.date"
-                :description="article.description"
-                :href="article.href"
-                :image="article.image"
-                :title="article.title"
+              <SparklesText
+                :colors="{ first: '#9E7AFF', second: '#FE8BBB' }" :sparkles-count="5"
+                text="Trending Topics"
               />
-            </div>
+            </h3>
+          </div>
+          <div class="flex flex-1 flex-col justify-start gap-4">
+            <TrendingCard
+              v-for="article in trendingArticles"
+              :id="article.id"
+              :key="article.id"
+              :author="article.author"
+              :date="article.date"
+              :description="article.description"
+              :href="article.href"
+              :image="article.image"
+              :title="article.title"
+            />
           </div>
         </div>
       </div>
