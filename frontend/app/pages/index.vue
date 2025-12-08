@@ -144,7 +144,7 @@ watch(shouldMountSpline, (value) => {
       </div>
 
       <!-- Text Wrapper -->
-      <div class="w-full text-center md:w-1/2 space-y-4 md:text-left md:space-y-8">
+      <div class="w-full text-center <sm:mt-6 md:w-1/2 space-y-4 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
             'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance animate-clip-circle md:text-balance',
