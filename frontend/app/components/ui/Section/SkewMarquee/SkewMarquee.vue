@@ -65,7 +65,7 @@ const firstRow = ref(reviews)
 <template>
   <div
     ref="target"
-    class="my-12 w-full flex flex-col items-center justify-center"
+    class="my-12 w-screen max-w-none relative left-1/2 -translate-x-1/2 flex flex-col items-center justify-center"
   >
     <div
       class="relative h-[430px] w-full overflow-hidden border bg-pureWhite dark:bg-background"

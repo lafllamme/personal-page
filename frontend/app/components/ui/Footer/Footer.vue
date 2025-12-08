@@ -207,7 +207,7 @@ watch(footerVisible, (vis) => {
             bottomVisible ? 'animate-fade-in-up' : 'opacity-0 translate-y-16',
           ]" class="flex flex-col items-center justify-between pt-8 md:flex-row space-y-4 md:space-y-0"
         >
-          <p class="color-gray-11 font-light transition-colors duration-300 ease-out hover:color-mint-12">
+          <p class="font-manrope color-gray-11 font-extralight transition-colors duration-300 ease-out hover:color-mint-12">
             © {{ currentYear }} TecNews. All rights reserved.
           </p>
           <div class="flex space-x-6">
