@@ -25,6 +25,11 @@ const LazyRippleButton = defineLazyHydrationComponent(
   () => import('~/components/ui/Buttons/RippleButton/RippleButton.vue'),
 )
 
+const LazyMarquee = defineLazyHydrationComponent(
+  'idle',
+  () => import('~/components/ui/Marquee/Marquee.vue'),
+)
+
 const LazySkewMarquee = defineLazyHydrationComponent(
   'visible',
   () => import('~/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
@@ -115,8 +120,24 @@ watch(shouldMountSpline, (value) => {
     class="bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack"
   >
     <div
-      class="mb-12 flex flex-col items-center md:flex-row"
+      class="relative isolate mb-12 flex flex-col items-center overflow-hidden md:flex-row"
     >
+      <LazyMarquee
+        class="pointer-events-none absolute right-[-12%] top-[-3rem] z-0 max-w-none w-[140%] rotate-[18deg] text-pureBlack/5 dark:text-pureWhite/5"
+        :repeat="8"
+        :pause-on-hover="false"
+      >
+        <div
+          class="font-bold font-electric flex items-center gap-3 text-[10rem] md:text-[15rem] tracking-normal uppercase"
+        >
+          <span>Tech news radar</span>
+          <span aria-hidden="true">•</span>
+          <span>Shipping weekly</span>
+          <span aria-hidden="true">•</span>
+          <span>Signal over noise</span>
+        </div>
+      </LazyMarquee>
+
       <!-- Circle Wrapper -->
       <div
         ref="heroRef"
@@ -144,7 +165,7 @@ watch(shouldMountSpline, (value) => {
       </div>
 
       <!-- Text Wrapper -->
-      <div class="w-full text-center <sm:mt-6 md:w-1/2 space-y-4 md:text-left md:space-y-8">
+      <div class="relative z-10 w-full text-center <sm:mt-6 md:mt-12 md:w-1/2 space-y-4 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
             'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance animate-clip-circle md:text-balance',
