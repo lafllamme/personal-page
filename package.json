@@ -28,8 +28,8 @@
     "deps:upgrade:latest": "pnpm run deps:latest && pnpm run deps:install && pnpm -w dedupe"
   },
   "devDependencies": {
-    "concurrently": "^9.2.1",
-    "turbo": "^2.5.8"
+    "concurrently": "catalog:",
+    "turbo": "catalog:"
   },
   "packageManager": "pnpm@10.18.3",
   "pnpm": {
