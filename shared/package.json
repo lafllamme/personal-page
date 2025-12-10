@@ -60,18 +60,18 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@payloadcms/db-postgres": "3.60.0",
-    "@payloadcms/next": "3.60.0",
-    "@payloadcms/richtext-lexical": "3.60.0",
-    "@vercel/blob": "^2.0.0",
-    "monaco-editor": "^0.54.0",
-    "payload": "3.60.0",
-    "sharp": "0.34.3"
+    "@payloadcms/db-postgres": "catalog:",
+    "@payloadcms/next": "catalog:",
+    "@payloadcms/richtext-lexical": "catalog:",
+    "@vercel/blob": "catalog:",
+    "monaco-editor": "catalog:",
+    "payload": "catalog:",
+    "sharp": "catalog:"
   },
   "devDependencies": {
-    "@types/node": "^24.8.1",
-    "@types/react": "^19.2.2",
-    "typescript": "^5.9.3"
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "typescript": "catalog:"
   },
   "files": [
     "dist",
