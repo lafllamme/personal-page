@@ -115,6 +115,30 @@ const textFlipX = ref(true)
 const textFlipY = ref(false)
 const textBoost = ref(1.15)
 const textMix = ref(0.95)
+const fontOptions = [
+  { label: 'Electric', family: 'Electric' },
+  { label: 'Recoleta', family: 'Recoleta' },
+  { label: 'Ginger', family: 'Ginger' },
+  { label: 'Prata', family: 'Prata' },
+  { label: 'Manrope', family: 'Manrope' },
+  { label: 'Geist', family: 'Geist Regular' },
+  { label: 'Space Grotesk', family: 'Space Grotesk' },
+  { label: 'Boldonse', family: 'Boldonse' },
+  { label: 'Audiowide', family: 'Audiowide' },
+  { label: 'Zen Dots', family: 'Zen Dots' },
+  { label: 'Bruno Ace SC', family: 'Bruno Ace SC' },
+  { label: 'Major Mono Display', family: 'Major Mono Display' },
+  { label: 'Nova Square', family: 'Nova Square' },
+  { label: 'Figtree', family: 'Figtree' },
+  { label: 'JetBrains Mono', family: 'JetBrains Mono' },
+  { label: 'Crimson Text', family: 'Crimson Text' },
+  { label: 'Lora', family: 'Lora' },
+  { label: 'Libre Baskerville', family: 'Libre Baskerville' },
+  { label: 'EB Garamond', family: 'EB Garamond' },
+  { label: 'Cormorant Garamond', family: 'Cormorant Garamond' },
+  { label: 'Zalando Sans Expanded', family: 'Zalando Sans Expanded' },
+]
+const selectedFont = ref(fontOptions[0].family)
 
 /**
  * Legacy toggles kept for UI compatibility
@@ -217,6 +241,10 @@ watch([
   lengthStretch,
   widthStretch,
 ], () => logState(), { immediate: true })
+
+watch(selectedFont, () => {
+  drawGlyphAtlas()
+})
 
 const instanced = shallowRef<InstancedMesh | null>(null)
 
@@ -344,7 +372,7 @@ function drawGlyphAtlas() {
   // draw white glyph into alpha, shader applies color
   ctx.fillStyle = 'rgba(255,255,255,1)'
   ctx.strokeStyle = 'rgba(255,255,255,1)'
-  ctx.font = `800 ${size}px "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
+  ctx.font = `800 ${size}px "${selectedFont.value}", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
 
   const pad = Math.max(10, Math.floor(ATLAS_CELL * 0.12))
   const cx = ATLAS_CELL * 0.5
@@ -872,8 +900,22 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     :class="props.full ? '' : 'w-full'"
     :style="containerStyle"
   >
-    <div class="pointer-events-none absolute inset-0">
-      <div class="border-white/10 bg-black/75 text-white pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border rounded-lg p-3 text-[12px] shadow-xl backdrop-blur-md space-y-2">
+      <div class="pointer-events-none absolute inset-0">
+        <div class="border-white/10 bg-black/75 text-white pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border rounded-lg p-3 text-[12px] shadow-xl backdrop-blur-md space-y-2">
+          <div class="space-y-2">
+            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+              <span>Ribbon Text</span>
+              <input v-model="ribbonText" type="text" class="w-full rounded bg-white/10 px-2 py-1 text-[12px] text-white border border-white/10">
+            </label>
+            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+              <span>Font</span>
+              <select v-model="selectedFont" class="w-full rounded bg-white/10 px-2 py-1 text-[12px] text-white border border-white/10">
+                <option v-for="opt in fontOptions" :key="opt.family" :value="opt.family">
+                  {{ opt.label }}
+                </option>
+              </select>
+            </label>
+          </div>
         <div class="text-white/70 text-xs tracking-[0.15em] font-mono uppercase">
           Camera
         </div>
