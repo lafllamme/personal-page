@@ -25,6 +25,7 @@ const fonts = [
   { name: 'Libre Baskerville', class: 'font-baskerville', category: 'serif' },
   { name: 'EB Garamond', class: 'font-eb-garamond', category: 'serif' },
   { name: 'Cormorant Garamond', class: 'font-cormorant-garamond', category: 'serif' },
+  { name: 'Zalando Sans Expanded', class: 'zalando-sans-expanded', category: 'sans' },
 ]
 
 // Computed properties for filtering and font weight classes

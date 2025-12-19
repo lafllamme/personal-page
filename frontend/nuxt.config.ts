@@ -27,6 +27,7 @@ const fonts: NuxtFontsOptions = {
 
     // Single-weight display families (avoid synthetic bold in CSS via font-synthesis: none)
     { name: 'Prata', weights: ['400'], styles: ['normal'] },
+    { name: 'Zalando Sans Expanded', weights: ['400', '700'], styles: ['normal'] },
     { name: 'Nova Square', weights: ['400'], styles: ['normal'] },
     { name: 'Audiowide', weights: ['400'], styles: ['normal'] },
     { name: 'Zen Dots', weights: ['400'], styles: ['normal'] },
