@@ -36,7 +36,7 @@
    * Ribbon text and length
    */
   const ribbonText = ref(
-    ' THE SEA IS A DESERT OF WAVES, A WILDERNESS OF WATER. THE SEA IS A DESERT OF WAVES, A WILDERNESS OF WATER. THE SEA IS A DESERT OF WAVES, A WILDERNESS OF WATER. ',
+    (' THE SEA IS A DESERT OF WAVES, A WILDERNESS OF WATER.').repeat(5).slice(0, 160),
   )
   const runLength = computed(() => Math.max(1, ribbonText.value.length))
   
@@ -58,10 +58,10 @@
    */
   const scaler = ref(0.017)
   const groupScale = computed(() => [scaler.value, scaler.value, scaler.value] as const)
-  
-  const shiftX = ref(0)
-  const shiftY = ref(0)
-  const shiftZ = ref(0)
+
+  const shiftX = ref(2)
+  const shiftY = ref(3)
+  const shiftZ = ref(7)
   const groupPos = computed(() => [shiftX.value, shiftY.value, shiftZ.value] as const)
   
   /**
@@ -69,24 +69,18 @@
    */
   const camX = ref(10)
   const camY = ref(12)
-  const camZ = ref(28)
-  const fov = ref(35)
-  
-  const rotX = ref(-1.91)
-  const rotY = ref(-2.12)
-  const rotZ = ref(3.05)
+  const camZ = ref(29.75)
+  const fov = ref(28)
+
+  const rotX = ref(1.74)
+  const rotY = ref(0.48)
+  const rotZ = ref(6.28)
   
   const timeScale = ref(1)
   
   const cameraPos = computed(() => [camX.value, camY.value, camZ.value] as const)
   const groupRot = computed(() => [rotX.value, rotY.value, rotZ.value] as const)
   
-  watch([camX, camY, camZ, fov, rotX, rotY, rotZ, scaler, shiftX, shiftY, shiftZ], () => {
-    consola.info(
-      '[RibbonDebug]',
-      `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)})`,
-    )
-  })
   
   /**
    * Visual styling controls
@@ -99,8 +93,8 @@
   const col2 = ref('#FF2F92')
   const col3 = ref('#011993')
   const col4 = ref('#0096FF')
-  
-  const showText = ref(true)
+
+  const showText = ref(false)
   const textColor = ref('#ffffff')
   const textOpacity = ref(0.95)
   const textSize = ref(92)
@@ -109,6 +103,24 @@
   const frameStrength = ref(0.25)
   const showBands = ref(true)
   const bandStrength = ref(0.18)
+
+  const logState = () => {
+    consola.info(
+      '[RibbonDebug]',
+      `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | text ${showText.value ? 1 : 0} size ${textSize.value} stroke ${textStroke.value} opacity ${textOpacity.value.toFixed(2)} | colors c1 ${col1.value} c2 ${col2.value} c3 ${col3.value} c4 ${col4.value} bg (${bgA.value}, ${bgB.value}, ${bgC.value}) | frame ${showSegmentFrame.value ? frameStrength.value.toFixed(2) : 0} bands ${showBands.value ? bandStrength.value.toFixed(2) : 0} | runLen ${runLength.value} textLen ${ribbonText.value.length}`,
+    )
+  }
+
+  watch([
+    camX, camY, camZ, fov, rotX, rotY, rotZ, scaler, shiftX, shiftY, shiftZ,
+    speed, timeScale, alt,
+    segmentSpace, segmentCount, depth, middleStretch, xSpace, zSpace, count,
+    ribbonText, showText, textColor, textOpacity, textSize, textStroke,
+    showSegmentFrame, frameStrength, showBands, bandStrength,
+    col1, col2, col3, col4, bgA, bgB, bgC,
+  ], () => {
+    logState()
+  }, { immediate: true })
   
   const instanced = shallowRef<InstancedMesh | null>(null)
   const segGeomRef = shallowRef<PlaneGeometry | null>(null)
@@ -573,7 +585,8 @@
         },
       ]"
     >
-      <div class="bg-black/60 text-white pointer-events-auto absolute right-3 top-3 z-10 grid gap-2 rounded-md p-3 text-[12px] backdrop-blur">
+      <div class="pointer-events-none absolute inset-0">
+        <div class="pointer-events-auto fixed right-4 top-24 z-30 w-72 max-h-[80vh] overflow-auto rounded-lg border border-white/10 bg-black/75 p-3 text-[12px] text-white shadow-xl backdrop-blur-md space-y-2">
         <div class="text-white/70 text-xs tracking-[0.15em] font-mono uppercase">Camera</div>
   
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
@@ -725,8 +738,9 @@
             <input v-model="bgC" type="color" class="h-6 w-full">
           </label>
         </div>
+        </div>  
       </div>
-  
+
       <ClientOnly>
         <TresCanvas
           v-if="ready"
