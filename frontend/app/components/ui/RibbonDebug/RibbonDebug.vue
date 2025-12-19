@@ -107,6 +107,8 @@ const textColor = ref('#ffffff')
 const textOpacity = ref(0.95)
 const textSize = ref(111)
 const textStroke = ref(1)
+const textWidth = ref(1)
+const textSpacing = ref(0)
 
 /**
  * Text fixes + readability
@@ -190,7 +192,7 @@ const containerStyle = computed(() => {
 function logState() {
   consola.info(
     '[RibbonDebug]',
-    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value} | text ${showText.value ? 1 : 0} size ${textSize.value} stroke ${textStroke.value} opacity ${textOpacity.value.toFixed(2)} flipX ${textFlipX.value ? 1 : 0} flipY ${textFlipY.value ? 1 : 0} boost ${textBoost.value.toFixed(2)} mix ${textMix.value.toFixed(2)} | frame ${showSegmentFrame.value ? frameStrength.value.toFixed(2) : 0} mode ${frameMode.value} | bands ${showBands.value ? bandStrength.value.toFixed(2) : 0}`,
+    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value} | text ${showText.value ? 1 : 0} font "${selectedFont.value}" size ${textSize.value} stroke ${textStroke.value} opacity ${textOpacity.value.toFixed(2)} width ${textWidth.value.toFixed(2)} spacing ${textSpacing.value.toFixed(2)} flipX ${textFlipX.value ? 1 : 0} flipY ${textFlipY.value ? 1 : 0} boost ${textBoost.value.toFixed(2)} mix ${textMix.value.toFixed(2)} | frame ${showSegmentFrame.value ? frameStrength.value.toFixed(2) : 0} mode ${frameMode.value} | bands ${showBands.value ? bandStrength.value.toFixed(2) : 0}`,
   )
 }
 
@@ -222,6 +224,9 @@ watch([
   textOpacity,
   textSize,
   textStroke,
+  textWidth,
+  textSpacing,
+  selectedFont,
   textFlipX,
   textFlipY,
   textBoost,
@@ -361,6 +366,13 @@ function drawGlyphAtlas() {
 
   const size = Math.max(10, Math.floor(textSize.value))
   const stroke = Math.max(0, Math.floor(textStroke.value))
+  const widthScale = Math.max(0.35, textWidth.value)
+  const fontSpec = `800 ${size}px "${selectedFont.value}"`
+
+  if ('fonts' in document && !document.fonts.check(fontSpec)) {
+    document.fonts.load(fontSpec).then(() => drawGlyphAtlas())
+    return
+  }
 
   ctx.save()
   ctx.globalCompositeOperation = 'source-over'
@@ -372,7 +384,7 @@ function drawGlyphAtlas() {
   // draw white glyph into alpha, shader applies color
   ctx.fillStyle = 'rgba(255,255,255,1)'
   ctx.strokeStyle = 'rgba(255,255,255,1)'
-  ctx.font = `800 ${size}px "${selectedFont.value}", "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
+  ctx.font = `${fontSpec}, "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
 
   const pad = Math.max(10, Math.floor(ATLAS_CELL * 0.12))
   const cx = ATLAS_CELL * 0.5
@@ -388,14 +400,15 @@ function drawGlyphAtlas() {
     ctx.clearRect(x0, y0, ATLAS_CELL, ATLAS_CELL)
     ctx.save()
     ctx.translate(x0 + cx, y0 + cy)
+    ctx.scale(widthScale, 1)
 
     // metric centered placement
     const m = ctx.measureText(ch)
-    const xOff = -((m.actualBoundingBoxLeft ?? 0) + (m.actualBoundingBoxRight ?? 0)) * 0.5
+    const xOff = -((m.actualBoundingBoxLeft ?? 0) + (m.actualBoundingBoxRight ?? 0)) * 0.5 / widthScale
     const yOff = ((m.actualBoundingBoxAscent ?? 0) - (m.actualBoundingBoxDescent ?? 0)) * 0.5
 
     if (stroke > 0) {
-      ctx.lineWidth = stroke
+      ctx.lineWidth = stroke / widthScale
       ctx.strokeText(ch, xOff, yOff)
     }
     ctx.fillText(ch, xOff, yOff)
@@ -418,7 +431,7 @@ function drawTextTexture() {
   drawGlyphAtlas()
 }
 
-watch([ribbonText, showText, textSize, textStroke], () => {
+watch([ribbonText, showText, textSize, textStroke, textWidth], () => {
   drawGlyphAtlas()
 })
 
@@ -443,6 +456,8 @@ onMounted(() => {
 
     shader.uniforms.uTextColor = { value: new Color(textColor.value) }
     shader.uniforms.uTextOpacity = { value: textOpacity.value }
+    shader.uniforms.uTextWidth = { value: textWidth.value }
+    shader.uniforms.uTextSpacing = { value: textSpacing.value }
 
     shader.uniforms.uTextFlipX = { value: textFlipX.value ? 1 : 0 }
     shader.uniforms.uTextFlipY = { value: textFlipY.value ? 1 : 0 }
@@ -507,6 +522,8 @@ uniform int uShowText;
 
 uniform vec3 uTextColor;
 uniform float uTextOpacity;
+uniform float uTextWidth;
+uniform float uTextSpacing;
 
 uniform int uTextFlipX;
 uniform int uTextFlipY;
@@ -595,10 +612,17 @@ void main() {
   }
 
   if (uShowText == 1) {
-    vec2 tuv = atlasUv(vGlyph, uv);
+    float width = max(0.1, uTextWidth);
+    float spacing = clamp(uTextSpacing, 0.0, 0.45);
+    vec2 localUv = uv;
+    localUv.x = (localUv.x - 0.5) / width + 0.5;
+    float spacingMask = step(spacing, localUv.x) * step(localUv.x, 1.0 - spacing);
+    localUv = clamp(localUv, 0.0, 1.0);
+
+    vec2 tuv = atlasUv(vGlyph, localUv);
     vec4 tx = texture2D(uTextMap, tuv);
 
-    float a = clamp(tx.a * uTextOpacity, 0.0, 1.0);
+    float a = clamp(tx.a * uTextOpacity, 0.0, 1.0) * spacingMask;
     vec3 tcol = clamp(uTextColor * uTextBoost, 0.0, 1.0);
 
     base = mix(base, tcol, a * clamp(uTextMix, 0.0, 1.0));
@@ -850,6 +874,8 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     shader.uniforms.uShowText.value = showText.value ? 1 : 0
     shader.uniforms.uTextColor.value.set(textColor.value)
     shader.uniforms.uTextOpacity.value = textOpacity.value
+    shader.uniforms.uTextWidth.value = textWidth.value
+    shader.uniforms.uTextSpacing.value = textSpacing.value
 
     shader.uniforms.uTextFlipX.value = textFlipX.value ? 1 : 0
     shader.uniforms.uTextFlipY.value = textFlipY.value ? 1 : 0
@@ -902,20 +928,6 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
   >
       <div class="pointer-events-none absolute inset-0">
         <div class="border-white/10 bg-black/75 text-white pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border rounded-lg p-3 text-[12px] shadow-xl backdrop-blur-md space-y-2">
-          <div class="space-y-2">
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>Ribbon Text</span>
-              <input v-model="ribbonText" type="text" class="w-full rounded bg-white/10 px-2 py-1 text-[12px] text-white border border-white/10">
-            </label>
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>Font</span>
-              <select v-model="selectedFont" class="w-full rounded bg-white/10 px-2 py-1 text-[12px] text-white border border-white/10">
-                <option v-for="opt in fontOptions" :key="opt.family" :value="opt.family">
-                  {{ opt.label }}
-                </option>
-              </select>
-            </label>
-          </div>
         <div class="text-white/70 text-xs tracking-[0.15em] font-mono uppercase">
           Camera
         </div>
@@ -1011,6 +1023,24 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           </label>
         </div>
 
+        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+          Text Input
+        </div>
+
+        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+          <span>Text</span>
+          <input v-model="ribbonText" type="text" class="w-full rounded bg-white/10 px-2 py-1 text-[12px] text-white border border-white/10">
+        </label>
+
+        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+          <span>Font</span>
+          <select v-model="selectedFont" class="w-full rounded bg-white/10 px-2 py-1 text-[12px] text-white border border-white/10">
+            <option v-for="opt in fontOptions" :key="opt.family" :value="opt.family">
+              {{ opt.label }}
+            </option>
+          </select>
+        </label>
+
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Text</span>
           <input v-model="showText" type="checkbox" @change="drawTextTexture()">
@@ -1035,6 +1065,16 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Stroke</span>
           <input v-model.number="textStroke" type="range" min="0" max="22" step="1" @input="drawTextTexture()">
+        </label>
+
+        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+          <span>Width</span>
+          <input v-model.number="textWidth" type="range" min="0.35" max="2.5" step="0.01" @input="drawTextTexture()">
+        </label>
+
+        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+          <span>Space</span>
+          <input v-model.number="textSpacing" type="range" min="0" max="0.45" step="0.01">
         </label>
 
         <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
