@@ -15,19 +15,19 @@ const fonts: NuxtFontsOptions = {
     // Variable / multi-weight families – Range syntax uses SPACE, not '..'
     { name: 'Figtree', weights: ['300 900'], styles: ['normal', 'italic'] },
     { name: 'Space Grotesk', weights: ['300 700'], styles: ['normal'] },
-    { name: 'Manrope', weights: ['200 800'], styles: ['normal', 'italic'] },
+    { name: 'Manrope', weights: ['200 800'], styles: ['normal'] },
     { name: 'JetBrains Mono', weights: ['100 800'], styles: ['normal', 'italic'] },
     { name: 'EB Garamond', weights: ['400 800'], styles: ['normal', 'italic'] },
     { name: 'Lora', weights: ['400 700'], styles: ['normal', 'italic'] },
     { name: 'Cormorant Garamond', weights: ['300 700'], styles: ['normal', 'italic'] },
+    { name: 'Zalando Sans Expanded', weights: ['200 900'], styles: ['normal', 'italic'] },
 
     // Multi/static weights
     { name: 'Crimson Text', weights: ['400', '600', '700'], styles: ['normal', 'italic'] },
-    { name: 'Libre Baskerville', weights: ['400', '700'], styles: ['normal', 'italic'] },
+    { name: 'Libre Baskerville', weights: ['400 700'], styles: ['normal', 'italic'] },
 
     // Single-weight display families (avoid synthetic bold in CSS via font-synthesis: none)
     { name: 'Prata', weights: ['400'], styles: ['normal'] },
-    { name: 'Zalando Sans Expanded', weights: ['400', '700'], styles: ['normal'] },
     { name: 'Nova Square', weights: ['400'], styles: ['normal'] },
     { name: 'Audiowide', weights: ['400'], styles: ['normal'] },
     { name: 'Zen Dots', weights: ['400'], styles: ['normal'] },
