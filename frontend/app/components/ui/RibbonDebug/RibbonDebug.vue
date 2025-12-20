@@ -38,19 +38,8 @@ const ribbonText = ref(
 const baseRunLength = computed(() => Math.max(1, ribbonText.value.length))
 
 /**
- * Band stretch controls
- */
-const lengthStretch = ref(1.3) // makes more segments without editing ribbonText
-const widthStretch = ref(1.31) // scales depth for thickness
-
-const runLength = computed(() => {
-  const v = Math.max(1, Math.floor(baseRunLength.value * Math.max(0.25, lengthStretch.value)))
-  return v
-})
-const effectiveDepth = computed(() => Math.max(1, depth.value * Math.max(0.25, widthStretch.value)))
-
-/**
  * Streamers preset params
+ * FIX: depth must exist before effectiveDepth computed (TDZ crash otherwise)
  */
 const segmentSpace = ref(23)
 const segmentCount = ref(22)
@@ -61,6 +50,18 @@ const count = ref(4)
 const zSpace = ref(1.62)
 const xSpace = ref(1.3)
 const alt = ref(false)
+
+/**
+ * Band stretch controls
+ */
+const lengthStretch = ref(1.3)
+const widthStretch = ref(1.31)
+
+const runLength = computed(() => {
+  const v = Math.max(1, Math.floor(baseRunLength.value * Math.max(0.25, lengthStretch.value)))
+  return v
+})
+const effectiveDepth = computed(() => Math.max(1, depth.value * Math.max(0.25, widthStretch.value)))
 
 /**
  * Debug scale and shift
@@ -109,6 +110,11 @@ const textSize = ref(111)
 const textStroke = ref(1)
 const textWidth = ref(1)
 const textSpacing = ref(0)
+
+/**
+ * FIX: controllable font weight for glyph atlas
+ */
+const textWeight = ref(300)
 
 /**
  * Text fixes + readability
@@ -170,8 +176,8 @@ const _lastWrap = ref<number | null>(null)
 
 const backgroundStyle = computed(() => ({
   background: `radial-gradient(1200px 700px at 20% 20%, ${bgB.value} 0%, rgba(0,0,0,0) 60%),
-                 radial-gradient(900px 600px at 80% 30%, ${bgC.value} 0%, rgba(0,0,0,0) 60%),
-                 linear-gradient(135deg, ${bgA.value} 0%, #05060c 55%, #05060c 100%)`,
+                   radial-gradient(900px 600px at 80% 30%, ${bgC.value} 0%, rgba(0,0,0,0) 60%),
+                   linear-gradient(135deg, ${bgA.value} 0%, #05060c 55%, #05060c 100%)`,
 }))
 
 const containerStyle = computed(() => {
@@ -192,7 +198,7 @@ const containerStyle = computed(() => {
 function logState() {
   consola.info(
     '[RibbonDebug]',
-    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value} | text ${showText.value ? 1 : 0} font "${selectedFont.value}" size ${textSize.value} stroke ${textStroke.value} opacity ${textOpacity.value.toFixed(2)} width ${textWidth.value.toFixed(2)} spacing ${textSpacing.value.toFixed(2)} flipX ${textFlipX.value ? 1 : 0} flipY ${textFlipY.value ? 1 : 0} boost ${textBoost.value.toFixed(2)} mix ${textMix.value.toFixed(2)} | frame ${showSegmentFrame.value ? frameStrength.value.toFixed(2) : 0} mode ${frameMode.value} | bands ${showBands.value ? bandStrength.value.toFixed(2) : 0}`,
+    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value} | text ${showText.value ? 1 : 0} font "${selectedFont.value}" weight ${textWeight.value} size ${textSize.value} stroke ${textStroke.value} opacity ${textOpacity.value.toFixed(2)} width ${textWidth.value.toFixed(2)} spacing ${textSpacing.value.toFixed(2)} flipX ${textFlipX.value ? 1 : 0} flipY ${textFlipY.value ? 1 : 0} boost ${textBoost.value.toFixed(2)} mix ${textMix.value.toFixed(2)} | frame ${showSegmentFrame.value ? frameStrength.value.toFixed(2) : 0} mode ${frameMode.value} | bands ${showBands.value ? bandStrength.value.toFixed(2) : 0}`,
   )
 }
 
@@ -227,6 +233,7 @@ watch([
   textWidth,
   textSpacing,
   selectedFont,
+  textWeight,
   textFlipX,
   textFlipY,
   textBoost,
@@ -247,9 +254,8 @@ watch([
   widthStretch,
 ], () => logState(), { immediate: true })
 
-watch(selectedFont, () => {
-  drawGlyphAtlas()
-})
+watch(selectedFont, () => drawGlyphAtlas())
+watch(textWeight, () => drawGlyphAtlas())
 
 const instanced = shallowRef<InstancedMesh | null>(null)
 
@@ -294,7 +300,6 @@ function ensureGlyphAtlas() {
   tex.wrapS = ClampToEdgeWrapping
   tex.wrapT = ClampToEdgeWrapping
 
-  // avoid mip bleed across cells
   tex.generateMipmaps = false
   tex.minFilter = LinearFilter
   tex.magFilter = LinearFilter
@@ -307,15 +312,6 @@ function ensureGlyphAtlas() {
   glyphCanvas.value = c
   glyphCtx.value = ctx
   glyphTex.value = tex
-
-  consola.info('[RibbonGlyphAtlas]', 'atlas created', {
-    w: c.width,
-    h: c.height,
-    cols: ATLAS_COLS,
-    rows: ATLAS_ROWS,
-    cell: ATLAS_CELL,
-    cap: ATLAS_CAP,
-  })
 }
 
 function buildGlyphSetFromText() {
@@ -328,13 +324,8 @@ function buildGlyphSetFromText() {
   const list = Array.from(set)
   list.sort((a, b) => (a === ' ' ? -1 : b === ' ' ? 1 : a.localeCompare(b)))
 
-  if (list.length > ATLAS_CAP) {
-    consola.warn('[RibbonGlyphAtlas]', 'too many unique glyphs for atlas capacity', {
-      unique: list.length,
-      cap: ATLAS_CAP,
-    })
+  if (list.length > ATLAS_CAP)
     list.length = ATLAS_CAP
-  }
 
   const map = new Map<string, number>()
   for (let i = 0; i < list.length; i++)
@@ -367,7 +358,9 @@ function drawGlyphAtlas() {
   const size = Math.max(10, Math.floor(textSize.value))
   const stroke = Math.max(0, Math.floor(textStroke.value))
   const widthScale = Math.max(0.35, textWidth.value)
-  const fontSpec = `800 ${size}px "${selectedFont.value}"`
+
+  const weight = Math.min(900, Math.max(100, Math.round(textWeight.value / 50) * 50))
+  const fontSpec = `${weight} ${size}px "${selectedFont.value}"`
 
   if ('fonts' in document && !document.fonts.check(fontSpec)) {
     document.fonts.load(fontSpec).then(() => drawGlyphAtlas())
@@ -381,7 +374,6 @@ function drawGlyphAtlas() {
   ctx.lineJoin = 'round'
   ctx.lineCap = 'round'
 
-  // draw white glyph into alpha, shader applies color
   ctx.fillStyle = 'rgba(255,255,255,1)'
   ctx.strokeStyle = 'rgba(255,255,255,1)'
   ctx.font = `${fontSpec}, "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
@@ -402,7 +394,6 @@ function drawGlyphAtlas() {
     ctx.translate(x0 + cx, y0 + cy)
     ctx.scale(widthScale, 1)
 
-    // metric centered placement
     const m = ctx.measureText(ch)
     const xOff = -((m.actualBoundingBoxLeft ?? 0) + (m.actualBoundingBoxRight ?? 0)) * 0.5 / widthScale
     const yOff = ((m.actualBoundingBoxAscent ?? 0) - (m.actualBoundingBoxDescent ?? 0)) * 0.5
@@ -413,7 +404,6 @@ function drawGlyphAtlas() {
     }
     ctx.fillText(ch, xOff, yOff)
 
-    // clear thin borders to reduce sampling bleed
     ctx.clearRect(-cx, -cy, pad, ATLAS_CELL)
     ctx.clearRect(cx - pad, -cy, pad, ATLAS_CELL)
     ctx.clearRect(-cx, -cy, ATLAS_CELL, pad)
@@ -427,11 +417,10 @@ function drawGlyphAtlas() {
 }
 
 function drawTextTexture() {
-  // keep function name for template calls
   drawGlyphAtlas()
 }
 
-watch([ribbonText, showText, textSize, textStroke, textWidth], () => {
+watch([ribbonText, showText, textSize, textStroke, textWidth, selectedFont, textWeight], () => {
   drawGlyphAtlas()
 })
 
@@ -478,159 +467,151 @@ onMounted(() => {
       .replace(
         '#include <common>',
         `#include <common>
-attribute float aSegIndex;
-attribute float aRibbonId;
-attribute float aGlyph;
+  attribute float aSegIndex;
+  attribute float aRibbonId;
+  attribute float aGlyph;
 
-uniform float uRunLength;
+  uniform float uRunLength;
 
-varying vec2 vUv;
-varying float vGradT;
-varying float vRibbonId;
-varying float vGlyph;
-varying float vSegIndex;
-        `,
+  varying vec2 vUv;
+  varying float vGradT;
+  varying float vRibbonId;
+  varying float vGlyph;
+  varying float vSegIndex;
+          `,
       )
       .replace(
         '#include <uv_vertex>',
         `#include <uv_vertex>
-vUv = uv;
-vRibbonId = aRibbonId;
-vGlyph = aGlyph;
-vSegIndex = aSegIndex;
+  vUv = uv;
+  vRibbonId = aRibbonId;
+  vGlyph = aGlyph;
+  vSegIndex = aSegIndex;
 
-float rl = max(1.0, uRunLength);
-vGradT = clamp(aSegIndex / max(1.0, rl - 1.0), 0.0, 1.0);
-        `,
+  float rl = max(1.0, uRunLength);
+  vGradT = clamp(aSegIndex / max(1.0, rl - 1.0), 0.0, 1.0);
+          `,
       )
 
     shader.fragmentShader = `
-#ifdef GL_ES
-precision highp float;
-precision highp int;
-#endif
+  #ifdef GL_ES
+  precision highp float;
+  precision highp int;
+  #endif
 
-uniform float uRunLength;
+  uniform float uRunLength;
 
-uniform vec3 uCol1;
-uniform vec3 uCol2;
-uniform vec3 uCol3;
-uniform vec3 uCol4;
+  uniform vec3 uCol1;
+  uniform vec3 uCol2;
+  uniform vec3 uCol3;
+  uniform vec3 uCol4;
 
-uniform sampler2D uTextMap;
-uniform int uShowText;
+  uniform sampler2D uTextMap;
+  uniform int uShowText;
 
-uniform vec3 uTextColor;
-uniform float uTextOpacity;
-uniform float uTextWidth;
-uniform float uTextSpacing;
+  uniform vec3 uTextColor;
+  uniform float uTextOpacity;
+  uniform float uTextWidth;
+  uniform float uTextSpacing;
 
-uniform int uTextFlipX;
-uniform int uTextFlipY;
-uniform float uTextBoost;
-uniform float uTextMix;
+  uniform int uTextFlipX;
+  uniform int uTextFlipY;
+  uniform float uTextBoost;
+  uniform float uTextMix;
 
-uniform float uAtlasCols;
-uniform float uAtlasRows;
+  uniform float uAtlasCols;
+  uniform float uAtlasRows;
 
-uniform int uShowFrame;
-uniform float uFrameStrength;
-uniform int uFrameMode;
+  uniform int uShowFrame;
+  uniform float uFrameStrength;
+  uniform int uFrameMode;
 
-uniform int uShowBands;
-uniform float uBandStrength;
+  uniform int uShowBands;
+  uniform float uBandStrength;
 
-varying vec2 vUv;
-varying float vGradT;
-varying float vRibbonId;
-varying float vGlyph;
-varying float vSegIndex;
+  varying vec2 vUv;
+  varying float vGradT;
+  varying float vRibbonId;
+  varying float vGlyph;
+  varying float vSegIndex;
 
-vec3 ramp(float t) {
-  t = clamp(t, 0.0, 1.0);
-  if (t < 0.3333) return mix(uCol1, uCol2, smoothstep(0.0, 0.3333, t));
-  if (t < 0.6666) return mix(uCol2, uCol3, smoothstep(0.3333, 0.6666, t));
-  return mix(uCol3, uCol4, smoothstep(0.6666, 1.0, t));
-}
-
-float edgeMask(float edge) {
-  return 1.0 - smoothstep(0.02, 0.08, edge);
-}
-
-float frameMaskTile(vec2 uv) {
-  float edge = min(min(uv.x, 1.0 - uv.x), min(uv.y, 1.0 - uv.y));
-  return edgeMask(edge);
-}
-
-float frameMaskOuter(vec2 uv) {
-  float rl = max(1.0, uRunLength);
-  float isEnd = step(vSegIndex, 0.5) + step(rl - 1.5, vSegIndex);
-  isEnd = clamp(isEnd, 0.0, 1.0);
-
-  float ex = min(uv.x, 1.0 - uv.x);
-  float ey = min(uv.y, 1.0 - uv.y);
-
-  float fx = edgeMask(ex) * isEnd;
-  float fy = edgeMask(ey);
-
-  return max(fx, fy);
-}
-
-vec2 atlasUv(float glyphId, vec2 localUv) {
-  float id = floor(glyphId + 0.5);
-  float col = mod(id, uAtlasCols);
-  float row = floor(id / uAtlasCols);
-
-  vec2 uv = localUv;
-
-  uv.x = (uTextFlipX == 1) ? (1.0 - uv.x) : uv.x;
-  uv.y = (uTextFlipY == 1) ? (1.0 - uv.y) : uv.y;
-
-  if (!gl_FrontFacing) {
-    uv.x = 1.0 - uv.x;
+  vec3 ramp(float t) {
+    t = clamp(t, 0.0, 1.0);
+    if (t < 0.3333) return mix(uCol1, uCol2, smoothstep(0.0, 0.3333, t));
+    if (t < 0.6666) return mix(uCol2, uCol3, smoothstep(0.3333, 0.6666, t));
+    return mix(uCol3, uCol4, smoothstep(0.6666, 1.0, t));
   }
 
-  return (vec2(col, row) + uv) / vec2(uAtlasCols, uAtlasRows);
-}
-
-void main() {
-  vec2 uv = vUv;
-
-  vec3 base = ramp(vGradT);
-
-  if (!gl_FrontFacing) base *= 0.86;
-
-  if (uShowBands == 1) {
-    float bands = abs(fract(uv.x * 1.0) - 0.5);
-    float bandMask = smoothstep(0.48, 0.50, bands);
-    base = mix(base, vec3(1.0), bandMask * uBandStrength);
+  float edgeMask(float edge) {
+    return 1.0 - smoothstep(0.02, 0.08, edge);
   }
 
-  if (uShowFrame == 1 && uFrameStrength > 0.0001 && uFrameMode != 0) {
-    float fm = (uFrameMode == 2) ? frameMaskOuter(uv) : frameMaskTile(uv);
-    base = mix(base, vec3(0.0), fm * uFrameStrength);
+  float frameMaskTile(vec2 uv) {
+    float edge = min(min(uv.x, 1.0 - uv.x), min(uv.y, 1.0 - uv.y));
+    return edgeMask(edge);
   }
 
-  if (uShowText == 1) {
-    float width = max(0.1, uTextWidth);
-    float spacing = clamp(uTextSpacing, 0.0, 0.45);
-    vec2 localUv = uv;
-    localUv.x = (localUv.x - 0.5) / width + 0.5;
-    float spacingMask = step(spacing, localUv.x) * step(localUv.x, 1.0 - spacing);
-    localUv = clamp(localUv, 0.0, 1.0);
-
-    vec2 tuv = atlasUv(vGlyph, localUv);
-    vec4 tx = texture2D(uTextMap, tuv);
-
-    float a = clamp(tx.a * uTextOpacity, 0.0, 1.0) * spacingMask;
-    vec3 tcol = clamp(uTextColor * uTextBoost, 0.0, 1.0);
-
-    base = mix(base, tcol, a * clamp(uTextMix, 0.0, 1.0));
+  float frameMaskOuter(vec2 uv) {
+    vec2 uvi = clamp(uv, vec2(0.002), vec2(0.998));
+    float ey = min(uvi.y, 1.0 - uvi.y);
+    return edgeMask(ey);
   }
 
-  gl_FragColor = vec4(base, 1.0);
-}
-`
+  vec2 atlasUv(float glyphId, vec2 localUv) {
+    float id = floor(glyphId + 0.5);
+    float col = mod(id, uAtlasCols);
+    float row = floor(id / uAtlasCols);
+
+    vec2 uv = localUv;
+
+    uv.x = (uTextFlipX == 1) ? (1.0 - uv.x) : uv.x;
+    uv.y = (uTextFlipY == 1) ? (1.0 - uv.y) : uv.y;
+
+    if (!gl_FrontFacing) {
+      uv.x = 1.0 - uv.x;
+    }
+
+    return (vec2(col, row) + uv) / vec2(uAtlasCols, uAtlasRows);
+  }
+
+  void main() {
+    vec2 uv = vUv;
+
+    vec3 base = ramp(vGradT);
+
+    if (!gl_FrontFacing) base *= 0.86;
+
+    if (uShowBands == 1) {
+      float bands = abs(fract(uv.x * 1.0) - 0.5);
+      float bandMask = smoothstep(0.48, 0.50, bands);
+      base = mix(base, vec3(1.0), bandMask * uBandStrength);
+    }
+
+    if (uShowFrame == 1 && uFrameStrength > 0.0001 && uFrameMode != 0) {
+      float fm = (uFrameMode == 2) ? frameMaskOuter(uv) : frameMaskTile(uv);
+      base = mix(base, vec3(0.0), fm * uFrameStrength);
+    }
+
+    if (uShowText == 1) {
+      float width = max(0.1, uTextWidth);
+      float spacing = clamp(uTextSpacing, 0.0, 0.45);
+      vec2 localUv = uv;
+      localUv.x = (localUv.x - 0.5) / width + 0.5;
+      float spacingMask = step(spacing, localUv.x) * step(localUv.x, 1.0 - spacing);
+      localUv = clamp(localUv, 0.0, 1.0);
+
+      vec2 tuv = atlasUv(vGlyph, localUv);
+      vec4 tx = texture2D(uTextMap, tuv);
+
+      float a = clamp(tx.a * uTextOpacity, 0.0, 1.0) * spacingMask;
+      vec3 tcol = clamp(uTextColor * uTextBoost, 0.0, 1.0);
+
+      base = mix(base, tcol, a * clamp(uTextMix, 0.0, 1.0));
+    }
+
+    gl_FragColor = vec4(base, 1.0);
+  }
+  `
 
     ;(material as any).userData.shader = shader
   }
@@ -776,9 +757,7 @@ function rebuildMesh() {
   const glyphArr = new Float32Array(instances)
 
   const rl = runLength.value
-  const baseLen = baseRunLength.value
 
-  // build effective string by repeating
   const raw = ribbonText.value ?? ''
   const rep = raw.length > 0 ? raw : ' '
   const times = Math.max(1, Math.ceil(rl / Math.max(1, rep.length)))
@@ -794,7 +773,6 @@ function rebuildMesh() {
     segIndex[idx] = i
     ribbonIdArr[idx] = rId
 
-    // p5: letter_select = runLength - 1 - i
     const textPos = (rl - 1 - i)
     const ch = sEff[textPos] ?? ' '
     glyphArr[idx] = map.get(ch) ?? spaceId
@@ -822,6 +800,9 @@ watch([
   showText,
   textSize,
   textStroke,
+  textWidth,
+  selectedFont,
+  textWeight,
   lengthStretch,
   widthStretch,
 ], () => {
@@ -926,8 +907,8 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     :class="props.full ? '' : 'w-full'"
     :style="containerStyle"
   >
-      <div class="pointer-events-none absolute inset-0">
-        <div class="border-white/10 bg-black/75 text-white pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border rounded-lg p-3 text-[12px] shadow-xl backdrop-blur-md space-y-2">
+    <div class="pointer-events-none absolute inset-0">
+      <div class="bg-black/75 border-white/10 text-white pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border rounded-lg p-3 text-[12px] shadow-xl backdrop-blur-md space-y-2">
         <div class="text-white/70 text-xs tracking-[0.15em] font-mono uppercase">
           Camera
         </div>
@@ -961,7 +942,7 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           <span>RY</span>
           <input v-model.number="rotY" type="range" min="-3.14" max="3.14" step="0.01">
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid-cols_[auto,1fr] grid items-center gap-2">
           <span>RZ</span>
           <input v-model.number="rotZ" type="range" min="-6.28" max="6.28" step="0.01">
         </label>
@@ -1029,16 +1010,21 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Text</span>
-          <input v-model="ribbonText" type="text" class="w-full rounded bg-white/10 px-2 py-1 text-[12px] text-white border border-white/10">
+          <input v-model="ribbonText" type="text" class="text-white border-white/10 bg-white/10 w-full border rounded px-2 py-1 text-[12px]">
         </label>
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Font</span>
-          <select v-model="selectedFont" class="w-full rounded bg-white/10 px-2 py-1 text-[12px] text-white border border-white/10">
+          <select v-model="selectedFont" class="bg-white/10 text-white border-white/10 w-full border rounded px-2 py-1 text-[12px]">
             <option v-for="opt in fontOptions" :key="opt.family" :value="opt.family">
               {{ opt.label }}
             </option>
           </select>
+        </label>
+
+        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+          <span>Weight</span>
+          <input v-model.number="textWeight" type="range" min="100" max="900" step="50" @input="drawTextTexture()">
         </label>
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
@@ -1221,3 +1207,16 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     </ClientOnly>
   </div>
 </template>
+
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@100;200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+</style>
