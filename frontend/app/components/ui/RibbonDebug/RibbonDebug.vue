@@ -503,6 +503,9 @@ onMounted(() => {
   varying float vRibbonId;
   varying float vGlyph;
   varying float vSegIndex;
+
+  varying vec3 vNormalV;
+  varying vec3 vViewDirV;
           `,
       )
       .replace(
@@ -515,6 +518,18 @@ onMounted(() => {
 
   float rl = max(1.0, uRunLength);
   vGradT = clamp(aSegIndex / max(1.0, rl - 1.0), 0.0, 1.0);
+          `,
+      )
+      .replace(
+        '#include <defaultnormal_vertex>',
+        `#include <defaultnormal_vertex>
+  vNormalV = normalize(normalMatrix * objectNormal);
+          `,
+      )
+      .replace(
+        '#include <project_vertex>',
+        `#include <project_vertex>
+  vViewDirV = normalize(-mvPosition.xyz);
           `,
       )
 
@@ -563,6 +578,9 @@ onMounted(() => {
   varying float vGlyph;
   varying float vSegIndex;
 
+  varying vec3 vNormalV;
+  varying vec3 vViewDirV;
+
   vec3 ramp(float t) {
     t = clamp(t, 0.0, 1.0);
     if (t < 0.3333) return mix(uCol1, uCol2, smoothstep(0.0, 0.3333, t));
@@ -607,7 +625,14 @@ onMounted(() => {
 
     vec3 base = ramp(vGradT);
 
-    if (!gl_FrontFacing) base *= 0.86;
+    vec3 N = normalize(vNormalV);
+    vec3 V = normalize(vViewDirV);
+
+    float f = dot(N, V);
+    float soft = 0.06;
+    float back = 1.0 - smoothstep(-soft, soft, f);
+
+    base *= mix(1.0, 0.86, back);
 
     if (uShowBands == 1) {
       float bands = abs(fract(uv.x * 1.0) - 0.5);
