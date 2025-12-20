@@ -9,6 +9,7 @@ import {
   InstancedBufferAttribute,
   InstancedMesh,
   LinearFilter,
+  LinearMipmapLinearFilter,
   Matrix4,
   MeshBasicMaterial,
   PlaneGeometry,
@@ -39,7 +40,6 @@ const baseRunLength = computed(() => Math.max(1, ribbonText.value.length))
 
 /**
  * Streamers preset params
- * FIX: depth must exist before effectiveDepth computed (TDZ crash otherwise)
  */
 const segmentSpace = ref(23)
 const segmentCount = ref(22)
@@ -112,7 +112,14 @@ const textWidth = ref(1)
 const textSpacing = ref(0)
 
 /**
- * FIX: controllable font weight for glyph atlas
+ * p5 like controls for inner padding of glyph sampling
+ * tracking and typeHeight are percentages (0..100) mapped to 0..1 in shader
+ */
+const tracking = ref(73)
+const typeHeight = ref(37)
+
+/**
+ * Controllable font weight
  */
 const textWeight = ref(300)
 
@@ -146,11 +153,10 @@ const fontOptions = [
   { label: 'Cormorant Garamond', family: 'Cormorant Garamond' },
   { label: 'Zalando Sans Expanded', family: 'Zalando Sans Expanded' },
 ]
-const selectedFont = ref(fontOptions[0].family)
+const selectedFont = ref('Zalando Sans Expanded')
 
 /**
  * Legacy toggles kept for UI compatibility
- * (not used in glyph atlas approach)
  */
 const textFollowScroll = ref(true)
 const textSnapTexel = ref(true)
@@ -198,7 +204,7 @@ const containerStyle = computed(() => {
 function logState() {
   consola.info(
     '[RibbonDebug]',
-    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value} | text ${showText.value ? 1 : 0} font "${selectedFont.value}" weight ${textWeight.value} size ${textSize.value} stroke ${textStroke.value} opacity ${textOpacity.value.toFixed(2)} width ${textWidth.value.toFixed(2)} spacing ${textSpacing.value.toFixed(2)} flipX ${textFlipX.value ? 1 : 0} flipY ${textFlipY.value ? 1 : 0} boost ${textBoost.value.toFixed(2)} mix ${textMix.value.toFixed(2)} | frame ${showSegmentFrame.value ? frameStrength.value.toFixed(2) : 0} mode ${frameMode.value} | bands ${showBands.value ? bandStrength.value.toFixed(2) : 0}`,
+    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value} | text ${showText.value ? 1 : 0} font "${selectedFont.value}" weight ${textWeight.value} size ${textSize.value} stroke ${textStroke.value} opacity ${textOpacity.value.toFixed(2)} width ${textWidth.value.toFixed(2)} spacing ${textSpacing.value.toFixed(2)} tracking ${tracking.value} height ${typeHeight.value} flipX ${textFlipX.value ? 1 : 0} flipY ${textFlipY.value ? 1 : 0} boost ${textBoost.value.toFixed(2)} mix ${textMix.value.toFixed(2)} | frame ${showSegmentFrame.value ? frameStrength.value.toFixed(2) : 0} mode ${frameMode.value} | bands ${showBands.value ? bandStrength.value.toFixed(2) : 0}`,
   )
 }
 
@@ -232,6 +238,8 @@ watch([
   textStroke,
   textWidth,
   textSpacing,
+  tracking,
+  typeHeight,
   selectedFont,
   textWeight,
   textFlipX,
@@ -265,11 +273,11 @@ const material = new MeshBasicMaterial({
 })
 
 /**
- * Glyph atlas (p5 like)
+ * Glyph atlas (sharp)
  */
 const ATLAS_COLS = 16
 const ATLAS_ROWS = 16
-const ATLAS_CELL = 128
+const ATLAS_CELL = 256
 const ATLAS_W = ATLAS_COLS * ATLAS_CELL
 const ATLAS_H = ATLAS_ROWS * ATLAS_CELL
 const ATLAS_CAP = ATLAS_COLS * ATLAS_ROWS
@@ -300,8 +308,8 @@ function ensureGlyphAtlas() {
   tex.wrapS = ClampToEdgeWrapping
   tex.wrapT = ClampToEdgeWrapping
 
-  tex.generateMipmaps = false
-  tex.minFilter = LinearFilter
+  tex.generateMipmaps = true
+  tex.minFilter = LinearMipmapLinearFilter
   tex.magFilter = LinearFilter
   tex.anisotropy = 16
 
@@ -357,7 +365,6 @@ function drawGlyphAtlas() {
 
   const size = Math.max(10, Math.floor(textSize.value))
   const stroke = Math.max(0, Math.floor(textStroke.value))
-  const widthScale = Math.max(0.35, textWidth.value)
 
   const weight = Math.min(900, Math.max(100, Math.round(textWeight.value / 50) * 50))
   const fontSpec = `${weight} ${size}px "${selectedFont.value}"`
@@ -373,12 +380,13 @@ function drawGlyphAtlas() {
   ctx.textBaseline = 'alphabetic'
   ctx.lineJoin = 'round'
   ctx.lineCap = 'round'
+  ctx.imageSmoothingEnabled = true
 
   ctx.fillStyle = 'rgba(255,255,255,1)'
   ctx.strokeStyle = 'rgba(255,255,255,1)'
   ctx.font = `${fontSpec}, "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace`
 
-  const pad = Math.max(10, Math.floor(ATLAS_CELL * 0.12))
+  const pad = Math.max(14, Math.floor(ATLAS_CELL * 0.14))
   const cx = ATLAS_CELL * 0.5
   const cy = ATLAS_CELL * 0.5
 
@@ -390,24 +398,38 @@ function drawGlyphAtlas() {
     const y0 = row * ATLAS_CELL
 
     ctx.clearRect(x0, y0, ATLAS_CELL, ATLAS_CELL)
+
     ctx.save()
     ctx.translate(x0 + cx, y0 + cy)
-    ctx.scale(widthScale, 1)
 
     const m = ctx.measureText(ch)
-    const xOff = -((m.actualBoundingBoxLeft ?? 0) + (m.actualBoundingBoxRight ?? 0)) * 0.5 / widthScale
-    const yOff = ((m.actualBoundingBoxAscent ?? 0) - (m.actualBoundingBoxDescent ?? 0)) * 0.5
+    const left = m.actualBoundingBoxLeft ?? 0
+    const right = m.actualBoundingBoxRight ?? 0
+    const asc = m.actualBoundingBoxAscent ?? 0
+    const desc = m.actualBoundingBoxDescent ?? 0
+
+    const boxW = left + right
+    const boxH = asc + desc
+
+    const safeW = ATLAS_CELL - pad * 2
+    const safeH = ATLAS_CELL - pad * 2
+
+    const fit = Math.min(
+      1,
+      safeW / Math.max(1, boxW + stroke * 2),
+      safeH / Math.max(1, boxH + stroke * 2),
+    )
+
+    ctx.scale(fit, fit)
+
+    const xOff = (left - right) * 0.5
+    const yOff = (asc - desc) * 0.5
 
     if (stroke > 0) {
-      ctx.lineWidth = stroke / widthScale
+      ctx.lineWidth = stroke
       ctx.strokeText(ch, xOff, yOff)
     }
     ctx.fillText(ch, xOff, yOff)
-
-    ctx.clearRect(-cx, -cy, pad, ATLAS_CELL)
-    ctx.clearRect(cx - pad, -cy, pad, ATLAS_CELL)
-    ctx.clearRect(-cx, -cy, ATLAS_CELL, pad)
-    ctx.clearRect(-cx, cy - pad, ATLAS_CELL, pad)
 
     ctx.restore()
   }
@@ -420,7 +442,7 @@ function drawTextTexture() {
   drawGlyphAtlas()
 }
 
-watch([ribbonText, showText, textSize, textStroke, textWidth, selectedFont, textWeight], () => {
+watch([ribbonText, showText, textSize, textStroke, selectedFont, textWeight], () => {
   drawGlyphAtlas()
 })
 
@@ -447,6 +469,9 @@ onMounted(() => {
     shader.uniforms.uTextOpacity = { value: textOpacity.value }
     shader.uniforms.uTextWidth = { value: textWidth.value }
     shader.uniforms.uTextSpacing = { value: textSpacing.value }
+
+    shader.uniforms.uTracking = { value: tracking.value / 100 }
+    shader.uniforms.uTypeHeight = { value: typeHeight.value / 100 }
 
     shader.uniforms.uTextFlipX = { value: textFlipX.value ? 1 : 0 }
     shader.uniforms.uTextFlipY = { value: textFlipY.value ? 1 : 0 }
@@ -513,6 +538,9 @@ onMounted(() => {
   uniform float uTextOpacity;
   uniform float uTextWidth;
   uniform float uTextSpacing;
+
+  uniform float uTracking;
+  uniform float uTypeHeight;
 
   uniform int uTextFlipX;
   uniform int uTextFlipY;
@@ -593,19 +621,30 @@ onMounted(() => {
     }
 
     if (uShowText == 1) {
-      float width = max(0.1, uTextWidth);
-      float spacing = clamp(uTextSpacing, 0.0, 0.45);
+      float trackingNorm = clamp(1.0 - uTracking, 0.15, 1.0);
+      float heightNorm = clamp(1.0 - uTypeHeight, 0.15, 1.0);
+
       vec2 localUv = uv;
-      localUv.x = (localUv.x - 0.5) / width + 0.5;
-      float spacingMask = step(spacing, localUv.x) * step(localUv.x, 1.0 - spacing);
+
+      localUv.x = (localUv.x - 0.5) * trackingNorm + 0.5;
+      localUv.y = (localUv.y - 0.5) * heightNorm + 0.5;
+
+      float spacing = clamp(uTextSpacing, 0.0, 0.45);
+      float spacingMask = step(spacing, uv.x) * step(uv.x, 1.0 - spacing);
+
+      float width = max(0.35, uTextWidth);
+      localUv.x = (localUv.x - 0.5) * width + 0.5;
+
       localUv = clamp(localUv, 0.0, 1.0);
 
       vec2 tuv = atlasUv(vGlyph, localUv);
       vec4 tx = texture2D(uTextMap, tuv);
 
-      float a = clamp(tx.a * uTextOpacity, 0.0, 1.0) * spacingMask;
-      vec3 tcol = clamp(uTextColor * uTextBoost, 0.0, 1.0);
+      float aRaw = tx.a;
+      float aSharp = smoothstep(0.38, 0.62, aRaw);
+      float a = clamp(aSharp * uTextOpacity, 0.0, 1.0) * spacingMask;
 
+      vec3 tcol = clamp(uTextColor * uTextBoost, 0.0, 1.0);
       base = mix(base, tcol, a * clamp(uTextMix, 0.0, 1.0));
     }
 
@@ -800,7 +839,6 @@ watch([
   showText,
   textSize,
   textStroke,
-  textWidth,
   selectedFont,
   textWeight,
   lengthStretch,
@@ -857,6 +895,9 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     shader.uniforms.uTextOpacity.value = textOpacity.value
     shader.uniforms.uTextWidth.value = textWidth.value
     shader.uniforms.uTextSpacing.value = textSpacing.value
+
+    shader.uniforms.uTracking.value = tracking.value / 100
+    shader.uniforms.uTypeHeight.value = typeHeight.value / 100
 
     shader.uniforms.uTextFlipX.value = textFlipX.value ? 1 : 0
     shader.uniforms.uTextFlipY.value = textFlipY.value ? 1 : 0
@@ -1055,12 +1096,26 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Width</span>
-          <input v-model.number="textWidth" type="range" min="0.35" max="2.5" step="0.01" @input="drawTextTexture()">
+          <input v-model.number="textWidth" type="range" min="0.35" max="2.5" step="0.01">
         </label>
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Space</span>
           <input v-model.number="textSpacing" type="range" min="0" max="0.45" step="0.01">
+        </label>
+
+        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+          p5 Glyph Padding
+        </div>
+
+        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+          <span>Tracking</span>
+          <input v-model.number="tracking" type="range" min="0" max="80" step="1">
+        </label>
+
+        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+          <span>Height</span>
+          <input v-model.number="typeHeight" type="range" min="0" max="80" step="1">
         </label>
 
         <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
