@@ -31,11 +31,77 @@ const ready = ref(false)
 const dpr = ref(1.5)
 
 /**
+ * Container sizing
+ */
+const containerEl = ref<HTMLElement | null>(null)
+const viewportW = ref(1)
+const viewportH = ref(1)
+let ro: ResizeObserver | null = null
+
+function updateViewport() {
+  if (!isClient)
+    return
+  const el = containerEl.value
+  if (!el)
+    return
+  const r = el.getBoundingClientRect()
+  viewportW.value = Math.max(1, Math.floor(r.width))
+  viewportH.value = Math.max(1, Math.floor(r.height))
+}
+
+onMounted(() => {
+  updateViewport()
+  if (!isClient)
+    return
+
+  ro = new ResizeObserver(() => updateViewport())
+  if (containerEl.value)
+    ro.observe(containerEl.value)
+})
+
+/**
+ * Camera p5 like
+ * p5 default camera Z uses: (height/2) / tan(fov/2) with fov = 60deg (PI/3)
+ * projection is ortho each frame, but keeping this Z matches the reference view setup
+ */
+const camX = ref(0)
+const camY = ref(0)
+const camZOffset = ref(0)
+
+/**
+ * Ortho zoom, in p5 you normally do not use camera zoom, but it is useful for matching
+ */
+const camZoom = ref(0.83)
+
+const p5EyeZ = computed(() => {
+  const h = Math.max(1, viewportH.value)
+  const fovRad = Math.PI / 3
+  return (h / 2) / Math.tan(fovRad / 2)
+})
+
+const cameraPos = computed(() => [camX.value, camY.value, p5EyeZ.value + camZOffset.value] as const)
+
+/**
+ * p5 ortho uses: ortho(-w/2, w/2, -h/2, h/2, -5000, 5000)
+ * note top is negative, bottom is positive, that flips Y to "down" like p5 WEBGL
+ */
+const ortho = computed(() => {
+  const w = Math.max(1, viewportW.value)
+  const h = Math.max(1, viewportH.value)
+  return {
+    left: -w / 2,
+    right: w / 2,
+    top: -h / 2,
+    bottom: h / 2,
+    near: -5000,
+    far: 5000,
+  }
+})
+
+/**
  * Ribbon text and base length
  */
-const ribbonText = ref(
-  (' THE SEA IS A DESERT OF WAVES, A WILDERNESS OF WATER.').repeat(5).slice(0, 160),
-)
+const ribbonText = ref('SOFTWARE IS A RIVER OF CHANGES, A MAP OF TOMORROW * SOFTWARE IS A RIVER OF CHANGES, A MAP OF TOMORROW * SOFTWARE IS A RIVER OF CHANGES, A MAP OF TOMORROW *')
 const baseRunLength = computed(() => Math.max(1, ribbonText.value.length))
 
 /**
@@ -54,8 +120,8 @@ const alt = ref(false)
 /**
  * Band stretch controls
  */
-const lengthStretch = ref(1.3)
-const widthStretch = ref(1.1)
+const lengthStretch = ref(1.34)
+const widthStretch = ref(1.24)
 
 const runLength = computed(() => {
   const v = Math.max(1, Math.floor(baseRunLength.value * Math.max(0.25, lengthStretch.value)))
@@ -64,32 +130,18 @@ const runLength = computed(() => {
 const effectiveDepth = computed(() => Math.max(1, depth.value * Math.max(0.25, widthStretch.value)))
 
 /**
- * Debug scale and shift
+ * p5 global controls
  */
-const scaler = ref(0.017)
-const groupScale = computed(() => [scaler.value, scaler.value, scaler.value] as const)
+const scaler = ref(1.12)
+const shiftX = ref(0)
+const shiftY = ref(10)
+const shiftZ = ref(0)
 
-const shiftX = ref(2)
-const shiftY = ref(3)
-const shiftZ = ref(7)
-const groupPos = computed(() => [shiftX.value, shiftY.value, shiftZ.value] as const)
-
-/**
- * Camera and group rotation
- */
-const camX = ref(10)
-const camY = ref(12)
-const camZ = ref(37.75)
-const fov = ref(28)
-
-const rotX = ref(1.74)
-const rotY = ref(0.48)
-const rotZ = ref(6.28)
+const rotX = ref(-1.91)
+const rotY = ref(0.56)
+const rotZ = ref(-0.53)
 
 const timeScale = ref(1)
-
-const cameraPos = computed(() => [camX.value, camY.value, camZ.value] as const)
-const groupRot = computed(() => [rotX.value, rotY.value, rotZ.value] as const)
 
 /**
  * Visual styling controls
@@ -111,25 +163,15 @@ const textStroke = ref(0)
 const textWidth = ref(1)
 const textSpacing = ref(0)
 
-/**
- * p5 like controls for inner padding of glyph sampling
- * tracking and typeHeight are percentages (0..100) mapped to 0..1 in shader
- */
 const tracking = ref(57)
 const typeHeight = ref(19)
-
-/**
- * Controllable font weight
- */
 const textWeight = ref(100)
 
-/**
- * Text fixes + readability
- */
 const textFlipX = ref(true)
 const textFlipY = ref(false)
 const textBoost = ref(2.2)
 const textMix = ref(0.96)
+
 const fontOptions = [
   { label: 'Electric', family: 'Electric' },
   { label: 'Recoleta', family: 'Recoleta' },
@@ -155,18 +197,11 @@ const fontOptions = [
 ]
 const selectedFont = ref('Space Grotesk')
 
-/**
- * Legacy toggles kept for UI compatibility
- */
 const textFollowScroll = ref(true)
 const textSnapTexel = ref(true)
 const textMultiSample = ref(true)
 const textSampleStrength = ref(1.0)
 
-/**
- * Frame options
- * frameMode: 0 off, 1 per tile, 2 outer only
- */
 const showSegmentFrame = ref(true)
 const frameStrength = ref(1)
 const frameMode = ref<0 | 1 | 2>(2)
@@ -174,11 +209,10 @@ const frameMode = ref<0 | 1 | 2>(2)
 const showBands = ref(false)
 const bandStrength = ref(0)
 
-/**
- * Debug wrap logs
- */
 const dbgWrap = ref(true)
 const _lastWrap = ref<number | null>(null)
+const panelHidden = ref(false)
+const panelCollapsed = ref(false)
 
 const backgroundStyle = computed(() => ({
   background: `radial-gradient(1200px 700px at 20% 20%, ${bgB.value} 0%, rgba(0,0,0,0) 60%),
@@ -204,15 +238,15 @@ const containerStyle = computed(() => {
 function logState() {
   consola.info(
     '[RibbonDebug]',
-    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${camZ.value.toFixed(2)}) fov ${fov.value.toFixed(1)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value} | text ${showText.value ? 1 : 0} font "${selectedFont.value}" weight ${textWeight.value} size ${textSize.value} stroke ${textStroke.value} opacity ${textOpacity.value.toFixed(2)} width ${textWidth.value.toFixed(2)} spacing ${textSpacing.value.toFixed(2)} tracking ${tracking.value} height ${typeHeight.value} flipX ${textFlipX.value ? 1 : 0} flipY ${textFlipY.value ? 1 : 0} boost ${textBoost.value.toFixed(2)} mix ${textMix.value.toFixed(2)} | frame ${showSegmentFrame.value ? frameStrength.value.toFixed(2) : 0} mode ${frameMode.value} | bands ${showBands.value ? bandStrength.value.toFixed(2) : 0}`,
+    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${(p5EyeZ.value + camZOffset.value).toFixed(2)}) zoom ${camZoom.value.toFixed(2)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value}`,
   )
 }
 
 watch([
   camX,
   camY,
-  camZ,
-  fov,
+  camZOffset,
+  camZoom,
   rotX,
   rotY,
   rotZ,
@@ -260,6 +294,8 @@ watch([
   bgC,
   lengthStretch,
   widthStretch,
+  viewportW,
+  viewportH,
 ], () => logState(), { immediate: true })
 
 watch(selectedFont, () => drawGlyphAtlas())
@@ -273,7 +309,7 @@ const material = new MeshBasicMaterial({
 })
 
 /**
- * Glyph atlas (sharp)
+ * Glyph atlas
  */
 const ATLAS_COLS = 16
 const ATLAS_ROWS = 16
@@ -685,6 +721,11 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  if (ro) {
+    ro.disconnect()
+    ro = null
+  }
+
   if (instanced.value) {
     instanced.value.geometry.dispose()
     material.dispose()
@@ -693,55 +734,67 @@ onBeforeUnmount(() => {
     glyphTex.value.dispose()
 })
 
-function p5LikeMatrixForSegment(opts: {
-  i: number
-  ribbonId: number
-  runLength: number
-  segmentSpace: number
-  segmentCount: number
-  middleStretch: number
-  depth: number
-  xSpace: number
-  zSpace: number
-  alt: boolean
-  scroll: number
-}) {
-  const {
-    i,
-    ribbonId,
-    runLength,
-    segmentSpace,
-    segmentCount,
-    middleStretch,
-    depth,
-    xSpace,
-    zSpace,
-    alt,
-    scroll,
-  } = opts
-
+/**
+ * p5 exact math helpers
+ */
+function buildP5GlobalMatrix(scroll: number) {
   const PI = Math.PI
-  const sinStep = PI / Math.max(1e-6, segmentCount)
 
-  const segmentLength = segmentCount * segmentSpace
-  const radius = segmentLength / PI
+  const segSpace = segmentSpace.value
+  const segCount = Math.max(1e-6, segmentCount.value)
+  const mid = middleStretch.value
 
-  const totalCycle = 2 * segmentCount + 2 * segmentCount * middleStretch
+  const segLength = segCount * segSpace
+  const radius = segLength / PI
 
-  const denom = segmentCount + segmentCount * middleStretch
-  const yCrawl = (runLength + scroll) / Math.max(1e-6, denom) * radius * 2
-  const ribbonHeight = runLength / Math.max(1e-6, denom) * radius * 2.25
-  const ribbonHeight2 = (count.value - 1) * xSpace * radius * 2
-  const ribbonWidth = segmentLength * middleStretch
+  const denom = segCount + segCount * mid
+
+  const rl = runLength.value
+  const yCrawl = (rl + scroll) / Math.max(1e-6, denom) * radius * 2
+  const ribbonHeight = rl / Math.max(1e-6, denom) * radius * 2.25
+  const ribbonHeight2 = (count.value - 1) * xSpace.value * radius * 2
+
+  const ribbonWidth = segLength * mid
 
   const baseX = -ribbonWidth / 2
-  const baseY = alt
+  const baseY = alt.value
     ? (-yCrawl + ribbonHeight / 2 - radius)
     : (-yCrawl + ribbonHeight / 2 - ribbonHeight2 / 2)
 
-  const baseZ
-    = -depth * (count.value - 1) / 2
-      - (count.value - 1) * (zSpace - 1) * depth / 2
+  const dep = effectiveDepth.value
+  const baseZ = -dep * (count.value - 1) / 2 - (count.value - 1) * (zSpace.value - 1) * dep / 2
+
+  const tX = baseX + shiftX.value
+  const tY = baseY + shiftY.value
+  const tZ = baseZ + shiftZ.value
+
+  const m = new Matrix4().identity()
+  m.multiply(new Matrix4().makeScale(scaler.value, scaler.value, scaler.value))
+  m.multiply(new Matrix4().makeRotationX(rotX.value))
+  m.multiply(new Matrix4().makeRotationY(rotY.value))
+  m.multiply(new Matrix4().makeRotationZ(rotZ.value + PI))
+  m.multiply(new Matrix4().makeTranslation(tX, tY, tZ))
+
+  return { m, radius, segLength }
+}
+
+function buildP5SegmentMatrix(opts: {
+  i: number
+  ribbonId: number
+  runLength: number
+  scroll: number
+  radius: number
+  segLength: number
+}) {
+  const { i, ribbonId, runLength, scroll, radius, segLength } = opts
+
+  const PI = Math.PI
+  const segSpace = segmentSpace.value
+  const segCount = Math.max(1e-6, segmentCount.value)
+  const mid = middleStretch.value
+
+  const sinStep = PI / Math.max(1e-6, segCount)
+  const totalCycle = 2 * segCount + 2 * segCount * mid
 
   const globalIndex = i + scroll
   let step = globalIndex % totalCycle
@@ -753,48 +806,45 @@ function p5LikeMatrixForSegment(opts: {
   let yCenter = 0
   let rot = 0
 
-  const a = segmentCount * middleStretch
-  const b = segmentCount + segmentCount * middleStretch
-  const c = segmentCount + 2 * segmentCount * middleStretch
+  const a = segCount * mid
+  const b = segCount + segCount * mid
+  const c = segCount + 2 * segCount * mid
 
   if (step <= a) {
-    xCenter = step * segmentSpace
+    xCenter = step * segSpace
     yCenter = jumper * radius * 4
     rot = 0
   }
   else if (step <= b) {
     const s = step - a
-    xCenter = segmentLength * middleStretch
+    xCenter = segLength * mid
     yCenter = jumper * radius * 4
     rot = s * sinStep
   }
   else if (step <= c) {
-    const s = step - (a + segmentCount)
-    xCenter = segmentLength * middleStretch - s * segmentSpace
+    const s = step - (a + segCount)
+    xCenter = segLength * mid - s * segSpace
     yCenter = radius * 2 + jumper * radius * 4
     rot = 0
   }
   else {
-    const s = step - (a + segmentCount)
+    const s = step - (a + segCount)
     xCenter = 0
     yCenter = radius * 2 + jumper * radius * 4
-    rot = -s * sinStep + PI * middleStretch
+    rot = -s * sinStep + PI * mid
   }
 
-  const yAdd = alt
+  const yAdd = alt.value
     ? ((ribbonId % 2) * radius * 2)
-    : (ribbonId * xSpace * radius * 2)
+    : (ribbonId * xSpace.value * radius * 2)
 
-  const zAdd = ribbonId * depth * zSpace
+  const zAdd = ribbonId * effectiveDepth.value * zSpace.value
 
-  const tx = baseX + xCenter
-  const ty = baseY + yCenter + yAdd
-  const tz = baseZ + zAdd
-
-  const m = new Matrix4().makeRotationX(Math.PI / 2)
-  m.premultiply(new Matrix4().makeTranslation(0, -radius, 0))
-  m.premultiply(new Matrix4().makeRotationZ(rot))
-  m.premultiply(new Matrix4().makeTranslation(tx, ty, tz))
+  const m = new Matrix4().identity()
+  m.multiply(new Matrix4().makeTranslation(xCenter, yCenter + yAdd, zAdd))
+  m.multiply(new Matrix4().makeRotationZ(rot))
+  m.multiply(new Matrix4().makeTranslation(0, -radius, 0))
+  m.multiply(new Matrix4().makeRotationX(Math.PI / 2))
 
   return m
 }
@@ -942,25 +992,23 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     shader.uniforms.uTextMap.value = glyphTex.value
   }
 
+  const { m: globalM, radius, segLength } = buildP5GlobalMatrix(scroll)
+
   for (let idx = 0; idx < instances; idx++) {
     const rId = Math.floor(idx / rl)
     const i = idx - rId * rl
 
-    const m = p5LikeMatrixForSegment({
+    const segM = buildP5SegmentMatrix({
       i,
       ribbonId: rId,
       runLength: rl,
-      segmentSpace: segmentSpace.value,
-      segmentCount: segmentCount.value,
-      middleStretch: middleStretch.value,
-      depth: effectiveDepth.value,
-      xSpace: xSpace.value,
-      zSpace: zSpace.value,
-      alt: alt.value,
       scroll,
+      radius,
+      segLength,
     })
 
-    mesh.setMatrixAt(idx, m)
+    const finalM = globalM.clone().multiply(segM)
+    mesh.setMatrixAt(idx, finalM)
   }
 
   mesh.instanceMatrix.needsUpdate = true
@@ -969,35 +1017,67 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
 
 <template>
   <div
+    ref="containerEl"
     class="relative overflow-hidden"
     :class="props.full ? '' : 'w-full'"
     :style="containerStyle"
   >
     <div class="pointer-events-none absolute inset-0">
-      <div class="bg-black/75 pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border border-pureWhite/10 rounded-lg p-3 text-[12px] text-pureWhite shadow-xl backdrop-blur-md space-y-2">
-        <div class="text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-          Camera
+      <button
+        v-if="panelHidden"
+        class="bg-black/60 pointer-events-auto fixed right-4 top-24 z-30 border border-pureWhite/10 rounded-full px-3 py-1 text-[11px] text-pureWhite/80 font-mono uppercase tracking-[0.2em] shadow-lg backdrop-blur-md"
+        @click="panelHidden = false"
+      >
+        Show Controls
+      </button>
+      <div
+        v-if="!panelHidden"
+        class="bg-black/75 pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border border-pureWhite/10 rounded-lg p-3 text-[12px] text-pureWhite shadow-xl backdrop-blur-md space-y-2"
+      >
+        <div class="flex items-center justify-between gap-2 pb-1">
+          <div class="text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
+            Ribbon Controls
+          </div>
+          <div class="flex items-center gap-2">
+            <button
+              class="border border-pureWhite/10 rounded px-2 py-1 text-[10px] text-pureWhite/70 font-mono uppercase tracking-[0.18em] hover:text-pureWhite/90"
+              @click="panelCollapsed = !panelCollapsed"
+            >
+              {{ panelCollapsed ? 'Expand' : 'Collapse' }}
+            </button>
+            <button
+              class="border border-pureWhite/10 rounded px-2 py-1 text-[10px] text-pureWhite/70 font-mono uppercase tracking-[0.18em] hover:text-pureWhite/90"
+              @click="panelHidden = true"
+            >
+              Hide
+            </button>
+          </div>
         </div>
+
+        <div v-show="!panelCollapsed" class="space-y-2">
+          <div class="text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
+            Camera
+          </div>
 
         <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>X</span>
-          <input v-model.number="camX" type="range" min="-30" max="30" step="0.1">
-          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camX.toFixed(2) }}</span>
+          <input v-model.number="camX" type="range" min="-1000" max="1000" step="1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camX.toFixed(0) }}</span>
         </label>
         <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Y</span>
-          <input v-model.number="camY" type="range" min="-30" max="30" step="0.1">
-          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camY.toFixed(2) }}</span>
+          <input v-model.number="camY" type="range" min="-1000" max="1000" step="1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camY.toFixed(0) }}</span>
         </label>
         <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Z</span>
-          <input v-model.number="camZ" type="range" min="2" max="120" step="0.25">
-          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camZ.toFixed(2) }}</span>
+          <input v-model.number="camZOffset" type="range" min="-2000" max="2000" step="5">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camZOffset.toFixed(0) }}</span>
         </label>
         <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-          <span>FOV</span>
-          <input v-model.number="fov" type="range" min="10" max="80" step="1">
-          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ fov.toFixed(0) }}</span>
+          <span>Zoom</span>
+          <input v-model.number="camZoom" type="range" min="0.25" max="3" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camZoom.toFixed(2) }}</span>
         </label>
 
         <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
@@ -1014,7 +1094,7 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           <input v-model.number="rotY" type="range" min="-3.14" max="3.14" step="0.01">
           <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ rotY.toFixed(2) }}</span>
         </label>
-        <label class="grid-cols-[auto,1fr,auto] grid items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>RZ</span>
           <input v-model.number="rotZ" type="range" min="-6.28" max="6.28" step="0.01">
           <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ rotZ.toFixed(2) }}</span>
@@ -1026,22 +1106,22 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
 
         <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Scale</span>
-          <input v-model.number="scaler" type="range" min="0.002" max="0.08" step="0.0005">
-          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ scaler.toFixed(4) }}</span>
+          <input v-model.number="scaler" type="range" min="0.2" max="3" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ scaler.toFixed(2) }}</span>
         </label>
         <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Shift X</span>
-          <input v-model.number="shiftX" type="range" min="-400" max="400" step="1">
+          <input v-model.number="shiftX" type="range" min="-2000" max="2000" step="5">
           <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftX.toFixed(0) }}</span>
         </label>
         <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Shift Y</span>
-          <input v-model.number="shiftY" type="range" min="-400" max="400" step="1">
+          <input v-model.number="shiftY" type="range" min="-2000" max="2000" step="5">
           <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftY.toFixed(0) }}</span>
         </label>
         <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Shift Z</span>
-          <input v-model.number="shiftZ" type="range" min="-400" max="400" step="1">
+          <input v-model.number="shiftZ" type="range" min="-2000" max="2000" step="5">
           <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftZ.toFixed(0) }}</span>
         </label>
 
@@ -1281,19 +1361,20 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           Background
         </div>
 
-        <div class="grid grid-cols-3 gap-2">
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>A</span>
-            <input v-model="bgA" type="color" class="h-6 w-full">
-          </label>
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>B</span>
-            <input v-model="bgB" type="color" class="h-6 w-full">
-          </label>
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>C</span>
-            <input v-model="bgC" type="color" class="h-6 w-full">
-          </label>
+          <div class="grid grid-cols-3 gap-2">
+            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+              <span>A</span>
+              <input v-model="bgA" type="color" class="h-6 w-full">
+            </label>
+            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+              <span>B</span>
+              <input v-model="bgB" type="color" class="h-6 w-full">
+            </label>
+            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+              <span>C</span>
+              <input v-model="bgC" type="color" class="h-6 w-full">
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -1307,10 +1388,18 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
         render-mode="always"
         @loop="handleLoop"
       >
-        <TresPerspectiveCamera :position="cameraPos" :look-at="[0, 0, 0]" :fov="fov" />
-        <TresGroup :rotation="groupRot" :scale="groupScale" :position="groupPos">
-          <primitive v-if="instanced" :object="instanced" />
-        </TresGroup>
+        <TresOrthographicCamera
+          :position="cameraPos"
+          :look-at="[0, 0, 0]"
+          :left="ortho.left"
+          :right="ortho.right"
+          :top="ortho.top"
+          :bottom="ortho.bottom"
+          :near="ortho.near"
+          :far="ortho.far"
+          :zoom="camZoom"
+        />
+        <primitive v-if="instanced" :object="instanced" />
       </TresCanvas>
     </ClientOnly>
   </div>
