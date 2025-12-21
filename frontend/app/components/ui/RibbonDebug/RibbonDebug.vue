@@ -55,7 +55,7 @@ const alt = ref(false)
  * Band stretch controls
  */
 const lengthStretch = ref(1.3)
-const widthStretch = ref(1.31)
+const widthStretch = ref(1.1)
 
 const runLength = computed(() => {
   const v = Math.max(1, Math.floor(baseRunLength.value * Math.max(0.25, lengthStretch.value)))
@@ -98,16 +98,16 @@ const bgA = ref('#0b1020')
 const bgB = ref('#23103a')
 const bgC = ref('#0b2a2a')
 
-const col1 = ref('#FFFC79')
-const col2 = ref('#FF2F92')
-const col3 = ref('#011993')
-const col4 = ref('#0096FF')
+const col1 = ref('#059669')
+const col2 = ref('#75DDDD')
+const col3 = ref('#6D28D9')
+const col4 = ref('#AA3E98')
 
 const showText = ref(true)
 const textColor = ref('#ffffff')
-const textOpacity = ref(0.95)
-const textSize = ref(111)
-const textStroke = ref(1)
+const textOpacity = ref(1)
+const textSize = ref(140)
+const textStroke = ref(0)
 const textWidth = ref(1)
 const textSpacing = ref(0)
 
@@ -115,21 +115,21 @@ const textSpacing = ref(0)
  * p5 like controls for inner padding of glyph sampling
  * tracking and typeHeight are percentages (0..100) mapped to 0..1 in shader
  */
-const tracking = ref(73)
-const typeHeight = ref(37)
+const tracking = ref(57)
+const typeHeight = ref(19)
 
 /**
  * Controllable font weight
  */
-const textWeight = ref(300)
+const textWeight = ref(100)
 
 /**
  * Text fixes + readability
  */
 const textFlipX = ref(true)
 const textFlipY = ref(false)
-const textBoost = ref(1.15)
-const textMix = ref(0.95)
+const textBoost = ref(2.2)
+const textMix = ref(0.96)
 const fontOptions = [
   { label: 'Electric', family: 'Electric' },
   { label: 'Recoleta', family: 'Recoleta' },
@@ -153,7 +153,7 @@ const fontOptions = [
   { label: 'Cormorant Garamond', family: 'Cormorant Garamond' },
   { label: 'Zalando Sans Expanded', family: 'Zalando Sans Expanded' },
 ]
-const selectedFont = ref('Zalando Sans Expanded')
+const selectedFont = ref('Space Grotesk')
 
 /**
  * Legacy toggles kept for UI compatibility
