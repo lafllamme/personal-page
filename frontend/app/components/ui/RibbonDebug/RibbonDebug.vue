@@ -974,80 +974,93 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     :style="containerStyle"
   >
     <div class="pointer-events-none absolute inset-0">
-      <div class="bg-black/75 border-white/10 text-white pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border rounded-lg p-3 text-[12px] shadow-xl backdrop-blur-md space-y-2">
-        <div class="text-white/70 text-xs tracking-[0.15em] font-mono uppercase">
+      <div class="bg-black/75 pointer-events-auto fixed right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border border-pureWhite/10 rounded-lg p-3 text-[12px] text-pureWhite shadow-xl backdrop-blur-md space-y-2">
+        <div class="text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Camera
         </div>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>X</span>
           <input v-model.number="camX" type="range" min="-30" max="30" step="0.1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camX.toFixed(2) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Y</span>
           <input v-model.number="camY" type="range" min="-30" max="30" step="0.1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camY.toFixed(2) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Z</span>
           <input v-model.number="camZ" type="range" min="2" max="120" step="0.25">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camZ.toFixed(2) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>FOV</span>
           <input v-model.number="fov" type="range" min="10" max="80" step="1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ fov.toFixed(0) }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Tilt
         </div>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>RX</span>
           <input v-model.number="rotX" type="range" min="-3.14" max="3.14" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ rotX.toFixed(2) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>RY</span>
           <input v-model.number="rotY" type="range" min="-3.14" max="3.14" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ rotY.toFixed(2) }}</span>
         </label>
-        <label class="grid-cols_[auto,1fr] grid items-center gap-2">
+        <label class="grid-cols-[auto,1fr,auto] grid items-center gap-2">
           <span>RZ</span>
           <input v-model.number="rotZ" type="range" min="-6.28" max="6.28" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ rotZ.toFixed(2) }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Debug
         </div>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Scale</span>
           <input v-model.number="scaler" type="range" min="0.002" max="0.08" step="0.0005">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ scaler.toFixed(4) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Shift X</span>
           <input v-model.number="shiftX" type="range" min="-400" max="400" step="1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftX.toFixed(0) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Shift Y</span>
           <input v-model.number="shiftY" type="range" min="-400" max="400" step="1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftY.toFixed(0) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Shift Z</span>
           <input v-model.number="shiftZ" type="range" min="-400" max="400" step="1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftZ.toFixed(0) }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Band Stretch
         </div>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Length</span>
           <input v-model.number="lengthStretch" type="range" min="0.5" max="3" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ lengthStretch.toFixed(2) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Width</span>
           <input v-model.number="widthStretch" type="range" min="0.5" max="3" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ widthStretch.toFixed(2) }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Ribbon Look
         </div>
 
@@ -1070,27 +1083,28 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           </label>
         </div>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Text Input
         </div>
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Text</span>
-          <input v-model="ribbonText" type="text" class="text-white border-white/10 bg-white/10 w-full border rounded px-2 py-1 text-[12px]">
+          <input v-model="ribbonText" type="text" class="w-full border border-pureWhite/10 rounded bg-pureWhite/10 px-2 py-1 text-[12px] text-pureWhite">
         </label>
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Font</span>
-          <select v-model="selectedFont" class="bg-white/10 text-white border-white/10 w-full border rounded px-2 py-1 text-[12px]">
+          <select v-model="selectedFont" class="w-full border border-pureWhite/10 rounded bg-pureWhite/10 px-2 py-1 text-[12px] text-pureWhite">
             <option v-for="opt in fontOptions" :key="opt.family" :value="opt.family">
               {{ opt.label }}
             </option>
           </select>
         </label>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Weight</span>
           <input v-model.number="textWeight" type="range" min="100" max="900" step="50" @input="drawTextTexture()">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textWeight }}</span>
         </label>
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
@@ -1103,47 +1117,54 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
             <span>TC</span>
             <input v-model="textColor" type="color" class="h-6 w-full" @change="drawTextTexture()">
           </label>
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
             <span>Op</span>
             <input v-model.number="textOpacity" type="range" min="0" max="1" step="0.01" @input="drawTextTexture()">
+            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textOpacity.toFixed(2) }}</span>
           </label>
         </div>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Size</span>
           <input v-model.number="textSize" type="range" min="24" max="140" step="1" @input="drawTextTexture()">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textSize }}</span>
         </label>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Stroke</span>
           <input v-model.number="textStroke" type="range" min="0" max="22" step="1" @input="drawTextTexture()">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textStroke }}</span>
         </label>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Width</span>
           <input v-model.number="textWidth" type="range" min="0.35" max="2.5" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textWidth.toFixed(2) }}</span>
         </label>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Space</span>
           <input v-model.number="textSpacing" type="range" min="0" max="0.45" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textSpacing.toFixed(2) }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           p5 Glyph Padding
         </div>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Tracking</span>
           <input v-model.number="tracking" type="range" min="0" max="80" step="1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ tracking }}</span>
         </label>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Height</span>
           <input v-model.number="typeHeight" type="range" min="0" max="80" step="1">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ typeHeight }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Text Fix
         </div>
 
@@ -1156,20 +1177,22 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           <input v-model="textFlipY" type="checkbox">
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Text Pop
         </div>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Boost</span>
           <input v-model.number="textBoost" type="range" min="0.8" max="2.2" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textBoost.toFixed(2) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Mix</span>
           <input v-model.number="textMix" type="range" min="0" max="1" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textMix.toFixed(2) }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Text Lock
         </div>
 
@@ -1182,7 +1205,7 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           <input v-model="textSnapTexel" type="checkbox">
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Text AA
         </div>
 
@@ -1190,12 +1213,13 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           <span>Multi</span>
           <input v-model="textMultiSample" type="checkbox">
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Strength</span>
           <input v-model.number="textSampleStrength" type="range" min="0" max="2" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textSampleStrength.toFixed(2) }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Frame
         </div>
 
@@ -1204,21 +1228,22 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           <input v-model="showSegmentFrame" type="checkbox">
         </label>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Str</span>
           <input v-model.number="frameStrength" type="range" min="0" max="1" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ frameStrength.toFixed(2) }}</span>
         </label>
 
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Mode</span>
-          <select v-model.number="frameMode" class="border-white/10 bg-black/30 border rounded px-2 py-1">
+          <select v-model.number="frameMode" class="bg-black/30 border border-pureWhite/10 rounded px-2 py-1">
             <option :value="0">Off</option>
             <option :value="1">Tiles</option>
             <option :value="2">Outer</option>
           </select>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Bands
         </div>
 
@@ -1227,29 +1252,32 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           <input v-model="showBands" type="checkbox">
         </label>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Str</span>
           <input v-model.number="bandStrength" type="range" min="0" max="1" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ bandStrength.toFixed(2) }}</span>
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Motion
         </div>
 
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Speed</span>
           <input v-model.number="speed" type="range" min="0" max="1" step="0.01">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ speed.toFixed(2) }}</span>
         </label>
-        <label class="grid grid-cols-[auto,1fr] items-center gap-2">
+        <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
           <span>Time</span>
           <input v-model.number="timeScale" type="range" min="0" max="2" step="0.05">
+          <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ timeScale.toFixed(2) }}</span>
         </label>
         <label class="grid grid-cols-[auto,1fr] items-center gap-2">
           <span>Alt</span>
           <input v-model="alt" type="checkbox">
         </label>
 
-        <div class="text-white/70 pt-1 text-xs tracking-[0.15em] font-mono uppercase">
+        <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
           Background
         </div>
 
