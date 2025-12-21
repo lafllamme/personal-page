@@ -1,9 +1,7 @@
 <script lang="ts" setup>
 // Lazy hydration components for better performance
-const LazySpline = defineLazyHydrationComponent(
-  'idle',
-  () => import('~/components/ui/Background/Spline/Spline.vue'),
-)
+
+import RibbonDebug from '~/components/ui/RibbonDebug/RibbonDebug.vue'
 
 const LazyFeaturedSection = defineLazyHydrationComponent(
   'visible',
@@ -42,10 +40,6 @@ const LazyTextGenerate = defineLazyHydrationComponent(
 
 const { t } = useI18n()
 
-const sceneUrl = 'https://prod.spline.design/gXj2nQHDWLqDw9ik/scene.splinecode'
-
-const heroImageUrl = 'https://i.imgur.com/nGHQpdo.jpeg'
-
 useHead({
   title: t('head.title'),
   meta: [
@@ -54,114 +48,31 @@ useHead({
   ],
 })
 
-const sceneLoaded = ref(false)
-const renderBackground = ref(false)
-const heroRef = useTemplateRef<HTMLElement>('heroRef')
-const heroVisible = useElementVisibility(heroRef, { threshold: 0.4 })
-const hasUserInteracted = ref(false)
-const idleReady = ref(false)
-const shouldLoadSpline = ref(false)
-const shouldMountSpline = computed(() => hasUserInteracted.value || (heroVisible.value && idleReady.value))
-
-function handleLoad() {
-  sceneLoaded.value = true
-}
+const { height: viewportHeight } = useWindowSize()
+const heroRibbonHeight = computed(() => {
+  const base = Math.round(viewportHeight.value * 0.6)
+  return Math.max(360, Math.min(base, 720))
+})
 
 function handleClick() {
   // navigate to /blog page
   navigateTo('/blog')
 }
 
-watch(sceneLoaded, (v) => {
-  if (v) {
-    setTimeout(() => {
-      renderBackground.value = true
-    }, 1000)
-  }
-})
-
 const animate = ref(false)
 
 function handleGenerateComplete() {
   animate.value = true
 }
-
-if (import.meta.client) {
-  useEventListener(window, 'pointerdown', () => {
-    hasUserInteracted.value = true
-  }, { once: true })
-
-  useEventListener(window, 'keydown', () => {
-    hasUserInteracted.value = true
-  }, { once: true })
-
-  onMounted(() => {
-    if ('requestIdleCallback' in window) {
-      window.requestIdleCallback(() => {
-        idleReady.value = true
-      }, { timeout: 4000 })
-    }
-    else {
-      setTimeout(() => {
-        idleReady.value = true
-      }, 4000)
-    }
-  })
-}
-
-watch(shouldMountSpline, (value) => {
-  if (value)
-    shouldLoadSpline.value = true
-}, { immediate: true })
 </script>
 
 <template>
-  <div
-    class="bg-pureWhite transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)] dark:bg-pureBlack"
-  >
+  <div>
     <div
-      class="relative isolate mb-12 flex flex-col items-center overflow-hidden md:flex-row"
+      class="relative mb-12 min-h-[360px] flex flex-col items-center overflow-visible md:min-h-[520px] md:flex-row"
     >
-      <LazyMarquee
-        class="pointer-events-none absolute right-[-12%] top-[-3rem] z-0 max-w-none w-[140%] rotate-[18deg] text-pureBlack/5 dark:text-pureWhite/5"
-        :repeat="8"
-        :pause-on-hover="false"
-      >
-        <div
-          class="font-bold font-electric flex items-center gap-3 text-[10rem] md:text-[15rem] tracking-normal uppercase"
-        >
-          <span>Tech news radar</span>
-          <span aria-hidden="true">•</span>
-          <span>Shipping weekly</span>
-          <span aria-hidden="true">•</span>
-          <span>Signal over noise</span>
-        </div>
-      </LazyMarquee>
-
-      <!-- Circle Wrapper -->
-      <div
-        ref="heroRef"
-        class="animate-top-to-bottom-reveal max-w-[450px] w-full md:order-last md:max-w-none md:w-1/2 min-[1900px]:!max-w-[1200px]"
-      >
-        <div
-          class="relative aspect-square w-full touch-none overflow-hidden rounded-full transition-colors duration-[2000ms] ease-in-out"
-        >
-          <NuxtImg
-            :src="heroImageUrl"
-            alt="TecNews hero illustration"
-            format="webp"
-            loading="eager"
-            fetchpriority="high"
-            preload
-            class="pointer-events-none absolute inset-0 h-full w-full object-cover"
-          />
-          <LazySpline
-            :on-load="handleLoad"
-            :scene="sceneUrl"
-            render-on-demand
-            :hydrate-on-idle="true"
-          />
-        </div>
+      <div class="pointer-events-none absolute inset-0 z-0">
+        <RibbonDebug full />
       </div>
 
       <!-- Text Wrapper -->
@@ -190,8 +101,8 @@ watch(shouldMountSpline, (value) => {
         <div
           :class="useClsx(
             'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
-            'dark:bg-pureBlack lg:text-xl sm:text-lg',
-            'bg-pureWhite !min-w-3/4 md:justify-start',
+            'bg-none lg:text-xl sm:text-lg',
+            '!min-w-3/4 md:justify-start',
             'max-[400px]:text-sm text-base flex justify-center gap-4 whitespace-nowrap',
             animate ? 'opacity-100 animate-fade-in' : 'opacity-0',
           )"
