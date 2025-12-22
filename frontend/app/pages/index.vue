@@ -71,8 +71,12 @@ function handleGenerateComplete() {
     <div
       class="relative mb-12 min-h-[360px] flex flex-col items-center overflow-visible md:min-h-[520px] md:flex-row"
     >
-      <div class="pointer-events-none absolute inset-0 z-0">
-        <RibbonDebug full />
+      <div class="absolute inset-0 z-0">
+        <div class="absolute left-1/2 top-1/2 w-screen max-w-none -translate-x-1/2 -translate-y-1/2">
+          <div class="mx-auto w-[130%] max-w-none">
+            <RibbonDebug :full="false" :height="heroRibbonHeight" allow-overflow />
+          </div>
+        </div>
       </div>
 
       <!-- Text Wrapper -->
