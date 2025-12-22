@@ -213,8 +213,8 @@ const bandStrength = ref(0)
 
 const dbgWrap = ref(true)
 const _lastWrap = ref<number | null>(null)
-const panelHidden = ref(true)
-const panelCollapsed = ref(false)
+const panelHidden = ref(false)
+const panelCollapsed = ref(true)
 
 const backgroundStyle = computed(() => ({
   background: `radial-gradient(1200px 700px at 20% 20%, ${bgB.value} 0%, rgba(0,0,0,0) 60%),
