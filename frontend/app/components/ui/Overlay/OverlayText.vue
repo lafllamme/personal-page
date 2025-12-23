@@ -158,7 +158,7 @@ function hide() {
           <span
             v-for="(char, i) in topText.split('')"
             :key="`top-${col}-${i}`"
-            class="font-orbito inline-block color-pureBlack font-medium tracking-normal dark:color-pureWhite"
+            class="font-clash inline-block color-pureBlack font-normal tracking-tight dark:color-pureWhite"
             :style="{
               fontSize: `${topSize}vw`,
               opacity: '0',
@@ -181,7 +181,7 @@ function hide() {
           <span
             v-for="(char, i) in bottomText.split('')"
             :key="`bottom-${col}-${i}`"
-            class="font-orbito inline-block color-pureBlack font-medium tracking-normal dark:color-pureWhite"
+            class="font-clash inline-block color-pureBlack font-normal tracking-tight dark:color-pureWhite"
             :style="{
               fontSize: `${bottomSize}vw`,
               opacity: '0',
@@ -217,7 +217,7 @@ function hide() {
           <span
             v-for="(char, charIndex) in topText.split('')"
             :key="`top-${charIndex}`"
-            class="font-orbito inline-block color-pureBlack font-medium tracking-normal dark:color-pureWhite"
+            class="font-clash inline-block color-pureBlack font-normal tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${topSize}vw`,
               '--final-scaleX': String(letterDistortions[col]?.[charIndex]?.scaleX ?? 1),
@@ -236,7 +236,7 @@ function hide() {
           <span
             v-for="(char, charIndex) in bottomText.split('')"
             :key="`bottom-${charIndex}`"
-            class="font-orbito inline-block color-pureBlack font-medium tracking-normal dark:color-pureWhite"
+            class="font-clash inline-block color-pureBlack font-normal tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${bottomSize}vw`,
               '--final-scaleX': String(letterDistortions[col]?.[charIndex + 7]?.scaleX ?? 1),
