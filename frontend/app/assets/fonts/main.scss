@@ -55,6 +55,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'CabinetGrotesk.ttf';
+  src: url('Headline/CabinetGrotesk.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ClashDisplay';
+  src: url('Headline/ClashDisplay.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .font-electric {
   font-family: 'Electric', sans-serif;
 }
@@ -83,6 +97,13 @@
   font-family: 'Orbito.otf', sans-serif;
 }
 
+.font-cabinet {
+  font-family: 'CabinetGrotesk.ttf', sans-serif;
+}
+
+.font-clash {
+  font-family: 'ClashDisplay', sans-serif;
+}
 
 .font-prata {
   font-family: 'Prata', serif;
