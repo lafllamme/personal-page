@@ -25,43 +25,34 @@ const bottomOffset = computed(() => (animationPhase.value === 'typing' ? `${20 +
 const smoothEasing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 
+interface LetterDistortion {
+  scaleX: number
+  scaleY: number
+  skew: number
+  rotateY: number
+  depth: number
+}
+
 const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1))
 
-function generateDistortions() {
-  const columnDistortions: Record<number, Record<string, { scaleX: number, scaleY: number, skew: number }>> = {}
+const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
-  ;[-1, 0, 1].forEach((col) => {
-    const distortions: Record<string, { scaleX: number, scaleY: number, skew: number }> = {}
+function generateDistortions() {
+  const columnDistortions: Record<number, Record<string, LetterDistortion>> = {}
+
+  columns.forEach((col) => {
+    const distortions: Record<string, LetterDistortion> = {}
     const allLetters = [...topText.split(''), ...bottomText.split('')]
+    const intensity = Math.max(0.35, 1 - Math.abs(col) * 0.14)
 
     allLetters.forEach((_, i) => {
-      let scaleX = 1
-      let scaleY = 1
-      let skew = 0
+      const scaleX = clamp(1 + (Math.random() * 0.5 - 0.25) * intensity, 0.72, 1.42)
+      const scaleY = clamp(1 + (Math.random() * 0.32 - 0.16) * intensity, 0.82, 1.24)
+      const skew = clamp((Math.random() * 24 - 12) * intensity, -16, 16)
+      const rotateY = clamp((col * -3.4) + (Math.random() * 14 - 7) * intensity, -18, 18)
+      const depth = clamp((10 + Math.random() * 26) * intensity, 0, 36)
 
-      if (col === -1) {
-        if (Math.random() > 0.35) {
-          scaleX = 1.1 + Math.random() * 0.6
-          scaleY = 0.75 + Math.random() * 0.25
-          skew = -6 + Math.random() * 12
-        }
-      }
-      else if (col === 0) {
-        if (Math.random() > 0.35) {
-          scaleX = 0.65 + Math.random() * 0.35
-          scaleY = 0.8 + Math.random() * 0.35
-          skew = -18 + Math.random() * 36
-        }
-      }
-      else if (col === 1) {
-        if (Math.random() > 0.35) {
-          scaleX = 0.6 + Math.random() * 0.4
-          scaleY = 0.85 + Math.random() * 0.3
-          skew = -12 + Math.random() * 24
-        }
-      }
-
-      distortions[i] = { scaleX, scaleY, skew }
+      distortions[i] = { scaleX, scaleY, skew, rotateY, depth }
     })
 
     columnDistortions[col] = distortions
@@ -152,6 +143,8 @@ function hide() {
           top: '50%',
           transform: `translate(calc(-50% + ${col * columnGap}vw), -50%)`,
           gap: '0.5vw',
+          perspective: '1200px',
+          transformStyle: 'preserve-3d',
         }"
       >
         <div
@@ -165,11 +158,9 @@ function hide() {
           <span
             v-for="(char, i) in topText.split('')"
             :key="`top-${col}-${i}`"
-            class="inline-block color-pureBlack font-sans dark:color-pureWhite"
+            class="font-orbito inline-block color-pureBlack font-medium tracking-normal dark:color-pureWhite"
             :style="{
               fontSize: `${topSize}vw`,
-              fontWeight: 800,
-              letterSpacing: '0.05em',
               opacity: '0',
               animation: `kineticTypeIn 0.5s ${bounceEasing} ${i * 0.04}s forwards`,
               lineHeight: '1',
@@ -190,11 +181,9 @@ function hide() {
           <span
             v-for="(char, i) in bottomText.split('')"
             :key="`bottom-${col}-${i}`"
-            class="inline-block color-pureBlack font-sans dark:color-pureWhite"
+            class="font-orbito inline-block color-pureBlack font-medium tracking-normal dark:color-pureWhite"
             :style="{
               fontSize: `${bottomSize}vw`,
-              fontWeight: 400,
-              letterSpacing: '0.05em',
               opacity: '0',
               animation: `kineticTypeIn 0.5s ${bounceEasing} ${i * 0.04}s forwards`,
               lineHeight: '1',
@@ -220,21 +209,24 @@ function hide() {
           top: '50%',
           transform: 'translate(-50%, -50%)',
           gap: '0.5vw',
+          perspective: '1200px',
+          transformStyle: 'preserve-3d',
         }"
       >
         <div class="flex">
           <span
             v-for="(char, charIndex) in topText.split('')"
             :key="`top-${charIndex}`"
-            class="inline-block color-pureBlack font-sans dark:color-pureWhite"
+            class="font-orbito inline-block color-pureBlack font-medium tracking-normal dark:color-pureWhite"
             :style="{
               'fontSize': `${topSize}vw`,
-              'fontWeight': 800,
-              'letterSpacing': '0.05em',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex]?.scaleY ?? 1),
               '--final-skew': `${letterDistortions[col]?.[charIndex]?.skew ?? 0}deg`,
-              'animation': `letterWobbleDistortSmooth 0.9s ${smoothEasing} 0s 1 forwards, letterSwoosh 0.4s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
+              '--final-rotateY': `${letterDistortions[col]?.[charIndex]?.rotateY ?? 0}deg`,
+              '--final-depth': `${letterDistortions[col]?.[charIndex]?.depth ?? 0}px`,
+              'transformStyle': 'preserve-3d',
+              'animation': `letterWobbleDistortSmooth 1.05s ${smoothEasing} 0s 1 forwards, letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
             }"
           >
             {{ char }}
@@ -244,15 +236,16 @@ function hide() {
           <span
             v-for="(char, charIndex) in bottomText.split('')"
             :key="`bottom-${charIndex}`"
-            class="inline-block color-pureBlack font-sans dark:color-pureWhite"
+            class="font-orbito inline-block color-pureBlack font-medium tracking-normal dark:color-pureWhite"
             :style="{
               'fontSize': `${bottomSize}vw`,
-              'fontWeight': 400,
-              'letterSpacing': '0.05em',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex + 7]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex + 7]?.scaleY ?? 1),
               '--final-skew': `${letterDistortions[col]?.[charIndex + 7]?.skew ?? 0}deg`,
-              'animation': `letterWobbleDistortSmooth 0.9s ${smoothEasing} 0s 1 forwards, letterSwoosh 0.4s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
+              '--final-rotateY': `${letterDistortions[col]?.[charIndex + 7]?.rotateY ?? 0}deg`,
+              '--final-depth': `${letterDistortions[col]?.[charIndex + 7]?.depth ?? 0}px`,
+              'transformStyle': 'preserve-3d',
+              'animation': `letterWobbleDistortSmooth 1.05s ${smoothEasing} 0s 1 forwards, letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
             }"
           >
             {{ char }}
@@ -305,19 +298,20 @@ function hide() {
 
 @keyframes letterWobbleDistortSmooth {
   0% {
-    transform: scaleX(1) scaleY(1) skewX(0deg);
+    transform: translateZ(0) rotateY(0deg) scaleX(1) scaleY(1) skewX(0deg);
   }
   15% {
-    transform: scaleX(0.92) scaleY(1.08) skewX(-5deg);
+    transform: translateZ(10px) rotateY(-7deg) scaleX(0.9) scaleY(1.08) skewX(-6deg);
   }
   32% {
-    transform: scaleX(1.06) scaleY(0.95) skewX(4deg);
+    transform: translateZ(18px) rotateY(10deg) scaleX(1.12) scaleY(0.92) skewX(5deg);
   }
   48% {
-    transform: scaleX(0.96) scaleY(1.03) skewX(-2deg);
+    transform: translateZ(8px) rotateY(-5deg) scaleX(0.94) scaleY(1.05) skewX(-3deg);
   }
   100% {
-    transform: scaleX(var(--final-scaleX)) scaleY(var(--final-scaleY)) skewX(var(--final-skew));
+    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) scaleX(var(--final-scaleX))
+      scaleY(var(--final-scaleY)) skewX(var(--final-skew));
   }
 }
 
@@ -339,11 +333,13 @@ function hide() {
 @keyframes letterSwoosh {
   0% {
     opacity: 1;
-    transform: scaleX(var(--final-scaleX)) scaleY(var(--final-scaleY)) skewX(var(--final-skew)) translateY(0);
+    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) scaleX(var(--final-scaleX))
+      scaleY(var(--final-scaleY)) skewX(var(--final-skew)) translateY(0);
   }
   100% {
     opacity: 0;
-    transform: scaleX(var(--final-scaleX)) scaleY(var(--final-scaleY)) skewX(var(--final-skew)) translateY(-25px);
+    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) scaleX(var(--final-scaleX))
+      scaleY(var(--final-scaleY)) skewX(var(--final-skew)) translateY(-25px);
   }
 }
 </style>
