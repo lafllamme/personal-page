@@ -13,6 +13,13 @@
 }
 
 @font-face {
+  font-family: 'Mondea';
+  src: url('Headline/Mondea.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'Recoleta';
   font-style: normal;
   font-weight: normal;
@@ -22,6 +29,28 @@
 @font-face {
   font-family: 'Electric';
   src: url('Headline/Electric.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'Nohemi-Regular';
+  src: url('Headline/Nohemi-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'ResistSans.otf';
+  src: url('Headline/ResistSans.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Orbito.otf';
+  src: url('Headline/Orbito.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -37,6 +66,23 @@
 .font-ginger {
   font-family: 'Ginger', sans-serif;
 }
+
+.font-mondea {
+  font-family: 'Mondea', sans-serif;
+}
+
+.font-nohemi {
+  font-family: 'Nohemi-Regular', sans-serif;
+}
+
+.font-resist {
+  font-family: 'ResistSans.otf', sans-serif;
+}
+
+.font-orbito {
+  font-family: 'Orbito.otf', sans-serif;
+}
+
 
 .font-prata {
   font-family: 'Prata', serif;
