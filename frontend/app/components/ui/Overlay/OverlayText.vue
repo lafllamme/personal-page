@@ -156,7 +156,7 @@ function hide() {
           <span
             v-for="(char, i) in topText.split('')"
             :key="`top-${col}-${i}`"
-            class="font-clash-regular inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+            class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               fontSize: `${topSize}vw`,
               fontWeight: '100',
@@ -180,7 +180,7 @@ function hide() {
           <span
             v-for="(char, i) in bottomText.split('')"
             :key="`bottom-${col}-${i}`"
-            class="font-clash-regular inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+            class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               fontSize: `${bottomSize}vw`,
               fontWeight: '100',
@@ -217,17 +217,17 @@ function hide() {
           <span
             v-for="(char, charIndex) in topText.split('')"
             :key="`top-${charIndex}`"
-            class="font-clash-regular inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+            class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${topSize}vw`,
-              'fontWeight': '900',
+              'fontWeight': '100',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex]?.scaleY ?? 1),
               '--final-rotateY': `${letterDistortions[col]?.[charIndex]?.rotateY ?? 0}deg`,
               '--final-depth': `${letterDistortions[col]?.[charIndex]?.depth ?? 0}px`,
               'transformStyle': 'preserve-3d',
               'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
-              'animation': `letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
+              'animation': `letterWeightRise 0.38s ${smoothEasing} ${0.05 + 0.02 * charIndex}s forwards, letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
             }"
           >
             {{ char }}
@@ -237,17 +237,17 @@ function hide() {
           <span
             v-for="(char, charIndex) in bottomText.split('')"
             :key="`bottom-${charIndex}`"
-            class="font-clash-regular inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+            class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${bottomSize}vw`,
-              'fontWeight': '900',
+              'fontWeight': '100',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex + 7]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex + 7]?.scaleY ?? 1),
               '--final-rotateY': `${letterDistortions[col]?.[charIndex + 7]?.rotateY ?? 0}deg`,
               '--final-depth': `${letterDistortions[col]?.[charIndex + 7]?.depth ?? 0}px`,
               'transformStyle': 'preserve-3d',
               'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
-              'animation': `letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
+              'animation': `letterWeightRise 0.38s ${smoothEasing} ${0.05 + 0.02 * charIndex}s forwards, letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
             }"
           >
             {{ char }}
@@ -297,6 +297,15 @@ function hide() {
   100% {
     opacity: 0;
     transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(-25px);
+  }
+}
+
+@keyframes letterWeightRise {
+  0% {
+    font-weight: 100;
+  }
+  100% {
+    font-weight: 900;
   }
 }
 </style>
