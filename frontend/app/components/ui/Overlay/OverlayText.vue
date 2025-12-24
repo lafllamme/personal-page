@@ -198,7 +198,7 @@ function hide() {
     <div
       v-else
       class="absolute inset-0 flex items-center justify-center"
-      :style="{ animation: `carouselLoop 2.2s ${smoothEasing} 0.8s forwards` }"
+      :style="{ animation: `carouselLoop 2.2s cubic-bezier(0.28, 0.9, 0.62, 1) 0.8s forwards` }"
     >
       <div
         v-for="col in columns"
