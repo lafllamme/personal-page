@@ -28,7 +28,6 @@ const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 interface LetterDistortion {
   scaleX: number
   scaleY: number
-  skew: number
   rotateY: number
   depth: number
 }
@@ -48,11 +47,10 @@ function generateDistortions() {
     allLetters.forEach((_, i) => {
       const scaleX = clamp(1 + (Math.random() * 0.5 - 0.25) * intensity, 0.72, 1.42)
       const scaleY = clamp(1 + (Math.random() * 0.32 - 0.16) * intensity, 0.82, 1.24)
-      const skew = clamp((Math.random() * 24 - 12) * intensity, -16, 16)
       const rotateY = clamp((col * -3.4) + (Math.random() * 14 - 7) * intensity, -18, 18)
       const depth = clamp((10 + Math.random() * 26) * intensity, 0, 36)
 
-      distortions[i] = { scaleX, scaleY, skew, rotateY, depth }
+      distortions[i] = { scaleX, scaleY, rotateY, depth }
     })
 
     columnDistortions[col] = distortions
@@ -222,11 +220,11 @@ function hide() {
               'fontSize': `${topSize}vw`,
               '--final-scaleX': String(letterDistortions[col]?.[charIndex]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex]?.scaleY ?? 1),
-              '--final-skew': `${letterDistortions[col]?.[charIndex]?.skew ?? 0}deg`,
               '--final-rotateY': `${letterDistortions[col]?.[charIndex]?.rotateY ?? 0}deg`,
               '--final-depth': `${letterDistortions[col]?.[charIndex]?.depth ?? 0}px`,
               'transformStyle': 'preserve-3d',
-              'animation': `letterWobbleDistortSmooth 1.05s ${smoothEasing} 0s 1 forwards, letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
+              'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
+              'animation': `letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
             }"
           >
             {{ char }}
@@ -241,11 +239,11 @@ function hide() {
               'fontSize': `${bottomSize}vw`,
               '--final-scaleX': String(letterDistortions[col]?.[charIndex + 7]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex + 7]?.scaleY ?? 1),
-              '--final-skew': `${letterDistortions[col]?.[charIndex + 7]?.skew ?? 0}deg`,
               '--final-rotateY': `${letterDistortions[col]?.[charIndex + 7]?.rotateY ?? 0}deg`,
               '--final-depth': `${letterDistortions[col]?.[charIndex + 7]?.depth ?? 0}px`,
               'transformStyle': 'preserve-3d',
-              'animation': `letterWobbleDistortSmooth 1.05s ${smoothEasing} 0s 1 forwards, letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
+              'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
+              'animation': `letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
             }"
           >
             {{ char }}
@@ -260,58 +258,15 @@ function hide() {
 @keyframes kineticTypeIn {
   0% {
     opacity: 0;
-    transform: translateY(-35px) scaleX(1.2) scaleY(0.75) skewX(-6deg);
+    transform: translateY(-35px) scaleX(1.2) scaleY(0.75);
   }
   60% {
     opacity: 1;
-    transform: translateY(-3px) scaleX(0.97) scaleY(1.03) skewX(2deg);
+    transform: translateY(-3px) scaleX(0.97) scaleY(1.03);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scaleX(1) scaleY(1) skewX(0deg);
-  }
-}
-
-@keyframes containerWobbleSmooth {
-  0% {
-    transform: translateX(0);
-  }
-  12% {
-    transform: translateX(-8px);
-  }
-  28% {
-    transform: translateX(6px);
-  }
-  45% {
-    transform: translateX(-4px);
-  }
-  62% {
-    transform: translateX(3px);
-  }
-  78% {
-    transform: translateX(-1px);
-  }
-  100% {
-    transform: translateX(0);
-  }
-}
-
-@keyframes letterWobbleDistortSmooth {
-  0% {
-    transform: translateZ(0) rotateY(0deg) scaleX(1) scaleY(1) skewX(0deg);
-  }
-  15% {
-    transform: translateZ(10px) rotateY(-7deg) scaleX(0.9) scaleY(1.08) skewX(-6deg);
-  }
-  32% {
-    transform: translateZ(18px) rotateY(10deg) scaleX(1.12) scaleY(0.92) skewX(5deg);
-  }
-  48% {
-    transform: translateZ(8px) rotateY(-5deg) scaleX(0.94) scaleY(1.05) skewX(-3deg);
-  }
-  100% {
-    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) scaleX(var(--final-scaleX))
-      scaleY(var(--final-scaleY)) skewX(var(--final-skew));
+    transform: translateY(0) scaleX(1) scaleY(1);
   }
 }
 
@@ -333,13 +288,11 @@ function hide() {
 @keyframes letterSwoosh {
   0% {
     opacity: 1;
-    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) scaleX(var(--final-scaleX))
-      scaleY(var(--final-scaleY)) skewX(var(--final-skew)) translateY(0);
+    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0);
   }
   100% {
     opacity: 0;
-    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) scaleX(var(--final-scaleX))
-      scaleY(var(--final-scaleY)) skewX(var(--final-skew)) translateY(-25px);
+    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(-25px);
   }
 }
 </style>
