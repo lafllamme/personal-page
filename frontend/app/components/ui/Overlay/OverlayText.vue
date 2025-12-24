@@ -159,7 +159,7 @@ function hide() {
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               fontSize: `${topSize}vw`,
-              fontWeight: '100',
+              fontWeight: '300',
               opacity: '0',
               animation: `kineticTypeIn 0.5s ${bounceEasing} ${i * 0.04}s forwards`,
               lineHeight: '1',
@@ -183,7 +183,7 @@ function hide() {
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               fontSize: `${bottomSize}vw`,
-              fontWeight: '100',
+              fontWeight: '300',
               opacity: '0',
               animation: `kineticTypeIn 0.5s ${bounceEasing} ${i * 0.04}s forwards`,
               lineHeight: '1',
@@ -220,7 +220,7 @@ function hide() {
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${topSize}vw`,
-              'fontWeight': '100',
+              'fontWeight': '300',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex]?.scaleY ?? 1),
               '--final-rotateY': `${letterDistortions[col]?.[charIndex]?.rotateY ?? 0}deg`,
@@ -240,7 +240,7 @@ function hide() {
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${bottomSize}vw`,
-              'fontWeight': '100',
+              'fontWeight': '300',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex + 7]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex + 7]?.scaleY ?? 1),
               '--final-rotateY': `${letterDistortions[col]?.[charIndex + 7]?.rotateY ?? 0}deg`,
@@ -302,7 +302,7 @@ function hide() {
 
 @keyframes letterWeightRise {
   0% {
-    font-weight: 100;
+    font-weight: 300;
   }
   100% {
     font-weight: 900;
