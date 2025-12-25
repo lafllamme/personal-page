@@ -32,8 +32,8 @@ const bandDurationMs = 2000
 const bandDelayMs = 350
 const bandHoldMs = 0
 const bandFadeDelayMs = 0 // delay after band ends before fade-out stagger
-const letterFadeDurationMs = 1100
-const letterStaggerMs = 100
+const letterFadeDurationMs = 900
+const letterStaggerMs = 80
 
 interface LetterDistortion {
   scaleX: number
