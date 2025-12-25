@@ -29,8 +29,9 @@ const weightEasing = 'cubic-bezier(0.33, 1, 0.68, 1)'
 const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const bandEasing = 'cubic-bezier(0.26, 0.86, 0.28, 1)'
 const bandDurationMs = 2000
-const bandDelayMs = 320
-const bandHoldMs = 120
+const bandDelayMs = 350
+const bandHoldMs = 0
+const bandFadeDelayMs = 0 // delay after band ends before fade-out stagger
 const letterSwooshDurationMs = 460
 const letterStaggerMs = 60
 
@@ -54,11 +55,11 @@ const textLines: OverlayLine[] = [
 
 const maxLineLetters = Math.max(...textLines.map(line => line.letters.length))
 const lastLetterDelayMs = letterStaggerMs * Math.max(0, maxLineLetters - 1)
-const bandPhaseDurationMs = bandDelayMs + bandDurationMs + bandHoldMs + letterSwooshDurationMs + lastLetterDelayMs
+const bandPhaseDurationMs = bandDelayMs + bandDurationMs + bandHoldMs + bandFadeDelayMs + letterSwooshDurationMs + lastLetterDelayMs
 const topLetterCount = textLines.find(line => line.key === 'top')?.letters.length ?? 0
 const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1))
 const lineGap = '0.5vw'
-const phases: Array<{ name: AnimationPhase; duration: number }> = [
+const phases: Array<{ name: AnimationPhase, duration: number }> = [
   { name: 'typing', duration: 850 },
   { name: 'settlePre', duration: 200 }, // pause after fade/bounce before collision
   { name: 'collide', duration: 640 },
@@ -115,12 +116,12 @@ function getIntroLineStyle(position: OverlayLineKey) {
 
   return {
     '--intro-offset': offset,
-    transform: isTyping || isSettlingPre || isColliding ? `translateY(${offset})` : 'translateY(0)',
-    fontWeight: introWeight.value,
-    fontVariationSettings: `"wght" ${introWeight.value}`,
-    transition: `font-weight 0.8s ${weightEasing}, font-variation-settings 0.8s ${weightEasing}`,
-    animation: animations.join(', '),
-    willChange: 'transform, font-weight, font-variation-settings',
+    'transform': isTyping || isSettlingPre || isColliding ? `translateY(${offset})` : 'translateY(0)',
+    'fontWeight': introWeight.value,
+    'fontVariationSettings': `"wght" ${introWeight.value}`,
+    'transition': `font-weight 0.8s ${weightEasing}, font-variation-settings 0.8s ${weightEasing}`,
+    'animation': animations.join(', '),
+    'willChange': 'transform, font-weight, font-variation-settings',
   }
 }
 
@@ -153,7 +154,7 @@ function getColumnStyle(col: number) {
 function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number) {
   const offset = line.key === 'top' ? 0 : topLetterCount
   const distortion = letterDistortions.value[col]?.[charIndex + offset]
-  const delay = (bandDelayMs + bandDurationMs + bandHoldMs + letterStaggerMs * charIndex) / 1000
+  const delay = (bandDelayMs + bandDurationMs + bandFadeDelayMs + bandHoldMs + letterStaggerMs * charIndex) / 1000
 
   return {
     'fontSize': `${line.size}vw`,
@@ -340,5 +341,4 @@ function hide() {
     transform: translateY(0);
   }
 }
-
 </style>
