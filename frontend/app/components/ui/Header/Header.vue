@@ -186,7 +186,7 @@ watch(isSwitchOpen, (open) => {
               tabindex="0"
             >
               <span class="text-pureBlack dark:text-pureWhite">Tec</span>
-              <span class="color-teal-10">News</span>
+              <span class="color-teal-10 dark:color-[#01E2B6]">News</span>
               <Underline />
             </NuxtLink>
           </div>
