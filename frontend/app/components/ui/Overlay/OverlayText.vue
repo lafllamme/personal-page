@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<OverlayTextProps>(), OverlayTextDefaultPr
 const { class: classNames } = toRefs(props)
 
 const isVisible = ref(true)
-const animationPhase = ref<'typing' | 'merging' | 'band'>('typing')
+const animationPhase = ref<'typing' | 'collide' | 'settle' | 'band'>('typing')
 const renderKey = ref(0)
 const containerRef = ref<HTMLDivElement | null>(null)
 
@@ -19,8 +19,8 @@ const columnGap = 50
 const topSize = 7
 const bottomSize = 5.5
 
-const topOffset = computed(() => (animationPhase.value === 'typing' ? `-${20 + topSize / 2}vh` : '0'))
-const bottomOffset = computed(() => (animationPhase.value === 'typing' ? `${20 + bottomSize / 2}vh` : '0'))
+const introTopOffset = computed(() => `-${20 + topSize / 2}vh`)
+const introBottomOffset = computed(() => `${20 + bottomSize / 2}vh`)
 
 const smoothEasing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
@@ -69,10 +69,51 @@ watch(renderKey, () => {
   letterDistortions.value = generateDistortions()
 })
 
+const introFontWeight = computed(() => {
+  if (animationPhase.value === 'settle')
+    return '900'
+  return '300'
+})
+
+function getIntroLineStyle(position: 'top' | 'bottom') {
+  const offset = position === 'top' ? introTopOffset.value : introBottomOffset.value
+  const isTyping = animationPhase.value === 'typing'
+  const isColliding = animationPhase.value === 'collide'
+
+  return {
+    '--intro-offset': offset,
+    transform: isTyping || isColliding ? `translateY(${offset})` : 'translateY(0)',
+    animation: isColliding
+      ? `${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.48s ${bounceEasing} forwards`
+      : '',
+    willChange: 'transform',
+  }
+}
+
+function getIntroLetterStyle(index: number, size: number) {
+  const isTyping = animationPhase.value === 'typing'
+  const isColliding = animationPhase.value === 'collide'
+
+  const baseStyle: Record<string, string> = {
+    fontSize: `${size}vw`,
+    fontWeight: introFontWeight.value,
+    opacity: isTyping ? '0' : '1',
+    lineHeight: '1',
+  }
+
+  if (isTyping)
+    baseStyle.animation = `kineticTypeIn 0.5s ${bounceEasing} ${index * 0.04}s forwards`
+  else if (isColliding)
+    baseStyle.animation = `mergeWeightSnap 0.26s ease-out ${0.04 * index + 0.08}s forwards`
+
+  return baseStyle
+}
+
 function runPhases() {
   const phases = [
     { name: 'typing', duration: 650 },
-    { name: 'merging', duration: 350 },
+    { name: 'collide', duration: 520 },
+    { name: 'settle', duration: 300 },
     { name: 'band', duration: 2600 },
   ]
 
@@ -80,7 +121,7 @@ function runPhases() {
 
   const runPhase = () => {
     const phase = phases[currentPhaseIndex]
-    animationPhase.value = phase.name as 'typing' | 'merging' | 'band'
+    animationPhase.value = phase.name as 'typing' | 'collide' | 'settle' | 'band'
 
     timeoutId = setTimeout(() => {
       currentPhaseIndex += 1
@@ -128,7 +169,7 @@ function hide() {
     @click="hide"
   >
     <div
-      v-if="animationPhase === 'typing' || animationPhase === 'merging'"
+      v-if="animationPhase !== 'band'"
       class="absolute inset-0 flex items-center justify-center"
       :style="{ height: '100vh' }"
     >
@@ -147,23 +188,13 @@ function hide() {
       >
         <div
           class="flex justify-center"
-          :style="{
-            transform: `translateY(${topOffset})`,
-            transition: `transform 350ms ${smoothEasing}`,
-            willChange: 'transform',
-          }"
+          :style="getIntroLineStyle('top')"
         >
           <span
             v-for="(char, i) in topText.split('')"
             :key="`top-${col}-${i}`"
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="{
-              fontSize: `${topSize}vw`,
-              fontWeight: '300',
-              opacity: '0',
-              animation: `kineticTypeIn 0.5s ${bounceEasing} ${i * 0.04}s forwards`,
-              lineHeight: '1',
-            }"
+            :style="getIntroLetterStyle(i, topSize)"
           >
             {{ char }}
           </span>
@@ -171,23 +202,13 @@ function hide() {
 
         <div
           class="flex justify-center"
-          :style="{
-            transform: `translateY(${bottomOffset})`,
-            transition: `transform 350ms ${smoothEasing}`,
-            willChange: 'transform',
-          }"
+          :style="getIntroLineStyle('bottom')"
         >
           <span
             v-for="(char, i) in bottomText.split('')"
             :key="`bottom-${col}-${i}`"
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="{
-              fontSize: `${bottomSize}vw`,
-              fontWeight: '300',
-              opacity: '0',
-              animation: `kineticTypeIn 0.5s ${bounceEasing} ${i * 0.04}s forwards`,
-              lineHeight: '1',
-            }"
+            :style="getIntroLetterStyle(i, bottomSize)"
           >
             {{ char }}
           </span>
@@ -220,14 +241,14 @@ function hide() {
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${topSize}vw`,
-              'fontWeight': '300',
+              'fontWeight': '900',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex]?.scaleY ?? 1),
               '--final-rotateY': `${letterDistortions[col]?.[charIndex]?.rotateY ?? 0}deg`,
               '--final-depth': `${letterDistortions[col]?.[charIndex]?.depth ?? 0}px`,
               'transformStyle': 'preserve-3d',
               'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
-              'animation': `letterWeightRise 0.38s ${smoothEasing} ${0.05 + 0.02 * charIndex}s forwards, letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
+              'animation': `letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
             }"
           >
             {{ char }}
@@ -240,14 +261,14 @@ function hide() {
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${bottomSize}vw`,
-              'fontWeight': '300',
+              'fontWeight': '900',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex + 7]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex + 7]?.scaleY ?? 1),
               '--final-rotateY': `${letterDistortions[col]?.[charIndex + 7]?.rotateY ?? 0}deg`,
               '--final-depth': `${letterDistortions[col]?.[charIndex + 7]?.depth ?? 0}px`,
               'transformStyle': 'preserve-3d',
               'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
-              'animation': `letterWeightRise 0.38s ${smoothEasing} ${0.05 + 0.02 * charIndex}s forwards, letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
+              'animation': `letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
             }"
           >
             {{ char }}
@@ -300,9 +321,36 @@ function hide() {
   }
 }
 
-@keyframes letterWeightRise {
+@keyframes meetBounceTop {
+  0% {
+    transform: translateY(var(--intro-offset));
+  }
+  68% {
+    transform: translateY(-6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes meetBounceBottom {
+  0% {
+    transform: translateY(var(--intro-offset));
+  }
+  68% {
+    transform: translateY(6px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes mergeWeightSnap {
   0% {
     font-weight: 300;
+  }
+  60% {
+    font-weight: 950;
   }
   100% {
     font-weight: 900;
