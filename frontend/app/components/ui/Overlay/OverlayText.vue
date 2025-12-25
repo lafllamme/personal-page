@@ -51,7 +51,7 @@ const lineGap = '0.5vw'
 const phases: Array<{ name: AnimationPhase; duration: number }> = [
   { name: 'typing', duration: 650 },
   { name: 'collide', duration: 760 },
-  { name: 'settle', duration: 420 },
+  { name: 'settle', duration: 200 },
   { name: 'band', duration: 2600 },
 ]
 
@@ -106,7 +106,7 @@ function getIntroLineStyle(position: OverlayLineKey) {
     transform: isTyping || isColliding ? `translateY(${offset})` : 'translateY(0)',
     fontWeight: introWeight.value,
     fontVariationSettings: `"wght" ${introWeight.value}`,
-    transition: `font-weight 0.7s ${smoothEasing}, font-variation-settings 0.7s ${smoothEasing}`,
+    transition: `font-weight 0.9s ${smoothEasing}, font-variation-settings 0.9s ${smoothEasing}`,
     animation: animations.join(', '),
     willChange: 'transform, font-weight, font-variation-settings',
   }
