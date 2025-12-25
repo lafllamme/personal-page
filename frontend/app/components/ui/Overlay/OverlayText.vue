@@ -9,7 +9,6 @@ const { class: classNames } = toRefs(props)
 const isVisible = ref(true)
 const animationPhase = ref<'typing' | 'collide' | 'settle' | 'band'>('typing')
 const renderKey = ref(0)
-const containerRef = ref<HTMLDivElement | null>(null)
 
 const topText = 'TECNEWS'
 const bottomText = 'tecnews'
@@ -33,6 +32,7 @@ interface LetterDistortion {
 }
 
 const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1))
+const lineGap = computed(() => '0.5vw')
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
@@ -69,11 +69,7 @@ watch(renderKey, () => {
   letterDistortions.value = generateDistortions()
 })
 
-const introFontWeight = computed(() => {
-  if (animationPhase.value === 'settle')
-    return '900'
-  return '300'
-})
+const introFontWeight = computed(() => (animationPhase.value === 'typing' ? '300' : '950'))
 
 function getIntroLineStyle(position: 'top' | 'bottom') {
   const offset = position === 'top' ? introTopOffset.value : introBottomOffset.value
@@ -83,6 +79,7 @@ function getIntroLineStyle(position: 'top' | 'bottom') {
   return {
     '--intro-offset': offset,
     transform: isTyping || isColliding ? `translateY(${offset})` : 'translateY(0)',
+    fontWeight: introFontWeight.value,
     animation: isColliding
       ? `${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.48s ${bounceEasing} forwards`
       : '',
@@ -92,21 +89,28 @@ function getIntroLineStyle(position: 'top' | 'bottom') {
 
 function getIntroLetterStyle(index: number, size: number) {
   const isTyping = animationPhase.value === 'typing'
-  const isColliding = animationPhase.value === 'collide'
 
   const baseStyle: Record<string, string> = {
     fontSize: `${size}vw`,
-    fontWeight: introFontWeight.value,
     opacity: isTyping ? '0' : '1',
     lineHeight: '1',
   }
 
   if (isTyping)
     baseStyle.animation = `kineticTypeIn 0.5s ${bounceEasing} ${index * 0.04}s forwards`
-  else if (isColliding)
-    baseStyle.animation = `mergeWeightSnap 0.26s ease-out ${0.04 * index + 0.08}s forwards`
 
   return baseStyle
+}
+
+function getColumnStyle(col: number, gap: string) {
+  return {
+    left: '50%',
+    top: '50%',
+    transform: `translate(calc(-50% + ${col * columnGap}vw), -50%)`,
+    gap,
+    perspective: '1200px',
+    transformStyle: 'preserve-3d',
+  }
 }
 
 function runPhases() {
@@ -159,7 +163,6 @@ function hide() {
   <div
     v-if="isVisible && isMounted"
     :key="renderKey"
-    ref="containerRef"
     :class="useClsx(
       'fixed inset-0 z-[9999] overflow-hidden cursor-pointer',
       'bg-pureWhite dark:bg-pureBlack',
@@ -177,14 +180,7 @@ function hide() {
         v-for="col in centerColumns"
         :key="col"
         class="absolute flex flex-col items-center"
-        :style="{
-          left: '50%',
-          top: '50%',
-          transform: `translate(calc(-50% + ${col * columnGap}vw), -50%)`,
-          gap: '0.5vw',
-          perspective: '1200px',
-          transformStyle: 'preserve-3d',
-        }"
+        :style="getColumnStyle(col, lineGap)"
       >
         <div
           class="flex justify-center"
@@ -225,14 +221,7 @@ function hide() {
         v-for="col in columns"
         :key="col"
         class="absolute flex shrink-0 flex-col items-center leading-none"
-        :style="{
-          left: `calc(50% + ${col * columnGap}vw)`,
-          top: '50%',
-          transform: 'translate(-50%, -50%)',
-          gap: '0.5vw',
-          perspective: '1200px',
-          transformStyle: 'preserve-3d',
-        }"
+        :style="getColumnStyle(col, lineGap)"
       >
         <div class="flex">
           <span
@@ -241,7 +230,7 @@ function hide() {
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${topSize}vw`,
-              'fontWeight': '900',
+              'fontWeight': '950',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex]?.scaleY ?? 1),
               '--final-rotateY': `${letterDistortions[col]?.[charIndex]?.rotateY ?? 0}deg`,
@@ -261,7 +250,7 @@ function hide() {
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
             :style="{
               'fontSize': `${bottomSize}vw`,
-              'fontWeight': '900',
+              'fontWeight': '950',
               '--final-scaleX': String(letterDistortions[col]?.[charIndex + 7]?.scaleX ?? 1),
               '--final-scaleY': String(letterDistortions[col]?.[charIndex + 7]?.scaleY ?? 1),
               '--final-rotateY': `${letterDistortions[col]?.[charIndex + 7]?.rotateY ?? 0}deg`,
@@ -353,7 +342,7 @@ function hide() {
     font-weight: 950;
   }
   100% {
-    font-weight: 900;
+    font-weight: 950;
   }
 }
 </style>
