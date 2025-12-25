@@ -7,7 +7,10 @@ const props = withDefaults(defineProps<OverlayTextProps>(), OverlayTextDefaultPr
 const { class: classNames } = toRefs(props)
 
 const isVisible = ref(true)
-const animationPhase = ref<'typing' | 'collide' | 'settle' | 'band'>('typing')
+type AnimationPhase = 'typing' | 'collide' | 'settle' | 'band'
+type OverlayLineKey = 'top' | 'bottom'
+
+const animationPhase = ref<AnimationPhase>('typing')
 const renderKey = ref(0)
 
 const topText = 'TECNEWS'
@@ -31,16 +34,34 @@ interface LetterDistortion {
   depth: number
 }
 
+interface OverlayLine {
+  key: OverlayLineKey
+  size: number
+  letters: string[]
+}
+
+const textLines: OverlayLine[] = [
+  { key: 'top', size: topSize, letters: topText.split('') },
+  { key: 'bottom', size: bottomSize, letters: bottomText.split('') },
+]
+
+const topLetterCount = textLines.find(line => line.key === 'top')?.letters.length ?? 0
 const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1))
-const lineGap = computed(() => '0.5vw')
+const lineGap = '0.5vw'
+const phases: Array<{ name: AnimationPhase; duration: number }> = [
+  { name: 'typing', duration: 650 },
+  { name: 'collide', duration: 520 },
+  { name: 'settle', duration: 300 },
+  { name: 'band', duration: 2600 },
+]
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
 
 function generateDistortions() {
-  const columnDistortions: Record<number, Record<string, LetterDistortion>> = {}
+  const columnDistortions: Record<number, Record<number, LetterDistortion>> = {}
 
   columns.forEach((col) => {
-    const distortions: Record<string, LetterDistortion> = {}
+    const distortions: Record<number, LetterDistortion> = {}
     const allLetters = [...topText.split(''), ...bottomText.split('')]
     const intensity = Math.max(0.35, 1 - Math.abs(col) * 0.14)
 
@@ -102,30 +123,41 @@ function getIntroLetterStyle(index: number, size: number) {
   return baseStyle
 }
 
-function getColumnStyle(col: number, gap: string) {
+function getColumnStyle(col: number) {
   return {
     left: '50%',
     top: '50%',
     transform: `translate(calc(-50% + ${col * columnGap}vw), -50%)`,
-    gap,
+    gap: lineGap,
     perspective: '1200px',
     transformStyle: 'preserve-3d',
   }
 }
 
-function runPhases() {
-  const phases = [
-    { name: 'typing', duration: 650 },
-    { name: 'collide', duration: 520 },
-    { name: 'settle', duration: 300 },
-    { name: 'band', duration: 2600 },
-  ]
+function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number) {
+  const offset = line.key === 'top' ? 0 : topLetterCount
+  const distortion = letterDistortions.value[col]?.[charIndex + offset]
+  const delay = 1.8 + 0.06 * charIndex
 
+  return {
+    'fontSize': `${line.size}vw`,
+    'fontWeight': '950',
+    '--final-scaleX': String(distortion?.scaleX ?? 1),
+    '--final-scaleY': String(distortion?.scaleY ?? 1),
+    '--final-rotateY': `${distortion?.rotateY ?? 0}deg`,
+    '--final-depth': `${distortion?.depth ?? 0}px`,
+    'transformStyle': 'preserve-3d',
+    'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
+    'animation': `letterSwoosh 0.46s ${smoothEasing} ${delay}s forwards`,
+  }
+}
+
+function runPhases() {
   let currentPhaseIndex = 0
 
   const runPhase = () => {
     const phase = phases[currentPhaseIndex]
-    animationPhase.value = phase.name as 'typing' | 'collide' | 'settle' | 'band'
+    animationPhase.value = phase.name
 
     timeoutId = setTimeout(() => {
       currentPhaseIndex += 1
@@ -180,31 +212,19 @@ function hide() {
         v-for="col in centerColumns"
         :key="col"
         class="absolute flex flex-col items-center"
-        :style="getColumnStyle(col, lineGap)"
+        :style="getColumnStyle(col)"
       >
         <div
+          v-for="line in textLines"
+          :key="`intro-${line.key}-${col}`"
           class="flex justify-center"
-          :style="getIntroLineStyle('top')"
+          :style="getIntroLineStyle(line.key)"
         >
           <span
-            v-for="(char, i) in topText.split('')"
-            :key="`top-${col}-${i}`"
+            v-for="(char, i) in line.letters"
+            :key="`${line.key}-${col}-${i}`"
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="getIntroLetterStyle(i, topSize)"
-          >
-            {{ char }}
-          </span>
-        </div>
-
-        <div
-          class="flex justify-center"
-          :style="getIntroLineStyle('bottom')"
-        >
-          <span
-            v-for="(char, i) in bottomText.split('')"
-            :key="`bottom-${col}-${i}`"
-            class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="getIntroLetterStyle(i, bottomSize)"
+            :style="getIntroLetterStyle(i, line.size)"
           >
             {{ char }}
           </span>
@@ -221,44 +241,18 @@ function hide() {
         v-for="col in columns"
         :key="col"
         class="absolute flex shrink-0 flex-col items-center leading-none"
-        :style="getColumnStyle(col, lineGap)"
+        :style="getColumnStyle(col)"
       >
-        <div class="flex">
+        <div
+          v-for="line in textLines"
+          :key="`band-${line.key}-${col}`"
+          class="flex"
+        >
           <span
-            v-for="(char, charIndex) in topText.split('')"
-            :key="`top-${charIndex}`"
+            v-for="(char, charIndex) in line.letters"
+            :key="`${line.key}-${col}-${charIndex}`"
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="{
-              'fontSize': `${topSize}vw`,
-              'fontWeight': '950',
-              '--final-scaleX': String(letterDistortions[col]?.[charIndex]?.scaleX ?? 1),
-              '--final-scaleY': String(letterDistortions[col]?.[charIndex]?.scaleY ?? 1),
-              '--final-rotateY': `${letterDistortions[col]?.[charIndex]?.rotateY ?? 0}deg`,
-              '--final-depth': `${letterDistortions[col]?.[charIndex]?.depth ?? 0}px`,
-              'transformStyle': 'preserve-3d',
-              'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
-              'animation': `letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
-            }"
-          >
-            {{ char }}
-          </span>
-        </div>
-        <div class="flex">
-          <span
-            v-for="(char, charIndex) in bottomText.split('')"
-            :key="`bottom-${charIndex}`"
-            class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="{
-              'fontSize': `${bottomSize}vw`,
-              'fontWeight': '950',
-              '--final-scaleX': String(letterDistortions[col]?.[charIndex + 7]?.scaleX ?? 1),
-              '--final-scaleY': String(letterDistortions[col]?.[charIndex + 7]?.scaleY ?? 1),
-              '--final-rotateY': `${letterDistortions[col]?.[charIndex + 7]?.rotateY ?? 0}deg`,
-              '--final-depth': `${letterDistortions[col]?.[charIndex + 7]?.depth ?? 0}px`,
-              'transformStyle': 'preserve-3d',
-              'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
-              'animation': `letterSwoosh 0.46s ${smoothEasing} ${1.8 + 0.06 * charIndex}s forwards`,
-            }"
+            :style="getBandLetterStyle(line, col, charIndex)"
           >
             {{ char }}
           </span>
