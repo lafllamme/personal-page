@@ -32,8 +32,8 @@ const bandDurationMs = 2000
 const bandDelayMs = 350
 const bandHoldMs = 0
 const bandFadeDelayMs = 0 // delay after band ends before fade-out stagger
-const letterSwooshDurationMs = 460
-const letterStaggerMs = 60
+const letterFadeDurationMs = 1100
+const letterStaggerMs = 100
 
 interface LetterDistortion {
   scaleX: number
@@ -55,7 +55,7 @@ const textLines: OverlayLine[] = [
 
 const maxLineLetters = Math.max(...textLines.map(line => line.letters.length))
 const lastLetterDelayMs = letterStaggerMs * Math.max(0, maxLineLetters - 1)
-const bandPhaseDurationMs = bandDelayMs + bandDurationMs + bandHoldMs + bandFadeDelayMs + letterSwooshDurationMs + lastLetterDelayMs
+const bandPhaseDurationMs = bandDelayMs + bandDurationMs + bandHoldMs + bandFadeDelayMs + letterFadeDurationMs + lastLetterDelayMs
 const topLetterCount = textLines.find(line => line.key === 'top')?.letters.length ?? 0
 const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1))
 const lineGap = '0.5vw'
@@ -165,7 +165,8 @@ function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number) {
     '--final-depth': `${distortion?.depth ?? 0}px`,
     'transformStyle': 'preserve-3d',
     'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
-    'animation': `letterSwoosh 0.46s ${smoothEasing} ${delay}s forwards`,
+    'willChange': 'transform, opacity, filter',
+    'animation': `letterBlurFade ${letterFadeDurationMs / 1000}s ease-in ${delay}s forwards`,
   }
 }
 
@@ -307,14 +308,18 @@ function hide() {
   }
 }
 
-@keyframes letterSwoosh {
+@keyframes letterBlurFade {
   0% {
     opacity: 1;
-    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0);
+    filter: blur(0px);
+  }
+  50% {
+    opacity: 0.5;
+    filter: blur(4px);
   }
   100% {
     opacity: 0;
-    transform: translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(-25px);
+    filter: blur(8px);
   }
 }
 
