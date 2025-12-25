@@ -25,6 +25,7 @@ const introTopOffset = computed(() => `-${20 + topSize / 2}vh`)
 const introBottomOffset = computed(() => `${20 + bottomSize / 2}vh`)
 
 const smoothEasing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+const weightEasing = 'cubic-bezier(0.33, 1, 0.68, 1)'
 const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 
 interface LetterDistortion {
@@ -50,8 +51,8 @@ const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1
 const lineGap = '0.5vw'
 const phases: Array<{ name: AnimationPhase; duration: number }> = [
   { name: 'typing', duration: 650 },
-  { name: 'collide', duration: 760 },
-  { name: 'settle', duration: 10 },
+  { name: 'collide', duration: 640 },
+  { name: 'settle', duration: 0 },
   { name: 'band', duration: 2600 },
 ]
 
@@ -106,7 +107,7 @@ function getIntroLineStyle(position: OverlayLineKey) {
     transform: isTyping || isColliding ? `translateY(${offset})` : 'translateY(0)',
     fontWeight: introWeight.value,
     fontVariationSettings: `"wght" ${introWeight.value}`,
-    transition: `font-weight 0.9s ${smoothEasing}, font-variation-settings 0.9s ${smoothEasing}`,
+    transition: `font-weight 0.8s ${weightEasing}, font-variation-settings 0.8s ${weightEasing}`,
     animation: animations.join(', '),
     willChange: 'transform, font-weight, font-variation-settings',
   }
