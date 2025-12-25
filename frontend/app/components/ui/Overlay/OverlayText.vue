@@ -36,6 +36,8 @@ const letterFadeDurationMs = 780
 const letterStaggerMs = 70
 const overlayFadeOutMs = 320
 const mobileSizeMultiplier = 1.15
+const mobileBandColumnGap = 56
+const mobileBandColumns = [-2, -1, 0, 1, 2]
 const mobileStacks = [-1, 0, 1]
 const mobileStackGapVh = 16
 
@@ -166,11 +168,11 @@ function getColumnStyle(col: number, gap = columnGap) {
   }
 }
 
-function getMobileStackStyle(stack: number) {
+function getMobileBandStackStyle(col: number, stack: number) {
   return {
     left: '50%',
     top: '50%',
-    transform: `translate(-50%, calc(-50% + ${stack * mobileStackGapVh}vh))`,
+    transform: `translate(calc(-50% + ${col * mobileBandColumnGap}vw), calc(-50% + ${stack * mobileStackGapVh}vh))`,
     gap: lineGap,
     perspective: '1200px',
     transformStyle: 'preserve-3d',
@@ -276,28 +278,30 @@ function hide() {
       :style="{ height: '100vh' }"
     >
       <div class="absolute inset-0 flex items-center justify-center md:hidden">
-        <div
-          v-for="stack in mobileStacks"
-          :key="`intro-stack-${stack}`"
-          class="absolute flex flex-col items-center"
-          :style="getMobileStackStyle(stack)"
-        >
+        <template v-for="col in mobileBandColumns" :key="`intro-mobile-col-${col}`">
           <div
-            v-for="line in textLines"
-            :key="`intro-${line.key}-mobile-${stack}`"
-            class="flex justify-center"
-            :style="getIntroLineStyle(line.key)"
+            v-for="stack in mobileStacks"
+            :key="`intro-stack-${col}-${stack}`"
+            class="absolute flex flex-col items-center"
+            :style="getMobileBandStackStyle(col, stack)"
           >
-            <span
-              v-for="(char, i) in line.letters"
-              :key="`${line.key}-mobile-${stack}-${i}`"
-              class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-              :style="getIntroLetterStyle(i, line.size, mobileSizeMultiplier)"
+            <div
+              v-for="line in textLines"
+              :key="`intro-${line.key}-mobile-${col}-${stack}`"
+              class="flex justify-center"
+              :style="getIntroLineStyle(line.key)"
             >
-              {{ char }}
-            </span>
+              <span
+                v-for="(char, i) in line.letters"
+                :key="`${line.key}-mobile-${col}-${stack}-${i}`"
+                class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+                :style="getIntroLetterStyle(i, line.size, mobileSizeMultiplier)"
+              >
+                {{ char }}
+              </span>
+            </div>
           </div>
-        </div>
+        </template>
       </div>
       <div class="absolute inset-0 hidden items-center justify-center md:flex">
         <div
@@ -325,33 +329,39 @@ function hide() {
       </div>
     </div>
 
-    <div
-      v-else
-      class="absolute inset-0 flex items-center justify-center"
-      :style="{ animation: `carouselLoop ${bandDurationMs / 1000}s ${bandEasing} ${bandDelayMs / 1000}s forwards` }"
-    >
+    <div v-else class="absolute inset-0 flex items-center justify-center">
       <div
-        v-for="stack in mobileStacks"
-        :key="`band-stack-${stack}`"
-        class="absolute flex flex-col items-center leading-none md:hidden"
-        :style="getMobileStackStyle(stack)"
+        class="absolute inset-0 flex items-center justify-center md:hidden"
+        :style="{ animation: `carouselLoop ${bandDurationMs / 1000}s ${bandEasing} ${bandDelayMs / 1000}s forwards`, '--column-gap': `${mobileBandColumnGap}vw` }"
       >
-        <div
-          v-for="line in textLines"
-          :key="`band-${line.key}-mobile-${stack}`"
-          class="flex"
-        >
-          <span
-            v-for="(char, charIndex) in line.letters"
-            :key="`${line.key}-mobile-${stack}-${charIndex}`"
-            class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="getBandLetterStyle(line, 0, charIndex, mobileSizeMultiplier)"
+        <template v-for="col in mobileBandColumns" :key="`band-mobile-col-${col}`">
+          <div
+            v-for="stack in mobileStacks"
+            :key="`band-stack-${col}-${stack}`"
+            class="absolute flex flex-col items-center leading-none"
+            :style="getMobileBandStackStyle(col, stack)"
           >
-            {{ char }}
-          </span>
-        </div>
+            <div
+              v-for="line in textLines"
+              :key="`band-${line.key}-mobile-${col}-${stack}`"
+              class="flex"
+            >
+              <span
+                v-for="(char, charIndex) in line.letters"
+                :key="`${line.key}-mobile-${col}-${stack}-${charIndex}`"
+                class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+                :style="getBandLetterStyle(line, col, charIndex, mobileSizeMultiplier)"
+              >
+                {{ char }}
+              </span>
+            </div>
+          </div>
+        </template>
       </div>
-      <div class="hidden md:block">
+      <div
+        class="hidden md:block"
+        :style="{ animation: `carouselLoop ${bandDurationMs / 1000}s ${bandEasing} ${bandDelayMs / 1000}s forwards` }"
+      >
         <div
           v-for="col in columns"
           :key="col"
