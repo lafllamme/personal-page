@@ -27,6 +27,8 @@ const props = withDefaults(defineProps<{
   allowOverflow: false,
 })
 
+const emit = defineEmits<{ (e: 'ready'): void }>()
+
 const isClient = typeof window !== 'undefined' && typeof document !== 'undefined'
 
 const ready = ref(false)
@@ -904,6 +906,7 @@ function rebuildMesh() {
 onMounted(() => {
   rebuildMesh()
   ready.value = true
+  emit('ready')
 })
 
 watch([

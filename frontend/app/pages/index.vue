@@ -1,36 +1,37 @@
 <script lang="ts" setup>
 // Lazy hydration components for better performance
 
-import RibbonDebug from '~/components/ui/RibbonDebug/RibbonDebug.vue'
+import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
+import RibbonDebug from '@/components/ui/RibbonDebug/RibbonDebug.vue'
 
 const LazyFeaturedSection = defineLazyHydrationComponent(
   'visible',
-  () => import('~/components/ui/Blog/FeaturedSection/FeaturedSection.vue'),
+  () => import('@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'),
 )
 
 const LazyBlogLayout = defineLazyHydrationComponent(
   'visible',
-  () => import('~/components/ui/Blog/Layout/BlogLayout.vue'),
+  () => import('@/components/ui/Blog/Layout/BlogLayout.vue'),
 )
 
 const LazyInteractiveButton = defineLazyHydrationComponent(
   'idle',
-  () => import('~/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'),
+  () => import('@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'),
 )
 
 const LazyRippleButton = defineLazyHydrationComponent(
   'idle',
-  () => import('~/components/ui/Buttons/RippleButton/RippleButton.vue'),
+  () => import('@/components/ui/Buttons/RippleButton/RippleButton.vue'),
 )
 
 const LazySkewMarquee = defineLazyHydrationComponent(
   'visible',
-  () => import('~/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
+  () => import('@/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
 )
 
 const LazyTextGenerate = defineLazyHydrationComponent(
   'idle',
-  () => import('~/components/ui/Text/TextGenerate/TextGenerate.vue'),
+  () => import('@/components/ui/Text/TextGenerate/TextGenerate.vue'),
 )
 
 const { t } = useI18n()
@@ -55,21 +56,46 @@ function handleClick() {
 }
 
 const animate = ref(false)
+const overlaySeen = useState('intro-overlay-seen', () => false)
+const overlayCanComplete = ref(false)
+const overlayActive = computed(() => !overlaySeen.value)
 
 function handleGenerateComplete() {
   animate.value = true
+}
+
+function handleOverlayComplete() {
+  overlaySeen.value = true
+}
+
+function handleRibbonReady() {
+  overlayCanComplete.value = true
 }
 </script>
 
 <template>
   <div>
+    <OverlayText
+      v-if="!overlaySeen"
+      :can-complete="overlayCanComplete"
+      :on-complete="handleOverlayComplete"
+    />
     <div
-      class="relative mb-12 min-h-[360px] flex flex-col items-center overflow-visible md:min-h-[520px] md:flex-row"
+      :class="useClsx(
+        'relative mb-12 min-h-[360px] flex flex-col items-center overflow-visible md:min-h-[520px] md:flex-row',
+        overlayActive && 'opacity-0 pointer-events-none',
+        !overlayActive && 'opacity-100 transition-opacity duration-300 ease-[cubic-bezier(0.33,1,0.68,1)]',
+      )"
     >
       <div class="absolute inset-0 z-0">
         <div class="absolute left-1/2 top-1/2 max-w-none w-screen -translate-x-1/2 -translate-y-1/2">
           <div class="mx-auto max-w-none w-[130%]">
-            <RibbonDebug :full="false" :height="heroRibbonHeight" allow-overflow />
+            <RibbonDebug
+              :full="false"
+              :height="heroRibbonHeight"
+              allow-overflow
+              @ready="handleRibbonReady"
+            />
           </div>
         </div>
       </div>
