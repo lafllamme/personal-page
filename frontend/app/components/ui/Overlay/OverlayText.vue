@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<OverlayTextProps>(), OverlayTextDefaultPr
 const { class: classNames } = toRefs(props)
 
 const isVisible = ref(true)
-type AnimationPhase = 'typing' | 'collide' | 'settle' | 'band'
+type AnimationPhase = 'typing' | 'settlePre' | 'collide' | 'settlePost' | 'band'
 type OverlayLineKey = 'top' | 'bottom'
 
 const animationPhase = ref<AnimationPhase>('typing')
@@ -27,6 +27,12 @@ const introBottomOffset = computed(() => `${20 + bottomSize / 2}vh`)
 const smoothEasing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 const weightEasing = 'cubic-bezier(0.33, 1, 0.68, 1)'
 const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
+const bandEasing = 'cubic-bezier(0.26, 0.86, 0.28, 1)'
+const bandDurationMs = 2000
+const bandDelayMs = 800
+const bandHoldMs = 120
+const letterSwooshDurationMs = 460
+const letterStaggerMs = 60
 
 interface LetterDistortion {
   scaleX: number
@@ -46,14 +52,18 @@ const textLines: OverlayLine[] = [
   { key: 'bottom', size: bottomSize, letters: bottomText.split('') },
 ]
 
+const maxLineLetters = Math.max(...textLines.map(line => line.letters.length))
+const lastLetterDelayMs = letterStaggerMs * Math.max(0, maxLineLetters - 1)
+const bandPhaseDurationMs = bandDelayMs + bandDurationMs + bandHoldMs + letterSwooshDurationMs + lastLetterDelayMs
 const topLetterCount = textLines.find(line => line.key === 'top')?.letters.length ?? 0
 const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1))
 const lineGap = '0.5vw'
 const phases: Array<{ name: AnimationPhase; duration: number }> = [
-  { name: 'typing', duration: 650 },
+  { name: 'typing', duration: 850 },
+  { name: 'settlePre', duration: 200 }, // pause after fade/bounce before collision
   { name: 'collide', duration: 640 },
-  { name: 'settle', duration: 0 },
-  { name: 'band', duration: 2600 },
+  { name: 'settlePost', duration: 0 }, // brief pause after collision before band
+  { name: 'band', duration: bandPhaseDurationMs },
 ]
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value))
@@ -91,11 +101,12 @@ watch(renderKey, () => {
   letterDistortions.value = generateDistortions()
 })
 
-const introWeight = computed(() => (animationPhase.value === 'typing' ? 300 : 900))
+const introWeight = computed(() => (animationPhase.value === 'typing' || animationPhase.value === 'settlePre' ? 300 : 900))
 
 function getIntroLineStyle(position: OverlayLineKey) {
   const offset = position === 'top' ? introTopOffset.value : introBottomOffset.value
   const isTyping = animationPhase.value === 'typing'
+  const isSettlingPre = animationPhase.value === 'settlePre'
   const isColliding = animationPhase.value === 'collide'
   const animations: string[] = []
 
@@ -104,7 +115,7 @@ function getIntroLineStyle(position: OverlayLineKey) {
 
   return {
     '--intro-offset': offset,
-    transform: isTyping || isColliding ? `translateY(${offset})` : 'translateY(0)',
+    transform: isTyping || isSettlingPre || isColliding ? `translateY(${offset})` : 'translateY(0)',
     fontWeight: introWeight.value,
     fontVariationSettings: `"wght" ${introWeight.value}`,
     transition: `font-weight 0.8s ${weightEasing}, font-variation-settings 0.8s ${weightEasing}`,
@@ -123,7 +134,7 @@ function getIntroLetterStyle(index: number, size: number) {
   }
 
   if (isTyping)
-    baseStyle.animation = `kineticTypeIn 0.5s ${bounceEasing} ${index * 0.04}s forwards`
+    baseStyle.animation = `kineticTypeIn 0.6s ${bounceEasing} ${index * 0.05}s forwards`
 
   return baseStyle
 }
@@ -142,7 +153,7 @@ function getColumnStyle(col: number) {
 function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number) {
   const offset = line.key === 'top' ? 0 : topLetterCount
   const distortion = letterDistortions.value[col]?.[charIndex + offset]
-  const delay = 1.8 + 0.06 * charIndex
+  const delay = (bandDelayMs + bandDurationMs + bandHoldMs + letterStaggerMs * charIndex) / 1000
 
   return {
     'fontSize': `${line.size}vw`,
@@ -240,7 +251,7 @@ function hide() {
     <div
       v-else
       class="absolute inset-0 flex items-center justify-center"
-      :style="{ animation: `carouselLoop 2.2s cubic-bezier(0.28, 0.9, 0.62, 1) 0.8s forwards` }"
+      :style="{ animation: `carouselLoop ${bandDurationMs / 1000}s ${bandEasing} ${bandDelayMs / 1000}s forwards` }"
     >
       <div
         v-for="col in columns"
@@ -271,11 +282,11 @@ function hide() {
 @keyframes kineticTypeIn {
   0% {
     opacity: 0;
-    transform: translateY(-35px) scaleX(1.2) scaleY(0.75);
+    transform: translateY(-28px) scaleX(1.15) scaleY(0.8);
   }
   60% {
     opacity: 1;
-    transform: translateY(-3px) scaleX(0.97) scaleY(1.03);
+    transform: translateY(-4px) scaleX(0.99) scaleY(1.02);
   }
   100% {
     opacity: 1;
@@ -286,15 +297,12 @@ function hide() {
 @keyframes carouselLoop {
   0% {
     transform: translateX(0);
-    opacity: 1;
   }
   80% {
     transform: translateX(var(--column-gap));
-    opacity: 1;
   }
   100% {
-    transform: translateX(var(--column-gap)) translateY(-15px);
-    opacity: 0;
+    transform: translateX(var(--column-gap));
   }
 }
 
