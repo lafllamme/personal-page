@@ -102,7 +102,7 @@ watch(renderKey, () => {
   letterDistortions.value = generateDistortions()
 })
 
-const introWeight = computed(() => (animationPhase.value === 'typing' || animationPhase.value === 'settlePre' ? 300 : 900))
+const introWeight = computed(() => (animationPhase.value === 'typing' || animationPhase.value === 'settlePre' ? 400 : 800))
 
 function getIntroLineStyle(position: OverlayLineKey) {
   const offset = position === 'top' ? introTopOffset.value : introBottomOffset.value
@@ -158,7 +158,7 @@ function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number) {
 
   return {
     'fontSize': `${line.size}vw`,
-    'fontWeight': '950',
+    'fontWeight': '800',
     '--final-scaleX': String(distortion?.scaleX ?? 1),
     '--final-scaleY': String(distortion?.scaleY ?? 1),
     '--final-rotateY': `${distortion?.rotateY ?? 0}deg`,
