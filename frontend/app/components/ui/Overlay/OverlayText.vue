@@ -50,8 +50,8 @@ const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1
 const lineGap = '0.5vw'
 const phases: Array<{ name: AnimationPhase; duration: number }> = [
   { name: 'typing', duration: 650 },
-  { name: 'collide', duration: 520 },
-  { name: 'settle', duration: 300 },
+  { name: 'collide', duration: 760 },
+  { name: 'settle', duration: 420 },
   { name: 'band', duration: 2600 },
 ]
 
@@ -99,14 +99,14 @@ function getIntroLineStyle(position: OverlayLineKey) {
   const animations: string[] = []
 
   if (isColliding)
-    animations.push(`${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.48s ${bounceEasing} forwards`)
+    animations.push(`${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.64s ${bounceEasing} forwards`)
 
   return {
     '--intro-offset': offset,
     transform: isTyping || isColliding ? `translateY(${offset})` : 'translateY(0)',
     fontWeight: introWeight.value,
     fontVariationSettings: `"wght" ${introWeight.value}`,
-    transition: `font-weight 0.42s ${smoothEasing}, font-variation-settings 0.42s ${smoothEasing}`,
+    transition: `font-weight 0.7s ${smoothEasing}, font-variation-settings 0.7s ${smoothEasing}`,
     animation: animations.join(', '),
     willChange: 'transform, font-weight, font-variation-settings',
   }
