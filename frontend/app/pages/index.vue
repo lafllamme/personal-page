@@ -23,11 +23,6 @@ const LazyRippleButton = defineLazyHydrationComponent(
   () => import('~/components/ui/Buttons/RippleButton/RippleButton.vue'),
 )
 
-const LazyMarquee = defineLazyHydrationComponent(
-  'idle',
-  () => import('~/components/ui/Marquee/Marquee.vue'),
-)
-
 const LazySkewMarquee = defineLazyHydrationComponent(
   'visible',
   () => import('~/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
@@ -72,8 +67,8 @@ function handleGenerateComplete() {
       class="relative mb-12 min-h-[360px] flex flex-col items-center overflow-visible md:min-h-[520px] md:flex-row"
     >
       <div class="absolute inset-0 z-0">
-        <div class="absolute left-1/2 top-1/2 w-screen max-w-none -translate-x-1/2 -translate-y-1/2">
-          <div class="mx-auto w-[130%] max-w-none">
+        <div class="absolute left-1/2 top-1/2 max-w-none w-screen -translate-x-1/2 -translate-y-1/2">
+          <div class="mx-auto max-w-none w-[130%]">
             <RibbonDebug :full="false" :height="heroRibbonHeight" allow-overflow />
           </div>
         </div>

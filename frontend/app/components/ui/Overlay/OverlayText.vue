@@ -24,7 +24,6 @@ const bottomSize = 5.5
 const introTopOffset = computed(() => `-${20 + topSize / 2}vh`)
 const introBottomOffset = computed(() => `${20 + bottomSize / 2}vh`)
 
-const smoothEasing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 const weightEasing = 'cubic-bezier(0.33, 1, 0.68, 1)'
 const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const bandEasing = 'cubic-bezier(0.26, 0.86, 0.28, 1)'

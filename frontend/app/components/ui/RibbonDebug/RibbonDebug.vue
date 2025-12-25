@@ -788,7 +788,7 @@ function buildP5SegmentMatrix(opts: {
   radius: number
   segLength: number
 }) {
-  const { i, ribbonId, runLength, scroll, radius, segLength } = opts
+  const { i, ribbonId, _runLength, scroll, radius, segLength } = opts
 
   const PI = Math.PI
   const segSpace = segmentSpace.value
