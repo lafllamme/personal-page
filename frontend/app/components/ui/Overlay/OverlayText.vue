@@ -51,7 +51,7 @@ const lineGap = '0.5vw'
 const phases: Array<{ name: AnimationPhase; duration: number }> = [
   { name: 'typing', duration: 650 },
   { name: 'collide', duration: 760 },
-  { name: 'settle', duration: 200 },
+  { name: 'settle', duration: 10 },
   { name: 'band', duration: 2600 },
 ]
 
