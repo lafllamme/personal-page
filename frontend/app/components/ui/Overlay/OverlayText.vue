@@ -35,6 +35,9 @@ const bandFadeDelayMs = 0 // delay after band ends before fade-out stagger
 const letterFadeDurationMs = 780
 const letterStaggerMs = 70
 const overlayFadeOutMs = 320
+const mobileSizeMultiplier = 1.15
+const mobileStacks = [-1, 0, 1]
+const mobileStackGapVh = 16
 
 interface LetterDistortion {
   scaleX: number
@@ -137,11 +140,11 @@ function getIntroLineStyle(position: OverlayLineKey) {
   }
 }
 
-function getIntroLetterStyle(index: number, size: number) {
+function getIntroLetterStyle(index: number, size: number, multiplier = 1) {
   const isTyping = animationPhase.value === 'typing'
 
   const baseStyle: Record<string, string> = {
-    fontSize: `${size}vw`,
+    fontSize: `${size * multiplier}vw`,
     opacity: isTyping ? '0' : '1',
     lineHeight: '1',
   }
@@ -152,24 +155,35 @@ function getIntroLetterStyle(index: number, size: number) {
   return baseStyle
 }
 
-function getColumnStyle(col: number) {
+function getColumnStyle(col: number, gap = columnGap) {
   return {
     left: '50%',
     top: '50%',
-    transform: `translate(calc(-50% + ${col * columnGap}vw), -50%)`,
+    transform: `translate(calc(-50% + ${col * gap}vw), -50%)`,
     gap: lineGap,
     perspective: '1200px',
     transformStyle: 'preserve-3d',
   }
 }
 
-function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number) {
+function getMobileStackStyle(stack: number) {
+  return {
+    left: '50%',
+    top: '50%',
+    transform: `translate(-50%, calc(-50% + ${stack * mobileStackGapVh}vh))`,
+    gap: lineGap,
+    perspective: '1200px',
+    transformStyle: 'preserve-3d',
+  }
+}
+
+function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number, multiplier = 1) {
   const offset = line.key === 'top' ? 0 : topLetterCount
   const distortion = letterDistortions.value[col]?.[charIndex + offset]
   const delay = (bandDelayMs + bandDurationMs + bandFadeDelayMs + bandHoldMs + letterStaggerMs * charIndex) / 1000
 
   return {
-    'fontSize': `${line.size}vw`,
+    'fontSize': `${line.size * multiplier}vw`,
     'fontWeight': '800',
     '--final-scaleX': String(distortion?.scaleX ?? 1),
     '--final-scaleY': String(distortion?.scaleY ?? 1),
@@ -261,26 +275,52 @@ function hide() {
       class="absolute inset-0 flex items-center justify-center"
       :style="{ height: '100vh' }"
     >
-      <div
-        v-for="col in centerColumns"
-        :key="col"
-        class="absolute flex flex-col items-center"
-        :style="getColumnStyle(col)"
-      >
+      <div class="absolute inset-0 flex items-center justify-center md:hidden">
         <div
-          v-for="line in textLines"
-          :key="`intro-${line.key}-${col}`"
-          class="flex justify-center"
-          :style="getIntroLineStyle(line.key)"
+          v-for="stack in mobileStacks"
+          :key="`intro-stack-${stack}`"
+          class="absolute flex flex-col items-center"
+          :style="getMobileStackStyle(stack)"
         >
-          <span
-            v-for="(char, i) in line.letters"
-            :key="`${line.key}-${col}-${i}`"
-            class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="getIntroLetterStyle(i, line.size)"
+          <div
+            v-for="line in textLines"
+            :key="`intro-${line.key}-mobile-${stack}`"
+            class="flex justify-center"
+            :style="getIntroLineStyle(line.key)"
           >
-            {{ char }}
-          </span>
+            <span
+              v-for="(char, i) in line.letters"
+              :key="`${line.key}-mobile-${stack}-${i}`"
+              class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+              :style="getIntroLetterStyle(i, line.size, mobileSizeMultiplier)"
+            >
+              {{ char }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="absolute inset-0 hidden items-center justify-center md:flex">
+        <div
+          v-for="col in centerColumns"
+          :key="col"
+          class="absolute flex flex-col items-center"
+          :style="getColumnStyle(col)"
+        >
+          <div
+            v-for="line in textLines"
+            :key="`intro-${line.key}-${col}`"
+            class="flex justify-center"
+            :style="getIntroLineStyle(line.key)"
+          >
+            <span
+              v-for="(char, i) in line.letters"
+              :key="`${line.key}-${col}-${i}`"
+              class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+              :style="getIntroLetterStyle(i, line.size)"
+            >
+              {{ char }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -291,24 +331,47 @@ function hide() {
       :style="{ animation: `carouselLoop ${bandDurationMs / 1000}s ${bandEasing} ${bandDelayMs / 1000}s forwards` }"
     >
       <div
-        v-for="col in columns"
-        :key="col"
-        class="absolute flex shrink-0 flex-col items-center leading-none"
-        :style="getColumnStyle(col)"
+        v-for="stack in mobileStacks"
+        :key="`band-stack-${stack}`"
+        class="absolute flex flex-col items-center leading-none md:hidden"
+        :style="getMobileStackStyle(stack)"
       >
         <div
           v-for="line in textLines"
-          :key="`band-${line.key}-${col}`"
+          :key="`band-${line.key}-mobile-${stack}`"
           class="flex"
         >
           <span
             v-for="(char, charIndex) in line.letters"
-            :key="`${line.key}-${col}-${charIndex}`"
+            :key="`${line.key}-mobile-${stack}-${charIndex}`"
             class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
-            :style="getBandLetterStyle(line, col, charIndex)"
+            :style="getBandLetterStyle(line, 0, charIndex, mobileSizeMultiplier)"
           >
             {{ char }}
           </span>
+        </div>
+      </div>
+      <div class="hidden md:block">
+        <div
+          v-for="col in columns"
+          :key="col"
+          class="absolute flex shrink-0 flex-col items-center leading-none"
+          :style="getColumnStyle(col)"
+        >
+          <div
+            v-for="line in textLines"
+            :key="`band-${line.key}-${col}`"
+            class="flex"
+          >
+            <span
+              v-for="(char, charIndex) in line.letters"
+              :key="`${line.key}-${col}-${charIndex}`"
+              class="zalando-sans-expanded inline-block color-pureBlack tracking-tight dark:color-pureWhite"
+              :style="getBandLetterStyle(line, col, charIndex)"
+            >
+              {{ char }}
+            </span>
+          </div>
         </div>
       </div>
     </div>
