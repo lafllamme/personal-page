@@ -90,21 +90,25 @@ watch(renderKey, () => {
   letterDistortions.value = generateDistortions()
 })
 
-const introFontWeight = computed(() => (animationPhase.value === 'typing' ? '300' : '950'))
+const introWeight = computed(() => (animationPhase.value === 'typing' ? 300 : 900))
 
-function getIntroLineStyle(position: 'top' | 'bottom') {
+function getIntroLineStyle(position: OverlayLineKey) {
   const offset = position === 'top' ? introTopOffset.value : introBottomOffset.value
   const isTyping = animationPhase.value === 'typing'
   const isColliding = animationPhase.value === 'collide'
+  const animations: string[] = []
+
+  if (isColliding)
+    animations.push(`${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.48s ${bounceEasing} forwards`)
 
   return {
     '--intro-offset': offset,
     transform: isTyping || isColliding ? `translateY(${offset})` : 'translateY(0)',
-    fontWeight: introFontWeight.value,
-    animation: isColliding
-      ? `${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.48s ${bounceEasing} forwards`
-      : '',
-    willChange: 'transform',
+    fontWeight: introWeight.value,
+    fontVariationSettings: `"wght" ${introWeight.value}`,
+    transition: `font-weight 0.42s ${smoothEasing}, font-variation-settings 0.42s ${smoothEasing}`,
+    animation: animations.join(', '),
+    willChange: 'transform, font-weight, font-variation-settings',
   }
 }
 
@@ -328,15 +332,4 @@ function hide() {
   }
 }
 
-@keyframes mergeWeightSnap {
-  0% {
-    font-weight: 300;
-  }
-  60% {
-    font-weight: 950;
-  }
-  100% {
-    font-weight: 950;
-  }
-}
 </style>
