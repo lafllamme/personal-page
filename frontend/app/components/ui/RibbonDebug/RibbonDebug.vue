@@ -21,10 +21,12 @@ const props = withDefaults(defineProps<{
   full?: boolean
   height?: number
   allowOverflow?: boolean
+  showBackground?: boolean
 }>(), {
   full: true,
   height: 520,
   allowOverflow: false,
+  showBackground: true,
 })
 
 const emit = defineEmits<{ (e: 'ready'): void }>()
@@ -218,6 +220,7 @@ const _lastWrap = ref<number | null>(null)
 const panelHidden = ref(false)
 const panelCollapsed = ref(true)
 
+const hasBackground = computed(() => props.showBackground !== false)
 const backgroundStyle = computed(() => ({
   background: `radial-gradient(1200px 700px at 20% 20%, ${bgB.value} 0%, rgba(0,0,0,0) 60%),
                    radial-gradient(900px 600px at 80% 30%, ${bgC.value} 0%, rgba(0,0,0,0) 60%),
@@ -226,18 +229,22 @@ const backgroundStyle = computed(() => ({
 
 const containerStyle = computed(() => {
   if (props.full) {
-    return {
+    const base = {
       width: '90svw',
       height: '90svh',
-      ...backgroundStyle.value,
     }
+    return hasBackground.value ? { ...base, ...backgroundStyle.value } : base
   }
-  return {
+  const base = {
     width: '100%',
     height: `${props.height}px`,
-    ...backgroundStyle.value,
   }
+  return hasBackground.value ? { ...base, ...backgroundStyle.value } : base
 })
+
+const canvasAlpha = computed(() => !hasBackground.value)
+const canvasClearAlpha = computed(() => (hasBackground.value ? 1 : 0))
+const canvasClearColor = computed(() => '#000000')
 
 function logState() {
   consola.info(
@@ -1389,7 +1396,9 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
         v-if="ready"
         class="absolute inset-0 h-full w-full"
         :dpr="dpr"
-        clear-color="#000000"
+        :alpha="canvasAlpha"
+        :clear-alpha="canvasClearAlpha"
+        :clear-color="canvasClearColor"
         render-mode="always"
         @loop="handleLoop"
       >

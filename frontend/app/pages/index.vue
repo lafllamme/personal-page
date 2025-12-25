@@ -93,6 +93,7 @@ function handleRibbonReady() {
             <RibbonDebug
               :full="false"
               :height="heroRibbonHeight"
+              :show-background="false"
               allow-overflow
               @ready="handleRibbonReady"
             />
