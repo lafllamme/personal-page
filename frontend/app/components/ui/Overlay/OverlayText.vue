@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { OverlayTextProps } from './OverlayText.model'
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, toRefs, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, toRefs, watch } from 'vue'
 import { OverlayTextDefaultProps } from './OverlayText.model'
 
 const props = withDefaults(defineProps<OverlayTextProps>(), OverlayTextDefaultProps)
@@ -24,15 +24,17 @@ const bottomSize = 5.5
 const introTopOffset = computed(() => `-${20 + topSize / 2}vh`)
 const introBottomOffset = computed(() => `${20 + bottomSize / 2}vh`)
 
+const smoothEasing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 const weightEasing = 'cubic-bezier(0.33, 1, 0.68, 1)'
 const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const bandEasing = 'cubic-bezier(0.26, 0.86, 0.28, 1)'
-const bandDurationMs = 2000
-const bandDelayMs = 350
+const bandDurationMs = 1700
+const bandDelayMs = 280
 const bandHoldMs = 0
 const bandFadeDelayMs = 0 // delay after band ends before fade-out stagger
-const letterFadeDurationMs = 900
-const letterStaggerMs = 80
+const letterFadeDurationMs = 780
+const letterStaggerMs = 70
+const overlayFadeOutMs = 320
 
 interface LetterDistortion {
   scaleX: number
@@ -95,11 +97,22 @@ const letterDistortions = ref(generateDistortions())
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null
 let rafId: number | null = null
-const isMounted = ref(false)
+let exitTimeoutId: ReturnType<typeof setTimeout> | null = null
+const isMounted = ref(true)
+const isExiting = ref(false)
+const bandCycles = ref(0)
 
 watch(renderKey, () => {
   letterDistortions.value = generateDistortions()
 })
+
+watch(
+  () => props.canComplete,
+  (canComplete) => {
+    if (canComplete && props.autoHide && bandCycles.value >= 1)
+      hide()
+  },
+)
 
 const introWeight = computed(() => (animationPhase.value === 'typing' || animationPhase.value === 'settlePre' ? 400 : 800))
 
@@ -179,6 +192,11 @@ function runPhases() {
     timeoutId = setTimeout(() => {
       currentPhaseIndex += 1
       if (currentPhaseIndex >= phases.length) {
+        bandCycles.value += 1
+        if (props.autoHide && props.canComplete && bandCycles.value >= 1) {
+          hide()
+          return
+        }
         currentPhaseIndex = 0
         renderKey.value += 1
       }
@@ -188,10 +206,7 @@ function runPhases() {
 
   runPhase()
 }
-
 onMounted(async () => {
-  await nextTick()
-  isMounted.value = true
   rafId = requestAnimationFrame(() => runPhases())
 })
 
@@ -200,24 +215,45 @@ onBeforeUnmount(() => {
     clearTimeout(timeoutId)
   if (rafId !== null)
     cancelAnimationFrame(rafId)
+  if (exitTimeoutId)
+    clearTimeout(exitTimeoutId)
 })
 
 function hide() {
-  isVisible.value = false
-  props.onComplete?.()
+  if (isExiting.value)
+    return
+
+  isExiting.value = true
+  if (timeoutId) {
+    clearTimeout(timeoutId)
+    timeoutId = null
+  }
+  if (rafId !== null) {
+    cancelAnimationFrame(rafId)
+    rafId = null
+  }
+
+  exitTimeoutId = setTimeout(() => {
+    isVisible.value = false
+    props.onComplete?.()
+  }, overlayFadeOutMs)
 }
 </script>
 
 <template>
   <div
-    v-if="isVisible && isMounted"
+    v-if="isVisible"
     :key="renderKey"
     :class="useClsx(
       'fixed inset-0 z-[9999] overflow-hidden cursor-pointer',
       'bg-pureWhite dark:bg-pureBlack',
       classNames,
     )"
-    :style="{ '--column-gap': `${columnGap}vw` }"
+    :style="{
+      '--column-gap': `${columnGap}vw`,
+      'opacity': isExiting ? 0 : 1,
+      'transition': `opacity ${overlayFadeOutMs}ms ${smoothEasing}`,
+    }"
     @click="hide"
   >
     <div
