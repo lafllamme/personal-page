@@ -16,7 +16,7 @@ function replayOverlay() {
 </script>
 
 <template>
-  <div class="text-black relative min-h-screen bg-[#f7f5f0]">
+  <div class="relative min-h-screen color-pureBlack dark:color-pureWhite">
     <div class="mx-auto max-w-4xl px-6 py-16">
       <div class="flex items-center justify-between gap-6">
         <div>
@@ -29,7 +29,7 @@ function replayOverlay() {
         </div>
         <button
           type="button"
-          class="bg-black text-white hover:bg-black/80 rounded-full px-5 py-2 text-sm font-semibold transition"
+          class="hover:bg-black/80 rounded-full px-5 py-2 text-sm font-semibold transition"
           @click="replayOverlay"
         >
           Replay overlay
