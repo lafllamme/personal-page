@@ -9,6 +9,7 @@
     "dev:frontend": "turbo dev --filter=@personal-page/frontend",
     "dev:cms": "turbo dev --filter=@personal-page/cms",
     "build": "turbo build",
+    "eslint": "eslint .",
     "build:frontend": "turbo build --filter=@personal-page/frontend",
     "build:cms": "turbo build --filter=@personal-page/cms",
     "start": "turbo start",
@@ -28,7 +29,13 @@
     "deps:upgrade:latest": "pnpm run deps:latest && pnpm run deps:install && pnpm -w dedupe"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "catalog:",
+    "@eslint/eslintrc": "catalog:",
+    "@typescript-eslint/parser": "catalog:",
     "concurrently": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-next": "catalog:",
+    "vue-eslint-parser": "catalog:",
     "turbo": "catalog:"
   },
   "packageManager": "pnpm@10.18.3",
