@@ -4,6 +4,7 @@ import { FlatCompat } from '@eslint/eslintrc'
 import tsParser from '@typescript-eslint/parser'
 import vueParser from 'vue-eslint-parser'
 import antfu from '@antfu/eslint-config'
+import nextPlugin from '@next/eslint-plugin-next'
 
 const rootDir = dirname(fileURLToPath(import.meta.url))
 const frontendDir = resolve(rootDir, 'frontend')
@@ -48,6 +49,21 @@ const sharedConfigs = scopeConfigs(
 )
 
 const compat = new FlatCompat({ baseDirectory: cmsDir })
+const cmsNextConfig = nextPlugin.configs['core-web-vitals'] ?? {}
+const cmsNextSettingsBase =
+  cmsNextConfig.settings && typeof cmsNextConfig.settings === 'object'
+    ? cmsNextConfig.settings
+    : {}
+const cmsNextSettings = {
+  ...cmsNextSettingsBase,
+  next: {
+    ...(typeof cmsNextSettingsBase.next === 'object'
+      ? cmsNextSettingsBase.next
+      : {}),
+    rootDir: ['cms'],
+  },
+}
+
 const cmsConfigs = scopeConfigs(
   [
     ...compat.extends('next/core-web-vitals', 'next/typescript'),
@@ -110,6 +126,14 @@ export default [
         sourceType: 'module',
       },
     },
+  },
+  {
+    files: ['cms/**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
+    plugins: {
+      '@next/next': nextPlugin,
+    },
+    ...(cmsNextConfig.rules ? { rules: cmsNextConfig.rules } : {}),
+    settings: cmsNextSettings,
   },
   ...frontendConfigs,
   ...sharedConfigs,

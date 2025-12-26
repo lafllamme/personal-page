@@ -25,6 +25,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
+      "dependsOn": ["^build"],
       "env": [
         "NUXT_DATABASE_URI",
         "NUXT_PAYLOAD_SECRET", 

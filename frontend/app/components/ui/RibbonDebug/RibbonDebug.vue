@@ -159,9 +159,11 @@ const bgC = ref('#0b2a2a')
 const col1 = ref('#059669')
 const col2 = ref('#75DDDD')
 const col3 = ref('#6D28D9')
+
+
 const col4 = ref('#AA3E98')
 
-const showText = ref(true)
+  const showText = ref(true)
 const textColor = ref('#ffffff')
 const textOpacity = ref(1)
 const textSize = ref(140)
