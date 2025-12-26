@@ -21,7 +21,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 
 # 7. Build the CMS app (and shared, if needed)
-RUN pnpm --filter @personal-page/cms... build
+RUN pnpm --filter @tec/cms... build
 
 # 8. Set the working directory to /app/cms for runtime
 WORKDIR /app/cms
