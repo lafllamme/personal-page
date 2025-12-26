@@ -28,13 +28,13 @@ const smoothEasing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 const weightEasing = 'cubic-bezier(0.33, 1, 0.68, 1)'
 const bounceEasing = 'cubic-bezier(0.34, 1.56, 0.64, 1)'
 const bandEasing = 'cubic-bezier(0.26, 0.86, 0.28, 1)'
-const bandDurationMs = 1700
-const bandDelayMs = 280
+const bandDurationMs = 1400
+const bandDelayMs = 220
 const bandHoldMs = 0
 const bandFadeDelayMs = 0 // delay after band ends before fade-out stagger
-const letterFadeDurationMs = 780
-const letterStaggerMs = 70
-const overlayFadeOutMs = 320
+const letterFadeDurationMs = 640
+const letterStaggerMs = 60
+const overlayFadeOutMs = 260
 const mobileSizeMultiplier = 1.15
 const mobileBandColumnGap = 56
 const mobileBandColumns = [-2, -1, 0, 1, 2]
@@ -66,9 +66,9 @@ const topLetterCount = textLines.find(line => line.key === 'top')?.letters.lengt
 const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1))
 const lineGap = '0.5vw'
 const phases: Array<{ name: AnimationPhase, duration: number }> = [
-  { name: 'typing', duration: 850 },
-  { name: 'settlePre', duration: 200 }, // pause after fade/bounce before collision
-  { name: 'collide', duration: 640 },
+  { name: 'typing', duration: 720 },
+  { name: 'settlePre', duration: 160 }, // pause after fade/bounce before collision
+  { name: 'collide', duration: 520 },
   { name: 'settlePost', duration: 0 }, // brief pause after collision before band
   { name: 'band', duration: bandPhaseDurationMs },
 ]
@@ -129,7 +129,7 @@ function getIntroLineStyle(position: OverlayLineKey) {
   const animations: string[] = []
 
   if (isColliding)
-    animations.push(`${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.64s ${bounceEasing} forwards`)
+    animations.push(`${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.52s ${bounceEasing} forwards`)
 
   return {
     '--intro-offset': offset,
@@ -152,7 +152,7 @@ function getIntroLetterStyle(index: number, size: number, multiplier = 1) {
   }
 
   if (isTyping)
-    baseStyle.animation = `kineticTypeIn 0.6s ${bounceEasing} ${index * 0.05}s forwards`
+    baseStyle.animation = `kineticTypeIn 0.5s ${bounceEasing} ${index * 0.04}s forwards`
 
   return baseStyle
 }
