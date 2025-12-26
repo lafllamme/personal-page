@@ -83,7 +83,7 @@ useEventListener(document, 'pointermove', handlePointerMove, { passive: true })
 
 onMounted(() => {
   if (disabled.value)
-  // eslint-disable-next-line no-useless-return
+   
     return
 })
 
