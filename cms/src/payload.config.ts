@@ -9,11 +9,11 @@ import {fileURLToPath} from 'url'
 import sharp from 'sharp'
 
 // Import shared collections with enhanced features
-import { Users } from '@lafllamme/personal-page-shared/payload/collections/Users'
-import { Media } from '@lafllamme/personal-page-shared/payload/collections/Media'
-import { Pages } from '@lafllamme/personal-page-shared/payload/collections/Pages'
-import { Posts } from '@lafllamme/personal-page-shared/payload/collections/Posts'
-import { Categories } from '@lafllamme/personal-page-shared/payload/collections/Categories'
+import { Users } from '@tec/types/payload/collections/Users'
+import { Media } from '@tec/types/payload/collections/Media'
+import { Pages } from '@tec/types/payload/collections/Pages'
+import { Posts } from '@tec/types/payload/collections/Posts'
+import { Categories } from '@tec/types/payload/collections/Categories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)

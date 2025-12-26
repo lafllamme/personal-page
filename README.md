@@ -89,13 +89,13 @@ personal-page/
 ```bash
 # Development (with caching)
 turbo dev              # Run both frontend and CMS
-turbo dev --filter=@personal-page/frontend  # Run only frontend
-turbo dev --filter=@personal-page/cms       # Run only CMS
+turbo dev --filter=@tec/frontend  # Run only frontend
+turbo dev --filter=@tec/cms       # Run only CMS
 
 # Building (with intelligent caching)
 turbo build            # Build both apps
-turbo build --filter=@personal-page/frontend  # Build frontend only
-turbo build --filter=@personal-page/cms       # Build CMS only
+turbo build --filter=@tec/frontend  # Build frontend only
+turbo build --filter=@tec/cms       # Build CMS only
 
 # Type generation
 turbo payload:generate-types  # Generate types from Payload CMS

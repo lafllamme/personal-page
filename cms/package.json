@@ -1,6 +1,6 @@
 {
-  "name": "@personal-page/cms",
-  "version": "1.0.0",
+  "name": "@tec/cms",
+  "version": "1.0.1-beta.1",
   "description": "A blank template to get started with Payload 3.0",
   "license": "MIT",
   "type": "module",
@@ -21,7 +21,7 @@
     "test:int": "NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
-    "@lafllamme/personal-page-shared": "workspace:*",
+    "@tec/types": "workspace:*",
     "@payloadcms/db-postgres": "catalog:",
     "@payloadcms/next": "catalog:",
     "@payloadcms/payload-cloud": "catalog:",

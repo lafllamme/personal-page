@@ -1,7 +1,7 @@
 {
-  "name": "@personal-page/frontend",
+  "name": "@tec/frontend",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1-beta.1",
   "private": true,
   "packageManager": "pnpm@10.18.3",
   "description": "Personal page frontend built with Nuxt 3",
@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@iconify-json/radix-icons": "catalog:",
-    "@lafllamme/personal-page-shared": "workspace:*",
+    "@tec/types": "workspace:*",
     "@nuxt/icon": "catalog:",
     "@nuxt/image": "catalog:",
     "@nuxtjs/color-mode": "catalog:",

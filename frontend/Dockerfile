@@ -21,7 +21,7 @@ COPY . .
 # Build the frontend app (and shared, if needed)
 # Clean any previous builds first
 RUN rm -rf /app/frontend/.nuxt /app/frontend/.output
-RUN pnpm --filter @personal-page/frontend... build
+RUN pnpm --filter @tec/frontend... build
 RUN echo "=== DEBUG: Frontend contents after build ===" && ls -la /app/frontend
 RUN echo "=== DEBUG: .nuxt contents ===" && ls -la /app/frontend/.nuxt
 RUN echo "=== DEBUG: .output contents ===" && ls -la /app/frontend/.output
