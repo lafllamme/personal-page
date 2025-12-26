@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { TextGenerateProps } from './TextGenerate.model'
 import { useElementVisibility } from '@vueuse/core'
-import { computed, onMounted, ref, toRefs, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, toRefs, watch } from 'vue'
 import { TextGenerateDefaultProps } from './TextGenerate.model'
 
 /* props ------------------------------------------------------------------ */
@@ -11,7 +11,7 @@ const emit = defineEmits<{
   (e: 'generate'): void
 }>()
 
-const { delay, duration, filter, class: classNames } = toRefs(props)
+const { delay, duration, filter, class: classNames, active } = toRefs(props)
 
 /* visibility (IntersectionObserver) -------------------------------------- */
 const el = useTemplateRef('el')
@@ -32,6 +32,7 @@ const step = 0.2 // seconds between words
 
 // Track animation completion
 const animationComplete = ref(false)
+let emitTimeoutId: ReturnType<typeof setTimeout> | null = null
 
 function vars(i: number) {
   return {
@@ -41,23 +42,31 @@ function vars(i: number) {
 }
 
 // Track when animation should start
-const shouldAnimate = computed(() => isMounted.value && isVisible.value)
+const shouldAnimate = computed(() => active.value && isMounted.value && isVisible.value)
 
 // Watch for visibility and calculate when animation should complete
 watch(shouldAnimate, (visible) => {
-  if (visible) {
-    // Calculate time for last word's animation to complete
-    const lastWordDelay = (delay.value / 1000) + ((words.value.length - 1) * step)
-    const lastWordDuration = duration.value
-
-    // Emit at 60% of last word's animation
-    const emitTime = (lastWordDelay + lastWordDuration * 0.6) * 1000
-
-    setTimeout(() => {
-      animationComplete.value = true
-      emit('generate')
-    }, emitTime)
+  if (!visible || animationComplete.value) {
+    if (!visible && emitTimeoutId) {
+      clearTimeout(emitTimeoutId)
+      emitTimeoutId = null
+    }
+    return
   }
+
+  const lastWordDelay = (delay.value / 1000) + ((words.value.length - 1) * step)
+  const lastWordDuration = duration.value
+  const emitTime = (lastWordDelay + lastWordDuration * 0.6) * 1000
+
+  emitTimeoutId = setTimeout(() => {
+    animationComplete.value = true
+    emit('generate')
+  }, emitTime)
+})
+
+onBeforeUnmount(() => {
+  if (emitTimeoutId)
+    clearTimeout(emitTimeoutId)
 })
 </script>
 
