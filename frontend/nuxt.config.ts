@@ -1,5 +1,9 @@
 import type { ModuleOptions as NuxtFontsOptions } from '@nuxt/fonts'
 // nuxt.config.ts
+import { existsSync } from 'node:fs'
+import { cp, mkdir } from 'node:fs/promises'
+import { createRequire } from 'node:module'
+import { join, resolve } from 'node:path'
 import * as process from 'node:process'
 import { defineNuxtConfig } from 'nuxt/config'
 
@@ -34,6 +38,18 @@ const fonts: NuxtFontsOptions = {
     { name: 'Bruno Ace SC', weights: ['400'], styles: ['normal'] },
     { name: 'Major Mono Display', weights: ['400'], styles: ['normal'] },
   ],
+}
+
+const require = createRequire(import.meta.url)
+
+const resolveSharpImgDir = () => {
+  try {
+    const sharpEntry = require.resolve('sharp')
+    const sharpPkgDir = resolve(sharpEntry, '..', '..')
+    return resolve(sharpPkgDir, '..', '@img')
+  } catch {
+    return null
+  }
 }
 
 export default defineNuxtConfig({
@@ -101,6 +117,28 @@ export default defineNuxtConfig({
     build: {
       target: 'esnext',
       modulePreload: { polyfill: false },
+      chunkSizeWarningLimit: 1024,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes('node_modules'))
+              return
+
+            if (id.includes('/three/'))
+              return 'three'
+            if (id.includes('monaco-editor'))
+              return 'monaco'
+            if (id.includes('motion-v'))
+              return 'motion'
+            if (id.includes('@tresjs'))
+              return 'tres'
+            if (id.includes('radix-vue') || id.includes('reka-ui'))
+              return 'ui'
+
+            return 'vendor'
+          },
+        },
+      },
     },
   },
 
@@ -115,6 +153,20 @@ export default defineNuxtConfig({
     sourceMap: false,
     experimental: {
       wasm: false,
+    },
+    hooks: {
+      async compiled(nitro) {
+        const imgSourceDir = resolveSharpImgDir()
+        if (!imgSourceDir || !existsSync(imgSourceDir))
+          return
+
+        const targetDir = join(nitro.options.output.serverDir, 'node_modules/@img')
+        if (existsSync(targetDir))
+          return
+
+        await mkdir(targetDir, { recursive: true })
+        await cp(imgSourceDir, targetDir, { recursive: true })
+      },
     },
     rollupConfig: {
       external: [],
