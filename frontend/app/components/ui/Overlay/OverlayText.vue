@@ -35,6 +35,12 @@ const bandFadeDelayMs = 0 // delay after band ends before fade-out stagger
 const letterFadeDurationMs = 640
 const letterStaggerMs = 60
 const overlayFadeOutMs = 260
+const bandDurationSec = bandDurationMs / 1000
+const bandDelaySec = bandDelayMs / 1000
+const bandHoldSec = bandHoldMs / 1000
+const bandFadeDelaySec = bandFadeDelayMs / 1000
+const letterFadeDurationSec = letterFadeDurationMs / 1000
+const letterStaggerSec = letterStaggerMs / 1000
 const mobileSizeMultiplier = 1.15
 const mobileBandColumnGap = 56
 const mobileBandColumns = [-2, -1, 0, 1, 2]
@@ -59,6 +65,7 @@ const textLines: OverlayLine[] = [
   { key: 'bottom', size: bottomSize, letters: bottomText.split('') },
 ]
 
+const allLetters = [...topText.split(''), ...bottomText.split('')]
 const maxLineLetters = Math.max(...textLines.map(line => line.letters.length))
 const lastLetterDelayMs = letterStaggerMs * Math.max(0, maxLineLetters - 1)
 const bandPhaseDurationMs = bandDelayMs + bandDurationMs + bandHoldMs + bandFadeDelayMs + letterFadeDurationMs + lastLetterDelayMs
@@ -80,7 +87,6 @@ function generateDistortions() {
 
   columns.forEach((col) => {
     const distortions: Record<number, LetterDistortion> = {}
-    const allLetters = [...topText.split(''), ...bottomText.split('')]
     const intensity = Math.max(0.35, 1 - Math.abs(col) * 0.14)
 
     allLetters.forEach((_, i) => {
@@ -103,7 +109,6 @@ const letterDistortions = ref(generateDistortions())
 let timeoutId: ReturnType<typeof setTimeout> | null = null
 let rafId: number | null = null
 let exitTimeoutId: ReturnType<typeof setTimeout> | null = null
-const isMounted = ref(true)
 const isExiting = ref(false)
 const bandCycles = ref(0)
 
@@ -126,6 +131,7 @@ function getIntroLineStyle(position: OverlayLineKey) {
   const isTyping = animationPhase.value === 'typing'
   const isSettlingPre = animationPhase.value === 'settlePre'
   const isColliding = animationPhase.value === 'collide'
+  const isIntroPhase = isTyping || isSettlingPre || isColliding
   const animations: string[] = []
 
   if (isColliding)
@@ -133,7 +139,7 @@ function getIntroLineStyle(position: OverlayLineKey) {
 
   return {
     '--intro-offset': offset,
-    'transform': isTyping || isSettlingPre || isColliding ? `translateY(${offset})` : 'translateY(0)',
+    'transform': isIntroPhase ? `translateY(${offset})` : 'translateY(0)',
     'fontWeight': introWeight.value,
     'fontVariationSettings': `"wght" ${introWeight.value}`,
     'transition': `font-weight 0.8s ${weightEasing}, font-variation-settings 0.8s ${weightEasing}`,
@@ -179,10 +185,17 @@ function getMobileBandStackStyle(col: number, stack: number) {
   }
 }
 
+function getBandAnimationStyle(columnGapOverride?: number) {
+  return {
+    animation: `carouselLoop ${bandDurationSec}s ${bandEasing} ${bandDelaySec}s forwards`,
+    ...(columnGapOverride ? { '--column-gap': `${columnGapOverride}vw` } : {}),
+  }
+}
+
 function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number, multiplier = 1) {
   const offset = line.key === 'top' ? 0 : topLetterCount
   const distortion = letterDistortions.value[col]?.[charIndex + offset]
-  const delay = (bandDelayMs + bandDurationMs + bandFadeDelayMs + bandHoldMs + letterStaggerMs * charIndex) / 1000
+  const delay = bandDelaySec + bandDurationSec + bandFadeDelaySec + bandHoldSec + letterStaggerSec * charIndex
 
   return {
     'fontSize': `${line.size * multiplier}vw`,
@@ -194,7 +207,7 @@ function getBandLetterStyle(line: OverlayLine, col: number, charIndex: number, m
     'transformStyle': 'preserve-3d',
     'transform': `translateZ(var(--final-depth, 0px)) rotateY(var(--final-rotateY, 0deg)) translateY(0)`,
     'willChange': 'transform, opacity, filter',
-    'animation': `letterBlurFade ${letterFadeDurationMs / 1000}s ease-in ${delay}s forwards`,
+    'animation': `letterBlurFade ${letterFadeDurationSec}s ease-in ${delay}s forwards`,
   }
 }
 
@@ -332,7 +345,7 @@ function hide() {
     <div v-else class="absolute inset-0 flex items-center justify-center">
       <div
         class="absolute inset-0 flex items-center justify-center md:hidden"
-        :style="{ animation: `carouselLoop ${bandDurationMs / 1000}s ${bandEasing} ${bandDelayMs / 1000}s forwards`, '--column-gap': `${mobileBandColumnGap}vw` }"
+        :style="getBandAnimationStyle(mobileBandColumnGap)"
       >
         <template v-for="col in mobileBandColumns" :key="`band-mobile-col-${col}`">
           <div
@@ -360,7 +373,7 @@ function hide() {
       </div>
       <div
         class="hidden md:block"
-        :style="{ animation: `carouselLoop ${bandDurationMs / 1000}s ${bandEasing} ${bandDelayMs / 1000}s forwards` }"
+        :style="getBandAnimationStyle()"
       >
         <div
           v-for="col in columns"

@@ -59,6 +59,7 @@ const animate = ref(false)
 const overlaySeen = useState('intro-overlay-seen', () => false)
 const overlayCanComplete = ref(false)
 const overlayActive = computed(() => !overlaySeen.value)
+const heroAnimationsReady = ref(overlaySeen.value)
 
 function handleGenerateComplete() {
   animate.value = true
@@ -66,6 +67,7 @@ function handleGenerateComplete() {
 
 function handleOverlayComplete() {
   overlaySeen.value = true
+  heroAnimationsReady.value = true
 }
 
 function handleRibbonReady() {
@@ -105,9 +107,10 @@ function handleRibbonReady() {
       <div class="relative z-10 w-full text-center <sm:mt-6 md:mt-12 md:w-1/2 space-y-4 md:text-left md:space-y-8">
         <h1
           :class="useClsx(
-            'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance animate-clip-circle md:text-balance',
+            'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance md:text-balance',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tight antialiased',
+            heroAnimationsReady && 'animate-clip-circle',
           )"
         >
           {{ t('hero.headline') }}
@@ -120,6 +123,7 @@ function handleRibbonReady() {
           )"
           :delay="0.8"
           :duration="1.1"
+          :active="heroAnimationsReady"
           :words="t('hero.text')"
           :hydrate-on-idle="500"
           @generate="handleGenerateComplete"
