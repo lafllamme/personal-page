@@ -15,9 +15,11 @@ import {
   PlaneGeometry,
   SRGBColorSpace,
 } from 'three'
-import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
-import type { RibbonTextProps } from './RibbonText.model'
-import { RibbonTextDefaultProps } from './RibbonText.model'
+import {computed, onBeforeUnmount, onMounted, ref, shallowRef, watch} from 'vue'
+import type {RibbonTextProps} from './RibbonText.model'
+import {RibbonTextDefaultProps} from './RibbonText.model'
+import RibbonSettings from './RibbonSettings.vue'
+import {TresCanvas} from "@tresjs/core";
 
 const props = withDefaults(defineProps<RibbonTextProps>(), RibbonTextDefaultProps)
 
@@ -155,7 +157,7 @@ const col3 = ref('#6D28D9')
 
 const col4 = ref('#AA3E98')
 
-  const showText = ref(true)
+const showText = ref(true)
 const textColor = ref('#ffffff')
 const textOpacity = ref(1)
 const textSize = ref(140)
@@ -173,27 +175,27 @@ const textBoost = ref(2.2)
 const textMix = ref(0.96)
 
 const fontOptions = [
-  { label: 'Electric', family: 'Electric' },
-  { label: 'Recoleta', family: 'Recoleta' },
-  { label: 'Ginger', family: 'Ginger' },
-  { label: 'Prata', family: 'Prata' },
-  { label: 'Manrope', family: 'Manrope' },
-  { label: 'Geist', family: 'Geist Regular' },
-  { label: 'Space Grotesk', family: 'Space Grotesk' },
-  { label: 'Boldonse', family: 'Boldonse' },
-  { label: 'Audiowide', family: 'Audiowide' },
-  { label: 'Zen Dots', family: 'Zen Dots' },
-  { label: 'Bruno Ace SC', family: 'Bruno Ace SC' },
-  { label: 'Major Mono Display', family: 'Major Mono Display' },
-  { label: 'Nova Square', family: 'Nova Square' },
-  { label: 'Figtree', family: 'Figtree' },
-  { label: 'JetBrains Mono', family: 'JetBrains Mono' },
-  { label: 'Crimson Text', family: 'Crimson Text' },
-  { label: 'Lora', family: 'Lora' },
-  { label: 'Libre Baskerville', family: 'Libre Baskerville' },
-  { label: 'EB Garamond', family: 'EB Garamond' },
-  { label: 'Cormorant Garamond', family: 'Cormorant Garamond' },
-  { label: 'Zalando Sans Expanded', family: 'Zalando Sans Expanded' },
+  {label: 'Electric', family: 'Electric'},
+  {label: 'Recoleta', family: 'Recoleta'},
+  {label: 'Ginger', family: 'Ginger'},
+  {label: 'Prata', family: 'Prata'},
+  {label: 'Manrope', family: 'Manrope'},
+  {label: 'Geist', family: 'Geist Regular'},
+  {label: 'Space Grotesk', family: 'Space Grotesk'},
+  {label: 'Boldonse', family: 'Boldonse'},
+  {label: 'Audiowide', family: 'Audiowide'},
+  {label: 'Zen Dots', family: 'Zen Dots'},
+  {label: 'Bruno Ace SC', family: 'Bruno Ace SC'},
+  {label: 'Major Mono Display', family: 'Major Mono Display'},
+  {label: 'Nova Square', family: 'Nova Square'},
+  {label: 'Figtree', family: 'Figtree'},
+  {label: 'JetBrains Mono', family: 'JetBrains Mono'},
+  {label: 'Crimson Text', family: 'Crimson Text'},
+  {label: 'Lora', family: 'Lora'},
+  {label: 'Libre Baskerville', family: 'Libre Baskerville'},
+  {label: 'EB Garamond', family: 'EB Garamond'},
+  {label: 'Cormorant Garamond', family: 'Cormorant Garamond'},
+  {label: 'Zalando Sans Expanded', family: 'Zalando Sans Expanded'},
 ]
 const selectedFont = ref('Space Grotesk')
 
@@ -214,6 +216,59 @@ const _lastWrap = ref<number | null>(null)
 const panelHidden = ref(false)
 const panelCollapsed = ref(true)
 
+const settings = {
+  panelHidden,
+  panelCollapsed,
+  camX,
+  camY,
+  camZOffset,
+  camZoom,
+  rotX,
+  rotY,
+  rotZ,
+  scaler,
+  shiftX,
+  shiftY,
+  shiftZ,
+  lengthStretch,
+  widthStretch,
+  col1,
+  col2,
+  col3,
+  col4,
+  ribbonText,
+  selectedFont,
+  textWeight,
+  showText,
+  textColor,
+  textOpacity,
+  textSize,
+  textStroke,
+  textWidth,
+  textSpacing,
+  tracking,
+  typeHeight,
+  textFlipX,
+  textFlipY,
+  textBoost,
+  textMix,
+  textFollowScroll,
+  textSnapTexel,
+  textMultiSample,
+  textSampleStrength,
+  showSegmentFrame,
+  frameStrength,
+  frameMode,
+  showBands,
+  bandStrength,
+  speed,
+  timeScale,
+  alt,
+  bgA,
+  bgB,
+  bgC,
+}
+
 const hasBackground = computed(() => props.showBackground !== false)
 const backgroundStyle = computed(() => ({
   background: `radial-gradient(1200px 700px at 20% 20%, ${bgB.value} 0%, rgba(0,0,0,0) 60%),
@@ -221,29 +276,14 @@ const backgroundStyle = computed(() => ({
                    linear-gradient(135deg, ${bgA.value} 0%, #05060c 55%, #05060c 100%)`,
 }))
 
-const containerStyle = computed(() => {
-  if (props.full) {
-    const base = {
-      width: '90svw',
-      height: '90svh',
-    }
-    return hasBackground.value ? { ...base, ...backgroundStyle.value } : base
-  }
-  const base = {
-    width: '100%',
-    height: `${props.height}px`,
-  }
-  return hasBackground.value ? { ...base, ...backgroundStyle.value } : base
-})
-
 const canvasAlpha = computed(() => !hasBackground.value)
 const canvasClearAlpha = computed(() => (hasBackground.value ? 1 : 0))
 const canvasClearColor = computed(() => '#000000')
 
 function logState() {
   consola.info(
-    '[RibbonText]',
-    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${(p5EyeZ.value + camZOffset.value).toFixed(2)}) zoom ${camZoom.value.toFixed(2)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value}`,
+      '[RibbonText]',
+      `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${(p5EyeZ.value + camZOffset.value).toFixed(2)}) zoom ${camZoom.value.toFixed(2)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value}`,
   )
 }
 
@@ -301,7 +341,7 @@ watch([
   widthStretch,
   viewportW,
   viewportH,
-], () => logState(), { immediate: true })
+], () => logState(), {immediate: true})
 
 watch(selectedFont, () => drawGlyphAtlas())
 watch(textWeight, () => drawGlyphAtlas())
@@ -456,9 +496,9 @@ function drawGlyphAtlas() {
     const safeH = ATLAS_CELL - pad * 2
 
     const fit = Math.min(
-      1,
-      safeW / Math.max(1, boxW + stroke * 2),
-      safeH / Math.max(1, boxH + stroke * 2),
+        1,
+        safeW / Math.max(1, boxW + stroke * 2),
+        safeH / Math.max(1, boxH + stroke * 2),
     )
 
     ctx.scale(fit, fit)
@@ -495,44 +535,44 @@ onMounted(() => {
   drawGlyphAtlas()
 
   material.onBeforeCompile = (shader) => {
-    shader.uniforms.uScroll = { value: 0 }
-    shader.uniforms.uRunLength = { value: runLength.value }
+    shader.uniforms.uScroll = {value: 0}
+    shader.uniforms.uRunLength = {value: runLength.value}
 
-    shader.uniforms.uCol1 = { value: new Color(col1.value) }
-    shader.uniforms.uCol2 = { value: new Color(col2.value) }
-    shader.uniforms.uCol3 = { value: new Color(col3.value) }
-    shader.uniforms.uCol4 = { value: new Color(col4.value) }
+    shader.uniforms.uCol1 = {value: new Color(col1.value)}
+    shader.uniforms.uCol2 = {value: new Color(col2.value)}
+    shader.uniforms.uCol3 = {value: new Color(col3.value)}
+    shader.uniforms.uCol4 = {value: new Color(col4.value)}
 
-    shader.uniforms.uTextMap = { value: glyphTex.value }
-    shader.uniforms.uShowText = { value: showText.value ? 1 : 0 }
+    shader.uniforms.uTextMap = {value: glyphTex.value}
+    shader.uniforms.uShowText = {value: showText.value ? 1 : 0}
 
-    shader.uniforms.uTextColor = { value: new Color(textColor.value) }
-    shader.uniforms.uTextOpacity = { value: textOpacity.value }
-    shader.uniforms.uTextWidth = { value: textWidth.value }
-    shader.uniforms.uTextSpacing = { value: textSpacing.value }
+    shader.uniforms.uTextColor = {value: new Color(textColor.value)}
+    shader.uniforms.uTextOpacity = {value: textOpacity.value}
+    shader.uniforms.uTextWidth = {value: textWidth.value}
+    shader.uniforms.uTextSpacing = {value: textSpacing.value}
 
-    shader.uniforms.uTracking = { value: tracking.value / 100 }
-    shader.uniforms.uTypeHeight = { value: typeHeight.value / 100 }
+    shader.uniforms.uTracking = {value: tracking.value / 100}
+    shader.uniforms.uTypeHeight = {value: typeHeight.value / 100}
 
-    shader.uniforms.uTextFlipX = { value: textFlipX.value ? 1 : 0 }
-    shader.uniforms.uTextFlipY = { value: textFlipY.value ? 1 : 0 }
-    shader.uniforms.uTextBoost = { value: textBoost.value }
-    shader.uniforms.uTextMix = { value: textMix.value }
+    shader.uniforms.uTextFlipX = {value: textFlipX.value ? 1 : 0}
+    shader.uniforms.uTextFlipY = {value: textFlipY.value ? 1 : 0}
+    shader.uniforms.uTextBoost = {value: textBoost.value}
+    shader.uniforms.uTextMix = {value: textMix.value}
 
-    shader.uniforms.uAtlasCols = { value: ATLAS_COLS * 1.0 }
-    shader.uniforms.uAtlasRows = { value: ATLAS_ROWS * 1.0 }
+    shader.uniforms.uAtlasCols = {value: ATLAS_COLS * 1.0}
+    shader.uniforms.uAtlasRows = {value: ATLAS_ROWS * 1.0}
 
-    shader.uniforms.uShowFrame = { value: showSegmentFrame.value ? 1 : 0 }
-    shader.uniforms.uFrameStrength = { value: frameStrength.value }
-    shader.uniforms.uFrameMode = { value: frameMode.value }
+    shader.uniforms.uShowFrame = {value: showSegmentFrame.value ? 1 : 0}
+    shader.uniforms.uFrameStrength = {value: frameStrength.value}
+    shader.uniforms.uFrameMode = {value: frameMode.value}
 
-    shader.uniforms.uShowBands = { value: showBands.value ? 1 : 0 }
-    shader.uniforms.uBandStrength = { value: bandStrength.value }
+    shader.uniforms.uShowBands = {value: showBands.value ? 1 : 0}
+    shader.uniforms.uBandStrength = {value: bandStrength.value}
 
     shader.vertexShader = shader.vertexShader
-      .replace(
-        '#include <common>',
-        `#include <common>
+        .replace(
+            '#include <common>',
+            `#include <common>
   attribute float aSegIndex;
   attribute float aRibbonId;
   attribute float aGlyph;
@@ -548,10 +588,10 @@ onMounted(() => {
   varying vec3 vNormalV;
   varying vec3 vViewDirV;
           `,
-      )
-      .replace(
-        '#include <uv_vertex>',
-        `#include <uv_vertex>
+        )
+        .replace(
+            '#include <uv_vertex>',
+            `#include <uv_vertex>
   vUv = uv;
   vRibbonId = aRibbonId;
   vGlyph = aGlyph;
@@ -560,19 +600,19 @@ onMounted(() => {
   float rl = max(1.0, uRunLength);
   vGradT = clamp(aSegIndex / max(1.0, rl - 1.0), 0.0, 1.0);
           `,
-      )
-      .replace(
-        '#include <defaultnormal_vertex>',
-        `#include <defaultnormal_vertex>
+        )
+        .replace(
+            '#include <defaultnormal_vertex>',
+            `#include <defaultnormal_vertex>
   vNormalV = normalize(normalMatrix * objectNormal);
           `,
-      )
-      .replace(
-        '#include <project_vertex>',
-        `#include <project_vertex>
+        )
+        .replace(
+            '#include <project_vertex>',
+            `#include <project_vertex>
   vViewDirV = normalize(-mvPosition.xyz);
           `,
-      )
+        )
 
     shader.fragmentShader = `
   #ifdef GL_ES
@@ -763,8 +803,8 @@ function buildP5GlobalMatrix(scroll: number) {
 
   const baseX = -ribbonWidth / 2
   const baseY = alt.value
-    ? (-yCrawl + ribbonHeight / 2 - radius)
-    : (-yCrawl + ribbonHeight / 2 - ribbonHeight2 / 2)
+      ? (-yCrawl + ribbonHeight / 2 - radius)
+      : (-yCrawl + ribbonHeight / 2 - ribbonHeight2 / 2)
 
   const dep = effectiveDepth.value
   const baseZ = -dep * (count.value - 1) / 2 - (count.value - 1) * (zSpace.value - 1) * dep / 2
@@ -780,7 +820,7 @@ function buildP5GlobalMatrix(scroll: number) {
   m.multiply(new Matrix4().makeRotationZ(rotZ.value + PI))
   m.multiply(new Matrix4().makeTranslation(tX, tY, tZ))
 
-  return { m, radius, segLength }
+  return {m, radius, segLength}
 }
 
 function buildP5SegmentMatrix(opts: {
@@ -791,7 +831,7 @@ function buildP5SegmentMatrix(opts: {
   radius: number
   segLength: number
 }) {
-  const { i, ribbonId, _runLength, scroll, radius, segLength } = opts
+  const {i, ribbonId, _runLength, scroll, radius, segLength} = opts
 
   const PI = Math.PI
   const segSpace = segmentSpace.value
@@ -819,20 +859,17 @@ function buildP5SegmentMatrix(opts: {
     xCenter = step * segSpace
     yCenter = jumper * radius * 4
     rot = 0
-  }
-  else if (step <= b) {
+  } else if (step <= b) {
     const s = step - a
     xCenter = segLength * mid
     yCenter = jumper * radius * 4
     rot = s * sinStep
-  }
-  else if (step <= c) {
+  } else if (step <= c) {
     const s = step - (a + segCount)
     xCenter = segLength * mid - s * segSpace
     yCenter = radius * 2 + jumper * radius * 4
     rot = 0
-  }
-  else {
+  } else {
     const s = step - (a + segCount)
     xCenter = 0
     yCenter = radius * 2 + jumper * radius * 4
@@ -840,8 +877,8 @@ function buildP5SegmentMatrix(opts: {
   }
 
   const yAdd = alt.value
-    ? ((ribbonId % 2) * radius * 2)
-    : (ribbonId * xSpace.value * radius * 2)
+      ? ((ribbonId % 2) * radius * 2)
+      : (ribbonId * xSpace.value * radius * 2)
 
   const zAdd = ribbonId * effectiveDepth.value * zSpace.value
 
@@ -957,7 +994,7 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
       _lastWrap.value = wrap
     if (wrap !== _lastWrap.value) {
       _lastWrap.value = wrap
-      consola.info('[RibbonWrap]', { wrap, scroll, cycle, rl })
+      consola.info('[RibbonWrap]', {wrap, scroll, cycle, rl})
     }
   }
 
@@ -998,7 +1035,7 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     shader.uniforms.uTextMap.value = glyphTex.value
   }
 
-  const { m: globalM, radius, segLength } = buildP5GlobalMatrix(scroll)
+  const {m: globalM, radius, segLength} = buildP5GlobalMatrix(scroll)
 
   for (let idx = 0; idx < instances; idx++) {
     const rId = Math.floor(idx / rl)
@@ -1023,380 +1060,26 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
 
 <template>
   <div
-    ref="containerEl"
-    class="relative"
-    :class="[props.full ? '' : 'w-full', allowOverflow ? 'overflow-visible' : 'overflow-hidden']"
-    :style="containerStyle"
+      ref="containerEl"
+      class="relative size-full"
   >
-    <div class="pointer-events-none absolute inset-0">
-      <button
-        v-if="panelHidden"
-        class="bg-black/60 pointer-events-auto absolute right-4 top-24 z-30 border border-pureWhite/10 rounded-full px-3 py-1 text-[11px] text-pureWhite/80 tracking-[0.2em] font-mono uppercase shadow-lg backdrop-blur-md"
-        @click="panelHidden = false"
-      >
-        Show Controls
-      </button>
-      <div
-        v-if="!panelHidden"
-        class="bg-black/75 pointer-events-auto absolute right-4 top-24 z-30 max-h-[80vh] w-72 overflow-auto border border-pureWhite/10 rounded-lg p-3 text-[12px] text-pureWhite shadow-xl backdrop-blur-md space-y-2"
-      >
-        <div class="flex items-center justify-between gap-2 pb-1">
-          <div class="text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Ribbon Controls
-          </div>
-          <div class="flex items-center gap-2">
-            <button
-              class="border border-pureWhite/10 rounded px-2 py-1 text-[10px] text-pureWhite/70 tracking-[0.18em] font-mono uppercase hover:text-pureWhite/90"
-              @click="panelCollapsed = !panelCollapsed"
-            >
-              {{ panelCollapsed ? 'Expand' : 'Collapse' }}
-            </button>
-            <button
-              class="border border-pureWhite/10 rounded px-2 py-1 text-[10px] text-pureWhite/70 tracking-[0.18em] font-mono uppercase hover:text-pureWhite/90"
-              @click="panelHidden = true"
-            >
-              Hide
-            </button>
-          </div>
-        </div>
+    <RibbonSettings
+      :settings="settings"
+      :font-options="fontOptions"
+      :on-draw-texture="drawTextTexture"
+    />
 
-        <div v-show="!panelCollapsed" class="space-y-2">
-          <div class="text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Camera
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>X</span>
-            <input v-model.number="camX" type="range" min="-1000" max="1000" step="1">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camX.toFixed(0) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Y</span>
-            <input v-model.number="camY" type="range" min="-1000" max="1000" step="1">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camY.toFixed(0) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Z</span>
-            <input v-model.number="camZOffset" type="range" min="-2000" max="2000" step="5">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camZOffset.toFixed(0) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Zoom</span>
-            <input v-model.number="camZoom" type="range" min="0.25" max="3" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ camZoom.toFixed(2) }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Tilt
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>RX</span>
-            <input v-model.number="rotX" type="range" min="-3.14" max="3.14" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ rotX.toFixed(2) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>RY</span>
-            <input v-model.number="rotY" type="range" min="-3.14" max="3.14" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ rotY.toFixed(2) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>RZ</span>
-            <input v-model.number="rotZ" type="range" min="-6.28" max="6.28" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ rotZ.toFixed(2) }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Debug
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Scale</span>
-            <input v-model.number="scaler" type="range" min="0.2" max="3" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ scaler.toFixed(2) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Shift X</span>
-            <input v-model.number="shiftX" type="range" min="-2000" max="2000" step="5">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftX.toFixed(0) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Shift Y</span>
-            <input v-model.number="shiftY" type="range" min="-2000" max="2000" step="5">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftY.toFixed(0) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Shift Z</span>
-            <input v-model.number="shiftZ" type="range" min="-2000" max="2000" step="5">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ shiftZ.toFixed(0) }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Band Stretch
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Length</span>
-            <input v-model.number="lengthStretch" type="range" min="0.5" max="3" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ lengthStretch.toFixed(2) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Width</span>
-            <input v-model.number="widthStretch" type="range" min="0.5" max="3" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ widthStretch.toFixed(2) }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Ribbon Look
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>C1</span>
-              <input v-model="col1" type="color" class="h-6 w-full">
-            </label>
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>C2</span>
-              <input v-model="col2" type="color" class="h-6 w-full">
-            </label>
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>C3</span>
-              <input v-model="col3" type="color" class="h-6 w-full">
-            </label>
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>C4</span>
-              <input v-model="col4" type="color" class="h-6 w-full">
-            </label>
-          </div>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Text Input
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Text</span>
-            <input v-model="ribbonText" type="text" class="w-full border border-pureWhite/10 rounded bg-pureWhite/10 px-2 py-1 text-[12px] text-pureWhite">
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Font</span>
-            <select v-model="selectedFont" class="w-full border border-pureWhite/10 rounded bg-pureWhite/10 px-2 py-1 text-[12px] text-pureWhite">
-              <option v-for="opt in fontOptions" :key="opt.family" :value="opt.family">
-                {{ opt.label }}
-              </option>
-            </select>
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Weight</span>
-            <input v-model.number="textWeight" type="range" min="100" max="900" step="50" @input="drawTextTexture()">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textWeight }}</span>
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Text</span>
-            <input v-model="showText" type="checkbox" @change="drawTextTexture()">
-          </label>
-
-          <div class="grid grid-cols-2 gap-2">
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>TC</span>
-              <input v-model="textColor" type="color" class="h-6 w-full" @change="drawTextTexture()">
-            </label>
-            <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-              <span>Op</span>
-              <input v-model.number="textOpacity" type="range" min="0" max="1" step="0.01" @input="drawTextTexture()">
-              <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textOpacity.toFixed(2) }}</span>
-            </label>
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Size</span>
-            <input v-model.number="textSize" type="range" min="24" max="140" step="1" @input="drawTextTexture()">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textSize }}</span>
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Stroke</span>
-            <input v-model.number="textStroke" type="range" min="0" max="22" step="1" @input="drawTextTexture()">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textStroke }}</span>
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Width</span>
-            <input v-model.number="textWidth" type="range" min="0.35" max="2.5" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textWidth.toFixed(2) }}</span>
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Space</span>
-            <input v-model.number="textSpacing" type="range" min="0" max="0.45" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textSpacing.toFixed(2) }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            p5 Glyph Padding
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Tracking</span>
-            <input v-model.number="tracking" type="range" min="0" max="80" step="1">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ tracking }}</span>
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Height</span>
-            <input v-model.number="typeHeight" type="range" min="0" max="80" step="1">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ typeHeight }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Text Fix
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Flip X</span>
-            <input v-model="textFlipX" type="checkbox">
-          </label>
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Flip Y</span>
-            <input v-model="textFlipY" type="checkbox">
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Text Pop
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Boost</span>
-            <input v-model.number="textBoost" type="range" min="0.8" max="2.2" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textBoost.toFixed(2) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Mix</span>
-            <input v-model.number="textMix" type="range" min="0" max="1" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textMix.toFixed(2) }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Text Lock
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Follow</span>
-            <input v-model="textFollowScroll" type="checkbox">
-          </label>
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Snap</span>
-            <input v-model="textSnapTexel" type="checkbox">
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Text AA
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Multi</span>
-            <input v-model="textMultiSample" type="checkbox">
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Strength</span>
-            <input v-model.number="textSampleStrength" type="range" min="0" max="2" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ textSampleStrength.toFixed(2) }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Frame
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Frame</span>
-            <input v-model="showSegmentFrame" type="checkbox">
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Str</span>
-            <input v-model.number="frameStrength" type="range" min="0" max="1" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ frameStrength.toFixed(2) }}</span>
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Mode</span>
-            <select v-model.number="frameMode" class="bg-black/30 border border-pureWhite/10 rounded px-2 py-1">
-              <option :value="0">Off</option>
-              <option :value="1">Tiles</option>
-              <option :value="2">Outer</option>
-            </select>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Bands
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Bands</span>
-            <input v-model="showBands" type="checkbox">
-          </label>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Str</span>
-            <input v-model.number="bandStrength" type="range" min="0" max="1" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ bandStrength.toFixed(2) }}</span>
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Motion
-          </div>
-
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Speed</span>
-            <input v-model.number="speed" type="range" min="0" max="1" step="0.01">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ speed.toFixed(2) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr,auto] items-center gap-2">
-            <span>Time</span>
-            <input v-model.number="timeScale" type="range" min="0" max="2" step="0.05">
-            <span class="text-[10px] text-pureWhite/60 font-mono tabular-nums">{{ timeScale.toFixed(2) }}</span>
-          </label>
-          <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-            <span>Alt</span>
-            <input v-model="alt" type="checkbox">
-          </label>
-
-          <div class="pt-1 text-xs text-pureWhite/70 tracking-[0.15em] font-mono uppercase">
-            Background
-          </div>
-
-          <div class="grid grid-cols-3 gap-2">
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>A</span>
-              <input v-model="bgA" type="color" class="h-6 w-full">
-            </label>
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>B</span>
-              <input v-model="bgB" type="color" class="h-6 w-full">
-            </label>
-            <label class="grid grid-cols-[auto,1fr] items-center gap-2">
-              <span>C</span>
-              <input v-model="bgC" type="color" class="h-6 w-full">
-            </label>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <ClientOnly>
-      <TresCanvas
+    <TresCanvas
+        class="absolute inset-0"
         v-if="ready"
-        class="absolute inset-0 h-full w-full"
         :dpr="dpr"
         :alpha="canvasAlpha"
         :clear-alpha="canvasClearAlpha"
         :clear-color="canvasClearColor"
         render-mode="always"
         @loop="handleLoop"
-      >
-        <TresOrthographicCamera
+    >
+      <TresOrthographicCamera
           :position="cameraPos"
           :look-at="[0, 0, 0]"
           :left="ortho.left"
@@ -1406,9 +1089,11 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
           :near="ortho.near"
           :far="ortho.far"
           :zoom="camZoom"
-        />
-        <primitive v-if="instanced" :object="instanced" />
-      </TresCanvas>
-    </ClientOnly>
+      />
+      <primitive
+          v-if="instanced"
+          :object="instanced"
+      />
+    </TresCanvas>
   </div>
 </template>
