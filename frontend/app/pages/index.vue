@@ -2,7 +2,7 @@
 // Lazy hydration components for better performance
 
 import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
-import RibbonDebug from '~/components/ui/RibbonDebug/RibbonDebug.vue'
+import RibbonWrapper from '~/components/ui/RibbonText/RibbonWrapper.client.vue'
 
 const LazyFeaturedSection = defineLazyHydrationComponent(
   'visible',
@@ -92,7 +92,7 @@ function handleRibbonReady() {
       <div class="absolute inset-0 z-0">
         <div class="absolute left-1/2 top-1/2 max-w-none w-screen -translate-x-1/2 -translate-y-1/2">
           <div class="mx-auto max-w-none w-[130%]">
-            <RibbonDebug
+            <RibbonWrapper
               :full="false"
               :height="heroRibbonHeight"
               :show-background="false"
