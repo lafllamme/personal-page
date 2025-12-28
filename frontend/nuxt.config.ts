@@ -128,8 +128,6 @@ export default defineNuxtConfig({
               return 'three'
             if (id.includes('monaco-editor'))
               return 'monaco'
-            if (id.includes('motion-v'))
-              return 'motion'
             if (id.includes('@tresjs'))
               return 'tres'
             if (id.includes('radix-vue') || id.includes('reka-ui'))

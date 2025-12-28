@@ -1,7 +1,11 @@
 <script lang="ts" setup>
-import type { CursorProps, CursorType } from '~/components/ui/Cursor/Cursor.model'
-import { CursorDefaultProps } from '~/components/ui/Cursor/Cursor.model'
-import SpinningText from '~/components/ui/Text/SpinningText/SpinningText.vue'
+import { defineAsyncComponent } from 'vue'
+import type { CursorProps, CursorType } from '@/components/ui/Cursor/Cursor.model'
+import { CursorDefaultProps } from '@/components/ui/Cursor/Cursor.model'
+
+const LazySpinningText = defineAsyncComponent(() =>
+  import('@/components/ui/Text/SpinningText/SpinningText.vue'),
+)
 
 // TODO: Is the fade duration necessary? It seems unclear in terms of usage.
 const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps) // ms, for fade in/out
@@ -248,7 +252,7 @@ onMounted(() => {
         }"
         class="pointer-events-none absolute left-1/2 top-1/2 z-1 -translate-x-1/2 -translate-y-1/2"
       >
-        <SpinningText
+        <LazySpinningText
           :class="useClsx(
             'color-pureWhite jetbrains-mono-regular text-lg',
             'mix-blend-difference block w-full h-full leading-[0] antialiased pointer-events-none',

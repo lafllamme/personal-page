@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import RibbonDebug from '~/components/ui/RibbonDebug/RibbonDebug.vue'
+import RibbonWrapper from '~/components/ui/RibbonText/RibbonWrapper.client.vue'
 
 useHead({
-  title: 'Ribbon Debug',
+  title: 'Ribbon Text',
 })
 </script>
 
@@ -19,6 +19,6 @@ useHead({
         Single ribbon in 3D with sine-wave motion for tuning.
       </p>
     </div>
-    <RibbonDebug full />
+    <RibbonWrapper full />
   </div>
 </template>
