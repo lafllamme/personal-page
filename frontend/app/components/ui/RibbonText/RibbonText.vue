@@ -1061,16 +1061,14 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
 <template>
   <div
       ref="containerEl"
-      class="relative size-full"
   >
     <RibbonSettings
-      :settings="settings"
-      :font-options="fontOptions"
-      :on-draw-texture="drawTextTexture"
+        :settings="settings"
+        :font-options="fontOptions"
+        :on-draw-texture="drawTextTexture"
     />
 
     <TresCanvas
-        class="absolute inset-0"
         v-if="ready"
         :dpr="dpr"
         :alpha="canvasAlpha"
