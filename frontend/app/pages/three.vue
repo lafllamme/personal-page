@@ -7,7 +7,7 @@ useHead({
 </script>
 
 <template>
-  <div class="relative min-h-screen overflow-hidden bg-pureBlack text-pureWhite">
+  <div class="text-pureBlack dark:text-pureWhite">
     <div class="pointer-events-none absolute left-4 top-4 z-20 space-y-1">
       <p class="text-xs text-pureWhite/60 tracking-[0.2em] font-mono uppercase">
         Debug
@@ -19,6 +19,9 @@ useHead({
         Single ribbon in 3D with sine-wave motion for tuning.
       </p>
     </div>
-    <RibbonWrapper full />
+    <RibbonWrapper
+        :show-background="false"
+        :style="{ height: '90dvh'}"
+    />
   </div>
 </template>

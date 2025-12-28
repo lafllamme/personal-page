@@ -1,13 +1,10 @@
 export interface RibbonTextProps {
-  full?: boolean
-  height?: number
-  allowOverflow?: boolean
-  showBackground?: boolean
+    allowOverflow?: boolean
+    showBackground?: boolean
+    height?: string
 }
 
 export const RibbonTextDefaultProps: RibbonTextProps = {
-  full: true,
-  height: 520,
-  allowOverflow: false,
-  showBackground: true,
+    allowOverflow: false,
+    showBackground: true,
 }

@@ -2,53 +2,48 @@
 // Lazy hydration components for better performance
 
 import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
-import RibbonWrapper from '~/components/ui/RibbonText/RibbonWrapper.client.vue'
+import RibbonWrapper from '@/components/ui/RibbonText/RibbonWrapper.client.vue'
 
 const LazyFeaturedSection = defineLazyHydrationComponent(
-  'visible',
-  () => import('@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'),
+    'visible',
+    () => import('@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'),
 )
 
 const LazyBlogLayout = defineLazyHydrationComponent(
-  'visible',
-  () => import('@/components/ui/Blog/Layout/BlogLayout.vue'),
+    'visible',
+    () => import('@/components/ui/Blog/Layout/BlogLayout.vue'),
 )
 
 const LazyInteractiveButton = defineLazyHydrationComponent(
-  'idle',
-  () => import('@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'),
+    'idle',
+    () => import('@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'),
 )
 
 const LazyRippleButton = defineLazyHydrationComponent(
-  'idle',
-  () => import('@/components/ui/Buttons/RippleButton/RippleButton.vue'),
+    'idle',
+    () => import('@/components/ui/Buttons/RippleButton/RippleButton.vue'),
 )
 
 const LazySkewMarquee = defineLazyHydrationComponent(
-  'visible',
-  () => import('@/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
+    'visible',
+    () => import('@/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
 )
 
 const LazyTextGenerate = defineLazyHydrationComponent(
-  'idle',
-  () => import('@/components/ui/Text/TextGenerate/TextGenerate.vue'),
+    'idle',
+    () => import('@/components/ui/Text/TextGenerate/TextGenerate.vue'),
 )
 
-const { t } = useI18n()
+const {t} = useI18n()
 
 useHead({
   title: t('head.title'),
   meta: [
-    { name: 'description', content: t('head.description') },
-    { name: 'keywords', content: t('head.keywords') },
+    {name: 'description', content: t('head.description')},
+    {name: 'keywords', content: t('head.keywords')},
   ],
 })
 
-const { height: viewportHeight } = useWindowSize()
-const heroRibbonHeight = computed(() => {
-  const base = Math.round(viewportHeight.value * 0.6)
-  return Math.max(360, Math.min(base, 720))
-})
 
 function handleClick() {
   // navigate to /blog page
@@ -78,26 +73,24 @@ function handleRibbonReady() {
 <template>
   <div>
     <OverlayText
-      v-if="!overlaySeen"
-      :can-complete="overlayCanComplete"
-      :on-complete="handleOverlayComplete"
+        v-if="!overlaySeen"
+        :can-complete="overlayCanComplete"
+        :on-complete="handleOverlayComplete"
     />
     <div
-      :class="useClsx(
+        :class="useClsx(
         'relative mb-12 min-h-[360px] flex flex-col items-center overflow-visible md:min-h-[520px] md:flex-row',
         overlayActive && 'opacity-0 pointer-events-none',
         !overlayActive && 'opacity-100 transition-opacity duration-300 ease-[cubic-bezier(0.33,1,0.68,1)]',
       )"
     >
-      <div class="absolute inset-0 z-0">
-        <div class="absolute left-1/2 top-1/2 max-w-none w-screen -translate-x-1/2 -translate-y-1/2">
-          <div class="mx-auto max-w-none w-[130%]">
+      <div class="absolute inset-0 z-0 bg-orange-5">
+        <div class="absolute left-1/2  bg-blue-4 top-1/2 max-w-none w-screen -translate-x-1/2 -translate-y-1/2">
+          <div class="bg-red-9 w-full">
             <RibbonWrapper
-              :full="false"
-              :height="heroRibbonHeight"
-              :show-background="false"
-              allow-overflow
-              @ready="handleRibbonReady"
+                height='50svh'
+                :show-background="false"
+                @ready="handleRibbonReady"
             />
           </div>
         </div>
@@ -106,7 +99,7 @@ function handleRibbonReady() {
       <!-- Text Wrapper -->
       <div class="relative z-10 w-full text-center <sm:mt-6 md:mt-12 md:w-1/2 space-y-4 md:text-left md:space-y-8">
         <h1
-          :class="useClsx(
+            :class="useClsx(
             'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance md:text-balance',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tight antialiased',
@@ -116,20 +109,20 @@ function handleRibbonReady() {
           {{ t('hero.headline') }}
         </h1>
         <LazyTextGenerate
-          :class="useClsx(
+            :active="heroAnimationsReady"
+            :class="useClsx(
             'max-w-3xl 2xl:max-w-4xl md:text-justify',
             'text-wrap text-[clamp(1rem,2vw,1.5rem)]',
             'font-light leading-normal tracking-normal font-manrope',
           )"
-          :delay="0.8"
-          :duration="1.1"
-          :active="heroAnimationsReady"
-          :words="t('hero.text')"
-          :hydrate-on-idle="500"
-          @generate="handleGenerateComplete"
+            :delay="0.8"
+            :duration="1.1"
+            :hydrate-on-idle="500"
+            :words="t('hero.text')"
+            @generate="handleGenerateComplete"
         />
         <div
-          :class="useClsx(
+            :class="useClsx(
             'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'bg-none lg:text-xl sm:text-lg',
             '!min-w-3/4 md:justify-start',
@@ -138,26 +131,26 @@ function handleRibbonReady() {
           )"
         >
           <LazyInteractiveButton
-            :text="t('buttons.latest')"
-            :hydrate-on-idle="1000"
-            @click="handleClick"
+              :hydrate-on-idle="1000"
+              :text="t('buttons.latest')"
+              @click="handleClick"
           />
           <LazyRippleButton
-            :text="t('buttons.subscribe')"
-            :hydrate-on-idle="1000"
+              :hydrate-on-idle="1000"
+              :text="t('buttons.subscribe')"
           />
         </div>
       </div>
     </div>
     <LazyFeaturedSection
-      :hydrate-on-visible="{ rootMargin: '100px' }"
+        :hydrate-on-visible="{ rootMargin: '100px' }"
     />
     <LazyBlogLayout
-      :hydrate-on-visible="{ rootMargin: '100px' }"
+        :hydrate-on-visible="{ rootMargin: '100px' }"
     />
     <div class="mb-12 mt-6 md:mb-32 md:mt-12">
       <LazySkewMarquee
-        :hydrate-on-visible="{ rootMargin: '150px' }"
+          :hydrate-on-visible="{ rootMargin: '150px' }"
       />
     </div>
   </div>
