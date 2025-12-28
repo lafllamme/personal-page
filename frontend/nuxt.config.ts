@@ -156,6 +156,9 @@ export default defineNuxtConfig({
     },
     hooks: {
       async compiled(nitro) {
+        if (nitro.options.preset !== 'node-server')
+          return
+
         const imgSourceDir = resolveSharpImgDir()
         if (!imgSourceDir || !existsSync(imgSourceDir))
           return
