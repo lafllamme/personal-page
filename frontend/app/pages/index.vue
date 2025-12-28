@@ -88,7 +88,7 @@ function handleRibbonReady() {
         <div class="absolute left-1/2  bg-blue-4 top-1/2 max-w-none w-screen -translate-x-1/2 -translate-y-1/2">
           <div class="bg-red-9 w-full">
             <RibbonWrapper
-                height='50svh'
+                height='60vh'
                 :show-background="false"
                 @ready="handleRibbonReady"
             />
