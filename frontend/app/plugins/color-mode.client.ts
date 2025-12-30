@@ -1,4 +1,4 @@
 export default defineNuxtPlugin(() => {
   const colorModeCookie = useCookie('color-mode')
-  useState('color-mode', () => colorModeCookie.value || 'light')
+  useState('color-mode', () => colorModeCookie.value || 'dark')
 })

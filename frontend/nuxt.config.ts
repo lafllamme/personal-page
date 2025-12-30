@@ -260,7 +260,7 @@ export default defineNuxtConfig({
 
   // Color mode configuration
   colorMode: {
-    preference: 'system',
+    preference: 'dark',
     fallback: 'dark',
     hid: 'nuxt-color-mode-script',
     globalName: '__NUXT_COLOR_MODE__',
