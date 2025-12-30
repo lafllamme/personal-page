@@ -33,7 +33,7 @@ const dpr = ref(1.5)
 /**
  * Container sizing
  */
-const containerEl = ref<HTMLElement | null>(null)
+const containerEl = useTemplateRef('containerEl')
 const viewportW = ref(1)
 const viewportH = ref(1)
 let ro: ResizeObserver | null = null
@@ -133,7 +133,7 @@ const effectiveDepth = computed(() => Math.max(1, depth.value * Math.max(0.25, w
  * p5 global controls
  */
 const scaler = ref(1.12)
-const shiftX = ref(0)
+const shiftX = ref(-700)
 const shiftY = ref(10)
 const shiftZ = ref(0)
 

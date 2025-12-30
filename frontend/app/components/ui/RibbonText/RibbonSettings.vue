@@ -130,7 +130,7 @@ const {
     </button>
     <div
         v-if="!panelHidden"
-        class="bg-black/75 pointer-events-auto absolute right-4 bottom-0 z-30 max-h-[80vh] w-72 overflow-auto border border-pureWhite/10 rounded-lg p-3 text-[12px] color-pureBlack dark:color-pureWhite shadow-xl backdrop-blur-md space-y-2"
+        class="bg-black/75 pointer-events-auto absolute right-4 -bottom-15 z-30 max-h-[80vh] w-72 overflow-auto border border-pureWhite/10 rounded-lg p-3 text-[12px] color-pureBlack dark:color-pureWhite shadow-xl backdrop-blur-md space-y-2"
     >
       <div class="flex items-center justify-between gap-2 pb-1">
         <div class="text-xs color-pureBlack/70 dark:color-pureWhite/70 tracking-[0.15em] font-mono uppercase">

@@ -7,7 +7,8 @@ const props = withDefaults(defineProps<RibbonTextProps>(), RibbonTextDefaultProp
 const emit = defineEmits<{ (e: 'ready'): void }>()
 const attrs = useAttrs()
 const ribbonHeight = computed(() => ({
-  height: props.height ? props.height : '100%'
+  height: props.height ? props.height : '100%',
+  width: '100%',
 }))
 </script>
 
