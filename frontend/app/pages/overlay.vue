@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, ref, watch} from 'vue'
+import {computed, onMounted, ref, watch} from 'vue'
 import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
 import TextBand from '@/components/ui/TextBand/TextBand.vue'
 import TextBandSettings from '@/components/ui/TextBand/TextBandSettings.vue'
@@ -8,6 +8,7 @@ const showOverlay = ref(false)
 const overlayKey = ref(0)
 const showTextBand = ref(true)
 const showTextBandControls = ref(false)
+const overlayVisible = useState('intro-overlay-visible', () => false)
 const textBandText = ref('TECNEWS')
 const textBandBackground = ref('#000000')
 const textBandColor = ref('#ffffff')
@@ -96,6 +97,10 @@ watch(
     },
     {deep: true},
 )
+
+onMounted(() => {
+  overlayVisible.value = false
+})
 
 function handleComplete() {
   showOverlay.value = false
