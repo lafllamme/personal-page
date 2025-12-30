@@ -10,42 +10,72 @@ const rootDir = dirname(fileURLToPath(import.meta.url))
 const frontendDir = resolve(rootDir, 'frontend')
 const cmsDir = resolve(rootDir, 'cms')
 
-const scopeConfigs = (configs, files) => {
-  const configList = Array.isArray(configs) ? configs : [configs]
+const prefixFiles = (files, root) =>
+  files.map((pattern) => {
+    if (typeof pattern !== 'string')
+      return pattern
+    if (pattern.startsWith(`!${root}/`) || pattern.startsWith(`${root}/`))
+      return pattern
+    if (pattern.startsWith('!'))
+      return `!${root}/${pattern.slice(1)}`
+    return `${root}/${pattern}`
+  })
+
+const scopeConfigs = async (configs, scope) => {
+  const configList =
+    typeof configs?.toConfigs === 'function'
+      ? await configs.toConfigs()
+      : Array.isArray(configs)
+        ? configs
+        : [configs]
   return configList.map((config) => {
     const cleaned = Object.fromEntries(
       Object.entries(config).filter(([key]) => !key.startsWith('_')),
     )
+    const hasFiles = Array.isArray(cleaned.files)
+    const isPluginOnly =
+      !hasFiles &&
+      cleaned.plugins &&
+      !cleaned.rules &&
+      !cleaned.languageOptions &&
+      !cleaned.processor
+    const scopedFiles = hasFiles
+      ? prefixFiles(cleaned.files, scope.root)
+      : isPluginOnly
+        ? scope.allFiles
+        : scope.fallbackFiles
     return {
       ...cleaned,
-      files: Array.from(new Set([...(config.files ?? []), ...files])),
+      ...(scopedFiles ? { files: scopedFiles } : {}),
     }
   })
 }
 
-const frontendConfigs = scopeConfigs(
+const frontendConfigs = await scopeConfigs(
   antfu({
     formatters: true,
     unocss: true,
     vue: true,
     typescript: true,
-    eslintOptions: {
-      rules: {
-        'no-console': 'warn', // keep package-level overrides
-        'vue/no-unused-vars': 'error',
-      },
-    },
   }),
-  ['frontend/**/*.{js,ts,tsx,jsx,mjs,cjs,mts,cts,vue}'],
+  {
+    root: 'frontend',
+    fallbackFiles: ['frontend/**/*.{js,ts,tsx,jsx,mjs,cjs,mts,cts,vue}'],
+    allFiles: ['frontend/**/*'],
+  },
 )
 
-const sharedConfigs = scopeConfigs(
+const sharedConfigs = await scopeConfigs(
   antfu({
     formatters: true,
     vue: false,
     typescript: true,
   }),
-  ['shared/**/*.{js,ts,tsx,jsx,mjs,cjs,mts,cts}'],
+  {
+    root: 'shared',
+    fallbackFiles: ['shared/**/*.{js,ts,tsx,jsx,mjs,cjs,mts,cts}'],
+    allFiles: ['shared/**/*'],
+  },
 )
 
 const compat = new FlatCompat({ baseDirectory: cmsDir })
@@ -64,7 +94,7 @@ const cmsNextSettings = {
   },
 }
 
-const cmsConfigs = scopeConfigs(
+const cmsConfigs = await scopeConfigs(
   [
     ...compat.extends('next/core-web-vitals', 'next/typescript'),
     {
@@ -90,7 +120,11 @@ const cmsConfigs = scopeConfigs(
       ignores: ['.next/'],
     },
   ],
-  [`${cmsDir}/**/*.{js,ts,tsx,jsx,mjs,cjs,mts,cts}`],
+  {
+    root: 'cms',
+    fallbackFiles: [`${cmsDir}/**/*.{js,ts,tsx,jsx,mjs,cjs,mts,cts}`],
+    allFiles: ['cms/**/*'],
+  },
 )
 
 export default [
@@ -116,6 +150,11 @@ export default [
         sourceType: 'module',
       },
     },
+    settings: {
+      unocss: {
+        configPath: 'frontend/uno.config.ts',
+      },
+    },
   },
   {
     files: ['shared/**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
@@ -134,6 +173,18 @@ export default [
     },
     ...(cmsNextConfig.rules ? { rules: cmsNextConfig.rules } : {}),
     settings: cmsNextSettings,
+  },
+  {
+    files: ['frontend/**/*.{vue,js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
+    rules: {
+      'no-console': 'warn',
+    },
+  },
+  {
+    files: ['frontend/**/*.vue'],
+    rules: {
+      'vue/no-unused-vars': 'error',
+    },
   },
   ...frontendConfigs,
   ...sharedConfigs,
