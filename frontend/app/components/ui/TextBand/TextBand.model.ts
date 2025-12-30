@@ -12,13 +12,14 @@ export interface TextBandProps {
     switchMs?: number
     switchFadeMs?: number
     columnCount?: number
-    columnGap?: number
-    rowSpacing?: number
-    speedVariance?: number
-    amplitude?: number
-    amplitudeVariance?: number
-    fitPadding?: number
-    class?: string
+  columnGap?: number
+  rowSpacing?: number
+  speedVariance?: number
+  amplitude?: number
+  amplitudeVariance?: number
+  stepEase?: number
+  fitPadding?: number
+  class?: string
 }
 
 export const TextBandDefaultProps = {
@@ -39,9 +40,10 @@ export const TextBandDefaultProps = {
     columnCount: 1,
     columnGap: 180,
     rowSpacing: 0.82,
-    speedVariance: 0.35,
-    amplitude: 1.7,
-    amplitudeVariance: 0.35,
-    fitPadding: 0.03,
-    class: '',
+  speedVariance: 0.35,
+  amplitude: 1.7,
+  amplitudeVariance: 0.35,
+  stepEase: 2.6,
+  fitPadding: 0.03,
+  class: '',
 }

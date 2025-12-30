@@ -39,6 +39,7 @@ const {
   speedVariance,
   amplitude,
   amplitudeVariance,
+  stepEase,
   fitPadding,
   class: className,
 } = toRefs(props)
@@ -214,10 +215,11 @@ function lerp(a: number, b: number, t: number) {
   return a + (b - a) * t
 }
 
-function easeInOutCirc(t: number) {
-  return t < 0.5
-    ? (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2
-    : (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2
+function easeInOutPow(t: number, power: number) {
+  const p = Math.max(1, power)
+  if (t < 0.5)
+    return 0.5 * Math.pow(2 * t, p)
+  return 1 - 0.5 * Math.pow(2 - 2 * t, p)
 }
 
 function ensureColumnIndex(column: Column, index: number, glyph: Glyph) {
@@ -270,7 +272,7 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
   context.value.font = `${fontWeight.value} ${fontSize}px ${fontFamily.value}`
 
   for (const column of columns) {
-    const eased = easeInOutCirc(Math.min(1, Math.max(0, column.progress)))
+    const eased = easeInOutPow(Math.min(1, Math.max(0, column.progress)), stepEase.value)
     for (let index = 0; index < glyphs.length; index++) {
       const glyph = glyphs[index]
       ensureColumnIndex(column, index, glyph)
