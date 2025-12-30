@@ -5,6 +5,7 @@ import Header from '@/components/ui/Header/Header.vue'
 import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.vue'
 import TextBand from '@/components/ui/TextBand/TextBand.vue'
 
+const route = useRoute()
 const overlayVisible = useState('intro-overlay-visible', () => true)
 const overlayPaused = useState('intro-overlay-paused', () => false)
 const overlayStopPending = useState('intro-overlay-stop-pending', () => false)
@@ -18,10 +19,11 @@ const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(
   { immediate: false },
 )
 const showIntroOverlay = computed(() => overlayVisible.value)
+const isHome = computed(() => route.path === '/')
 
 onMounted(() => {
   overlayPaused.value = false
-  overlayStopPending.value = false
+  overlayStopPending.value = !isHome.value
   stopOverlayHide()
 })
 
