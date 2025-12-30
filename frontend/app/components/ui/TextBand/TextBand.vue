@@ -42,6 +42,7 @@ const {
   amplitude,
   amplitudeVariance,
   stepEase,
+  stepHold,
   alignChance,
   fitPadding,
   class: className,
@@ -281,6 +282,8 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
 
   const centerY = canvasSize.h / 2
   const half = repeats / 2
+  const hold = Math.min(0.8, Math.max(0, stepHold.value))
+  const movePortion = Math.max(0.0001, 1 - hold)
 
   context.value.save()
   context.value.globalAlpha = alpha
@@ -290,7 +293,9 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
   context.value.font = `${fontWeight.value} ${fontSize}px ${fontFamily.value}`
 
   for (const column of columns) {
-    const eased = easeInOutPow(Math.min(1, Math.max(0, column.progress)), stepEase.value)
+    const rawProgress = Math.min(1, Math.max(0, column.progress))
+    const moveT = Math.min(rawProgress / movePortion, 1)
+    const eased = easeInOutPow(moveT, stepEase.value)
     const alignFactor = column.alignPulse ? Math.sin(Math.PI * column.progress) : 0
     for (let index = 0; index < glyphs.length; index++) {
       const glyph = glyphs[index]

@@ -20,6 +20,7 @@ interface TextBandSettingsBindings {
   amplitude: Ref<number>
   amplitudeVariance: Ref<number>
   stepEase: Ref<number>
+  stepHold: Ref<number>
   alignChance: Ref<number>
   fitPadding: Ref<number>
 }
@@ -51,6 +52,7 @@ const {
   amplitude,
   amplitudeVariance,
   stepEase,
+  stepHold,
   alignChance,
   fitPadding,
 } = settings
@@ -196,10 +198,17 @@ const {
       </div>
       <div class="grid grid-cols-2 gap-3">
         <label class="block">
+          <span class="mb-1 block text-[10px] uppercase tracking-[0.2em] color-white/60">Step hold</span>
+          <input v-model.number="stepHold" type="range" min="0" max="0.6" step="0.02" class="w-full">
+          <span class="mt-1 block text-[10px] color-white/50">How long each step rests at the target.</span>
+        </label>
+        <label class="block">
           <span class="mb-1 block text-[10px] uppercase tracking-[0.2em] color-white/60">Align chance</span>
           <input v-model.number="alignChance" type="range" min="0" max="1" step="0.05" class="w-full">
           <span class="mt-1 block text-[10px] color-white/50">Chance to align all rows for readability.</span>
         </label>
+      </div>
+      <div class="grid grid-cols-2 gap-3">
         <label class="block">
           <span class="mb-1 block text-[10px] uppercase tracking-[0.2em] color-white/60">Fit padding</span>
           <input v-model.number="fitPadding" type="range" min="0" max="0.12" step="0.01" class="w-full">
