@@ -291,7 +291,6 @@ function updateColumns(now: number, referenceGlyphs: Glyph[]) {
   }
 }
 
-
 function resolveGlyphX(glyphs: Glyph[], index: number, fromGlyphs: Glyph[] | null, t: number) {
   if (!fromGlyphs || !fromGlyphs[index])
     return glyphs[index].x
