@@ -50,11 +50,19 @@ function handleClick() {
 
 const animate = ref(false)
 const overlayVisible = useState('intro-overlay-visible', () => true)
-const overlayLeaving = useState('intro-overlay-leaving', () => false)
+const overlayPaused = useState('intro-overlay-paused', () => false)
+const overlayStopPending = useState('intro-overlay-stop-pending', () => false)
 const heroAnimationsReady = ref(false)
 const overlayStart = ref(0)
 const minOverlayMs = 1900
-const overlayFadeMs = 1200
+const overlayStopDelay = ref(0)
+const { start: scheduleOverlayStop, stop: cancelOverlayStop } = useTimeoutFn(
+  () => {
+    overlayStopPending.value = true
+  },
+  overlayStopDelay,
+  { immediate: false },
+)
 
 function handleGenerateComplete() {
   animate.value = true
@@ -65,29 +73,34 @@ function handleRibbonReady() {
   const elapsed = performance.now() - start
   const remaining = minOverlayMs - elapsed
   const complete = () => {
-    if (overlayLeaving.value)
-      return
-
-    overlayLeaving.value = true
-    window.setTimeout(() => {
-      overlayVisible.value = false
-      overlayLeaving.value = false
-      heroAnimationsReady.value = true
-    }, overlayFadeMs)
+    overlayStopDelay.value = remaining > 0 ? remaining : 0
+    scheduleOverlayStop()
   }
 
-  if (remaining > 0)
-    window.setTimeout(complete, remaining)
-  else
-    complete()
+  complete()
 }
 
 overlayVisible.value = true
-overlayLeaving.value = false
+overlayPaused.value = false
+overlayStopPending.value = false
 
 onMounted(() => {
   overlayStart.value = performance.now()
+  cancelOverlayStop()
 })
+
+watch(
+  overlayVisible,
+  (next) => {
+    heroAnimationsReady.value = !next
+    if (next) {
+      overlayPaused.value = false
+      overlayStopPending.value = false
+      cancelOverlayStop()
+    }
+  },
+)
+
 </script>
 
 <template>
@@ -119,7 +132,7 @@ onMounted(() => {
             'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance md:text-balance',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tight antialiased',
-            heroAnimationsReady && 'animate-clip-circle',
+            heroAnimationsReady ? 'animate-clip-circle opacity-100' : 'opacity-0',
           )"
         >
           {{ t('hero.headline') }}
@@ -130,8 +143,9 @@ onMounted(() => {
             'max-w-3xl 2xl:max-w-4xl md:text-justify',
             'text-wrap text-[clamp(1rem,2vw,1.5rem)]',
             'font-light leading-normal tracking-normal font-manrope',
+            heroAnimationsReady ? 'opacity-100' : 'opacity-0',
           )"
-          :delay="0.8"
+          :delay="0"
           :duration="1.1"
           :hydrate-on-idle="500"
           :words="t('hero.text')"

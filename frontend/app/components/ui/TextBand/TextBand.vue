@@ -22,6 +22,9 @@ interface Column {
 }
 
 const props = withDefaults(defineProps<TextBandProps>(), TextBandDefaultProps)
+const emit = defineEmits<{
+  (e: 'iteration'): void
+}>()
 const {
   text,
   segments,
@@ -45,6 +48,7 @@ const {
   stepHold,
   alignChance,
   fitPadding,
+  paused,
   class: className,
 } = toRefs(props)
 
@@ -269,6 +273,7 @@ function updateColumns(now: number, referenceGlyphs: Glyph[]) {
 
   if (cycledColumns.length === 0)
     return
+  emit('iteration')
 
   const shouldAlign = Math.random() < alignChance.value
   const variance = Math.max(0, speedVariance.value)
@@ -285,6 +290,7 @@ function updateColumns(now: number, referenceGlyphs: Glyph[]) {
     column.durationMs = column.baseDurationMs * (1 + randomRange(-variance, variance))
   }
 }
+
 
 function resolveGlyphX(glyphs: Glyph[], index: number, fromGlyphs: Glyph[] | null, t: number) {
   if (!fromGlyphs || !fromGlyphs[index])
@@ -331,8 +337,13 @@ function drawFrame(now: number) {
     return
 
   const referenceGlyphs = nextGlyphs.length ? nextGlyphs : currentGlyphs
-  updateColumns(now, referenceGlyphs)
-  updateSwitch(now)
+  if (paused.value) {
+    lastFrameTime = now
+  }
+  else {
+    updateColumns(now, referenceGlyphs)
+    updateSwitch(now)
+  }
 
   context.value.clearRect(0, 0, canvasSize.w, canvasSize.h)
   context.value.fillStyle = resolveFillColor(backgroundColor.value, 'background')
@@ -407,20 +418,5 @@ watch(pixelRatio, () => resizeCanvas())
 
 .dark .text-band-root {
   @apply bg-pureBlack text-pureWhite;
-}
-
-@keyframes text-band-elegant-fade {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.02);
-  }
-}
-
-.text-band-fade-out {
-  animation: text-band-elegant-fade 900ms ease-out forwards;
 }
 </style>

@@ -21,6 +21,7 @@ export interface TextBandProps {
   stepHold?: number
   alignChance?: number
   fitPadding?: number
+  paused?: boolean
   class?: string
 }
 
@@ -47,5 +48,6 @@ export const TextBandDefaultProps = {
   stepHold: 0,
   alignChance: 0.25,
   fitPadding: 0,
+  paused: false,
   class: '',
 }

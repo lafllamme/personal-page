@@ -6,24 +6,45 @@ import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.
 import TextBand from '@/components/ui/TextBand/TextBand.vue'
 
 const overlayVisible = useState('intro-overlay-visible', () => true)
-const overlayLeaving = useState('intro-overlay-leaving', () => false)
-const showIntroOverlay = computed(() => overlayVisible.value || overlayLeaving.value)
+const overlayPaused = useState('intro-overlay-paused', () => false)
+const overlayStopPending = useState('intro-overlay-stop-pending', () => false)
+const overlayHideDelayMs = 300
+const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(
+  () => {
+    overlayVisible.value = false
+    overlayPaused.value = false
+  },
+  overlayHideDelayMs,
+  { immediate: false },
+)
+const showIntroOverlay = computed(() => overlayVisible.value)
+
+onMounted(() => {
+  overlayPaused.value = false
+  overlayStopPending.value = false
+  stopOverlayHide()
+})
+
+function handleOverlayIteration() {
+  if (!overlayStopPending.value || overlayPaused.value)
+    return
+  overlayStopPending.value = false
+  overlayPaused.value = true
+  startOverlayHide()
+}
 </script>
 
 <template>
   <div class="relative">
     <div
       v-show="showIntroOverlay"
-      :class="useClsx(
-        'fixed inset-0 z-[9999] overflow-hidden',
-      )"
+      class="fixed inset-0 z-[9999] overflow-hidden"
     >
       <TextBand
         text="TECNEWS"
-        :class="useClsx(
-          'pointer-events-none h-full w-full',
-          overlayLeaving && 'text-band-fade-out',
-        )"
+        class="pointer-events-none h-full w-full"
+        :paused="overlayPaused"
+        @iteration="handleOverlayIteration"
       />
     </div>
     <!-- Main Content -->
@@ -32,9 +53,9 @@ const showIntroOverlay = computed(() => overlayVisible.value || overlayLeaving.v
         'relative z-10',
         'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
         'bg-pureWhite  dark:bg-pureBlack',
-        showIntroOverlay && 'pointer-events-none',
+        overlayVisible && 'pointer-events-none',
       )"
-      :style="showIntroOverlay ? { visibility: 'hidden' } : {}"
+      :style="overlayVisible ? { visibility: 'hidden' } : {}"
     >
       <Header />
       <main

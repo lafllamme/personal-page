@@ -9,7 +9,8 @@ const overlayKey = ref(0)
 const showTextBand = ref(true)
 const showTextBandControls = ref(false)
 const overlayVisible = useState('intro-overlay-visible', () => false)
-const overlayLeaving = useState('intro-overlay-leaving', () => false)
+const overlayPaused = useState('intro-overlay-paused', () => false)
+const overlayStopPending = useState('intro-overlay-stop-pending', () => false)
 const textBandText = ref('TECNEWS')
 const textBandBackground = ref('#000000')
 const textBandColor = ref('#ffffff')
@@ -101,7 +102,8 @@ watch(
 
 onMounted(() => {
   overlayVisible.value = false
-  overlayLeaving.value = false
+  overlayPaused.value = false
+  overlayStopPending.value = false
 })
 
 function handleComplete() {
