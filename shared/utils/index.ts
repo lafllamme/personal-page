@@ -1,10 +1,10 @@
 // Shared utility functions
 
-export const formatDate = (date: string | Date) => {
+export function formatDate(date: string | Date) {
   return new Date(date).toLocaleDateString()
 }
 
-export const slugify = (text: string) => {
+export function slugify(text: string) {
   return text
     .toLowerCase()
     .replace(/[^\w ]+/g, '')
@@ -12,4 +12,4 @@ export const slugify = (text: string) => {
 }
 
 // Export access control utilities
-export * from './access.js' 
+export * from './access.js'

@@ -1,2 +1,2 @@
 // Shared type definitions
-export * from './payload-types.js' 
+export * from './payload-types.js'
