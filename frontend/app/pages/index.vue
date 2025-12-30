@@ -52,6 +52,7 @@ const animate = ref(false)
 const overlayVisible = useState('intro-overlay-visible', () => true)
 const overlayPaused = useState('intro-overlay-paused', () => false)
 const overlayStopPending = useState('intro-overlay-stop-pending', () => false)
+const overlayHasPlayed = useState('intro-overlay-has-played', () => false)
 const heroAnimationsReady = ref(false)
 const overlayStart = ref(0)
 const minOverlayMs = 1900
@@ -80,13 +81,23 @@ function handleRibbonReady() {
   complete()
 }
 
-overlayVisible.value = true
-overlayPaused.value = false
-overlayStopPending.value = false
+if (!overlayHasPlayed.value) {
+  overlayVisible.value = true
+  overlayPaused.value = false
+  overlayStopPending.value = false
+}
+else {
+  overlayVisible.value = false
+  overlayPaused.value = false
+  overlayStopPending.value = false
+  heroAnimationsReady.value = true
+}
 
 onMounted(() => {
   overlayStart.value = performance.now()
   cancelOverlayStop()
+  if (!overlayHasPlayed.value)
+    overlayHasPlayed.value = true
 })
 
 watch(
@@ -99,6 +110,7 @@ watch(
       cancelOverlayStop()
     }
   },
+  { immediate: true },
 )
 </script>
 
