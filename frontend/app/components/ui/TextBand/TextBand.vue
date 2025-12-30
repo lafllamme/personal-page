@@ -18,7 +18,7 @@ interface Column {
   progress: number
   starts: number[]
   targets: number[]
-  alignPulse: boolean
+  alignStep: boolean
 }
 
 const props = withDefaults(defineProps<TextBandProps>(), TextBandDefaultProps)
@@ -159,7 +159,7 @@ function buildColumns() {
       progress: randomRange(0, 1),
       starts: [],
       targets: [],
-      alignPulse: false,
+      alignStep: false,
     }
   })
 }
@@ -257,14 +257,14 @@ function updateColumns(now: number, referenceGlyphs: Glyph[]) {
   const shouldAlign = Math.random() < alignChance.value
   const variance = Math.max(0, speedVariance.value)
   for (const column of cycledColumns) {
-    column.alignPulse = shouldAlign
+    column.alignStep = shouldAlign
     const maxCount = Math.max(column.starts.length, column.targets.length, referenceGlyphs.length)
     for (let i = 0; i < maxCount; i++) {
       const glyph = referenceGlyphs[i]
       const spread = glyph ? glyph.amplitude * fontSize : fontSize
       const current = column.targets[i] ?? randomRange(-spread, spread)
       column.starts[i] = current
-      column.targets[i] = randomRange(-spread, spread)
+      column.targets[i] = shouldAlign ? 0 : randomRange(-spread, spread)
     }
     column.durationMs = column.baseDurationMs * (1 + randomRange(-variance, variance))
   }
@@ -282,9 +282,6 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
 
   const centerY = canvasSize.h / 2
   const half = repeats / 2
-  const hold = Math.min(0.8, Math.max(0, stepHold.value))
-  const movePortion = Math.max(0.0001, 1 - hold)
-
   context.value.save()
   context.value.globalAlpha = alpha
   context.value.fillStyle = textColor.value
@@ -293,14 +290,15 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
   context.value.font = `${fontWeight.value} ${fontSize}px ${fontFamily.value}`
 
   for (const column of columns) {
+    const hold = column.alignStep ? 0 : Math.min(0.8, Math.max(0, stepHold.value))
+    const movePortion = Math.max(0.0001, 1 - hold)
     const rawProgress = Math.min(1, Math.max(0, column.progress))
     const moveT = Math.min(rawProgress / movePortion, 1)
     const eased = easeInOutPow(moveT, stepEase.value)
-    const alignFactor = column.alignPulse ? Math.sin(Math.PI * column.progress) : 0
     for (let index = 0; index < glyphs.length; index++) {
       const glyph = glyphs[index]
       ensureColumnIndex(column, index, glyph)
-      const offset = lerp(column.starts[index], column.targets[index], eased) * (1 - alignFactor)
+      const offset = lerp(column.starts[index], column.targets[index], eased)
       const baseX = resolveGlyphX(glyphs, index, fromGlyphs, t)
       for (let i = 0; i < repeats; i++) {
         const y = centerY + offset + (i - half) * lineStep
