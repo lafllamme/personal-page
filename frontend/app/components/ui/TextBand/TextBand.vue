@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import {useDevicePixelRatio, useResizeObserver} from '@vueuse/core'
-import type {TextBandProps} from './TextBand.model'
-import {TextBandDefaultProps} from './TextBand.model'
+import type { TextBandProps } from './TextBand.model'
+import { useDevicePixelRatio, useResizeObserver } from '@vueuse/core'
+import { TextBandDefaultProps } from './TextBand.model'
 
 interface Glyph {
   char: string
@@ -53,8 +53,8 @@ const isClient = typeof window !== 'undefined' && typeof document !== 'undefined
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const containerRef = ref<HTMLDivElement | null>(null)
 const context = ref<CanvasRenderingContext2D | null>(null)
-const canvasSize = reactive({w: 0, h: 0})
-const {pixelRatio} = useDevicePixelRatio()
+const canvasSize = reactive({ w: 0, h: 0 })
+const { pixelRatio } = useDevicePixelRatio()
 
 let rafId = 0
 let fontSize = 120
@@ -72,9 +72,9 @@ let lastFrameTime = 0
 const activeSegments = computed(() => {
   if (text.value && text.value.trim().length > 0) {
     const parsed = text.value
-        .split(/\r?\n|\s*\|\s*/g)
-        .map(item => item.trim())
-        .filter(Boolean)
+      .split(/\r?\n|\s*\|\s*/g)
+      .map(item => item.trim())
+      .filter(Boolean)
     return parsed.length ? parsed : ['']
   }
   if (segments.value?.length)
@@ -151,8 +151,8 @@ function buildGlyphs(textValue: string, prevGlyphs: Glyph[] = []) {
       x,
       phase: prev ? prev.phase : randomRange(0, Math.PI * 2),
       amplitude: prev
-          ? prev.amplitude
-          : amplitude.value * (1 + randomRange(-amplitudeVariance.value, amplitudeVariance.value)),
+        ? prev.amplitude
+        : amplitude.value * (1 + randomRange(-amplitudeVariance.value, amplitudeVariance.value)),
     }
     x += width + textSpacing.value
     return glyph
@@ -166,7 +166,7 @@ function buildColumns() {
   const variance = Math.max(0, speedVariance.value)
   const start = -((count - 1) / 2) * gap
 
-  columns = Array.from({length: count}, (_, i) => {
+  columns = Array.from({ length: count }, (_, i) => {
     const durationMs = baseDuration * (1 + randomRange(-variance, variance))
     return {
       xOffset: start + i * gap,
@@ -240,8 +240,8 @@ function lerp(a: number, b: number, t: number) {
 function easeInOutPow(t: number, power: number) {
   const p = Math.max(1, power)
   if (t < 0.5)
-    return 0.5 * Math.pow(2 * t, p)
-  return 1 - 0.5 * Math.pow(2 - 2 * t, p)
+    return 0.5 * (2 * t) ** p
+  return 1 - 0.5 * (2 - 2 * t) ** p
 }
 
 function ensureColumnIndex(column: Column, index: number, glyph: Glyph) {
@@ -343,7 +343,8 @@ function drawFrame(now: number) {
     const t = Math.min(1, (now - fadeStart) / fadeDuration)
     drawGlyphs(currentGlyphs, now, 1 - t)
     drawGlyphs(nextGlyphs, now, t, currentGlyphs, t)
-  } else {
+  }
+  else {
     drawGlyphs(currentGlyphs, now, 1)
   }
 
@@ -368,22 +369,22 @@ onBeforeUnmount(() => {
 useResizeObserver(containerRef, () => resizeCanvas())
 
 watch(
-    [
-      text,
-      segments,
-      fontFamily,
-      fontWeight,
-      textSpacing,
-      fontSizeMin,
-      fontSizeMax,
-      rowSpacing,
-      amplitude,
-      amplitudeVariance,
-      fitPadding,
-    ],
-    () => {
-      prepareText()
-    },
+  [
+    text,
+    segments,
+    fontFamily,
+    fontWeight,
+    textSpacing,
+    fontSizeMin,
+    fontSizeMax,
+    rowSpacing,
+    amplitude,
+    amplitudeVariance,
+    fitPadding,
+  ],
+  () => {
+    prepareText()
+  },
 )
 
 watch([columnCount, columnGap, pace, speedVariance], () => {
@@ -395,7 +396,7 @@ watch(pixelRatio, () => resizeCanvas())
 
 <template>
   <div ref="containerRef" :class="className" class="text-band-root relative h-full w-full">
-    <canvas ref="canvasRef" class="absolute inset-0 h-full w-full"/>
+    <canvas ref="canvasRef" class="absolute inset-0 h-full w-full" />
   </div>
 </template>
 
@@ -406,5 +407,20 @@ watch(pixelRatio, () => resizeCanvas())
 
 .dark .text-band-root {
   @apply bg-pureBlack text-pureWhite;
+}
+
+@keyframes text-band-elegant-fade {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.02);
+  }
+}
+
+.text-band-fade-out {
+  animation: text-band-elegant-fade 900ms ease-out forwards;
 }
 </style>
