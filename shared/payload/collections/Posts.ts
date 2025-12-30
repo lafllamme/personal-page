@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { publicRead, isEditor } from '../../utils/access.js'
+import { isEditor, publicRead } from '../../utils/access.js'
 
 const PostsCollection: CollectionConfig = {
   slug: 'posts',
@@ -125,4 +125,4 @@ const PostsCollection: CollectionConfig = {
   ],
 }
 
-export const Posts = PostsCollection 
+export const Posts = PostsCollection

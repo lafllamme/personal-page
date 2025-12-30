@@ -1,14 +1,16 @@
 <script lang="ts" setup>
-import {defineAsyncComponent} from 'vue'
-import type {CursorProps, CursorType} from '@/components/ui/Cursor/Cursor.model'
-import {CursorDefaultProps} from '@/components/ui/Cursor/Cursor.model'
-
-const LazySpinningText = defineAsyncComponent(() =>
-    import('@/components/ui/Text/SpinningText/SpinningText.vue'),
-)
+import type { CursorProps, CursorType } from '@/components/ui/Cursor/Cursor.model'
+import { defineAsyncComponent } from 'vue'
+import { CursorDefaultProps } from '@/components/ui/Cursor/Cursor.model'
 
 // TODO: Is the fade duration necessary? It seems unclear in terms of usage.
-const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps) // ms, for fade in/out
+const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps)
+
+const LazySpinningText = defineAsyncComponent(() =>
+  import('@/components/ui/Text/SpinningText/SpinningText.vue'),
+)
+
+// ms, for fade in/out
 const FADE_IN_DELAY = 3000 // 3 seconds!
 const FADE_DURATION = 0
 
@@ -97,7 +99,7 @@ function calculateTextBarHeight(
 
 function checkElementType(e: MouseEvent) {
   const target = e.target as HTMLElement
- 
+
   // 1. Check force types first
   const forceTypeClass = forceType.value?.find(cls =>
     target.classList.contains(cls) || !!target.closest(`.${cls}`),

@@ -21,15 +21,19 @@ const UsersCollection: CollectionConfig = {
     // Users can read their own profile, admins can read all
     read: ({ req }) => {
       const user = req.user
-      if (!user) return false
-      if (user.role === 'admin') return true
+      if (!user)
+        return false
+      if (user.role === 'admin')
+        return true
       return { id: { equals: user.id } }
     },
     // Users can update their own profile, admins can update all
     update: ({ req }) => {
       const user = req.user
-      if (!user) return false
-      if (user.role === 'admin') return true
+      if (!user)
+        return false
+      if (user.role === 'admin')
+        return true
       return { id: { equals: user.id } }
     },
     // Only admins can delete users
@@ -45,9 +49,9 @@ const UsersCollection: CollectionConfig = {
       type: 'select',
       required: true,
       defaultValue: 'viewer',
-      options: roleOptions.map(r => ({ 
-        label: r.charAt(0).toUpperCase() + r.slice(1), 
-        value: r 
+      options: roleOptions.map(r => ({
+        label: r.charAt(0).toUpperCase() + r.slice(1),
+        value: r,
       })),
       admin: {
         position: 'sidebar',

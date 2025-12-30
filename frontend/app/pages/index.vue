@@ -4,45 +4,44 @@
 import RibbonWrapper from '@/components/ui/RibbonText/RibbonWrapper.client.vue'
 
 const LazyFeaturedSection = defineLazyHydrationComponent(
-    'visible',
-    () => import('@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'),
+  'visible',
+  () => import('@/components/ui/Blog/FeaturedSection/FeaturedSection.vue'),
 )
 
 const LazyBlogLayout = defineLazyHydrationComponent(
-    'visible',
-    () => import('@/components/ui/Blog/Layout/BlogLayout.vue'),
+  'visible',
+  () => import('@/components/ui/Blog/Layout/BlogLayout.vue'),
 )
 
 const LazyInteractiveButton = defineLazyHydrationComponent(
-    'idle',
-    () => import('@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'),
+  'idle',
+  () => import('@/components/ui/Buttons/InteractiveButton/InteractiveButton.vue'),
 )
 
 const LazyRippleButton = defineLazyHydrationComponent(
-    'idle',
-    () => import('@/components/ui/Buttons/RippleButton/RippleButton.vue'),
+  'idle',
+  () => import('@/components/ui/Buttons/RippleButton/RippleButton.vue'),
 )
 
 const LazySkewMarquee = defineLazyHydrationComponent(
-    'visible',
-    () => import('@/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
+  'visible',
+  () => import('@/components/ui/Section/SkewMarquee/SkewMarquee.vue'),
 )
 
 const LazyTextGenerate = defineLazyHydrationComponent(
-    'idle',
-    () => import('@/components/ui/Text/TextGenerate/TextGenerate.vue'),
+  'idle',
+  () => import('@/components/ui/Text/TextGenerate/TextGenerate.vue'),
 )
 
-const {t} = useI18n()
+const { t } = useI18n()
 
 useHead({
   title: t('head.title'),
   meta: [
-    {name: 'description', content: t('head.description')},
-    {name: 'keywords', content: t('head.keywords')},
+    { name: 'description', content: t('head.description') },
+    { name: 'keywords', content: t('head.keywords') },
   ],
 })
-
 
 function handleClick() {
   // navigate to /blog page
@@ -51,9 +50,11 @@ function handleClick() {
 
 const animate = ref(false)
 const overlayVisible = useState('intro-overlay-visible', () => true)
+const overlayLeaving = useState('intro-overlay-leaving', () => false)
 const heroAnimationsReady = ref(false)
 const overlayStart = ref(0)
 const minOverlayMs = 1900
+const overlayFadeMs = 1200
 
 function handleGenerateComplete() {
   animate.value = true
@@ -64,8 +65,15 @@ function handleRibbonReady() {
   const elapsed = performance.now() - start
   const remaining = minOverlayMs - elapsed
   const complete = () => {
-    overlayVisible.value = false
-    heroAnimationsReady.value = true
+    if (overlayLeaving.value)
+      return
+
+    overlayLeaving.value = true
+    window.setTimeout(() => {
+      overlayVisible.value = false
+      overlayLeaving.value = false
+      heroAnimationsReady.value = true
+    }, overlayFadeMs)
   }
 
   if (remaining > 0)
@@ -75,6 +83,7 @@ function handleRibbonReady() {
 }
 
 overlayVisible.value = true
+overlayLeaving.value = false
 
 onMounted(() => {
   overlayStart.value = performance.now()
@@ -84,20 +93,20 @@ onMounted(() => {
 <template>
   <div>
     <div
-        :class="useClsx(
+      :class="useClsx(
         'relative mb-12 min-h-[360px] flex flex-col items-center overflow-visible md:min-h-[520px] md:flex-row',
         overlayVisible && 'opacity-0 pointer-events-none',
         !overlayVisible && 'opacity-100 transition-opacity duration-300 ease-[cubic-bezier(0.33,1,0.68,1)]',
       )"
-        :style="overlayVisible ? { visibility: 'hidden' } : {}"
+      :style="overlayVisible ? { visibility: 'hidden' } : {}"
     >
       <div class="absolute inset-0 z-0 bg-transparent">
-        <div class="absolute left-1/2 w-full bg-transparent top-1/2 -translate-x-1/2 -translate-y-1/2 scale-x-[1.3]">
+        <div class="absolute left-1/2 top-1/2 w-full scale-x-[1.3] bg-transparent -translate-x-1/2 -translate-y-1/2">
           <div class="bg-transparent">
             <RibbonWrapper
-                height="90dvh"
-                :show-background="false"
-                @ready="handleRibbonReady"
+              height="90dvh"
+              :show-background="false"
+              @ready="handleRibbonReady"
             />
           </div>
         </div>
@@ -106,7 +115,7 @@ onMounted(() => {
       <!-- Text Wrapper -->
       <div class="relative z-10 w-full text-center <sm:mt-6 md:mt-12 md:w-1/2 space-y-4 md:text-left md:space-y-8">
         <h1
-            :class="useClsx(
+          :class="useClsx(
             'font-prata text-6vh md:text-[clamp(1.75rem,7vw,8rem)] 2xl:max-w-4xl text-balance md:text-balance',
             'dark:text-pureWhite !font-bold',
             'text-pureBlack leading-tight tracking-tight antialiased',
@@ -116,20 +125,20 @@ onMounted(() => {
           {{ t('hero.headline') }}
         </h1>
         <LazyTextGenerate
-            :active="heroAnimationsReady"
-            :class="useClsx(
+          :active="heroAnimationsReady"
+          :class="useClsx(
             'max-w-3xl 2xl:max-w-4xl md:text-justify',
             'text-wrap text-[clamp(1rem,2vw,1.5rem)]',
             'font-light leading-normal tracking-normal font-manrope',
           )"
-            :delay="0.8"
-            :duration="1.1"
-            :hydrate-on-idle="500"
-            :words="t('hero.text')"
-            @generate="handleGenerateComplete"
+          :delay="0.8"
+          :duration="1.1"
+          :hydrate-on-idle="500"
+          :words="t('hero.text')"
+          @generate="handleGenerateComplete"
         />
         <div
-            :class="useClsx(
+          :class="useClsx(
             'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'bg-none lg:text-xl sm:text-lg',
             '!min-w-3/4 md:justify-start',
@@ -138,26 +147,26 @@ onMounted(() => {
           )"
         >
           <LazyInteractiveButton
-              :hydrate-on-idle="1000"
-              :text="t('buttons.latest')"
-              @click="handleClick"
+            :hydrate-on-idle="1000"
+            :text="t('buttons.latest')"
+            @click="handleClick"
           />
           <LazyRippleButton
-              :hydrate-on-idle="1000"
-              :text="t('buttons.subscribe')"
+            :hydrate-on-idle="1000"
+            :text="t('buttons.subscribe')"
           />
         </div>
       </div>
     </div>
     <LazyFeaturedSection
-        :hydrate-on-visible="{ rootMargin: '100px' }"
+      :hydrate-on-visible="{ rootMargin: '100px' }"
     />
     <LazyBlogLayout
-        :hydrate-on-visible="{ rootMargin: '100px' }"
+      :hydrate-on-visible="{ rootMargin: '100px' }"
     />
     <div class="mb-12 mt-6 md:mb-32 md:mt-12">
       <LazySkewMarquee
-          :hydrate-on-visible="{ rootMargin: '150px' }"
+        :hydrate-on-visible="{ rootMargin: '150px' }"
       />
     </div>
   </div>
