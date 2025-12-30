@@ -21,7 +21,6 @@
   },
   "dependencies": {
     "@iconify-json/radix-icons": "catalog:",
-    "@tec/types": "workspace:*",
     "@nuxt/icon": "catalog:",
     "@nuxt/image": "catalog:",
     "@nuxtjs/color-mode": "catalog:",
@@ -30,6 +29,7 @@
     "@pinia/nuxt": "catalog:",
     "@radix-ui/colors": "catalog:",
     "@splinetool/runtime": "catalog:",
+    "@tec/types": "workspace:*",
     "@theme-toggles/react": "catalog:",
     "@tresjs/cientos": "catalog:",
     "@tresjs/core": "catalog:",

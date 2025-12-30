@@ -36,7 +36,9 @@
     "concurrently": "catalog:",
     "eslint": "catalog:",
     "eslint-config-next": "catalog:",
+    "eslint-plugin-yml": "catalog:",
     "vue-eslint-parser": "catalog:",
+    "yaml-eslint-parser": "catalog:",
     "turbo": "catalog:"
   },
   "packageManager": "pnpm@10.18.3",
