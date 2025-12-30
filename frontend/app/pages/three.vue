@@ -20,8 +20,8 @@ useHead({
       </p>
     </div>
     <RibbonWrapper
-        :show-background="false"
-        :style="{ height: '90dvh'}"
+      :show-background="false"
+      :style="{ height: '90dvh' }"
     />
   </div>
 </template>

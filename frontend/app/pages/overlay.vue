@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {computed, onMounted, ref, watch} from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
 import TextBand from '@/components/ui/TextBand/TextBand.vue'
 import TextBandSettings from '@/components/ui/TextBand/TextBandSettings.vue'
@@ -9,6 +9,7 @@ const overlayKey = ref(0)
 const showTextBand = ref(true)
 const showTextBandControls = ref(false)
 const overlayVisible = useState('intro-overlay-visible', () => false)
+const overlayLeaving = useState('intro-overlay-leaving', () => false)
 const textBandText = ref('TECNEWS')
 const textBandBackground = ref('#000000')
 const textBandColor = ref('#ffffff')
@@ -91,15 +92,16 @@ const hasMultipleSegments = computed(() => {
 })
 
 watch(
-    textBandPreview,
-    (next) => {
-      console.log('[TextBand settings]', JSON.stringify(next))
-    },
-    {deep: true},
+  textBandPreview,
+  (next) => {
+    console.log('[TextBand settings]', JSON.stringify(next))
+  },
+  { deep: true },
 )
 
 onMounted(() => {
   overlayVisible.value = false
+  overlayLeaving.value = false
 })
 
 function handleComplete() {
@@ -136,16 +138,16 @@ function toggleTextBandControls() {
         </div>
         <div class="flex items-center gap-3">
           <button
-              type="button"
-              class="hover:bg-black/80 rounded-full px-5 py-2 text-sm font-semibold transition"
-              @click="replayOverlay"
+            type="button"
+            class="hover:bg-black/80 rounded-full px-5 py-2 text-sm font-semibold transition"
+            @click="replayOverlay"
           >
             Replay overlay
           </button>
           <button
-              type="button"
-              class="border border-black/20 hover:bg-black/5 rounded-full px-5 py-2 text-sm font-semibold transition"
-              @click="toggleTextBand"
+            type="button"
+            class="border-black/20 hover:bg-black/5 border rounded-full px-5 py-2 text-sm font-semibold transition"
+            @click="toggleTextBand"
           >
             {{ showTextBand ? 'Hide' : 'Show' }} text band
           </button>
@@ -157,23 +159,22 @@ function toggleTextBandControls() {
           This page is a sandbox to test the overlay animation without affecting the main home route.
         </p>
       </div>
-
     </div>
 
     <OverlayText
-        v-if="showOverlay"
-        :key="overlayKey"
-        :on-complete="handleComplete"
+      v-if="showOverlay"
+      :key="overlayKey"
+      :on-complete="handleComplete"
     />
 
     <div
-        v-if="showTextBand"
-        class="fixed inset-0 z-[9998] overflow-hidden"
+      v-if="showTextBand"
+      class="fixed inset-0 z-[9998] overflow-hidden"
     >
       <ClientOnly>
         <TextBand
-            v-bind="textBandPreview"
-            class="pointer-events-none h-full w-full"
+          v-bind="textBandPreview"
+          class="pointer-events-none h-full w-full"
         />
       </ClientOnly>
       <TextBandSettings

@@ -42,12 +42,13 @@ const fonts: NuxtFontsOptions = {
 
 const require = createRequire(import.meta.url)
 
-const resolveSharpImgDir = () => {
+function resolveSharpImgDir() {
   try {
     const sharpEntry = require.resolve('sharp')
     const sharpPkgDir = resolve(sharpEntry, '..', '..')
     return resolve(sharpPkgDir, '..', '@img')
-  } catch {
+  }
+  catch {
     return null
   }
 }
