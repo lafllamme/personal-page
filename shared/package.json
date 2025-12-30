@@ -1,84 +1,11 @@
 {
   "name": "@tec/types",
-  "version": "1.0.1-beta.1",
-  "description": "Shared types, utilities, and Payload CMS collections for the personal-page monorepo. Includes types, access utils, and Payload collection configs for Posts, Pages, Media, Users, and Categories.",
-  "private": true,
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "types": "./dist/index.d.ts"
-    },
-    "./frontend": {
-      "import": "./dist/payload/config.frontend.js",
-      "types": "./dist/payload/config.frontend.d.ts"
-    },
-    "./cms": {
-      "import": "./dist/payload/config.cms.js",
-      "types": "./dist/payload/config.cms.d.ts"
-    },
-    "./types": {
-      "import": "./dist/types/index.js",
-      "types": "./dist/types/index.d.ts"
-    },
-    "./utils": {
-      "import": "./dist/utils/index.js",
-      "types": "./dist/utils/index.d.ts"
-    },
-    "./utils/access": {
-      "import": "./dist/utils/access.js",
-      "types": "./dist/utils/access.d.ts"
-    },
-    "./payload": {
-      "import": "./dist/payload/config.js",
-      "types": "./dist/payload/config.d.ts"
-    },
-    "./payload/collections/Users": {
-      "import": "./dist/payload/collections/Users.js",
-      "types": "./dist/payload/collections/Users.d.ts"
-    },
-    "./payload/collections/Media": {
-      "import": "./dist/payload/collections/Media.js",
-      "types": "./dist/payload/collections/Media.d.ts"
-    },
-    "./payload/collections/Pages": {
-      "import": "./dist/payload/collections/Pages.js",
-      "types": "./dist/payload/collections/Pages.d.ts"
-    },
-    "./payload/collections/Posts": {
-      "import": "./dist/payload/collections/Posts.js",
-      "types": "./dist/payload/collections/Posts.d.ts"
-    },
-    "./payload/collections/Categories": {
-      "import": "./dist/payload/collections/Categories.js",
-      "types": "./dist/payload/collections/Categories.d.ts"
-    }
-  },
-  "scripts": {
-    "build": "tsc --build",
-    "clean": "rm -rf dist",
-    "type-check": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@payloadcms/db-postgres": "catalog:",
-    "@payloadcms/next": "catalog:",
-    "@payloadcms/richtext-lexical": "catalog:",
-    "@vercel/blob": "catalog:",
-    "monaco-editor": "catalog:",
-    "payload": "catalog:",
-    "sharp": "catalog:"
-  },
-  "devDependencies": {
-    "@types/node": "catalog:",
-    "@types/react": "catalog:",
-    "typescript": "catalog:"
-  },
-  "files": [
-    "dist",
-    "README.md"
-  ],
+  "version": "1.0.1-beta.1",
+  "private": true,
+  "description": "Shared types, utilities, and Payload CMS collections for the personal-page monorepo. Includes types, access utils, and Payload collection configs for Posts, Pages, Media, Users, and Categories.",
+  "author": "Dogan Teke <dogan.teke@gmail.com>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lafllamme/personal-page.git",
@@ -100,6 +27,79 @@
     "access",
     "personal-page"
   ],
-  "author": "Dogan Teke <dogan.teke@gmail.com>",
-  "license": "MIT"
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./frontend": {
+      "types": "./dist/payload/config.frontend.d.ts",
+      "import": "./dist/payload/config.frontend.js"
+    },
+    "./cms": {
+      "types": "./dist/payload/config.cms.d.ts",
+      "import": "./dist/payload/config.cms.js"
+    },
+    "./types": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/types/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js"
+    },
+    "./utils/access": {
+      "types": "./dist/utils/access.d.ts",
+      "import": "./dist/utils/access.js"
+    },
+    "./payload": {
+      "types": "./dist/payload/config.d.ts",
+      "import": "./dist/payload/config.js"
+    },
+    "./payload/collections/Users": {
+      "types": "./dist/payload/collections/Users.d.ts",
+      "import": "./dist/payload/collections/Users.js"
+    },
+    "./payload/collections/Media": {
+      "types": "./dist/payload/collections/Media.d.ts",
+      "import": "./dist/payload/collections/Media.js"
+    },
+    "./payload/collections/Pages": {
+      "types": "./dist/payload/collections/Pages.d.ts",
+      "import": "./dist/payload/collections/Pages.js"
+    },
+    "./payload/collections/Posts": {
+      "types": "./dist/payload/collections/Posts.d.ts",
+      "import": "./dist/payload/collections/Posts.js"
+    },
+    "./payload/collections/Categories": {
+      "types": "./dist/payload/collections/Categories.d.ts",
+      "import": "./dist/payload/collections/Categories.js"
+    }
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "README.md",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "rm -rf dist",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@payloadcms/db-postgres": "catalog:",
+    "@payloadcms/next": "catalog:",
+    "@payloadcms/richtext-lexical": "catalog:",
+    "@vercel/blob": "catalog:",
+    "monaco-editor": "catalog:",
+    "payload": "catalog:",
+    "sharp": "catalog:"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+    "typescript": "catalog:"
+  }
 }
