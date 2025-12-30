@@ -5,10 +5,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "prebuild": "pnpm run generate:importmap",
-    "build": "next build",
-    "predev": "pnpm run generate:importmap",
-    "dev": "PORT=3001 next dev -p 3001",
+    "build": "pnpm --filter @tec/types build && pnpm run generate:importmap && next build",
+    "dev": "pnpm --filter @tec/types build && pnpm run generate:importmap && PORT=3001 next dev -p 3001",
     "generate:importmap": "payload generate:importmap",
     "generate:types": "payload generate:types",
     "lint": "next lint",
