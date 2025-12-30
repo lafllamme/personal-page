@@ -13,10 +13,12 @@ interface Glyph {
 
 interface Column {
   xOffset: number
+  baseDurationMs: number
   durationMs: number
   progress: number
   starts: number[]
   targets: number[]
+  alignPulse: boolean
 }
 
 const props = withDefaults(defineProps<TextBandProps>(), TextBandDefaultProps)
@@ -40,6 +42,7 @@ const {
   amplitude,
   amplitudeVariance,
   stepEase,
+  alignChance,
   fitPadding,
   class: className,
 } = toRefs(props)
@@ -150,10 +153,12 @@ function buildColumns() {
     const durationMs = baseDuration * (1 + randomRange(-variance, variance))
     return {
       xOffset: start + i * gap,
+      baseDurationMs: baseDuration,
       durationMs,
       progress: randomRange(0, 1),
       starts: [],
       targets: [],
+      alignPulse: false,
     }
   })
 }
@@ -236,18 +241,31 @@ function updateColumns(now: number, referenceGlyphs: Glyph[]) {
   const dt = lastFrameTime ? now - lastFrameTime : 16
   lastFrameTime = now
 
+  const cycledColumns: Column[] = []
   for (const column of columns) {
     column.progress += dt / column.durationMs
     if (column.progress >= 1) {
       column.progress %= 1
-      const maxCount = Math.max(column.starts.length, column.targets.length, referenceGlyphs.length)
-      for (let i = 0; i < maxCount; i++) {
-        const glyph = referenceGlyphs[i]
-        const spread = glyph ? glyph.amplitude * fontSize : fontSize
-        column.starts[i] = column.targets[i] ?? randomRange(-spread, spread)
-        column.targets[i] = randomRange(-spread, spread)
-      }
+      cycledColumns.push(column)
     }
+  }
+
+  if (cycledColumns.length === 0)
+    return
+
+  const shouldAlign = Math.random() < alignChance.value
+  const variance = Math.max(0, speedVariance.value)
+  for (const column of cycledColumns) {
+    column.alignPulse = shouldAlign
+    const maxCount = Math.max(column.starts.length, column.targets.length, referenceGlyphs.length)
+    for (let i = 0; i < maxCount; i++) {
+      const glyph = referenceGlyphs[i]
+      const spread = glyph ? glyph.amplitude * fontSize : fontSize
+      const current = column.targets[i] ?? randomRange(-spread, spread)
+      column.starts[i] = current
+      column.targets[i] = randomRange(-spread, spread)
+    }
+    column.durationMs = column.baseDurationMs * (1 + randomRange(-variance, variance))
   }
 }
 
@@ -273,10 +291,11 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
 
   for (const column of columns) {
     const eased = easeInOutPow(Math.min(1, Math.max(0, column.progress)), stepEase.value)
+    const alignFactor = column.alignPulse ? Math.sin(Math.PI * column.progress) : 0
     for (let index = 0; index < glyphs.length; index++) {
       const glyph = glyphs[index]
       ensureColumnIndex(column, index, glyph)
-      const offset = lerp(column.starts[index], column.targets[index], eased)
+      const offset = lerp(column.starts[index], column.targets[index], eased) * (1 - alignFactor)
       const baseX = resolveGlyphX(glyphs, index, fromGlyphs, t)
       for (let i = 0; i < repeats; i++) {
         const y = centerY + offset + (i - half) * lineStep

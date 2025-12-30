@@ -18,6 +18,7 @@ export interface TextBandProps {
   amplitude?: number
   amplitudeVariance?: number
   stepEase?: number
+  alignChance?: number
   fitPadding?: number
   class?: string
 }
@@ -44,6 +45,7 @@ export const TextBandDefaultProps = {
   amplitude: 1.7,
   amplitudeVariance: 0.35,
   stepEase: 2.6,
-  fitPadding: 0.03,
+  alignChance: 0.5,
+  fitPadding: 0.01,
   class: '',
 }
