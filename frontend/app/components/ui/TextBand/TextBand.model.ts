@@ -30,7 +30,7 @@ export const TextBandDefaultProps = {
   segments: () => [
     'TECNEWS',
   ],
-  fontFamily: 'Geist',
+  fontFamily: 'Figtree',
   fontWeight: 500,
   fontSizeMin: 40,
   fontSizeMax: 300,

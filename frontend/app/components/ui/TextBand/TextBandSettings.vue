@@ -56,6 +56,39 @@ const {
   alignChance,
   fitPadding,
 } = settings
+
+const fontOptions = [
+  'Electric',
+  'Recoleta',
+  'Ginger',
+  'Prata',
+  'Manrope',
+  'Geist Regular',
+  'Geist Thin',
+  'Space Grotesk',
+  'Boldonse',
+  'Audiowide',
+  'Zen Dots',
+  'Bruno Ace SC',
+  'Major Mono Display',
+  'Nova Square',
+  'Figtree',
+  'JetBrains Mono',
+  'Crimson Text',
+  'Lora',
+  'Libre Baskerville',
+  'EB Garamond',
+  'Cormorant Garamond',
+  'Zalando Sans Expanded',
+]
+
+const selectedFontFamily = computed({
+  get: () => (fontOptions.includes(fontFamily.value) ? fontFamily.value : ''),
+  set: (value: string) => {
+    if (value)
+      fontFamily.value = value
+  },
+})
 </script>
 
 <template>
@@ -111,6 +144,15 @@ const {
       </div>
       <label class="block">
         <span class="color-white/60 mb-1 block text-[10px] tracking-[0.2em] uppercase">Font family</span>
+        <select
+          v-model="selectedFontFamily"
+          class="border-white/10 bg-black/60 text-white mb-2 w-full border rounded-lg px-2 py-1 text-[11px]"
+        >
+          <option disabled value="">Select a font</option>
+          <option v-for="font in fontOptions" :key="font" :value="font">
+            {{ font }}
+          </option>
+        </select>
         <input v-model="fontFamily" type="text" class="border-white/10 bg-black/60 text-white w-full border rounded-lg px-2 py-1 text-[11px]">
         <span class="color-white/50 mt-1 block text-[10px]">Font family name for the band text.</span>
       </label>
