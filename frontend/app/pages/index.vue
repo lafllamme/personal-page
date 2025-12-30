@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 // Lazy hydration components for better performance
 
-import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
 import RibbonWrapper from '@/components/ui/RibbonText/RibbonWrapper.client.vue'
 
 const LazyFeaturedSection = defineLazyHydrationComponent(
@@ -51,44 +50,52 @@ function handleClick() {
 }
 
 const animate = ref(false)
-const overlaySeen = useState('intro-overlay-seen', () => false)
-const overlayCanComplete = ref(false)
-const overlayActive = computed(() => !overlaySeen.value)
-const heroAnimationsReady = ref(overlaySeen.value)
+const overlayVisible = useState('intro-overlay-visible', () => true)
+const heroAnimationsReady = ref(false)
+const overlayStart = ref(0)
+const minOverlayMs = 1900
 
 function handleGenerateComplete() {
   animate.value = true
 }
 
-function handleOverlayComplete() {
-  overlaySeen.value = true
-  heroAnimationsReady.value = true
+function handleRibbonReady() {
+  const start = overlayStart.value || performance.now()
+  const elapsed = performance.now() - start
+  const remaining = minOverlayMs - elapsed
+  const complete = () => {
+    overlayVisible.value = false
+    heroAnimationsReady.value = true
+  }
+
+  if (remaining > 0)
+    window.setTimeout(complete, remaining)
+  else
+    complete()
 }
 
-function handleRibbonReady() {
-  overlayCanComplete.value = true
-}
+overlayVisible.value = true
+
+onMounted(() => {
+  overlayStart.value = performance.now()
+})
 </script>
 
 <template>
   <div>
-    <OverlayText
-        v-if="!overlaySeen"
-        :can-complete="overlayCanComplete"
-        :on-complete="handleOverlayComplete"
-    />
     <div
         :class="useClsx(
         'relative mb-12 min-h-[360px] flex flex-col items-center overflow-visible md:min-h-[520px] md:flex-row',
-        overlayActive && 'opacity-0 pointer-events-none',
-        !overlayActive && 'opacity-100 transition-opacity duration-300 ease-[cubic-bezier(0.33,1,0.68,1)]',
+        overlayVisible && 'opacity-0 pointer-events-none',
+        !overlayVisible && 'opacity-100 transition-opacity duration-300 ease-[cubic-bezier(0.33,1,0.68,1)]',
       )"
+        :style="overlayVisible ? { visibility: 'hidden' } : {}"
     >
-      <div class="absolute inset-0 z-0 bg-orange-5">
-        <div class="absolute left-1/2  bg-blue-4 top-1/2 max-w-none w-screen -translate-x-1/2 -translate-y-1/2">
-          <div class="bg-red-9 w-full">
+      <div class="absolute inset-0 z-0 bg-transparent">
+        <div class="absolute left-1/2 w-full bg-transparent top-1/2 -translate-x-1/2 -translate-y-1/2 scale-x-[1.3]">
+          <div class="bg-transparent">
             <RibbonWrapper
-                height='60vh'
+                height="90dvh"
                 :show-background="false"
                 @ready="handleRibbonReady"
             />
