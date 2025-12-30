@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import type {RibbonTextProps} from './RibbonText.model'
-import {RibbonTextDefaultProps} from './RibbonText.model'
+import type { RibbonTextProps } from './RibbonText.model'
+import { RibbonTextDefaultProps } from './RibbonText.model'
 import RibbonText from './RibbonText.vue'
 
 const props = withDefaults(defineProps<RibbonTextProps>(), RibbonTextDefaultProps)
@@ -16,9 +16,9 @@ const ribbonHeight = computed(() => ({
   <div v-bind="attrs">
     <ClientOnly>
       <RibbonText
-          v-bind="props"
-          :style="ribbonHeight"
-          @ready="emit('ready')"
+        v-bind="props"
+        :style="ribbonHeight"
+        @ready="emit('ready')"
       />
     </ClientOnly>
   </div>
