@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { RibbonTextProps } from './RibbonText.model'
+import { TresCanvas } from '@tresjs/core'
 import consola from 'consola'
 import {
   CanvasTexture,
@@ -15,11 +17,9 @@ import {
   PlaneGeometry,
   SRGBColorSpace,
 } from 'three'
-import {computed, onBeforeUnmount, onMounted, ref, shallowRef, watch} from 'vue'
-import type {RibbonTextProps} from './RibbonText.model'
-import {RibbonTextDefaultProps} from './RibbonText.model'
+import { computed, onBeforeUnmount, onMounted, ref, shallowRef, watch } from 'vue'
 import RibbonSettings from './RibbonSettings.vue'
-import {TresCanvas} from "@tresjs/core";
+import { RibbonTextDefaultProps } from './RibbonText.model'
 
 const props = withDefaults(defineProps<RibbonTextProps>(), RibbonTextDefaultProps)
 
@@ -154,7 +154,6 @@ const col1 = ref('#059669')
 const col2 = ref('#75DDDD')
 const col3 = ref('#6D28D9')
 
-
 const col4 = ref('#AA3E98')
 
 const showText = ref(true)
@@ -175,27 +174,27 @@ const textBoost = ref(2.2)
 const textMix = ref(0.96)
 
 const fontOptions = [
-  {label: 'Electric', family: 'Electric'},
-  {label: 'Recoleta', family: 'Recoleta'},
-  {label: 'Ginger', family: 'Ginger'},
-  {label: 'Prata', family: 'Prata'},
-  {label: 'Manrope', family: 'Manrope'},
-  {label: 'Geist', family: 'Geist Regular'},
-  {label: 'Space Grotesk', family: 'Space Grotesk'},
-  {label: 'Boldonse', family: 'Boldonse'},
-  {label: 'Audiowide', family: 'Audiowide'},
-  {label: 'Zen Dots', family: 'Zen Dots'},
-  {label: 'Bruno Ace SC', family: 'Bruno Ace SC'},
-  {label: 'Major Mono Display', family: 'Major Mono Display'},
-  {label: 'Nova Square', family: 'Nova Square'},
-  {label: 'Figtree', family: 'Figtree'},
-  {label: 'JetBrains Mono', family: 'JetBrains Mono'},
-  {label: 'Crimson Text', family: 'Crimson Text'},
-  {label: 'Lora', family: 'Lora'},
-  {label: 'Libre Baskerville', family: 'Libre Baskerville'},
-  {label: 'EB Garamond', family: 'EB Garamond'},
-  {label: 'Cormorant Garamond', family: 'Cormorant Garamond'},
-  {label: 'Zalando Sans Expanded', family: 'Zalando Sans Expanded'},
+  { label: 'Electric', family: 'Electric' },
+  { label: 'Recoleta', family: 'Recoleta' },
+  { label: 'Ginger', family: 'Ginger' },
+  { label: 'Prata', family: 'Prata' },
+  { label: 'Manrope', family: 'Manrope' },
+  { label: 'Geist', family: 'Geist Regular' },
+  { label: 'Space Grotesk', family: 'Space Grotesk' },
+  { label: 'Boldonse', family: 'Boldonse' },
+  { label: 'Audiowide', family: 'Audiowide' },
+  { label: 'Zen Dots', family: 'Zen Dots' },
+  { label: 'Bruno Ace SC', family: 'Bruno Ace SC' },
+  { label: 'Major Mono Display', family: 'Major Mono Display' },
+  { label: 'Nova Square', family: 'Nova Square' },
+  { label: 'Figtree', family: 'Figtree' },
+  { label: 'JetBrains Mono', family: 'JetBrains Mono' },
+  { label: 'Crimson Text', family: 'Crimson Text' },
+  { label: 'Lora', family: 'Lora' },
+  { label: 'Libre Baskerville', family: 'Libre Baskerville' },
+  { label: 'EB Garamond', family: 'EB Garamond' },
+  { label: 'Cormorant Garamond', family: 'Cormorant Garamond' },
+  { label: 'Zalando Sans Expanded', family: 'Zalando Sans Expanded' },
 ]
 const selectedFont = ref('Space Grotesk')
 
@@ -282,8 +281,8 @@ const canvasClearColor = computed(() => '#000000')
 
 function logState() {
   consola.info(
-      '[RibbonText]',
-      `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${(p5EyeZ.value + camZOffset.value).toFixed(2)}) zoom ${camZoom.value.toFixed(2)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value}`,
+    '[RibbonText]',
+    `cam (${camX.value.toFixed(2)}, ${camY.value.toFixed(2)}, ${(p5EyeZ.value + camZOffset.value).toFixed(2)}) zoom ${camZoom.value.toFixed(2)} | rot (${rotX.value.toFixed(2)}, ${rotY.value.toFixed(2)}, ${rotZ.value.toFixed(2)}) | scale ${scaler.value.toFixed(4)} | shift (${shiftX.value.toFixed(2)}, ${shiftY.value.toFixed(2)}, ${shiftZ.value.toFixed(2)}) | motion speed ${speed.value.toFixed(2)} time ${timeScale.value.toFixed(2)} alt ${alt.value ? 1 : 0} | segs space ${segmentSpace.value} count ${segmentCount.value} depth ${depth.value} depthScale ${widthStretch.value.toFixed(2)} mid ${middleStretch.value} xSpace ${xSpace.value} zSpace ${zSpace.value} | lenBase ${baseRunLength.value} lenScale ${lengthStretch.value.toFixed(2)} lenEff ${runLength.value}`,
   )
 }
 
@@ -341,7 +340,7 @@ watch([
   widthStretch,
   viewportW,
   viewportH,
-], () => logState(), {immediate: true})
+], () => logState(), { immediate: true })
 
 watch(selectedFont, () => drawGlyphAtlas())
 watch(textWeight, () => drawGlyphAtlas())
@@ -496,9 +495,9 @@ function drawGlyphAtlas() {
     const safeH = ATLAS_CELL - pad * 2
 
     const fit = Math.min(
-        1,
-        safeW / Math.max(1, boxW + stroke * 2),
-        safeH / Math.max(1, boxH + stroke * 2),
+      1,
+      safeW / Math.max(1, boxW + stroke * 2),
+      safeH / Math.max(1, boxH + stroke * 2),
     )
 
     ctx.scale(fit, fit)
@@ -535,44 +534,44 @@ onMounted(() => {
   drawGlyphAtlas()
 
   material.onBeforeCompile = (shader) => {
-    shader.uniforms.uScroll = {value: 0}
-    shader.uniforms.uRunLength = {value: runLength.value}
+    shader.uniforms.uScroll = { value: 0 }
+    shader.uniforms.uRunLength = { value: runLength.value }
 
-    shader.uniforms.uCol1 = {value: new Color(col1.value)}
-    shader.uniforms.uCol2 = {value: new Color(col2.value)}
-    shader.uniforms.uCol3 = {value: new Color(col3.value)}
-    shader.uniforms.uCol4 = {value: new Color(col4.value)}
+    shader.uniforms.uCol1 = { value: new Color(col1.value) }
+    shader.uniforms.uCol2 = { value: new Color(col2.value) }
+    shader.uniforms.uCol3 = { value: new Color(col3.value) }
+    shader.uniforms.uCol4 = { value: new Color(col4.value) }
 
-    shader.uniforms.uTextMap = {value: glyphTex.value}
-    shader.uniforms.uShowText = {value: showText.value ? 1 : 0}
+    shader.uniforms.uTextMap = { value: glyphTex.value }
+    shader.uniforms.uShowText = { value: showText.value ? 1 : 0 }
 
-    shader.uniforms.uTextColor = {value: new Color(textColor.value)}
-    shader.uniforms.uTextOpacity = {value: textOpacity.value}
-    shader.uniforms.uTextWidth = {value: textWidth.value}
-    shader.uniforms.uTextSpacing = {value: textSpacing.value}
+    shader.uniforms.uTextColor = { value: new Color(textColor.value) }
+    shader.uniforms.uTextOpacity = { value: textOpacity.value }
+    shader.uniforms.uTextWidth = { value: textWidth.value }
+    shader.uniforms.uTextSpacing = { value: textSpacing.value }
 
-    shader.uniforms.uTracking = {value: tracking.value / 100}
-    shader.uniforms.uTypeHeight = {value: typeHeight.value / 100}
+    shader.uniforms.uTracking = { value: tracking.value / 100 }
+    shader.uniforms.uTypeHeight = { value: typeHeight.value / 100 }
 
-    shader.uniforms.uTextFlipX = {value: textFlipX.value ? 1 : 0}
-    shader.uniforms.uTextFlipY = {value: textFlipY.value ? 1 : 0}
-    shader.uniforms.uTextBoost = {value: textBoost.value}
-    shader.uniforms.uTextMix = {value: textMix.value}
+    shader.uniforms.uTextFlipX = { value: textFlipX.value ? 1 : 0 }
+    shader.uniforms.uTextFlipY = { value: textFlipY.value ? 1 : 0 }
+    shader.uniforms.uTextBoost = { value: textBoost.value }
+    shader.uniforms.uTextMix = { value: textMix.value }
 
-    shader.uniforms.uAtlasCols = {value: ATLAS_COLS * 1.0}
-    shader.uniforms.uAtlasRows = {value: ATLAS_ROWS * 1.0}
+    shader.uniforms.uAtlasCols = { value: ATLAS_COLS * 1.0 }
+    shader.uniforms.uAtlasRows = { value: ATLAS_ROWS * 1.0 }
 
-    shader.uniforms.uShowFrame = {value: showSegmentFrame.value ? 1 : 0}
-    shader.uniforms.uFrameStrength = {value: frameStrength.value}
-    shader.uniforms.uFrameMode = {value: frameMode.value}
+    shader.uniforms.uShowFrame = { value: showSegmentFrame.value ? 1 : 0 }
+    shader.uniforms.uFrameStrength = { value: frameStrength.value }
+    shader.uniforms.uFrameMode = { value: frameMode.value }
 
-    shader.uniforms.uShowBands = {value: showBands.value ? 1 : 0}
-    shader.uniforms.uBandStrength = {value: bandStrength.value}
+    shader.uniforms.uShowBands = { value: showBands.value ? 1 : 0 }
+    shader.uniforms.uBandStrength = { value: bandStrength.value }
 
     shader.vertexShader = shader.vertexShader
-        .replace(
-            '#include <common>',
-            `#include <common>
+      .replace(
+        '#include <common>',
+        `#include <common>
   attribute float aSegIndex;
   attribute float aRibbonId;
   attribute float aGlyph;
@@ -588,10 +587,10 @@ onMounted(() => {
   varying vec3 vNormalV;
   varying vec3 vViewDirV;
           `,
-        )
-        .replace(
-            '#include <uv_vertex>',
-            `#include <uv_vertex>
+      )
+      .replace(
+        '#include <uv_vertex>',
+        `#include <uv_vertex>
   vUv = uv;
   vRibbonId = aRibbonId;
   vGlyph = aGlyph;
@@ -600,19 +599,19 @@ onMounted(() => {
   float rl = max(1.0, uRunLength);
   vGradT = clamp(aSegIndex / max(1.0, rl - 1.0), 0.0, 1.0);
           `,
-        )
-        .replace(
-            '#include <defaultnormal_vertex>',
-            `#include <defaultnormal_vertex>
+      )
+      .replace(
+        '#include <defaultnormal_vertex>',
+        `#include <defaultnormal_vertex>
   vNormalV = normalize(normalMatrix * objectNormal);
           `,
-        )
-        .replace(
-            '#include <project_vertex>',
-            `#include <project_vertex>
+      )
+      .replace(
+        '#include <project_vertex>',
+        `#include <project_vertex>
   vViewDirV = normalize(-mvPosition.xyz);
           `,
-        )
+      )
 
     shader.fragmentShader = `
   #ifdef GL_ES
@@ -803,8 +802,8 @@ function buildP5GlobalMatrix(scroll: number) {
 
   const baseX = -ribbonWidth / 2
   const baseY = alt.value
-      ? (-yCrawl + ribbonHeight / 2 - radius)
-      : (-yCrawl + ribbonHeight / 2 - ribbonHeight2 / 2)
+    ? (-yCrawl + ribbonHeight / 2 - radius)
+    : (-yCrawl + ribbonHeight / 2 - ribbonHeight2 / 2)
 
   const dep = effectiveDepth.value
   const baseZ = -dep * (count.value - 1) / 2 - (count.value - 1) * (zSpace.value - 1) * dep / 2
@@ -820,7 +819,7 @@ function buildP5GlobalMatrix(scroll: number) {
   m.multiply(new Matrix4().makeRotationZ(rotZ.value + PI))
   m.multiply(new Matrix4().makeTranslation(tX, tY, tZ))
 
-  return {m, radius, segLength}
+  return { m, radius, segLength }
 }
 
 function buildP5SegmentMatrix(opts: {
@@ -831,7 +830,7 @@ function buildP5SegmentMatrix(opts: {
   radius: number
   segLength: number
 }) {
-  const {i, ribbonId, _runLength, scroll, radius, segLength} = opts
+  const { i, ribbonId, _runLength, scroll, radius, segLength } = opts
 
   const PI = Math.PI
   const segSpace = segmentSpace.value
@@ -859,17 +858,20 @@ function buildP5SegmentMatrix(opts: {
     xCenter = step * segSpace
     yCenter = jumper * radius * 4
     rot = 0
-  } else if (step <= b) {
+  }
+  else if (step <= b) {
     const s = step - a
     xCenter = segLength * mid
     yCenter = jumper * radius * 4
     rot = s * sinStep
-  } else if (step <= c) {
+  }
+  else if (step <= c) {
     const s = step - (a + segCount)
     xCenter = segLength * mid - s * segSpace
     yCenter = radius * 2 + jumper * radius * 4
     rot = 0
-  } else {
+  }
+  else {
     const s = step - (a + segCount)
     xCenter = 0
     yCenter = radius * 2 + jumper * radius * 4
@@ -877,8 +879,8 @@ function buildP5SegmentMatrix(opts: {
   }
 
   const yAdd = alt.value
-      ? ((ribbonId % 2) * radius * 2)
-      : (ribbonId * xSpace.value * radius * 2)
+    ? ((ribbonId % 2) * radius * 2)
+    : (ribbonId * xSpace.value * radius * 2)
 
   const zAdd = ribbonId * effectiveDepth.value * zSpace.value
 
@@ -994,7 +996,7 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
       _lastWrap.value = wrap
     if (wrap !== _lastWrap.value) {
       _lastWrap.value = wrap
-      consola.info('[RibbonWrap]', {wrap, scroll, cycle, rl})
+      consola.info('[RibbonWrap]', { wrap, scroll, cycle, rl })
     }
   }
 
@@ -1035,7 +1037,7 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     shader.uniforms.uTextMap.value = glyphTex.value
   }
 
-  const {m: globalM, radius, segLength} = buildP5GlobalMatrix(scroll)
+  const { m: globalM, radius, segLength } = buildP5GlobalMatrix(scroll)
 
   for (let idx = 0; idx < instances; idx++) {
     const rId = Math.floor(idx / rl)
@@ -1060,37 +1062,37 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
 
 <template>
   <div
-      ref="containerEl"
+    ref="containerEl"
   >
     <RibbonSettings
-        :settings="settings"
-        :font-options="fontOptions"
-        :on-draw-texture="drawTextTexture"
+      :settings="settings"
+      :font-options="fontOptions"
+      :on-draw-texture="drawTextTexture"
     />
 
     <TresCanvas
-        v-if="ready"
-        :dpr="dpr"
-        :alpha="canvasAlpha"
-        :clear-alpha="canvasClearAlpha"
-        :clear-color="canvasClearColor"
-        render-mode="always"
-        @loop="handleLoop"
+      v-if="ready"
+      :dpr="dpr"
+      :alpha="canvasAlpha"
+      :clear-alpha="canvasClearAlpha"
+      :clear-color="canvasClearColor"
+      render-mode="always"
+      @loop="handleLoop"
     >
       <TresOrthographicCamera
-          :position="cameraPos"
-          :look-at="[0, 0, 0]"
-          :left="ortho.left"
-          :right="ortho.right"
-          :top="ortho.top"
-          :bottom="ortho.bottom"
-          :near="ortho.near"
-          :far="ortho.far"
-          :zoom="camZoom"
+        :position="cameraPos"
+        :look-at="[0, 0, 0]"
+        :left="ortho.left"
+        :right="ortho.right"
+        :top="ortho.top"
+        :bottom="ortho.bottom"
+        :near="ortho.near"
+        :far="ortho.far"
+        :zoom="camZoom"
       />
       <primitive
-          v-if="instanced"
-          :object="instanced"
+        v-if="instanced"
+        :object="instanced"
       />
     </TresCanvas>
   </div>
