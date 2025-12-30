@@ -100,7 +100,6 @@ watch(
     }
   },
 )
-
 </script>
 
 <template>
@@ -113,7 +112,7 @@ watch(
       )"
       :style="overlayVisible ? { visibility: 'hidden' } : {}"
     >
-      <div class="absolute inset-0 z-0 pointer-events-none overflow-x-clip mx-[calc(50%-50vw)] bg-transparent">
+      <div class="pointer-events-none absolute inset-0 z-0 mx-[calc(50%-50vw)] overflow-x-clip bg-transparent">
         <div class="absolute left-1/2 top-1/2 w-full scale-x-[1.3] bg-transparent -translate-x-1/2 -translate-y-1/2">
           <div class="bg-transparent">
             <RibbonWrapper
