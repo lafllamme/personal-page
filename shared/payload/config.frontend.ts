@@ -2,4 +2,4 @@
 export default {
   // Frontend only needs types and utilities, not the full Payload CMS configuration
   // This prevents pulling in Payload CMS dependencies that cause Lexical module errors
-} 
+}

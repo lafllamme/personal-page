@@ -1,12 +1,12 @@
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import path from 'path'
 import { buildConfig } from 'payload'
-import { fileURLToPath } from 'url'
+import { Categories } from './collections/Categories'
 import { Media } from './collections/Media'
-import { Users } from './collections/Users'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
-import { Categories } from './collections/Categories'
+import { Users } from './collections/Users'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -52,4 +52,4 @@ const baseConfig = {
   },
 }
 
-export default baseConfig 
+export default baseConfig
