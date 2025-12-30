@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useDevicePixelRatio, useResizeObserver } from '@vueuse/core'
-import type { TextBandProps } from './TextBand.model'
-import { TextBandDefaultProps } from './TextBand.model'
+import {useDevicePixelRatio, useResizeObserver} from '@vueuse/core'
+import type {TextBandProps} from './TextBand.model'
+import {TextBandDefaultProps} from './TextBand.model'
 
 interface Glyph {
   char: string
@@ -48,11 +48,13 @@ const {
   class: className,
 } = toRefs(props)
 
+const isClient = typeof window !== 'undefined' && typeof document !== 'undefined'
+
 const canvasRef = ref<HTMLCanvasElement | null>(null)
 const containerRef = ref<HTMLDivElement | null>(null)
 const context = ref<CanvasRenderingContext2D | null>(null)
-const canvasSize = reactive({ w: 0, h: 0 })
-const { pixelRatio } = useDevicePixelRatio()
+const canvasSize = reactive({w: 0, h: 0})
+const {pixelRatio} = useDevicePixelRatio()
 
 let rafId = 0
 let fontSize = 120
@@ -70,9 +72,9 @@ let lastFrameTime = 0
 const activeSegments = computed(() => {
   if (text.value && text.value.trim().length > 0) {
     const parsed = text.value
-      .split(/\r?\n|\s*\|\s*/g)
-      .map(item => item.trim())
-      .filter(Boolean)
+        .split(/\r?\n|\s*\|\s*/g)
+        .map(item => item.trim())
+        .filter(Boolean)
     return parsed.length ? parsed : ['']
   }
   if (segments.value?.length)
@@ -96,6 +98,20 @@ function measureTextWidth(textValue: string, size: number) {
   if (textValue.length > 0)
     width -= textSpacing.value
   return width
+}
+
+function resolveComputedColor(kind: 'background' | 'text') {
+  if (!isClient || !containerRef.value)
+    return ''
+  const styles = getComputedStyle(containerRef.value)
+  return kind === 'background' ? styles.backgroundColor : styles.color
+}
+
+function resolveFillColor(fallback: string, kind: 'background' | 'text') {
+  const computed = resolveComputedColor(kind)
+  if (computed && computed !== 'transparent' && computed !== 'rgba(0, 0, 0, 0)')
+    return computed
+  return fallback
 }
 
 function fitFontSizeFromSegments() {
@@ -135,8 +151,8 @@ function buildGlyphs(textValue: string, prevGlyphs: Glyph[] = []) {
       x,
       phase: prev ? prev.phase : randomRange(0, Math.PI * 2),
       amplitude: prev
-        ? prev.amplitude
-        : amplitude.value * (1 + randomRange(-amplitudeVariance.value, amplitudeVariance.value)),
+          ? prev.amplitude
+          : amplitude.value * (1 + randomRange(-amplitudeVariance.value, amplitudeVariance.value)),
     }
     x += width + textSpacing.value
     return glyph
@@ -150,7 +166,7 @@ function buildColumns() {
   const variance = Math.max(0, speedVariance.value)
   const start = -((count - 1) / 2) * gap
 
-  columns = Array.from({ length: count }, (_, i) => {
+  columns = Array.from({length: count}, (_, i) => {
     const durationMs = baseDuration * (1 + randomRange(-variance, variance))
     return {
       xOffset: start + i * gap,
@@ -284,7 +300,7 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
   const half = repeats / 2
   context.value.save()
   context.value.globalAlpha = alpha
-  context.value.fillStyle = textColor.value
+  context.value.fillStyle = resolveFillColor(textColor.value, 'text')
   context.value.textBaseline = 'middle'
   context.value.textAlign = 'left'
   context.value.font = `${fontWeight.value} ${fontSize}px ${fontFamily.value}`
@@ -319,7 +335,7 @@ function drawFrame(now: number) {
   updateSwitch(now)
 
   context.value.clearRect(0, 0, canvasSize.w, canvasSize.h)
-  context.value.fillStyle = backgroundColor.value
+  context.value.fillStyle = resolveFillColor(backgroundColor.value, 'background')
   context.value.fillRect(0, 0, canvasSize.w, canvasSize.h)
 
   if (isFading && nextGlyphs.length) {
@@ -327,8 +343,7 @@ function drawFrame(now: number) {
     const t = Math.min(1, (now - fadeStart) / fadeDuration)
     drawGlyphs(currentGlyphs, now, 1 - t)
     drawGlyphs(nextGlyphs, now, t, currentGlyphs, t)
-  }
-  else {
+  } else {
     drawGlyphs(currentGlyphs, now, 1)
   }
 
@@ -353,22 +368,22 @@ onBeforeUnmount(() => {
 useResizeObserver(containerRef, () => resizeCanvas())
 
 watch(
-  [
-    text,
-    segments,
-    fontFamily,
-    fontWeight,
-    textSpacing,
-    fontSizeMin,
-    fontSizeMax,
-    rowSpacing,
-    amplitude,
-    amplitudeVariance,
-    fitPadding,
-  ],
-  () => {
-    prepareText()
-  },
+    [
+      text,
+      segments,
+      fontFamily,
+      fontWeight,
+      textSpacing,
+      fontSizeMin,
+      fontSizeMax,
+      rowSpacing,
+      amplitude,
+      amplitudeVariance,
+      fitPadding,
+    ],
+    () => {
+      prepareText()
+    },
 )
 
 watch([columnCount, columnGap, pace, speedVariance], () => {
@@ -379,7 +394,17 @@ watch(pixelRatio, () => resizeCanvas())
 </script>
 
 <template>
-  <div ref="containerRef" :class="className" class="relative h-full w-full">
-    <canvas ref="canvasRef" class="absolute inset-0 h-full w-full" />
+  <div ref="containerRef" :class="className" class="text-band-root relative h-full w-full">
+    <canvas ref="canvasRef" class="absolute inset-0 h-full w-full"/>
   </div>
 </template>
+
+<style lang="scss">
+.text-band-root {
+  @apply bg-pureWhite text-pureBlack;
+}
+
+.dark .text-band-root {
+  @apply bg-pureBlack text-pureWhite;
+}
+</style>
