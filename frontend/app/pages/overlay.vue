@@ -15,19 +15,20 @@ const textBandFontFamily = ref('Geist')
 const textBandFontWeight = ref(500)
 const textBandFontSizeMin = ref(40)
 const textBandFontSizeMax = ref(300)
-const textBandSpacing = ref(10)
+const textBandSpacing = ref(0)
 const textBandPace = ref(0.7)
 const textBandSwitchMs = ref(2200)
 const textBandSwitchFadeMs = ref(600)
 const textBandColumnCount = ref(1)
 const textBandColumnGap = ref(180)
 const textBandRowSpacing = ref(0.82)
-const textBandSpeedVariance = ref(0.35)
+const textBandSpeedVariance = ref(0)
 const textBandAmplitude = ref(1.7)
 const textBandAmplitudeVariance = ref(0.35)
-const textBandStepEase = ref(2.6)
+const textBandStepEase = ref(5)
+const textBandStepHold = ref(0.18)
 const textBandAlignChance = ref(0.5)
-const textBandFitPadding = ref(0.01)
+const textBandFitPadding = ref(0)
 
 function toNumber(value: unknown, fallback: number) {
   const parsed = Number(value)
@@ -41,20 +42,21 @@ const textBandPreview = computed(() => ({
   fontFamily: textBandFontFamily.value,
   fontWeight: toNumber(textBandFontWeight.value, 500),
   fontSizeMin: toNumber(textBandFontSizeMin.value, 40),
-  fontSizeMax: toNumber(textBandFontSizeMax.value, 250),
-  textSpacing: toNumber(textBandSpacing.value, 8),
+  fontSizeMax: toNumber(textBandFontSizeMax.value, 300),
+  textSpacing: toNumber(textBandSpacing.value, 0),
   pace: toNumber(textBandPace.value, 0.7),
   switchMs: toNumber(textBandSwitchMs.value, 2200),
   switchFadeMs: toNumber(textBandSwitchFadeMs.value, 600),
   columnCount: toNumber(textBandColumnCount.value, 1),
   columnGap: toNumber(textBandColumnGap.value, 180),
   rowSpacing: toNumber(textBandRowSpacing.value, 0.82),
-  speedVariance: toNumber(textBandSpeedVariance.value, 0.35),
+  speedVariance: toNumber(textBandSpeedVariance.value, 0),
   amplitude: toNumber(textBandAmplitude.value, 1.7),
   amplitudeVariance: toNumber(textBandAmplitudeVariance.value, 0.35),
-  stepEase: toNumber(textBandStepEase.value, 2.6),
+  stepEase: toNumber(textBandStepEase.value, 5),
+  stepHold: toNumber(textBandStepHold.value, 0.18),
   alignChance: toNumber(textBandAlignChance.value, 0.5),
-  fitPadding: toNumber(textBandFitPadding.value, 0.01),
+  fitPadding: toNumber(textBandFitPadding.value, 0),
 }))
 const textBandSettings = {
   text: textBandText,
@@ -75,6 +77,7 @@ const textBandSettings = {
   amplitude: textBandAmplitude,
   amplitudeVariance: textBandAmplitudeVariance,
   stepEase: textBandStepEase,
+  stepHold: textBandStepHold,
   alignChance: textBandAlignChance,
   fitPadding: textBandFitPadding,
 }
