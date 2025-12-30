@@ -13,9 +13,10 @@ interface Glyph {
 
 interface Column {
   xOffset: number
-  speed: number
-  phase: number
-  direction: number
+  durationMs: number
+  progress: number
+  starts: number[]
+  targets: number[]
 }
 
 const props = withDefaults(defineProps<TextBandProps>(), TextBandDefaultProps)
@@ -59,6 +60,7 @@ let nextGlyphs: Glyph[] = []
 let switchStart = 0
 let fadeStart = 0
 let isFading = false
+let lastFrameTime = 0
 
 const activeSegments = computed(() => {
   if (text.value && text.value.trim().length > 0) {
@@ -72,6 +74,7 @@ const activeSegments = computed(() => {
     return segments.value
   return ['']
 })
+const hasMultipleSegments = computed(() => activeSegments.value.length > 1)
 
 function randomRange(min: number, max: number) {
   return min + Math.random() * (max - min)
@@ -110,22 +113,25 @@ function fitFontSizeFromSegments() {
   repeats = Math.ceil((canvasSize.h * 2) / lineStep) + 3
 }
 
-function buildGlyphs(textValue: string) {
+function buildGlyphs(textValue: string, prevGlyphs: Glyph[] = []) {
   if (!context.value)
     return []
   const chars = Array.from(textValue)
   const totalWidth = measureTextWidth(textValue, fontSize)
   let x = (canvasSize.w - totalWidth) / 2
 
-  return chars.map((char) => {
+  return chars.map((char, index) => {
+    const prev = prevGlyphs[index]
     context.value!.font = `${fontWeight.value} ${fontSize}px ${fontFamily.value}`
     const width = context.value!.measureText(char).width
     const glyph = {
       char,
       width,
       x,
-      phase: randomRange(0, Math.PI * 2),
-      amplitude: amplitude.value * (1 + randomRange(-amplitudeVariance.value, amplitudeVariance.value)),
+      phase: prev ? prev.phase : randomRange(0, Math.PI * 2),
+      amplitude: prev
+        ? prev.amplitude
+        : amplitude.value * (1 + randomRange(-amplitudeVariance.value, amplitudeVariance.value)),
     }
     x += width + textSpacing.value
     return glyph
@@ -135,17 +141,18 @@ function buildGlyphs(textValue: string) {
 function buildColumns() {
   const count = Math.max(1, Math.floor(columnCount.value))
   const gap = Math.max(0, columnGap.value)
-  const base = pace.value
+  const baseDuration = 1800 / Math.max(0.1, pace.value)
   const variance = Math.max(0, speedVariance.value)
   const start = -((count - 1) / 2) * gap
 
   columns = Array.from({ length: count }, (_, i) => {
-    const direction = i % 2 === 0 ? 1 : -1
+    const durationMs = baseDuration * (1 + randomRange(-variance, variance))
     return {
       xOffset: start + i * gap,
-      speed: base * (1 + randomRange(-variance, variance)),
-      phase: randomRange(0, Math.PI * 2),
-      direction,
+      durationMs,
+      progress: randomRange(0, 1),
+      starts: [],
+      targets: [],
     }
   })
 }
@@ -158,6 +165,7 @@ function prepareText() {
   switchStart = performance.now()
   fadeStart = 0
   isFading = false
+  lastFrameTime = 0
 }
 
 function resizeCanvas() {
@@ -177,12 +185,14 @@ function resizeCanvas() {
 }
 
 function updateSwitch(now: number) {
+  if (!hasMultipleSegments.value)
+    return
   if (!switchStart)
     switchStart = now
 
   if (!isFading && now - switchStart >= switchMs.value) {
     const nextIndex = (currentIndex + 1) % activeSegments.value.length
-    nextGlyphs = buildGlyphs(activeSegments.value[nextIndex] || '')
+    nextGlyphs = buildGlyphs(activeSegments.value[nextIndex] || '', currentGlyphs)
     fadeStart = now
     isFading = true
   }
@@ -200,11 +210,55 @@ function updateSwitch(now: number) {
   }
 }
 
-function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1) {
+function lerp(a: number, b: number, t: number) {
+  return a + (b - a) * t
+}
+
+function easeInOutCirc(t: number) {
+  return t < 0.5
+    ? (1 - Math.sqrt(1 - Math.pow(2 * t, 2))) / 2
+    : (Math.sqrt(1 - Math.pow(-2 * t + 2, 2)) + 1) / 2
+}
+
+function ensureColumnIndex(column: Column, index: number, glyph: Glyph) {
+  const spread = glyph.amplitude * fontSize
+  if (column.starts[index] == null)
+    column.starts[index] = randomRange(-spread, spread)
+  if (column.targets[index] == null)
+    column.targets[index] = randomRange(-spread, spread)
+}
+
+function updateColumns(now: number, referenceGlyphs: Glyph[]) {
+  if (!columns.length)
+    return
+  const dt = lastFrameTime ? now - lastFrameTime : 16
+  lastFrameTime = now
+
+  for (const column of columns) {
+    column.progress += dt / column.durationMs
+    if (column.progress >= 1) {
+      column.progress %= 1
+      const maxCount = Math.max(column.starts.length, column.targets.length, referenceGlyphs.length)
+      for (let i = 0; i < maxCount; i++) {
+        const glyph = referenceGlyphs[i]
+        const spread = glyph ? glyph.amplitude * fontSize : fontSize
+        column.starts[i] = column.targets[i] ?? randomRange(-spread, spread)
+        column.targets[i] = randomRange(-spread, spread)
+      }
+    }
+  }
+}
+
+function resolveGlyphX(glyphs: Glyph[], index: number, fromGlyphs: Glyph[] | null, t: number) {
+  if (!fromGlyphs || !fromGlyphs[index])
+    return glyphs[index].x
+  return lerp(fromGlyphs[index].x, glyphs[index].x, t)
+}
+
+function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[] | null = null, t = 1) {
   if (!context.value || glyphs.length === 0)
     return
 
-  const time = now / 1000
   const centerY = canvasSize.h / 2
   const half = repeats / 2
 
@@ -216,12 +270,15 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1) {
   context.value.font = `${fontWeight.value} ${fontSize}px ${fontFamily.value}`
 
   for (const column of columns) {
-    const timeOffset = time * column.speed * column.direction + column.phase
-    for (const glyph of glyphs) {
-      const offset = Math.sin(timeOffset + glyph.phase) * glyph.amplitude * fontSize
+    const eased = easeInOutCirc(Math.min(1, Math.max(0, column.progress)))
+    for (let index = 0; index < glyphs.length; index++) {
+      const glyph = glyphs[index]
+      ensureColumnIndex(column, index, glyph)
+      const offset = lerp(column.starts[index], column.targets[index], eased)
+      const baseX = resolveGlyphX(glyphs, index, fromGlyphs, t)
       for (let i = 0; i < repeats; i++) {
         const y = centerY + offset + (i - half) * lineStep
-        context.value.fillText(glyph.char, glyph.x + column.xOffset, y)
+        context.value.fillText(glyph.char, baseX + column.xOffset, y)
       }
     }
   }
@@ -233,6 +290,8 @@ function drawFrame(now: number) {
   if (!context.value)
     return
 
+  const referenceGlyphs = nextGlyphs.length ? nextGlyphs : currentGlyphs
+  updateColumns(now, referenceGlyphs)
   updateSwitch(now)
 
   context.value.clearRect(0, 0, canvasSize.w, canvasSize.h)
@@ -243,7 +302,7 @@ function drawFrame(now: number) {
     const fadeDuration = Math.max(1, switchFadeMs.value)
     const t = Math.min(1, (now - fadeStart) / fadeDuration)
     drawGlyphs(currentGlyphs, now, 1 - t)
-    drawGlyphs(nextGlyphs, now, t)
+    drawGlyphs(nextGlyphs, now, t, currentGlyphs, t)
   }
   else {
     drawGlyphs(currentGlyphs, now, 1)
