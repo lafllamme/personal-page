@@ -9,9 +9,6 @@ const nextConfig = {
       { protocol: 'https', hostname: 'blob.vercel-storage.com' },
     ],
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],
