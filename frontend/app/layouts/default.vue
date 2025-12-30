@@ -12,36 +12,36 @@ const showIntroOverlay = computed(() => overlayVisible.value)
 <template>
   <div class="relative">
     <div
-      v-if="showIntroOverlay"
-      class="fixed inset-0 z-[9999] overflow-hidden bg-black"
+        v-show="showIntroOverlay"
+        class="fixed inset-0 z-[9999] overflow-hidden"
     >
-        <TextBand
+      <TextBand
           text="TECNEWS"
           class="pointer-events-none h-full w-full"
-        />
+      />
     </div>
     <!-- Main Content -->
     <div
-      :class="useClsx(
+        :class="useClsx(
         'relative z-10',
         'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
         'bg-pureWhite  dark:bg-pureBlack',
         showIntroOverlay && 'pointer-events-none',
       )"
-      :style="showIntroOverlay ? { visibility: 'hidden' } : {}"
+        :style="showIntroOverlay ? { visibility: 'hidden' } : {}"
     >
-      <Header />
+      <Header/>
       <main
-        :class="useClsx(
+          :class="useClsx(
           'pt-[calc(4rem-1px+1rem)] md:pt-[calc(4rem+5px+1.5rem)]',
         )"
       >
         <PageContainer>
-          <slot name="default" />
+          <slot name="default"/>
         </PageContainer>
       </main>
-      <Footer />
-      <ScrollTopButton />
+      <Footer/>
+      <ScrollTopButton/>
     </div>
   </div>
 </template>
