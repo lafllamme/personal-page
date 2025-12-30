@@ -24,6 +24,7 @@
     "@payloadcms/richtext-lexical": "catalog:",
     "@payloadcms/storage-vercel-blob": "catalog:",
     "@payloadcms/ui": "catalog:",
+    "@dnd-kit/core": "catalog:",
     "@tec/types": "workspace:*",
     "@vercel/blob": "catalog:",
     "cross-env": "catalog:",

@@ -1,14 +1,13 @@
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { FlatCompat } from '@eslint/eslintrc'
 import tsParser from '@typescript-eslint/parser'
 import vueParser from 'vue-eslint-parser'
 import antfu from '@antfu/eslint-config'
-import nextPlugin from '@next/eslint-plugin-next'
+import nextCoreWebVitals from 'eslint-config-next/core-web-vitals'
+import nextTypeScript from 'eslint-config-next/typescript'
 
 const rootDir = dirname(fileURLToPath(import.meta.url))
 const frontendDir = resolve(rootDir, 'frontend')
-const cmsDir = resolve(rootDir, 'cms')
 
 const prefixFiles = (files, root) =>
   files.map((pattern) => {
@@ -78,25 +77,17 @@ const sharedConfigs = await scopeConfigs(
   },
 )
 
-const compat = new FlatCompat({ baseDirectory: cmsDir })
-const cmsNextConfig = nextPlugin.configs['core-web-vitals'] ?? {}
-const cmsNextSettingsBase =
-  cmsNextConfig.settings && typeof cmsNextConfig.settings === 'object'
-    ? cmsNextConfig.settings
-    : {}
-const cmsNextSettings = {
-  ...cmsNextSettingsBase,
-  next: {
-    ...(typeof cmsNextSettingsBase.next === 'object'
-      ? cmsNextSettingsBase.next
-      : {}),
-    rootDir: ['cms'],
-  },
-}
-
 const cmsConfigs = await scopeConfigs(
   [
-    ...compat.extends('next/core-web-vitals', 'next/typescript'),
+    ...nextCoreWebVitals,
+    ...nextTypeScript,
+    {
+      settings: {
+        next: {
+          rootDir: ['cms'],
+        },
+      },
+    },
     {
       rules: {
         '@typescript-eslint/ban-ts-comment': 'warn',
@@ -122,7 +113,7 @@ const cmsConfigs = await scopeConfigs(
   ],
   {
     root: 'cms',
-    fallbackFiles: [`${cmsDir}/**/*.{js,ts,tsx,jsx,mjs,cjs,mts,cts}`],
+    fallbackFiles: ['cms/**/*.{js,ts,tsx,jsx,mjs,cjs,mts,cts}'],
     allFiles: ['cms/**/*'],
   },
 )
@@ -168,11 +159,11 @@ export default [
   },
   {
     files: ['cms/**/*.{js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
-    plugins: {
-      '@next/next': nextPlugin,
+    settings: {
+      next: {
+        rootDir: ['cms'],
+      },
     },
-    ...(cmsNextConfig.rules ? { rules: cmsNextConfig.rules } : {}),
-    settings: cmsNextSettings,
   },
   {
     files: ['frontend/**/*.{vue,js,jsx,ts,tsx,mjs,cjs,mts,cts}'],
