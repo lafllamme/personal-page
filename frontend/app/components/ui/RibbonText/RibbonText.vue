@@ -1065,6 +1065,7 @@ function handleLoop(payload: { elapsedTime?: number, elapsed?: number }) {
     ref="containerEl"
   >
     <RibbonSettings
+      v-if="!props.hideSettings"
       :settings="settings"
       :font-options="fontOptions"
       :on-draw-texture="drawTextTexture"
