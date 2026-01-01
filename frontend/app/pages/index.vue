@@ -67,6 +67,7 @@ const { start: scheduleOverlayStop, stop: cancelOverlayStop } = useTimeoutFn(
 
 function handleGenerateComplete() {
   animate.value = true
+  requestOverlayStop()
 }
 
 function handleRibbonReady() {
@@ -79,6 +80,14 @@ function handleRibbonReady() {
   }
 
   complete()
+}
+
+const hasRequestedOverlayStop = ref(false)
+function requestOverlayStop() {
+  if (hasRequestedOverlayStop.value || !overlayVisible.value)
+    return
+  hasRequestedOverlayStop.value = true
+  handleRibbonReady()
 }
 
 if (!overlayHasPlayed.value) {
@@ -100,6 +109,14 @@ onMounted(() => {
     overlayHasPlayed.value = true
 })
 
+useEventListener('pointerdown', () => {
+  requestOverlayStop()
+})
+
+useEventListener('keydown', () => {
+  requestOverlayStop()
+})
+
 watch(
   overlayVisible,
   (next) => {
@@ -108,6 +125,7 @@ watch(
       overlayPaused.value = false
       overlayStopPending.value = false
       cancelOverlayStop()
+      hasRequestedOverlayStop.value = false
     }
   },
   { immediate: true },
