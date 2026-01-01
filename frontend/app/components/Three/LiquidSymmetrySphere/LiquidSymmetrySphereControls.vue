@@ -4,11 +4,102 @@ import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
 const props = defineProps<{ settings: LiquidSymmetrySettings }>()
 const settings = toRef(props, 'settings')
 
+function toHexChannel(value: number) {
+  const clamped = Math.min(1, Math.max(0, value))
+  return Math.round(clamped * 255).toString(16).padStart(2, '0')
+}
+
+function rgbToHex(r: number, g: number, b: number) {
+  return `#${toHexChannel(r)}${toHexChannel(g)}${toHexChannel(b)}`
+}
+
+function hexToRgb(hex: string) {
+  const value = hex.replace('#', '').trim()
+  if (value.length !== 6)
+    return null
+  const r = Number.parseInt(value.slice(0, 2), 16)
+  const g = Number.parseInt(value.slice(2, 4), 16)
+  const b = Number.parseInt(value.slice(4, 6), 16)
+  if ([r, g, b].some(Number.isNaN))
+    return null
+  return { r: r / 255, g: g / 255, b: b / 255 }
+}
+
+const color1Hex = computed({
+  get: () => rgbToHex(settings.value.color1R, settings.value.color1G, settings.value.color1B),
+  set: (value) => {
+    const rgb = hexToRgb(value)
+    if (!rgb)
+      return
+    settings.value.color1R = rgb.r
+    settings.value.color1G = rgb.g
+    settings.value.color1B = rgb.b
+  },
+})
+
+const color2Hex = computed({
+  get: () => rgbToHex(settings.value.color2R, settings.value.color2G, settings.value.color2B),
+  set: (value) => {
+    const rgb = hexToRgb(value)
+    if (!rgb)
+      return
+    settings.value.color2R = rgb.r
+    settings.value.color2G = rgb.g
+    settings.value.color2B = rgb.b
+  },
+})
+
 const isCollapsed = ref(false)
 const activeSection = ref<string | null>(null)
 
 function toggleSection(section: string) {
   activeSection.value = activeSection.value === section ? null : section
+}
+
+const settingsJson = computed(() => JSON.stringify({
+  meshDensity: settings.value.meshDensity,
+  wireframe: settings.value.wireframe,
+  animationSpeed: settings.value.animationSpeed,
+  bubble1Speed: settings.value.bubble1Speed,
+  bubble1Amount: settings.value.bubble1Amount,
+  bubble1Frequency: settings.value.bubble1Frequency,
+  bubble2Speed: settings.value.bubble2Speed,
+  bubble2Amount: settings.value.bubble2Amount,
+  bubble2Frequency: settings.value.bubble2Frequency,
+  bubble3Speed: settings.value.bubble3Speed,
+  bubble3Amount: settings.value.bubble3Amount,
+  bubble3Frequency: settings.value.bubble3Frequency,
+  pulseSpeed: settings.value.pulseSpeed,
+  pulseAmount: settings.value.pulseAmount,
+  transparency: settings.value.transparency,
+  sphereSize: settings.value.sphereSize,
+  cameraDistance: settings.value.cameraDistance,
+  rotationYSpeed: settings.value.rotationYSpeed,
+  rotationXSpeed: settings.value.rotationXSpeed,
+  rotationXAmount: settings.value.rotationXAmount,
+  color1R: settings.value.color1R,
+  color1G: settings.value.color1G,
+  color1B: settings.value.color1B,
+  color1Hex: color1Hex.value,
+  color2R: settings.value.color2R,
+  color2G: settings.value.color2G,
+  color2B: settings.value.color2B,
+  color2Hex: color2Hex.value,
+  gradientMode: settings.value.gradientMode,
+  glowSpeed: settings.value.glowSpeed,
+  glowAmount: settings.value.glowAmount,
+  breathingEnabled: settings.value.breathingEnabled,
+  breathingSpeed: settings.value.breathingSpeed,
+  breathingIntensity: settings.value.breathingIntensity,
+}, null, 2))
+
+async function copySettingsJson() {
+  try {
+    await navigator.clipboard.writeText(settingsJson.value)
+  }
+  catch {
+    // no-op: clipboard can be denied by browser permissions
+  }
 }
 </script>
 
@@ -40,6 +131,20 @@ function toggleSection(section: string) {
       </div>
 
       <div class="p-4 space-y-2">
+        <div class="border-white/10 overflow-hidden border rounded-lg">
+          <div class="bg-slate-800/50 px-4 py-3 text-left color-pureBlack font-medium dark:color-pureWhite">
+            Export Settings
+          </div>
+          <div class="bg-slate-800/30 p-4">
+            <button
+              class="border-white/10 bg-slate-800/80 hover:bg-slate-700 w-full rounded border px-3 py-2 text-sm color-pureBlack transition-colors dark:color-pureWhite"
+              type="button"
+              @click="copySettingsJson"
+            >
+              Copy settings JSON
+            </button>
+          </div>
+        </div>
         <div class="border-white/10 overflow-hidden border rounded-lg">
           <button
             class="bg-slate-800/50 hover:bg-slate-800 w-full flex items-center justify-between px-4 py-3 text-left color-pureBlack font-medium transition-colors dark:color-pureWhite"
@@ -459,6 +564,20 @@ function toggleSection(section: string) {
             <div>
               <label class="mb-2 block text-sm color-pureBlack dark:color-pureWhite">Color 1</label>
               <div class="space-y-2">
+                <div class="flex items-center gap-3">
+                  <input
+                    v-model="color1Hex"
+                    type="color"
+                    class="border-white/10 h-10 w-14 cursor-pointer border rounded bg-transparent p-0"
+                    aria-label="Pick color 1"
+                  >
+                  <input
+                    v-model="color1Hex"
+                    type="text"
+                    class="border-white/10 bg-slate-800/60 h-10 w-full border rounded px-3 text-sm color-pureBlack dark:color-pureWhite"
+                    spellcheck="false"
+                  >
+                </div>
                 <div class="flex items-center gap-2">
                   <span class="w-8 text-xs color-pureBlack dark:color-pureWhite">R:</span>
                   <input
@@ -506,6 +625,20 @@ function toggleSection(section: string) {
             <div>
               <label class="mb-2 block text-sm color-pureBlack dark:color-pureWhite">Color 2</label>
               <div class="space-y-2">
+                <div class="flex items-center gap-3">
+                  <input
+                    v-model="color2Hex"
+                    type="color"
+                    class="border-white/10 h-10 w-14 cursor-pointer border rounded bg-transparent p-0"
+                    aria-label="Pick color 2"
+                  >
+                  <input
+                    v-model="color2Hex"
+                    type="text"
+                    class="border-white/10 bg-slate-800/60 h-10 w-full border rounded px-3 text-sm color-pureBlack dark:color-pureWhite"
+                    spellcheck="false"
+                  >
+                </div>
                 <div class="flex items-center gap-2">
                   <span class="w-8 text-xs color-pureBlack dark:color-pureWhite">R:</span>
                   <input
