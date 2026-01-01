@@ -106,9 +106,9 @@ async function copyFontSettings() {
           :class="selectedH1Font"
           class="mb-4 text-balance text-6xl color-pureBlack font-bold md:text-8xl dark:color-pureWhite"
         >
-          UNFETTERED
+          TECNEWS
           <br>
-          <span :class="selectedSpanFont" class="font-thin italic">KNOWLEDGE</span>
+          <span :class="selectedSpanFont" class="text-7xl font-thin uppercase italic">Daily Stack</span>
         </h1>
         <button
           :class="selectedButtonFont"
