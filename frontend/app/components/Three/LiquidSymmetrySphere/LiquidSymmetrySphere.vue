@@ -1,8 +1,10 @@
 <script lang="ts" setup>
+import type { BufferAttribute } from 'three'
+import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
 import { useRafFn, useWindowSize } from '@vueuse/core'
-import { BufferAttribute, Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
+import { Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
+import { LiquidSymmetryDefaults } from './LiquidSymmetrySphere.model'
 import LiquidSymmetrySphereControls from './LiquidSymmetrySphereControls.vue'
-import { LiquidSymmetryDefaults, type LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
 
 const settings = reactive<LiquidSymmetrySettings>({ ...LiquidSymmetryDefaults })
 const { width, height } = useWindowSize()
