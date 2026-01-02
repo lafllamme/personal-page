@@ -34,11 +34,45 @@ const selectedH1Font = ref('zalando-sans-expanded')
 const selectedSpanFont = ref('font-baskerville')
 const selectedButtonFont = ref(fonts[4]?.class ?? '')
 const showFontOptions = ref(false)
+
+const { y } = useWindowScroll({ throttle: 16 })
+const { height } = useWindowSize()
+const heroRef = ref<HTMLElement | null>(null)
+const heroBounds = useElementBounding(heroRef)
+const heroProgress = computed(() => {
+  if (import.meta.server)
+    return 0
+  const _ = y.value
+  const viewport = height.value || window.innerHeight
+  const top = heroBounds.top.value ?? 0
+  const progress = -top / (viewport * 0.8)
+  return Math.min(Math.max(progress, 0), 1)
+})
+const smoothedProgress = ref(0)
+useRafFn(() => {
+  const target = heroProgress.value
+  smoothedProgress.value += (target - smoothedProgress.value) * 0.18
+})
+const heroEased = computed(() => {
+  const p = smoothedProgress.value
+  return p * p * (3 - 2 * p)
+})
+const heroTranslateX = computed(() => `${heroEased.value * 30}vw`)
+const heroTranslateY = computed(() => `${heroEased.value * -4.5}vh`)
+const heroOpacity = computed(() => Math.max(0, 1 - heroEased.value * 0.45))
+const heroH1Styles = computed(() => ({
+  transform: `translate3d(${heroTranslateX.value}, ${heroTranslateY.value}, 0)`,
+  opacity: heroOpacity.value,
+}))
+const heroH2Styles = computed(() => ({
+  transform: `translate3d(-${heroTranslateX.value}, ${heroTranslateY.value}, 0)`,
+  opacity: heroOpacity.value,
+}))
 </script>
 
 <template>
   <main class="min-h-screen bg-pureWhite dark:bg-pureBlack">
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+    <section ref="heroRef" class="relative h-screen flex items-center justify-center overflow-hidden">
       <div class="absolute inset-0">
         <LiquidSymmetrySphere />
       </div>
@@ -86,21 +120,122 @@ const showFontOptions = ref(false)
           </div>
         </div>
       </div>
-      <div class="relative z-10 px-4 text-center">
+      <div
+        class="relative z-10 px-4 text-center transition-all duration-150 ease-out will-change-transform"
+      >
         <h1
           :class="selectedH1Font"
           class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
+          :style="heroH1Styles"
         >
           Web evolves.
-          <br>
-          <span :class="selectedSpanFont" class="font-thin uppercase italic">We track it.</span>
         </h1>
+        <h2
+          :class="selectedSpanFont"
+          class="whitespace-nowrap text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
+          :style="heroH2Styles"
+        >
+          We track it.
+        </h2>
         <button
           :class="selectedButtonFont"
           class="mt-8 border border-pureWhite/30 border-solid px-8 py-3 color-pureBlack transition-colors hover:bg-pureWhite/10 dark:color-pureWhite"
         >
           ENTER ARCHIVE
         </button>
+      </div>
+    </section>
+    <section class="relative px-6 py-24 md:px-12">
+      <div class="mx-auto max-w-4xl space-y-16">
+        <div class="space-y-6">
+          <h2 class="text-3xl color-pureBlack font-light tracking-tight md:text-4xl dark:color-pureWhite">
+            Liquid Drift
+          </h2>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed non risus. Suspendisse lectus tortor,
+            dignissim sit amet, adipiscing nec, ultricies sed, dolor.
+          </p>
+        </div>
+        <div class="space-y-6">
+          <h3 class="text-xl color-pureBlack font-light tracking-tight md:text-2xl dark:color-pureWhite">
+            Signal Layers
+          </h3>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Cras elementum ultrices diam. Maecenas ligula massa, varius a, semper congue, euismod non, mi. Proin
+            porttitor, orci nec nonummy molestie, enim est eleifend mi, non fermentum diam nisl sit amet erat.
+          </p>
+        </div>
+        <div class="space-y-6">
+          <h3 class="text-xl color-pureBlack font-light tracking-tight md:text-2xl dark:color-pureWhite">
+            Soft Horizons
+          </h3>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Duis arcu massa, scelerisque vitae, consequat in, pretium a, enim. Pellentesque congue. Ut in risus volutpat
+            libero pharetra tempor. Cras vestibulum bibendum augue.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="relative px-6 py-24 md:px-12">
+      <div class="mx-auto max-w-4xl space-y-16">
+        <div class="space-y-6">
+          <h2 class="text-3xl color-pureBlack font-light tracking-tight md:text-4xl dark:color-pureWhite">
+            Elastic Currents
+          </h2>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante
+            dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet.
+          </p>
+        </div>
+        <div class="space-y-6">
+          <h3 class="text-xl color-pureBlack font-light tracking-tight md:text-2xl dark:color-pureWhite">
+            Depth Fields
+          </h3>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris massa. Vestibulum
+            lacinia arcu eget nulla. Class aptent taciti sociosqu ad litora torquent per conubia nostra.
+          </p>
+        </div>
+        <div class="space-y-6">
+          <h3 class="text-xl color-pureBlack font-light tracking-tight md:text-2xl dark:color-pureWhite">
+            Slow Bloom
+          </h3>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh. Aenean
+            quam. In scelerisque sem at dolor.
+          </p>
+        </div>
+      </div>
+    </section>
+    <section class="relative px-6 py-24 md:px-12">
+      <div class="mx-auto max-w-4xl space-y-16">
+        <div class="space-y-6">
+          <h2 class="text-3xl color-pureBlack font-light tracking-tight md:text-4xl dark:color-pureWhite">
+            Horizon Stack
+          </h2>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam nec ante. Sed lacinia, urna non tincidunt
+            mattis, tortor neque adipiscing diam, a cursus ipsum ante quis turpis.
+          </p>
+        </div>
+        <div class="space-y-6">
+          <h3 class="text-xl color-pureBlack font-light tracking-tight md:text-2xl dark:color-pureWhite">
+            Quiet Momentum
+          </h3>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum
+            sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit.
+          </p>
+        </div>
+        <div class="space-y-6">
+          <h3 class="text-xl color-pureBlack font-light tracking-tight md:text-2xl dark:color-pureWhite">
+            Afterglow
+          </h3>
+          <p class="text-base color-pureBlack/70 leading-relaxed md:text-lg dark:color-pureWhite/70">
+            Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa
+            mattis sem, at interdum magna augue eget diam.
+          </p>
+        </div>
       </div>
     </section>
   </main>
