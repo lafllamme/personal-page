@@ -33,6 +33,9 @@ export interface LiquidSymmetrySettings {
   breathingEnabled: boolean
   breathingSpeed: number
   breathingIntensity: number
+  craterDepth: number
+  craterDarken: number
+  craterTintMix: number
 }
 
 export const LiquidSymmetryDefaults: LiquidSymmetrySettings = {
@@ -65,7 +68,10 @@ export const LiquidSymmetryDefaults: LiquidSymmetrySettings = {
   gradientMode: 'vertical',
   glowSpeed: 0.5,
   glowAmount: 0.15,
-  breathingEnabled: false,
+  breathingEnabled: true,
   breathingSpeed: 0.8,
   breathingIntensity: 0.1,
+  craterDepth: 10,
+  craterDarken: 0.35,
+  craterTintMix: 0.55,
 }
