@@ -234,11 +234,12 @@ watch(
 const cameraPosition = computed(() => [0, 0, settings.cameraDistance] as const)
 
 let time = 0
-useRafFn(() => {
+useRafFn(({ delta }) => {
   if (!mesh.value || !positionAttribute || originalPositions.length === 0)
     return
 
-  time += settings.animationSpeed
+  const frameScale = Math.min(delta / 16.6667, 2)
+  time += settings.animationSpeed * frameScale
   uniforms.time.value = time
 
   const count = positionAttribute.count
@@ -272,7 +273,7 @@ useRafFn(() => {
   if (craterAttribute)
     craterAttribute.needsUpdate = true
 
-  mesh.value.rotation.y += settings.rotationYSpeed
+  mesh.value.rotation.y += settings.rotationYSpeed * frameScale
   mesh.value.rotation.x = Math.sin(time * settings.rotationXSpeed) * settings.rotationXAmount
 
   if (settings.breathingEnabled) {
