@@ -62,7 +62,7 @@ function handleOverlayIteration() {
       <Header />
       <main
         :class="useClsx(
-          'pt-[calc(4rem-1px+1rem)] md:pt-[calc(4rem+5px+1.5rem)]',
+          'pt-[var(--header-height)]',
         )"
       >
         <PageContainer>
