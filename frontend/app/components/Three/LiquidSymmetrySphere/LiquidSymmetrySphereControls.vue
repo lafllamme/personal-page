@@ -56,42 +56,6 @@ function toggleSection(section: string) {
   activeSection.value = activeSection.value === section ? null : section
 }
 
-function randomInRange(min: number, max: number) {
-  return min + Math.random() * (max - min)
-}
-
-function randomFrom<T>(values: T[]) {
-  return values[Math.floor(Math.random() * values.length)] as T
-}
-
-function randomizeSettings() {
-  settings.value.meshDensity = randomFrom([16, 32, 48, 64, 96, 128, 160, 192, 224, 256])
-  settings.value.wireframe = Math.random() > 0.5
-  settings.value.animationSpeed = Number(randomInRange(0, 0.05).toFixed(3))
-  settings.value.bubble1Speed = Number(randomInRange(0, 5).toFixed(2))
-  settings.value.bubble1Amount = Number(randomInRange(0, 0.5).toFixed(3))
-  settings.value.bubble1Frequency = Number(randomInRange(0, 10).toFixed(1))
-  settings.value.bubble2Speed = Number(randomInRange(0, 5).toFixed(2))
-  settings.value.bubble2Amount = Number(randomInRange(0, 0.5).toFixed(3))
-  settings.value.bubble2Frequency = Number(randomInRange(0, 10).toFixed(1))
-  settings.value.bubble3Speed = Number(randomInRange(0, 5).toFixed(2))
-  settings.value.bubble3Amount = Number(randomInRange(0, 0.5).toFixed(3))
-  settings.value.bubble3Frequency = Number(randomInRange(0, 10).toFixed(1))
-  settings.value.pulseSpeed = Number(randomInRange(0, 3).toFixed(2))
-  settings.value.pulseAmount = Number(randomInRange(0, 0.2).toFixed(3))
-  settings.value.transparency = Number(randomInRange(0, 1).toFixed(2))
-  settings.value.sphereSize = Number(randomInRange(0.5, 3).toFixed(2))
-  settings.value.cameraDistance = Number(randomInRange(2, 8).toFixed(1))
-  settings.value.rotationYSpeed = Number(randomInRange(-0.02, 0.02).toFixed(3))
-  settings.value.rotationXSpeed = Number(randomInRange(0, 1).toFixed(2))
-  settings.value.rotationXAmount = Number(randomInRange(0, 0.5).toFixed(3))
-  settings.value.glowSpeed = Number(randomInRange(0, 2).toFixed(2))
-  settings.value.glowAmount = Number(randomInRange(0, 0.5).toFixed(2))
-  settings.value.breathingEnabled = Math.random() > 0.5
-  settings.value.breathingSpeed = Number(randomInRange(0.1, 3).toFixed(2))
-  settings.value.breathingIntensity = Number(randomInRange(0.05, 0.3).toFixed(2))
-}
-
 const settingsJson = computed(() => JSON.stringify({
   meshDensity: settings.value.meshDensity,
   wireframe: settings.value.wireframe,
@@ -127,6 +91,9 @@ const settingsJson = computed(() => JSON.stringify({
   breathingEnabled: settings.value.breathingEnabled,
   breathingSpeed: settings.value.breathingSpeed,
   breathingIntensity: settings.value.breathingIntensity,
+  craterDepth: settings.value.craterDepth,
+  craterDarken: settings.value.craterDarken,
+  craterTintMix: settings.value.craterTintMix,
 }, null, 2))
 
 async function copySettingsJson() {
@@ -178,13 +145,6 @@ async function copySettingsJson() {
               @click="copySettingsJson"
             >
               Copy settings JSON
-            </button>
-            <button
-              class="border-white/10 bg-slate-800/80 hover:bg-slate-700 mt-3 w-full rounded border px-3 py-2 text-sm color-pureBlack transition-colors dark:color-pureWhite"
-              type="button"
-              @click="randomizeSettings"
-            >
-              Randomize settings
             </button>
           </div>
         </div>
@@ -748,6 +708,45 @@ async function copySettingsJson() {
                 type="range"
                 min="0"
                 max="0.5"
+                step="0.01"
+                class="w-full"
+              >
+            </div>
+            <div>
+              <label class="mb-1 block text-sm color-pureBlack dark:color-pureWhite">
+                Crater Depth: {{ settings.craterDepth.toFixed(1) }}
+              </label>
+              <input
+                v-model.number="settings.craterDepth"
+                type="range"
+                min="2"
+                max="16"
+                step="0.5"
+                class="w-full"
+              >
+            </div>
+            <div>
+              <label class="mb-1 block text-sm color-pureBlack dark:color-pureWhite">
+                Crater Darken: {{ settings.craterDarken.toFixed(2) }}
+              </label>
+              <input
+                v-model.number="settings.craterDarken"
+                type="range"
+                min="0"
+                max="0.8"
+                step="0.01"
+                class="w-full"
+              >
+            </div>
+            <div>
+              <label class="mb-1 block text-sm color-pureBlack dark:color-pureWhite">
+                Crater Tint Mix: {{ settings.craterTintMix.toFixed(2) }}
+              </label>
+              <input
+                v-model.number="settings.craterTintMix"
+                type="range"
+                min="0"
+                max="1"
                 step="0.01"
                 class="w-full"
               >
