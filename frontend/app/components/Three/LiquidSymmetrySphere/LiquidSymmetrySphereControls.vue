@@ -108,9 +108,9 @@ async function copySettingsJson() {
 
 <template>
   <div>
-    <div v-if="isCollapsed" class="fixed left-4 top-4 z-50">
+    <div v-if="isCollapsed" class="fixed bottom-4 left-4 z-50">
       <button
-        class="border-white/10 bg-slate-800/90 hover:bg-slate-700/90 border rounded-lg px-4 py-2 color-pureBlack transition-colors dark:color-pureWhite"
+        class="bg-slate-800/90 border-white/10 hover:bg-slate-700/90 border rounded-lg px-4 py-2 color-pureBlack transition-colors dark:color-pureWhite"
         @click="isCollapsed = false"
       >
         Show Controls
@@ -140,7 +140,7 @@ async function copySettingsJson() {
           </div>
           <div class="bg-slate-800/30 p-4">
             <button
-              class="border-white/10 bg-slate-800/80 hover:bg-slate-700 w-full rounded border px-3 py-2 text-sm color-pureBlack transition-colors dark:color-pureWhite"
+              class="border-white/10 hover:bg-slate-700 bg-slate-800/80 w-full border rounded px-3 py-2 text-sm color-pureBlack transition-colors dark:color-pureWhite"
               type="button"
               @click="copySettingsJson"
             >
