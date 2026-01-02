@@ -166,7 +166,7 @@ watch(isSwitchOpen, (open) => {
           :class="useClsx(
             'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'relative flex items-center justify-between',
-            effectiveHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-6 py-4 md:px-8',
+            effectiveHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-4 py-4 md:px-8',
             effectiveHeaderMinimized ? 'border-none' : 'border-b',
             effectiveHeaderMinimized ? '' : 'border-b border-gray-5 border-solid dark:border-gray-4',
           )"
