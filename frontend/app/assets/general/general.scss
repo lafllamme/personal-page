@@ -14,6 +14,16 @@ html {
   @include theme-bg(bg-pureWhite, bg-pureBlack);
 }
 
+:root {
+  --header-height: 65px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-height: 77px;
+  }
+}
+
 // page transitions
 /* Enhanced soft fade transition without scaling to avoid jumpiness */
 .page-enter-active,
