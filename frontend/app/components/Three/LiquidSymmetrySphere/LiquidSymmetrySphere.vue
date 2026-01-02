@@ -1,8 +1,7 @@
 <script lang="ts" setup>
-import type { BufferAttribute } from 'three'
 import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
 import { useRafFn, useWindowSize } from '@vueuse/core'
-import { Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
+import { BufferAttribute, Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
 import { LiquidSymmetryDefaults } from './LiquidSymmetrySphere.model'
 import LiquidSymmetrySphereControls from './LiquidSymmetrySphereControls.vue'
 
@@ -26,6 +25,9 @@ const uniforms = {
   glowAmount: { value: settings.glowAmount },
   transparency: { value: settings.transparency },
   sphereSize: { value: settings.sphereSize },
+  craterDepth: { value: settings.craterDepth },
+  craterDarken: { value: settings.craterDarken },
+  craterTintMix: { value: settings.craterTintMix },
 }
 
 const mesh = shallowRef<Mesh | null>(null)
@@ -34,12 +36,21 @@ const geometry = shallowRef<SphereGeometry | null>(null)
 
 let originalPositions = new Float32Array(0)
 let positionAttribute: BufferAttribute | null = null
+let craterAttribute: BufferAttribute | null = null
 
 const vertexShader = `
+  attribute float aCrater;
   varying vec3 vPosition;
+  varying vec3 vNormalV;
+  varying vec3 vViewDir;
+  varying float vCrater;
   void main() {
     vPosition = position;
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vCrater = aCrater;
+    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+    vNormalV = normalize(normalMatrix * normal);
+    vViewDir = normalize(-mvPosition.xyz);
+    gl_Position = projectionMatrix * mvPosition;
   }
 `
 
@@ -52,7 +63,13 @@ const fragmentShader = `
   uniform float glowAmount;
   uniform float transparency;
   uniform float sphereSize;
+  uniform float craterDepth;
+  uniform float craterDarken;
+  uniform float craterTintMix;
   varying vec3 vPosition;
+  varying vec3 vNormalV;
+  varying vec3 vViewDir;
+  varying float vCrater;
 
   void main() {
     float gradientFactor;
@@ -70,6 +87,18 @@ const fragmentShader = `
 
     vec3 finalColor = mix(color1, color2, gradientFactor);
     float glow = 0.9 + sin(time * glowSpeed) * glowAmount;
+
+    float crater = clamp(vCrater * craterDepth, 0.0, 1.0);
+    vec3 craterTint = mix(color1, color2, 0.65);
+    finalColor = mix(finalColor, craterTint, crater * craterTintMix);
+    finalColor *= 1.0 - crater * craterDarken;
+
+    vec3 N = normalize(vNormalV);
+    vec3 V = normalize(vViewDir);
+    vec3 L = normalize(vec3(0.4, 0.7, 0.5));
+    float spec = pow(max(dot(reflect(-L, N), V), 0.0), 48.0);
+    finalColor += vec3(1.0) * spec * 0.6;
+
     gl_FragColor = vec4(finalColor * glow, transparency);
   }
 `
@@ -78,6 +107,8 @@ function buildGeometry() {
   const next = new SphereGeometry(settings.sphereSize, settings.meshDensity, settings.meshDensity)
   const attribute = next.getAttribute('position') as BufferAttribute
   const positions = new Float32Array(attribute.count * 3)
+  craterAttribute = new BufferAttribute(new Float32Array(attribute.count), 1)
+  next.setAttribute('aCrater', craterAttribute)
 
   for (let i = 0; i < attribute.count; i++) {
     positions[i * 3] = attribute.getX(i)
@@ -171,6 +202,27 @@ watch(
 )
 
 watch(
+  () => settings.craterDepth,
+  (value) => {
+    uniforms.craterDepth.value = value
+  },
+)
+
+watch(
+  () => settings.craterDarken,
+  (value) => {
+    uniforms.craterDarken.value = value
+  },
+)
+
+watch(
+  () => settings.craterTintMix,
+  (value) => {
+    uniforms.craterTintMix.value = value
+  },
+)
+
+watch(
   () => settings.wireframe,
   (value) => {
     if (material.value)
@@ -211,9 +263,13 @@ useRafFn(() => {
       y + y * scale,
       z + z * scale,
     )
+    if (craterAttribute)
+      craterAttribute.setX(i, Math.max(0, -displacement))
   }
 
   positionAttribute.needsUpdate = true
+  if (craterAttribute)
+    craterAttribute.needsUpdate = true
 
   mesh.value.rotation.y += settings.rotationYSpeed
   mesh.value.rotation.x = Math.sin(time * settings.rotationXSpeed) * settings.rotationXAmount
