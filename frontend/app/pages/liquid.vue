@@ -51,7 +51,7 @@ async function copyFontSettings() {
 </script>
 
 <template>
-  <main class="min-h-screen">
+  <main class="min-h-screen bg-pureWhite dark:bg-pureBlack">
     <section class="relative h-screen flex items-center justify-center overflow-hidden">
       <div class="absolute inset-0">
         <LiquidSymmetrySphere />
@@ -104,11 +104,11 @@ async function copyFontSettings() {
       <div class="relative z-10 px-4 text-center">
         <h1
           :class="selectedH1Font"
-          class="mb-4 text-balance text-6xl color-pureBlack font-bold md:text-8xl dark:color-pureWhite"
+          class="mb-4 text-balance text-6xl color-pureBlack font-semibold uppercase md:text-8xl dark:color-pureWhite"
         >
-          TECNEWS
+          Web evolves.
           <br>
-          <span :class="selectedSpanFont" class="text-7xl font-thin uppercase italic">Daily Stack</span>
+          <span :class="selectedSpanFont" class="font-thin uppercase italic">We track it.</span>
         </h1>
         <button
           :class="selectedButtonFont"
