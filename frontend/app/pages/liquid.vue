@@ -104,7 +104,7 @@ async function copyFontSettings() {
       <div class="relative z-10 px-4 text-center">
         <h1
           :class="selectedH1Font"
-          class="mb-4 text-balance text-6xl color-pureBlack font-semibold uppercase md:text-8xl dark:color-pureWhite"
+          class="mb-4 text-balance text-[clamp(3rem,8vw+1rem,8rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
         >
           Web evolves.
           <br>

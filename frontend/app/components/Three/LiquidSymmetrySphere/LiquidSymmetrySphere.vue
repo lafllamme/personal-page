@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
+import { TresCanvas } from '@tresjs/core'
 import { useRafFn, useWindowSize } from '@vueuse/core'
 import { BufferAttribute, Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
 import { LiquidSymmetryDefaults } from './LiquidSymmetrySphere.model'
