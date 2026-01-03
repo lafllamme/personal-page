@@ -269,11 +269,6 @@ const settings = {
 }
 
 const hasBackground = computed(() => props.showBackground !== false)
-const backgroundStyle = computed(() => ({
-  background: `radial-gradient(1200px 700px at 20% 20%, ${bgB.value} 0%, rgba(0,0,0,0) 60%),
-                   radial-gradient(900px 600px at 80% 30%, ${bgC.value} 0%, rgba(0,0,0,0) 60%),
-                   linear-gradient(135deg, ${bgA.value} 0%, #05060c 55%, #05060c 100%)`,
-}))
 
 const canvasAlpha = computed(() => !hasBackground.value)
 const canvasClearAlpha = computed(() => (hasBackground.value ? 1 : 0))

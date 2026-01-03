@@ -180,7 +180,7 @@ const heroButtonStyles = computed(() => {
         <div class="absolute left-1/2 top-1/2 z-20">
           <button
             :class="selectedButtonFont"
-            class="border border-pureWhite/30 border-solid px-8 py-3 color-pureBlack transition-transform transition-colors duration-150 ease-out will-change-transform hover:bg-pureWhite/10 dark:color-pureWhite"
+            class="border border-pureWhite/30 border-solid px-8 py-3 color-pureBlack transition-colors transition-transform duration-150 ease-out will-change-transform hover:bg-pureWhite/10 dark:color-pureWhite"
             :style="heroButtonStyles"
           >
             ENTER ARCHIVE

@@ -81,12 +81,6 @@ const containerStyles = computed(() => {
 useEventListener(window, 'scroll', handleScroll, { passive: true })
 useEventListener(document, 'pointermove', handlePointerMove, { passive: true })
 
-onMounted(() => {
-  if (disabled.value)
-
-    return
-})
-
 onUnmounted(() => {
   if (animationFrame.value) {
     cancelAnimationFrame(animationFrame.value)
