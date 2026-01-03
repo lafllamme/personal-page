@@ -63,16 +63,23 @@ const heroEased = computed(() => {
   const smooth = p * p * (3 - 2 * p)
   return p * 0.75 + smooth * 0.25
 })
-const heroTranslateX = computed(() => `${heroEased.value * 32}vw`)
-const heroTranslateY = computed(() => `${heroEased.value * -6}vh`)
-const heroOpacity = computed(() => Math.max(0, 1 - heroEased.value * 1.05))
-const heroH1Styles = computed(() => ({
-  transform: `translate3d(${heroTranslateX.value}, ${heroTranslateY.value}, 0)`,
-  opacity: heroOpacity.value,
+const heroTextLift = computed(() => `${heroEased.value * -6}vh`)
+const heroTextScale = computed(() => 1 - heroEased.value * 0.08)
+const heroTextSquash = computed(() => 1 - heroEased.value * 0.12)
+const heroTextOpacity = computed(() => Math.max(0, 1 - heroEased.value * 1.15))
+const heroTextSpacing = computed(() => `${(0.02 + heroEased.value * 0.18).toFixed(3)}em`)
+const heroGhostLift = computed(() => `${heroEased.value * -2}vh`)
+const heroGhostScale = computed(() => 1 + heroEased.value * 0.06)
+const heroGhostOpacity = computed(() => Math.max(0, 0.35 - heroEased.value * 0.35))
+const heroMainTextStyles = computed(() => ({
+  transform: `translate3d(0, ${heroTextLift.value}, 0) scale(${heroTextScale.value}, ${heroTextSquash.value})`,
+  opacity: heroTextOpacity.value,
+  letterSpacing: heroTextSpacing.value,
 }))
-const heroH2Styles = computed(() => ({
-  transform: `translate3d(-${heroTranslateX.value}, ${heroTranslateY.value}, 0)`,
-  opacity: heroOpacity.value,
+const heroGhostTextStyles = computed(() => ({
+  transform: `translate3d(0, ${heroGhostLift.value}, 0) scale(${heroGhostScale.value})`,
+  opacity: heroGhostOpacity.value,
+  letterSpacing: `${(0.08 + heroEased.value * 0.12).toFixed(3)}em`,
 }))
 const heroButtonStyles = computed(() => {
   const startAfter = 0.35
@@ -144,20 +151,31 @@ const heroButtonStyles = computed(() => {
         <div
           class="relative z-10 px-4 text-center transition-all duration-150 ease-out will-change-transform"
         >
-          <h1
-            :class="selectedH1Font"
-            class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
-            :style="heroH1Styles"
-          >
-            Web evolves.
-          </h1>
-          <h2
-            :class="selectedSpanFont"
-            class="whitespace-nowrap text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
-            :style="heroH2Styles"
-          >
-            We track it.
-          </h2>
+          <div class="relative">
+            <div class="pointer-events-none absolute inset-0">
+              <h1
+                :class="selectedH1Font"
+                class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack/30 font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite/20"
+                :style="heroGhostTextStyles"
+              >
+                Web evolves.
+              </h1>
+            </div>
+            <h1
+              :class="selectedH1Font"
+              class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
+              :style="heroMainTextStyles"
+            >
+              Web evolves.
+            </h1>
+            <h2
+              :class="selectedSpanFont"
+              class="whitespace-nowrap text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
+              :style="heroMainTextStyles"
+            >
+              We track it.
+            </h2>
+          </div>
         </div>
         <div class="absolute left-1/2 top-1/2 z-20">
           <button
