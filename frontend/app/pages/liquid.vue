@@ -38,8 +38,10 @@ const showFontOptions = ref(false)
 const { y } = useWindowScroll({ throttle: 16 })
 const { height } = useWindowSize()
 const heroSectionRef = ref<HTMLElement | null>(null)
+const isHeroVisible = useElementVisibility(heroSectionRef, { threshold: 0.1 })
 const heroBounds = useElementBounding(heroSectionRef)
 const headerHeightVar = useCssVar('--header-height')
+const heroPinMultiplier = 2.2
 const headerOffset = computed(() => {
   const value = Number.parseFloat(headerHeightVar.value || '0')
   return Number.isFinite(value) ? value : 0
@@ -49,28 +51,47 @@ const heroProgress = computed(() => {
     return 0
   const _ = y.value
   const viewport = height.value || window.innerHeight
-  const pinRange = viewport * 1.4
+  const pinRange = viewport * heroPinMultiplier
   const progress = (headerOffset.value - (heroBounds.top.value ?? 0)) / pinRange
   return Math.min(Math.max(progress, 0), 1)
 })
 const smoothedProgress = ref(0)
-useRafFn(() => {
+const { pause: pauseHeroRaf, resume: resumeHeroRaf } = useRafFn(() => {
   const target = heroProgress.value
   smoothedProgress.value += (target - smoothedProgress.value) * 0.18
 })
+watch(
+  isHeroVisible,
+  (visible) => {
+    if (visible)
+      resumeHeroRaf()
+    else
+      pauseHeroRaf()
+  },
+  { immediate: true },
+)
 const heroEased = computed(() => {
   const p = smoothedProgress.value
   const smooth = p * p * (3 - 2 * p)
   return p * 0.75 + smooth * 0.25
 })
-const heroTextLift = computed(() => `${heroEased.value * -6}vh`)
-const heroTextScale = computed(() => 1 - heroEased.value * 0.08)
-const heroTextSquash = computed(() => 1 - heroEased.value * 0.12)
-const heroTextOpacity = computed(() => Math.max(0, 1 - heroEased.value * 1.15))
-const heroTextSpacing = computed(() => `${(0.02 + heroEased.value * 0.18).toFixed(3)}em`)
-const heroGhostLift = computed(() => `${heroEased.value * -2}vh`)
-const heroGhostScale = computed(() => 1 + heroEased.value * 0.06)
-const heroGhostOpacity = computed(() => Math.max(0, 0.35 - heroEased.value * 0.35))
+
+const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
+const easeInOutCubic = (t: number) =>
+  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
+
+const heroTextProgress = computed(() => easeInOutCubic(clamp01(heroEased.value / 0.7)))
+const heroButtonProgress = computed(() => easeOutCubic(clamp01((heroEased.value - 0.6) / 0.35)))
+
+const heroTextLift = computed(() => `${heroTextProgress.value * -6}vh`)
+const heroTextScale = computed(() => 1 - heroTextProgress.value * 0.08)
+const heroTextSquash = computed(() => 1 - heroTextProgress.value * 0.12)
+const heroTextOpacity = computed(() => Math.max(0, 1 - heroTextProgress.value * 1.35))
+const heroTextSpacing = computed(() => `${(0.02 + heroTextProgress.value * 0.18).toFixed(3)}em`)
+const heroGhostLift = computed(() => `${heroTextProgress.value * -2}vh`)
+const heroGhostScale = computed(() => 1 + heroTextProgress.value * 0.06)
+const heroGhostOpacity = computed(() => Math.max(0, 0.35 - heroTextProgress.value * 0.35))
 const heroMainTextStyles = computed(() => ({
   transform: `translate3d(0, ${heroTextLift.value}, 0) scale(${heroTextScale.value}, ${heroTextSquash.value})`,
   opacity: heroTextOpacity.value,
@@ -79,18 +100,15 @@ const heroMainTextStyles = computed(() => ({
 const heroGhostTextStyles = computed(() => ({
   transform: `translate3d(0, ${heroGhostLift.value}, 0) scale(${heroGhostScale.value})`,
   opacity: heroGhostOpacity.value,
-  letterSpacing: `${(0.08 + heroEased.value * 0.12).toFixed(3)}em`,
+  letterSpacing: `${(0.08 + heroTextProgress.value * 0.12).toFixed(3)}em`,
 }))
 const heroButtonStyles = computed(() => {
-  const startAfter = 0.35
-  const raw = (heroEased.value - startAfter) / (1 - startAfter)
-  const buttonProgress = Math.min(Math.max(raw, 0), 1)
-  const offset = (1 - buttonProgress) * 8
-  const scale = 1 + buttonProgress * 0.3
-  const visible = buttonProgress > 0.05
+  const offset = (1 - heroButtonProgress.value) * 8
+  const scale = 1 + heroButtonProgress.value * 0.3
+  const visible = heroButtonProgress.value > 0.05
   return {
     transform: `translate(-50%, calc(-50% + ${offset}vh)) scale(${scale})`,
-    opacity: visible ? Math.min(1, buttonProgress * 1.2) : 0,
+    opacity: visible ? Math.min(1, heroButtonProgress.value * 1.2) : 0,
     visibility: visible ? 'visible' : 'hidden',
     pointerEvents: visible ? 'auto' : 'none',
   }
@@ -99,7 +117,7 @@ const heroButtonStyles = computed(() => {
 
 <template>
   <main class="min-h-screen bg-pureWhite dark:bg-pureBlack">
-    <section ref="heroSectionRef" class="relative min-h-[240vh]">
+    <section ref="heroSectionRef" class="relative min-h-[320vh]">
       <div class="sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0">
           <LiquidSymmetrySphere />
