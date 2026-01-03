@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { consola } from 'consola'
 import { computed, onMounted, ref, watch } from 'vue'
 import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
 import TextBand from '@/components/ui/TextBand/TextBand.vue'
@@ -95,7 +96,7 @@ const hasMultipleSegments = computed(() => {
 watch(
   textBandPreview,
   (next) => {
-    console.log('[TextBand settings]', JSON.stringify(next))
+    consola.debug('[TextBand settings]', JSON.stringify(next))
   },
   { deep: true },
 )

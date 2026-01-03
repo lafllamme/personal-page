@@ -127,6 +127,8 @@ export default [
       '**/.nuxt/**',
       '**/.output/**',
       '**/.vercel/**',
+      'cms/src/payload-types.ts',
+      'shared/types/payload-types.ts',
       'shared/dist/**',
     ],
   },
