@@ -37,15 +37,20 @@ const showFontOptions = ref(false)
 
 const { y } = useWindowScroll({ throttle: 16 })
 const { height } = useWindowSize()
-const heroRef = ref<HTMLElement | null>(null)
-const heroBounds = useElementBounding(heroRef)
+const heroSectionRef = ref<HTMLElement | null>(null)
+const heroBounds = useElementBounding(heroSectionRef)
+const headerHeightVar = useCssVar('--header-height')
+const headerOffset = computed(() => {
+  const value = Number.parseFloat(headerHeightVar.value || '0')
+  return Number.isFinite(value) ? value : 0
+})
 const heroProgress = computed(() => {
   if (import.meta.server)
     return 0
   const _ = y.value
   const viewport = height.value || window.innerHeight
-  const top = heroBounds.top.value ?? 0
-  const progress = (viewport * 0.1 - top) / (viewport * 0.9)
+  const pinRange = viewport * 1.4
+  const progress = (headerOffset.value - (heroBounds.top.value ?? 0)) / pinRange
   return Math.min(Math.max(progress, 0), 1)
 })
 const smoothedProgress = ref(0)
@@ -58,9 +63,9 @@ const heroEased = computed(() => {
   const smooth = p * p * (3 - 2 * p)
   return p * 0.75 + smooth * 0.25
 })
-const heroTranslateX = computed(() => `${heroEased.value * 30}vw`)
-const heroTranslateY = computed(() => `${heroEased.value * -4.5}vh`)
-const heroOpacity = computed(() => Math.max(0, 1 - heroEased.value * 0.45))
+const heroTranslateX = computed(() => `${heroEased.value * 32}vw`)
+const heroTranslateY = computed(() => `${heroEased.value * -6}vh`)
+const heroOpacity = computed(() => Math.max(0, 1 - heroEased.value * 1.05))
 const heroH1Styles = computed(() => ({
   transform: `translate3d(${heroTranslateX.value}, ${heroTranslateY.value}, 0)`,
   opacity: heroOpacity.value,
@@ -69,81 +74,100 @@ const heroH2Styles = computed(() => ({
   transform: `translate3d(-${heroTranslateX.value}, ${heroTranslateY.value}, 0)`,
   opacity: heroOpacity.value,
 }))
+const heroButtonStyles = computed(() => {
+  const startAfter = 0.35
+  const raw = (heroEased.value - startAfter) / (1 - startAfter)
+  const buttonProgress = Math.min(Math.max(raw, 0), 1)
+  const offset = (1 - buttonProgress) * 8
+  const scale = 1 + buttonProgress * 0.3
+  const visible = buttonProgress > 0.05
+  return {
+    transform: `translate(-50%, calc(-50% + ${offset}vh)) scale(${scale})`,
+    opacity: visible ? Math.min(1, buttonProgress * 1.2) : 0,
+    visibility: visible ? 'visible' : 'hidden',
+    pointerEvents: visible ? 'auto' : 'none',
+  }
+})
 </script>
 
 <template>
   <main class="min-h-screen bg-pureWhite dark:bg-pureBlack">
-    <section ref="heroRef" class="relative h-screen flex items-center justify-center overflow-hidden">
-      <div class="absolute inset-0">
-        <LiquidSymmetrySphere />
-      </div>
-      <div class="absolute left-4 top-4 z-20 w-[260px] space-y-4">
-        <button
-          class="w-full border border-pureWhite/20 rounded bg-pureBlack/70 px-2 py-2 text-xs color-pureWhite/80 tracking-[0.2em] uppercase backdrop-blur transition-colors hover:bg-pureWhite/10"
-          type="button"
-          @click="showFontOptions = !showFontOptions"
-        >
-          {{ showFontOptions ? 'Hide font options' : 'Show font options' }}
-        </button>
-        <div v-show="showFontOptions" class="space-y-4">
-          <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
-            <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">H1 Font</label>
-            <select
-              v-model="selectedH1Font"
-              class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
-            >
-              <option v-for="font in fonts" :key="font.class" :value="font.class">
-                {{ font.name }}
-              </option>
-            </select>
-          </div>
-          <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
-            <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">Span Font</label>
-            <select
-              v-model="selectedSpanFont"
-              class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
-            >
-              <option v-for="font in fonts" :key="font.class" :value="font.class">
-                {{ font.name }}
-              </option>
-            </select>
-          </div>
-          <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
-            <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">Button Font</label>
-            <select
-              v-model="selectedButtonFont"
-              class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
-            >
-              <option v-for="font in fonts" :key="font.class" :value="font.class">
-                {{ font.name }}
-              </option>
-            </select>
+    <section ref="heroSectionRef" class="relative min-h-[240vh]">
+      <div class="sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0">
+          <LiquidSymmetrySphere />
+        </div>
+        <div class="absolute left-4 top-4 z-20 w-[260px] space-y-4">
+          <button
+            class="w-full border border-pureWhite/20 rounded bg-pureBlack/70 px-2 py-2 text-xs color-pureWhite/80 tracking-[0.2em] uppercase backdrop-blur transition-colors hover:bg-pureWhite/10"
+            type="button"
+            @click="showFontOptions = !showFontOptions"
+          >
+            {{ showFontOptions ? 'Hide font options' : 'Show font options' }}
+          </button>
+          <div v-show="showFontOptions" class="space-y-4">
+            <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
+              <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">H1 Font</label>
+              <select
+                v-model="selectedH1Font"
+                class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
+              >
+                <option v-for="font in fonts" :key="font.class" :value="font.class">
+                  {{ font.name }}
+                </option>
+              </select>
+            </div>
+            <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
+              <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">Span Font</label>
+              <select
+                v-model="selectedSpanFont"
+                class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
+              >
+                <option v-for="font in fonts" :key="font.class" :value="font.class">
+                  {{ font.name }}
+                </option>
+              </select>
+            </div>
+            <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
+              <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">Button Font</label>
+              <select
+                v-model="selectedButtonFont"
+                class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
+              >
+                <option v-for="font in fonts" :key="font.class" :value="font.class">
+                  {{ font.name }}
+                </option>
+              </select>
+            </div>
           </div>
         </div>
-      </div>
-      <div
-        class="relative z-10 px-4 text-center transition-all duration-150 ease-out will-change-transform"
-      >
-        <h1
-          :class="selectedH1Font"
-          class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
-          :style="heroH1Styles"
+        <div
+          class="relative z-10 px-4 text-center transition-all duration-150 ease-out will-change-transform"
         >
-          Web evolves.
-        </h1>
-        <h2
-          :class="selectedSpanFont"
-          class="whitespace-nowrap text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
-          :style="heroH2Styles"
-        >
-          We track it.
-        </h2>
-        <button
-          :class="selectedButtonFont"
-          class="mt-8 border border-pureWhite/30 border-solid px-8 py-3 color-pureBlack transition-colors hover:bg-pureWhite/10 dark:color-pureWhite"
-        >
-          ENTER ARCHIVE
-        </button>
+          <h1
+            :class="selectedH1Font"
+            class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
+            :style="heroH1Styles"
+          >
+            Web evolves.
+          </h1>
+          <h2
+            :class="selectedSpanFont"
+            class="whitespace-nowrap text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
+            :style="heroH2Styles"
+          >
+            We track it.
+          </h2>
+        </div>
+        <div class="absolute left-1/2 top-1/2 z-20">
+          <button
+            :class="selectedButtonFont"
+            class="border border-pureWhite/30 border-solid px-8 py-3 color-pureBlack transition-transform transition-colors duration-150 ease-out will-change-transform hover:bg-pureWhite/10 dark:color-pureWhite"
+            :style="heroButtonStyles"
+          >
+            ENTER ARCHIVE
+          </button>
+        </div>
       </div>
     </section>
     <section class="relative px-6 py-24 md:px-12">
