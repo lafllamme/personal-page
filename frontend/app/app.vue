@@ -5,6 +5,11 @@ import Cursor from '~/components/ui/Cursor/Cursor.vue'
 const loadingGradient = ref('linear-gradient(90deg, #059669, #064e3b, #6d28d9)')
 const appConfig = useAppConfig()
 const { meta } = appConfig as { meta: HeadMeta }
+const lenisOptions = {
+  duration: 1.1,
+  smoothWheel: true,
+  smoothTouch: false,
+}
 
 // If we are in development mode, we set consola log level to 5
 if (import.meta.dev) {
@@ -41,12 +46,17 @@ useHead(() => {
 </script>
 
 <template>
-  <NuxtLayout>
-    <NuxtLoadingIndicator
-      :color="loadingGradient"
-      :throttle="0"
-    />
-    <Cursor />
-    <NuxtPage />
-  </NuxtLayout>
+  <VueLenis
+    root
+    :options="lenisOptions"
+  >
+    <NuxtLayout>
+      <NuxtLoadingIndicator
+        :color="loadingGradient"
+        :throttle="0"
+      />
+      <Cursor />
+      <NuxtPage />
+    </NuxtLayout>
+  </VueLenis>
 </template>

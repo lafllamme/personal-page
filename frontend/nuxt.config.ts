@@ -202,6 +202,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/icon',
     '@unocss/nuxt',
+    'lenis/nuxt',
     '@nuxtjs/color-mode',
     '@nuxt/fonts',
     '@nuxtjs/i18n',
