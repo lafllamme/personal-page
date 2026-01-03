@@ -49,7 +49,7 @@ const color2Hex = computed({
   },
 })
 
-const isCollapsed = ref(false)
+const isCollapsed = ref(true)
 const activeSection = ref<string | null>(null)
 
 function toggleSection(section: string) {
@@ -119,7 +119,7 @@ async function copySettingsJson() {
 
     <div
       v-else
-      class="border-white/10 bg-slate-900/95 fixed left-4 top-4 z-50 max-h-[90vh] w-96 overflow-y-auto border rounded-lg shadow-2xl backdrop-blur-md"
+      class="border-white/10 bg-slate-900/95 fixed left-4 top-20 z-50 max-h-[90vh] w-96 overflow-y-auto border rounded-lg shadow-2xl backdrop-blur-md"
     >
       <div class="border-white/10 bg-slate-900/95 sticky top-0 flex items-center justify-between border-b p-4 backdrop-blur-md">
         <h3 class="text-lg color-pureBlack font-semibold dark:color-pureWhite">
