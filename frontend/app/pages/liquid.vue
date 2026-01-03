@@ -45,7 +45,7 @@ const heroProgress = computed(() => {
   const _ = y.value
   const viewport = height.value || window.innerHeight
   const top = heroBounds.top.value ?? 0
-  const progress = -top / (viewport * 0.8)
+  const progress = (viewport * 0.1 - top) / (viewport * 0.9)
   return Math.min(Math.max(progress, 0), 1)
 })
 const smoothedProgress = ref(0)
@@ -55,7 +55,8 @@ useRafFn(() => {
 })
 const heroEased = computed(() => {
   const p = smoothedProgress.value
-  return p * p * (3 - 2 * p)
+  const smooth = p * p * (3 - 2 * p)
+  return p * 0.75 + smooth * 0.25
 })
 const heroTranslateX = computed(() => `${heroEased.value * 30}vw`)
 const heroTranslateY = computed(() => `${heroEased.value * -4.5}vh`)
