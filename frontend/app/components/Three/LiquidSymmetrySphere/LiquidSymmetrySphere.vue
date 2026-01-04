@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
 import { TresCanvas } from '@tresjs/core'
-import { useMutationObserver, useRafFn, useWindowSize } from '@vueuse/core'
+import { useDocumentVisibility, useElementVisibility, useMutationObserver, useRafFn, useWindowSize } from '@vueuse/core'
 import { BufferAttribute, Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
 import { LiquidSymmetryDefaults } from './LiquidSymmetrySphere.model'
 import LiquidSymmetrySphereControls from './LiquidSymmetrySphereControls.vue'
@@ -35,6 +35,9 @@ const mesh = shallowRef<Mesh | null>(null)
 const material = shallowRef<ShaderMaterial | null>(null)
 const geometry = shallowRef<SphereGeometry | null>(null)
 const isTransitionPaused = ref(false)
+const container = ref<HTMLElement | null>(null)
+const isVisible = useElementVisibility(container)
+const documentVisibility = useDocumentVisibility()
 
 let originalPositions = new Float32Array(0)
 let positionAttribute: BufferAttribute | null = null
@@ -250,7 +253,7 @@ watch(
 const cameraPosition = computed(() => [0, 0, settings.cameraDistance] as const)
 
 let time = 0
-useRafFn(({ delta }) => {
+const { pause, resume } = useRafFn(({ delta }) => {
   if (isTransitionPaused.value)
     return
   if (!mesh.value || !positionAttribute || originalPositions.length === 0)
@@ -301,11 +304,28 @@ useRafFn(({ delta }) => {
   else {
     mesh.value.scale.set(1, 1, 1)
   }
+}, { immediate: false })
+
+const shouldAnimate = computed(() => {
+  return isVisible.value && documentVisibility.value === 'visible' && !isTransitionPaused.value
+})
+
+onMounted(() => {
+  watch(
+    shouldAnimate,
+    (active) => {
+      if (active)
+        resume()
+      else
+        pause()
+    },
+    { immediate: true },
+  )
 })
 </script>
 
 <template>
-  <div class="relative h-full w-full">
+  <div ref="container" class="relative h-full w-full">
     <ClientOnly>
       <TresCanvas
         :alpha="true"
