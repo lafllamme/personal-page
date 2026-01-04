@@ -158,16 +158,18 @@ onBeforeUnmount(() => {
   mesh.value = null
 })
 
-useMutationObserver(
-  () => document.documentElement,
-  () => {
-    isTransitionPaused.value = document.documentElement.dataset.themeTransitioning === 'true'
-  },
-  {
-    attributes: true,
-    attributeFilter: ['data-theme-transitioning'],
-  },
-)
+if (import.meta.client) {
+  useMutationObserver(
+    () => document.documentElement,
+    () => {
+      isTransitionPaused.value = document.documentElement.dataset.themeTransitioning === 'true'
+    },
+    {
+      attributes: true,
+      attributeFilter: ['data-theme-transitioning'],
+    },
+  )
+}
 
 watch(
   () => [settings.meshDensity, settings.sphereSize],
