@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
 import { TresCanvas } from '@tresjs/core'
-import { useRafFn, useWindowSize } from '@vueuse/core'
+import { useMutationObserver, useRafFn, useWindowSize } from '@vueuse/core'
 import { BufferAttribute, Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
 import { LiquidSymmetryDefaults } from './LiquidSymmetrySphere.model'
 import LiquidSymmetrySphereControls from './LiquidSymmetrySphereControls.vue'
@@ -34,6 +34,7 @@ const uniforms = {
 const mesh = shallowRef<Mesh | null>(null)
 const material = shallowRef<ShaderMaterial | null>(null)
 const geometry = shallowRef<SphereGeometry | null>(null)
+const isTransitionPaused = ref(false)
 
 let originalPositions = new Float32Array(0)
 let positionAttribute: BufferAttribute | null = null
@@ -147,6 +148,8 @@ onMounted(() => {
   buildGeometry()
   buildMaterial()
   mesh.value = new Mesh(geometry.value!, material.value!)
+
+  isTransitionPaused.value = document.documentElement.dataset.themeTransitioning === 'true'
 })
 
 onBeforeUnmount(() => {
@@ -154,6 +157,17 @@ onBeforeUnmount(() => {
   material.value?.dispose()
   mesh.value = null
 })
+
+useMutationObserver(
+  () => document.documentElement,
+  () => {
+    isTransitionPaused.value = document.documentElement.dataset.themeTransitioning === 'true'
+  },
+  {
+    attributes: true,
+    attributeFilter: ['data-theme-transitioning'],
+  },
+)
 
 watch(
   () => [settings.meshDensity, settings.sphereSize],
@@ -235,6 +249,8 @@ const cameraPosition = computed(() => [0, 0, settings.cameraDistance] as const)
 
 let time = 0
 useRafFn(({ delta }) => {
+  if (isTransitionPaused.value)
+    return
   if (!mesh.value || !positionAttribute || originalPositions.length === 0)
     return
 
