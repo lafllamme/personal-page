@@ -20,7 +20,6 @@ function handlePressed(pressed: boolean) {
 
 function applyTheme(theme: 'light' | 'dark') {
   colorMode.preference = theme
-  document.documentElement.classList.toggle('dark', theme === 'dark')
 }
 
 function toggleDarkMode() {
@@ -35,16 +34,21 @@ function toggleDarkMode() {
       finished: Promise<void>
     }
   }).startViewTransition?.bind(document)
+  const root = document.documentElement
 
   handlePressed(true)
 
   if (!buttonEl || !startViewTransition) {
     applyTheme(newTheme)
+    delete root.dataset.themeTransitioning
+    delete root.dataset.themeTarget
     handlePressed(false)
     return
   }
 
   isAnimating.value = true
+  root.dataset.themeTransitioning = 'true'
+  root.dataset.themeTarget = newTheme
 
   const rect = buttonEl.getBoundingClientRect()
   const centerX = rect.left + rect.width / 2
@@ -54,10 +58,21 @@ function toggleDarkMode() {
     Math.max(centerY, window.innerHeight - centerY),
   )
 
-  const transition = startViewTransition(async () => {
+  let transition: { ready: Promise<void>, finished: Promise<void> }
+  try {
+    transition = startViewTransition(async () => {
+      applyTheme(newTheme)
+      await nextTick()
+    })
+  }
+  catch {
     applyTheme(newTheme)
-    await nextTick()
-  })
+    delete root.dataset.themeTransitioning
+    delete root.dataset.themeTarget
+    isAnimating.value = false
+    handlePressed(false)
+    return
+  }
 
   transition.ready.then(() => {
     document.documentElement.animate(
@@ -77,6 +92,8 @@ function toggleDarkMode() {
 
   transition.finished.finally(() => {
     isAnimating.value = false
+    delete root.dataset.themeTransitioning
+    delete root.dataset.themeTarget
     handlePressed(false)
   })
 }

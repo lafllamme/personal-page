@@ -19,11 +19,6 @@ html[data-theme-transitioning='true'] .theme-transition-surface {
   transition: none !important;
 }
 
-html[data-theme-transitioning='true'] .theme-transition-surface {
-  background-color: transparent !important;
-  backdrop-filter: none !important;
-  box-shadow: none !important;
-}
 
 :root {
   --header-height: 65px;
