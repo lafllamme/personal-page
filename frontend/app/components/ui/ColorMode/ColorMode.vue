@@ -13,6 +13,7 @@ const isLoading = ref(true)
 const isAnimating = ref(false)
 const isPressed = ref(false)
 const animationDuration = 1000
+const preTransitionDelayMs = 220
 
 function handlePressed(pressed: boolean) {
   isPressed.value = pressed
@@ -22,7 +23,11 @@ function applyTheme(theme: 'light' | 'dark') {
   colorMode.preference = theme
 }
 
-function toggleDarkMode() {
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+async function toggleDarkMode() {
   if (isAnimating.value)
     return
 
@@ -60,6 +65,7 @@ function toggleDarkMode() {
 
   let transition: { ready: Promise<void>, finished: Promise<void> }
   try {
+    await sleep(preTransitionDelayMs)
     transition = startViewTransition(async () => {
       applyTheme(newTheme)
       await nextTick()

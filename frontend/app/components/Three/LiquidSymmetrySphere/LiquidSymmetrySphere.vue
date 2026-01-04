@@ -34,7 +34,12 @@ const uniforms = {
 const mesh = shallowRef<Mesh | null>(null)
 const material = shallowRef<ShaderMaterial | null>(null)
 const geometry = shallowRef<SphereGeometry | null>(null)
-const isTransitionPaused = ref(false)
+const baseTransparency = ref(settings.transparency)
+const targetVisibility = ref(1)
+const sphereVisibility = ref(1)
+const vanishEpsilon = 0.02
+const vanishSpeed = 18
+const appearSpeed = 10
 const container = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(container)
 const documentVisibility = useDocumentVisibility()
@@ -151,8 +156,9 @@ onMounted(() => {
   buildGeometry()
   buildMaterial()
   mesh.value = new Mesh(geometry.value!, material.value!)
-
-  isTransitionPaused.value = document.documentElement.dataset.themeTransitioning === 'true'
+  const isTransitioning = document.documentElement.dataset.themeTransitioning === 'true'
+  targetVisibility.value = isTransitioning ? 0 : 1
+  sphereVisibility.value = targetVisibility.value
 })
 
 onBeforeUnmount(() => {
@@ -165,7 +171,8 @@ if (import.meta.client) {
   useMutationObserver(
     () => document.documentElement,
     () => {
-      isTransitionPaused.value = document.documentElement.dataset.themeTransitioning === 'true'
+      const isTransitioning = document.documentElement.dataset.themeTransitioning === 'true'
+      targetVisibility.value = isTransitioning ? 0 : 1
     },
     {
       attributes: true,
@@ -217,7 +224,7 @@ watch(
 watch(
   () => settings.transparency,
   (value) => {
-    uniforms.transparency.value = value
+    baseTransparency.value = value
   },
 )
 
@@ -254,14 +261,18 @@ const cameraPosition = computed(() => [0, 0, settings.cameraDistance] as const)
 
 let time = 0
 const { pause, resume } = useRafFn(({ delta }) => {
-  if (isTransitionPaused.value)
-    return
   if (!mesh.value || !positionAttribute || originalPositions.length === 0)
     return
 
   const frameScale = Math.min(delta / 16.6667, 2)
   time += settings.animationSpeed * frameScale
   uniforms.time.value = time
+  const speed = targetVisibility.value === 0 ? vanishSpeed : appearSpeed
+  const fadeStep = 1 - Math.exp(-speed * (delta / 1000))
+  sphereVisibility.value += (targetVisibility.value - sphereVisibility.value) * fadeStep
+  if (targetVisibility.value === 0 && sphereVisibility.value < vanishEpsilon)
+    sphereVisibility.value = 0
+  uniforms.transparency.value = baseTransparency.value * sphereVisibility.value
 
   const count = positionAttribute.count
   for (let i = 0; i < count; i++) {
@@ -299,15 +310,17 @@ const { pause, resume } = useRafFn(({ delta }) => {
 
   if (settings.breathingEnabled) {
     const breathScale = 1 + Math.sin(time * settings.breathingSpeed) * settings.breathingIntensity
-    mesh.value.scale.set(breathScale, breathScale, breathScale)
+    const visScale = 0.05 + 0.95 * sphereVisibility.value
+    mesh.value.scale.set(breathScale * visScale, breathScale * visScale, breathScale * visScale)
   }
   else {
-    mesh.value.scale.set(1, 1, 1)
+    const visScale = 0.05 + 0.95 * sphereVisibility.value
+    mesh.value.scale.set(visScale, visScale, visScale)
   }
 }, { immediate: false })
 
 const shouldAnimate = computed(() => {
-  return isVisible.value && documentVisibility.value === 'visible' && !isTransitionPaused.value
+  return isVisible.value && documentVisibility.value === 'visible'
 })
 
 onMounted(() => {
