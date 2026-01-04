@@ -113,6 +113,10 @@ const fragmentShader = `
   }
 `
 
+function setVectorUniform(uniform: { value: Vector3 }, r: number, g: number, b: number) {
+  uniform.value.set(r, g, b)
+}
+
 function buildGeometry() {
   const next = new SphereGeometry(settings.sphereSize, settings.meshDensity, settings.meshDensity)
   const attribute = next.getAttribute('position') as BufferAttribute
@@ -189,14 +193,14 @@ watch(
 watch(
   () => [settings.color1R, settings.color1G, settings.color1B],
   ([r, g, b]) => {
-    uniforms.color1.value.set(r, g, b)
+    setVectorUniform(uniforms.color1, r, g, b)
   },
 )
 
 watch(
   () => [settings.color2R, settings.color2G, settings.color2B],
   ([r, g, b]) => {
-    uniforms.color2.value.set(r, g, b)
+    setVectorUniform(uniforms.color2, r, g, b)
   },
 )
 
@@ -208,44 +212,21 @@ watch(
 )
 
 watch(
-  () => settings.glowSpeed,
-  (value) => {
-    uniforms.glowSpeed.value = value
-  },
-)
-
-watch(
-  () => settings.glowAmount,
-  (value) => {
-    uniforms.glowAmount.value = value
-  },
-)
-
-watch(
-  () => settings.transparency,
-  (value) => {
-    baseTransparency.value = value
-  },
-)
-
-watch(
-  () => settings.craterDepth,
-  (value) => {
-    uniforms.craterDepth.value = value
-  },
-)
-
-watch(
-  () => settings.craterDarken,
-  (value) => {
-    uniforms.craterDarken.value = value
-  },
-)
-
-watch(
-  () => settings.craterTintMix,
-  (value) => {
-    uniforms.craterTintMix.value = value
+  () => [
+    settings.glowSpeed,
+    settings.glowAmount,
+    settings.transparency,
+    settings.craterDepth,
+    settings.craterDarken,
+    settings.craterTintMix,
+  ],
+  ([glowSpeed, glowAmount, transparency, craterDepth, craterDarken, craterTintMix]) => {
+    uniforms.glowSpeed.value = glowSpeed
+    uniforms.glowAmount.value = glowAmount
+    baseTransparency.value = transparency
+    uniforms.craterDepth.value = craterDepth
+    uniforms.craterDarken.value = craterDarken
+    uniforms.craterTintMix.value = craterTintMix
   },
 )
 
