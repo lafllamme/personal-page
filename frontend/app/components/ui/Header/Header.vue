@@ -136,7 +136,8 @@ watch(isSwitchOpen, (open) => {
       ref="headerRef"
       :class="useClsx(
         'fixed inset-x-0 top-0 z-50 w-full max-w-100vw',
-        'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+        'transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+        'theme-transition-guard',
       )"
       role="banner"
     >
@@ -144,7 +145,7 @@ watch(isSwitchOpen, (open) => {
         ref="headerContainerRef"
         :class="useClsx(
           'relative mx-auto',
-          'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+          'transition-[margin,max-width,width,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
           effectiveHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] min-w-0 md:max-w-[45vw]' : 'mt-0 max-w-full',
         )"
       >
@@ -153,7 +154,8 @@ watch(isSwitchOpen, (open) => {
           :class="useClsx(
             hasScrolledEnough && 'backdrop-saturate-150',
             'pointer-events-none absolute inset-0',
-            'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+            'transition-[backdrop-filter,backdrop-saturate,backdrop-contrast,box-shadow] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+            'theme-transition-surface',
             // Glass background: default subtle glass, minimized = pure liquid glass (blur only)
             effectiveHeaderMinimized
               ? 'backdrop-blur-[12px] backdrop-saturate-180 backdrop-contrast-115 bg-transparent ring-1 ring-mint-12 dark:shadow-[0_8px_30px_rgba(255,255,255,0.12)] shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
@@ -164,7 +166,7 @@ watch(isSwitchOpen, (open) => {
         <!-- Inner container for logo and right-side items -->
         <div
           :class="useClsx(
-            'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+            'transition-[padding,margin,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'relative flex items-center justify-between',
             effectiveHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-4 py-4 md:px-8',
             effectiveHeaderMinimized ? 'border-none' : 'border-b',
@@ -175,7 +177,7 @@ watch(isSwitchOpen, (open) => {
             <NuxtLink
               :class="useClsx(
                 'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-                'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
+                'transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
                 'focus-visible:outline-none focus-visible:ring-3',
                 'font-nova font-bold tracking-tight antialiased',
                 'absolute group px-2',
@@ -196,28 +198,28 @@ watch(isSwitchOpen, (open) => {
           >
             <div
               :class="useClsx(
-                'flex items-center gap-0.5 transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                'flex items-center gap-0.5 transition-[margin,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
                 effectiveHeaderMinimized ? 'mr-4' : 'mr-6.5 md:mr-10.5',
               )"
             >
               <LanguageSwitcher
                 :open="!!isSwitchOpen"
                 :class="useClsx(
-                  'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                  'transition-[padding,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
                   effectiveHeaderMinimized ? 'p-1' : 'p-1.5',
                 )"
                 @update:open="(v: boolean) => { isSwitchOpen = v }"
               />
               <ColorMode
                 :class="useClsx(
-                  'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                  'transition-[padding,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
                   effectiveHeaderMinimized ? '<md:hidden' : 'p-1.5',
                 )"
               />
             </div>
             <Menu
               :class="useClsx(
-                'transition-all duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                'transition-[padding,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
                 effectiveHeaderMinimized ? 'p-1' : 'p-1.5',
               )"
             />
