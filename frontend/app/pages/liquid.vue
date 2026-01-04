@@ -32,7 +32,7 @@ const fonts = [
 
 const selectedH1Font = ref('zalando-sans-expanded')
 const selectedSpanFont = ref('font-baskerville')
-const selectedButtonFont = ref(fonts[4]?.class ?? '')
+const selectedButtonFont = ref('font-recoleta')
 const showFontOptions = ref(false)
 
 const { y } = useWindowScroll({ throttle: 16 })
@@ -77,12 +77,13 @@ const heroEased = computed(() => {
 })
 
 const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
-const easeInOutCubic = (t: number) =>
-  t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
-const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
+function easeInOutCubic(t: number) {
+  return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2
+}
+const easeOutCubic = (t: number) => 1 - (1 - t) ** 3
 
 const heroTextProgress = computed(() => easeInOutCubic(clamp01(heroEased.value / 0.7)))
-const heroButtonProgress = computed(() => easeOutCubic(clamp01((heroEased.value - 0.6) / 0.35)))
+const heroButtonProgress = computed(() => easeOutCubic(clamp01((heroEased.value - 0.52) / 0.35)))
 
 const heroTextLift = computed(() => `${heroTextProgress.value * -6}vh`)
 const heroTextScale = computed(() => 1 - heroTextProgress.value * 0.08)
@@ -195,14 +196,17 @@ const heroButtonStyles = computed(() => {
             </h2>
           </div>
         </div>
-        <div class="absolute left-1/2 top-1/2 z-20">
-          <button
+        <div class="absolute left-1/2 top-1/2 z-20 flex flex-col items-center">
+          <div
             :class="selectedButtonFont"
-            class="border border-pureWhite/30 border-solid px-8 py-3 color-pureBlack transition-colors transition-transform duration-150 ease-out will-change-transform hover:bg-pureWhite/10 dark:color-pureWhite"
+            class="font-recoleta text-[clamp(1.5rem,3vw+0.5rem,3rem)] color-pureBlack font-light tracking-[12px] uppercase transition-transform duration-150 ease-out will-change-transform dark:color-pureWhite"
             :style="heroButtonStyles"
           >
-            ENTER ARCHIVE
-          </button>
+            <div class="flex flex-col items-center justify-center gap-2">
+              <span>Explore</span>
+              <Icon class="size-12" name="bitcoin-icons:arrow-down-filled" />
+            </div>
+          </div>
         </div>
       </div>
     </section>
