@@ -204,7 +204,7 @@ const heroButtonStyles = computed(() => {
           >
             <div class="flex flex-col items-center justify-center gap-2">
               <span>Explore</span>
-              <Icon class="size-12" name="bitcoin-icons:arrow-down-filled" />
+              <Icon class="size-12" name="material-symbols-light:arrow-cool-down-rounded" />
             </div>
           </div>
         </div>
