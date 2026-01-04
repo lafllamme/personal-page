@@ -20,6 +20,7 @@ const fonts: NuxtFontsOptions = {
     { name: 'Figtree', weights: ['300 900'], styles: ['normal', 'italic'] },
     { name: 'Space Grotesk', weights: ['300 700'], styles: ['normal'] },
     { name: 'Manrope', weights: ['200 800'], styles: ['normal'] },
+    { name: 'Geist', weights: ['100 900'], styles: ['normal'] },
     { name: 'JetBrains Mono', weights: ['100 800'], styles: ['normal', 'italic'] },
     { name: 'EB Garamond', weights: ['400 800'], styles: ['normal', 'italic'] },
     { name: 'Lora', weights: ['400 700'], styles: ['normal', 'italic'] },
