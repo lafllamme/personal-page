@@ -53,7 +53,6 @@ function handleOverlayIteration() {
     <div
       :class="useClsx(
         'relative z-10',
-        'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
         'bg-pureWhite  dark:bg-pureBlack',
         overlayVisible && 'pointer-events-none',
       )"

@@ -90,18 +90,10 @@ const heroTextScale = computed(() => 1 - heroTextProgress.value * 0.08)
 const heroTextSquash = computed(() => 1 - heroTextProgress.value * 0.12)
 const heroTextOpacity = computed(() => Math.max(0, 1 - heroTextProgress.value * 1.35))
 const heroTextSpacing = computed(() => `${(0.02 + heroTextProgress.value * 0.18).toFixed(3)}em`)
-const heroGhostLift = computed(() => `${heroTextProgress.value * -2}vh`)
-const heroGhostScale = computed(() => 1 + heroTextProgress.value * 0.06)
-const heroGhostOpacity = computed(() => Math.max(0, 0.35 - heroTextProgress.value * 0.35))
 const heroMainTextStyles = computed(() => ({
   transform: `translate3d(0, ${heroTextLift.value}, 0) scale(${heroTextScale.value}, ${heroTextSquash.value})`,
   opacity: heroTextOpacity.value,
   letterSpacing: heroTextSpacing.value,
-}))
-const heroGhostTextStyles = computed(() => ({
-  transform: `translate3d(0, ${heroGhostLift.value}, 0) scale(${heroGhostScale.value})`,
-  opacity: heroGhostOpacity.value,
-  letterSpacing: `${(0.08 + heroTextProgress.value * 0.12).toFixed(3)}em`,
 }))
 const heroButtonStyles = computed(() => {
   const offset = (1 - heroButtonProgress.value) * 8
@@ -171,15 +163,6 @@ const heroButtonStyles = computed(() => {
           class="relative z-10 px-4 text-center transition-all duration-150 ease-out will-change-transform"
         >
           <div class="relative">
-            <div class="pointer-events-none absolute inset-0">
-              <h1
-                :class="selectedH1Font"
-                class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack/30 font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite/20"
-                :style="heroGhostTextStyles"
-              >
-                Web evolves.
-              </h1>
-            </div>
             <h1
               :class="selectedH1Font"
               class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"

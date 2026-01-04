@@ -182,7 +182,6 @@ watch(
         />
         <div
           :class="useClsx(
-            'transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)]',
             'bg-none lg:text-xl sm:text-lg',
             '!min-w-3/4 md:justify-start',
             'max-[400px]:text-sm text-base flex justify-center gap-4 whitespace-nowrap',

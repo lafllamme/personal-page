@@ -7,11 +7,22 @@
 
 html,
 body {
-  @apply scroll-smooth transition-colors duration-600 ease-[cubic-bezier(0.33,1,0.68,1)];
+  @apply scroll-smooth;
 }
 
 html {
   @include theme-bg(bg-pureWhite, bg-pureBlack);
+}
+
+html[data-theme-transitioning='true'] .theme-transition-guard,
+html[data-theme-transitioning='true'] .theme-transition-surface {
+  transition: none !important;
+}
+
+html[data-theme-transitioning='true'] .theme-transition-surface {
+  background-color: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
 }
 
 :root {
