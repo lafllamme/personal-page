@@ -12,25 +12,73 @@ const isDark = computed(() => colorMode.value === 'dark')
 const isLoading = ref(true)
 const isAnimating = ref(false)
 const isPressed = ref(false)
+const animationDuration = 1000
 
 function handlePressed(pressed: boolean) {
   isPressed.value = pressed
 }
 
-function toggleDarkMode() {
-  debounceAnimation()
-  handlePressed(true)
+function applyTheme(theme: 'light' | 'dark') {
+  colorMode.preference = theme
+  document.documentElement.classList.toggle('dark', theme === 'dark')
 }
 
-function debounceAnimation(timeout: number = 1000) {
-  if (!isAnimating.value) {
-    isAnimating.value = true
-    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
+function toggleDarkMode() {
+  if (isAnimating.value)
+    return
 
-    setTimeout(() => {
-      isAnimating.value = false
-    }, timeout)
+  const buttonEl = button.value
+  const newTheme = isDark.value ? 'light' : 'dark'
+  const startViewTransition = (document as unknown as {
+    startViewTransition?: (callback: () => void) => {
+      ready: Promise<void>
+      finished: Promise<void>
+    }
+  }).startViewTransition?.bind(document)
+
+  handlePressed(true)
+
+  if (!buttonEl || !startViewTransition) {
+    applyTheme(newTheme)
+    handlePressed(false)
+    return
   }
+
+  isAnimating.value = true
+
+  const rect = buttonEl.getBoundingClientRect()
+  const centerX = rect.left + rect.width / 2
+  const centerY = rect.top + rect.height / 2
+  const maxRadius = Math.hypot(
+    Math.max(centerX, window.innerWidth - centerX),
+    Math.max(centerY, window.innerHeight - centerY),
+  )
+
+  const transition = startViewTransition(async () => {
+    applyTheme(newTheme)
+    await nextTick()
+  })
+
+  transition.ready.then(() => {
+    document.documentElement.animate(
+      {
+        clipPath: [
+          `circle(0px at ${centerX}px ${centerY}px)`,
+          `circle(${maxRadius}px at ${centerX}px ${centerY}px)`,
+        ],
+      },
+      {
+        duration: animationDuration,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        pseudoElement: '::view-transition-new(root)' as unknown as string,
+      },
+    )
+  }).catch(() => {})
+
+  transition.finished.finally(() => {
+    isAnimating.value = false
+    handlePressed(false)
+  })
 }
 
 onMounted(() => {
@@ -142,5 +190,26 @@ onMounted(() => {
   100% {
     filter: blur(0.01);
   }
+}
+
+:global(:root) {
+  view-transition-name: root;
+}
+
+:global(:root) {
+  view-transition-name: root;
+}
+
+:global(::view-transition-old(root)),
+:global(::view-transition-new(root)) {
+  animation: none;
+}
+
+:global(::view-transition-old(root)) {
+  mix-blend-mode: normal;
+}
+
+:global(::view-transition-new(root)) {
+  mix-blend-mode: normal;
 }
 </style>
