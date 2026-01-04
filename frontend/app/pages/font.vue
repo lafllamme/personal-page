@@ -2,42 +2,55 @@
 const inputText = ref('The quick brown fox jumps over the lazy dog 0123456789')
 const searchQuery = ref('')
 const selectedWeight = ref<'light' | 'medium' | 'regular'>('regular')
+const fontSize = ref(70)
 
 const fonts = [
-  { name: 'Electric', class: 'font-electric', category: 'display' },
-  { name: 'Recoleta', class: 'font-recoleta', category: 'serif' },
-  { name: 'Ginger', class: 'font-ginger', category: 'display' },
-  { name: 'Prata', class: 'font-prata', category: 'serif' },
-  { name: 'Manrope', class: 'font-manrope', category: 'sans' },
-  { name: 'Geist', class: 'geist-regular', category: 'sans' },
-  { name: 'Space Grotesk', class: 'space-grotesk-regular', category: 'sans' },
-  { name: 'Boldonse', class: 'boldonse-regular', category: 'display' },
   { name: 'Audiowide', class: 'audiowide-regular', category: 'display' },
-  { name: 'Zen Dots', class: 'zen-dots-regular', category: 'display' },
+  { name: 'Boldonse', class: 'boldonse-regular', category: 'display' },
   { name: 'Bruno Ace SC', class: 'bruno-ace-sc-regular', category: 'display' },
-  { name: 'Major Mono Display', class: 'major-mono-display-regular', category: 'mono' },
-  { name: 'Nova Square', class: 'font-nova', category: 'display' },
-  { name: 'Figtree', class: 'figtree-regular', category: 'sans' },
-  { name: 'JetBrains Mono', class: 'jetbrains-mono-regular', category: 'mono' },
-  { name: 'Crimson Text', class: 'crimson-text-regular', category: 'serif' },
-  { name: 'Lora', class: 'font-lora', category: 'serif' },
-  { name: 'Libre Baskerville', class: 'font-baskerville', category: 'serif' },
-  { name: 'EB Garamond', class: 'font-eb-garamond', category: 'serif' },
+  { name: 'Cabinet Grotesk', class: 'font-cabinet', category: 'display' },
+  { name: 'Clash Display', class: 'font-clash', category: 'display' },
+  { name: 'Clash Display Regular', class: 'font-clash-regular', category: 'display' },
   { name: 'Cormorant Garamond', class: 'font-cormorant-garamond', category: 'serif' },
+  { name: 'Crimson Text', class: 'crimson-text-regular', category: 'serif' },
+  { name: 'EB Garamond', class: 'font-eb-garamond', category: 'serif' },
+  { name: 'Electric', class: 'font-electric', category: 'display' },
+  { name: 'Figtree', class: 'figtree-regular', category: 'sans' },
+  { name: 'Geist', class: 'geist-regular', category: 'sans' },
+  { name: 'Ginger', class: 'font-ginger', category: 'display' },
+  { name: 'JetBrains Mono', class: 'jetbrains-mono-regular', category: 'mono' },
+  { name: 'Libre Baskerville', class: 'font-baskerville', category: 'serif' },
+  { name: 'Lora', class: 'font-lora', category: 'serif' },
+  { name: 'Major Mono Display', class: 'major-mono-display-regular', category: 'mono' },
+  { name: 'Manrope', class: 'font-manrope', category: 'sans' },
+  { name: 'Mondea', class: 'font-mondea', category: 'display' },
+  { name: 'Nohemi', class: 'font-nohemi', category: 'sans' },
+  { name: 'Nova Square', class: 'font-nova', category: 'display' },
+  { name: 'Orbito', class: 'font-orbito', category: 'display' },
+  { name: 'Prata', class: 'font-prata', category: 'serif' },
+  { name: 'Recoleta', class: 'font-recoleta', category: 'serif' },
+  { name: 'Resist Sans', class: 'font-resist', category: 'sans' },
+  { name: 'Space Grotesk', class: 'space-grotesk-regular', category: 'sans' },
   { name: 'Zalando Sans Expanded', class: 'zalando-sans-expanded', category: 'sans' },
+  { name: 'Zen Dots', class: 'zen-dots-regular', category: 'display' },
 ]
 
 // Computed properties for filtering and font weight classes
 const filteredFonts = computed(() => {
-  if (!searchQuery.value)
-    return fonts
+  const query = searchQuery.value.toLowerCase().trim()
 
-  const query = searchQuery.value.toLowerCase()
-  return fonts.filter(font =>
-    font.name.toLowerCase().includes(query)
-    || font.class.toLowerCase().includes(query)
-    || font.category.toLowerCase().includes(query),
-  )
+  return fonts
+    .filter((font) => {
+      if (!query)
+        return true
+
+      return (
+        font.name.toLowerCase().includes(query)
+        || font.class.toLowerCase().includes(query)
+        || font.category.toLowerCase().includes(query)
+      )
+    })
+    .sort((a, b) => a.name.localeCompare(b.name))
 })
 
 const weightClasses = {
@@ -58,180 +71,207 @@ const sampleTexts = {
   numbers: '0123456789',
   symbols: '!@#$%^&*()_+-=[]{}|;:"./<>?',
 }
+
+const fontsCount = computed(() => fonts.length)
 </script>
 
 <template>
-  <div class="min-h-screen p-8">
-    <div class="mx-auto max-w-7xl">
-      <!-- Header -->
-      <div class="mb-12">
-        <h1 class="mb-4 text-6xl color-pureBlack font-bold dark:color-pureWhite">
-          Font Preview
-        </h1>
-        <p class="text-xl color-gray-11 dark:color-gray-10">
-          Preview all your custom fonts with different weights and sizes
-        </p>
-      </div>
-
-      <!-- Controls Section -->
-      <div class="mb-12 space-y-8">
-        <!-- Search and Weight Controls -->
-        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <!-- Enhanced Search Bar -->
-          <div class="relative">
-            <label for="font-search" class="mb-4 block text-lg color-pureBlack font-semibold dark:color-pureWhite">
-              Search Fonts
-            </label>
-            <div class="relative">
-              <Icon
-                name="ri:search-line"
-                class="absolute left-4 top-1/2 size-5 transform color-gray-10 -translate-y-1/2"
-              />
-              <input
-                id="font-search"
-                v-model="searchQuery"
-                type="text"
-                class="bg-white w-full border border-gray-7 rounded-xl py-4 pl-12 pr-4 text-lg color-pureBlack transition-all duration-200 dark:border-gray-6 focus:border-transparent dark:bg-gray-8 dark:color-pureWhite focus:ring-2 focus:ring-mint-11"
-                placeholder="Search by name, class, or category..."
-              >
-              <div
-                v-if="searchQuery"
-                class="absolute right-4 top-1/2 transform cursor-pointer transition-colors -translate-y-1/2 hover:color-gray-12"
-                @click="searchQuery = ''"
-              >
-                <Icon name="ri:close-line" class="size-5" />
-              </div>
+  <div class="min-h-screen bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
+    <div class="mx-auto px-6 pb-24">
+      <header class="pt-6">
+        <div
+          class="grid grid-cols-1 border border-pureBlack/10 md:grid-cols-[1.3fr_1fr_1fr_1fr_1.2fr] dark:border-pureWhite/10"
+        >
+          <div class="flex items-center justify-between md:border-l md:border-pureBlack/10 dark:md:border-pureWhite/10">
+            <div class="text-sm tracking-widest uppercase">
+              Fonts
             </div>
-            <p class="mt-2 text-sm color-gray-10">
-              {{ filteredFonts.length }} of {{ fonts.length }} fonts
-            </p>
+            <div class="text-sm tabular-nums">
+              {{ fontsCount }}
+            </div>
           </div>
+          <div class="flex items-center justify-between p-6 md:border-l md:border-pureBlack/10 dark:md:border-pureWhite/10">
+            <div class="text-sm tracking-widest uppercase">
+              Pairs
+            </div>
+            <div class="text-sm tabular-nums">
+              0
+            </div>
+          </div>
+          <div class="flex items-center justify-between p-6 md:border-l md:border-pureBlack/10 dark:md:border-pureWhite/10">
+            <div class="text-sm tracking-widest uppercase">
+              Licenses
+            </div>
+            <div class="text-sm tabular-nums">
+              0
+            </div>
+          </div>
+          <div
+            class="flex items-center justify-between gap-6 p-6 md:border-l md:border-pureBlack/10 dark:md:border-pureWhite/10"
+          >
+            <div class="flex items-center gap-2">
+              <span class="h-0.5 w-8 bg-pureBlack/80 dark:bg-pureWhite/80" />
+              <span class="h-0.5 w-8 bg-pureBlack/80 dark:bg-pureWhite/80" />
+              <span class="h-0.5 w-8 bg-pureBlack/80 dark:bg-pureWhite/80" />
+            </div>
+            <div class="text-nowrap text-sm color-pureBlack/60 dark:color-pureWhite/60">
+              No styles selected
+            </div>
+          </div>
+        </div>
+      </header>
 
-          <!-- Font Weight Selector -->
+      <section class="mt-10 border-b border-t border-pureBlack/10 py-6 dark:border-pureWhite/10">
+        <div class="grid grid-cols-1 items-center gap-6 lg:grid-cols-[2fr_1fr_1fr]">
+          <div class="flex items-center gap-3 border-b border-pureBlack/10 border-solid pb-3 dark:border-pureWhite/10 focus-within:border-pureBlack dark:focus-within:border-pureWhite">
+            <Icon name="ri:search-line" class="size-5 color-pureBlack/60 dark:color-pureWhite/60" />
+            <input
+              id="font-search"
+              v-model="searchQuery"
+              type="text"
+              class="w-full bg-transparent text-sm color-pureBlack tracking-widest uppercase dark:color-pureWhite placeholder:color-pureBlack/40 focus:outline-none dark:placeholder:color-pureWhite/40"
+              placeholder="Search"
+            >
+          </div>
+          <button
+            class="flex items-center justify-between border-b border-pureBlack/10 pb-3 text-sm tracking-widest uppercase dark:border-pureWhite/10"
+            type="button"
+          >
+            Serif
+            <Icon name="ri:arrow-down-s-line" class="size-5" />
+          </button>
+          <div class="flex items-center justify-between gap-4 border-b border-pureBlack/10 pb-3 dark:border-pureWhite/10">
+            <div class="text-sm tracking-widest uppercase">
+              Size
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="text-sm tabular-nums">
+                {{ fontSize }}px
+              </div>
+              <input
+                v-model.number="fontSize"
+                type="range"
+                min="24"
+                max="160"
+                class="w-36 accent-pureBlack dark:accent-pureWhite"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 mt-8 gap-6 lg:grid-cols-[2fr_1fr]">
           <div>
-            <label class="mb-4 block text-lg color-pureBlack font-semibold dark:color-pureWhite">
-              Font Weight
-            </label>
-            <div class="flex space-x-2">
+            <div class="flex flex-wrap gap-3 text-xs tracking-widest uppercase">
+              <button
+                v-for="(text, key) in sampleTexts"
+                :key="key"
+                :class="useClsx(
+                  'border-b border-transparent pb-1 transition-colors',
+                  inputText === text
+                    ? 'border-pureBlack dark:border-pureWhite'
+                    : 'color-pureBlack/50 dark:color-pureWhite/50 hover:color-pureBlack dark:hover:color-pureWhite',
+                )"
+                type="button"
+                @click="inputText = text"
+              >
+                {{ key.charAt(0).toUpperCase() + key.slice(1) }}
+              </button>
+            </div>
+            <div class="mt-4 border-b border-pureBlack/10 pb-3 dark:border-pureWhite/10">
+              <input
+                id="font-input"
+                v-model="inputText"
+                type="text"
+                class="w-full bg-transparent text-2xl color-pureBlack dark:color-pureWhite placeholder:color-pureBlack/40 dark:placeholder:color-pureWhite/40"
+                placeholder="Enter text..."
+              >
+            </div>
+          </div>
+          <div class="flex items-end justify-between gap-2">
+            <div class="text-sm color-pureBlack/60 tracking-widest uppercase dark:color-pureWhite/60">
+              Weight
+            </div>
+            <div class="flex gap-3 text-xs tracking-widest uppercase">
               <button
                 v-for="weight in ['light', 'medium', 'regular']"
                 :key="weight"
                 :class="useClsx(
-                  'px-6 py-3 rounded-lg font-medium transition-all duration-200',
+                  'border-b border-transparent pb-1 transition-colors',
                   selectedWeight === weight
-                    ? 'bg-mint-11 color-pureWhite shadow-lg'
-                    : 'bg-white dark:bg-gray-8 color-gray-12 dark:color-gray-10 border border-gray-7 dark:border-gray-6 hover:bg-gray-1 dark:hover:bg-gray-7',
+                    ? 'border-pureBlack dark:border-pureWhite'
+                    : 'color-pureBlack/50 dark:color-pureWhite/50 hover:color-pureBlack dark:hover:color-pureWhite',
                 )"
+                type="button"
                 @click="selectedWeight = weight as any"
               >
-                {{ weight.charAt(0).toUpperCase() + weight.slice(1) }}
+                {{ weight }}
               </button>
             </div>
           </div>
         </div>
+      </section>
 
-        <!-- Custom Text Input -->
-        <div>
-          <label for="font-input" class="mb-4 block text-lg color-pureBlack font-semibold dark:color-pureWhite">
-            Custom Text
-          </label>
-          <div class="grid grid-cols-1 mb-4 gap-4 lg:grid-cols-4 md:grid-cols-2">
-            <button
-              v-for="(text, key) in sampleTexts"
-              :key="key"
-              :class="useClsx(
-                'px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200',
-                inputText === text
-                  ? 'bg-sand-12 color-pureWhite'
-                  : 'bg-white dark:bg-gray-8 color-gray-12 dark:color-gray-10 border border-gray-7 dark:border-gray-6 hover:bg-gray-1 dark:hover:bg-gray-7',
-              )"
-              @click="inputText = text"
-            >
-              {{ key.charAt(0).toUpperCase() + key.slice(1) }}
-            </button>
-          </div>
-          <input
-            id="font-input"
-            v-model="inputText"
-            type="text"
-            class="bg-white w-full border border-gray-7 rounded-xl p-4 text-lg color-pureBlack transition-all duration-200 dark:border-gray-6 focus:border-transparent dark:bg-gray-8 dark:color-pureWhite focus:ring-2 focus:ring-mint-11"
-            placeholder="Enter text to preview..."
-          >
+      <div class="mt-10 flex flex-col gap-4 text-xs tracking-widest uppercase md:flex-row md:items-center md:justify-between">
+        <div class="flex items-center gap-6">
+          <span class="text-2xl color-pureBlack dark:color-pureWhite">{{ filteredFonts.length }}</span>
+          <span class="color-pureBlack/50 dark:color-pureWhite/50">List view</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="color-pureBlack/50 dark:color-pureWhite/50">Sort by</span>
+          <span class="border-b border-pureBlack pb-1 dark:border-pureWhite">Alphabetical</span>
+          <span class="color-pureBlack/50 dark:color-pureWhite/50">Popular</span>
         </div>
       </div>
 
-      <!-- Font Previews -->
-      <div v-if="filteredFonts.length > 0" class="space-y-16">
+      <div v-if="filteredFonts.length > 0" class="mt-10 space-y-12">
         <div
           v-for="font in filteredFonts"
           :key="font.name"
-          class="bg-white border border-gray-7 rounded-2xl p-8 shadow-lg transition-all duration-300 dark:border-gray-6 dark:bg-gray-8 hover:shadow-xl"
+          class="border border-pureBlack rounded-3xl border-solid p-8 dark:border-pureWhite"
         >
-          <!-- Font Header -->
-          <div class="mb-8">
-            <div class="mb-4 flex items-center justify-between">
-              <h2 class="text-3xl color-pureBlack font-semibold dark:color-pureWhite">
-                {{ font.name }}
-              </h2>
-              <span
-                class="rounded-full bg-sand-3 px-3 py-1 text-sm color-sand-11 font-medium dark:bg-gray-7 dark:color-gray-10"
-              >
-                {{ font.category }}
-              </span>
+          <div class="mb-6 flex flex-wrap items-center justify-between gap-4 text-xs tracking-widest uppercase">
+            <div class="flex items-center gap-3">
+              <span class="color-pureBlack/60 dark:color-pureWhite/60">{{ font.category }}</span>
+              <span class="h-1 w-1 rounded-full bg-pureBlack/50 dark:bg-pureWhite/50" />
+              <span class="color-pureBlack/60 dark:color-pureWhite/60">{{ font.class }}</span>
             </div>
-            <p class="text-sm color-gray-10 font-mono">
-              Class: {{ font.class }}
-            </p>
+            <span class="color-pureBlack/50 dark:color-pureWhite/50">Variable</span>
           </div>
 
-          <!-- Main Font Preview -->
-          <div class="mb-8 rounded-xl bg-sand-2 p-6 dark:bg-gray-7">
-            <div
-              class="text-4xl color-pureBlack leading-tight dark:color-pureWhite" :class="[getFontClass(font.class)]"
-            >
-              {{ inputText }}
-            </div>
+          <div class="mb-6 text-6xl leading-none" :class="[getFontClass(font.class)]" :style="{ fontSize: `${fontSize}px` }">
+            {{ inputText }}
           </div>
 
-          <!-- Sample Characters Grid -->
-          <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+          <div class="grid grid-cols-1 gap-6 text-sm color-pureBlack/60 tracking-widest uppercase md:grid-cols-4 dark:color-pureWhite/60">
             <div>
-              <h3 class="mb-3 text-lg color-pureBlack font-semibold dark:color-pureWhite">
+              <div class="mb-2 text-[10px]">
                 Uppercase
-              </h3>
-              <div
-                class="text-2xl color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]"
-              >
+              </div>
+              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]">
                 ABCDEFGHIJKLMNOPQRSTUVWXYZ
               </div>
             </div>
             <div>
-              <h3 class="mb-3 text-lg color-pureBlack font-semibold dark:color-pureWhite">
+              <div class="mb-2 text-[10px]">
                 Lowercase
-              </h3>
-              <div
-                class="text-2xl color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]"
-              >
+              </div>
+              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]">
                 abcdefghijklmnopqrstuvwxyz
               </div>
             </div>
             <div>
-              <h3 class="mb-3 text-lg color-pureBlack font-semibold dark:color-pureWhite">
+              <div class="mb-2 text-[10px]">
                 Numbers
-              </h3>
-              <div
-                class="text-2xl color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]"
-              >
+              </div>
+              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]">
                 0123456789
               </div>
             </div>
             <div>
-              <h3 class="mb-3 text-lg color-pureBlack font-semibold dark:color-pureWhite">
-                Special Characters
-              </h3>
-              <div
-                class="text-2xl color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]"
-              >
+              <div class="mb-2 text-[10px]">
+                Symbols
+              </div>
+              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]">
                 {{ `!@#$ % ^ & * ()_ + -= []{}|;':",./<>?` }}
               </div>
             </div>
@@ -239,17 +279,16 @@ const sampleTexts = {
         </div>
       </div>
 
-      <!-- No Results -->
       <div v-else class="py-16 text-center">
-        <Icon name="ri:search-line" class="mx-auto mb-4 size-16 color-gray-10" />
-        <h3 class="mb-2 text-2xl color-pureBlack font-semibold dark:color-pureWhite">
+        <Icon name="ri:search-line" class="mx-auto mb-4 size-12 color-pureBlack/40 dark:color-pureWhite/40" />
+        <h3 class="mb-2 text-2xl color-pureBlack dark:color-pureWhite">
           No fonts found
         </h3>
-        <p class="color-gray-10">
+        <p class="color-pureBlack/60 dark:color-pureWhite/60">
           Try adjusting your search terms or browse all {{ fonts.length }} fonts
         </p>
         <button
-          class="mt-4 rounded-lg bg-mint-11 px-6 py-3 color-pureWhite transition-colors hover:bg-mint-10"
+          class="mt-6 border-b border-pureBlack pb-1 text-sm tracking-widest uppercase dark:border-pureWhite"
           @click="searchQuery = ''"
         >
           Clear Search
