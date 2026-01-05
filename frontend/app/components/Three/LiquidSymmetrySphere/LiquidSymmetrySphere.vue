@@ -5,10 +5,43 @@ import { useDocumentVisibility, useElementVisibility, useMutationObserver, useRa
 import { BufferAttribute, Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
 import { LiquidSymmetryDefaults } from './LiquidSymmetrySphere.model'
 import LiquidSymmetrySphereControls from './LiquidSymmetrySphereControls.vue'
+import { usePreferencesStore } from '~/stores/preferences'
+
+type QualityPresetName = 'low' | 'mid' | 'high'
+
+interface QualityPreset {
+  dprCap: number
+  meshSegments: number
+}
+
+const QUALITY_PRESETS: Record<QualityPresetName, QualityPreset> = {
+  low: {
+    dprCap: 1,
+    meshSegments: 24,
+  },
+  mid: {
+    dprCap: 1.25,
+    meshSegments: 28,
+  },
+  high: {
+    dprCap: 2,
+    meshSegments: 96,
+  },
+}
+
+const QUALITY_ORDER: QualityPresetName[] = ['low', 'mid', 'high']
+const QUALITY_CACHE_KEY = 'liquid-symmetry-quality:v1'
+const TARGET_FRAME_MS = 16.7
+const WARMUP_FRAMES = 20
+const MEASURE_FRAMES = 60
 
 const settings = reactive<LiquidSymmetrySettings>({ ...LiquidSymmetryDefaults })
+const preferencesStore = usePreferencesStore()
 const { width, height } = useWindowSize()
 const aspectRatio = computed(() => width.value / height.value)
+const canvasDpr = ref(1)
+const currentPresetName = ref<QualityPresetName>('low')
+const lastLog = ref<QualityPresetName | null>(null)
 
 const gradientModes = {
   vertical: 0,
@@ -37,6 +70,7 @@ const geometry = shallowRef<SphereGeometry | null>(null)
 const baseTransparency = ref(settings.transparency)
 const targetVisibility = ref(1)
 const sphereVisibility = ref(1)
+const lastGeometryKey = reactive({ meshDensity: settings.meshDensity, sphereSize: settings.sphereSize })
 const vanishEpsilon = 0.02
 const vanishSpeed = 18
 const appearSpeed = 10
@@ -117,8 +151,15 @@ function setVectorUniform(uniform: { value: Vector3 }, r: number, g: number, b: 
   uniform.value.set(r, g, b)
 }
 
-function buildGeometry() {
-  const next = new SphereGeometry(settings.sphereSize, settings.meshDensity, settings.meshDensity)
+function buildGeometry(meshSegments = settings.meshDensity) {
+  settings.meshDensity = meshSegments
+  if (meshSegments === lastGeometryKey.meshDensity && settings.sphereSize === lastGeometryKey.sphereSize && geometry.value)
+    return
+
+  lastGeometryKey.meshDensity = meshSegments
+  lastGeometryKey.sphereSize = settings.sphereSize
+
+  const next = new SphereGeometry(settings.sphereSize, meshSegments, meshSegments)
   const attribute = next.getAttribute('position') as BufferAttribute
   const positions = new Float32Array(attribute.count * 3)
   craterAttribute = new BufferAttribute(new Float32Array(attribute.count), 1)
@@ -156,13 +197,144 @@ function buildMaterial() {
     mesh.value.material = next
 }
 
+function getDeviceKey() {
+  if (import.meta.server)
+    return QUALITY_CACHE_KEY
+  const ua = navigator.userAgent || 'unknown'
+  const dpr = window.devicePixelRatio || 1
+  const size = `${window.screen?.width ?? 0}x${window.screen?.height ?? 0}`
+  return `${QUALITY_CACHE_KEY}:${ua}:${dpr}:${size}`
+}
+
+function readCachedPreset(): { preset: QualityPresetName, source: 'cookie' | 'localStorage' } | null {
+  if (import.meta.server)
+    return null
+  const pref = preferencesStore.getPreferences().qualityPreset
+  if (pref === 'low' || pref === 'mid' || pref === 'high')
+    return { preset: pref, source: 'cookie' }
+  try {
+    const key = getDeviceKey()
+    const cached = localStorage.getItem(key)
+    if (cached === 'low' || cached === 'mid' || cached === 'high')
+      return { preset: cached, source: 'localStorage' }
+  }
+  catch {
+    // ignore storage failures
+  }
+  return null
+}
+
+function writeCachedPreset(preset: QualityPresetName) {
+  if (import.meta.server)
+    return
+  try {
+    localStorage.setItem(getDeviceKey(), preset)
+  }
+  catch {
+    // ignore storage failures
+  }
+}
+
+function logPresetChange(presetName: QualityPresetName, reason: string) {
+  if (import.meta.server)
+    return
+  if (lastLog.value === presetName && reason === 'boot-safety')
+    return
+  // eslint-disable-next-line no-console
+  console.info('[LiquidSymmetry] preset', presetName, 'reason:', reason)
+  lastLog.value = presetName
+}
+
+function applyPreset(presetName: QualityPresetName, options: { rebuildGeometry?: boolean, reason?: string, persist?: boolean, log?: boolean } = {}) {
+  if (import.meta.server)
+    return
+  const preset = QUALITY_PRESETS[presetName]
+  currentPresetName.value = presetName
+  canvasDpr.value = Math.min(window.devicePixelRatio || 1, preset.dprCap)
+  settings.meshDensity = preset.meshSegments
+  if (options.rebuildGeometry !== false)
+    buildGeometry(preset.meshSegments)
+  if (options.persist !== false)
+    preferencesStore.setPreferences({ qualityPreset: presetName })
+  if (options.log !== false)
+    logPresetChange(presetName, options.reason ?? 'apply')
+}
+
+function percentile(values: number[], p: number) {
+  if (!values.length)
+    return 0
+  const sorted = [...values].sort((a, b) => a - b)
+  const idx = Math.min(sorted.length - 1, Math.floor(sorted.length * p))
+  return sorted[idx]
+}
+
+function pickPreset(stats: { p90Ms: number }, target = TARGET_FRAME_MS): QualityPresetName {
+  if (stats.p90Ms > target * 1.35)
+    return 'low'
+  if (stats.p90Ms > target * 1.1)
+    return 'mid'
+  return 'high'
+}
+
+function measureFrames({ warmup = WARMUP_FRAMES, measure = MEASURE_FRAMES } = {}) {
+  if (import.meta.server)
+    return Promise.resolve({ avgMs: TARGET_FRAME_MS, p90Ms: TARGET_FRAME_MS })
+
+  return new Promise<{ avgMs: number, p90Ms: number }>((resolve) => {
+    let count = 0
+    let last = performance.now()
+    const samples: number[] = []
+
+    function tick() {
+      const now = performance.now()
+      const dt = now - last
+      last = now
+      count += 1
+      if (count > warmup)
+        samples.push(dt)
+
+      if (count >= warmup + measure) {
+        samples.sort((a, b) => a - b)
+        const avg = samples.reduce((sum, v) => sum + v, 0) / samples.length
+        const p90 = samples[Math.floor(samples.length * 0.9)]
+        resolve({ avgMs: avg, p90Ms: p90 })
+        return
+      }
+      requestAnimationFrame(tick)
+    }
+
+    requestAnimationFrame(tick)
+  })
+}
+
+async function autoQualityBoot() {
+  const cached = readCachedPreset()
+  const stats = await measureFrames()
+  const measured = pickPreset(stats)
+  const cachedPreset = cached?.preset
+  const chosen = cachedPreset
+    ? QUALITY_ORDER[Math.max(QUALITY_ORDER.indexOf(cachedPreset), QUALITY_ORDER.indexOf(measured))]
+    : measured
+
+  if (chosen !== currentPresetName.value)
+    applyPreset(chosen, { reason: cached ? 'boot-upgrade' : 'boot-measured' })
+  else
+    logPresetChange(chosen, 'boot-final')
+
+  writeCachedPreset(chosen)
+}
+
 onMounted(() => {
+  const cached = readCachedPreset()
+  const initialPreset = cached?.preset ?? 'low'
+  applyPreset(initialPreset, { rebuildGeometry: false, reason: cached ? `boot-${cached.source}` : 'boot-safety', persist: false, log: false })
   buildGeometry()
   buildMaterial()
   mesh.value = new Mesh(geometry.value!, material.value!)
   const isTransitioning = document.documentElement.dataset.themeTransitioning === 'true'
   targetVisibility.value = isTransitioning ? 0 : 1
   sphereVisibility.value = targetVisibility.value
+  autoQualityBoot()
 })
 
 onBeforeUnmount(() => {
@@ -322,6 +494,7 @@ onMounted(() => {
   <div ref="container" class="relative h-full w-full">
     <ClientOnly>
       <TresCanvas
+        :dpr="canvasDpr"
         :alpha="true"
         :clear-alpha="0"
         clear-color="#000000"

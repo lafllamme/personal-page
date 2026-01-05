@@ -4,6 +4,7 @@ export interface UserPreferences {
   flashlight: boolean
   radius: number
   dim: number
+  qualityPreset?: string
 }
 
 // This store is a thin cookie facade. It should not hold UI state.
