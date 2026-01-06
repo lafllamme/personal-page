@@ -45,7 +45,7 @@ const vanishSpeed = 18
 const appearSpeed = 10
 
 /** Enable verbose visibility diagnostics in dev. */
-const DEBUG_VIS = true
+const DEBUG_VIS = false
 
 /** Required visible ratio to animate (0..1). High on purpose for debugging. */
 const VISIBILITY_THRESHOLD = 0.3
@@ -57,7 +57,8 @@ const { width, height } = useWindowSize()
 const aspectRatio = computed(() => width.value / height.value)
 
 const canvasDpr = ref(1)
-const currentPresetName = ref<QualityPresetName>('low')
+const initialPresetName = readCachedPreset()?.preset ?? 'low'
+const currentPresetName = ref<QualityPresetName>(initialPresetName)
 const lastLog = ref<QualityPresetName | null>(null)
 
 /** Container observed for visibility. */
@@ -212,20 +213,19 @@ function getDeviceKey() {
 
 /** Reads a preset from cookie preferences, falling back to localStorage. */
 function readCachedPreset(): { preset: QualityPresetName, source: 'cookie' | 'localStorage' } | null {
-  if (import.meta.server)
-    return null
-
   const pref = preferencesStore.getPreferences().qualityPreset
   if (pref === 'low' || pref === 'mid' || pref === 'high')
     return { preset: pref, source: 'cookie' }
 
-  try {
-    const cached = localStorage.getItem(getDeviceKey())
-    if (cached === 'low' || cached === 'mid' || cached === 'high')
-      return { preset: cached, source: 'localStorage' }
-  }
-  catch {
-    // ignore storage failures
+  if (import.meta.client) {
+    try {
+      const cached = localStorage.getItem(getDeviceKey())
+      if (cached === 'low' || cached === 'mid' || cached === 'high')
+        return { preset: cached, source: 'localStorage' }
+    }
+    catch {
+      // ignore storage failures
+    }
   }
 
   return null
