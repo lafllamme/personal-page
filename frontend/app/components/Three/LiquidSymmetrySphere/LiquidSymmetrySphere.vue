@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
 import { TresCanvas } from '@tresjs/core'
 import { useDocumentVisibility, useElementVisibility, useMutationObserver, useRafFn, useWindowSize } from '@vueuse/core'
-import { BufferAttribute, Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
 import consola from 'consola'
-import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
+import { Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
 import { usePreferencesStore } from '~/stores/preferences'
 import { LiquidSymmetryDefaults } from './LiquidSymmetrySphere.model'
 import LiquidSymmetrySphereControls from './LiquidSymmetrySphereControls.vue'
@@ -55,11 +55,23 @@ const uniforms = {
   time: { value: 0 },
   color1: { value: new Vector3(settings.color1R, settings.color1G, settings.color1B) },
   color2: { value: new Vector3(settings.color2R, settings.color2G, settings.color2B) },
+  craterTint: { value: new Vector3() },
   gradientMode: { value: gradientModes[settings.gradientMode] },
   glowSpeed: { value: settings.glowSpeed },
   glowAmount: { value: settings.glowAmount },
   transparency: { value: settings.transparency },
   sphereSize: { value: settings.sphereSize },
+  bubble1Speed: { value: settings.bubble1Speed },
+  bubble1Amount: { value: settings.bubble1Amount },
+  bubble1Frequency: { value: settings.bubble1Frequency },
+  bubble2Speed: { value: settings.bubble2Speed },
+  bubble2Amount: { value: settings.bubble2Amount },
+  bubble2Frequency: { value: settings.bubble2Frequency },
+  bubble3Speed: { value: settings.bubble3Speed },
+  bubble3Amount: { value: settings.bubble3Amount },
+  bubble3Frequency: { value: settings.bubble3Frequency },
+  pulseSpeed: { value: settings.pulseSpeed },
+  pulseAmount: { value: settings.pulseAmount },
   craterDepth: { value: settings.craterDepth },
   craterDarken: { value: settings.craterDarken },
   craterTintMix: { value: settings.craterTintMix },
@@ -71,7 +83,7 @@ const geometry = shallowRef<SphereGeometry | null>(null)
 const baseTransparency = ref(settings.transparency)
 const targetVisibility = ref(1)
 const sphereVisibility = ref(1)
-const lastGeometryKey = reactive({ meshDensity: settings.meshDensity, sphereSize: settings.sphereSize })
+let lastGeometryKey = { meshDensity: settings.meshDensity }
 const vanishEpsilon = 0.02
 const vanishSpeed = 18
 const appearSpeed = 10
@@ -79,22 +91,40 @@ const container = ref<HTMLElement | null>(null)
 const isVisible = useElementVisibility(container)
 const documentVisibility = useDocumentVisibility()
 
-let originalPositions = new Float32Array(0)
-let positionAttribute: BufferAttribute | null = null
-let craterAttribute: BufferAttribute | null = null
-
 const vertexShader = `
-  attribute float aCrater;
+  uniform float time;
+  uniform float bubble1Speed;
+  uniform float bubble1Amount;
+  uniform float bubble1Frequency;
+  uniform float bubble2Speed;
+  uniform float bubble2Amount;
+  uniform float bubble2Frequency;
+  uniform float bubble3Speed;
+  uniform float bubble3Amount;
+  uniform float bubble3Frequency;
+  uniform float pulseSpeed;
+  uniform float pulseAmount;
+  uniform float sphereSize;
   varying vec3 vPosition;
   varying vec3 vNormalV;
   varying vec3 vViewDir;
   varying float vCrater;
   void main() {
-    vPosition = position;
-    vCrater = aCrater;
-    vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-    vNormalV = normalize(normalMatrix * normal);
+    vec3 scaledPos = position * sphereSize;
+    float dist = length(scaledPos);
+    float bubble1 = sin(time * bubble1Speed + scaledPos.x * bubble1Frequency + scaledPos.y * bubble1Frequency) * bubble1Amount;
+    float bubble2 = sin(time * bubble2Speed + scaledPos.y * bubble2Frequency + scaledPos.z * bubble2Frequency) * bubble2Amount;
+    float bubble3 = cos(time * bubble3Speed + scaledPos.z * bubble3Frequency + scaledPos.x * bubble3Frequency) * bubble3Amount;
+    float radialPulse = sin(time * pulseSpeed + dist * 4.0) * pulseAmount;
+    float displacement = bubble1 + bubble2 + bubble3 + radialPulse;
+    float invDist = dist > 0.0001 ? 1.0 / dist : 0.0;
+    vec3 displaced = scaledPos + scaledPos * (displacement * invDist);
+    vec4 mvPosition = modelViewMatrix * vec4(displaced, 1.0);
+    vPosition = displaced;
     vViewDir = normalize(-mvPosition.xyz);
+    vec3 displacedNormal = normalize(normalMatrix * (scaledPos + scaledPos * (displacement * invDist)));
+    vNormalV = displacedNormal;
+    vCrater = max(0.0, -displacement);
     gl_Position = projectionMatrix * mvPosition;
   }
 `
@@ -111,6 +141,7 @@ const fragmentShader = `
   uniform float craterDepth;
   uniform float craterDarken;
   uniform float craterTintMix;
+  uniform vec3 craterTint;
   varying vec3 vPosition;
   varying vec3 vNormalV;
   varying vec3 vViewDir;
@@ -134,7 +165,6 @@ const fragmentShader = `
     float glow = 0.9 + sin(time * glowSpeed) * glowAmount;
 
     float crater = clamp(vCrater * craterDepth, 0.0, 1.0);
-    vec3 craterTint = mix(color1, color2, 0.65);
     finalColor = mix(finalColor, craterTint, crater * craterTintMix);
     finalColor *= 1.0 - crater * craterDarken;
 
@@ -153,30 +183,15 @@ function setVectorUniform(uniform: { value: Vector3 }, r: number, g: number, b: 
 }
 
 function buildGeometry(meshSegments = settings.meshDensity) {
-  settings.meshDensity = meshSegments
-  if (meshSegments === lastGeometryKey.meshDensity && settings.sphereSize === lastGeometryKey.sphereSize && geometry.value)
+  if (meshSegments === lastGeometryKey.meshDensity && geometry.value)
     return
 
-  lastGeometryKey.meshDensity = meshSegments
-  lastGeometryKey.sphereSize = settings.sphereSize
+  lastGeometryKey = { meshDensity: meshSegments }
 
-  const next = new SphereGeometry(settings.sphereSize, meshSegments, meshSegments)
-  const attribute = next.getAttribute('position') as BufferAttribute
-  const positions = new Float32Array(attribute.count * 3)
-  craterAttribute = new BufferAttribute(new Float32Array(attribute.count), 1)
-  next.setAttribute('aCrater', craterAttribute)
-
-  for (let i = 0; i < attribute.count; i++) {
-    positions[i * 3] = attribute.getX(i)
-    positions[i * 3 + 1] = attribute.getY(i)
-    positions[i * 3 + 2] = attribute.getZ(i)
-  }
+  const next = new SphereGeometry(1, meshSegments, meshSegments)
 
   geometry.value?.dispose()
   geometry.value = next
-  originalPositions = positions
-  positionAttribute = attribute
-  uniforms.sphereSize.value = settings.sphereSize
 
   if (mesh.value)
     mesh.value.geometry = next
@@ -196,6 +211,13 @@ function buildMaterial() {
 
   if (mesh.value)
     mesh.value.material = next
+}
+
+function updateMeshScale(breathScale = 1) {
+  if (!mesh.value)
+    return
+  const visScale = 0.05 + 0.95 * sphereVisibility.value
+  mesh.value.scale.setScalar(settings.sphereSize * visScale * breathScale)
 }
 
 function getDeviceKey() {
@@ -271,14 +293,6 @@ function applyPreset(
     preferencesStore.setPreferences({ qualityPreset: presetName })
   if (options.log !== false)
     logPresetChange(presetName, options.reason ?? 'apply', options.context)
-}
-
-function percentile(values: number[], p: number) {
-  if (!values.length)
-    return 0
-  const sorted = [...values].sort((a, b) => a - b)
-  const idx = Math.min(sorted.length - 1, Math.floor(sorted.length * p))
-  return sorted[idx]
 }
 
 function pickPreset(stats: { p90Ms: number }, target = TARGET_FRAME_MS): QualityPresetName {
@@ -364,6 +378,7 @@ onMounted(() => {
   buildGeometry()
   buildMaterial()
   mesh.value = new Mesh(geometry.value!, material.value!)
+  updateMeshScale()
   const isTransitioning = document.documentElement.dataset.themeTransitioning === 'true'
   targetVisibility.value = isTransitioning ? 0 : 1
   sphereVisibility.value = targetVisibility.value
@@ -391,48 +406,42 @@ if (import.meta.client) {
 }
 
 watch(
-  () => [settings.meshDensity, settings.sphereSize],
-  () => buildGeometry(),
+  () => settings.meshDensity,
+  density => buildGeometry(density),
 )
 
-watch(
-  () => [settings.color1R, settings.color1G, settings.color1B],
-  ([r, g, b]) => {
-    setVectorUniform(uniforms.color1, r, g, b)
-  },
-)
+watchEffect(() => {
+  setVectorUniform(uniforms.color1, settings.color1R, settings.color1G, settings.color1B)
+  setVectorUniform(uniforms.color2, settings.color2R, settings.color2G, settings.color2B)
+  uniforms.craterTint.value.set(
+    settings.color1R * 0.35 + settings.color2R * 0.65,
+    settings.color1G * 0.35 + settings.color2G * 0.65,
+    settings.color1B * 0.35 + settings.color2B * 0.65,
+  )
+  uniforms.gradientMode.value = gradientModes[settings.gradientMode]
+  uniforms.glowSpeed.value = settings.glowSpeed
+  uniforms.glowAmount.value = settings.glowAmount
+  baseTransparency.value = settings.transparency
+  uniforms.craterDepth.value = settings.craterDepth
+  uniforms.craterDarken.value = settings.craterDarken
+  uniforms.craterTintMix.value = settings.craterTintMix
+  uniforms.bubble1Speed.value = settings.bubble1Speed
+  uniforms.bubble1Amount.value = settings.bubble1Amount
+  uniforms.bubble1Frequency.value = settings.bubble1Frequency
+  uniforms.bubble2Speed.value = settings.bubble2Speed
+  uniforms.bubble2Amount.value = settings.bubble2Amount
+  uniforms.bubble2Frequency.value = settings.bubble2Frequency
+  uniforms.bubble3Speed.value = settings.bubble3Speed
+  uniforms.bubble3Amount.value = settings.bubble3Amount
+  uniforms.bubble3Frequency.value = settings.bubble3Frequency
+  uniforms.pulseSpeed.value = settings.pulseSpeed
+  uniforms.pulseAmount.value = settings.pulseAmount
+  uniforms.sphereSize.value = settings.sphereSize
+})
 
 watch(
-  () => [settings.color2R, settings.color2G, settings.color2B],
-  ([r, g, b]) => {
-    setVectorUniform(uniforms.color2, r, g, b)
-  },
-)
-
-watch(
-  () => settings.gradientMode,
-  (mode) => {
-    uniforms.gradientMode.value = gradientModes[mode]
-  },
-)
-
-watch(
-  () => [
-    settings.glowSpeed,
-    settings.glowAmount,
-    settings.transparency,
-    settings.craterDepth,
-    settings.craterDarken,
-    settings.craterTintMix,
-  ],
-  ([glowSpeed, glowAmount, transparency, craterDepth, craterDarken, craterTintMix]) => {
-    uniforms.glowSpeed.value = glowSpeed
-    uniforms.glowAmount.value = glowAmount
-    baseTransparency.value = transparency
-    uniforms.craterDepth.value = craterDepth
-    uniforms.craterDarken.value = craterDarken
-    uniforms.craterTintMix.value = craterTintMix
-  },
+  () => settings.sphereSize,
+  () => updateMeshScale(),
 )
 
 watch(
@@ -447,7 +456,7 @@ const cameraPosition = computed(() => [0, 0, settings.cameraDistance] as const)
 
 let time = 0
 const { pause, resume } = useRafFn(({ delta }) => {
-  if (!mesh.value || !positionAttribute || originalPositions.length === 0)
+  if (!mesh.value)
     return
 
   const frameScale = Math.min(delta / 16.6667, 2)
@@ -459,55 +468,23 @@ const { pause, resume } = useRafFn(({ delta }) => {
   if (targetVisibility.value === 0 && sphereVisibility.value < vanishEpsilon)
     sphereVisibility.value = 0
   uniforms.transparency.value = baseTransparency.value * sphereVisibility.value
-
-  const count = positionAttribute.count
-  for (let i = 0; i < count; i++) {
-    const x = originalPositions[i * 3]
-    const y = originalPositions[i * 3 + 1]
-    const z = originalPositions[i * 3 + 2]
-
-    const dist = Math.sqrt(x * x + y * y + z * z) || 1
-
-    const bubble1 = Math.sin(time * settings.bubble1Speed + x * settings.bubble1Frequency + y * settings.bubble1Frequency) * settings.bubble1Amount
-    const bubble2 = Math.sin(time * settings.bubble2Speed + y * settings.bubble2Frequency + z * settings.bubble2Frequency) * settings.bubble2Amount
-    const bubble3 = Math.cos(time * settings.bubble3Speed + z * settings.bubble3Frequency + x * settings.bubble3Frequency) * settings.bubble3Amount
-
-    const radialPulse = Math.sin(time * settings.pulseSpeed + dist * 4) * settings.pulseAmount
-
-    const displacement = bubble1 + bubble2 + bubble3 + radialPulse
-    const scale = displacement / dist
-
-    positionAttribute.setXYZ(
-      i,
-      x + x * scale,
-      y + y * scale,
-      z + z * scale,
-    )
-    if (craterAttribute)
-      craterAttribute.setX(i, Math.max(0, -displacement))
-  }
-
-  positionAttribute.needsUpdate = true
-  if (craterAttribute)
-    craterAttribute.needsUpdate = true
-
   mesh.value.rotation.y += settings.rotationYSpeed * frameScale
   mesh.value.rotation.x = Math.sin(time * settings.rotationXSpeed) * settings.rotationXAmount
 
   if (settings.breathingEnabled) {
     const breathScale = 1 + Math.sin(time * settings.breathingSpeed) * settings.breathingIntensity
-    const visScale = 0.05 + 0.95 * sphereVisibility.value
-    mesh.value.scale.set(breathScale * visScale, breathScale * visScale, breathScale * visScale)
+    updateMeshScale(breathScale)
   }
   else {
-    const visScale = 0.05 + 0.95 * sphereVisibility.value
-    mesh.value.scale.set(visScale, visScale, visScale)
+    updateMeshScale()
   }
 }, { immediate: false })
 
 const shouldAnimate = computed(() => {
   return isVisible.value && documentVisibility.value === 'visible'
 })
+
+const renderMode = computed(() => shouldAnimate.value ? 'always' : 'on-demand')
 
 onMounted(() => {
   watch(
@@ -531,7 +508,7 @@ onMounted(() => {
         :alpha="true"
         :clear-alpha="0"
         clear-color="#000000"
-        render-mode="always"
+        :render-mode="renderMode"
       >
         <TresPerspectiveCamera
           :aspect="aspectRatio"
