@@ -188,7 +188,7 @@ const heroButtonStyles = computed(() => {
         <div class="absolute left-1/2 top-1/2 z-20 flex flex-col items-center">
           <div
             :class="selectedButtonFont"
-            class="font-recoleta text-[clamp(1.5rem,3vw+0.5rem,3rem)] color-pureBlack font-light tracking-[12px] uppercase transition-transform duration-150 ease-out will-change-transform dark:color-pureWhite"
+            class="font-clash text-[clamp(1.5rem,3vw+0.5rem,3rem)] color-pureBlack font-light tracking-[12px] uppercase transition-transform duration-150 ease-out will-change-transform dark:color-pureWhite"
             :style="heroButtonStyles"
           >
             <div class="flex flex-col items-center justify-center gap-2">
