@@ -1,11 +1,12 @@
 <script lang="ts" setup>
-import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
 import { TresCanvas } from '@tresjs/core'
 import { useDocumentVisibility, useElementVisibility, useMutationObserver, useRafFn, useWindowSize } from '@vueuse/core'
 import { BufferAttribute, Mesh, ShaderMaterial, SphereGeometry, Vector3 } from 'three'
+import consola from 'consola'
+import type { LiquidSymmetrySettings } from './LiquidSymmetrySphere.model'
+import { usePreferencesStore } from '~/stores/preferences'
 import { LiquidSymmetryDefaults } from './LiquidSymmetrySphere.model'
 import LiquidSymmetrySphereControls from './LiquidSymmetrySphereControls.vue'
-import { usePreferencesStore } from '~/stores/preferences'
 
 type QualityPresetName = 'low' | 'mid' | 'high'
 
@@ -17,14 +18,14 @@ interface QualityPreset {
 const QUALITY_PRESETS: Record<QualityPresetName, QualityPreset> = {
   low: {
     dprCap: 1,
-    meshSegments: 24,
+    meshSegments: 56,
   },
   mid: {
     dprCap: 1.25,
-    meshSegments: 28,
+    meshSegments: 64,
   },
   high: {
-    dprCap: 2,
+    dprCap: 1.75,
     meshSegments: 96,
   },
 }
@@ -235,17 +236,29 @@ function writeCachedPreset(preset: QualityPresetName) {
   }
 }
 
-function logPresetChange(presetName: QualityPresetName, reason: string) {
+function logPresetChange(presetName: QualityPresetName, reason: string, context?: Record<string, unknown>) {
   if (import.meta.server)
     return
   if (lastLog.value === presetName && reason === 'boot-safety')
     return
-  // eslint-disable-next-line no-console
-  console.info('[LiquidSymmetry] preset', presetName, 'reason:', reason)
+
+  if (context)
+    consola.debug('[LiquidSymmetry] preset', presetName, 'reason:', reason, context)
+  else
+    consola.debug('[LiquidSymmetry] preset', presetName, 'reason:', reason)
   lastLog.value = presetName
 }
 
-function applyPreset(presetName: QualityPresetName, options: { rebuildGeometry?: boolean, reason?: string, persist?: boolean, log?: boolean } = {}) {
+function applyPreset(
+  presetName: QualityPresetName,
+  options: {
+    rebuildGeometry?: boolean
+    reason?: string
+    persist?: boolean
+    log?: boolean
+    context?: Record<string, unknown>
+  } = {},
+) {
   if (import.meta.server)
     return
   const preset = QUALITY_PRESETS[presetName]
@@ -257,7 +270,7 @@ function applyPreset(presetName: QualityPresetName, options: { rebuildGeometry?:
   if (options.persist !== false)
     preferencesStore.setPreferences({ qualityPreset: presetName })
   if (options.log !== false)
-    logPresetChange(presetName, options.reason ?? 'apply')
+    logPresetChange(presetName, options.reason ?? 'apply', options.context)
 }
 
 function percentile(values: number[], p: number) {
@@ -269,9 +282,10 @@ function percentile(values: number[], p: number) {
 }
 
 function pickPreset(stats: { p90Ms: number }, target = TARGET_FRAME_MS): QualityPresetName {
-  if (stats.p90Ms > target * 1.35)
+  // Push häufiger in Mid, High nur wenn klar Luft ist
+  if (stats.p90Ms > target * 1.30)
     return 'low'
-  if (stats.p90Ms > target * 1.1)
+  if (stats.p90Ms > target)
     return 'mid'
   return 'high'
 }
@@ -316,10 +330,29 @@ async function autoQualityBoot() {
     ? QUALITY_ORDER[Math.max(QUALITY_ORDER.indexOf(cachedPreset), QUALITY_ORDER.indexOf(measured))]
     : measured
 
-  if (chosen !== currentPresetName.value)
-    applyPreset(chosen, { reason: cached ? 'boot-upgrade' : 'boot-measured' })
-  else
-    logPresetChange(chosen, 'boot-final')
+  if (chosen !== currentPresetName.value) {
+    applyPreset(chosen, {
+      reason: cached ? 'boot-upgrade' : 'boot-measured',
+      context: {
+        p90Ms: Number(stats.p90Ms.toFixed(2)),
+        avgMs: Number(stats.avgMs.toFixed(2)),
+        targetMs: TARGET_FRAME_MS,
+        measured,
+        cached: cachedPreset ?? null,
+        chosen,
+      },
+    })
+  }
+  else {
+    logPresetChange(chosen, 'boot-final', {
+      p90Ms: Number(stats.p90Ms.toFixed(2)),
+      avgMs: Number(stats.avgMs.toFixed(2)),
+      targetMs: TARGET_FRAME_MS,
+      measured,
+      cached: cachedPreset ?? null,
+      chosen,
+    })
+  }
 
   writeCachedPreset(chosen)
 }
