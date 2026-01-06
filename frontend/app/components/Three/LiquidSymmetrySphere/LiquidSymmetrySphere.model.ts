@@ -39,7 +39,7 @@ export interface LiquidSymmetrySettings {
 }
 
 export const LiquidSymmetryDefaults: LiquidSymmetrySettings = {
-  meshDensity: 144,
+  meshDensity: 96,
   wireframe: true,
   animationSpeed: 0.016,
   bubble1Speed: 2,
@@ -54,7 +54,7 @@ export const LiquidSymmetryDefaults: LiquidSymmetrySettings = {
   pulseSpeed: 0.8,
   pulseAmount: 0.05,
   transparency: 1,
-  sphereSize: 1.6,
+  sphereSize: 1.2,
   cameraDistance: 3.5,
   rotationYSpeed: 0.002,
   rotationXSpeed: 0.3,

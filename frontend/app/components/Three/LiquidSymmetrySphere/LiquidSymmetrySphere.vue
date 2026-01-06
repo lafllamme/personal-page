@@ -484,16 +484,31 @@ const shouldAnimate = computed(() => {
   return isVisible.value && documentVisibility.value === 'visible'
 })
 
-const renderMode = computed(() => shouldAnimate.value ? 'always' : 'on-demand')
-
 onMounted(() => {
   watch(
     shouldAnimate,
     (active) => {
+      consola.debug('[LiquidSymmetry] shouldAnimate changed', { active, isVisible: isVisible.value, documentVisibility: documentVisibility.value })
       if (active)
         resume()
       else
         pause()
+    },
+    { immediate: true },
+  )
+
+  watch(
+    isVisible,
+    (visible) => {
+      consola.debug('[LiquidSymmetry] isVisible changed', { visible })
+    },
+    { immediate: true },
+  )
+
+  watch(
+    documentVisibility,
+    (visibility) => {
+      consola.debug('[LiquidSymmetry] documentVisibility changed', { visibility })
     },
     { immediate: true },
   )
@@ -508,7 +523,7 @@ onMounted(() => {
         :alpha="true"
         :clear-alpha="0"
         clear-color="#000000"
-        :render-mode="renderMode"
+        render-mode="always"
       >
         <TresPerspectiveCamera
           :aspect="aspectRatio"
