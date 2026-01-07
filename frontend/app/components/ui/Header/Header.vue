@@ -1,5 +1,6 @@
 <script lang="ts" setup>
-import { useCssVar, useEventListener, useResizeObserver, useThrottleFn, useWindowScroll } from '@vueuse/core'
+import type { CSSProperties } from 'vue'
+import { useCssVar, useEventListener, useResizeObserver, useThrottleFn, useTimeoutFn, useWindowScroll } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 // Import external components and utilities
 import ColorMode from '~/components/ui/ColorMode/ColorMode.vue'
@@ -84,6 +85,51 @@ const headerRef = ref<HTMLElement | null>(null)
 
 const { y } = useWindowScroll({ throttle: 100 })
 
+// Intro animation values synced with the overlay lifecycle
+type HeaderIntroPhase = 'pre' | 'animating' | 'done'
+const overlayVisible = useState('intro-overlay-visible', () => true)
+const headerIntroPhase = ref<HeaderIntroPhase>(overlayVisible.value ? 'pre' : 'done')
+const headerIntroDurationMs = 800
+const headerIntroDelayMs = 140
+
+const { start: markIntroSettled, stop: stopIntroSettled } = useTimeoutFn(() => {
+  headerIntroPhase.value = 'done'
+}, headerIntroDurationMs, { immediate: false })
+
+const { start: scheduleIntroStart, stop: cancelIntroStart } = useTimeoutFn(() => {
+  if (headerIntroPhase.value !== 'pre')
+    return
+  headerIntroPhase.value = 'animating'
+  markIntroSettled()
+}, headerIntroDelayMs, { immediate: false })
+
+watch(overlayVisible, (visible) => {
+  if (visible) {
+    cancelIntroStart()
+    stopIntroSettled()
+    headerIntroPhase.value = 'pre'
+    return
+  }
+  if (headerIntroPhase.value === 'pre')
+    scheduleIntroStart()
+}, { immediate: true })
+
+const headerIntroStyle = computed<CSSProperties>(() => {
+  const translate = headerIntroPhase.value === 'pre' ? 'translate3d(0,-70px,0)' : 'translate3d(0,0,0)'
+  return {
+    transform: translate,
+  }
+})
+
+const glassClass = computed(() => {
+  if (headerIntroPhase.value !== 'done') {
+    return 'backdrop-blur-[18px] backdrop-saturate-180 backdrop-contrast-115 bg-pureWhite/50 dark:bg-pureBlack/35 ring-0'
+  }
+  return effectiveHeaderMinimized.value
+    ? 'backdrop-blur-[12px] backdrop-saturate-180 backdrop-contrast-115 bg-transparent ring-1 ring-mint-12 dark:shadow-[0_8px_30px_rgba(255,255,255,0.12)] shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
+    : 'backdrop-blur-[6px] bg-pureWhite/45 dark:bg-pureBlack/35 ring-0'
+})
+
 // Compute how far the user has scrolled relative to total scrollable height
 const scrolledPercent = computed(() => {
   if (import.meta.server)
@@ -131,102 +177,108 @@ watch(isSwitchOpen, (open) => {
 
 <template>
   <div>
-    <!-- Main Header container with dynamic style and classes -->
-    <header
-      ref="headerRef"
+    <div
       :class="useClsx(
         'fixed inset-x-0 top-0 z-50 w-full max-w-100vw',
-        'transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-        'theme-transition-guard',
+        'transition-transform duration-800 ease-[cubic-bezier(0.25,0.1,0.25,1)]',
+        'will-change-transform isolate overflow-visible',
       )"
-      role="banner"
+      :style="headerIntroStyle"
     >
-      <div
-        ref="headerContainerRef"
+      <!-- Main Header container with dynamic style and classes -->
+      <header
+        ref="headerRef"
         :class="useClsx(
-          'relative mx-auto',
-          'transition-[margin,max-width,width,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-          effectiveHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] min-w-0 md:max-w-[45vw]' : 'mt-0 max-w-full',
+          'w-full max-w-100vw',
+          'transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+          'theme-transition-guard',
         )"
+        role="banner"
       >
-        <!-- Background layer for consistent backdrop filter (Glass morphism) -->
         <div
+          ref="headerContainerRef"
           :class="useClsx(
-            hasScrolledEnough && 'backdrop-saturate-150',
-            'pointer-events-none absolute inset-0',
-            'transition-[backdrop-filter,backdrop-saturate,backdrop-contrast,box-shadow] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-            'theme-transition-surface',
-            // Glass background: default subtle glass, minimized = pure liquid glass (blur only)
-            effectiveHeaderMinimized
-              ? 'backdrop-blur-[12px] backdrop-saturate-180 backdrop-contrast-115 bg-transparent ring-1 ring-mint-12 dark:shadow-[0_8px_30px_rgba(255,255,255,0.12)] shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
-              : 'backdrop-blur-[6px] bg-pureWhite/45 dark:bg-pureBlack/35 ring-0',
-            effectiveHeaderMinimized ? 'rounded-full' : 'rounded-none',
-          )"
-        />
-        <!-- Inner container for logo and right-side items -->
-        <div
-          :class="useClsx(
-            'transition-[padding,margin,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-            'relative flex items-center justify-between',
-            effectiveHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-4 py-4 md:px-8',
-            effectiveHeaderMinimized ? 'border-none' : 'border-b',
-            effectiveHeaderMinimized ? '' : 'border-b border-gray-5 border-solid dark:border-gray-4',
+            'relative mx-auto',
+            'transition-[margin,max-width,width,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+            effectiveHeaderMinimized ? 'mt-4 md:mt-6 max-w-[65vw] min-w-0 md:max-w-[45vw]' : 'mt-0 max-w-full',
           )"
         >
-          <div class="flex items-center">
-            <NuxtLink
-              :class="useClsx(
-                'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-                'transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
-                'focus-visible:outline-none focus-visible:ring-3',
-                'font-nova font-bold tracking-tight antialiased',
-                'absolute group px-2',
-                effectiveHeaderMinimized ? 'text-xl md:text-2xl ts-contrast' : 'text-2xl md:text-3xl',
-              )"
-              :to="homeLink"
-              aria-label="Tech News"
-              tabindex="0"
-            >
-              <span class="text-pureBlack dark:text-pureWhite">Tec</span>
-              <span class="color-teal-10 dark:color-[#01E2B6]">News</span>
-              <Underline />
-            </NuxtLink>
-          </div>
+          <!-- Background layer for consistent backdrop filter (Glass morphism) -->
           <div
-            :class="useClsx(effectiveHeaderMinimized ? 'pr-7' : '')"
-            class="relative flex items-center"
+            :class="useClsx(
+              hasScrolledEnough && 'backdrop-saturate-150',
+              'pointer-events-none absolute inset-0',
+              'transition-[backdrop-filter,backdrop-saturate,backdrop-contrast,box-shadow] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+              'theme-transition-surface',
+              glassClass,
+              effectiveHeaderMinimized ? 'rounded-full' : 'rounded-none',
+            )"
+          />
+          <!-- Inner container for logo and right-side items -->
+          <div
+            :class="useClsx(
+              'transition-[padding,margin,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+              'relative flex items-center justify-between',
+              effectiveHeaderMinimized ? ' px-6 py-4 md:px-8 md:py-4' : 'px-4 py-4 md:px-8',
+              effectiveHeaderMinimized ? 'border-none' : 'border-b',
+              effectiveHeaderMinimized ? '' : 'border-b border-gray-5 border-solid dark:border-gray-4',
+            )"
           >
+            <div class="flex items-center">
+              <NuxtLink
+                :class="useClsx(
+                  'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
+                  'transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
+                  'focus-visible:outline-none focus-visible:ring-3',
+                  'font-nova font-bold tracking-tight antialiased',
+                  'absolute group px-2',
+                  effectiveHeaderMinimized ? 'text-xl md:text-2xl ts-contrast' : 'text-2xl md:text-3xl',
+                )"
+                :to="homeLink"
+                aria-label="Tech News"
+                tabindex="0"
+              >
+                <span class="text-pureBlack dark:text-pureWhite">Tec</span>
+                <span class="color-teal-10 dark:color-[#01E2B6]">News</span>
+                <Underline />
+              </NuxtLink>
+            </div>
             <div
-              :class="useClsx(
-                'flex items-center gap-0.5 transition-[margin,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-                effectiveHeaderMinimized ? 'mr-4' : 'mr-6.5 md:mr-10.5',
-              )"
+              :class="useClsx(effectiveHeaderMinimized ? 'pr-7' : '')"
+              class="relative flex items-center"
             >
-              <LanguageSwitcher
-                :open="!!isSwitchOpen"
+              <div
+                :class="useClsx(
+                  'flex items-center gap-0.5 transition-[margin,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                  effectiveHeaderMinimized ? 'mr-4' : 'mr-6.5 md:mr-10.5',
+                )"
+              >
+                <LanguageSwitcher
+                  :open="!!isSwitchOpen"
+                  :class="useClsx(
+                    'transition-[padding,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                    effectiveHeaderMinimized ? 'p-1' : 'p-1.5',
+                  )"
+                  @update:open="(v: boolean) => { isSwitchOpen = v }"
+                />
+                <ColorMode
+                  :class="useClsx(
+                    'transition-[padding,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
+                    effectiveHeaderMinimized ? '<md:hidden' : 'p-1.5',
+                  )"
+                />
+              </div>
+              <Menu
                 :class="useClsx(
                   'transition-[padding,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
                   effectiveHeaderMinimized ? 'p-1' : 'p-1.5',
                 )"
-                @update:open="(v: boolean) => { isSwitchOpen = v }"
-              />
-              <ColorMode
-                :class="useClsx(
-                  'transition-[padding,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-                  effectiveHeaderMinimized ? '<md:hidden' : 'p-1.5',
-                )"
               />
             </div>
-            <Menu
-              :class="useClsx(
-                'transition-[padding,transform,opacity] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)]',
-                effectiveHeaderMinimized ? 'p-1' : 'p-1.5',
-              )"
-            />
           </div>
         </div>
-      </div>
-    </header>
+      </header>
+    </div>
   </div>
 </template>
 
