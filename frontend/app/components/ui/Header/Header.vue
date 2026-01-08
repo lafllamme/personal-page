@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { CSSProperties } from 'vue'
-import { useCssVar, useEventListener, useResizeObserver, useThrottleFn, useTimeoutFn, useWindowScroll } from '@vueuse/core'
+import { TransitionPresets, useCssVar, useEventListener, useResizeObserver, useThrottleFn, useTimeoutFn, useTransition, useWindowScroll } from '@vueuse/core'
 import { useFocusTrap } from '@vueuse/integrations/useFocusTrap'
 // Import external components and utilities
 import ColorMode from '~/components/ui/ColorMode/ColorMode.vue'
@@ -121,6 +121,37 @@ const headerIntroStyle = computed<CSSProperties>(() => {
   }
 })
 
+const logoBlurTarget = computed(() => {
+  if (headerIntroPhase.value === 'pre')
+    return 18
+  if (headerIntroPhase.value === 'animating')
+    return 0
+  return 0
+})
+
+const logoOpacityTarget = computed(() => {
+  if (headerIntroPhase.value === 'pre')
+    return 0
+  if (headerIntroPhase.value === 'animating')
+    return 1
+  return 1
+})
+
+const animatedLogoBlur = useTransition(logoBlurTarget, {
+  duration: headerIntroDurationMs,
+  transition: TransitionPresets.easeOutCubic,
+})
+
+const animatedLogoOpacity = useTransition(logoOpacityTarget, {
+  duration: headerIntroDurationMs * 0.9,
+  transition: TransitionPresets.easeOutCubic,
+})
+
+const logoIntroStyle = computed<CSSProperties>(() => ({
+  filter: `blur(${animatedLogoBlur.value}px)`,
+  opacity: animatedLogoOpacity.value.toFixed(3),
+}))
+
 const glassClass = computed(() => {
   if (headerIntroPhase.value !== 'done') {
     return 'backdrop-blur-[18px] backdrop-saturate-180 backdrop-contrast-115 bg-pureWhite/50 dark:bg-pureBlack/35 ring-0'
@@ -228,7 +259,7 @@ watch(isSwitchOpen, (open) => {
               <NuxtLink
                 :class="useClsx(
                   'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-                  'transition-transform duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
+                'transition-[filter,opacity,transform] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
                   'focus-visible:outline-none focus-visible:ring-3',
                   'font-nova font-bold tracking-tight antialiased',
                   'absolute group px-2',
@@ -237,6 +268,7 @@ watch(isSwitchOpen, (open) => {
                 :to="homeLink"
                 aria-label="Tech News"
                 tabindex="0"
+              :style="logoIntroStyle"
               >
                 <span class="text-pureBlack dark:text-pureWhite">Tec</span>
                 <span class="color-teal-10 dark:color-[#01E2B6]">News</span>
