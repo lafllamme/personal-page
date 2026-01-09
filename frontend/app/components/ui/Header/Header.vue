@@ -157,11 +157,11 @@ const logoIntroStyle = computed<CSSProperties>(() => ({
 
 const glassClass = computed(() => {
   if (headerIntroPhase.value !== 'done') {
-    return 'backdrop-blur-[18px] backdrop-saturate-180 backdrop-contrast-115 bg-pureWhite/50 dark:bg-pureBlack/35 ring-0'
+    return 'backdrop-blur-[24px] backdrop-saturate-200 backdrop-contrast-125 bg-pureWhite/60 dark:bg-pureBlack/40 ring-0'
   }
   return effectiveHeaderMinimized.value
-    ? 'backdrop-blur-[12px] backdrop-saturate-180 backdrop-contrast-115 bg-transparent ring-1 ring-mint-12 dark:shadow-[0_8px_30px_rgba(255,255,255,0.12)] shadow-[0_8px_30px_rgba(0,0,0,0.12)]'
-    : 'backdrop-blur-[6px] bg-pureWhite/45 dark:bg-pureBlack/35 ring-0'
+    ? 'backdrop-blur-[20px] backdrop-saturate-200 backdrop-contrast-125 bg-transparent ring-1 ring-mint-12 dark:shadow-[0_10px_40px_rgba(255,255,255,0.16)] shadow-[0_10px_40px_rgba(0,0,0,0.18)]'
+    : 'backdrop-blur-[14px] backdrop-saturate-180 backdrop-contrast-115 bg-pureWhite/55 dark:bg-pureBlack/40 ring-0'
 })
 
 // Compute how far the user has scrolled relative to total scrollable height
