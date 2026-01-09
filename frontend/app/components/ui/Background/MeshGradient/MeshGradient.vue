@@ -103,6 +103,8 @@ const grainOverlayStyle = computed(() => {
     opacity,
     backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'160\' height=\'160\' viewBox=\'0 0 160 160\'%3E%3Cfilter id=\'n\' x=\'0\' y=\'0\' width=\'1\' height=\'1\'%3E%3CfeTurbulence baseFrequency=\'0.8\' numOctaves=\'4\' seed=\'3\' type=\'fractalNoise\'/%3E%3C/filter%3E%3Crect width=\'160\' height=\'160\' filter=\'url(%23n)\'/%3E%3C/svg%3E")',
     backgroundSize: '140px 140px',
+    backgroundRepeat: 'repeat',
+    backgroundPosition: '0 0',
   }
 })
 
