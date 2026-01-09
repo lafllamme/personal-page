@@ -115,10 +115,13 @@ watch(overlayVisible, (visible) => {
 }, { immediate: true })
 
 const headerIntroStyle = computed<CSSProperties>(() => {
-  const translate = headerIntroPhase.value === 'pre' ? 'translate3d(0,-70px,0)' : 'translate3d(0,0,0)'
-  return {
-    transform: translate,
-  }
+  if (headerIntroPhase.value === 'pre')
+    return { transform: 'translate3d(0,-70px,0)' }
+  if (headerIntroPhase.value === 'animating')
+    return { transform: 'translate3d(0,0,0)' }
+  // Remove transform when animation settles so nested fixed elements
+  // (menu overlay & panel) keep using the viewport as their containing block.
+  return {}
 })
 
 const logoBlurTarget = computed(() => {
@@ -212,7 +215,8 @@ watch(isSwitchOpen, (open) => {
       :class="useClsx(
         'fixed inset-x-0 top-0 z-50 w-full max-w-100vw',
         'transition-transform duration-800 ease-[cubic-bezier(0.25,0.1,0.25,1)]',
-        'will-change-transform isolate overflow-visible',
+        headerIntroPhase !== 'done' && 'will-change-transform',
+        'isolate overflow-visible',
       )"
       :style="headerIntroStyle"
     >
