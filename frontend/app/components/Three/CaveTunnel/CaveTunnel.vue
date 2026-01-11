@@ -54,6 +54,7 @@ const tunnelGroup = shallowRef<Group | null>(null)
 const cameraRef = shallowRef<PerspectiveCamera | null>(null)
 const camLightRef = shallowRef<PointLight | null>(null)
 const sceneRef = shallowRef<Scene | null>(null)
+const fogRef = shallowRef<FogExp2 | null>(null)
 const showControls = ref(true)
 const copied = ref(false)
 
@@ -112,6 +113,7 @@ function createChunk(index: number): CaveChunk {
     roughness: 0.9,
     flatShading: settings.flatShading,
     wireframe: settings.wireframe,
+    fog: true,
     side: DoubleSide,
     dithering: true,
   })
@@ -121,6 +123,7 @@ function createChunk(index: number): CaveChunk {
     roughness: 0.9,
     flatShading: settings.flatShading,
     wireframe: settings.wireframe,
+    fog: true,
     side: DoubleSide,
     dithering: true,
   })
@@ -233,14 +236,15 @@ function syncSceneAtmosphere() {
     scene.background.set(settings.bgColor)
   else
     scene.background = new Color(settings.bgColor)
+}
 
-  if (scene.fog instanceof FogExp2) {
-    scene.fog.color.set(settings.bgColor)
-    scene.fog.density = settings.fogDensity
-  }
-  else {
-    scene.fog = new FogExp2(settings.bgColor, settings.fogDensity)
-  }
+function syncFog() {
+  const settings = state.value
+  if (!fogRef.value)
+    fogRef.value = new FogExp2(settings.bgColor, settings.fogDensity)
+
+  fogRef.value.color.set(settings.bgColor)
+  fogRef.value.density = settings.fogDensity
 }
 
 function disposeTunnel() {
@@ -337,7 +341,10 @@ watch(
 
 watch(
   () => [state.value.bgColor, state.value.fogDensity],
-  () => syncSceneAtmosphere(),
+  () => {
+    syncSceneAtmosphere()
+    syncFog()
+  },
   { immediate: true },
 )
 
@@ -350,6 +357,7 @@ onMounted(() => {
   syncShading()
   syncWireframe()
   syncMaterialColors()
+  syncFog()
 })
 
 onBeforeUnmount(() => {
@@ -394,6 +402,7 @@ onBeforeUnmount(() => {
           :decay="1.5"
           :position="[0, 0, CAMERA_START_Z]"
         />
+        <primitive v-if="fogRef" :object="fogRef" attach="fog" />
         <primitive v-if="tunnelGroup" :object="tunnelGroup" />
       </TresCanvas>
     </ClientOnly>
