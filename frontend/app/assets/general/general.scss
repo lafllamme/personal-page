@@ -14,9 +14,21 @@ html {
   @include theme-bg(bg-pureWhite, bg-pureBlack);
 }
 
+body {
+  @apply bg-pureWhite;
+}
+
+html.dark body {
+  @apply bg-pureBlack;
+}
+
 html[data-theme-transitioning='true'] .theme-transition-guard,
 html[data-theme-transitioning='true'] .theme-transition-surface {
   transition: none !important;
+}
+
+html[data-theme-transitioning='true']::view-transition-new(root) {
+  clip-path: circle(0px at var(--theme-transition-x, 50%) var(--theme-transition-y, 50%));
 }
 
 
