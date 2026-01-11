@@ -11,7 +11,7 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: CaveTunnelProps): void
 }>()
 
-const state = useVModel(props, 'modelValue', emit, { deep: true })
+const state = useVModel(props, 'modelValue', emit, { deep: true, passive: true })
 
 function resetControls() {
   state.value = { ...caveTunnelDefaults }
