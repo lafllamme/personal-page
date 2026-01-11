@@ -24,7 +24,10 @@ const showControls = ref(true)
 </script>
 
 <template>
-  <div class="relative min-h-screen overflow-hidden bg-[#0b0f14] text-pureWhite">
+  <div
+    class="relative min-h-screen overflow-hidden text-pureWhite"
+    :style="{ backgroundColor: caveSettings.bgColor }"
+  >
     <CaveTunnel v-bind="caveSettings" class="absolute inset-0" />
 
     <div class="relative z-10 mx-auto max-w-5xl min-h-screen flex flex-col gap-4 px-6 py-16">
