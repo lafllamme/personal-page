@@ -390,13 +390,13 @@ onBeforeUnmount(() => {
           :far="300"
         />
         <TresHemisphereLight
-          :color="state.ceilingColor"
-          :ground-color="state.groundColor"
+          color="#ffffff"
+          ground-color="#444444"
           :intensity="state.ambientInt"
         />
         <TresPointLight
           ref="camLightRef"
-          color="#ffffff"
+          color="#ffaa00"
           :intensity="state.camLightInt"
           :distance="120"
           :decay="1.5"
