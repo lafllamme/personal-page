@@ -16,18 +16,18 @@ export interface CaveTunnelProps {
 }
 
 export const caveTunnelDefaults: Required<CaveTunnelProps> = {
-  speed: 6.0,
-  showCeiling: true,
-  scale: 30.0,
+  speed: 6,
+  showCeiling: false,
+  scale: 10,
   heightMultiplier: 3.6,
   detailStrength: 0.27,
-  valleyWidth: 25.0,
+  valleyWidth: 25,
   flatShading: false,
   wireframe: false,
-  bgColor: '#b6c2cc',
+  bgColor: '#027864',
   fogDensity: 0.0104,
-  groundColor: '#1a1a1a',
+  groundColor: '#a5a1a1',
   ceilingColor: '#5e6a75',
-  ambientInt: 0.6,
+  ambientInt: 2.1,
   camLightInt: 1.5,
 }
