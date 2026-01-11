@@ -13,7 +13,12 @@ const isLoading = ref(true)
 const isAnimating = ref(false)
 const isPressed = ref(false)
 const animationDuration = 1000
-const preTransitionDelayMs = 220
+
+const transitionVars = {
+  x: '--theme-transition-x',
+  y: '--theme-transition-y',
+  radius: '--theme-transition-radius',
+} as const
 
 function handlePressed(pressed: boolean) {
   isPressed.value = pressed
@@ -21,10 +26,6 @@ function handlePressed(pressed: boolean) {
 
 function applyTheme(theme: 'light' | 'dark') {
   colorMode.preference = theme
-}
-
-function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
 }
 
 async function toggleDarkMode() {
@@ -44,16 +45,22 @@ async function toggleDarkMode() {
   handlePressed(true)
 
   if (!buttonEl || !startViewTransition) {
+    isAnimating.value = true
+    root.dataset.themeTransitioning = 'true'
     applyTheme(newTheme)
-    delete root.dataset.themeTransitioning
-    delete root.dataset.themeTarget
-    handlePressed(false)
+    window.setTimeout(() => {
+      delete root.dataset.themeTransitioning
+      root.style.removeProperty(transitionVars.x)
+      root.style.removeProperty(transitionVars.y)
+      root.style.removeProperty(transitionVars.radius)
+      isAnimating.value = false
+      handlePressed(false)
+    }, animationDuration)
     return
   }
 
   isAnimating.value = true
   root.dataset.themeTransitioning = 'true'
-  root.dataset.themeTarget = newTheme
 
   const rect = buttonEl.getBoundingClientRect()
   const centerX = rect.left + rect.width / 2
@@ -62,10 +69,11 @@ async function toggleDarkMode() {
     Math.max(centerX, window.innerWidth - centerX),
     Math.max(centerY, window.innerHeight - centerY),
   )
-
+  root.style.setProperty(transitionVars.x, `${centerX}px`)
+  root.style.setProperty(transitionVars.y, `${centerY}px`)
+  root.style.setProperty(transitionVars.radius, `${maxRadius}px`)
   let transition: { ready: Promise<void>, finished: Promise<void> }
   try {
-    await sleep(preTransitionDelayMs)
     transition = startViewTransition(async () => {
       applyTheme(newTheme)
       await nextTick()
@@ -74,7 +82,6 @@ async function toggleDarkMode() {
   catch {
     applyTheme(newTheme)
     delete root.dataset.themeTransitioning
-    delete root.dataset.themeTarget
     isAnimating.value = false
     handlePressed(false)
     return
@@ -91,6 +98,7 @@ async function toggleDarkMode() {
       {
         duration: animationDuration,
         easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+        fill: 'both',
         pseudoElement: '::view-transition-new(root)' as unknown as string,
       },
     )
@@ -99,7 +107,9 @@ async function toggleDarkMode() {
   transition.finished.finally(() => {
     isAnimating.value = false
     delete root.dataset.themeTransitioning
-    delete root.dataset.themeTarget
+    root.style.removeProperty(transitionVars.x)
+    root.style.removeProperty(transitionVars.y)
+    root.style.removeProperty(transitionVars.radius)
     handlePressed(false)
   })
 }
