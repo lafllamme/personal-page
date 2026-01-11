@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import type { TresContext } from '@tresjs/core'
+import type {
+  PerspectiveCamera,
+  PointLight,
+  Scene,
+} from 'three'
+import type { CaveTunnelProps } from './CaveTunnel.model'
 import { TresCanvas } from '@tresjs/core'
 import { useDevicePixelRatio, useDocumentVisibility, useRafFn, useWindowSize } from '@vueuse/core'
+import { createNoise2D } from 'simplex-noise'
 import {
   Color,
   DoubleSide,
@@ -9,13 +16,9 @@ import {
   Group,
   Mesh,
   MeshStandardMaterial,
-  PerspectiveCamera,
   PlaneGeometry,
-  PointLight,
-  Scene,
 } from 'three'
-import { createNoise2D } from 'simplex-noise'
-import { caveTunnelDefaults, type CaveTunnelProps } from './CaveTunnel.model'
+import { caveTunnelDefaults } from './CaveTunnel.model'
 
 interface CaveChunk {
   group: Group
@@ -56,10 +59,10 @@ function getElevation(x: number, z: number, isTop: boolean) {
   const detailScale = props.scale * 0.4
   y
     += noise2D((x + offset) / detailScale, (z + offset) / detailScale)
-    * (props.heightMultiplier * props.detailStrength)
+      * (props.heightMultiplier * props.detailStrength)
 
   const dist = Math.abs(x)
-  const valley = Math.pow(dist / props.valleyWidth, 2.5)
+  const valley = (dist / props.valleyWidth) ** 2.5
   y += valley
 
   return y
@@ -307,7 +310,6 @@ onMounted(() => {
   syncShading()
   syncWireframe()
   syncMaterialColors()
-
 })
 
 onBeforeUnmount(() => {
@@ -323,8 +325,8 @@ onBeforeUnmount(() => {
         :dpr="dpr"
         :antialias="true"
         :clear-color="props.bgColor"
-        :render-mode="'always'"
-        :power-preference="'high-performance'"
+        render-mode="always"
+        power-preference="high-performance"
         precision="highp"
         window-size
         @ready="onCanvasReady"
@@ -337,7 +339,7 @@ onBeforeUnmount(() => {
           :near="0.1"
           :far="300"
         />
-        <TresHemisphereLight color="#ffffff" ground-color="#444444" :intensity="props.ambientInt" />
+        <TresHemisphereLight color="#1a15ab" ground-color="#ed1515" :intensity="props.ambientInt" />
         <TresPointLight
           ref="camLightRef"
           color="#ffaa00"
