@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { CaveTunnelProps } from './CaveTunnel.model'
+import { useVModel } from '@vueuse/core'
 import { caveTunnelDefaults } from './CaveTunnel.model'
 
 const props = defineProps<{
@@ -10,30 +11,10 @@ const emit = defineEmits<{
   (event: 'update:modelValue', value: CaveTunnelProps): void
 }>()
 
-const state = reactive<Required<CaveTunnelProps>>({
-  ...caveTunnelDefaults,
-  ...props.modelValue,
-})
-
-watch(
-  () => props.modelValue,
-  (value) => {
-    Object.assign(state, caveTunnelDefaults, value)
-  },
-  { deep: true },
-)
-
-watch(
-  state,
-  () => {
-    emit('update:modelValue', { ...state })
-  },
-  { deep: true },
-)
+const state = useVModel(props, 'modelValue', emit, { deep: true })
 
 function resetControls() {
-  Object.assign(state, caveTunnelDefaults)
-  emit('update:modelValue', { ...caveTunnelDefaults })
+  state.value = { ...caveTunnelDefaults }
 }
 </script>
 

@@ -324,6 +324,8 @@ onBeforeUnmount(() => {
       <TresCanvas
         :dpr="dpr"
         :antialias="true"
+        :alpha="false"
+        :clear-alpha="1"
         :clear-color="props.bgColor"
         render-mode="always"
         power-preference="high-performance"
