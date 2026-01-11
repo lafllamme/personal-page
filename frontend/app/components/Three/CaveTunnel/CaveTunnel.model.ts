@@ -26,7 +26,7 @@ export const caveTunnelDefaults: Required<CaveTunnelProps> = {
   wireframe: false,
   bgColor: '#027864',
   fogDensity: 0.0104,
-  groundColor: '#a5a1a1',
+  groundColor: '#2f2d2d',
   ceilingColor: '#5e6a75',
   ambientInt: 2.1,
   camLightInt: 1.5,
