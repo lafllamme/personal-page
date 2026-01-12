@@ -139,14 +139,14 @@ function createDefaultSettings(): GlassMetaballsSettings {
     uiOpen: true,
 
     perf: {
-      dprMax: 1.5,
-      marchingResolution: 96,
+      dprMax: 1,
+      marchingResolution: 80,
       marchingMaxPoly: 90000,
     },
 
     field: {
-      scale: 5,
-      isolation: 1000,
+      scale: 4.65,
+      isolation: 335,
       metaMapMul: 0.1, // your current mapping: pos * 0.1 + offset
       offsetX: 0.5,
       offsetY: 0.5,
@@ -750,6 +750,10 @@ type GlassPresetName = 'enhanced' | 'reference'
 
 function createReferencePreset(): GlassMetaballsSettings {
   const preset = createDefaultSettings()
+
+  preset.perf.marchingResolution = 96
+  preset.field.scale = 5
+  preset.field.isolation = 1000
 
   preset.bodies.sizeMin = 0.2
   preset.bodies.sizeMax = 0.2
