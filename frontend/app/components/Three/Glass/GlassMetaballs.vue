@@ -61,6 +61,8 @@ interface GlassMetaballsSettings {
     mode: 'room' | 'image'
     url: string
     useAsBackground: boolean
+    backgroundBlurriness: number
+    backgroundIntensity: number
   }
   field: {
     scale: number
@@ -155,6 +157,8 @@ function createDefaultSettings(): GlassMetaballsSettings {
       mode: 'image',
       url: 'https://raw.githubusercontent.com/bobbyroe/physics-liquid-glass/refs/heads/main/envs/san_giuseppe_bridge_2k.jpg',
       useAsBackground: false,
+      backgroundBlurriness: 0.05,
+      backgroundIntensity: 1,
     },
 
     field: {
@@ -346,6 +350,9 @@ function applyMaterialSettings() {
   if (!material)
     return
 
+  if (sceneRef.value)
+    sceneRef.value.environmentIntensity = settings.material.envMapIntensity
+
   material.transmission = settings.material.transmission
   material.thickness = settings.material.thickness
   material.ior = settings.material.ior
@@ -389,6 +396,14 @@ function applyBackgroundTexture(texture: Texture | null) {
   environmentBackground.value?.dispose()
   environmentBackground.value = texture
   sceneRef.value.background = texture
+}
+
+function applyBackgroundSceneSettings() {
+  if (!sceneRef.value)
+    return
+
+  sceneRef.value.backgroundBlurriness = settings.environment.backgroundBlurriness
+  sceneRef.value.backgroundIntensity = settings.environment.backgroundIntensity
 }
 
 function setRoomEnvironment(renderer: ThreeWebGLRenderer) {
@@ -497,6 +512,7 @@ async function applyEnvironmentSettings() {
       envStatus.loading = false
   }
 
+  applyBackgroundSceneSettings()
   requestRender()
 }
 
@@ -991,6 +1007,18 @@ watch(
 
 watch(
   () => [
+    settings.environment.backgroundBlurriness,
+    settings.environment.backgroundIntensity,
+  ],
+  () => {
+    applyBackgroundSceneSettings()
+    requestRender()
+  },
+  { immediate: true },
+)
+
+watch(
+  () => [
     settings.field.scale,
     settings.field.isolation,
     settings.field.metaMapMul,
@@ -1280,6 +1308,23 @@ onBeforeUnmount(() => {
               <input v-model="settings.environment.useAsBackground" type="checkbox" class="accent-white">
               Use as visible background
             </label>
+
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-[11px] opacity-80">
+                <span>Background blur</span><span>{{ settings.environment.backgroundBlurriness.toFixed(3) }}</span>
+              </div>
+              <input v-model.number="settings.environment.backgroundBlurriness" type="range" min="0" max="0.25" step="0.005" class="w-full">
+              <div class="text-[10px] opacity-60">
+                Works when background is enabled
+              </div>
+            </div>
+
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-[11px] opacity-80">
+                <span>Background intensity</span><span>{{ settings.environment.backgroundIntensity.toFixed(2) }}</span>
+              </div>
+              <input v-model.number="settings.environment.backgroundIntensity" type="range" min="0" max="2" step="0.05" class="w-full">
+            </div>
 
             <div class="flex items-center justify-between gap-2">
               <div class="text-[10px] opacity-60">
