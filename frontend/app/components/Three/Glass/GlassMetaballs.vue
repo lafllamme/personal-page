@@ -14,6 +14,7 @@ import {
 import {
   ACESFilmicToneMapping,
   Color,
+  EquirectangularReflectionMapping,
   Mesh,
   MeshBasicMaterial,
   MeshPhysicalMaterial,
@@ -21,6 +22,7 @@ import {
   PMREMGenerator,
   Raycaster,
   SRGBColorSpace,
+  TextureLoader,
   WebGLRenderer as ThreeWebGLRenderer,
   Vector2,
   Vector3,
@@ -54,6 +56,11 @@ interface GlassMetaballsSettings {
     dprMax: number
     marchingResolution: number
     marchingMaxPoly: number
+  }
+  environment: {
+    mode: 'room' | 'image'
+    url: string
+    useAsBackground: boolean
   }
   field: {
     scale: number
@@ -142,6 +149,12 @@ function createDefaultSettings(): GlassMetaballsSettings {
       dprMax: 1,
       marchingResolution: 80,
       marchingMaxPoly: 90000,
+    },
+
+    environment: {
+      mode: 'image',
+      url: 'https://raw.githubusercontent.com/bobbyroe/physics-liquid-glass/refs/heads/main/envs/san_giuseppe_bridge_2k.jpg',
+      useAsBackground: false,
     },
 
     field: {
@@ -280,6 +293,7 @@ function requestRender() {
 function applySettingsPreset(preset: GlassMetaballsSettings) {
   const preserveUiOpen = settings.uiOpen
   Object.assign(settings.perf, preset.perf)
+  Object.assign(settings.environment, preset.environment)
   Object.assign(settings.field, preset.field)
   Object.assign(settings.material, preset.material)
   Object.assign(settings.bodies, preset.bodies)
@@ -310,20 +324,9 @@ function onCanvasReady(ctx: TresContext) {
   if ('outputColorSpace' in rAny)
     rAny.outputColorSpace = SRGBColorSpace
 
-  if (rendererRef.value instanceof ThreeWebGLRenderer) {
-    const pmrem = new PMREMGenerator(rendererRef.value)
-    const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
-    pmrem.dispose()
+  sceneRef.value.background = new Color('#06090f')
 
-    environmentMap.value?.dispose()
-    environmentMap.value = envTexture
-
-    sceneRef.value.environment = envTexture
-    sceneRef.value.background = new Color('#06090f')
-  }
-  else {
-    sceneRef.value.background = new Color('#06090f')
-  }
+  void applyEnvironmentSettings()
 
   requestRender()
 }
@@ -351,6 +354,150 @@ function applyMaterialSettings() {
   material.envMapIntensity = settings.material.envMapIntensity
   material.clearcoat = settings.material.clearcoat
   material.clearcoatRoughness = settings.material.clearcoatRoughness
+}
+
+const environmentBackground = shallowRef<Texture | null>(null)
+const envStatus = reactive<{ loading: boolean, error: string | null }>({
+  loading: false,
+  error: null,
+})
+
+let envApplyToken = 0
+
+function resolveEnvironmentUrl(input: string) {
+  const value = input.trim()
+  if (!value)
+    return null
+
+  if (value.startsWith('http://') || value.startsWith('https://'))
+    return value
+
+  return value.startsWith('/') ? value : `/${value}`
+}
+
+function applyBackgroundTexture(texture: Texture | null) {
+  if (!sceneRef.value)
+    return
+
+  if (!texture) {
+    environmentBackground.value?.dispose()
+    environmentBackground.value = null
+    sceneRef.value.background = new Color('#06090f')
+    return
+  }
+
+  environmentBackground.value?.dispose()
+  environmentBackground.value = texture
+  sceneRef.value.background = texture
+}
+
+function setRoomEnvironment(renderer: ThreeWebGLRenderer) {
+  const pmrem = new PMREMGenerator(renderer)
+  const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
+  pmrem.dispose()
+
+  return envTexture
+}
+
+async function loadImageEnvironment(renderer: ThreeWebGLRenderer, url: string, useAsBackground: boolean) {
+  const loader = new TextureLoader()
+  loader.setCrossOrigin('anonymous')
+
+  const sourceTexture = await new Promise<Texture>((resolve, reject) => {
+    loader.load(url, resolve, undefined, reject)
+  })
+
+  sourceTexture.mapping = EquirectangularReflectionMapping
+  sourceTexture.colorSpace = SRGBColorSpace
+
+  const pmrem = new PMREMGenerator(renderer)
+  const envTexture = pmrem.fromEquirectangular(sourceTexture).texture
+  pmrem.dispose()
+
+  if (!useAsBackground)
+    sourceTexture.dispose()
+
+  return {
+    envTexture,
+    backgroundTexture: useAsBackground ? sourceTexture : null,
+  }
+}
+
+async function applyEnvironmentSettings() {
+  if (!import.meta.client)
+    return
+
+  const renderer = rendererRef.value
+  if (!(renderer instanceof ThreeWebGLRenderer))
+    return
+
+  const token = ++envApplyToken
+  envStatus.loading = true
+  envStatus.error = null
+
+  try {
+    if (settings.environment.mode === 'room') {
+      const envTexture = setRoomEnvironment(renderer)
+      if (token !== envApplyToken) {
+        envTexture.dispose()
+        return
+      }
+
+      environmentMap.value?.dispose()
+      environmentMap.value = envTexture
+
+      if (sceneRef.value)
+        sceneRef.value.environment = envTexture
+
+      applyBackgroundTexture(null)
+    }
+    else {
+      const url = resolveEnvironmentUrl(settings.environment.url)
+      if (!url)
+        throw new Error('No environment URL/path set')
+
+      const useAsBackground = settings.environment.useAsBackground
+      const { envTexture, backgroundTexture } = await loadImageEnvironment(renderer, url, useAsBackground)
+      if (token !== envApplyToken) {
+        envTexture.dispose()
+        backgroundTexture?.dispose()
+        return
+      }
+
+      environmentMap.value?.dispose()
+      environmentMap.value = envTexture
+
+      if (sceneRef.value)
+        sceneRef.value.environment = envTexture
+
+      applyBackgroundTexture(backgroundTexture)
+    }
+  }
+  catch (error) {
+    if (token !== envApplyToken)
+      return
+
+    envStatus.error = error instanceof Error ? error.message : String(error)
+    const envTexture = setRoomEnvironment(renderer)
+    if (token !== envApplyToken) {
+      envTexture.dispose()
+      return
+    }
+
+    environmentMap.value?.dispose()
+    environmentMap.value = envTexture
+
+    if (sceneRef.value)
+      sceneRef.value.environment = envTexture
+
+    applyBackgroundTexture(null)
+  }
+  finally {
+    if (token === envApplyToken)
+      envStatus.loading = false
+  }
+
+  requestRender()
 }
 
 function createMetaballs() {
@@ -808,12 +955,14 @@ async function applyPreset(name: GlassPresetName) {
     isApplyingPreset.value = false
   }
 
+  await applyEnvironmentSettings()
   await queueMarchingRebuild()
   await queuePhysicsRebuild()
 }
 
 const settingsJson = computed(() => JSON.stringify({
   perf: { ...settings.perf },
+  environment: { ...settings.environment },
   field: { ...settings.field },
   material: { ...settings.material },
   bodies: { ...settings.bodies },
@@ -828,6 +977,17 @@ async function copySettingsJson() {
     // no-op: clipboard can be denied by browser permissions
   }
 }
+
+watch(
+  () => [
+    settings.environment.mode,
+    settings.environment.url,
+    settings.environment.useAsBackground,
+  ],
+  useDebounceFn(() => {
+    void applyEnvironmentSettings()
+  }, 300),
+)
 
 watch(
   () => [
@@ -944,6 +1104,7 @@ onBeforeUnmount(() => {
     mousePlane.value.material.dispose()
 
   environmentMap.value?.dispose()
+  environmentBackground.value?.dispose()
 
   freeWorld()
   rapier = null
@@ -1071,6 +1232,68 @@ onBeforeUnmount(() => {
               <div class="mt-1 text-[10px] opacity-60">
                 Rebuilds marching cubes
               </div>
+            </div>
+          </div>
+        </details>
+
+        <div class="h-2" />
+
+        <details open class="border-white/10 bg-white/5 border rounded-xl p-2">
+          <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
+            Environment
+          </summary>
+
+          <div class="mt-2 space-y-3">
+            <div class="grid grid-cols-[72px,1fr] items-center gap-2">
+              <div class="text-[10px] opacity-70">
+                Mode
+              </div>
+              <select
+                v-model="settings.environment.mode"
+                class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs"
+              >
+                <option value="image">
+                  Image (equirect)
+                </option>
+                <option value="room">
+                  Room (procedural)
+                </option>
+              </select>
+            </div>
+
+            <label v-if="settings.environment.mode === 'image'" class="space-y-1">
+              <div class="text-[10px] opacity-70">
+                URL / public path
+              </div>
+              <input
+                v-model="settings.environment.url"
+                type="text"
+                placeholder="/env/my-env.jpg or https://..."
+                class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs"
+              >
+              <div class="text-[10px] opacity-60">
+                Use a raw link (CORS) or place file in <code class="bg-black/30 rounded px-1 py-0.5">frontend/public</code>
+              </div>
+            </label>
+
+            <label class="flex items-center gap-2 text-[11px] opacity-90">
+              <input v-model="settings.environment.useAsBackground" type="checkbox" class="accent-white">
+              Use as visible background
+            </label>
+
+            <div class="flex items-center justify-between gap-2">
+              <div class="text-[10px] opacity-60">
+                <span v-if="envStatus.loading">Loading…</span>
+                <span v-else-if="envStatus.error">Error: {{ envStatus.error }}</span>
+                <span v-else>Ready</span>
+              </div>
+              <button
+                type="button"
+                class="border-white/10 bg-white/5 hover:bg-white/10 border rounded-xl px-2 py-1 text-[11px]"
+                @click="applyEnvironmentSettings()"
+              >
+                Apply
+              </button>
             </div>
           </div>
         </details>
