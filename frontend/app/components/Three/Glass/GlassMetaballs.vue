@@ -34,6 +34,8 @@ type RapierRigidBody = import('@dimforge/rapier3d-compat').RigidBody
 interface GlassBody {
   rigid: RapierRigidBody
   color: Color
+  strength: number
+  subtract: number
   update: () => Vector3
 }
 
@@ -147,9 +149,10 @@ function createMousePlane() {
 }
 
 function createBody(rapierInstance: RapierModule, rapierWorld: RapierWorld): GlassBody {
-  const size = 0.2
   const range = 6
-  const density = 0.5
+
+  const size = 0.12 + Math.random() * 0.22
+  const density = 0.35 + Math.random() * 0.35
 
   const x = Math.random() * range - range * 0.5
   const y = Math.random() * range - range * 0.5 + 3
@@ -158,72 +161,86 @@ function createBody(rapierInstance: RapierModule, rapierWorld: RapierWorld): Gla
   const rigidBodyDesc = rapierInstance.RigidBodyDesc.dynamic().setTranslation(x, y, z)
   const rigid = rapierWorld.createRigidBody(rigidBodyDesc)
 
-  rigid.setLinearDamping(3.0)
-  rigid.setAngularDamping(8.0)
+  const linDamp = 2.2 + Math.random() * 1.4
+  const angDamp = 6.0 + Math.random() * 5.0
+  rigid.setLinearDamping(linDamp)
+  rigid.setAngularDamping(angDamp)
 
   const colliderDesc = rapierInstance.ColliderDesc.ball(size)
     .setDensity(density)
     .setRestitution(0.0)
-    .setFriction(1.2)
+    .setFriction(1.15)
 
   rapierWorld.createCollider(colliderDesc, rigid)
 
   const color = new Color(colorPalette[Math.floor(Math.random() * colorPalette.length)])
 
   const pos = new Vector3()
-  const spring = new Vector3()
+  const dir = new Vector3()
+
+  const strength = 0.34 + size * 0.95 + Math.random() * 0.08
+  const subtract = 7.2 + (0.34 - size) * 12.0 + Math.random() * 2.0
 
   return {
     rigid,
     color,
+    strength,
+    subtract,
     update() {
       let px = 0
       let py = 0
       let pz = 0
 
       {
-        const t: any = rigid.translation()
+        let t: any = rigid.translation()
         px = t.x
         py = t.y
         pz = t.z
+        t = null
       }
 
       rigid.resetForces(true)
 
       pos.set(px, py, pz)
 
-      spring.copy(pos).sub(sceneMiddle)
-      const dist = spring.length() + 0.0001
-      spring.multiplyScalar(1 / dist)
+      dir.copy(pos).sub(sceneMiddle)
+      const dist = dir.length() + 0.0001
+      dir.multiplyScalar(1 / dist)
 
-      const basePull = 0.5
-      const boost = Math.min(dist * 0.18, 2.0)
+      const basePull = 0.45
+      const boost = Math.min(dist * 0.16, 1.85)
       const pull = basePull + boost
 
-      rigid.addForce({ x: -spring.x * pull, y: -spring.y * pull, z: -spring.z * pull }, true)
+      rigid.addForce({ x: -dir.x * pull, y: -dir.y * pull, z: -dir.z * pull }, true)
 
-      const v: any = rigid.linvel()
-      const vx = v.x
-      const vy = v.y
-      const vz = v.z
+      {
+        let v: any = rigid.linvel()
+        const vx = v.x
+        const vy = v.y
+        const vz = v.z
+        v = null
 
-      const speed = Math.sqrt(vx * vx + vy * vy + vz * vz)
-      const maxSpeed = 6
-      if (speed > maxSpeed) {
-        const s = maxSpeed / speed
-        rigid.setLinvel({ x: vx * s, y: vy * s, z: vz * s }, true)
+        const speed = Math.sqrt(vx * vx + vy * vy + vz * vz)
+        const maxSpeed = 5.4 + Math.random() * 0.5
+        if (speed > maxSpeed) {
+          const s = maxSpeed / speed
+          rigid.setLinvel({ x: vx * s, y: vy * s, z: vz * s }, true)
+        }
       }
 
-      const w: any = rigid.angvel()
-      const wx = w.x
-      const wy = w.y
-      const wz = w.z
+      {
+        let w: any = rigid.angvel()
+        const wx = w.x
+        const wy = w.y
+        const wz = w.z
+        w = null
 
-      const angSpeed = Math.sqrt(wx * wx + wy * wy + wz * wz)
-      const maxAng = 8
-      if (angSpeed > maxAng) {
-        const s = maxAng / angSpeed
-        rigid.setAngvel({ x: wx * s, y: wy * s, z: wz * s }, true)
+        const angSpeed = Math.sqrt(wx * wx + wy * wy + wz * wz)
+        const maxAng = 6.8 + Math.random() * 1.2
+        if (angSpeed > maxAng) {
+          const s = maxAng / angSpeed
+          rigid.setAngvel({ x: wx * s, y: wy * s, z: wz * s }, true)
+        }
       }
 
       pos.multiplyScalar(0.1).add(metaOffset)
@@ -236,7 +253,8 @@ function createMouseBall(rapierInstance: RapierModule, rapierWorld: RapierWorld)
   const mouseSize = 0.25
   const bodyDesc = rapierInstance.RigidBodyDesc.kinematicPositionBased().setTranslation(0, 0, 0)
   const rigid = rapierWorld.createRigidBody(bodyDesc)
-  const colliderDesc = rapierInstance.ColliderDesc.ball(mouseSize * 6.0)
+
+  const colliderDesc = rapierInstance.ColliderDesc.ball(mouseSize * 4.8)
   rapierWorld.createCollider(colliderDesc, rigid)
 
   return {
@@ -289,12 +307,10 @@ function stepSimulation() {
   })
 
   metaballs.value.reset()
-  const strength = 0.5
-  const subtract = 10
 
   bodies.forEach((b) => {
     const p = b.update()
-    metaballs.value?.addBall(p.x, p.y, p.z, strength, subtract, b.color)
+    metaballs.value?.addBall(p.x, p.y, p.z, b.strength, b.subtract, b.color)
   })
 
   metaballs.value.update()
