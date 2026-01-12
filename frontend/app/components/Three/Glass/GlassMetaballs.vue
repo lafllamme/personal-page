@@ -20,6 +20,7 @@ import {
   PMREMGenerator,
   Raycaster,
   SRGBColorSpace,
+  WebGLRenderer as ThreeWebGLRenderer,
   Vector2,
   Vector3,
 } from 'three'
@@ -72,36 +73,47 @@ let world: RapierWorld | null = null
 let rapier: RapierModule | null = null
 
 const colorPalette = [
-  0x0067b1,
-  0x4e99ce,
-  0x9bcbeb,
-  0x55d7e2,
-  0xffffff,
-  0x9ca9b2,
-  0x4e6676,
-  0xf69230,
-  0xf5d81f,
+  0x0067B1,
+  0x4E99CE,
+  0x9BCBEB,
+  0x55D7E2,
+  0xFFFFFF,
+  0x9CA9B2,
+  0x4E6676,
+  0xF69230,
+  0xF5D81F,
 ]
 
 function onCanvasReady(ctx: TresContext) {
-  rendererRef.value = ctx.renderer
-  sceneRef.value = ctx.scene
+  const renderer = ctx.renderer.instance as unknown as WebGLRenderer
+  const scene = ctx.scene.value as unknown as Scene
+
+  rendererRef.value = renderer
+  sceneRef.value = scene
 
   if (!rendererRef.value || !sceneRef.value)
     return
 
-  rendererRef.value.toneMapping = ACESFilmicToneMapping
-  rendererRef.value.outputColorSpace = SRGBColorSpace
+  const rAny = rendererRef.value as any
+  if ('toneMapping' in rAny)
+    rAny.toneMapping = ACESFilmicToneMapping
+  if ('outputColorSpace' in rAny)
+    rAny.outputColorSpace = SRGBColorSpace
 
-  const pmrem = new PMREMGenerator(rendererRef.value)
-  const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
-  pmrem.dispose()
+  if (rendererRef.value instanceof ThreeWebGLRenderer) {
+    const pmrem = new PMREMGenerator(rendererRef.value)
+    const envTexture = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
+    pmrem.dispose()
 
-  environmentMap.value?.dispose()
-  environmentMap.value = envTexture
+    environmentMap.value?.dispose()
+    environmentMap.value = envTexture
 
-  sceneRef.value.environment = envTexture
-  sceneRef.value.background = new Color('#06090f')
+    sceneRef.value.environment = envTexture
+    sceneRef.value.background = new Color('#06090f')
+  }
+  else {
+    sceneRef.value.background = new Color('#06090f')
+  }
 }
 
 function createMetaballs() {
@@ -128,7 +140,7 @@ function createMetaballs() {
 function createMousePlane() {
   const geometry = new PlaneGeometry(48, 48, 1, 1)
   const material = new MeshBasicMaterial({
-    color: 0x00ff00,
+    color: 0x00FF00,
     transparent: true,
     opacity: 0,
     depthWrite: false,
@@ -142,28 +154,102 @@ function createBody(rapierInstance: RapierModule, rapierWorld: RapierWorld): Gla
   const size = 0.2
   const range = 6
   const density = 0.5
+
   const x = Math.random() * range - range * 0.5
   const y = Math.random() * range - range * 0.5 + 3
   const z = Math.random() * range - range * 0.5
 
   const rigidBodyDesc = rapierInstance.RigidBodyDesc.dynamic().setTranslation(x, y, z)
   const rigid = rapierWorld.createRigidBody(rigidBodyDesc)
-  const colliderDesc = rapierInstance.ColliderDesc.ball(size).setDensity(density)
+
+  rigid.setLinearDamping(3.0)
+  rigid.setAngularDamping(8.0)
+
+  const colliderDesc = rapierInstance.ColliderDesc.ball(size)
+    .setDensity(density)
+    .setRestitution(0.0)
+    .setFriction(1.2)
+
   rapierWorld.createCollider(colliderDesc, rigid)
 
   const color = new Color(colorPalette[Math.floor(Math.random() * colorPalette.length)])
+
   const pos = new Vector3()
-  const dir = new Vector3()
+  const vel = new Vector3()
+  const spring = new Vector3()
+  const damper = new Vector3()
+  const total = new Vector3()
 
   return {
     rigid,
     color,
     update() {
+      let px = 0
+      let py = 0
+      let pz = 0
+
+      let vx = 0
+      let vy = 0
+      let vz = 0
+
+      let wx = 0
+      let wy = 0
+      let wz = 0
+
+      {
+        const t: any = rigid.translation()
+        px = t.x
+        py = t.y
+        pz = t.z
+      }
+
+      {
+        const v: any = rigid.linvel()
+        vx = v.x
+        vy = v.y
+        vz = v.z
+      }
+
+      {
+        const w: any = rigid.angvel()
+        wx = w.x
+        wy = w.y
+        wz = w.z
+      }
+
       rigid.resetForces(true)
-      const { x, y, z } = rigid.translation()
-      pos.set(x, y, z)
-      dir.copy(pos).sub(sceneMiddle).normalize()
-      rigid.addForce(dir.multiplyScalar(-0.5), true)
+
+      pos.set(px, py, pz)
+      vel.set(vx, vy, vz)
+
+      const k = 1.2
+      const c = 1.6
+
+      spring.copy(pos).sub(sceneMiddle).multiplyScalar(-k)
+      damper.copy(vel).multiplyScalar(-c)
+
+      total.copy(spring).add(damper)
+
+      const maxForce = 18
+      if (total.length() > maxForce)
+        total.setLength(maxForce)
+
+      rigid.addForce({ x: total.x, y: total.y, z: total.z }, true)
+
+      const speed = Math.sqrt(vx * vx + vy * vy + vz * vz)
+      const maxSpeed = 6
+      if (speed > maxSpeed) {
+        const s = maxSpeed / speed
+        rigid.setLinvel({ x: vx * s, y: vy * s, z: vz * s }, true)
+      }
+
+      const angSpeed = Math.sqrt(wx * wx + wy * wy + wz * wz)
+      const maxAng = 8
+      if (angSpeed > maxAng) {
+        const s = maxAng / angSpeed
+        rigid.setAngvel({ x: wx * s, y: wy * s, z: wz * s }, true)
+      }
+
       pos.multiplyScalar(0.1).add(metaOffset)
       return pos
     },
@@ -179,7 +265,7 @@ function createMouseBall(rapierInstance: RapierModule, rapierWorld: RapierWorld)
 
   return {
     update(position: Vector3) {
-      rigid.setTranslation({ x: position.x, y: position.y, z: position.z })
+      rigid.setNextKinematicTranslation({ x: position.x, y: position.y, z: position.z })
     },
   }
 }
@@ -194,9 +280,8 @@ async function initPhysics() {
   world = new rapier.World({ x: 0.0, y: 0.0, z: 0.0 })
   bodies.length = 0
 
-  for (let i = 0; i < 36; i++) {
+  for (let i = 0; i < 36; i++)
     bodies.push(createBody(rapier, world))
-  }
 
   mouseBall = createMouseBall(rapier, world)
 }
@@ -226,10 +311,12 @@ function stepSimulation() {
   metaballs.value.reset()
   const strength = 0.5
   const subtract = 10
+
   bodies.forEach((body) => {
-    const pos = body.update()
-    metaballs.value?.addBall(pos.x, pos.y, pos.z, strength, subtract, body.color)
+    const p = body.update()
+    metaballs.value?.addBall(p.x, p.y, p.z, strength, subtract, body.color)
   })
+
   metaballs.value.update()
 }
 
@@ -275,17 +362,19 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   pause()
+
   metaballs.value?.geometry.dispose()
-  if (Array.isArray(metaballs.value?.material)) {
+  if (Array.isArray(metaballs.value?.material))
     metaballs.value?.material.forEach(material => material.dispose())
-  }
-  else {
+  else
     metaballs.value?.material.dispose()
-  }
+
   mousePlane.value?.geometry.dispose()
   if (mousePlane.value?.material instanceof MeshBasicMaterial)
     mousePlane.value.material.dispose()
+
   environmentMap.value?.dispose()
+
   world?.free()
   world = null
   rapier = null
