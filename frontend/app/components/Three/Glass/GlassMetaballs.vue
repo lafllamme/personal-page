@@ -119,30 +119,26 @@ function onCanvasReady(ctx: TresContext) {
 function createMetaballs() {
   const material = new MeshPhysicalMaterial({
     vertexColors: true,
-    transmission: 1,
-    thickness: 1.2,
-    roughness: 0.05,
-    metalness: 0,
+    transmission: 1.0,
+    thickness: 1.0,
+    roughness: 0.0,
+    metalness: 0.0,
     transparent: true,
-    ior: 1.45,
-    envMapIntensity: 1.3,
-    specularIntensity: 0.8,
-    attenuationDistance: 2.2,
-    attenuationColor: new Color('#d8f2ff'),
   })
 
-  const marching = new MarchingCubes(80, material, true, true, 90000)
-  marching.scale.setScalar(4.4)
-  marching.isolation = 100
+  const marching = new MarchingCubes(96, material, true, true, 90000)
+  marching.scale.setScalar(5)
+  marching.isolation = 1000
   metaballs.value = marching
 }
 
 function createMousePlane() {
-  const geometry = new PlaneGeometry(48, 48, 1, 1)
+  const geometry = new PlaneGeometry(48, 48, 48, 48)
   const material = new MeshBasicMaterial({
     color: 0x00FF00,
     transparent: true,
     opacity: 0,
+    wireframe: true,
     depthWrite: false,
   })
   const plane = new Mesh(geometry, material)
@@ -175,10 +171,7 @@ function createBody(rapierInstance: RapierModule, rapierWorld: RapierWorld): Gla
   const color = new Color(colorPalette[Math.floor(Math.random() * colorPalette.length)])
 
   const pos = new Vector3()
-  const vel = new Vector3()
   const spring = new Vector3()
-  const damper = new Vector3()
-  const total = new Vector3()
 
   return {
     rigid,
@@ -188,14 +181,6 @@ function createBody(rapierInstance: RapierModule, rapierWorld: RapierWorld): Gla
       let py = 0
       let pz = 0
 
-      let vx = 0
-      let vy = 0
-      let vz = 0
-
-      let wx = 0
-      let wy = 0
-      let wz = 0
-
       {
         const t: any = rigid.translation()
         px = t.x
@@ -203,38 +188,24 @@ function createBody(rapierInstance: RapierModule, rapierWorld: RapierWorld): Gla
         pz = t.z
       }
 
-      {
-        const v: any = rigid.linvel()
-        vx = v.x
-        vy = v.y
-        vz = v.z
-      }
-
-      {
-        const w: any = rigid.angvel()
-        wx = w.x
-        wy = w.y
-        wz = w.z
-      }
-
       rigid.resetForces(true)
 
       pos.set(px, py, pz)
-      vel.set(vx, vy, vz)
 
-      const k = 1.2
-      const c = 1.6
+      spring.copy(pos).sub(sceneMiddle)
+      const dist = spring.length() + 0.0001
+      spring.multiplyScalar(1 / dist)
 
-      spring.copy(pos).sub(sceneMiddle).multiplyScalar(-k)
-      damper.copy(vel).multiplyScalar(-c)
+      const basePull = 0.5
+      const boost = Math.min(dist * 0.18, 2.0)
+      const pull = basePull + boost
 
-      total.copy(spring).add(damper)
+      rigid.addForce({ x: -spring.x * pull, y: -spring.y * pull, z: -spring.z * pull }, true)
 
-      const maxForce = 18
-      if (total.length() > maxForce)
-        total.setLength(maxForce)
-
-      rigid.addForce({ x: total.x, y: total.y, z: total.z }, true)
+      const v: any = rigid.linvel()
+      const vx = v.x
+      const vy = v.y
+      const vz = v.z
 
       const speed = Math.sqrt(vx * vx + vy * vy + vz * vz)
       const maxSpeed = 6
@@ -242,6 +213,11 @@ function createBody(rapierInstance: RapierModule, rapierWorld: RapierWorld): Gla
         const s = maxSpeed / speed
         rigid.setLinvel({ x: vx * s, y: vy * s, z: vz * s }, true)
       }
+
+      const w: any = rigid.angvel()
+      const wx = w.x
+      const wy = w.y
+      const wz = w.z
 
       const angSpeed = Math.sqrt(wx * wx + wy * wy + wz * wz)
       const maxAng = 8
@@ -280,7 +256,7 @@ async function initPhysics() {
   world = new rapier.World({ x: 0.0, y: 0.0, z: 0.0 })
   bodies.length = 0
 
-  for (let i = 0; i < 36; i++)
+  for (let i = 0; i < 40; i++)
     bodies.push(createBody(rapier, world))
 
   mouseBall = createMouseBall(rapier, world)
@@ -308,13 +284,17 @@ function stepSimulation() {
   handleRaycast()
   mouseBall?.update(mousePos)
 
+  bodies.forEach((b) => {
+    b.update()
+  })
+
   metaballs.value.reset()
   const strength = 0.5
   const subtract = 10
 
-  bodies.forEach((body) => {
-    const p = body.update()
-    metaballs.value?.addBall(p.x, p.y, p.z, strength, subtract, body.color)
+  bodies.forEach((b) => {
+    const p = b.update()
+    metaballs.value?.addBall(p.x, p.y, p.z, strength, subtract, b.color)
   })
 
   metaballs.value.update()
