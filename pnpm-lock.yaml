@@ -9,6 +9,9 @@ catalogs:
     '@antfu/eslint-config':
       specifier: ^6.0.0
       version: 6.0.0
+    '@dimforge/rapier3d-compat':
+      specifier: ^0.18.0
+      version: 0.18.2
     '@eslint/eslintrc':
       specifier: ^3.1.0
       version: 3.3.1
@@ -453,6 +456,9 @@ importers:
 
   frontend:
     dependencies:
+      '@dimforge/rapier3d-compat':
+        specifier: 'catalog:'
+        version: 0.18.2
       '@iconify-json/radix-icons':
         specifier: 'catalog:'
         version: 1.2.5
@@ -1185,6 +1191,9 @@ packages:
 
   '@dimforge/rapier3d-compat@0.12.0':
     resolution: {integrity: sha512-uekIGetywIgopfD97oDL5PfeezkFpNhwlzlaEYNOA0N6ghdsOvh/HYjSMek5Q2O1PYvRSDFcqFVJl4r4ZBwOow==}
+
+  '@dimforge/rapier3d-compat@0.18.2':
+    resolution: {integrity: sha512-DTXrOsn3ra9ZonB+VyqJc16xnRXWsHVa5FK230Z+R1PJ7q8oSRmWQ+AU6e+IJYBHxkM0a5QVDqd729DyeEhHPA==}
 
   '@dnd-kit/accessibility@3.1.1':
     resolution: {integrity: sha512-2P+YgaXF+gRsIihwwY1gCsQSYnu9Zyj2py8kY5fFvUM1qm2WA2u639R6YNVfU4GWr+ZM5mqEsfHZZLoRONbemw==}
@@ -11090,6 +11099,8 @@ snapshots:
   '@date-fns/tz@1.2.0': {}
 
   '@dimforge/rapier3d-compat@0.12.0': {}
+
+  '@dimforge/rapier3d-compat@0.18.2': {}
 
   '@dnd-kit/accessibility@3.1.1(react@19.2.3)':
     dependencies:
