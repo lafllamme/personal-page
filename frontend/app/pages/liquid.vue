@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LiquidSymmetrySphere from '@/components/Three/LiquidSymmetrySphere/LiquidSymmetrySphere.vue'
+import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
 
 useHead({
   title: 'Liquid Symmetry',
@@ -119,7 +119,7 @@ const heroButtonStyles = computed(() => {
     <section ref="heroSectionRef" class="relative min-h-[320vh]">
       <div class="sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0">
-          <LiquidSymmetrySphere />
+          <GlassMetaballs class="h-full w-full" />
         </div>
         <div class="absolute left-4 top-4 z-20 w-[260px] space-y-4">
           <button
