@@ -22,18 +22,18 @@ useHead({
       <GlassMetaballs class="h-full w-full" />
     </div>
     <div class="pointer-events-none absolute inset-0">
-      <div class="absolute -left-24 top-[-10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(120,210,255,0.28),transparent_60%)] blur-2xl" />
+      <div class="absolute top-[-10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(120,210,255,0.28),transparent_60%)] blur-2xl -left-24" />
       <div class="absolute right-[-20%] top-[30%] h-[640px] w-[640px] rounded-full bg-[radial-gradient(circle,rgba(255,210,120,0.2),transparent_65%)] blur-3xl" />
     </div>
 
-    <div class="pointer-events-none relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col justify-between px-6 py-16">
+    <div class="pointer-events-none relative z-10 mx-auto max-w-6xl min-h-screen flex flex-col justify-between px-6 py-16">
       <div class="space-y-6">
-        <p class="text-xs uppercase tracking-[0.5em] text-pureWhite/60">
+        <p class="text-xs text-pureWhite/60 tracking-[0.5em] uppercase">
           Glass Lab
         </p>
         <h1 class="font-nohemi text-balance text-[clamp(2.8rem,7vw+1rem,7rem)] leading-[0.95] tracking-tight">
           Liquid glass,
-          <span class="block font-cormorant-garamond text-[clamp(2.2rem,6vw+0.8rem,6rem)] font-light italic text-pureWhite/80">
+          <span class="font-cormorant-garamond block text-[clamp(2.2rem,6vw+0.8rem,6rem)] text-pureWhite/80 font-light italic">
             pulled by your cursor.
           </span>
         </h1>
@@ -42,7 +42,7 @@ useHead({
         </p>
       </div>
 
-      <div class="flex flex-wrap items-center gap-4 text-xs uppercase tracking-[0.35em] text-pureWhite/60">
+      <div class="flex flex-wrap items-center gap-4 text-xs text-pureWhite/60 tracking-[0.35em] uppercase">
         <span>Move pointer</span>
         <span class="h-[1px] w-12 bg-pureWhite/20" />
         <span>Organic refractions</span>
