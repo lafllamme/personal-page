@@ -13,8 +13,11 @@ import {
 } from '@vueuse/core'
 import {
   ACESFilmicToneMapping,
+  BackSide,
+  BoxGeometry,
   Color,
   EquirectangularReflectionMapping,
+  Matrix3,
   Mesh,
   MeshBasicMaterial,
   MeshPhysicalMaterial,
@@ -22,7 +25,10 @@ import {
   PMREMGenerator,
   Raycaster,
   SRGBColorSpace,
+  ShaderLib,
+  ShaderMaterial,
   TextureLoader,
+  UniformsUtils,
   WebGLRenderer as ThreeWebGLRenderer,
   Vector2,
   Vector3,
@@ -61,6 +67,7 @@ interface GlassMetaballsSettings {
     mode: 'room' | 'image'
     url: string
     useAsBackground: boolean
+    useAsBackdrop: boolean
     backgroundBlurriness: number
     backgroundIntensity: number
   }
@@ -145,7 +152,7 @@ const { pixelRatio } = useDevicePixelRatio()
 
 function createDefaultSettings(): GlassMetaballsSettings {
   return {
-    uiOpen: true,
+    uiOpen: false,
 
     perf: {
       dprMax: 1,
@@ -157,6 +164,7 @@ function createDefaultSettings(): GlassMetaballsSettings {
       mode: 'image',
       url: 'https://raw.githubusercontent.com/bobbyroe/physics-liquid-glass/refs/heads/main/envs/san_giuseppe_bridge_2k.jpg',
       useAsBackground: false,
+      useAsBackdrop: true,
       backgroundBlurriness: 0.05,
       backgroundIntensity: 1,
     },
@@ -328,7 +336,7 @@ function onCanvasReady(ctx: TresContext) {
   if ('outputColorSpace' in rAny)
     rAny.outputColorSpace = SRGBColorSpace
 
-  sceneRef.value.background = new Color('#06090f')
+  sceneRef.value.background = null
 
   void applyEnvironmentSettings()
 
@@ -364,6 +372,8 @@ function applyMaterialSettings() {
 }
 
 const environmentBackground = shallowRef<Texture | null>(null)
+const transmissionBackdrop = shallowRef<Mesh | null>(null)
+const transmissionBackdropMaterial = shallowRef<ShaderMaterial | null>(null)
 const envStatus = reactive<{ loading: boolean, error: string | null }>({
   loading: false,
   error: null,
@@ -389,7 +399,7 @@ function applyBackgroundTexture(texture: Texture | null) {
   if (!texture) {
     environmentBackground.value?.dispose()
     environmentBackground.value = null
-    sceneRef.value.background = new Color('#06090f')
+    sceneRef.value.background = null
     return
   }
 
@@ -398,7 +408,96 @@ function applyBackgroundTexture(texture: Texture | null) {
   sceneRef.value.background = texture
 }
 
+function disposeTransmissionBackdrop() {
+  const mesh = transmissionBackdrop.value
+  if (!mesh)
+    return
+
+  if (sceneRef.value)
+    sceneRef.value.remove(mesh)
+
+  mesh.geometry.dispose()
+  if (mesh.material instanceof ShaderMaterial)
+    mesh.material.dispose()
+
+  transmissionBackdrop.value = null
+  transmissionBackdropMaterial.value = null
+}
+
+function ensureTransmissionBackdrop() {
+  if (!sceneRef.value)
+    return
+
+  if (transmissionBackdrop.value)
+    return
+
+  const uniforms = UniformsUtils.clone(ShaderLib.backgroundCube.uniforms)
+  uniforms.envMap.value = environmentMap.value
+  uniforms.flipEnvMap.value = 1
+  uniforms.backgroundBlurriness.value = settings.environment.backgroundBlurriness
+  uniforms.backgroundIntensity.value = settings.environment.backgroundIntensity
+  uniforms.backgroundRotation.value = new Matrix3()
+
+  const material = new ShaderMaterial({
+    name: 'TransmissionBackdropMaterial',
+    uniforms,
+    vertexShader: ShaderLib.backgroundCube.vertexShader,
+    fragmentShader: ShaderLib.backgroundCube.fragmentShader,
+    side: BackSide,
+    depthTest: false,
+    depthWrite: false,
+    fog: false,
+    allowOverride: false,
+  })
+
+  // Add "envMap" material property so the renderer can evaluate it like for built-in materials.
+  Object.defineProperty(material, 'envMap', {
+    get() {
+      return this.uniforms.envMap.value
+    },
+  })
+
+  const geometry = new BoxGeometry(1, 1, 1)
+  geometry.deleteAttribute('normal')
+  geometry.deleteAttribute('uv')
+
+  const mesh = new Mesh(geometry, material)
+  mesh.frustumCulled = false
+  mesh.renderOrder = -999
+  mesh.layers.enableAll()
+  mesh.onBeforeRender = (renderer, _scene, camera) => {
+    mesh.matrixWorld.copyPosition(camera.matrixWorld)
+    material.colorWrite = renderer.getRenderTarget() !== null
+  }
+
+  transmissionBackdrop.value = mesh
+  transmissionBackdropMaterial.value = material
+  sceneRef.value.add(mesh)
+}
+
+function syncTransmissionBackdrop() {
+  if (!settings.environment.useAsBackdrop) {
+    disposeTransmissionBackdrop()
+    return
+  }
+
+  ensureTransmissionBackdrop()
+
+  const material = transmissionBackdropMaterial.value
+  if (!material)
+    return
+
+  if (material.uniforms.envMap.value !== environmentMap.value) {
+    material.uniforms.envMap.value = environmentMap.value
+    material.needsUpdate = true
+  }
+
+  material.uniforms.backgroundBlurriness.value = settings.environment.backgroundBlurriness
+  material.uniforms.backgroundIntensity.value = settings.environment.backgroundIntensity
+}
+
 function applyBackgroundSceneSettings() {
+  syncTransmissionBackdrop()
   if (!sceneRef.value)
     return
 
@@ -458,13 +557,15 @@ async function applyEnvironmentSettings() {
         return
       }
 
-      environmentMap.value?.dispose()
+      const previousEnvironment = environmentMap.value
       environmentMap.value = envTexture
 
       if (sceneRef.value)
         sceneRef.value.environment = envTexture
 
       applyBackgroundTexture(null)
+      syncTransmissionBackdrop()
+      previousEnvironment?.dispose()
     }
     else {
       const url = resolveEnvironmentUrl(settings.environment.url)
@@ -479,12 +580,14 @@ async function applyEnvironmentSettings() {
         return
       }
 
-      environmentMap.value?.dispose()
+      const previousEnvironment = environmentMap.value
       environmentMap.value = envTexture
 
       if (sceneRef.value)
         sceneRef.value.environment = envTexture
 
+      syncTransmissionBackdrop()
+      previousEnvironment?.dispose()
       applyBackgroundTexture(backgroundTexture)
     }
   }
@@ -499,13 +602,15 @@ async function applyEnvironmentSettings() {
       return
     }
 
-    environmentMap.value?.dispose()
+    const previousEnvironment = environmentMap.value
     environmentMap.value = envTexture
 
     if (sceneRef.value)
       sceneRef.value.environment = envTexture
 
+    syncTransmissionBackdrop()
     applyBackgroundTexture(null)
+    previousEnvironment?.dispose()
   }
   finally {
     if (token === envApplyToken)
@@ -999,10 +1104,29 @@ watch(
     settings.environment.mode,
     settings.environment.url,
     settings.environment.useAsBackground,
+    settings.environment.useAsBackdrop,
   ],
   useDebounceFn(() => {
     void applyEnvironmentSettings()
   }, 300),
+)
+
+watch(
+  () => settings.environment.useAsBackdrop,
+  (enabled) => {
+    if (enabled)
+      settings.environment.useAsBackground = false
+    syncTransmissionBackdrop()
+    requestRender()
+  },
+)
+
+watch(
+  () => settings.environment.useAsBackground,
+  (enabled) => {
+    if (enabled)
+      settings.environment.useAsBackdrop = false
+  },
 )
 
 watch(
@@ -1133,6 +1257,7 @@ onBeforeUnmount(() => {
 
   environmentMap.value?.dispose()
   environmentBackground.value?.dispose()
+  disposeTransmissionBackdrop()
 
   freeWorld()
   rapier = null
@@ -1229,7 +1354,7 @@ onBeforeUnmount(() => {
           </button>
         </div>
 
-        <details open class="border-white/10 bg-white/5 border rounded-xl p-2">
+        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
           <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
             Performance
           </summary>
@@ -1266,7 +1391,7 @@ onBeforeUnmount(() => {
 
         <div class="h-2" />
 
-        <details open class="border-white/10 bg-white/5 border rounded-xl p-2">
+        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
           <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
             Environment
           </summary>
@@ -1309,13 +1434,18 @@ onBeforeUnmount(() => {
               Use as visible background
             </label>
 
+            <label class="flex items-center gap-2 text-[11px] opacity-90">
+              <input v-model="settings.environment.useAsBackdrop" type="checkbox" class="accent-white">
+              Use as refraction source only (hide background)
+            </label>
+
             <div class="space-y-1">
               <div class="flex items-center justify-between text-[11px] opacity-80">
                 <span>Background blur</span><span>{{ settings.environment.backgroundBlurriness.toFixed(3) }}</span>
               </div>
               <input v-model.number="settings.environment.backgroundBlurriness" type="range" min="0" max="0.25" step="0.005" class="w-full">
               <div class="text-[10px] opacity-60">
-                Works when background is enabled
+                Works when background/backdrop is enabled
               </div>
             </div>
 
@@ -1345,7 +1475,7 @@ onBeforeUnmount(() => {
 
         <div class="h-2" />
 
-        <details open class="border-white/10 bg-white/5 border rounded-xl p-2">
+        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
           <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
             Field
           </summary>
@@ -1391,7 +1521,7 @@ onBeforeUnmount(() => {
 
         <div class="h-2" />
 
-        <details open class="border-white/10 bg-white/5 border rounded-xl p-2">
+        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
           <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
             Material
           </summary>
@@ -1456,7 +1586,7 @@ onBeforeUnmount(() => {
               <input v-model.number="settings.bodies.count" type="range" min="10" max="90" step="1" class="w-full">
             </div>
 
-            <details open class="border-white/10 bg-black/20 border rounded-xl p-2">
+            <details class="border-white/10 bg-black/20 border rounded-xl p-2">
               <summary class="cursor-pointer select-none text-[11px] font-semibold opacity-90">
                 Spawn + size (rebuild)
               </summary>
@@ -1699,7 +1829,7 @@ onBeforeUnmount(() => {
 
         <div class="h-2" />
 
-        <details open class="border-white/10 bg-white/5 border rounded-xl p-2">
+        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
           <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
             Mouse
           </summary>
