@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { TresContext } from '@tresjs/core'
 import type { PerspectiveCamera, Scene, Texture, WebGLRenderer } from 'three'
+import type { GlassMetaballsSettings, GlassPresetName } from './GlassMetaballs.model'
 import { TresCanvas } from '@tresjs/core'
 import {
   useDebounceFn,
@@ -24,17 +25,20 @@ import {
   PlaneGeometry,
   PMREMGenerator,
   Raycaster,
-  SRGBColorSpace,
   ShaderLib,
   ShaderMaterial,
+  SRGBColorSpace,
   TextureLoader,
-  UniformsUtils,
   WebGLRenderer as ThreeWebGLRenderer,
+  UniformsUtils,
   Vector2,
   Vector3,
 } from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
 import { MarchingCubes } from 'three/examples/jsm/objects/MarchingCubes.js'
+
+import { createDefaultGlassMetaballsSettings, glassMetaballsPresets } from './GlassMetaballs.model'
+import GlassMetaballsControls from './GlassMetaballsControls.vue'
 
 type RapierModule = typeof import('@dimforge/rapier3d-compat')
 type RapierWorld = import('@dimforge/rapier3d-compat').World
@@ -56,85 +60,6 @@ interface MouseBall {
 
 type RenderMode = 'always' | 'on-demand'
 
-interface GlassMetaballsSettings {
-  uiOpen: boolean
-  perf: {
-    dprMax: number
-    marchingResolution: number
-    marchingMaxPoly: number
-  }
-  environment: {
-    mode: 'room' | 'image'
-    url: string
-    useAsBackground: boolean
-    useAsBackdrop: boolean
-    backgroundBlurriness: number
-    backgroundIntensity: number
-  }
-  field: {
-    scale: number
-    isolation: number
-    metaMapMul: number
-    offsetX: number
-    offsetY: number
-    offsetZ: number
-  }
-  material: {
-    transmission: number
-    thickness: number
-    ior: number
-    roughness: number
-    metalness: number
-    envMapIntensity: number
-    clearcoat: number
-    clearcoatRoughness: number
-  }
-  bodies: {
-    count: number
-    range: number
-    spawnYBias: number
-    sizeMin: number
-    sizeMax: number
-    sizePow: number
-    densityMin: number
-    densityMax: number
-    linDampMin: number
-    linDampMax: number
-    angDampMin: number
-    angDampMax: number
-    restitution: number
-    friction: number
-    pullBaseMin: number
-    pullBaseMax: number
-    pullBoostMulMin: number
-    pullBoostMulMax: number
-    pullBoostCapMin: number
-    pullBoostCapMax: number
-    maxSpeedMin: number
-    maxSpeedMax: number
-    maxAngMin: number
-    maxAngMax: number
-    flowStrength: number
-    flowSpeed: number
-    flowSpatial: number
-    swirlStrength: number
-    swirlSpeed: number
-    strengthBase: number
-    strengthSizeMul: number
-    strengthRand: number
-    subtractBase: number
-    subtractInvSizeMul: number
-    subtractRand: number
-  }
-  mouse: {
-    lerp: number
-    parkZ: number
-    edgeDeadzoneNdc: number
-    colliderMul: number
-    radius: number
-  }
-}
-
 const container = ref<HTMLElement | null>(null)
 const cameraRef = shallowRef<PerspectiveCamera | null>(null)
 const sceneRef = shallowRef<Scene | null>(null)
@@ -150,108 +75,13 @@ const { width, height } = useWindowSize()
 const aspectRatio = computed(() => (height.value ? width.value / height.value : 1))
 const { pixelRatio } = useDevicePixelRatio()
 
-function createDefaultSettings(): GlassMetaballsSettings {
-  return {
-    uiOpen: false,
-
-    perf: {
-      dprMax: 1,
-      marchingResolution: 80,
-      marchingMaxPoly: 90000,
-    },
-
-    environment: {
-      mode: 'image',
-      url: 'https://raw.githubusercontent.com/bobbyroe/physics-liquid-glass/refs/heads/main/envs/san_giuseppe_bridge_2k.jpg',
-      useAsBackground: false,
-      useAsBackdrop: true,
-      backgroundBlurriness: 0.05,
-      backgroundIntensity: 1,
-    },
-
-    field: {
-      scale: 4.65,
-      isolation: 335,
-      metaMapMul: 0.1, // your current mapping: pos * 0.1 + offset
-      offsetX: 0.5,
-      offsetY: 0.5,
-      offsetZ: 0.5,
-    },
-
-    material: {
-      transmission: 1.0,
-      thickness: 1.0,
-      ior: 1.5,
-      roughness: 0.03,
-      metalness: 0.0,
-      envMapIntensity: 1.35,
-      clearcoat: 0.0,
-      clearcoatRoughness: 0.2,
-    },
-
-    bodies: {
-      count: 40,
-      range: 6,
-      spawnYBias: 3,
-
-      sizeMin: 0.12,
-      sizeMax: 0.34,
-      sizePow: 1.8,
-
-      densityMin: 0.35,
-      densityMax: 0.70,
-
-      linDampMin: 0.6,
-      linDampMax: 1.2,
-      angDampMin: 0.6,
-      angDampMax: 1.3,
-
-      restitution: 0.0,
-      friction: 0.8,
-
-      pullBaseMin: 0.35,
-      pullBaseMax: 0.48,
-      pullBoostMulMin: 0.08,
-      pullBoostMulMax: 0.14,
-      pullBoostCapMin: 0.85,
-      pullBoostCapMax: 1.35,
-
-      maxSpeedMin: 8.0,
-      maxSpeedMax: 10.5,
-      maxAngMin: 9.0,
-      maxAngMax: 13.0,
-
-      flowStrength: 0.16,
-      flowSpeed: 0.85,
-      flowSpatial: 0.6,
-      swirlStrength: 0.10,
-      swirlSpeed: 0.6,
-
-      strengthBase: 0.34,
-      strengthSizeMul: 0.95,
-      strengthRand: 0.08,
-
-      subtractBase: 7.2,
-      subtractInvSizeMul: 12.0,
-      subtractRand: 2.0,
-    },
-
-    mouse: {
-      lerp: 0.22,
-      parkZ: 50,
-      edgeDeadzoneNdc: 0.96,
-      colliderMul: 6.0,
-      radius: 0.25,
-    },
-  }
-}
-
 /**
- * Settings (UI-controlled)
+ * Settings
  * - grouped by: Perf / Field / Bodies / Mouse
  * - anything that changes body/collider creation triggers rebuildPhysics()
  */
-const settings = reactive<GlassMetaballsSettings>(createDefaultSettings())
+const settings = reactive<GlassMetaballsSettings>(createDefaultGlassMetaballsSettings())
+const settingsModel = shallowRef(settings)
 
 const dpr = computed(() => Math.min(pixelRatio.value || 1, settings.perf.dprMax))
 
@@ -303,14 +133,12 @@ function requestRender() {
 }
 
 function applySettingsPreset(preset: GlassMetaballsSettings) {
-  const preserveUiOpen = settings.uiOpen
   Object.assign(settings.perf, preset.perf)
   Object.assign(settings.environment, preset.environment)
   Object.assign(settings.field, preset.field)
   Object.assign(settings.material, preset.material)
   Object.assign(settings.bodies, preset.bodies)
   Object.assign(settings.mouse, preset.mouse)
-  settings.uiOpen = preserveUiOpen
 }
 
 function readRapierVec3To(out: Vector3, rapierVec: any) {
@@ -431,18 +259,18 @@ function ensureTransmissionBackdrop() {
   if (transmissionBackdrop.value)
     return
 
-  const uniforms = UniformsUtils.clone(ShaderLib.backgroundCube.uniforms)
-  uniforms.envMap.value = environmentMap.value
-  uniforms.flipEnvMap.value = 1
-  uniforms.backgroundBlurriness.value = settings.environment.backgroundBlurriness
-  uniforms.backgroundIntensity.value = settings.environment.backgroundIntensity
-  uniforms.backgroundRotation.value = new Matrix3()
+  const uniforms = UniformsUtils.clone(ShaderLib.backgroundCube!.uniforms)
+  uniforms.envMap!.value = environmentMap.value
+  uniforms.flipEnvMap!.value = 1
+  uniforms.backgroundBlurriness!.value = settings.environment.backgroundBlurriness
+  uniforms.backgroundIntensity!.value = settings.environment.backgroundIntensity
+  uniforms.backgroundRotation!.value = new Matrix3()
 
   const material = new ShaderMaterial({
     name: 'TransmissionBackdropMaterial',
     uniforms,
-    vertexShader: ShaderLib.backgroundCube.vertexShader,
-    fragmentShader: ShaderLib.backgroundCube.fragmentShader,
+    vertexShader: ShaderLib.backgroundCube!.vertexShader,
+    fragmentShader: ShaderLib.backgroundCube!.fragmentShader,
     side: BackSide,
     depthTest: false,
     depthWrite: false,
@@ -1014,63 +842,13 @@ const scheduleMarchingRebuild = useDebounceFn(() => {
   void queueMarchingRebuild()
 }, 200)
 
-type GlassPresetName = 'enhanced' | 'reference'
-
-function createReferencePreset(): GlassMetaballsSettings {
-  const preset = createDefaultSettings()
-
-  preset.perf.marchingResolution = 96
-  preset.field.scale = 5
-  preset.field.isolation = 1000
-
-  preset.bodies.sizeMin = 0.2
-  preset.bodies.sizeMax = 0.2
-  preset.bodies.sizePow = 1
-  preset.bodies.densityMin = 0.5
-  preset.bodies.densityMax = 0.5
-  preset.bodies.linDampMin = 0
-  preset.bodies.linDampMax = 0
-  preset.bodies.angDampMin = 0
-  preset.bodies.angDampMax = 0
-  preset.bodies.restitution = 0
-  preset.bodies.friction = 0.5
-  preset.bodies.pullBaseMin = 0.5
-  preset.bodies.pullBaseMax = 0.5
-  preset.bodies.pullBoostMulMin = 0
-  preset.bodies.pullBoostMulMax = 0
-  preset.bodies.pullBoostCapMin = 0
-  preset.bodies.pullBoostCapMax = 0
-  preset.bodies.maxSpeedMin = 100
-  preset.bodies.maxSpeedMax = 100
-  preset.bodies.maxAngMin = 100
-  preset.bodies.maxAngMax = 100
-  preset.bodies.flowStrength = 0
-  preset.bodies.swirlStrength = 0
-  preset.bodies.strengthBase = 0.5
-  preset.bodies.strengthSizeMul = 0
-  preset.bodies.strengthRand = 0
-  preset.bodies.subtractBase = 10
-  preset.bodies.subtractInvSizeMul = 0
-  preset.bodies.subtractRand = 0
-
-  preset.mouse.radius = 0.25
-  preset.mouse.colliderMul = 6
-
-  return preset
-}
-
-const presets: Record<GlassPresetName, GlassMetaballsSettings> = {
-  enhanced: createDefaultSettings(),
-  reference: createReferencePreset(),
-}
-
 const presetName = ref<GlassPresetName>('enhanced')
 
 async function applyPreset(name: GlassPresetName) {
   isApplyingPreset.value = true
   try {
     presetName.value = name
-    applySettingsPreset(presets[name])
+    applySettingsPreset(glassMetaballsPresets[name])
   }
   finally {
     isApplyingPreset.value = false
@@ -1289,607 +1067,15 @@ onBeforeUnmount(() => {
         <primitive v-if="mousePlane" :object="mousePlane" />
       </TresCanvas>
 
-      <!-- Settings panel (Tailwind / UnoCSS compatible classes) -->
-      <div
-        v-if="settings.uiOpen"
-        data-lenis-prevent
-        data-liquid-ui
-        class="border-white/10 text-white/90 absolute bottom-3 right-3 z-50 max-h-[70vh] w-[360px] overflow-auto border rounded-2xl bg-[#080a10]/70 p-3 backdrop-blur"
-      >
-        <div class="mb-2 flex items-start justify-between gap-3">
-          <div class="min-w-0">
-            <div class="text-sm font-semibold">
-              Liquid Settings
-            </div>
-            <div class="mt-0.5 text-[10px] opacity-60">
-              Debounced rebuilds • Pointer ignored over panel
-            </div>
-          </div>
-          <div class="flex flex-wrap items-center justify-end gap-2">
-            <button
-              type="button"
-              class="border-white/10 bg-white/5 hover:bg-white/10 border rounded-xl px-2 py-1 text-[11px]"
-              @click="copySettingsJson()"
-            >
-              Copy
-            </button>
-            <button
-              type="button"
-              class="border-white/10 bg-white/5 hover:bg-white/10 border rounded-xl px-2 py-1 text-[11px]"
-              @click="applyPreset('enhanced')"
-            >
-              Reset
-            </button>
-            <button
-              type="button"
-              class="border-white/10 bg-white/5 hover:bg-white/10 border rounded-xl px-2 py-1 text-[11px]"
-              @click="settings.uiOpen = false"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-
-        <div class="mb-2 flex items-center gap-2">
-          <div class="w-12 shrink-0 text-[10px] opacity-70">
-            Preset
-          </div>
-          <select
-            v-model="presetName"
-            class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs"
-          >
-            <option value="enhanced">
-              Enhanced
-            </option>
-            <option value="reference">
-              Reference (bobbyroe)
-            </option>
-          </select>
-          <button
-            type="button"
-            class="border-white/10 bg-white/5 hover:bg-white/10 shrink-0 border rounded-lg px-2 py-1 text-xs"
-            @click="applyPreset(presetName)"
-          >
-            Apply
-          </button>
-        </div>
-
-        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
-          <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
-            Performance
-          </summary>
-
-          <div class="mt-2 space-y-3">
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>DPR max</span><span>{{ settings.perf.dprMax.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.perf.dprMax" type="range" min="1" max="2" step="0.05" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Marching resolution</span><span>{{ settings.perf.marchingResolution }}</span>
-              </div>
-              <input v-model.number="settings.perf.marchingResolution" type="range" min="48" max="128" step="8" class="w-full">
-              <div class="mt-1 text-[10px] opacity-60">
-                Rebuilds marching cubes
-              </div>
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Max polys</span><span>{{ settings.perf.marchingMaxPoly }}</span>
-              </div>
-              <input v-model.number="settings.perf.marchingMaxPoly" type="range" min="30000" max="140000" step="5000" class="w-full">
-              <div class="mt-1 text-[10px] opacity-60">
-                Rebuilds marching cubes
-              </div>
-            </div>
-          </div>
-        </details>
-
-        <div class="h-2" />
-
-        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
-          <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
-            Environment
-          </summary>
-
-          <div class="mt-2 space-y-3">
-            <div class="grid grid-cols-[72px,1fr] items-center gap-2">
-              <div class="text-[10px] opacity-70">
-                Mode
-              </div>
-              <select
-                v-model="settings.environment.mode"
-                class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs"
-              >
-                <option value="image">
-                  Image (equirect)
-                </option>
-                <option value="room">
-                  Room (procedural)
-                </option>
-              </select>
-            </div>
-
-            <label v-if="settings.environment.mode === 'image'" class="space-y-1">
-              <div class="text-[10px] opacity-70">
-                URL / public path
-              </div>
-              <input
-                v-model="settings.environment.url"
-                type="text"
-                placeholder="/env/my-env.jpg or https://..."
-                class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs"
-              >
-              <div class="text-[10px] opacity-60">
-                Use a raw link (CORS) or place file in <code class="bg-black/30 rounded px-1 py-0.5">frontend/public</code>
-              </div>
-            </label>
-
-            <label class="flex items-center gap-2 text-[11px] opacity-90">
-              <input v-model="settings.environment.useAsBackground" type="checkbox" class="accent-white">
-              Use as visible background
-            </label>
-
-            <label class="flex items-center gap-2 text-[11px] opacity-90">
-              <input v-model="settings.environment.useAsBackdrop" type="checkbox" class="accent-white">
-              Use as refraction source only (hide background)
-            </label>
-
-            <div class="space-y-1">
-              <div class="flex items-center justify-between text-[11px] opacity-80">
-                <span>Background blur</span><span>{{ settings.environment.backgroundBlurriness.toFixed(3) }}</span>
-              </div>
-              <input v-model.number="settings.environment.backgroundBlurriness" type="range" min="0" max="0.25" step="0.005" class="w-full">
-              <div class="text-[10px] opacity-60">
-                Works when background/backdrop is enabled
-              </div>
-            </div>
-
-            <div class="space-y-1">
-              <div class="flex items-center justify-between text-[11px] opacity-80">
-                <span>Background intensity</span><span>{{ settings.environment.backgroundIntensity.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.environment.backgroundIntensity" type="range" min="0" max="2" step="0.05" class="w-full">
-            </div>
-
-            <div class="flex items-center justify-between gap-2">
-              <div class="text-[10px] opacity-60">
-                <span v-if="envStatus.loading">Loading…</span>
-                <span v-else-if="envStatus.error">Error: {{ envStatus.error }}</span>
-                <span v-else>Ready</span>
-              </div>
-              <button
-                type="button"
-                class="border-white/10 bg-white/5 hover:bg-white/10 border rounded-xl px-2 py-1 text-[11px]"
-                @click="applyEnvironmentSettings()"
-              >
-                Apply
-              </button>
-            </div>
-          </div>
-        </details>
-
-        <div class="h-2" />
-
-        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
-          <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
-            Field
-          </summary>
-
-          <div class="mt-2 space-y-3">
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Scale</span><span>{{ settings.field.scale.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.field.scale" type="range" min="2.5" max="6.5" step="0.05" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Isolation</span><span>{{ settings.field.isolation.toFixed(0) }}</span>
-              </div>
-              <input v-model.number="settings.field.isolation" type="range" min="80" max="1400" step="5" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Meta mapping</span><span>{{ settings.field.metaMapMul.toFixed(3) }}</span>
-              </div>
-              <input v-model.number="settings.field.metaMapMul" type="range" min="0.05" max="0.12" step="0.001" class="w-full">
-            </div>
-
-            <div class="grid grid-cols-3 gap-2">
-              <label class="space-y-1">
-                <div class="text-[10px] opacity-70">Off X</div>
-                <input v-model.number="settings.field.offsetX" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-              </label>
-              <label class="space-y-1">
-                <div class="text-[10px] opacity-70">Off Y</div>
-                <input v-model.number="settings.field.offsetY" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-              </label>
-              <label class="space-y-1">
-                <div class="text-[10px] opacity-70">Off Z</div>
-                <input v-model.number="settings.field.offsetZ" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-              </label>
-            </div>
-          </div>
-        </details>
-
-        <div class="h-2" />
-
-        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
-          <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
-            Material
-          </summary>
-
-          <div class="mt-2 space-y-3">
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Transmission</span><span>{{ settings.material.transmission.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.material.transmission" type="range" min="0.5" max="1" step="0.01" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>IOR</span><span>{{ settings.material.ior.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.material.ior" type="range" min="1.0" max="2.2" step="0.01" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Thickness</span><span>{{ settings.material.thickness.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.material.thickness" type="range" min="0.2" max="5" step="0.05" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Roughness</span><span>{{ settings.material.roughness.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.material.roughness" type="range" min="0" max="0.35" step="0.01" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Env intensity</span><span>{{ settings.material.envMapIntensity.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.material.envMapIntensity" type="range" min="0" max="3" step="0.05" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Clearcoat</span><span>{{ settings.material.clearcoat.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.material.clearcoat" type="range" min="0" max="1" step="0.01" class="w-full">
-            </div>
-          </div>
-        </details>
-
-        <div class="h-2" />
-
-        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
-          <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
-            Bodies
-          </summary>
-
-          <div class="mt-2 space-y-3">
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Count</span><span>{{ settings.bodies.count }}</span>
-              </div>
-              <input v-model.number="settings.bodies.count" type="range" min="10" max="90" step="1" class="w-full">
-            </div>
-
-            <details class="border-white/10 bg-black/20 border rounded-xl p-2">
-              <summary class="cursor-pointer select-none text-[11px] font-semibold opacity-90">
-                Spawn + size (rebuild)
-              </summary>
-
-              <div class="mt-2 space-y-3">
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Range</div>
-                    <input v-model.number="settings.bodies.range" type="number" step="0.25" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Spawn Y bias</div>
-                    <input v-model.number="settings.bodies.spawnYBias" type="number" step="0.25" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Size min</div>
-                    <input v-model.number="settings.bodies.sizeMin" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Size max</div>
-                    <input v-model.number="settings.bodies.sizeMax" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div>
-                  <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                    <span>Size bias</span><span>{{ settings.bodies.sizePow.toFixed(2) }}</span>
-                  </div>
-                  <input v-model.number="settings.bodies.sizePow" type="range" min="0.6" max="3.5" step="0.05" class="w-full">
-                  <div class="mt-1 text-[10px] opacity-60">
-                    &gt; 1 skews smaller shards
-                  </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Density min</div>
-                    <input v-model.number="settings.bodies.densityMin" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Density max</div>
-                    <input v-model.number="settings.bodies.densityMax" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-              </div>
-            </details>
-
-            <details class="border-white/10 bg-black/20 border rounded-xl p-2">
-              <summary class="cursor-pointer select-none text-[11px] font-semibold opacity-90">
-                Dynamics (rebuild)
-              </summary>
-
-              <div class="mt-2 space-y-3">
-                <div>
-                  <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                    <span>Restitution</span><span>{{ settings.bodies.restitution.toFixed(2) }}</span>
-                  </div>
-                  <input v-model.number="settings.bodies.restitution" type="range" min="0" max="0.6" step="0.01" class="w-full">
-                </div>
-
-                <div>
-                  <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                    <span>Friction</span><span>{{ settings.bodies.friction.toFixed(2) }}</span>
-                  </div>
-                  <input v-model.number="settings.bodies.friction" type="range" min="0.1" max="1.8" step="0.01" class="w-full">
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Lin damp min</div>
-                    <input v-model.number="settings.bodies.linDampMin" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Lin damp max</div>
-                    <input v-model.number="settings.bodies.linDampMax" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Ang damp min</div>
-                    <input v-model.number="settings.bodies.angDampMin" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Ang damp max</div>
-                    <input v-model.number="settings.bodies.angDampMax" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Max speed min</div>
-                    <input v-model.number="settings.bodies.maxSpeedMin" type="number" step="0.5" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Max speed max</div>
-                    <input v-model.number="settings.bodies.maxSpeedMax" type="number" step="0.5" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Max ang min</div>
-                    <input v-model.number="settings.bodies.maxAngMin" type="number" step="0.5" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Max ang max</div>
-                    <input v-model.number="settings.bodies.maxAngMax" type="number" step="0.5" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-              </div>
-            </details>
-
-            <details class="border-white/10 bg-black/20 border rounded-xl p-2">
-              <summary class="cursor-pointer select-none text-[11px] font-semibold opacity-90">
-                Forces
-              </summary>
-
-              <div class="mt-2 space-y-3">
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Pull base min</div>
-                    <input v-model.number="settings.bodies.pullBaseMin" type="number" step="0.02" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Pull base max</div>
-                    <input v-model.number="settings.bodies.pullBaseMax" type="number" step="0.02" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Boost mul min</div>
-                    <input v-model.number="settings.bodies.pullBoostMulMin" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Boost mul max</div>
-                    <input v-model.number="settings.bodies.pullBoostMulMax" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div class="grid grid-cols-2 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Boost cap min</div>
-                    <input v-model.number="settings.bodies.pullBoostCapMin" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Boost cap max</div>
-                    <input v-model.number="settings.bodies.pullBoostCapMax" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div>
-                  <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                    <span>Flow strength</span><span>{{ settings.bodies.flowStrength.toFixed(2) }}</span>
-                  </div>
-                  <input v-model.number="settings.bodies.flowStrength" type="range" min="0" max="0.6" step="0.01" class="w-full">
-                </div>
-
-                <div>
-                  <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                    <span>Flow speed</span><span>{{ settings.bodies.flowSpeed.toFixed(2) }}</span>
-                  </div>
-                  <input v-model.number="settings.bodies.flowSpeed" type="range" min="0" max="3" step="0.05" class="w-full">
-                </div>
-
-                <div>
-                  <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                    <span>Flow spatial</span><span>{{ settings.bodies.flowSpatial.toFixed(2) }}</span>
-                  </div>
-                  <input v-model.number="settings.bodies.flowSpatial" type="range" min="0" max="2.5" step="0.05" class="w-full">
-                </div>
-
-                <div>
-                  <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                    <span>Swirl strength</span><span>{{ settings.bodies.swirlStrength.toFixed(2) }}</span>
-                  </div>
-                  <input v-model.number="settings.bodies.swirlStrength" type="range" min="0" max="0.6" step="0.01" class="w-full">
-                </div>
-
-                <div>
-                  <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                    <span>Swirl speed</span><span>{{ settings.bodies.swirlSpeed.toFixed(2) }}</span>
-                  </div>
-                  <input v-model.number="settings.bodies.swirlSpeed" type="range" min="0" max="3" step="0.05" class="w-full">
-                </div>
-              </div>
-            </details>
-
-            <details class="border-white/10 bg-black/20 border rounded-xl p-2">
-              <summary class="cursor-pointer select-none text-[11px] font-semibold opacity-90">
-                Metaballs (rebuild)
-              </summary>
-
-              <div class="mt-2 space-y-3">
-                <div class="grid grid-cols-3 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Strength base</div>
-                    <input v-model.number="settings.bodies.strengthBase" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Size mul</div>
-                    <input v-model.number="settings.bodies.strengthSizeMul" type="number" step="0.05" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Rand</div>
-                    <input v-model.number="settings.bodies.strengthRand" type="number" step="0.01" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-
-                <div class="grid grid-cols-3 gap-2">
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Subtract base</div>
-                    <input v-model.number="settings.bodies.subtractBase" type="number" step="0.2" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Inv size mul</div>
-                    <input v-model.number="settings.bodies.subtractInvSizeMul" type="number" step="0.5" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                  <label class="space-y-1">
-                    <div class="text-[10px] opacity-70">Rand</div>
-                    <input v-model.number="settings.bodies.subtractRand" type="number" step="0.2" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-                  </label>
-                </div>
-              </div>
-            </details>
-
-            <button
-              type="button"
-              class="border-white/10 bg-white/5 hover:bg-white/10 w-full border rounded-xl px-3 py-2 text-xs"
-              @click="queuePhysicsRebuild()"
-            >
-              Rebuild bodies now
-            </button>
-          </div>
-        </details>
-
-        <div class="h-2" />
-
-        <details class="border-white/10 bg-white/5 border rounded-xl p-2">
-          <summary class="cursor-pointer select-none text-xs font-semibold opacity-90">
-            Mouse
-          </summary>
-
-          <div class="mt-2 space-y-3">
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Lerp</span><span>{{ settings.mouse.lerp.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.mouse.lerp" type="range" min="0.02" max="0.6" step="0.01" class="w-full">
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Radius</span><span>{{ settings.mouse.radius.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.mouse.radius" type="range" min="0.05" max="0.6" step="0.01" class="w-full">
-              <div class="mt-1 text-[10px] opacity-60">
-                Rebuilds mouse collider
-              </div>
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Collider mul</span><span>{{ settings.mouse.colliderMul.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.mouse.colliderMul" type="range" min="2.0" max="8.0" step="0.1" class="w-full">
-              <div class="mt-1 text-[10px] opacity-60">
-                Rebuilds mouse collider
-              </div>
-            </div>
-
-            <div>
-              <div class="mb-1 flex items-center justify-between text-[11px] opacity-80">
-                <span>Edge deadzone</span><span>{{ settings.mouse.edgeDeadzoneNdc.toFixed(2) }}</span>
-              </div>
-              <input v-model.number="settings.mouse.edgeDeadzoneNdc" type="range" min="0.6" max="0.99" step="0.01" class="w-full">
-            </div>
-
-            <label class="space-y-1">
-              <div class="text-[10px] opacity-70">Park Z (rebuild)</div>
-              <input v-model.number="settings.mouse.parkZ" type="number" step="1" class="border-white/10 bg-black/30 w-full border rounded-lg px-2 py-1 text-xs">
-            </label>
-          </div>
-        </details>
-
-        <div class="mt-3 text-[10px] opacity-60">
-          Tip: values marked “rebuild” recreate bodies/colliders (slightly heavier).
-        </div>
-      </div>
-
-      <button
-        v-else
-        type="button"
-        data-liquid-ui
-        class="border-white/10 bg-white/5 text-white/90 hover:bg-white/10 absolute bottom-3 right-3 z-50 border rounded-2xl px-3 py-2 text-xs backdrop-blur"
-        @click="settings.uiOpen = true"
-      >
-        Settings
-      </button>
+      <GlassMetaballsControls
+        v-model:settings="settingsModel"
+        v-model:preset-name="presetName"
+        :env-status="envStatus"
+        :on-apply-environment-settings="applyEnvironmentSettings"
+        :on-apply-preset="applyPreset"
+        :on-copy-settings="copySettingsJson"
+        :on-queue-physics-rebuild="queuePhysicsRebuild"
+      />
     </ClientOnly>
   </div>
 </template>
