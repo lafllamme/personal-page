@@ -176,7 +176,7 @@ const selectedFontFamily = computed({
         </label>
         <label class="block">
           <span class="color-white/60 mb-1 block text-[10px] tracking-[0.2em] uppercase">Max size</span>
-          <input v-model.number="fontSizeMax" type="number" min="40" max="320" step="2" class="border-white/10 bg-black/60 text-white w-full border rounded-lg px-2 py-1 text-[11px]">
+          <input v-model.number="fontSizeMax" type="number" min="40" max="2400" step="2" class="border-white/10 bg-black/60 text-white w-full border rounded-lg px-2 py-1 text-[11px]">
           <span class="color-white/50 mt-1 block text-[10px]">Maximum font size when fitting.</span>
         </label>
       </div>

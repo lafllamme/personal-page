@@ -124,16 +124,23 @@ function fitFontSizeFromSegments() {
   const pad = Math.max(0, Math.min(0.2, fitPadding.value))
   const available = Math.max(1, canvasSize.w * (1 - pad * 2))
   const longest = activeSegments.value.reduce((acc, item) => (item.length > acc.length ? item : acc), '')
-  let size = minSize
+  let lo = minSize
+  let hi = maxSize
+  let best = minSize
 
-  for (let next = minSize; next <= maxSize; next += 2) {
-    if (measureTextWidth(longest, next) <= available)
-      size = next
-    else
-      break
+  // Find the largest font size that still fits the available width.
+  while (lo <= hi) {
+    const mid = Math.floor((lo + hi) / 2)
+    if (measureTextWidth(longest, mid) <= available) {
+      best = mid
+      lo = mid + 1
+    }
+    else {
+      hi = mid - 1
+    }
   }
 
-  fontSize = size
+  fontSize = best
   lineStep = fontSize * rowSpacing.value
   repeats = Math.ceil((canvasSize.h * 2) / lineStep) + 3
 }
