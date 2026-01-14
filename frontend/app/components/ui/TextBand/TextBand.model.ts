@@ -33,7 +33,7 @@ export const TextBandDefaultProps = {
   fontFamily: 'Figtree',
   fontWeight: 500,
   fontSizeMin: 40,
-  fontSizeMax: 300,
+  fontSizeMax: 2400,
   textSpacing: 0,
   pace: 0.95,
   switchMs: 2200,

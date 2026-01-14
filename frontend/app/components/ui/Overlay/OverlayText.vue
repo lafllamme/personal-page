@@ -372,7 +372,7 @@ function hide() {
         </template>
       </div>
       <div
-        class="hidden md:block"
+        class="absolute inset-0 hidden md:block"
         :style="getBandAnimationStyle()"
       >
         <div
