@@ -4,12 +4,6 @@ import PageBleed from '@/components/ui/Partials/PageContainer/PageBleed.vue'
 
 useHead({
   title: 'Liquid Symmetry',
-  htmlAttrs: {
-    class: 'overflow-x-hidden touch-pan-y',
-  },
-  bodyAttrs: {
-    class: 'overflow-x-hidden touch-pan-y',
-  },
 })
 
 const fonts = [
@@ -58,6 +52,8 @@ const minFontSize = 8
 const maxFontSize = 28
 const minLetterSpacing = -0.08
 const maxLetterSpacing = -0.02
+const sizePhaseEnd = 0.7
+const exitStart = 0.85
 
 function clampNumber(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
@@ -81,23 +77,41 @@ const isPast = computed(() =>
   sectionBottom.value < headerHeightPx.value + stickyViewportHeight.value,
 )
 
+const sizeProgress = computed(() =>
+  clampNumber(scrollProgress.value / sizePhaseEnd, 0, 1),
+)
+
 const targetFontSize = computed(() =>
-  maxFontSize - (maxFontSize - minFontSize) * scrollProgress.value,
+  maxFontSize - (maxFontSize - minFontSize) * sizeProgress.value,
 )
 const targetLetterSpacing = computed(() =>
-  maxLetterSpacing - (maxLetterSpacing - minLetterSpacing) * scrollProgress.value,
+  maxLetterSpacing - (maxLetterSpacing - minLetterSpacing) * sizeProgress.value,
 )
+
+const exitProgress = computed(() =>
+  clampNumber((scrollProgress.value - exitStart) / (1 - exitStart), 0, 1),
+)
+const targetOpacity = computed(() => 1 - 0.9 * exitProgress.value)
+const targetTranslateY = computed(() => 28 * exitProgress.value)
+const targetScale = computed(() => 1 - 0.02 * exitProgress.value)
 
 const displayFontSize = ref(targetFontSize.value)
 const displayLetterSpacing = ref(targetLetterSpacing.value)
+const displayOpacity = ref(targetOpacity.value)
+const displayTranslateY = ref(targetTranslateY.value)
+const displayScale = ref(targetScale.value)
 
 function lerpNumber(a: number, b: number, t: number) {
   return a + (b - a) * t
 }
 
 useRafFn(() => {
-  displayFontSize.value = lerpNumber(displayFontSize.value, targetFontSize.value, 0.18)
-  displayLetterSpacing.value = lerpNumber(displayLetterSpacing.value, targetLetterSpacing.value, 0.18)
+  const t = 0.18
+  displayFontSize.value = lerpNumber(displayFontSize.value, targetFontSize.value, t)
+  displayLetterSpacing.value = lerpNumber(displayLetterSpacing.value, targetLetterSpacing.value, t)
+  displayOpacity.value = lerpNumber(displayOpacity.value, targetOpacity.value, t)
+  displayTranslateY.value = lerpNumber(displayTranslateY.value, targetTranslateY.value, t)
+  displayScale.value = lerpNumber(displayScale.value, targetScale.value, t)
 })
 </script>
 
@@ -107,13 +121,16 @@ useRafFn(() => {
       <section ref="sectionRef" class="relative h-[200svh]">
         <div
           :class="useClsx(
-            'z-10 flex items-center justify-center px-8 overflow-hidden',
+            'z-10 flex h-[100svh] items-center justify-center px-8 pt-[var(--header-height)]',
             isPinned && 'fixed left-0 right-0',
             !isPinned && 'absolute left-0 right-0',
           )"
-          :style="isPinned ? { top: `${headerHeightPx}px`, height: `calc(100svh - ${headerHeightPx}px)` } : (isPast ? { bottom: 0, height: `calc(100svh - ${headerHeightPx}px)` } : { top: 0, height: `calc(100svh - ${headerHeightPx}px)` })"
+          :style="isPinned ? { top: 0 } : (isPast ? { bottom: 0 } : { top: 0 })"
         >
-          <div class="pointer-events-none absolute inset-0 z-0">
+          <div
+            class="pointer-events-none absolute inset-0 z-0 overflow-hidden"
+            :style="{ transform: `translateY(${scrollProgress * 30}px)` }"
+          >
             <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
           </div>
 
@@ -163,15 +180,17 @@ useRafFn(() => {
           </div>
 
           <h1
-            class="relative z-10 text-center leading-[0.85] uppercase color-pureBlack font-semibold whitespace-nowrap dark:color-pureWhite"
+            class="relative z-10 whitespace-nowrap text-center color-pureBlack uppercase dark:color-pureWhite"
             :style="{
               fontSize: `${displayFontSize}rem`,
               letterSpacing: `${displayLetterSpacing}em`,
+              opacity: displayOpacity,
+              transform: `translateY(${displayTranslateY}px) scale(${displayScale})`,
             }"
           >
-            <span :class="selectedH1Font" class="inline-block whitespace-nowrap">Web evolves.</span>
+            <span :class="selectedH1Font" class="inline-block whitespace-nowrap font-semibold">Web evolves.</span>
             <br>
-            <span :class="selectedSpanFont" class="inline-block whitespace-nowrap">We track it.</span>
+            <span :class="selectedSpanFont" class="inline-block whitespace-nowrap italic">We track it.</span>
           </h1>
         </div>
       </section>
