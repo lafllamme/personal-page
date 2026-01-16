@@ -122,7 +122,9 @@ function fitFontSizeFromSegments() {
   const minSize = Math.max(8, fontSizeMin.value)
   const maxSize = Math.max(minSize, fontSizeMax.value)
   const pad = Math.max(0, Math.min(0.2, fitPadding.value))
-  const available = Math.max(1, canvasSize.w * (1 - pad * 2))
+  // Guard against subpixel rounding / glyph overhang clipping at the edges.
+  const guardPx = 10
+  const available = Math.max(1, canvasSize.w * (1 - pad * 2) - guardPx)
   const longest = activeSegments.value.reduce((acc, item) => (item.length > acc.length ? item : acc), '')
   let lo = minSize
   let hi = maxSize

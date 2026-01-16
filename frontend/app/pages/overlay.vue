@@ -32,7 +32,7 @@ const textBandAmplitudeVariance = ref(0.35)
 const textBandStepEase = ref(5)
 const textBandStepHold = ref(0)
 const textBandAlignChance = ref(0.25)
-const textBandFitPadding = ref(0)
+const textBandFitPadding = ref(0.02)
 
 function toNumber(value: unknown, fallback: number) {
   const parsed = Number(value)
