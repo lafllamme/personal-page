@@ -88,7 +88,7 @@ export function createDefaultGlassMetaballsSettings(): GlassMetaballsSettings {
 
     environment: {
       mode: 'image',
-      url: 'https://raw.githubusercontent.com/bobbyroe/physics-liquid-glass/refs/heads/main/envs/san_giuseppe_bridge_2k.jpg',
+      url: 'https://i.imgur.com/eQWtwTJ.jpeg',
       useAsBackground: false,
       useAsBackdrop: true,
       backgroundBlurriness: 0.05,
