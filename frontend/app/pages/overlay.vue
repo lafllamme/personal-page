@@ -157,7 +157,7 @@ function toggleTextBandControls() {
         </div>
       </div>
 
-      <div class="bg-white/70 border-black/10 mt-16 border rounded-3xl p-10 shadow-sm">
+      <div class="border-black/10 bg-white/70 mt-16 border rounded-3xl p-10 shadow-sm">
         <p class="text-black/75 text-lg leading-relaxed">
           This page is a sandbox to test the overlay animation without affecting the main home route.
         </p>

@@ -173,6 +173,106 @@ function buildGeometry(meshSegments = settings.meshDensity) {
   requestRender()
 }
 
+const vertexShader = `
+  uniform float time;
+  uniform float bubble1Speed;
+  uniform float bubble1Amount;
+  uniform float bubble1Frequency;
+  uniform float bubble2Speed;
+  uniform float bubble2Amount;
+  uniform float bubble2Frequency;
+  uniform float bubble3Speed;
+  uniform float bubble3Amount;
+  uniform float bubble3Frequency;
+  uniform float pulseSpeed;
+  uniform float pulseAmount;
+  uniform float sphereSize;
+
+  varying vec3 vPosition;
+  varying vec3 vNormalV;
+  varying vec3 vViewDir;
+  varying float vCrater;
+
+  void main() {
+    vec3 scaledPos = position * sphereSize;
+
+    float dist = length(scaledPos);
+    float bubble1 = sin(time * bubble1Speed + scaledPos.x * bubble1Frequency + scaledPos.y * bubble1Frequency) * bubble1Amount;
+    float bubble2 = sin(time * bubble2Speed + scaledPos.y * bubble2Frequency + scaledPos.z * bubble2Frequency) * bubble2Amount;
+    float bubble3 = cos(time * bubble3Speed + scaledPos.z * bubble3Frequency + scaledPos.x * bubble3Frequency) * bubble3Amount;
+    float radialPulse = sin(time * pulseSpeed + dist * 4.0) * pulseAmount;
+
+    float displacement = bubble1 + bubble2 + bubble3 + radialPulse;
+    float invDist = dist > 0.0001 ? 1.0 / dist : 0.0;
+
+    vec3 displaced = scaledPos + scaledPos * (displacement * invDist);
+    vec4 mvPosition = modelViewMatrix * vec4(displaced, 1.0);
+
+    vPosition = displaced;
+    vViewDir = normalize(-mvPosition.xyz);
+
+    vec3 objectNormal = normalize(displaced);
+    vNormalV = normalize(normalMatrix * objectNormal);
+
+    vCrater = max(0.0, -displacement);
+
+    gl_Position = projectionMatrix * mvPosition;
+  }
+`
+
+const fragmentShader = `
+  uniform float time;
+  uniform vec3 color1;
+  uniform vec3 color2;
+  uniform vec3 craterTint;
+
+  uniform int gradientMode;
+  uniform float glowSpeed;
+  uniform float glowAmount;
+  uniform float transparency;
+  uniform float sphereSize;
+
+  uniform float craterDepth;
+  uniform float craterDarken;
+  uniform float craterTintMix;
+
+  varying vec3 vPosition;
+  varying vec3 vNormalV;
+  varying vec3 vViewDir;
+  varying float vCrater;
+
+  void main() {
+    float gradientFactor;
+
+    if (gradientMode == 0) {
+      gradientFactor = (vPosition.y + sphereSize) / (2.0 * sphereSize);
+    } else if (gradientMode == 1) {
+      gradientFactor = (vPosition.x + sphereSize) / (2.0 * sphereSize);
+    } else if (gradientMode == 2) {
+      float dist = length(vPosition);
+      gradientFactor = dist / (sphereSize * 1.2);
+    } else {
+      gradientFactor = (vPosition.x + vPosition.y + 2.0 * sphereSize) / (4.0 * sphereSize);
+    }
+
+    vec3 finalColor = mix(color1, color2, gradientFactor);
+    float glow = 0.9 + sin(time * glowSpeed) * glowAmount;
+
+    float crater = clamp(vCrater * craterDepth, 0.0, 1.0);
+    finalColor = mix(finalColor, craterTint, crater * craterTintMix);
+    finalColor *= 1.0 - crater * craterDarken;
+
+    vec3 N = normalize(vNormalV);
+    vec3 V = normalize(vViewDir);
+    vec3 L = normalize(vec3(0.4, 0.7, 0.5));
+
+    float spec = pow(max(dot(reflect(-L, N), V), 0.0), 48.0);
+    finalColor += vec3(1.0) * spec * 0.6;
+
+    gl_FragColor = vec4(finalColor * glow, transparency);
+  }
+`
+
 /** Builds or replaces the shader material. */
 function buildMaterial() {
   const next = new ShaderMaterial({
@@ -473,106 +573,6 @@ watchEffect(() => {
 })
 
 const cameraPosition = computed(() => [0, 0, settings.cameraDistance] as const)
-
-const vertexShader = `
-  uniform float time;
-  uniform float bubble1Speed;
-  uniform float bubble1Amount;
-  uniform float bubble1Frequency;
-  uniform float bubble2Speed;
-  uniform float bubble2Amount;
-  uniform float bubble2Frequency;
-  uniform float bubble3Speed;
-  uniform float bubble3Amount;
-  uniform float bubble3Frequency;
-  uniform float pulseSpeed;
-  uniform float pulseAmount;
-  uniform float sphereSize;
-
-  varying vec3 vPosition;
-  varying vec3 vNormalV;
-  varying vec3 vViewDir;
-  varying float vCrater;
-
-  void main() {
-    vec3 scaledPos = position * sphereSize;
-
-    float dist = length(scaledPos);
-    float bubble1 = sin(time * bubble1Speed + scaledPos.x * bubble1Frequency + scaledPos.y * bubble1Frequency) * bubble1Amount;
-    float bubble2 = sin(time * bubble2Speed + scaledPos.y * bubble2Frequency + scaledPos.z * bubble2Frequency) * bubble2Amount;
-    float bubble3 = cos(time * bubble3Speed + scaledPos.z * bubble3Frequency + scaledPos.x * bubble3Frequency) * bubble3Amount;
-    float radialPulse = sin(time * pulseSpeed + dist * 4.0) * pulseAmount;
-
-    float displacement = bubble1 + bubble2 + bubble3 + radialPulse;
-    float invDist = dist > 0.0001 ? 1.0 / dist : 0.0;
-
-    vec3 displaced = scaledPos + scaledPos * (displacement * invDist);
-    vec4 mvPosition = modelViewMatrix * vec4(displaced, 1.0);
-
-    vPosition = displaced;
-    vViewDir = normalize(-mvPosition.xyz);
-
-    vec3 objectNormal = normalize(displaced);
-    vNormalV = normalize(normalMatrix * objectNormal);
-
-    vCrater = max(0.0, -displacement);
-
-    gl_Position = projectionMatrix * mvPosition;
-  }
-`
-
-const fragmentShader = `
-  uniform float time;
-  uniform vec3 color1;
-  uniform vec3 color2;
-  uniform vec3 craterTint;
-
-  uniform int gradientMode;
-  uniform float glowSpeed;
-  uniform float glowAmount;
-  uniform float transparency;
-  uniform float sphereSize;
-
-  uniform float craterDepth;
-  uniform float craterDarken;
-  uniform float craterTintMix;
-
-  varying vec3 vPosition;
-  varying vec3 vNormalV;
-  varying vec3 vViewDir;
-  varying float vCrater;
-
-  void main() {
-    float gradientFactor;
-
-    if (gradientMode == 0) {
-      gradientFactor = (vPosition.y + sphereSize) / (2.0 * sphereSize);
-    } else if (gradientMode == 1) {
-      gradientFactor = (vPosition.x + sphereSize) / (2.0 * sphereSize);
-    } else if (gradientMode == 2) {
-      float dist = length(vPosition);
-      gradientFactor = dist / (sphereSize * 1.2);
-    } else {
-      gradientFactor = (vPosition.x + vPosition.y + 2.0 * sphereSize) / (4.0 * sphereSize);
-    }
-
-    vec3 finalColor = mix(color1, color2, gradientFactor);
-    float glow = 0.9 + sin(time * glowSpeed) * glowAmount;
-
-    float crater = clamp(vCrater * craterDepth, 0.0, 1.0);
-    finalColor = mix(finalColor, craterTint, crater * craterTintMix);
-    finalColor *= 1.0 - crater * craterDarken;
-
-    vec3 N = normalize(vNormalV);
-    vec3 V = normalize(vViewDir);
-    vec3 L = normalize(vec3(0.4, 0.7, 0.5));
-
-    float spec = pow(max(dot(reflect(-L, N), V), 0.0), 48.0);
-    finalColor += vec3(1.0) * spec * 0.6;
-
-    gl_FragColor = vec4(finalColor * glow, transparency);
-  }
-`
 
 let time = 0
 

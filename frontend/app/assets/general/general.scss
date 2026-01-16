@@ -31,7 +31,6 @@ html[data-theme-transitioning='true']::view-transition-new(root) {
   clip-path: circle(0px at var(--theme-transition-x, 50%) var(--theme-transition-y, 50%));
 }
 
-
 :root {
   --header-height: 65px;
 }

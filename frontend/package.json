@@ -20,6 +20,7 @@
     "docker:start": "nuxt start --port 3000 --hostname 0.0.0.0"
   },
   "dependencies": {
+    "@dimforge/rapier3d-compat": "catalog:",
     "@iconify-json/radix-icons": "catalog:",
     "@nuxt/icon": "catalog:",
     "@nuxt/image": "catalog:",
@@ -40,7 +41,6 @@
     "@vueuse/integrations": "catalog:",
     "@vueuse/nuxt": "catalog:",
     "@vueuse/router": "catalog:",
-    "@dimforge/rapier3d-compat": "catalog:",
     "clsx": "catalog:",
     "consola": "catalog:",
     "focus-trap": "catalog:",

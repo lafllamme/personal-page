@@ -414,7 +414,7 @@ onBeforeUnmount(() => {
         showControls ? 'opacity-100 translate-x-0' : 'pointer-events-none opacity-0 translate-x-8',
       ]"
     >
-      <div class="border-black/5 bg-white/80 dark:border-white/10 dark:bg-black/50 border rounded-2xl p-4 shadow-xl backdrop-blur">
+      <div class="bg-white/80 border-black/5 dark:bg-black/50 dark:border-white/10 border rounded-2xl p-4 shadow-xl backdrop-blur">
         <div class="mb-4 flex items-center justify-between gap-4">
           <div>
             <p class="text-sm text-muted-foreground font-semibold tracking-wide">
@@ -523,7 +523,7 @@ onBeforeUnmount(() => {
     </div>
 
     <button
-      class="border-white/40 bg-white/80 text-slate-900 hover:bg-white pointer-events-auto fixed bottom-6 right-6 z-30 border rounded-full px-5 py-2 text-xs font-semibold tracking-[0.2em] uppercase shadow-lg backdrop-blur transition"
+      class="bg-white/80 border-white/40 text-slate-900 hover:bg-white pointer-events-auto fixed bottom-6 right-6 z-30 border rounded-full px-5 py-2 text-xs font-semibold tracking-[0.2em] uppercase shadow-lg backdrop-blur transition"
       type="button"
       @click="showControls = !showControls"
     >
