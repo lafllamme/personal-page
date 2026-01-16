@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
+import PageBleed from '@/components/ui/Partials/PageContainer/PageBleed.vue'
 
 useHead({
   title: 'Liquid Symmetry',
@@ -51,7 +52,7 @@ const showFontOptions = ref(false)
 <template>
   <main class="touch-pan-y bg-pureWhite dark:bg-pureBlack">
     <PageBleed>
-      <section class="relative -mt-[var(--header-height)] min-h-[100svh]">
+      <section class="relative min-h-[100svh] -mt-[var(--header-height)]">
         <div class="pointer-events-none absolute inset-0 z-0">
           <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
         </div>
