@@ -66,17 +66,6 @@ const scrollProgress = computed(() =>
   clampNumber((headerHeightPx.value - sectionTop.value) / scrollRange.value, 0, 1),
 )
 
-const stickyViewportHeight = computed(() =>
-  Math.max(1, viewportHeight.value - headerHeightPx.value),
-)
-const isPinned = computed(() =>
-  sectionTop.value <= headerHeightPx.value
-  && sectionBottom.value >= headerHeightPx.value + stickyViewportHeight.value,
-)
-const isPast = computed(() =>
-  sectionBottom.value < headerHeightPx.value + stickyViewportHeight.value,
-)
-
 const sizeProgress = computed(() =>
   clampNumber(scrollProgress.value / sizePhaseEnd, 0, 1),
 )
@@ -91,13 +80,11 @@ const targetLetterSpacing = computed(() =>
 const exitProgress = computed(() =>
   clampNumber((scrollProgress.value - exitStart) / (1 - exitStart), 0, 1),
 )
-const targetOpacity = computed(() => 1 - 0.9 * exitProgress.value)
 const targetTranslateY = computed(() => 28 * exitProgress.value)
 const targetScale = computed(() => 1 - 0.02 * exitProgress.value)
 
 const displayFontSize = ref(targetFontSize.value)
 const displayLetterSpacing = ref(targetLetterSpacing.value)
-const displayOpacity = ref(targetOpacity.value)
 const displayTranslateY = ref(targetTranslateY.value)
 const displayScale = ref(targetScale.value)
 
@@ -109,7 +96,6 @@ useRafFn(() => {
   const t = 0.18
   displayFontSize.value = lerpNumber(displayFontSize.value, targetFontSize.value, t)
   displayLetterSpacing.value = lerpNumber(displayLetterSpacing.value, targetLetterSpacing.value, t)
-  displayOpacity.value = lerpNumber(displayOpacity.value, targetOpacity.value, t)
   displayTranslateY.value = lerpNumber(displayTranslateY.value, targetTranslateY.value, t)
   displayScale.value = lerpNumber(displayScale.value, targetScale.value, t)
 })
@@ -119,14 +105,7 @@ useRafFn(() => {
   <main class="touch-pan-y bg-pureWhite dark:bg-pureBlack">
     <PageBleed>
       <section ref="sectionRef" class="relative h-[200svh]">
-        <div
-          :class="useClsx(
-            'z-10 flex h-[100svh] items-center justify-center px-8 pt-[var(--header-height)]',
-            isPinned && 'fixed left-0 right-0',
-            !isPinned && 'absolute left-0 right-0',
-          )"
-          :style="isPinned ? { top: 0 } : (isPast ? { bottom: 0 } : { top: 0 })"
-        >
+        <div class="sticky top-0 z-10 h-[100svh] flex items-center justify-center px-8 pt-[var(--header-height)]">
           <div
             class="pointer-events-none absolute inset-0 z-0 overflow-hidden"
             :style="{ transform: `translateY(${scrollProgress * 30}px)` }"
@@ -184,7 +163,6 @@ useRafFn(() => {
             :style="{
               fontSize: `${displayFontSize}rem`,
               letterSpacing: `${displayLetterSpacing}em`,
-              opacity: displayOpacity,
               transform: `translateY(${displayTranslateY}px) scale(${displayScale})`,
             }"
           >
