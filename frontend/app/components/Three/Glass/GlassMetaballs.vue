@@ -1084,9 +1084,9 @@ onBeforeUnmount(() => {
       <Teleport v-if="props.controlsMode === 'fixed'" to="body">
         <GlassMetaballsControls
           v-if="props.controlsMode !== 'none'"
-          position="fixed"
           v-model:settings="settingsModel"
           v-model:preset-name="presetName"
+          position="fixed"
           :env-status="envStatus"
           :on-apply-environment-settings="applyEnvironmentSettings"
           :on-apply-preset="applyPreset"
@@ -1097,9 +1097,9 @@ onBeforeUnmount(() => {
 
       <GlassMetaballsControls
         v-else-if="props.controlsMode !== 'none'"
-        position="absolute"
         v-model:settings="settingsModel"
         v-model:preset-name="presetName"
+        position="absolute"
         :env-status="envStatus"
         :on-apply-environment-settings="applyEnvironmentSettings"
         :on-apply-preset="applyPreset"
