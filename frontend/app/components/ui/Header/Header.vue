@@ -263,7 +263,7 @@ watch(isSwitchOpen, (open) => {
               <NuxtLink
                 :class="useClsx(
                   'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
-                'transition-[filter,opacity,transform] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
+                  'transition-[filter,opacity,transform] duration-500 ease-[cubic-bezier(0.33,1,0.68,1)] hover:scale-105',
                   'focus-visible:outline-none focus-visible:ring-3',
                   'font-nova font-bold tracking-tight antialiased',
                   'absolute group px-2',
@@ -272,7 +272,7 @@ watch(isSwitchOpen, (open) => {
                 :to="homeLink"
                 aria-label="Tech News"
                 tabindex="0"
-              :style="logoIntroStyle"
+                :style="logoIntroStyle"
               >
                 <span class="text-pureBlack dark:text-pureWhite">Tec</span>
                 <span class="color-teal-10 dark:color-[#01E2B6]">News</span>

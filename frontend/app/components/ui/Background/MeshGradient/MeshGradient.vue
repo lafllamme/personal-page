@@ -1,24 +1,26 @@
 <script lang="ts" setup>
+import type {
+  PerspectiveCamera,
+  Texture,
+} from 'three'
+import type { MeshGradientEnvPreset, MeshGradientProps } from './MeshGradient.model'
 import { useRafFn } from '@vueuse/core'
 import {
   DoubleSide,
   EquirectangularReflectionMapping,
   Mesh,
   MeshPhysicalMaterial,
-  PerspectiveCamera,
   PlaneGeometry,
   SphereGeometry,
-  Texture,
 } from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import {
   meshGradientDefaults,
-  type MeshGradientEnvPreset,
-  type MeshGradientProps,
+
 } from './MeshGradient.model'
 import { shaderGradientSphereFragment, shaderGradientSphereVertex } from './shaders'
 
-type NumericUniform = { value: number }
+interface NumericUniform { value: number }
 type ShaderUniformMap = Record<string, NumericUniform>
 type ColorUniformMap = Record<
   'uC1r' | 'uC1g' | 'uC1b' | 'uC2r' | 'uC2g' | 'uC2b' | 'uC3r' | 'uC3g' | 'uC3b',
@@ -48,8 +50,8 @@ const HDRI_URLS: Record<MeshGradientEnvPreset, string> = {
 }
 
 const ENV_LIGHTS: Record<
-MeshGradientEnvPreset,
-Array<{ position: [number, number, number]; intensity: number; color?: string }>
+  MeshGradientEnvPreset,
+  Array<{ position: [number, number, number], intensity: number, color?: string }>
 > = {
   city: [
     { position: [2.5, 3.5, 1.5], intensity: 1.4 },
@@ -131,7 +133,8 @@ function normalizeTime(value: number) {
   if (props.rangeMode === 'enabled' && props.rangeEnd > props.rangeStart) {
     const length = props.rangeEnd - props.rangeStart
     result = props.rangeStart + ((value - props.rangeStart) % length + length) % length
-  } else if (props.loop === 'on' && props.loopDuration > 0) {
+  }
+  else if (props.loop === 'on' && props.loopDuration > 0) {
     result = value % props.loopDuration
   }
   return result
@@ -186,7 +189,8 @@ function buildGeometry() {
   if (props.type === 'plane' || props.type === 'waterPlane') {
     const size = props.type === 'waterPlane' ? 6 : 4
     geometry.value = new PlaneGeometry(size, size, 256, 256)
-  } else {
+  }
+  else {
     geometry.value = new SphereGeometry(1, 256, 256)
   }
 }
@@ -253,7 +257,7 @@ function createShaderUniforms(): ShaderUniformMap {
 }
 
 function createColorUniforms(colors: string[]): ColorUniformMap {
-  const [c1, c2, c3] = colors.map((hex) => hexToUnitColor(hex))
+  const [c1, c2, c3] = colors.map(hex => hexToUnitColor(hex))
 
   return {
     uC1r: { value: c1.r },
@@ -316,7 +320,7 @@ watch(
 
 watch(
   () => [props.color1, props.color2, props.color3],
-  (colors) => applyColorUniforms(colors),
+  colors => applyColorUniforms(colors),
   { immediate: true },
 )
 
@@ -427,7 +431,7 @@ onBeforeUnmount(() => {
         :antialias="true"
         :dpr="1"
         :window-size="true"
-        :render-mode="'always'"
+        render-mode="always"
       >
         <TresPerspectiveCamera
           ref="cameraRef"
