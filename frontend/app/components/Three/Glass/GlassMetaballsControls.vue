@@ -12,12 +12,15 @@ const props = defineProps<{
   onCopySettings: () => void | Promise<void>
   onApplyEnvironmentSettings: () => void | Promise<void>
   onQueuePhysicsRebuild: () => void | Promise<void>
+  position?: 'absolute' | 'fixed'
 }>()
 
 const settings = defineModel<GlassMetaballsSettings>('settings', { required: true })
 const presetName = defineModel<GlassPresetName>('presetName', { required: true })
 
 const uiOpen = ref(false)
+
+const positionClass = computed(() => props.position ?? 'absolute')
 </script>
 
 <template>
@@ -26,7 +29,10 @@ const uiOpen = ref(false)
     v-if="uiOpen"
     data-lenis-prevent
     data-liquid-ui
-    class="absolute bottom-3 right-3 z-50 max-h-[70vh] w-[360px] overflow-auto border border-pureBlack/10 rounded-2xl bg-pureWhite/70 p-3 color-pureBlack/90 shadow-xl backdrop-blur dark:border-pureWhite/10 dark:bg-pureBlack/70 dark:color-pureWhite/90"
+    :class="useClsx(
+      positionClass,
+      'bottom-3 right-3 z-50 max-h-[70vh] w-[360px] overflow-auto border border-pureBlack/10 rounded-2xl bg-pureWhite/70 p-3 color-pureBlack/90 shadow-xl backdrop-blur dark:border-pureWhite/10 dark:bg-pureBlack/70 dark:color-pureWhite/90',
+    )"
   >
     <div class="mb-2 flex items-start justify-between gap-3">
       <div class="min-w-0">
@@ -662,7 +668,10 @@ const uiOpen = ref(false)
     v-else
     type="button"
     data-liquid-ui
-    class="absolute bottom-3 right-3 z-50 border border-pureBlack/10 rounded-2xl bg-pureBlack/5 px-3 py-2 text-xs color-pureBlack/90 shadow-lg backdrop-blur transition-colors dark:border-pureWhite/10 dark:bg-pureWhite/5 hover:bg-pureBlack/10 dark:color-pureWhite/90 dark:hover:bg-pureWhite/10"
+    :class="useClsx(
+      positionClass,
+      'bottom-3 right-3 z-50 border border-pureBlack/10 rounded-2xl bg-pureBlack/5 px-3 py-2 text-xs color-pureBlack/90 shadow-lg backdrop-blur transition-colors dark:border-pureWhite/10 dark:bg-pureWhite/5 hover:bg-pureBlack/10 dark:color-pureWhite/90 dark:hover:bg-pureWhite/10',
+    )"
     @click="uiOpen = true"
   >
     Settings
