@@ -59,8 +59,11 @@ function clampNumber(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
 }
 
+const stickyViewportHeight = computed(() =>
+  Math.max(1, viewportHeight.value - headerHeightPx.value),
+)
 const scrollRange = computed(() =>
-  Math.max(1, sectionHeight.value - (viewportHeight.value - headerHeightPx.value)),
+  Math.max(1, sectionHeight.value - stickyViewportHeight.value),
 )
 const scrollProgress = computed(() =>
   clampNumber((headerHeightPx.value - sectionTop.value) / scrollRange.value, 0, 1),
@@ -105,7 +108,7 @@ useRafFn(() => {
   <main class="touch-pan-y bg-pureWhite dark:bg-pureBlack">
     <PageBleed>
       <section ref="sectionRef" class="relative h-[200svh]">
-        <div class="sticky top-0 z-10 h-[100svh] flex items-center justify-center px-8 pt-[var(--header-height)]">
+        <div class="sticky top-[var(--header-height)] z-10 h-[calc(100svh-var(--header-height))] flex items-center justify-center px-8">
           <div
             class="pointer-events-none absolute inset-0 z-0 overflow-hidden"
             :style="{ transform: `translateY(${scrollProgress * 30}px)` }"
@@ -159,7 +162,7 @@ useRafFn(() => {
           </div>
 
           <h1
-            class="relative z-10 whitespace-nowrap text-center color-pureBlack uppercase dark:color-pureWhite"
+            class="default-cursor relative z-10 whitespace-nowrap text-center color-pureBlack uppercase dark:color-pureWhite"
             :style="{
               fontSize: `${displayFontSize}rem`,
               letterSpacing: `${displayLetterSpacing}em`,
