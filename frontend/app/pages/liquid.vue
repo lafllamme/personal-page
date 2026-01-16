@@ -1,11 +1,6 @@
 <script setup lang="ts">
 import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
 
-definePageMeta({
-  pageContainer: 'bleed',
-  headerOffset: false,
-})
-
 useHead({
   title: 'Liquid Symmetry',
   htmlAttrs: {
@@ -54,77 +49,79 @@ const showFontOptions = ref(false)
 </script>
 
 <template>
-  <main class="touch-pan-y overflow-x-hidden bg-pureWhite dark:bg-pureBlack">
-    <section class="relative min-h-[100svh] overflow-x-hidden">
-      <div class="absolute inset-0 z-0">
-        <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
-      </div>
+  <main class="touch-pan-y bg-pureWhite dark:bg-pureBlack">
+    <PageBleed>
+      <section class="relative -mt-[var(--header-height)] min-h-[100svh]">
+        <div class="pointer-events-none absolute inset-0 z-0">
+          <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
+        </div>
 
-      <div class="relative z-10 min-h-[100svh] flex items-center justify-center">
-        <div class="absolute left-4 top-4 z-20 w-[260px] space-y-4">
-          <button
-            class="w-full border border-pureWhite/20 rounded bg-pureBlack/70 px-2 py-2 text-xs color-pureWhite/80 tracking-[0.2em] uppercase backdrop-blur transition-colors hover:bg-pureWhite/10"
-            type="button"
-            @click="showFontOptions = !showFontOptions"
+        <div class="relative z-10 min-h-[100svh] flex items-center justify-center">
+          <div class="absolute left-4 top-[calc(var(--header-height)+1rem)] z-20 w-[260px] space-y-4">
+            <button
+              class="w-full border border-pureWhite/20 rounded bg-pureBlack/70 px-2 py-2 text-xs color-pureWhite/80 tracking-[0.2em] uppercase backdrop-blur transition-colors hover:bg-pureWhite/10"
+              type="button"
+              @click="showFontOptions = !showFontOptions"
+            >
+              {{ showFontOptions ? 'Hide font options' : 'Show font options' }}
+            </button>
+            <div v-show="showFontOptions" class="space-y-4">
+              <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
+                <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">H1 Font</label>
+                <select
+                  v-model="selectedH1Font"
+                  class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
+                >
+                  <option v-for="font in fonts" :key="font.class" :value="font.class">
+                    {{ font.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
+                <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">Span Font</label>
+                <select
+                  v-model="selectedSpanFont"
+                  class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
+                >
+                  <option v-for="font in fonts" :key="font.class" :value="font.class">
+                    {{ font.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
+                <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">Button Font</label>
+                <select
+                  v-model="selectedButtonFont"
+                  class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
+                >
+                  <option v-for="font in fonts" :key="font.class" :value="font.class">
+                    {{ font.name }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="relative z-10 px-4 text-center transition-all duration-150 ease-out will-change-transform"
           >
-            {{ showFontOptions ? 'Hide font options' : 'Show font options' }}
-          </button>
-          <div v-show="showFontOptions" class="space-y-4">
-            <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
-              <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">H1 Font</label>
-              <select
-                v-model="selectedH1Font"
-                class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
+            <div class="relative">
+              <h1
+                :class="selectedH1Font"
+                class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
               >
-                <option v-for="font in fonts" :key="font.class" :value="font.class">
-                  {{ font.name }}
-                </option>
-              </select>
-            </div>
-            <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
-              <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">Span Font</label>
-              <select
-                v-model="selectedSpanFont"
-                class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
+                Web evolves.
+              </h1>
+              <h2
+                :class="selectedSpanFont"
+                class="text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
               >
-                <option v-for="font in fonts" :key="font.class" :value="font.class">
-                  {{ font.name }}
-                </option>
-              </select>
-            </div>
-            <div class="border border-pureWhite/15 rounded-lg bg-pureBlack/70 p-3 backdrop-blur">
-              <label class="mb-2 block text-xs color-pureWhite/70 tracking-[0.2em] uppercase">Button Font</label>
-              <select
-                v-model="selectedButtonFont"
-                class="w-full border border-pureWhite/20 rounded bg-pureBlack/60 px-2 py-2 text-sm color-pureWhite"
-              >
-                <option v-for="font in fonts" :key="font.class" :value="font.class">
-                  {{ font.name }}
-                </option>
-              </select>
+                We track it.
+              </h2>
             </div>
           </div>
         </div>
-        <div
-          class="relative z-10 px-4 text-center transition-all duration-150 ease-out will-change-transform"
-        >
-          <div class="relative">
-            <h1
-              :class="selectedH1Font"
-              class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
-            >
-              Web evolves.
-            </h1>
-            <h2
-              :class="selectedSpanFont"
-              class="text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
-            >
-              We track it.
-            </h2>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </PageBleed>
     <section class="relative py-24">
       <div class="mx-auto max-w-4xl space-y-16">
         <div class="space-y-6">
