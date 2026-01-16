@@ -163,7 +163,7 @@ useRafFn(() => {
           </div>
 
           <h1
-            class="text-center leading-[0.85] uppercase color-pureBlack font-semibold whitespace-nowrap dark:color-pureWhite"
+            class="relative z-10 text-center leading-[0.85] uppercase color-pureBlack font-semibold whitespace-nowrap dark:color-pureWhite"
             :style="{
               fontSize: `${displayFontSize}rem`,
               letterSpacing: `${displayLetterSpacing}em`,
