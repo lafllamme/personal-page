@@ -60,3 +60,10 @@ useHead(() => {
     </NuxtLayout>
   </VueLenis>
 </template>
+
+<style>
+html,
+body {
+  overflow-x: clip;
+}
+</style>
