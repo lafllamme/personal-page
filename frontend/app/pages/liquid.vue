@@ -121,7 +121,7 @@ const heroButtonStyles = computed(() => {
         class="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
         :class="isHeroVisible ? 'opacity-100' : 'opacity-0'"
       >
-        <GlassMetaballs class="h-full w-full" />
+        <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
       </div>
 
       <div class="sticky top-0 z-10 h-screen flex items-center justify-center">

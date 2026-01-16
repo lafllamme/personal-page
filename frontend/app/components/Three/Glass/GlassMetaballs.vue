@@ -44,6 +44,17 @@ type RapierModule = typeof import('@dimforge/rapier3d-compat')
 type RapierWorld = import('@dimforge/rapier3d-compat').World
 type RapierRigidBody = import('@dimforge/rapier3d-compat').RigidBody
 
+const props = withDefaults(defineProps<{
+  /**
+   * - absolute: render controls in the component box (default)
+   * - fixed: teleport controls to body (useful for full-screen background usage)
+   * - none: hide the built-in settings UI
+   */
+  controlsMode?: 'absolute' | 'fixed' | 'none'
+}>(), {
+  controlsMode: 'absolute',
+})
+
 interface GlassBody {
   rigid: RapierRigidBody
   color: Color
@@ -1043,31 +1054,50 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="container" class="relative h-full w-full">
+  <div ref="container" class="relative h-full w-full touch-pan-y">
     <ClientOnly>
-      <TresCanvas
-        :dpr="dpr"
-        :alpha="true"
-        :clear-alpha="0"
-        clear-color="#06090f"
-        :render-mode="renderMode"
-        @ready="onCanvasReady"
-      >
-        <TresPerspectiveCamera
-          ref="cameraRef"
-          :aspect="aspectRatio"
-          :position="[0, 0, 6]"
-          :fov="70"
-          :near="0.1"
-          :far="100"
+      <!-- Canvas is non-interactive so the page can scroll / click through. -->
+      <div class="pointer-events-none absolute inset-0 touch-pan-y">
+        <TresCanvas
+          :dpr="dpr"
+          :alpha="true"
+          :clear-alpha="0"
+          clear-color="#06090f"
+          :render-mode="renderMode"
+          @ready="onCanvasReady"
+        >
+          <TresPerspectiveCamera
+            ref="cameraRef"
+            :aspect="aspectRatio"
+            :position="[0, 0, 6]"
+            :fov="70"
+            :near="0.1"
+            :far="100"
+          />
+          <TresAmbientLight :intensity="0.3" />
+          <TresDirectionalLight :position="[6, 8, 6]" :intensity="1.2" />
+          <primitive v-if="metaballs" :object="metaballs" />
+          <primitive v-if="mousePlane" :object="mousePlane" />
+        </TresCanvas>
+      </div>
+
+      <Teleport v-if="props.controlsMode === 'fixed'" to="body">
+        <GlassMetaballsControls
+          v-if="props.controlsMode !== 'none'"
+          position="fixed"
+          v-model:settings="settingsModel"
+          v-model:preset-name="presetName"
+          :env-status="envStatus"
+          :on-apply-environment-settings="applyEnvironmentSettings"
+          :on-apply-preset="applyPreset"
+          :on-copy-settings="copySettingsJson"
+          :on-queue-physics-rebuild="queuePhysicsRebuild"
         />
-        <TresAmbientLight :intensity="0.3" />
-        <TresDirectionalLight :position="[6, 8, 6]" :intensity="1.2" />
-        <primitive v-if="metaballs" :object="metaballs" />
-        <primitive v-if="mousePlane" :object="mousePlane" />
-      </TresCanvas>
+      </Teleport>
 
       <GlassMetaballsControls
+        v-else-if="props.controlsMode !== 'none'"
+        position="absolute"
         v-model:settings="settingsModel"
         v-model:preset-name="presetName"
         :env-status="envStatus"
