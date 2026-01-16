@@ -8,6 +8,12 @@ definePageMeta({
 
 useHead({
   title: 'Liquid Symmetry',
+  htmlAttrs: {
+    class: 'overflow-x-hidden touch-pan-y',
+  },
+  bodyAttrs: {
+    class: 'overflow-x-hidden touch-pan-y',
+  },
 })
 
 const fonts = [
@@ -45,86 +51,16 @@ const selectedH1Font = ref('zalando-sans-expanded')
 const selectedSpanFont = ref('font-baskerville')
 const selectedButtonFont = ref('font-recoleta')
 const showFontOptions = ref(false)
-
-const { y } = useWindowScroll({ throttle: 16 })
-const { height } = useWindowSize()
-const heroSectionRef = ref<HTMLElement | null>(null)
-const isHeroVisible = useElementVisibility(heroSectionRef, { threshold: 0.1 })
-const heroBounds = useElementBounding(heroSectionRef)
-const heroPinMultiplier = 2.2
-const heroProgress = computed(() => {
-  if (import.meta.server)
-    return 0
-  const _ = y.value
-  const viewport = height.value || window.innerHeight
-  const pinRange = viewport * heroPinMultiplier
-  const progress = -(heroBounds.top.value ?? 0) / pinRange
-  return Math.min(Math.max(progress, 0), 1)
-})
-const smoothedProgress = ref(0)
-const { pause: pauseHeroRaf, resume: resumeHeroRaf } = useRafFn(() => {
-  const target = heroProgress.value
-  smoothedProgress.value += (target - smoothedProgress.value) * 0.18
-})
-watch(
-  isHeroVisible,
-  (visible) => {
-    if (visible)
-      resumeHeroRaf()
-    else
-      pauseHeroRaf()
-  },
-  { immediate: true },
-)
-const heroEased = computed(() => {
-  const p = smoothedProgress.value
-  const smooth = p * p * (3 - 2 * p)
-  return p * 0.75 + smooth * 0.25
-})
-
-const clamp01 = (value: number) => Math.min(1, Math.max(0, value))
-function easeInOutCubic(t: number) {
-  return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2
-}
-const easeOutCubic = (t: number) => 1 - (1 - t) ** 3
-
-const heroTextProgress = computed(() => easeInOutCubic(clamp01(heroEased.value / 0.7)))
-const heroButtonProgress = computed(() => easeOutCubic(clamp01((heroEased.value - 0.52) / 0.35)))
-
-const heroTextLift = computed(() => `${heroTextProgress.value * -6}vh`)
-const heroTextScale = computed(() => 1 - heroTextProgress.value * 0.08)
-const heroTextSquash = computed(() => 1 - heroTextProgress.value * 0.12)
-const heroTextOpacity = computed(() => Math.max(0, 1 - heroTextProgress.value * 1.35))
-const heroTextSpacing = computed(() => `${(0.02 + heroTextProgress.value * 0.18).toFixed(3)}em`)
-const heroMainTextStyles = computed(() => ({
-  transform: `translate3d(0, ${heroTextLift.value}, 0) scale(${heroTextScale.value}, ${heroTextSquash.value})`,
-  opacity: heroTextOpacity.value,
-  letterSpacing: heroTextSpacing.value,
-}))
-const heroButtonStyles = computed(() => {
-  const offset = (1 - heroButtonProgress.value) * 8
-  const scale = 1 + heroButtonProgress.value * 0.3
-  const visible = heroButtonProgress.value > 0.05
-  return {
-    transform: `translate(-50%, calc(-50% + ${offset}vh)) scale(${scale})`,
-    opacity: visible ? Math.min(1, heroButtonProgress.value * 1.2) : 0,
-    visibility: visible ? 'visible' : 'hidden',
-    pointerEvents: visible ? 'auto' : 'none',
-  }
-})
 </script>
 
 <template>
-  <main class="min-h-screen bg-pureWhite dark:bg-pureBlack">
-    <section ref="heroSectionRef" class="relative min-h-[320vh]">
-      <div
-        class="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
-        :class="isHeroVisible ? 'opacity-100' : 'opacity-0'"
-      >
+  <main class="touch-pan-y overflow-x-hidden bg-pureWhite dark:bg-pureBlack">
+    <section class="relative min-h-[100svh] overflow-x-hidden">
+      <div class="absolute inset-0 z-0">
         <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
       </div>
 
-      <div class="sticky top-0 z-10 h-screen flex items-center justify-center">
+      <div class="relative z-10 min-h-[100svh] flex items-center justify-center">
         <div class="absolute left-4 top-4 z-20 w-[260px] space-y-4">
           <button
             class="w-full border border-pureWhite/20 rounded bg-pureBlack/70 px-2 py-2 text-xs color-pureWhite/80 tracking-[0.2em] uppercase backdrop-blur transition-colors hover:bg-pureWhite/10"
@@ -176,34 +112,20 @@ const heroButtonStyles = computed(() => {
             <h1
               :class="selectedH1Font"
               class="mb-4 text-balance text-[clamp(2.75rem,7.5vw+1rem,7rem)] color-pureBlack font-semibold leading-tight tracking-tight uppercase dark:color-pureWhite"
-              :style="heroMainTextStyles"
             >
               Web evolves.
             </h1>
             <h2
               :class="selectedSpanFont"
-              class="whitespace-nowrap text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
-              :style="heroMainTextStyles"
+              class="text-balance text-[clamp(2.5rem,6.5vw+1rem,8rem)] color-pureBlack font-thin leading-tight uppercase italic dark:color-pureWhite"
             >
               We track it.
             </h2>
           </div>
         </div>
-        <div class="absolute left-1/2 top-1/2 z-20 flex flex-col items-center">
-          <div
-            :class="selectedButtonFont"
-            class="font-clash text-[clamp(1.5rem,3vw+0.5rem,3rem)] color-pureBlack font-light tracking-[12px] uppercase transition-transform duration-150 ease-out will-change-transform dark:color-pureWhite"
-            :style="heroButtonStyles"
-          >
-            <div class="flex flex-col items-center justify-center gap-2">
-              <span>Explore</span>
-              <Icon class="size-12" name="material-symbols-light:arrow-cool-down-rounded" />
-            </div>
-          </div>
-        </div>
       </div>
     </section>
-    <section class="relative px-6 py-24 md:px-12">
+    <section class="relative py-24">
       <div class="mx-auto max-w-4xl space-y-16">
         <div class="space-y-6">
           <h2 class="text-3xl color-pureBlack font-light tracking-tight md:text-4xl dark:color-pureWhite">
@@ -234,7 +156,7 @@ const heroButtonStyles = computed(() => {
         </div>
       </div>
     </section>
-    <section class="relative px-6 py-24 md:px-12">
+    <section class="relative py-24">
       <div class="mx-auto max-w-4xl space-y-16">
         <div class="space-y-6">
           <h2 class="text-3xl color-pureBlack font-light tracking-tight md:text-4xl dark:color-pureWhite">
