@@ -20,6 +20,7 @@ const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(
 )
 const showIntroOverlay = computed(() => overlayVisible.value)
 const isHome = computed(() => route.path === '/')
+const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
 
 onMounted(() => {
   overlayPaused.value = false
@@ -64,7 +65,7 @@ function handleOverlayIteration() {
           'pt-[var(--header-height)]',
         )"
       >
-        <PageContainer>
+        <PageContainer v-bind="pageContainerProps">
           <slot name="default" />
         </PageContainer>
       </main>
