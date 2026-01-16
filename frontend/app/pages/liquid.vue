@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
 
+definePageMeta({
+  pageContainer: 'bleed',
+  headerOffset: false,
+})
+
 useHead({
   title: 'Liquid Symmetry',
 })
@@ -46,19 +51,14 @@ const { height } = useWindowSize()
 const heroSectionRef = ref<HTMLElement | null>(null)
 const isHeroVisible = useElementVisibility(heroSectionRef, { threshold: 0.1 })
 const heroBounds = useElementBounding(heroSectionRef)
-const headerHeightVar = useCssVar('--header-height')
 const heroPinMultiplier = 2.2
-const headerOffset = computed(() => {
-  const value = Number.parseFloat(headerHeightVar.value || '0')
-  return Number.isFinite(value) ? value : 0
-})
 const heroProgress = computed(() => {
   if (import.meta.server)
     return 0
   const _ = y.value
   const viewport = height.value || window.innerHeight
   const pinRange = viewport * heroPinMultiplier
-  const progress = (headerOffset.value - (heroBounds.top.value ?? 0)) / pinRange
+  const progress = -(heroBounds.top.value ?? 0) / pinRange
   return Math.min(Math.max(progress, 0), 1)
 })
 const smoothedProgress = ref(0)
@@ -117,10 +117,14 @@ const heroButtonStyles = computed(() => {
 <template>
   <main class="min-h-screen bg-pureWhite dark:bg-pureBlack">
     <section ref="heroSectionRef" class="relative min-h-[320vh]">
-      <div class="sticky top-[var(--header-height)] h-[calc(100vh-var(--header-height))] flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0">
-          <GlassMetaballs class="h-full w-full" />
-        </div>
+      <div
+        class="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300"
+        :class="isHeroVisible ? 'opacity-100' : 'opacity-0'"
+      >
+        <GlassMetaballs class="h-full w-full" />
+      </div>
+
+      <div class="sticky top-0 z-10 h-screen flex items-center justify-center">
         <div class="absolute left-4 top-4 z-20 w-[260px] space-y-4">
           <button
             class="w-full border border-pureWhite/20 rounded bg-pureBlack/70 px-2 py-2 text-xs color-pureWhite/80 tracking-[0.2em] uppercase backdrop-blur transition-colors hover:bg-pureWhite/10"
