@@ -47,7 +47,7 @@ export const TextBandDefaultProps = {
   stepEase: 5,
   stepHold: 0,
   alignChance: 0.25,
-  fitPadding: 0,
+  fitPadding: 0.02,
   paused: false,
   class: '',
 }
