@@ -187,7 +187,7 @@ const showFontOptions = ref(false)
         </div>
       </div>
     </section>
-    <section class="relative px-6 py-24 md:px-12">
+    <section class="relative py-24">
       <div class="mx-auto max-w-4xl space-y-16">
         <div class="space-y-6">
           <h2 class="text-3xl color-pureBlack font-light tracking-tight md:text-4xl dark:color-pureWhite">
