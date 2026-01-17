@@ -12,14 +12,14 @@ const sublineFontClass = 'font-baskerville'
 <template>
   <main class="touch-pan-y bg-pureWhite dark:bg-pureBlack">
     <PageBleed>
-      <section class="relative flex min-h-[100svh] items-center justify-center px-8 py-24">
-        <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-0 mx-[calc(50%-50vw)] -top-[var(--header-height,0px)] w-screen h-[calc(100%+var(--header-height,0px))] overflow-visible">
+      <section class="relative min-h-[100svh] flex items-start justify-center px-8 pt-32 pb-24">
+        <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-0 mx-[calc(50%-50vw)] h-[calc(100%+var(--header-height,0px))] w-screen overflow-visible -top-[var(--header-height,0px)]">
           <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
         </div>
 
-        <h1 class="relative z-10 whitespace-nowrap text-center text-[clamp(3.5rem,10vw,9rem)] uppercase leading-[0.9] color-pureBlack dark:color-pureWhite">
+        <h1 class="relative z-10 whitespace-nowrap text-center text-[clamp(3.5rem,10vw,9rem)] color-pureBlack uppercase dark:color-pureWhite">
           <span :class="headlineFontClass" class="block font-semibold">Web evolves.</span>
-          <span :class="sublineFontClass" class="block italic color-pureBlack/70 dark:color-pureWhite/70">We track it.</span>
+          <span :class="sublineFontClass" class="block color-pureBlack/70 italic dark:color-pureWhite/70">We track it.</span>
         </h1>
       </section>
     </PageBleed>
