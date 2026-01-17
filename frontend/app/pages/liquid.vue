@@ -13,7 +13,7 @@ const sublineFontClass = 'font-baskerville'
   <main class="touch-pan-y bg-pureWhite dark:bg-pureBlack">
     <PageBleed>
       <section class="relative flex min-h-[100svh] items-center justify-center px-8 py-24">
-        <div class="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+        <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-0 mx-[calc(50%-50vw)] -top-[var(--header-height,0px)] w-screen h-[calc(100%+var(--header-height,0px))] overflow-visible">
           <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
         </div>
 
