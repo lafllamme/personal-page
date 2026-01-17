@@ -12,7 +12,7 @@ const sublineFontClass = 'font-baskerville'
 <template>
   <main class="touch-pan-y bg-pureWhite dark:bg-pureBlack">
     <PageBleed>
-      <section class="relative min-h-[100svh] flex items-start justify-center px-8 pt-32 pb-24">
+      <section class="relative min-h-[100svh] flex items-start justify-center px-8 pb-24 pt-32">
         <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-0 mx-[calc(50%-50vw)] h-[calc(100%+var(--header-height,0px))] w-screen overflow-visible -top-[var(--header-height,0px)]">
           <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
         </div>
@@ -21,6 +21,11 @@ const sublineFontClass = 'font-baskerville'
           <span :class="headlineFontClass" class="block font-semibold">Web evolves.</span>
           <span :class="sublineFontClass" class="block color-pureBlack/70 italic dark:color-pureWhite/70">We track it.</span>
         </h1>
+
+        <div class="absolute bottom-24 left-1/2 z-10 flex flex-col items-center gap-2 -translate-x-1/2">
+          <span class="font-clash text-xs color-pureBlack/60 tracking-wider uppercase dark:color-pureWhite/60">SCROLL</span>
+          <div class="h-12 w-px bg-pureBlack/40 dark:bg-pureWhite/40" />
+        </div>
       </section>
     </PageBleed>
     <section class="relative py-24">
