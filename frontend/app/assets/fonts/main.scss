@@ -74,6 +74,90 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Font-Chiqueta';
+  src: url('Headline/ChiquetaRegular-G3j0q.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Djingo';
+  src: url('Headline/Djingo.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Now';
+  src: url('Headline/Now-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Kaluar';
+  src: url('Headline/KaluarDemo-Regular-BF6967c15a5ee3d.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Keiner';
+  src: url('Headline/Keiner-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-LeagueGothic';
+  src: url('Headline/LeagueGothic-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Mailna';
+  src: url('Headline/Mailna.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-LeMurmure';
+  src: url('Headline/le-murmure.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Neems';
+  src: url('Headline/Neems-Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Outward';
+  src: url('Headline/outward-block.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Raffas';
+  src: url('Headline/RaffasRegular-nAwZM.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Font-Reign';
+  src: url('Headline/Reign-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .font-electric {
   font-family: 'Electric', sans-serif;
 }
@@ -112,6 +196,54 @@
 
 .font-clash-regular {
   font-family: 'ClashDisplay-Regular', sans-serif;
+}
+
+.font-chiqueta {
+  font-family: 'Font-Chiqueta', sans-serif;
+}
+
+.font-djingo {
+  font-family: 'Font-Djingo', sans-serif;
+}
+
+.font-now {
+  font-family: 'Font-Now', sans-serif;
+}
+
+.font-kaluar {
+  font-family: 'Font-Kaluar', sans-serif;
+}
+
+.font-keiner {
+  font-family: 'Font-Keiner', sans-serif;
+}
+
+.font-league-gothic {
+  font-family: 'Font-LeagueGothic', sans-serif;
+}
+
+.font-mailna {
+  font-family: 'Font-Mailna', sans-serif;
+}
+
+.font-le-murmure {
+  font-family: 'Font-LeMurmure', sans-serif;
+}
+
+.font-neems {
+  font-family: 'Font-Neems', sans-serif;
+}
+
+.font-outward {
+  font-family: 'Font-Outward', sans-serif;
+}
+
+.font-raffas {
+  font-family: 'Font-Raffas', sans-serif;
+}
+
+.font-reign {
+  font-family: 'Font-Reign', sans-serif;
 }
 
 .font-prata {
