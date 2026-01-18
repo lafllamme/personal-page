@@ -76,7 +76,7 @@
 
 @font-face {
   font-family: 'Font-Chiqueta';
-  src: url('Headline/ChiquetaRegular-G3j0q.otf') format('opentype');
+  src: url('Headline/Chiqueta-Regular.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -97,7 +97,7 @@
 
 @font-face {
   font-family: 'Font-Kaluar';
-  src: url('Headline/KaluarDemo-Regular-BF6967c15a5ee3d.ttf') format('truetype');
+  src: url('Headline/Kaluar-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -125,7 +125,7 @@
 
 @font-face {
   font-family: 'Font-LeMurmure';
-  src: url('Headline/le-murmure.otf') format('opentype');
+  src: url('Headline/LeMurmure.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -139,14 +139,14 @@
 
 @font-face {
   font-family: 'Font-Outward';
-  src: url('Headline/outward-block.ttf') format('truetype');
+  src: url('Headline/Outward-Block.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Font-Raffas';
-  src: url('Headline/RaffasRegular-nAwZM.ttf') format('truetype');
+  src: url('Headline/Raffas-Regular.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -154,6 +154,13 @@
 @font-face {
   font-family: 'Font-Reign';
   src: url('Headline/Reign-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'TypogamaAsing';
+  src: url('Headline/TypogamaAsing.otf') format('opentype');
   font-weight: normal;
   font-style: normal;
 }
@@ -244,6 +251,10 @@
 
 .font-reign {
   font-family: 'Font-Reign', sans-serif;
+}
+
+.font-typogama-asing {
+  font-family: 'TypogamaAsing', sans-serif;
 }
 
 .font-prata {
