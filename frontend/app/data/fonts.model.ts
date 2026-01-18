@@ -43,6 +43,7 @@ export const fonts: FontOption[] = [
   { name: 'Reign', class: 'font-reign', category: 'display' },
   { name: 'Resist Sans', class: 'font-resist', category: 'sans' },
   { name: 'Space Grotesk', class: 'space-grotesk-regular', category: 'sans' },
+  { name: 'Typogama Asing', class: 'font-typogama-asing', category: 'display' },
   { name: 'Zalando Sans Expanded', class: 'zalando-sans-expanded', category: 'sans' },
   { name: 'Zen Dots', class: 'zen-dots-regular', category: 'display' },
 ]
