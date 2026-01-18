@@ -49,4 +49,4 @@ export const socialLinks: OsmoSocialLink[] = [
   { name: 'X', href: 'https://x.com', icon: 'ri:twitter-x-line' },
 ]
 
-export const marqueeMessage = 'Explore the OSMO Showcase'
+export const marqueeMessage = 'MAKE PIXELS FEEL ALIVE'
