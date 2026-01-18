@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
 import { AnimatePresence, Motion } from 'motion-v'
+import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
 import OsmoLogoMark from './OsmoLogoMark.vue'
 import OsmoMenuIcon from './OsmoMenuIcon.vue'
@@ -95,11 +96,11 @@ onMounted(() => {
       >
         <Motion
           as="div"
-          class="max-h-[calc(100dvh-36px)] overflow-y-auto rounded-md bg-[#201D1D] md:overflow-y-hidden"
+          class="max-h-[calc(100dvh-36px)] overflow-y-auto rounded-lg bg-[#201D1D] md:overflow-y-hidden"
           :animate="{ height: menuPhase === 'full' ? 'auto' : 'auto' }"
           :transition="{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }"
         >
-          <div class="sticky top-0 z-50 w-[calc(100vw-40px)] flex items-center justify-between rounded-md bg-[#201D1D] px-3 py-3 md:min-w-[640px] md:w-auto">
+          <div class="sticky top-0 z-50 w-[calc(100vw-40px)] flex items-center justify-between rounded-lg bg-[#201D1D] px-3 py-3 md:min-w-[640px] md:w-auto">
             <button
               class="h-10 flex cursor-pointer items-center gap-2 rounded-sm px-2.5 color-pureBlack transition-opacity md:gap-3 hover:bg-[#2D2A2A] md:px-4 dark:color-pureWhite hover:opacity-80"
               @click="toggleMenu"
@@ -133,11 +134,12 @@ onMounted(() => {
               </AnimatePresence>
             </div>
 
-            <div class="flex items-center gap-0">
+            <div class="flex items-center gap-2">
               <OsmoScrambleTextButton
                 text="Login"
                 class="hidden h-10 rounded-full bg-[#01E2B6] px-4 text-sm color-pureBlack md:block md:text-base"
               />
+              <ColorMode class="items-center justify-center" />
               <!--              <OsmoScrambleTextButton
                 text="Join"
                 class="h-10 rounded-none bg-[#A1FF62] px-4 text-sm text-[#1E1E1E] md:text-base"
