@@ -1,39 +1,10 @@
 <script lang="ts" setup>
+import { fonts } from '@/data/fonts.model'
+
 const inputText = ref('The quick brown fox jumps over the lazy dog 0123456789')
 const searchQuery = ref('')
-const selectedWeight = ref<'light' | 'medium' | 'regular'>('regular')
+const fontWeight = ref(400)
 const fontSize = ref(70)
-
-const fonts = [
-  { name: 'Audiowide', class: 'audiowide-regular', category: 'display' },
-  { name: 'Boldonse', class: 'boldonse-regular', category: 'display' },
-  { name: 'Bruno Ace SC', class: 'bruno-ace-sc-regular', category: 'display' },
-  { name: 'Cabinet Grotesk', class: 'font-cabinet', category: 'display' },
-  { name: 'Clash Display', class: 'font-clash', category: 'display' },
-  { name: 'Clash Display Regular', class: 'font-clash-regular', category: 'display' },
-  { name: 'Cormorant Garamond', class: 'font-cormorant-garamond', category: 'serif' },
-  { name: 'Crimson Text', class: 'crimson-text-regular', category: 'serif' },
-  { name: 'EB Garamond', class: 'font-eb-garamond', category: 'serif' },
-  { name: 'Electric', class: 'font-electric', category: 'display' },
-  { name: 'Figtree', class: 'figtree-regular', category: 'sans' },
-  { name: 'Geist', class: 'geist-regular', category: 'sans' },
-  { name: 'Ginger', class: 'font-ginger', category: 'display' },
-  { name: 'JetBrains Mono', class: 'jetbrains-mono-regular', category: 'mono' },
-  { name: 'Libre Baskerville', class: 'font-baskerville', category: 'serif' },
-  { name: 'Lora', class: 'font-lora', category: 'serif' },
-  { name: 'Major Mono Display', class: 'major-mono-display-regular', category: 'mono' },
-  { name: 'Manrope', class: 'font-manrope', category: 'sans' },
-  { name: 'Mondea', class: 'font-mondea', category: 'display' },
-  { name: 'Nohemi', class: 'font-nohemi', category: 'sans' },
-  { name: 'Nova Square', class: 'font-nova', category: 'display' },
-  { name: 'Orbito', class: 'font-orbito', category: 'display' },
-  { name: 'Prata', class: 'font-prata', category: 'serif' },
-  { name: 'Recoleta', class: 'font-recoleta', category: 'serif' },
-  { name: 'Resist Sans', class: 'font-resist', category: 'sans' },
-  { name: 'Space Grotesk', class: 'space-grotesk-regular', category: 'sans' },
-  { name: 'Zalando Sans Expanded', class: 'zalando-sans-expanded', category: 'sans' },
-  { name: 'Zen Dots', class: 'zen-dots-regular', category: 'display' },
-]
 
 // Computed properties for filtering and font weight classes
 const filteredFonts = computed(() => {
@@ -53,14 +24,8 @@ const filteredFonts = computed(() => {
     .sort((a, b) => a.name.localeCompare(b.name))
 })
 
-const weightClasses = {
-  light: 'font-light',
-  medium: 'font-medium',
-  regular: 'font-normal',
-}
-
 function getFontClass(fontClass: string) {
-  return `${fontClass} ${weightClasses[selectedWeight.value]}`
+  return fontClass
 }
 
 // Sample text variations
@@ -73,6 +38,11 @@ const sampleTexts = {
 }
 
 const fontsCount = computed(() => fonts.length)
+const previewWeightStyle = computed(() => ({ fontWeight: fontWeight.value }))
+const heroStyle = computed(() => ({
+  fontSize: `${fontSize.value}px`,
+  fontWeight: fontWeight.value,
+}))
 </script>
 
 <template>
@@ -191,21 +161,18 @@ const fontsCount = computed(() => fonts.length)
             <div class="text-sm color-pureBlack/60 tracking-widest uppercase dark:color-pureWhite/60">
               Weight
             </div>
-            <div class="flex gap-3 text-xs tracking-widest uppercase">
-              <button
-                v-for="weight in ['light', 'medium', 'regular']"
-                :key="weight"
-                :class="useClsx(
-                  'border-b border-transparent pb-1 transition-colors',
-                  selectedWeight === weight
-                    ? 'border-pureBlack dark:border-pureWhite'
-                    : 'color-pureBlack/50 dark:color-pureWhite/50 hover:color-pureBlack dark:hover:color-pureWhite',
-                )"
-                type="button"
-                @click="selectedWeight = weight as any"
+            <div class="flex items-center gap-4">
+              <div class="text-sm tabular-nums color-pureBlack/60 dark:color-pureWhite/60">
+                {{ fontWeight }}
+              </div>
+              <input
+                v-model.number="fontWeight"
+                type="range"
+                min="100"
+                max="900"
+                step="100"
+                class="w-36 accent-pureBlack dark:accent-pureWhite"
               >
-                {{ weight }}
-              </button>
             </div>
           </div>
         </div>
@@ -238,7 +205,7 @@ const fontsCount = computed(() => fonts.length)
             <span class="color-pureBlack/50 dark:color-pureWhite/50">Variable</span>
           </div>
 
-          <div class="mb-6 text-6xl leading-none" :class="[getFontClass(font.class)]" :style="{ fontSize: `${fontSize}px` }">
+          <div class="mb-6 text-6xl leading-none" :class="[getFontClass(font.class)]" :style="heroStyle">
             {{ inputText }}
           </div>
 
@@ -247,7 +214,7 @@ const fontsCount = computed(() => fonts.length)
               <div class="mb-2 text-[10px]">
                 Uppercase
               </div>
-              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]">
+              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]" :style="previewWeightStyle">
                 ABCDEFGHIJKLMNOPQRSTUVWXYZ
               </div>
             </div>
@@ -255,7 +222,7 @@ const fontsCount = computed(() => fonts.length)
               <div class="mb-2 text-[10px]">
                 Lowercase
               </div>
-              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]">
+              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]" :style="previewWeightStyle">
                 abcdefghijklmnopqrstuvwxyz
               </div>
             </div>
@@ -263,7 +230,7 @@ const fontsCount = computed(() => fonts.length)
               <div class="mb-2 text-[10px]">
                 Numbers
               </div>
-              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]">
+              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]" :style="previewWeightStyle">
                 0123456789
               </div>
             </div>
@@ -271,7 +238,7 @@ const fontsCount = computed(() => fonts.length)
               <div class="mb-2 text-[10px]">
                 Symbols
               </div>
-              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]">
+              <div class="text-base color-pureBlack dark:color-pureWhite" :class="[getFontClass(font.class)]" :style="previewWeightStyle">
                 {{ `!@#$ % ^ & * ()_ + -= []{}|;':",./<>?` }}
               </div>
             </div>
