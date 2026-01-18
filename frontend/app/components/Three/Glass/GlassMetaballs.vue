@@ -7,8 +7,8 @@ import {
   useDebounceFn,
   useDevicePixelRatio,
   useDocumentVisibility,
+  useElementVisibility,
   useEventListener,
-  useIntersectionObserver,
   useRafFn,
   useWindowSize,
 } from '@vueuse/core'
@@ -75,6 +75,7 @@ const container = ref<HTMLElement | null>(null)
 const cameraRef = shallowRef<PerspectiveCamera | null>(null)
 const sceneRef = shallowRef<Scene | null>(null)
 const rendererRef = shallowRef<WebGLRenderer | null>(null)
+const rendererLoop = shallowRef<{ start: () => void, stop: () => void } | null>(null)
 const environmentMap = shallowRef<Texture | null>(null)
 const invalidateFrame = shallowRef<null | (() => void)>(null)
 
@@ -97,8 +98,8 @@ const settingsModel = shallowRef(settings)
 const dpr = computed(() => Math.min(pixelRatio.value || 1, settings.perf.dprMax))
 
 const documentVisibility = useDocumentVisibility()
-const visibleRatio = ref(0)
-const isVisible = computed(() => visibleRatio.value >= 0.1 && documentVisibility.value === 'visible')
+const elementVisible = useElementVisibility(container)
+const isVisible = computed(() => elementVisible.value && documentVisibility.value === 'visible')
 const renderMode = computed<RenderMode>(() => (isVisible.value ? 'always' : 'on-demand'))
 
 const raycaster = new Raycaster()
@@ -163,6 +164,7 @@ function onCanvasReady(ctx: TresContext) {
   const scene = ctx.scene.value as unknown as Scene
 
   rendererRef.value = renderer
+  rendererLoop.value = ctx.renderer.loop
   sceneRef.value = scene
   invalidateFrame.value = (ctx as any)?.invalidate || (ctx as any)?.renderer?.invalidate || null
 
@@ -180,6 +182,9 @@ function onCanvasReady(ctx: TresContext) {
   void applyEnvironmentSettings()
 
   requestRender()
+
+  if (!isVisible.value)
+    rendererLoop.value.stop()
 }
 
 function applyFieldSettings() {
@@ -746,19 +751,18 @@ watch(isVisible, (active) => {
     resume()
   else
     pause()
+
+  if (rendererLoop.value) {
+    if (active)
+      rendererLoop.value.start()
+    else
+      rendererLoop.value.stop()
+  }
 }, { immediate: true })
 
 if (import.meta.client) {
   useEventListener(window, 'pointermove', updatePointerFromEvent, { passive: true })
   useEventListener(window, 'pointerdown', updatePointerFromEvent, { passive: true })
-
-  useIntersectionObserver(
-    container,
-    ([entry]) => {
-      visibleRatio.value = entry?.intersectionRatio ?? 0
-    },
-    { threshold: Array.from({ length: 11 }, (_, i) => i / 10) },
-  )
 }
 
 function updatePointerFromEvent(event: PointerEvent) {
