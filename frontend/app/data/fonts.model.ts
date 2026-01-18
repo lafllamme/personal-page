@@ -1,0 +1,48 @@
+export interface FontOption {
+  name: string
+  class: string
+  category: 'display' | 'serif' | 'sans' | 'mono'
+}
+
+export const fonts: FontOption[] = [
+  { name: 'Audiowide', class: 'audiowide-regular', category: 'display' },
+  { name: 'Boldonse', class: 'boldonse-regular', category: 'display' },
+  { name: 'Bruno Ace SC', class: 'bruno-ace-sc-regular', category: 'display' },
+  { name: 'Cabinet Grotesk', class: 'font-cabinet', category: 'display' },
+  { name: 'Chiqueta', class: 'font-chiqueta', category: 'display' },
+  { name: 'Clash Display', class: 'font-clash', category: 'display' },
+  { name: 'Clash Display Regular', class: 'font-clash-regular', category: 'display' },
+  { name: 'Cormorant Garamond', class: 'font-cormorant-garamond', category: 'serif' },
+  { name: 'Crimson Text', class: 'crimson-text-regular', category: 'serif' },
+  { name: 'Djingo', class: 'font-djingo', category: 'display' },
+  { name: 'EB Garamond', class: 'font-eb-garamond', category: 'serif' },
+  { name: 'Electric', class: 'font-electric', category: 'display' },
+  { name: 'Figtree', class: 'figtree-regular', category: 'sans' },
+  { name: 'Geist', class: 'geist-regular', category: 'sans' },
+  { name: 'Ginger', class: 'font-ginger', category: 'display' },
+  { name: 'JetBrains Mono', class: 'jetbrains-mono-regular', category: 'mono' },
+  { name: 'Kaluar', class: 'font-kaluar', category: 'display' },
+  { name: 'Keiner', class: 'font-keiner', category: 'sans' },
+  { name: 'League Gothic', class: 'font-league-gothic', category: 'sans' },
+  { name: 'Le Murmure', class: 'font-le-murmure', category: 'display' },
+  { name: 'Libre Baskerville', class: 'font-baskerville', category: 'serif' },
+  { name: 'Lora', class: 'font-lora', category: 'serif' },
+  { name: 'Mailna', class: 'font-mailna', category: 'display' },
+  { name: 'Major Mono Display', class: 'major-mono-display-regular', category: 'mono' },
+  { name: 'Manrope', class: 'font-manrope', category: 'sans' },
+  { name: 'Mondea', class: 'font-mondea', category: 'display' },
+  { name: 'Neems', class: 'font-neems', category: 'sans' },
+  { name: 'Nohemi', class: 'font-nohemi', category: 'sans' },
+  { name: 'Nova Square', class: 'font-nova', category: 'display' },
+  { name: 'Now', class: 'font-now', category: 'sans' },
+  { name: 'Outward', class: 'font-outward', category: 'display' },
+  { name: 'Orbito', class: 'font-orbito', category: 'display' },
+  { name: 'Prata', class: 'font-prata', category: 'serif' },
+  { name: 'Raffas', class: 'font-raffas', category: 'display' },
+  { name: 'Recoleta', class: 'font-recoleta', category: 'serif' },
+  { name: 'Reign', class: 'font-reign', category: 'display' },
+  { name: 'Resist Sans', class: 'font-resist', category: 'sans' },
+  { name: 'Space Grotesk', class: 'space-grotesk-regular', category: 'sans' },
+  { name: 'Zalando Sans Expanded', class: 'zalando-sans-expanded', category: 'sans' },
+  { name: 'Zen Dots', class: 'zen-dots-regular', category: 'display' },
+]
