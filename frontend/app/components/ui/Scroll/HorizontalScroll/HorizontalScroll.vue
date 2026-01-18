@@ -90,17 +90,8 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <article>
-    <header class="relative grid h-[80vh] w-full place-content-center bg-slate-12 text-slate-1">
-      <div
-        class="bg-size-[14px_24px] mask-[radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)]"
-      />
-
-      <h1 class="text-center text-6xl font-bold tracking-tight">
-        I know You Love to Scroll <br>
-        So Scroll
-      </h1>
-    </header>
+  <article class="relative bg-pureWhite dark:bg-pureBlack">
+    <div class="pointer-events-none h-[16vh] w-full bg-gradient-to-b from-pureWhite to-transparent dark:from-pureBlack dark:to-transparent" />
 
     <section ref="scrollSectionRef" class="relative h-[500vh]">
       <ul ref="ulRef" class="sticky top-0 m-0 flex flex-nowrap list-none p-0 will-change-transform">
