@@ -152,7 +152,7 @@ onBeforeUnmount(() => {
                     <Motion
                       v-for="(item, index) in ourProducts"
                       :key="item.name"
-                      class="border-b-white/10 border-b py-4 last:border-b-0"
+                      class="border-b border-pureBlack/10 border-solid py-4 last:border-b-0 dark:border-b-pureWhite/10"
                       :initial="{ opacity: 0, x: -10 }"
                       :animate="{ opacity: 1, x: 0 }"
                       :transition="{ delay: 0.15 + index * 0.05 }"
@@ -165,7 +165,7 @@ onBeforeUnmount(() => {
                           {{ item.name }}
                           <span
                             v-if="item.badge"
-                            class="bg-violet-600 rounded px-1.5 py-0.5 text-sm color-pureBlack dark:color-pureWhite"
+                            class="rounded bg-[#8023fe] px-1.5 py-0.5 text-sm color-pureBlack dark:color-pureWhite"
                           >
                             {{ item.badge }}
                           </span>
@@ -207,7 +207,7 @@ onBeforeUnmount(() => {
                       <Motion
                         v-for="(item, index) in explore"
                         :key="item.name"
-                        class="border-b-white/10 border-b py-4 last:border-b-0"
+                        class="border-b border-pureBlack/10 border-solid py-4 last:border-b-0 dark:border-b-pureWhite/10"
                         :initial="{ opacity: 0, x: -10 }"
                         :animate="{ opacity: 1, x: 0 }"
                         :transition="{ delay: 0.2 + index * 0.05 }"
@@ -255,7 +255,7 @@ onBeforeUnmount(() => {
                     <span class="rounded-none bg-[#3F3C3C] px-2 py-1 text-sm color-pureBlack font-medium font-mono uppercase dark:color-pureWhite">
                       Featured
                     </span>
-                    <span class="bg-violet-600 rounded-full px-2 py-1 text-sm color-pureBlack font-medium uppercase dark:color-pureWhite">
+                    <span class="rounded-full bg-[#8023fe] px-2 py-1 text-sm color-pureBlack font-medium uppercase dark:color-pureWhite">
                       Milestone
                     </span>
                   </div>

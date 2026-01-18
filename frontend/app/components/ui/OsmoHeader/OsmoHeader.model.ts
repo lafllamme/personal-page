@@ -15,33 +15,32 @@ export interface OsmoSocialLink {
   icon: string
 }
 
-export const ourProducts: OsmoMenuItem[] = [
-  { name: 'Showcase', href: '/showcase', badge: 'New' },
-  { name: 'Components', href: '/components' },
-  { name: 'Playground', href: '/playground', badge: 'Beta' },
-  { name: 'Docs', href: '/docs' },
+export const avatars: OsmoAvatar[] = [
+  { src: 'https://astrae-blocks.vercel.app/assets/review-1.png', alt: 'Member 1' },
+  { src: 'https://astrae-blocks.vercel.app/assets/review-2.png', alt: 'Member 2' },
+  { src: 'https://astrae-blocks.vercel.app/assets/review-3.png', alt: 'Member 3' },
+  { src: 'https://astrae-blocks.vercel.app/assets/review-4.png', alt: 'Member 4' },
+  { src: 'https://astrae-blocks.vercel.app/assets/review-5.png', alt: 'Member 5' },
+  { src: 'https://astrae-blocks.vercel.app/assets/review-6.png', alt: 'Member 6' },
+  { src: 'https://astrae-blocks.vercel.app/assets/review-7.png', alt: 'Member 7' },
+  { src: 'https://astrae-blocks.vercel.app/assets/review-8.png', alt: 'Member 8' },
 ]
 
-export const easings: OsmoMenuItem[] = [
-  { name: 'Spring', href: '/easings/spring', badge: 'Pro' },
-  { name: 'Ease In Out', href: '/easings/ease-in-out' },
+export const ourProducts: OsmoMenuItem[] = [
+  { name: 'The Vault', href: '#' },
+  { name: 'Page Transition Course', href: '#', badge: 'WIP' },
+  { name: 'Icon Library', href: '#' },
+  { name: 'Community', href: '#' },
 ]
 
 export const explore: OsmoMenuItem[] = [
-  { name: 'Community', href: '/community' },
-  { name: 'Stories', href: '/stories' },
-  { name: 'Events', href: '/events' },
-  { name: 'Careers', href: '/careers' },
+  { name: 'Osmo Showcase', href: '#' },
+  { name: 'Updates', href: '#' },
+  { name: 'Pricing', href: '#' },
 ]
 
-export const avatars: OsmoAvatar[] = [
-  { src: 'https://avatar.vercel.sh/ava', alt: 'Member Ava' },
-  { src: 'https://avatar.vercel.sh/liam', alt: 'Member Liam' },
-  { src: 'https://avatar.vercel.sh/zoe', alt: 'Member Zoe' },
-  { src: 'https://avatar.vercel.sh/leo', alt: 'Member Leo' },
-  { src: 'https://avatar.vercel.sh/ivy', alt: 'Member Ivy' },
-  { src: 'https://avatar.vercel.sh/ella', alt: 'Member Ella' },
-  { src: 'https://avatar.vercel.sh/noah', alt: 'Member Noah' },
+export const easings: OsmoMenuItem[] = [
+  { name: 'Easings', href: '#', badge: 'SOON' },
 ]
 
 export const socialLinks: OsmoSocialLink[] = [
