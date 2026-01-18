@@ -105,7 +105,7 @@ onMounted(() => {
               @click="toggleMenu"
             >
               <OsmoMenuIcon :is-open="isMenuOpen" />
-              <span class="text-sm font-medium md:text-base">Menu</span>
+              <span class="figtree-regular text-sm font-medium md:text-base">Menu</span>
             </button>
 
             <div class="absolute left-1/2 -translate-x-1/2">
@@ -155,7 +155,7 @@ onMounted(() => {
               :transition="{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }"
               class="border-t-white/10 overflow-hidden border-t pt-4"
             >
-              <div class="px-6 pb-6 pt-2">
+              <div class="font-clash-regular px-6 pb-6 pt-2">
                 <div class="grid gap-0 md:grid-cols-2 xl:grid-cols-3 md:gap-12">
                   <Motion
                     class="rounded-xl bg-[#2A2727] p-4 md:p-8"
@@ -163,7 +163,7 @@ onMounted(() => {
                     :animate="{ opacity: 1, y: 0 }"
                     :transition="{ delay: 0.1 }"
                   >
-                    <h3 class="mb-2 text-sm color-pureBlack font-mono uppercase dark:color-pureWhite/70">
+                    <h3 class="figtree-regular mb-2 text-sm color-pureBlack font-300 uppercase dark:color-pureWhite/70">
                       Our Products
                     </h3>
                     <ul>
@@ -218,7 +218,7 @@ onMounted(() => {
                     :transition="{ delay: 0.15 }"
                   >
                     <div>
-                      <h3 class="mb-4 text-sm color-pureBlack font-mono uppercase dark:color-pureWhite/70">
+                      <h3 class="figtree-regular mb-4 text-sm color-pureBlack font-300 uppercase dark:color-pureWhite/70">
                         Explore
                       </h3>
                       <ul>
@@ -338,7 +338,7 @@ onMounted(() => {
         <span
           v-for="index in 10"
           :key="index"
-          class="mx-4 flex items-center gap-4 text-xs text-[#1E1E1E] uppercase"
+          class="font-clash-regular mx-4 flex items-center gap-4 text-xs text-[#1E1E1E] uppercase"
         >
           {{ marqueeMessage }}
           <span class="text-[#1E1E1E]">✦</span>
