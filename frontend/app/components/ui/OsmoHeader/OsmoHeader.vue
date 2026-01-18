@@ -7,7 +7,7 @@ import OsmoLogoMark from './OsmoLogoMark.vue'
 import OsmoMenuIcon from './OsmoMenuIcon.vue'
 import OsmoScrambleTextButton from './OsmoScrambleTextButton.vue'
 
-const { y } = useWindowScroll({ throttle: 100 })
+const { y } = useWindowScroll({ throttle: 0 })
 const isScrolled = computed(() => y.value > 50)
 
 const isMenuOpen = ref(false)
@@ -22,8 +22,10 @@ function clearMenuPhaseTimer() {
 }
 
 watch(isMenuOpen, (open) => {
-  if (!open)
+  if (!open) {
+    menuPhase.value = 'closed'
     return
+  }
 
   menuPhase.value = 'width'
   clearMenuPhaseTimer()
@@ -91,7 +93,7 @@ onBeforeUnmount(() => {
           </button>
 
           <div class="absolute left-1/2 -translate-x-1/2">
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               <Motion
                 v-if="isScrolled && !isMenuOpen"
                 key="mark"
