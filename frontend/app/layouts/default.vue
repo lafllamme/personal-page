@@ -1,7 +1,7 @@
 <script setup>
 import ScrollTopButton from '@/components/ui/Buttons/ScrollTopButton/ScrollTopButton.vue'
 import Footer from '@/components/ui/Footer/Footer.vue'
-import Header from '@/components/ui/Header/Header.vue'
+import OsmoHeader from '@/components/ui/OsmoHeader/OsmoHeader.vue'
 import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.vue'
 import TextBand from '@/components/ui/TextBand/TextBand.vue'
 
@@ -59,7 +59,7 @@ function handleOverlayIteration() {
       )"
       :style="overlayVisible ? { visibility: 'hidden' } : {}"
     >
-      <Header />
+      <OsmoHeader />
       <main
         :class="useClsx(
           'pt-[var(--header-height)]',
