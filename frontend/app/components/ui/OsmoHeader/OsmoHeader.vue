@@ -136,12 +136,12 @@ onMounted(() => {
             <div class="flex items-center gap-0">
               <OsmoScrambleTextButton
                 text="Login"
-                class="hidden h-10 rounded-full bg-[#4F4C4C] px-4 text-sm text-[#F4F4F4] md:block md:text-base"
+                class="hidden h-10 rounded-full bg-[#01E2B6] px-4 text-sm color-pureBlack md:block md:text-base"
               />
-              <OsmoScrambleTextButton
+              <!--              <OsmoScrambleTextButton
                 text="Join"
                 class="h-10 rounded-none bg-[#A1FF62] px-4 text-sm text-[#1E1E1E] md:text-base"
-              />
+              /> -->
             </div>
           </div>
 
@@ -321,7 +321,7 @@ onMounted(() => {
 
     <Motion
       key="osmo-marquee"
-      class="fixed left-0 right-0 top-[5.5rem] z-30 mx-auto max-w-[640px] w-[calc(100vw-40px)] overflow-hidden rounded-sm bg-[#A1FF62] py-1 md:top-24"
+      class="fixed left-0 right-0 top-[5.5rem] z-30 mx-auto max-w-[640px] w-[calc(100vw-40px)] overflow-hidden rounded-sm bg-[#01E2B6] py-1 md:top-24"
       :initial="{ opacity: 0, y: -50 }"
       :animate="{
         opacity: marqueeHidden ? 0 : 1,
