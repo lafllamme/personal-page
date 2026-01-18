@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { TresContext } from '@tresjs/core'
-import type { PerspectiveCamera, Scene, Texture, WebGLRenderer } from 'three'
+import type { Intersection, PerspectiveCamera, Scene, Texture, WebGLRenderer } from 'three'
 import type { GlassMetaballsSettings, GlassPresetName } from './GlassMetaballs.model'
 import { TresCanvas } from '@tresjs/core'
 import {
@@ -104,6 +104,7 @@ const renderMode = computed<RenderMode>(() => (isVisible.value ? 'always' : 'on-
 
 const raycaster = new Raycaster()
 const pointerPos = new Vector2(0, 0)
+const raycastHits: Intersection[] = []
 
 const mouseTarget = new Vector3(0, 0, settings.mouse.parkZ)
 const mousePos = new Vector3(0, 0, settings.mouse.parkZ)
@@ -133,6 +134,7 @@ const colorPalette = [
 // Pointer state
 const pointerInside = ref(false)
 const pointerActive = ref(false)
+const shouldRaycast = ref(false)
 
 function clamp(v: number, min: number, max: number) {
   return Math.max(min, Math.min(max, v))
@@ -705,25 +707,31 @@ function handleRaycast() {
 
   if (!pointerInside.value || !pointerActive.value) {
     mouseTarget.set(0, 0, settings.mouse.parkZ)
+    shouldRaycast.value = false
     return
   }
+
+  if (!shouldRaycast.value)
+    return
+
+  shouldRaycast.value = false
 
   cameraRef.value.getWorldDirection(cameraDirection)
   cameraDirection.multiplyScalar(-1)
   mousePlane.value.lookAt(cameraDirection)
+  mousePlane.value.updateMatrixWorld()
 
   raycaster.setFromCamera(pointerPos, cameraRef.value)
-  const intersects = raycaster.intersectObject(mousePlane.value, false)
-  if (intersects.length > 0)
-    mouseTarget.copy(intersects[0].point)
+  raycastHits.length = 0
+  raycaster.intersectObject(mousePlane.value, false, raycastHits)
+  if (raycastHits.length > 0)
+    mouseTarget.copy(raycastHits[0].point)
 }
 
 function stepSimulation({ delta, timestamp }: { delta: number, timestamp: number }) {
   if (!world || !metaballs.value)
     return
 
-  applyFieldSettings()
-  applyMaterialSettings()
   handleRaycast()
 
   mousePos.lerp(mouseTarget, settings.mouse.lerp)
@@ -733,13 +741,15 @@ function stepSimulation({ delta, timestamp }: { delta: number, timestamp: number
   world.step()
 
   const timeS = timestamp / 1000
-  bodies.forEach(b => b.updatePhysics(timeS))
+  for (let i = 0; i < bodies.length; i++)
+    bodies[i].updatePhysics(timeS)
 
   metaballs.value.reset()
-  bodies.forEach((b) => {
+  for (let i = 0; i < bodies.length; i++) {
+    const b = bodies[i]
     const p = b.getMetaPos()
-    metaballs.value?.addBall(p.x, p.y, p.z, b.strength, b.subtract, b.color)
-  })
+    metaballs.value.addBall(p.x, p.y, p.z, b.strength, b.subtract, b.color)
+  }
   metaballs.value.update()
   requestRender()
 }
@@ -781,6 +791,7 @@ function updatePointerFromEvent(event: PointerEvent) {
 
   if (!inside) {
     pointerActive.value = false
+    shouldRaycast.value = false
     mouseTarget.set(0, 0, settings.mouse.parkZ)
     return
   }
@@ -788,6 +799,7 @@ function updatePointerFromEvent(event: PointerEvent) {
   const target = event.target
   if (target instanceof Element && target.closest('[data-liquid-ui]')) {
     pointerActive.value = false
+    shouldRaycast.value = false
     mouseTarget.set(0, 0, settings.mouse.parkZ)
     return
   }
@@ -802,9 +814,12 @@ function updatePointerFromEvent(event: PointerEvent) {
   const cx = clamp(nx, -dz, dz)
   const cy = clamp(ny, -dz, dz)
   pointerPos.set(cx, cy)
+  shouldRaycast.value = active
 
-  if (!active)
+  if (!active) {
+    shouldRaycast.value = false
     mouseTarget.set(0, 0, settings.mouse.parkZ)
+  }
 }
 
 const isApplyingPreset = ref(false)
@@ -1081,7 +1096,6 @@ onBeforeUnmount(() => {
           <TresAmbientLight :intensity="0.3" />
           <TresDirectionalLight :position="[6, 8, 6]" :intensity="1.2" />
           <primitive v-if="metaballs" :object="metaballs" />
-          <primitive v-if="mousePlane" :object="mousePlane" />
         </TresCanvas>
       </div>
 
