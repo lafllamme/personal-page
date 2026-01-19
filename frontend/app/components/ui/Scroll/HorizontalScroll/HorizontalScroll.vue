@@ -36,6 +36,12 @@ const headerRefs = ref<(HTMLElement | null)[]>([])
 const cleanupFns: Array<() => void> = []
 const headerHidden = useState<boolean>('osmo-header-hidden', () => false)
 const headerOffset = useState<number>('osmo-header-offset', () => 0)
+const colorMode = useColorMode()
+const headerTone = useState<'light' | 'dark'>(
+  'osmo-header-tone',
+  () => (colorMode.value === 'dark' ? 'dark' : 'light'),
+)
+const totalSlides = items.length
 
 function getHeaderOffset(): number {
   if (!import.meta.client)
@@ -51,6 +57,7 @@ const updateHeaderVisibility = useThrottleFn(() => {
   if (!section) {
     headerHidden.value = false
     headerOffset.value = 0
+    headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
     return
   }
 
@@ -66,6 +73,18 @@ const updateHeaderVisibility = useThrottleFn(() => {
   else {
     headerOffset.value = 0
   }
+
+  if (isCoveringHeader && totalSlides > 0) {
+    const totalScrollable = Math.max(1, rect.height - window.innerHeight)
+    const scrollProgress = Math.min(1, Math.max(0, (-rect.top) / totalScrollable))
+    const index = Math.min(totalSlides - 1, Math.max(0, Math.floor(scrollProgress * totalSlides)))
+    const isEven = index % 2 === 0
+    const isLightBackground = colorMode.value === 'dark' ? isEven : !isEven
+    headerTone.value = isLightBackground ? 'light' : 'dark'
+    return
+  }
+
+  headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
 }, 80)
 function slideThemeClasses(index: number) {
   const isEven = index % 2 === 0
@@ -121,11 +140,16 @@ onMounted(async () => {
   useEventListener(window, 'resize', updateHeaderVisibility, { passive: true })
 })
 
+watch(colorMode, () => {
+  updateHeaderVisibility()
+})
+
 onBeforeUnmount(() => {
   cleanupFns.forEach(stop => stop())
   cleanupFns.length = 0
   headerHidden.value = false
   headerOffset.value = 0
+  headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
 </script>
 

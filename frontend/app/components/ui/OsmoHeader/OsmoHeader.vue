@@ -9,6 +9,11 @@ import OsmoMenuIcon from './OsmoMenuIcon.vue'
 import OsmoScrambleTextButton from './OsmoScrambleTextButton.vue'
 
 const isScrolled = ref(false)
+const colorMode = useColorMode()
+const headerTone = useState<'light' | 'dark'>(
+  'osmo-header-tone',
+  () => (colorMode.value === 'dark' ? 'dark' : 'light'),
+)
 const isHeaderHidden = useState<boolean>('osmo-header-hidden', () => false)
 const headerOffset = useState<number>('osmo-header-offset', () => 0)
 const hoveredLabel = ref<string | null>(null)
@@ -55,6 +60,10 @@ const marqueeHidden = computed(() => isScrolled.value || isMenuOpen.value || isH
 const headerStyle = computed<Record<string, string>>(() => ({
   pointerEvents: isHeaderHidden.value ? 'none' : 'auto',
 }))
+const headerFgClass = computed(() => (headerTone.value === 'light' ? 'color-pureBlack' : 'color-pureWhite'))
+const headerDividerClass = computed(() => (headerTone.value === 'light' ? 'border-pureBlack/10' : 'border-pureWhite/10'))
+const headerOutlineClass = computed(() => (headerTone.value === 'light' ? 'ring-pureBlack/20' : 'ring-pureWhite/20'))
+const headerHoverBgClass = computed(() => (headerTone.value === 'light' ? 'hover:bg-pureBlack/10' : 'hover:bg-pureWhite/10'))
 
 const avatarPositions = computed(() => {
   const total = Math.max(1, avatars.length - 1)
@@ -138,6 +147,10 @@ onMounted(() => {
   updateScrollState()
   useEventListener(window, 'scroll', updateScrollState, { passive: true })
 })
+
+watch(colorMode, () => {
+  headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
+})
 </script>
 
 <template>
@@ -158,16 +171,23 @@ onMounted(() => {
       >
         <Motion
           as="div"
-          class="bg-white/10 overflow-visible rounded-lg shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] ring-1 ring-pureBlack/20 backdrop-blur-2xl dark:ring-pureWhite/20"
+          :class="useClsx(
+            'bg-white/10 overflow-visible rounded-lg shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] ring-1 backdrop-blur-2xl',
+            headerOutlineClass,
+          )"
           :animate="{ height: menuPhase === 'full' ? 'auto' : 'auto' }"
           :transition="{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }"
         >
           <div class="bg-white/10 sticky top-0 z-50 w-[calc(100vw-40px)] flex items-center justify-between rounded-lg px-3 py-3 backdrop-blur-2xl md:min-w-[640px] md:w-auto">
             <button
-              class="h-10 flex cursor-pointer items-center gap-2 rounded-sm px-2.5 color-pureBlack transition-opacity md:gap-3 hover:bg-pureBlack/10 md:px-4 dark:color-pureWhite hover:opacity-80 dark:hover:bg-pureWhite/10"
+              :class="useClsx(
+                'h-10 flex cursor-pointer items-center gap-2 rounded-sm px-2.5 transition-opacity md:gap-3 md:px-4 hover:opacity-80',
+                headerFgClass,
+                headerHoverBgClass,
+              )"
               @click="toggleMenu"
             >
-              <OsmoMenuIcon :is-open="isMenuOpen" />
+              <OsmoMenuIcon :is-open="isMenuOpen" :tone="headerTone" />
               <span class="figtree-regular text-sm font-medium md:text-base">Menu</span>
             </button>
 
@@ -191,7 +211,7 @@ onMounted(() => {
                   :exit="{ opacity: 0, y: 10 }"
                   :transition="{ duration: 0.3 }"
                 >
-                  <span class="font-cabinet text-3xl color-pureBlack tracking-tight dark:color-pureWhite">TECNEWS</span>
+                  <span :class="useClsx('font-cabinet text-3xl tracking-tight', headerFgClass)">TECNEWS</span>
                 </Motion>
               </AnimatePresence>
             </div>
@@ -199,9 +219,12 @@ onMounted(() => {
             <div class="flex items-center gap-2">
               <OsmoScrambleTextButton
                 text="Login"
-                class="hidden h-10 rounded-full bg-[#01E2B6] px-4 text-sm color-pureBlack md:block md:text-base dark:color-pureWhite"
+                :class="useClsx(
+                  'hidden h-10 rounded-full bg-[#01E2B6] px-4 text-sm md:block md:text-base',
+                  headerFgClass,
+                )"
               />
-              <ColorMode class="items-center justify-center" />
+              <ColorMode class="items-center justify-center" :tone="headerTone" />
               <!--              <OsmoScrambleTextButton
                 text="Join"
                 class="h-10 rounded-none bg-[#A1FF62] px-4 text-sm text-[#1E1E1E] md:text-base"
@@ -217,31 +240,43 @@ onMounted(() => {
               :animate="{ height: 'auto', opacity: 1 }"
               :exit="{ height: 0, opacity: 0 }"
               :transition="{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }"
-              class="max-h-[calc(100dvh-36px)] overflow-hidden overflow-y-auto border-t border-pureBlack/10 pt-4 md:overflow-y-hidden dark:border-pureWhite/10"
+              :class="useClsx(
+                'max-h-[calc(100dvh-36px)] overflow-hidden overflow-y-auto border-t pt-4 md:overflow-y-hidden',
+                headerDividerClass,
+              )"
             >
               <div class="font-clash-regular px-6 pb-6 pt-2">
                 <div class="grid gap-0 md:grid-cols-2 xl:grid-cols-3 md:gap-12">
                   <Motion
-                    class="bg-white/8 rounded-xl p-4 ring-1 ring-pureBlack/20 backdrop-blur-xl md:p-8 dark:ring-pureWhite/20"
+                    :class="useClsx(
+                      'bg-white/8 rounded-xl p-4 ring-1 backdrop-blur-xl md:p-8',
+                      headerOutlineClass,
+                    )"
                     :initial="{ opacity: 0, y: 20 }"
                     :animate="{ opacity: 1, y: 0 }"
                     :transition="{ delay: 0.1 }"
                   >
-                    <h3 class="figtree-regular mb-2 text-sm color-pureBlack font-300 uppercase dark:color-pureWhite">
+                    <h3 :class="useClsx('figtree-regular mb-2 text-sm font-300 uppercase', headerFgClass)">
                       Our Products
                     </h3>
                     <ul>
                       <Motion
                         v-for="(item, index) in ourProducts"
                         :key="item.name"
-                        class="border-b border-pureBlack/10 border-solid py-4 last:border-b-0 dark:border-b-pureWhite/10"
+                        :class="useClsx(
+                          'border-b border-solid py-4 last:border-b-0',
+                          headerDividerClass,
+                        )"
                         :initial="{ opacity: 0, x: -10 }"
                         :animate="{ opacity: 1, x: 0 }"
                         :transition="{ delay: 0.15 + index * 0.05 }"
                       >
                         <NuxtLink
                           :to="item.href"
-                          class="group w-fit flex items-center gap-2 text-lg color-pureBlack md:text-2xl dark:color-pureWhite"
+                          :class="useClsx(
+                            'group w-fit flex items-center gap-2 text-lg md:text-2xl',
+                            headerFgClass,
+                          )"
                           @mouseenter="hoveredLabel = item.name"
                           @mouseleave="hoveredLabel = null"
                         >
@@ -286,7 +321,10 @@ onMounted(() => {
                             </span>
                             <span
                               v-if="item.badge"
-                              class="rounded bg-[#8023fe] px-1.5 py-0.5 text-sm color-pureBlack dark:color-pureWhite"
+                              :class="useClsx(
+                                'rounded bg-[#8023fe] px-1.5 py-0.5 text-sm',
+                                headerFgClass,
+                              )"
                             >
                               {{ item.badge }}
                             </span>
@@ -300,7 +338,10 @@ onMounted(() => {
                         v-for="item in easings"
                         :key="item.name"
                         :to="item.href"
-                        class="flex items-center gap-2 text-base color-pureBlack md:text-xl dark:color-pureWhite"
+                        :class="useClsx(
+                          'flex items-center gap-2 text-base md:text-xl',
+                          headerFgClass,
+                        )"
                         @mouseenter="hoveredLabel = item.name"
                         @mouseleave="hoveredLabel = null"
                       >
@@ -344,7 +385,10 @@ onMounted(() => {
                         </span>
                         <span
                           v-if="item.badge"
-                          class="rounded bg-[#3F3C3C] px-1.5 py-0.5 text-sm color-pureBlack font-mono dark:color-pureWhite"
+                          :class="useClsx(
+                            'rounded bg-[#3F3C3C] px-1.5 py-0.5 text-sm font-mono',
+                            headerFgClass,
+                          )"
                         >
                           {{ item.badge }}
                         </span>
@@ -359,21 +403,27 @@ onMounted(() => {
                     :transition="{ delay: 0.15 }"
                   >
                     <div>
-                      <h3 class="figtree-regular mb-4 text-sm color-pureBlack font-300 uppercase dark:color-pureWhite">
+                      <h3 :class="useClsx('figtree-regular mb-4 text-sm font-300 uppercase', headerFgClass)">
                         Explore
                       </h3>
                       <ul>
                         <Motion
                           v-for="(item, index) in explore"
                           :key="item.name"
-                          class="border-b border-pureBlack/10 border-solid py-4 last:border-b-0 dark:border-b-pureWhite/10"
+                          :class="useClsx(
+                            'border-b border-solid py-4 last:border-b-0',
+                            headerDividerClass,
+                          )"
                           :initial="{ opacity: 0, x: -10 }"
                           :animate="{ opacity: 1, x: 0 }"
                           :transition="{ delay: 0.2 + index * 0.05 }"
                         >
                           <NuxtLink
                             :to="item.href"
-                            class="group w-fit flex items-center gap-2 text-lg color-pureBlack md:text-2xl dark:color-pureWhite"
+                            :class="useClsx(
+                              'group w-fit flex items-center gap-2 text-lg md:text-2xl',
+                              headerFgClass,
+                            )"
                             @mouseenter="hoveredLabel = item.name"
                             @mouseleave="hoveredLabel = null"
                           >
@@ -431,21 +481,24 @@ onMounted(() => {
                   </Motion>
 
                   <Motion
-                    class="bg-white/8 relative hidden min-h-[420px] items-center overflow-hidden rounded-xl p-4 text-center ring-1 ring-pureBlack/20 backdrop-blur-xl xl:block md:p-8 dark:ring-pureWhite/20"
+                    :class="useClsx(
+                      'bg-white/8 relative hidden min-h-[420px] items-center overflow-hidden rounded-xl p-4 text-center ring-1 backdrop-blur-xl xl:block md:p-8',
+                      headerOutlineClass,
+                    )"
                     :initial="{ opacity: 0, y: 20 }"
                     :animate="{ opacity: 1, y: 0 }"
                     :transition="{ delay: 0.2 }"
                   >
                     <div class="z-10 mb-8 mt-4 w-full flex justify-center gap-0">
-                      <span class="rounded-none bg-[#3F3C3C] px-2 py-1 text-sm color-pureBlack font-medium font-mono uppercase dark:color-pureWhite">
+                      <span :class="useClsx('rounded-none bg-[#3F3C3C] px-2 py-1 text-sm font-medium font-mono uppercase', headerFgClass)">
                         Featured
                       </span>
-                      <span class="rounded-full bg-[#8023fe] px-2 py-1 text-sm color-pureBlack font-medium uppercase dark:color-pureWhite">
+                      <span :class="useClsx('rounded-full bg-[#8023fe] px-2 py-1 text-sm font-medium uppercase', headerFgClass)">
                         Milestone
                       </span>
                     </div>
 
-                    <h4 class="relative z-10 mb-4 text-4xl color-pureBlack font-medium leading-none dark:color-pureWhite">
+                    <h4 :class="useClsx('relative z-10 mb-4 text-4xl font-medium leading-none', headerFgClass)">
                       We hit 1600
                       <br>
                       Members!
