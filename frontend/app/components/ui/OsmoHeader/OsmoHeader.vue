@@ -2,7 +2,8 @@
 import { useEventListener } from '@vueuse/core'
 import { AnimatePresence, Motion } from 'motion-v'
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
-import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
+import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
+import { avatars, easings, explore, marqueeMessage, ourProducts } from './OsmoHeader.model'
 import OsmoLogoMark from './OsmoLogoMark.vue'
 import OsmoMenuIcon from './OsmoMenuIcon.vue'
 import OsmoScrambleTextButton from './OsmoScrambleTextButton.vue'
@@ -96,7 +97,7 @@ onMounted(() => {
       >
         <Motion
           as="div"
-          class="max-h-[calc(100dvh-36px)] overflow-y-auto rounded-lg bg-[#201D1D] md:overflow-y-hidden"
+          class="overflow-visible rounded-lg bg-[#201D1D]"
           :animate="{ height: menuPhase === 'full' ? 'auto' : 'auto' }"
           :transition="{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }"
         >
@@ -155,7 +156,7 @@ onMounted(() => {
               :animate="{ height: 'auto', opacity: 1 }"
               :exit="{ height: 0, opacity: 0 }"
               :transition="{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }"
-              class="border-t-white/10 overflow-hidden border-t pt-4"
+              class="max-h-[calc(100dvh-36px)] overflow-y-auto border-t-white/10 overflow-hidden border-t pt-4 md:overflow-y-hidden"
             >
               <div class="font-clash-regular px-6 pb-6 pt-2">
                 <div class="grid gap-0 md:grid-cols-2 xl:grid-cols-3 md:gap-12">
@@ -246,22 +247,12 @@ onMounted(() => {
                     </div>
 
                     <Motion
-                      class="flex gap-0"
+                      class="flex items-center justify-start"
                       :initial="{ opacity: 0 }"
                       :animate="{ opacity: 1 }"
                       :transition="{ delay: 0.35 }"
                     >
-                      <NuxtLink
-                        v-for="link in socialLinks"
-                        :key="link.name"
-                        :to="link.href"
-                        class="size-12 flex items-center justify-center bg-[#2C2929] text-[#F4F4F4]"
-                        :class="link.name === 'Instagram' ? 'rounded-none' : 'rounded-full'"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <Icon :name="link.icon" class="size-5" />
-                      </NuxtLink>
+                      <LanguageSwitcher variant="stepper" tone="osmo" />
                     </Motion>
                   </Motion>
 
