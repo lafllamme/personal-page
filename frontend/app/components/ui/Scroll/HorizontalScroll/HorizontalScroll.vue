@@ -35,6 +35,7 @@ const scrollSectionRef = ref<HTMLElement | null>(null)
 const headerRefs = ref<(HTMLElement | null)[]>([])
 const cleanupFns: Array<() => void> = []
 const headerHidden = useState<boolean>('osmo-header-hidden', () => false)
+const headerOffset = useState<number>('osmo-header-offset', () => 0)
 
 function getHeaderOffset(): number {
   if (!import.meta.client)
@@ -49,6 +50,7 @@ const updateHeaderVisibility = useThrottleFn(() => {
   const section = scrollSectionRef.value
   if (!section) {
     headerHidden.value = false
+    headerOffset.value = 0
     return
   }
 
@@ -57,6 +59,13 @@ const updateHeaderVisibility = useThrottleFn(() => {
   const isCoveringHeader = rect.top <= offset && rect.bottom >= offset
 
   headerHidden.value = isCoveringHeader
+  if (isCoveringHeader) {
+    const progress = Math.min(1, Math.max(0, (offset - rect.top) / Math.max(1, offset)))
+    headerOffset.value = -120 * progress
+  }
+  else {
+    headerOffset.value = 0
+  }
 }, 80)
 function slideThemeClasses(index: number) {
   const isEven = index % 2 === 0
@@ -116,6 +125,7 @@ onBeforeUnmount(() => {
   cleanupFns.forEach(stop => stop())
   cleanupFns.length = 0
   headerHidden.value = false
+  headerOffset.value = 0
 })
 </script>
 
