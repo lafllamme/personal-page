@@ -1,14 +1,19 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
 
-defineProps<{ isOpen: boolean }>()
+const props = defineProps<{
+  isOpen: boolean
+  tone?: 'light' | 'dark'
+}>()
+
+const barClass = computed(() => (props.tone === 'light' ? 'bg-pureBlack' : 'bg-pureWhite'))
 </script>
 
 <template>
   <div class="relative h-6 w-6 flex flex-col items-center justify-center">
     <Motion
       as="span"
-      class="absolute h-0.5 w-6 rounded-full bg-pureBlack dark:bg-pureWhite"
+      :class="useClsx('absolute h-0.5 w-6 rounded-full', barClass)"
       :animate="{
         y: isOpen ? 0 : -4,
         rotate: isOpen ? 45 : 0,
@@ -17,7 +22,7 @@ defineProps<{ isOpen: boolean }>()
     />
     <Motion
       as="span"
-      class="absolute h-0.5 w-6 rounded-full bg-pureBlack dark:bg-pureWhite"
+      :class="useClsx('absolute h-0.5 w-6 rounded-full', barClass)"
       :animate="{
         y: isOpen ? 0 : 4,
         rotate: isOpen ? -45 : 0,
