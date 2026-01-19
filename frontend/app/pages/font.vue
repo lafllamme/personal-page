@@ -162,7 +162,7 @@ const heroStyle = computed(() => ({
               Weight
             </div>
             <div class="flex items-center gap-4">
-              <div class="text-sm tabular-nums color-pureBlack/60 dark:color-pureWhite/60">
+              <div class="text-sm color-pureBlack/60 tabular-nums dark:color-pureWhite/60">
                 {{ fontWeight }}
               </div>
               <input

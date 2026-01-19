@@ -91,7 +91,7 @@ onBeforeUnmount(() => {
 
 <template>
   <article class="relative mx-[calc(50%-50vw)] w-screen bg-pureWhite dark:bg-pureBlack">
-    <div class="pointer-events-none h-[16vh] w-full bg-gradient-to-b from-pureWhite to-transparent dark:from-pureBlack dark:to-transparent" />
+    <div class="pointer-events-none h-[16vh] w-full from-pureWhite to-transparent bg-gradient-to-b dark:from-pureBlack dark:to-transparent" />
 
     <section ref="scrollSectionRef" class="relative h-[500vh]">
       <ul ref="ulRef" class="sticky top-0 m-0 flex flex-nowrap list-none p-0 will-change-transform">

@@ -21,7 +21,7 @@ function resetControls() {
 <template>
   <div
     data-lenis-prevent
-    class="border-black/5 bg-white/80 dark:border-white/10 dark:bg-black/50 border rounded-2xl p-4 shadow-xl backdrop-blur"
+    class="bg-white/80 border-black/5 dark:bg-black/50 dark:border-white/10 border rounded-2xl p-4 shadow-xl backdrop-blur"
   >
     <div class="mb-4 flex items-center justify-between gap-4">
       <div>
