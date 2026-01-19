@@ -10,6 +10,7 @@ import OsmoScrambleTextButton from './OsmoScrambleTextButton.vue'
 
 const isScrolled = ref(false)
 const isHeaderHidden = useState<boolean>('osmo-header-hidden', () => false)
+const headerOffset = useState<number>('osmo-header-offset', () => 0)
 const hoveredLabel = ref<string | null>(null)
 
 const isMenuOpen = ref(false)
@@ -148,7 +149,7 @@ onMounted(() => {
         :initial="{ x: '-50%', y: -100, opacity: 0 }"
         :animate="{
           x: '-50%',
-          y: isHeaderHidden ? -120 : 0,
+          y: headerOffset,
           opacity: 1,
           width: isMenuOpen ? 'calc(100% - 40px)' : 'auto',
         }"
