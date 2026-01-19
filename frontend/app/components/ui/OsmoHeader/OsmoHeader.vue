@@ -97,11 +97,11 @@ onMounted(() => {
       >
         <Motion
           as="div"
-          class="overflow-visible rounded-lg bg-[#201D1D]"
+          class="overflow-visible rounded-lg bg-white/10 backdrop-blur-2xl ring-1 ring-pureBlack/20 shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] dark:ring-pureWhite/20"
           :animate="{ height: menuPhase === 'full' ? 'auto' : 'auto' }"
           :transition="{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }"
         >
-          <div class="sticky top-0 z-50 w-[calc(100vw-40px)] flex items-center justify-between rounded-lg bg-[#201D1D] px-3 py-3 md:min-w-[640px] md:w-auto">
+          <div class="sticky top-0 z-50 w-[calc(100vw-40px)] flex items-center justify-between rounded-lg bg-white/10 px-3 py-3 backdrop-blur-2xl md:min-w-[640px] md:w-auto">
             <button
               class="h-10 flex cursor-pointer items-center gap-2 rounded-sm px-2.5 color-pureBlack transition-opacity md:gap-3 hover:bg-[#2D2A2A] md:px-4 dark:color-pureWhite hover:opacity-80"
               @click="toggleMenu"
@@ -156,12 +156,12 @@ onMounted(() => {
               :animate="{ height: 'auto', opacity: 1 }"
               :exit="{ height: 0, opacity: 0 }"
               :transition="{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }"
-              class="max-h-[calc(100dvh-36px)] overflow-y-auto border-t-white/10 overflow-hidden border-t pt-4 md:overflow-y-hidden"
+              class="border-t-white/10 max-h-[calc(100dvh-36px)] overflow-hidden overflow-y-auto border-t pt-4 md:overflow-y-hidden"
             >
               <div class="font-clash-regular px-6 pb-6 pt-2">
                 <div class="grid gap-0 md:grid-cols-2 xl:grid-cols-3 md:gap-12">
                   <Motion
-                    class="rounded-xl bg-[#2A2727] p-4 md:p-8"
+                    class="rounded-xl bg-white/8 p-4 backdrop-blur-xl ring-1 ring-pureBlack/15 md:p-8 dark:ring-pureWhite/15"
                     :initial="{ opacity: 0, y: 20 }"
                     :animate="{ opacity: 1, y: 0 }"
                     :transition="{ delay: 0.1 }"
@@ -257,7 +257,7 @@ onMounted(() => {
                   </Motion>
 
                   <Motion
-                    class="relative hidden min-h-[420px] items-center overflow-hidden rounded-xl bg-[#2A2727] p-4 text-center xl:block md:p-8"
+                    class="relative hidden min-h-[420px] items-center overflow-hidden rounded-xl bg-white/8 p-4 text-center backdrop-blur-xl ring-1 ring-pureBlack/15 xl:block md:p-8 dark:ring-pureWhite/15"
                     :initial="{ opacity: 0, y: 20 }"
                     :animate="{ opacity: 1, y: 0 }"
                     :transition="{ delay: 0.2 }"

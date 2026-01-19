@@ -3,7 +3,7 @@ import logoOsmo from '@/assets/logos/logo-osmo.svg'
 </script>
 
 <template>
-  <div class="relative h-9 md:h-10 xl:h-12 w-auto aspect-video">
+  <div class="relative aspect-video h-9 w-auto md:h-10 xl:h-12">
     <NuxtImg
       :src="logoOsmo"
       alt="OSMO"
