@@ -1,37 +1,32 @@
 <script setup lang="ts">
+import { useEventListener, useThrottleFn } from '@vueuse/core'
 import { animate, scroll, spring } from 'motion-v'
 
 interface HorizontalScrollItem {
   title: string
   imageUrl: string
-  backgroundColor: string
 }
 
 const items: HorizontalScrollItem[] = [
   {
     title: 'PASSION',
     imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=600&fit=crop',
-    backgroundColor: 'bg-red-9',
   },
   {
     title: 'WORK',
     imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=600&fit=crop',
-    backgroundColor: 'bg-blue-9',
   },
   {
     title: 'MOTIVATION',
     imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=600&fit=crop',
-    backgroundColor: 'bg-orange-9',
   },
   {
     title: 'INSPIRATION',
     imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=600&fit=crop',
-    backgroundColor: 'bg-yellow-9',
   },
   {
     title: 'BELIVE',
     imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&h=600&fit=crop',
-    backgroundColor: 'bg-green-9',
   },
 ]
 
@@ -39,6 +34,36 @@ const ulRef = ref<HTMLUListElement | null>(null)
 const scrollSectionRef = ref<HTMLElement | null>(null)
 const headerRefs = ref<(HTMLElement | null)[]>([])
 const cleanupFns: Array<() => void> = []
+const headerHidden = useState<boolean>('osmo-header-hidden', () => false)
+
+function getHeaderOffset(): number {
+  if (!import.meta.client)
+    return 0
+
+  const raw = getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim()
+  const parsed = Number.parseFloat(raw)
+  return Number.isFinite(parsed) ? parsed + 16 : 96
+}
+
+const updateHeaderVisibility = useThrottleFn(() => {
+  const section = scrollSectionRef.value
+  if (!section) {
+    headerHidden.value = false
+    return
+  }
+
+  const rect = section.getBoundingClientRect()
+  const offset = getHeaderOffset()
+  const isCoveringHeader = rect.top <= offset && rect.bottom >= offset
+
+  headerHidden.value = isCoveringHeader
+}, 80)
+function slideThemeClasses(index: number) {
+  const isEven = index % 2 === 0
+  return isEven
+    ? 'bg-pureBlack text-pureWhite dark:bg-pureWhite dark:text-pureBlack'
+    : 'bg-pureWhite text-pureBlack dark:bg-pureBlack dark:text-pureWhite'
+}
 
 onMounted(async () => {
   await nextTick()
@@ -81,11 +106,16 @@ onMounted(async () => {
     )
     cleanupFns.push(() => control.stop())
   })
+
+  updateHeaderVisibility()
+  useEventListener(window, 'scroll', updateHeaderVisibility, { passive: true })
+  useEventListener(window, 'resize', updateHeaderVisibility, { passive: true })
 })
 
 onBeforeUnmount(() => {
   cleanupFns.forEach(stop => stop())
   cleanupFns.length = 0
+  headerHidden.value = false
 })
 </script>
 
@@ -98,13 +128,12 @@ onBeforeUnmount(() => {
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="relative h-screen w-screen flex flex-none items-center justify-center overflow-hidden" :class="[
-            item.backgroundColor,
-          ]"
+          class="relative h-screen w-screen flex flex-none items-center justify-center overflow-hidden"
+          :class="slideThemeClasses(index)"
         >
           <h2
             :ref="(el) => { if (el) headerRefs[index] = el as HTMLElement }"
-            class="text-black relative bottom-5 inline-block text-[20vw] font-semibold"
+            class="relative bottom-5 inline-block text-[20vw] font-semibold"
           >
             {{ item.title }}
           </h2>
@@ -120,7 +149,7 @@ onBeforeUnmount(() => {
       </ul>
     </section>
 
-    <footer class="grid h-[80vh] place-content-center bg-red-9 text-slate-1 font-medium">
+    <footer class="grid h-[80vh] place-content-center bg-pureWhite color-pureBlack font-medium dark:bg-pureBlack dark:color-pureWhite">
       <p>
         Inspired By
         <a
