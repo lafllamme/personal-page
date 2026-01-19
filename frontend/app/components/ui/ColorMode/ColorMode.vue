@@ -13,13 +13,7 @@ const isLoading = ref(true)
 const isAnimating = ref(false)
 const isPressed = ref(false)
 const animationDuration = 1000
-const useHeaderTone = computed(() => props.tone === 'header')
-const iconToneClass = computed(() => (useHeaderTone.value
-  ? 'color-[var(--header-fg)]'
-  : (isDark.value ? 'color-pureWhite' : 'color-pureBlack')))
-const ringToneClass = computed(() => (useHeaderTone.value
-  ? 'focus-visible:ring-[color:var(--header-fg)]'
-  : 'focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite'))
+const iconToneClass = computed(() => (isDark.value ? 'color-pureWhite' : 'color-pureBlack'))
 
 const transitionVars = {
   x: '--theme-transition-x',
@@ -138,8 +132,7 @@ onMounted(() => {
         ref="button"
         :aria-pressed="isPressed"
         :class="useClsx(
-          'peer group focus-visible:ring',
-          ringToneClass,
+          'peer group focus-visible:ring focus-visible:ring-pureBlack dark:focus-visible:ring-pureWhite',
           'outline-none blur-out z-2 group ring-offset-inherit',
           'theme-toggle transition-colors duration-500',
           isDark && 'theme-toggle--toggled',
