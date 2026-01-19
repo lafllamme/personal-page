@@ -23,7 +23,7 @@ const sortedLanguages = computed(() => {
 })
 
 const currentIndex = computed(() => {
-  const index = sortedLanguages.value.findIndex((lang) => lang.code === locale.value)
+  const index = sortedLanguages.value.findIndex(lang => lang.code === locale.value)
   return index >= 0 ? index : 0
 })
 const currentLabel = computed(() => t(sortedLanguages.value[currentIndex.value].labelKey))
@@ -96,7 +96,6 @@ function goPrev() {
   const prevIndex = (currentIndex.value - 1 + sortedLanguages.value.length) % sortedLanguages.value.length
   setLanguage(sortedLanguages.value[prevIndex].code)
 }
-
 </script>
 
 <template>
