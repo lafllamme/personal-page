@@ -9,6 +9,8 @@ import OsmoMenuIcon from './OsmoMenuIcon.vue'
 import OsmoScrambleTextButton from './OsmoScrambleTextButton.vue'
 
 const isScrolled = ref(false)
+const isHeaderHidden = useState<boolean>('osmo-header-hidden', () => false)
+const hoveredLabel = ref<string | null>(null)
 
 const isMenuOpen = ref(false)
 const menuPhase = ref<'closed' | 'width' | 'full'>('closed')
@@ -48,7 +50,10 @@ function toggleMenu() {
   isMenuOpen.value = true
 }
 
-const marqueeHidden = computed(() => isScrolled.value || isMenuOpen.value)
+const marqueeHidden = computed(() => isScrolled.value || isMenuOpen.value || isHeaderHidden.value)
+const headerStyle = computed<Record<string, string>>(() => ({
+  pointerEvents: isHeaderHidden.value ? 'none' : 'auto',
+}))
 
 const avatarPositions = computed(() => {
   const total = Math.max(1, avatars.length - 1)
@@ -62,6 +67,60 @@ const avatarPositions = computed(() => {
     }
   })
 })
+
+const containerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.015,
+    },
+  },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.015,
+    },
+  },
+}
+
+const charVariants = {
+  hidden: { y: 0 },
+  visible: {
+    y: -30,
+    transition: {
+      duration: 0.25,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+  exit: {
+    y: 2,
+    transition: {
+      duration: 0.25,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+}
+
+const charVariants2 = {
+  hidden: { y: 30 },
+  visible: {
+    y: 0,
+    transition: {
+      duration: 0.25,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+  exit: {
+    y: 30,
+    transition: {
+      duration: 0.25,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+}
+
+const getLabelChars = (label: string) => Array.from(label)
 
 onBeforeUnmount(() => {
   clearMenuPhaseTimer()
@@ -89,21 +148,22 @@ onMounted(() => {
         :initial="{ x: '-50%', y: -100, opacity: 0 }"
         :animate="{
           x: '-50%',
-          y: 0,
+          y: isHeaderHidden ? -120 : 0,
           opacity: 1,
           width: isMenuOpen ? 'calc(100% - 40px)' : 'auto',
         }"
-        :transition="{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }"
+        :transition="{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }"
+        :style="headerStyle"
       >
         <Motion
           as="div"
-          class="overflow-visible rounded-lg bg-white/10 backdrop-blur-2xl ring-1 ring-pureBlack/20 shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] dark:ring-pureWhite/20"
+          class="bg-white/10 overflow-visible rounded-lg shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] ring-1 ring-pureBlack/20 backdrop-blur-2xl dark:ring-pureWhite/20"
           :animate="{ height: menuPhase === 'full' ? 'auto' : 'auto' }"
           :transition="{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }"
         >
-          <div class="sticky top-0 z-50 w-[calc(100vw-40px)] flex items-center justify-between rounded-lg bg-white/10 px-3 py-3 backdrop-blur-2xl md:min-w-[640px] md:w-auto">
+          <div class="bg-white/10 sticky top-0 z-50 w-[calc(100vw-40px)] flex items-center justify-between rounded-lg px-3 py-3 backdrop-blur-2xl md:min-w-[640px] md:w-auto">
             <button
-              class="h-10 flex cursor-pointer items-center gap-2 rounded-sm px-2.5 color-pureBlack transition-opacity md:gap-3 hover:bg-[#2D2A2A] md:px-4 dark:color-pureWhite hover:opacity-80"
+              class="h-10 flex cursor-pointer items-center gap-2 rounded-sm px-2.5 color-pureBlack transition-opacity md:gap-3 hover:bg-pureBlack/10 md:px-4 dark:color-pureWhite hover:opacity-80 dark:hover:bg-pureWhite/10"
               @click="toggleMenu"
             >
               <OsmoMenuIcon :is-open="isMenuOpen" />
@@ -138,7 +198,7 @@ onMounted(() => {
             <div class="flex items-center gap-2">
               <OsmoScrambleTextButton
                 text="Login"
-                class="hidden h-10 rounded-full bg-[#01E2B6] px-4 text-sm color-pureBlack md:block md:text-base"
+                class="hidden h-10 rounded-full bg-[#01E2B6] px-4 text-sm color-pureBlack md:block md:text-base dark:color-pureWhite"
               />
               <ColorMode class="items-center justify-center" />
               <!--              <OsmoScrambleTextButton
@@ -156,17 +216,17 @@ onMounted(() => {
               :animate="{ height: 'auto', opacity: 1 }"
               :exit="{ height: 0, opacity: 0 }"
               :transition="{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }"
-              class="border-t-white/10 max-h-[calc(100dvh-36px)] overflow-hidden overflow-y-auto border-t pt-4 md:overflow-y-hidden"
+              class="max-h-[calc(100dvh-36px)] overflow-hidden overflow-y-auto border-t border-pureBlack/10 pt-4 md:overflow-y-hidden dark:border-pureWhite/10"
             >
               <div class="font-clash-regular px-6 pb-6 pt-2">
                 <div class="grid gap-0 md:grid-cols-2 xl:grid-cols-3 md:gap-12">
                   <Motion
-                    class="rounded-xl bg-white/8 p-4 backdrop-blur-xl ring-1 ring-pureBlack/15 md:p-8 dark:ring-pureWhite/15"
+                    class="bg-white/8 rounded-xl p-4 ring-1 ring-pureBlack/20 backdrop-blur-xl md:p-8 dark:ring-pureWhite/20"
                     :initial="{ opacity: 0, y: 20 }"
                     :animate="{ opacity: 1, y: 0 }"
                     :transition="{ delay: 0.1 }"
                   >
-                    <h3 class="figtree-regular mb-2 text-sm color-pureBlack font-300 uppercase dark:color-pureWhite/70">
+                    <h3 class="figtree-regular mb-2 text-sm color-pureBlack font-300 uppercase dark:color-pureWhite">
                       Our Products
                     </h3>
                     <ul>
@@ -181,16 +241,54 @@ onMounted(() => {
                         <NuxtLink
                           :to="item.href"
                           class="group w-fit flex items-center gap-2 text-lg color-pureBlack md:text-2xl dark:color-pureWhite"
+                          @mouseenter="hoveredLabel = item.name"
+                          @mouseleave="hoveredLabel = null"
                         >
                           <span class="relative flex items-center gap-2">
-                            {{ item.name }}
+                            <span class="relative inline-block h-[1.4em] overflow-hidden">
+                              <Motion
+                                as="span"
+                                class="inline-flex"
+                                :variants="containerVariants"
+                                initial="hidden"
+                                :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
+                              >
+                                <Motion
+                                  v-for="(char, index) in getLabelChars(item.name)"
+                                  :key="`first-${item.name}-${index}`"
+                                  as="span"
+                                  :variants="charVariants"
+                                  class="inline-block"
+                                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
+                                >
+                                  {{ char }}
+                                </Motion>
+                              </Motion>
+                              <Motion
+                                as="span"
+                                class="absolute inset-0 inline-flex items-center"
+                                :variants="containerVariants"
+                                initial="hidden"
+                                :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
+                              >
+                                <Motion
+                                  v-for="(char, index) in getLabelChars(item.name)"
+                                  :key="`second-${item.name}-${index}`"
+                                  as="span"
+                                  :variants="charVariants2"
+                                  class="inline-block"
+                                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
+                                >
+                                  {{ char }}
+                                </Motion>
+                              </Motion>
+                            </span>
                             <span
                               v-if="item.badge"
                               class="rounded bg-[#8023fe] px-1.5 py-0.5 text-sm color-pureBlack dark:color-pureWhite"
                             >
                               {{ item.badge }}
                             </span>
-                            <span class="absolute left-0 h-px w-full origin-right scale-x-0 bg-pureBlack transition-transform duration-300 ease-in-out -bottom-1 group-hover:origin-left group-hover:scale-x-100 dark:bg-pureWhite" />
                           </span>
                         </NuxtLink>
                       </Motion>
@@ -202,8 +300,47 @@ onMounted(() => {
                         :key="item.name"
                         :to="item.href"
                         class="flex items-center gap-2 text-base color-pureBlack md:text-xl dark:color-pureWhite"
+                        @mouseenter="hoveredLabel = item.name"
+                        @mouseleave="hoveredLabel = null"
                       >
-                        {{ item.name }}
+                        <span class="relative inline-block h-[1.2em] overflow-hidden">
+                          <Motion
+                            as="span"
+                            class="inline-flex"
+                            :variants="containerVariants"
+                            initial="hidden"
+                            :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
+                          >
+                            <Motion
+                              v-for="(char, index) in getLabelChars(item.name)"
+                              :key="`first-easing-${item.name}-${index}`"
+                              as="span"
+                              :variants="charVariants"
+                              class="inline-block"
+                              :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
+                            >
+                              {{ char }}
+                            </Motion>
+                          </Motion>
+                          <Motion
+                            as="span"
+                            class="absolute inset-0 inline-flex items-center"
+                            :variants="containerVariants"
+                            initial="hidden"
+                            :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
+                          >
+                            <Motion
+                              v-for="(char, index) in getLabelChars(item.name)"
+                              :key="`second-easing-${item.name}-${index}`"
+                              as="span"
+                              :variants="charVariants2"
+                              class="inline-block"
+                              :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
+                            >
+                              {{ char }}
+                            </Motion>
+                          </Motion>
+                        </span>
                         <span
                           v-if="item.badge"
                           class="rounded bg-[#3F3C3C] px-1.5 py-0.5 text-sm color-pureBlack font-mono dark:color-pureWhite"
@@ -221,7 +358,7 @@ onMounted(() => {
                     :transition="{ delay: 0.15 }"
                   >
                     <div>
-                      <h3 class="figtree-regular mb-4 text-sm color-pureBlack font-300 uppercase dark:color-pureWhite/70">
+                      <h3 class="figtree-regular mb-4 text-sm color-pureBlack font-300 uppercase dark:color-pureWhite">
                         Explore
                       </h3>
                       <ul>
@@ -236,10 +373,46 @@ onMounted(() => {
                           <NuxtLink
                             :to="item.href"
                             class="group w-fit flex items-center gap-2 text-lg color-pureBlack md:text-2xl dark:color-pureWhite"
+                            @mouseenter="hoveredLabel = item.name"
+                            @mouseleave="hoveredLabel = null"
                           >
-                            <span class="relative">
-                              {{ item.name }}
-                              <span class="absolute left-0 h-px w-full origin-right scale-x-0 bg-pureBlack transition-transform duration-300 ease-in-out -bottom-1 group-hover:origin-left group-hover:scale-x-100 dark:bg-pureWhite" />
+                            <span class="relative inline-block h-[1.4em] overflow-hidden">
+                              <Motion
+                                as="span"
+                                class="inline-flex"
+                                :variants="containerVariants"
+                                initial="hidden"
+                                :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
+                              >
+                                <Motion
+                                  v-for="(char, index) in getLabelChars(item.name)"
+                                  :key="`first-explore-${item.name}-${index}`"
+                                  as="span"
+                                  :variants="charVariants"
+                                  class="inline-block"
+                                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
+                                >
+                                  {{ char }}
+                                </Motion>
+                              </Motion>
+                              <Motion
+                                as="span"
+                                class="absolute inset-0 inline-flex items-center"
+                                :variants="containerVariants"
+                                initial="hidden"
+                                :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
+                              >
+                                <Motion
+                                  v-for="(char, index) in getLabelChars(item.name)"
+                                  :key="`second-explore-${item.name}-${index}`"
+                                  as="span"
+                                  :variants="charVariants2"
+                                  class="inline-block"
+                                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
+                                >
+                                  {{ char }}
+                                </Motion>
+                              </Motion>
                             </span>
                           </NuxtLink>
                         </Motion>
@@ -257,7 +430,7 @@ onMounted(() => {
                   </Motion>
 
                   <Motion
-                    class="relative hidden min-h-[420px] items-center overflow-hidden rounded-xl bg-white/8 p-4 text-center backdrop-blur-xl ring-1 ring-pureBlack/15 xl:block md:p-8 dark:ring-pureWhite/15"
+                    class="bg-white/8 relative hidden min-h-[420px] items-center overflow-hidden rounded-xl p-4 text-center ring-1 ring-pureBlack/20 backdrop-blur-xl xl:block md:p-8 dark:ring-pureWhite/20"
                     :initial="{ opacity: 0, y: 20 }"
                     :animate="{ opacity: 1, y: 0 }"
                     :transition="{ delay: 0.2 }"
