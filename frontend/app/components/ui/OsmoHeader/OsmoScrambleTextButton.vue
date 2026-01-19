@@ -45,6 +45,6 @@ onBeforeUnmount(() => {
     :class="useClsx('cursor-pointer font-medium', props.class)"
     @mouseenter="scramble"
   >
-    <span class="font-mono tracking-wide">{{ displayText }}</span>
+    <span class="tracking-wide font-mono">{{ displayText }}</span>
   </button>
 </template>
