@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { LanguageSwitcherProps } from './LanguageSwitcher.model'
 import { AnimatePresence, Motion } from 'motion-v'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { languages } from '~/types/i18n'
 import { LanguageSwitcherDefaults } from './LanguageSwitcher.model'
@@ -27,6 +27,60 @@ const currentIndex = computed(() => {
   return index >= 0 ? index : 0
 })
 const currentLabel = computed(() => t(sortedLanguages.value[currentIndex.value].labelKey))
+const labelChars = computed(() => currentLabel.value.split(''))
+const isHovered = ref(false)
+
+const containerVariants = {
+  hidden: { opacity: 1 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.015,
+    },
+  },
+  exit: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.015,
+    },
+  },
+}
+
+const charVariants = {
+  hidden: { y: 0 },
+  visible: {
+    y: -30,
+    transition: {
+      duration: 0.25,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+  exit: {
+    y: 2,
+    transition: {
+      duration: 0.25,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+}
+
+const charVariants2 = {
+  hidden: { y: 30 },
+  visible: {
+    y: 0,
+    transition: {
+      duration: 0.25,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+  exit: {
+    y: 30,
+    transition: {
+      duration: 0.25,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+}
 
 function setLanguage(code: string) {
   setLocale(code)
@@ -90,7 +144,48 @@ function goPrev() {
             :exit="{ opacity: 0, y: -6 }"
             :transition="{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }"
           >
-            {{ currentLabel }}
+            <span
+              class="relative inline-block h-[1.6em] overflow-hidden"
+              @mouseenter="isHovered = true"
+              @mouseleave="isHovered = false"
+            >
+              <Motion
+                as="span"
+                class="inline-flex"
+                :variants="containerVariants"
+                initial="hidden"
+                :animate="isHovered ? 'visible' : 'exit'"
+              >
+                <Motion
+                  v-for="(char, index) in labelChars"
+                  :key="`first-${char}-${index}`"
+                  as="span"
+                  :variants="charVariants"
+                  class="inline-block"
+                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
+                >
+                  {{ char }}
+                </Motion>
+              </Motion>
+              <Motion
+                as="span"
+                class="absolute inset-0 inline-flex items-center justify-center"
+                :variants="containerVariants"
+                initial="hidden"
+                :animate="isHovered ? 'visible' : 'exit'"
+              >
+                <Motion
+                  v-for="(char, index) in labelChars"
+                  :key="`second-${char}-${index}`"
+                  as="span"
+                  :variants="charVariants2"
+                  class="inline-block"
+                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
+                >
+                  {{ char }}
+                </Motion>
+              </Motion>
+            </span>
           </Motion>
         </AnimatePresence>
       </div>
