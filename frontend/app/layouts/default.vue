@@ -9,7 +9,15 @@ const route = useRoute()
 const overlayVisible = useState('intro-overlay-visible', () => true)
 const overlayPaused = useState('intro-overlay-paused', () => false)
 const overlayStopPending = useState('intro-overlay-stop-pending', () => false)
+const overlayReadyDelayMs = 600
 const overlayHideDelayMs = 300
+const { start: startOverlayReady, stop: stopOverlayReady } = useTimeoutFn(
+  () => {
+    overlayStopPending.value = true
+  },
+  overlayReadyDelayMs,
+  { immediate: false },
+)
 const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(
   () => {
     overlayVisible.value = false
@@ -23,9 +31,12 @@ const isHome = computed(() => route.path === '/')
 const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
 
 onMounted(() => {
+  overlayVisible.value = true
   overlayPaused.value = false
-  overlayStopPending.value = !isHome.value
+  overlayStopPending.value = false
   stopOverlayHide()
+  stopOverlayReady()
+  startOverlayReady()
 })
 
 function handleOverlayIteration() {
@@ -55,9 +66,9 @@ function handleOverlayIteration() {
       :class="useClsx(
         'relative z-10',
         'bg-pureWhite  dark:bg-pureBlack',
-        overlayVisible && 'pointer-events-none',
+        showIntroOverlay && 'pointer-events-none',
       )"
-      :style="overlayVisible ? { visibility: 'hidden' } : {}"
+      :style="showIntroOverlay ? { visibility: 'hidden' } : {}"
     >
       <OsmoHeader />
       <main

@@ -111,6 +111,7 @@ let rafId: number | null = null
 let exitTimeoutId: ReturnType<typeof setTimeout> | null = null
 const isExiting = ref(false)
 const bandCycles = ref(0)
+const waitingForComplete = ref(false)
 
 watch(renderKey, () => {
   letterDistortions.value = generateDistortions()
@@ -119,7 +120,7 @@ watch(renderKey, () => {
 watch(
   () => props.canComplete,
   (canComplete) => {
-    if (canComplete && props.autoHide && bandCycles.value >= 1)
+    if (canComplete && props.autoHide && (bandCycles.value >= 1 || waitingForComplete.value))
       hide()
   },
 )
@@ -222,8 +223,12 @@ function runPhases() {
       currentPhaseIndex += 1
       if (currentPhaseIndex >= phases.length) {
         bandCycles.value += 1
-        if (props.autoHide && props.canComplete && bandCycles.value >= 1) {
-          hide()
+        if (props.autoHide && bandCycles.value >= 1) {
+          if (props.canComplete) {
+            hide()
+            return
+          }
+          waitingForComplete.value = true
           return
         }
         currentPhaseIndex = 0
@@ -253,6 +258,7 @@ function hide() {
     return
 
   isExiting.value = true
+  waitingForComplete.value = false
   if (timeoutId) {
     clearTimeout(timeoutId)
     timeoutId = null
