@@ -101,6 +101,7 @@ const selectedFontFamily = computed({
   </button>
   <div
     v-if="open"
+    data-lenis-prevent
     class="bg-black/75 color-white pointer-events-auto absolute right-4 top-14 max-h-[78vh] max-w-[85vw] w-[320px] overflow-y-auto rounded-2xl p-4 text-xs shadow-xl backdrop-blur-xl"
   >
     <div class="flex items-center justify-between">
