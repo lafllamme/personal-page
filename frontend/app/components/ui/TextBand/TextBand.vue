@@ -72,6 +72,7 @@ let switchStart = 0
 let fadeStart = 0
 let isFading = false
 let lastFrameTime = 0
+let hasDrawnInitialFrame = false
 
 const activeSegments = computed(() => {
   if (text.value && text.value.trim().length > 0) {
@@ -185,7 +186,7 @@ function buildColumns() {
       xOffset: start + i * gap,
       baseDurationMs: baseDuration,
       durationMs,
-      progress: randomRange(0, 1),
+      progress: 0,
       starts: [],
       targets: [],
       alignStep: false,
@@ -202,6 +203,7 @@ function prepareText() {
   fadeStart = 0
   isFading = false
   lastFrameTime = 0
+  hasDrawnInitialFrame = false
 }
 
 function resizeCanvas() {
@@ -345,10 +347,17 @@ function drawFrame(now: number) {
     return
 
   const referenceGlyphs = nextGlyphs.length ? nextGlyphs : currentGlyphs
+  const isFirstFrame = !hasDrawnInitialFrame
+  if (isFirstFrame) {
+    hasDrawnInitialFrame = true
+    lastFrameTime = now
+    if (hasMultipleSegments.value)
+      switchStart = now
+  }
   if (paused.value) {
     lastFrameTime = now
   }
-  else {
+  else if (!isFirstFrame) {
     updateColumns(now, referenceGlyphs)
     updateSwitch(now)
   }
