@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import type { OverlayTextProps } from './OverlayText.model'
-import { computed, onBeforeUnmount, onMounted, ref, toRefs, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, toRefs, watchEffect } from 'vue'
 import { OverlayTextDefaultProps } from './OverlayText.model'
 
 const props = withDefaults(defineProps<OverlayTextProps>(), OverlayTextDefaultProps)
 const { class: classNames } = toRefs(props)
 
+const isMounted = ref(false)
 const isVisible = ref(true)
 type AnimationPhase = 'typing' | 'settlePre' | 'collide' | 'settlePost' | 'band'
 type OverlayLineKey = 'top' | 'bottom'
 
 const animationPhase = ref<AnimationPhase>('typing')
-const renderKey = ref(0)
 
 const topText = 'TECNEWS'
 const bottomText = 'tecnews'
@@ -21,8 +21,8 @@ const columnGap = 50
 const topSize = 7
 const bottomSize = 5.5
 
-const introTopOffset = computed(() => `-${20 + topSize / 2}vh`)
-const introBottomOffset = computed(() => `${20 + bottomSize / 2}vh`)
+const introTopOffset = `-${20 + topSize / 2}vh`
+const introBottomOffset = `${20 + bottomSize / 2}vh`
 
 const smoothEasing = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
 const weightEasing = 'cubic-bezier(0.33, 1, 0.68, 1)'
@@ -70,7 +70,7 @@ const maxLineLetters = Math.max(...textLines.map(line => line.letters.length))
 const lastLetterDelayMs = letterStaggerMs * Math.max(0, maxLineLetters - 1)
 const bandPhaseDurationMs = bandDelayMs + bandDurationMs + bandHoldMs + bandFadeDelayMs + letterFadeDurationMs + lastLetterDelayMs
 const topLetterCount = textLines.find(line => line.key === 'top')?.letters.length ?? 0
-const centerColumns = computed(() => columns.filter(col => col >= -1 && col <= 1))
+const centerColumns = columns.filter(col => col >= -1 && col <= 1)
 const lineGap = '0.5vw'
 const phases: Array<{ name: AnimationPhase, duration: number }> = [
   { name: 'typing', duration: 720 },
@@ -87,13 +87,13 @@ function generateDistortions() {
 
   columns.forEach((col) => {
     const distortions: Record<number, LetterDistortion> = {}
-    const intensity = Math.max(0.35, 1 - Math.abs(col) * 0.14)
+    const intensity = Math.max(0.35, 1 - Math.abs(col) * 0.2)
 
     allLetters.forEach((_, i) => {
-      const scaleX = clamp(1 + (Math.random() * 0.5 - 0.25) * intensity, 0.72, 1.42)
-      const scaleY = clamp(1 + (Math.random() * 0.32 - 0.16) * intensity, 0.82, 1.24)
-      const rotateY = clamp((col * -3.4) + (Math.random() * 14 - 7) * intensity, -18, 18)
-      const depth = clamp((10 + Math.random() * 26) * intensity, 0, 36)
+      const scaleX = clamp(1 + (Math.random() * 0.4 - 0.2) * intensity, 0.8, 1.3)
+      const scaleY = clamp(1 + (Math.random() * 0.26 - 0.13) * intensity, 0.86, 1.18)
+      const rotateY = clamp((col * -3.2) + (Math.random() * 10 - 5) * intensity, -14, 14)
+      const depth = clamp((8 + Math.random() * 18) * intensity, 0, 28)
 
       distortions[i] = { scaleX, scaleY, rotateY, depth }
     })
@@ -104,39 +104,39 @@ function generateDistortions() {
   return columnDistortions
 }
 
-const letterDistortions = ref(generateDistortions())
+const letterDistortions = ref<Record<number, Record<number, LetterDistortion>>>({})
 
 let timeoutId: ReturnType<typeof setTimeout> | null = null
 let rafId: number | null = null
 let exitTimeoutId: ReturnType<typeof setTimeout> | null = null
 const isExiting = ref(false)
-const bandCycles = ref(0)
 const waitingForComplete = ref(false)
 
-watch(renderKey, () => {
-  letterDistortions.value = generateDistortions()
+watchEffect(() => {
+  if (!props.autoHide)
+    return
+  if (!props.canComplete)
+    return
+  if (!waitingForComplete.value)
+    return
+  if (!isVisible.value)
+    return
+  hide()
 })
-
-watch(
-  () => props.canComplete,
-  (canComplete) => {
-    if (canComplete && props.autoHide && (bandCycles.value >= 1 || waitingForComplete.value))
-      hide()
-  },
-)
 
 const introWeight = computed(() => (animationPhase.value === 'typing' || animationPhase.value === 'settlePre' ? 400 : 800))
 
 function getIntroLineStyle(position: OverlayLineKey) {
-  const offset = position === 'top' ? introTopOffset.value : introBottomOffset.value
+  const offset = position === 'top' ? introTopOffset : introBottomOffset
   const isTyping = animationPhase.value === 'typing'
   const isSettlingPre = animationPhase.value === 'settlePre'
   const isColliding = animationPhase.value === 'collide'
   const isIntroPhase = isTyping || isSettlingPre || isColliding
   const animations: string[] = []
 
-  if (isColliding)
+  if (isColliding) {
     animations.push(`${position === 'top' ? 'meetBounceTop' : 'meetBounceBottom'} 0.52s ${bounceEasing} forwards`)
+  }
 
   return {
     '--intro-offset': offset,
@@ -151,6 +151,7 @@ function getIntroLineStyle(position: OverlayLineKey) {
 
 function getIntroLetterStyle(index: number, size: number, multiplier = 1) {
   const isTyping = animationPhase.value === 'typing'
+  const shouldAnimate = isMounted.value && isTyping
 
   const baseStyle: Record<string, string> = {
     fontSize: `${size * multiplier}vw`,
@@ -158,8 +159,9 @@ function getIntroLetterStyle(index: number, size: number, multiplier = 1) {
     lineHeight: '1',
   }
 
-  if (isTyping)
+  if (shouldAnimate) {
     baseStyle.animation = `kineticTypeIn 0.5s ${bounceEasing} ${index * 0.04}s forwards`
+  }
 
   return baseStyle
 }
@@ -222,8 +224,7 @@ function runPhases() {
     timeoutId = setTimeout(() => {
       currentPhaseIndex += 1
       if (currentPhaseIndex >= phases.length) {
-        bandCycles.value += 1
-        if (props.autoHide && bandCycles.value >= 1) {
+        if (props.autoHide) {
           if (props.canComplete) {
             hide()
             return
@@ -231,8 +232,8 @@ function runPhases() {
           waitingForComplete.value = true
           return
         }
+        letterDistortions.value = generateDistortions()
         currentPhaseIndex = 0
-        renderKey.value += 1
       }
       runPhase()
     }, phase.duration)
@@ -240,22 +241,30 @@ function runPhases() {
 
   runPhase()
 }
-onMounted(async () => {
-  rafId = requestAnimationFrame(() => runPhases())
+onMounted(() => {
+  isMounted.value = true
+  animationPhase.value = 'typing'
+  waitingForComplete.value = false
+  letterDistortions.value = generateDistortions()
+  rafId = requestAnimationFrame(runPhases)
 })
 
 onBeforeUnmount(() => {
-  if (timeoutId)
+  if (timeoutId) {
     clearTimeout(timeoutId)
-  if (rafId !== null)
+  }
+  if (rafId !== null) {
     cancelAnimationFrame(rafId)
-  if (exitTimeoutId)
+  }
+  if (exitTimeoutId) {
     clearTimeout(exitTimeoutId)
+  }
 })
 
 function hide() {
-  if (isExiting.value)
+  if (isExiting.value) {
     return
+  }
 
   isExiting.value = true
   waitingForComplete.value = false
@@ -278,7 +287,6 @@ function hide() {
 <template>
   <div
     v-if="isVisible"
-    :key="renderKey"
     :class="useClsx(
       'fixed inset-0 z-[9999] overflow-hidden cursor-pointer',
       'bg-pureWhite dark:bg-pureBlack',

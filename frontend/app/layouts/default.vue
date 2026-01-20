@@ -7,17 +7,22 @@ import TextBand from '@/components/ui/TextBand/TextBand.vue'
 
 const route = useRoute()
 const overlayVisible = ref(true)
-const shouldStopOnIteration = ref(false)
 const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
 
+let hasMounted = false
+let iterationsSinceMount = 0
+
 onMounted(() => {
-  shouldStopOnIteration.value = true
+  hasMounted = true
+  iterationsSinceMount = 0
 })
 
 function handleOverlayIteration() {
-  if (!shouldStopOnIteration.value)
+  if (!hasMounted || !overlayVisible.value)
     return
-  shouldStopOnIteration.value = false
+  iterationsSinceMount += 1
+  if (iterationsSinceMount < 2)
+    return
   overlayVisible.value = false
 }
 </script>
