@@ -6,58 +6,28 @@ import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.
 import TextBand from '@/components/ui/TextBand/TextBand.vue'
 
 const route = useRoute()
-const overlayVisible = useState('intro-overlay-visible', () => true)
-const overlayPaused = useState('intro-overlay-paused', () => false)
-const overlayStopPending = useState('intro-overlay-stop-pending', () => false)
-const overlayReadyDelayMs = 600
-const overlayHideDelayMs = 300
-const { start: startOverlayReady, stop: stopOverlayReady } = useTimeoutFn(
-  () => {
-    overlayStopPending.value = true
-  },
-  overlayReadyDelayMs,
-  { immediate: false },
-)
-const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(
-  () => {
-    overlayVisible.value = false
-    overlayPaused.value = false
-  },
-  overlayHideDelayMs,
-  { immediate: false },
-)
-const showIntroOverlay = computed(() => overlayVisible.value)
-const isHome = computed(() => route.path === '/')
+const overlayVisible = ref(true)
+const shouldStopOnIteration = ref(false)
 const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
 
 onMounted(() => {
-  overlayVisible.value = true
-  overlayPaused.value = false
-  overlayStopPending.value = false
-  stopOverlayHide()
-  stopOverlayReady()
-  startOverlayReady()
+  shouldStopOnIteration.value = true
 })
 
 function handleOverlayIteration() {
-  if (!overlayStopPending.value || overlayPaused.value)
+  if (!shouldStopOnIteration.value)
     return
-  overlayStopPending.value = false
-  overlayPaused.value = true
-  startOverlayHide()
+  shouldStopOnIteration.value = false
+  overlayVisible.value = false
 }
 </script>
 
 <template>
   <div class="relative">
-    <div
-      v-show="showIntroOverlay"
-      class="fixed inset-0 z-[9999] overflow-hidden"
-    >
+    <div v-if="overlayVisible" class="fixed inset-0 z-[9999] overflow-hidden">
       <TextBand
         text="TECNEWS"
         class="pointer-events-none h-full w-full"
-        :paused="overlayPaused"
         @iteration="handleOverlayIteration"
       />
     </div>
@@ -66,9 +36,9 @@ function handleOverlayIteration() {
       :class="useClsx(
         'relative z-10',
         'bg-pureWhite  dark:bg-pureBlack',
-        showIntroOverlay && 'pointer-events-none',
+        overlayVisible && 'pointer-events-none',
       )"
-      :style="showIntroOverlay ? { visibility: 'hidden' } : {}"
+      :style="overlayVisible ? { visibility: 'hidden' } : {}"
     >
       <OsmoHeader />
       <main
