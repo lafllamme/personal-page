@@ -290,8 +290,8 @@ watch(colorMode, () => {
                                 :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
                               >
                                 <Motion
-                                  v-for="(char, index) in getLabelChars(item.name)"
-                                  :key="`first-${item.name}-${index}`"
+                                  v-for="(char, charIndex) in getLabelChars(item.name)"
+                                  :key="`first-${item.name}-${charIndex}`"
                                   as="span"
                                   :variants="charVariants"
                                   class="inline-block"
@@ -308,8 +308,8 @@ watch(colorMode, () => {
                                 :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
                               >
                                 <Motion
-                                  v-for="(char, index) in getLabelChars(item.name)"
-                                  :key="`second-${item.name}-${index}`"
+                                  v-for="(char, charIndex) in getLabelChars(item.name)"
+                                  :key="`second-${item.name}-${charIndex}`"
                                   as="span"
                                   :variants="charVariants2"
                                   class="inline-block"
@@ -354,8 +354,8 @@ watch(colorMode, () => {
                             :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
                           >
                             <Motion
-                              v-for="(char, index) in getLabelChars(item.name)"
-                              :key="`first-easing-${item.name}-${index}`"
+                              v-for="(char, charIndex) in getLabelChars(item.name)"
+                              :key="`first-easing-${item.name}-${charIndex}`"
                               as="span"
                               :variants="charVariants"
                               class="inline-block"
@@ -372,8 +372,8 @@ watch(colorMode, () => {
                             :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
                           >
                             <Motion
-                              v-for="(char, index) in getLabelChars(item.name)"
-                              :key="`second-easing-${item.name}-${index}`"
+                              v-for="(char, charIndex) in getLabelChars(item.name)"
+                              :key="`second-easing-${item.name}-${charIndex}`"
                               as="span"
                               :variants="charVariants2"
                               class="inline-block"
@@ -436,8 +436,8 @@ watch(colorMode, () => {
                                 :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
                               >
                                 <Motion
-                                  v-for="(char, index) in getLabelChars(item.name)"
-                                  :key="`first-explore-${item.name}-${index}`"
+                                  v-for="(char, charIndex) in getLabelChars(item.name)"
+                                  :key="`first-explore-${item.name}-${charIndex}`"
                                   as="span"
                                   :variants="charVariants"
                                   class="inline-block"
@@ -454,8 +454,8 @@ watch(colorMode, () => {
                                 :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
                               >
                                 <Motion
-                                  v-for="(char, index) in getLabelChars(item.name)"
-                                  :key="`second-explore-${item.name}-${index}`"
+                                  v-for="(char, charIndex) in getLabelChars(item.name)"
+                                  :key="`second-explore-${item.name}-${charIndex}`"
                                   as="span"
                                   :variants="charVariants2"
                                   class="inline-block"
