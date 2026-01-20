@@ -53,7 +53,6 @@ useHead(() => {
     <NuxtLayout>
       <NuxtLoadingIndicator
         :color="loadingGradient"
-        :throttle="0"
       />
       <Cursor />
       <NuxtPage />
