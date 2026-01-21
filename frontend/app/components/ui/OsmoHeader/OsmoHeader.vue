@@ -78,9 +78,11 @@ const avatarPositions = computed(() => {
 
 const charStagger = 0.01
 const getLabelChars = (label: string) => Array.from(label)
-const getCharStaggerStyle = (index: number) => ({
-  transitionDelay: `${index * charStagger}s`,
-})
+function getCharStaggerStyle(index: number) {
+  return {
+    transitionDelay: `${index * charStagger}s`,
+  }
+}
 
 onBeforeUnmount(() => {
   clearMenuPhaseTimer()
@@ -454,6 +456,7 @@ watch(colorMode, () => {
 }
 
 .osmo-animate-chars__text {
+  position: relative;
   display: inline-block;
   white-space: nowrap;
   line-height: 1.3;
@@ -463,14 +466,14 @@ watch(colorMode, () => {
 .osmo-animate-chars__char {
   display: inline-block;
   position: relative;
-  text-shadow: 0 1.3em currentColor;
-  transform: translateY(0) rotate(0.001deg);
-  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
   will-change: transform;
+  text-shadow: 0px 1.3em currentColor;
+  transform: translateY(0em) rotate(0.001deg);
+  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
 }
 
-.osmo-animate-chars:hover .osmo-animate-chars__char,
-.osmo-animate-chars:focus-visible .osmo-animate-chars__char {
+.osmo-animate-chars:hover [data-button-animate-chars] .osmo-animate-chars__char,
+.osmo-animate-chars:focus-visible [data-button-animate-chars] .osmo-animate-chars__char {
   transform: translateY(-1.3em) rotate(0.001deg);
 }
 </style>
