@@ -124,7 +124,7 @@ watch(colorMode, () => {
         <Motion
           as="div"
           :class="useClsx(
-            'bg-white/10 overflow-visible rounded-lg shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] ring-1 backdrop-blur-2xl',
+            'bg-pureWhite/50 dark:bg-pureBlack/50 overflow-visible rounded-lg shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] ring-1 backdrop-blur-2xl',
             headerOutlineClass,
           )"
           :animate="{ height: menuPhase === 'full' ? 'auto' : 'auto' }"
@@ -237,14 +237,9 @@ watch(colorMode, () => {
                               class="osmo-animate-chars__char"
                               :style="[
                                 getCharStaggerStyle(charIndex),
-                                {
-                                  display: char === ' ' ? 'inline' : 'inline-block',
-                                  whiteSpace: char === ' ' ? 'pre' : 'normal',
-                                },
+                                char === ' ' ? { whiteSpace: 'pre' } : {},
                               ]"
-                            >
-                              {{ char }}
-                            </span>
+                            >{{ char }}</span>
                           </span>
                           <span
                             v-if="item.badge"
@@ -276,14 +271,9 @@ watch(colorMode, () => {
                             class="osmo-animate-chars__char"
                             :style="[
                               getCharStaggerStyle(charIndex),
-                              {
-                                display: char === ' ' ? 'inline' : 'inline-block',
-                                whiteSpace: char === ' ' ? 'pre' : 'normal',
-                              },
+                              char === ' ' ? { whiteSpace: 'pre' } : {},
                             ]"
-                          >
-                            {{ char }}
-                          </span>
+                          >{{ char }}</span>
                         </span>
                         <span
                           v-if="item.badge"
@@ -334,14 +324,9 @@ watch(colorMode, () => {
                                 class="osmo-animate-chars__char"
                                 :style="[
                                   getCharStaggerStyle(charIndex),
-                                  {
-                                    display: char === ' ' ? 'inline' : 'inline-block',
-                                    whiteSpace: char === ' ' ? 'pre' : 'normal',
-                                  },
+                                  char === ' ' ? { whiteSpace: 'pre' } : {},
                                 ]"
-                              >
-                                {{ char }}
-                              </span>
+                              >{{ char }}</span>
                             </span>
                           </NuxtLink>
                         </Motion>
@@ -447,33 +432,40 @@ watch(colorMode, () => {
 </template>
 
 <style scoped>
+/* Parent link - matches demo structure */
 .osmo-animate-chars {
   position: relative;
   display: inline-flex;
   align-items: center;
   gap: 0;
+  line-height: 1;
   text-decoration: none;
 }
 
+/* Text wrapper with line-height for proper clipping */
 .osmo-animate-chars__text {
-  position: relative;
-  display: inline-block;
   white-space: nowrap;
   line-height: 1.3;
-  overflow: hidden;
 }
 
-.osmo-animate-chars__char {
+/* Character container with overflow hidden */
+.osmo-animate-chars [data-button-animate-chars] {
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+}
+
+/* Individual characters */
+.osmo-animate-chars [data-button-animate-chars] span {
   display: inline-block;
   position: relative;
-  will-change: transform;
   text-shadow: 0px 1.3em currentColor;
   transform: translateY(0em) rotate(0.001deg);
   transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
 }
 
-.osmo-animate-chars:hover [data-button-animate-chars] .osmo-animate-chars__char,
-.osmo-animate-chars:focus-visible [data-button-animate-chars] .osmo-animate-chars__char {
+/* Hover state */
+.osmo-animate-chars:hover [data-button-animate-chars] span {
   transform: translateY(-1.3em) rotate(0.001deg);
 }
 </style>
