@@ -77,6 +77,14 @@ const updateHeaderVisibility = useThrottleFn(() => {
   if (isCoveringHeader && totalSlides > 0) {
     const totalScrollable = Math.max(1, rect.height - window.innerHeight)
     const scrollProgress = Math.min(1, Math.max(0, (-rect.top) / totalScrollable))
+
+    // Delay tone change until section is scrolled enough (threshold ~5% into scroll)
+    const toneChangeThreshold = 0.05
+    if (scrollProgress < toneChangeThreshold) {
+      headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
+      return
+    }
+
     const index = Math.min(totalSlides - 1, Math.max(0, Math.floor(scrollProgress * totalSlides)))
     const isEven = index % 2 === 0
     const isLightBackground = colorMode.value === 'dark' ? isEven : !isEven
