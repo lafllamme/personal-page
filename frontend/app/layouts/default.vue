@@ -11,18 +11,41 @@ const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
 
 let hasMounted = false
 let iterationsSinceMount = 0
+let totalIterations = 0
 
 onMounted(() => {
   hasMounted = true
   iterationsSinceMount = 0
+  totalIterations = 0
 })
 
 function handleOverlayIteration() {
-  if (!hasMounted || !overlayVisible.value)
+  totalIterations += 1
+
+  const isReady = hasMounted
+  if (!overlayVisible.value) {
+    console.info('[overlay:intro] iteration ignored; overlay already hidden', { totalIterations })
     return
+  }
+
+  if (!isReady) {
+    console.info('[overlay:intro] iteration received before ready; keep running', { totalIterations })
+    return
+  }
+
   iterationsSinceMount += 1
-  if (iterationsSinceMount < 2)
+
+  const shouldHide = iterationsSinceMount >= 1
+  console.info('[overlay:intro] iteration handled', {
+    totalIterations,
+    iterationsSinceMount,
+    isReady,
+    shouldHide,
+  })
+
+  if (!shouldHide)
     return
+
   overlayVisible.value = false
 }
 </script>
