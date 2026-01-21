@@ -16,8 +16,6 @@ const headerTone = useState<'light' | 'dark'>(
 )
 const isHeaderHidden = useState<boolean>('osmo-header-hidden', () => false)
 const headerOffset = useState<number>('osmo-header-offset', () => 0)
-const hoveredLabel = ref<string | null>(null)
-
 const isMenuOpen = ref(false)
 const menuPhase = ref<'closed' | 'width' | 'full'>('closed')
 let menuPhaseTimer: ReturnType<typeof setTimeout> | null = null
@@ -78,59 +76,11 @@ const avatarPositions = computed(() => {
   })
 })
 
-const containerVariants = {
-  hidden: { opacity: 1 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.015,
-    },
-  },
-  exit: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.015,
-    },
-  },
-}
-
-const charVariants = {
-  hidden: { y: 0 },
-  visible: {
-    y: -30,
-    transition: {
-      duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-  exit: {
-    y: 2,
-    transition: {
-      duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-}
-
-const charVariants2 = {
-  hidden: { y: 30 },
-  visible: {
-    y: 0,
-    transition: {
-      duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-  exit: {
-    y: 30,
-    transition: {
-      duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
-    },
-  },
-}
-
+const charStagger = 0.01
 const getLabelChars = (label: string) => Array.from(label)
+const getCharStaggerStyle = (index: number) => ({
+  transitionDelay: `${index * charStagger}s`,
+})
 
 onBeforeUnmount(() => {
   clearMenuPhaseTimer()
@@ -274,60 +224,34 @@ watch(colorMode, () => {
                         <NuxtLink
                           :to="item.href"
                           :class="useClsx(
-                            'group w-fit flex items-center gap-2 text-lg md:text-2xl',
+                            'group osmo-animate-chars w-fit flex items-center gap-2 text-lg md:text-2xl',
                             headerFgClass,
                           )"
-                          @mouseenter="hoveredLabel = item.name"
-                          @mouseleave="hoveredLabel = null"
                         >
-                          <span class="relative flex items-center gap-2">
-                            <span class="relative inline-block h-[1.4em] overflow-hidden">
-                              <Motion
-                                as="span"
-                                class="inline-flex"
-                                :variants="containerVariants"
-                                initial="hidden"
-                                :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
-                              >
-                                <Motion
-                                  v-for="(char, charIndex) in getLabelChars(item.name)"
-                                  :key="`first-${item.name}-${charIndex}`"
-                                  as="span"
-                                  :variants="charVariants"
-                                  class="inline-block"
-                                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
-                                >
-                                  {{ char }}
-                                </Motion>
-                              </Motion>
-                              <Motion
-                                as="span"
-                                class="absolute inset-0 inline-flex items-center"
-                                :variants="containerVariants"
-                                initial="hidden"
-                                :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
-                              >
-                                <Motion
-                                  v-for="(char, charIndex) in getLabelChars(item.name)"
-                                  :key="`second-${item.name}-${charIndex}`"
-                                  as="span"
-                                  :variants="charVariants2"
-                                  class="inline-block"
-                                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
-                                >
-                                  {{ char }}
-                                </Motion>
-                              </Motion>
-                            </span>
+                          <span class="osmo-animate-chars__text" data-button-animate-chars>
                             <span
-                              v-if="item.badge"
-                              :class="useClsx(
-                                'rounded bg-[#8023fe] px-1.5 py-0.5 text-sm',
-                                headerFgClass,
-                              )"
+                              v-for="(char, charIndex) in getLabelChars(item.name)"
+                              :key="`label-${item.name}-${charIndex}`"
+                              class="osmo-animate-chars__char"
+                              :style="[
+                                getCharStaggerStyle(charIndex),
+                                {
+                                  display: char === ' ' ? 'inline' : 'inline-block',
+                                  whiteSpace: char === ' ' ? 'pre' : 'normal',
+                                },
+                              ]"
                             >
-                              {{ item.badge }}
+                              {{ char }}
                             </span>
+                          </span>
+                          <span
+                            v-if="item.badge"
+                            :class="useClsx(
+                              'relative z-10 rounded bg-[#8023fe] px-1.5 py-0.5 text-sm',
+                              headerFgClass,
+                            )"
+                          >
+                            {{ item.badge }}
                           </span>
                         </NuxtLink>
                       </Motion>
@@ -339,54 +263,30 @@ watch(colorMode, () => {
                         :key="item.name"
                         :to="item.href"
                         :class="useClsx(
-                          'flex items-center gap-2 text-base md:text-xl',
+                          'osmo-animate-chars flex items-center gap-2 text-base md:text-xl',
                           headerFgClass,
                         )"
-                        @mouseenter="hoveredLabel = item.name"
-                        @mouseleave="hoveredLabel = null"
                       >
-                        <span class="relative inline-block h-[1.2em] overflow-hidden">
-                          <Motion
-                            as="span"
-                            class="inline-flex"
-                            :variants="containerVariants"
-                            initial="hidden"
-                            :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
+                        <span class="osmo-animate-chars__text" data-button-animate-chars>
+                          <span
+                            v-for="(char, charIndex) in getLabelChars(item.name)"
+                            :key="`label-easing-${item.name}-${charIndex}`"
+                            class="osmo-animate-chars__char"
+                            :style="[
+                              getCharStaggerStyle(charIndex),
+                              {
+                                display: char === ' ' ? 'inline' : 'inline-block',
+                                whiteSpace: char === ' ' ? 'pre' : 'normal',
+                              },
+                            ]"
                           >
-                            <Motion
-                              v-for="(char, charIndex) in getLabelChars(item.name)"
-                              :key="`first-easing-${item.name}-${charIndex}`"
-                              as="span"
-                              :variants="charVariants"
-                              class="inline-block"
-                              :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
-                            >
-                              {{ char }}
-                            </Motion>
-                          </Motion>
-                          <Motion
-                            as="span"
-                            class="absolute inset-0 inline-flex items-center"
-                            :variants="containerVariants"
-                            initial="hidden"
-                            :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
-                          >
-                            <Motion
-                              v-for="(char, charIndex) in getLabelChars(item.name)"
-                              :key="`second-easing-${item.name}-${charIndex}`"
-                              as="span"
-                              :variants="charVariants2"
-                              class="inline-block"
-                              :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
-                            >
-                              {{ char }}
-                            </Motion>
-                          </Motion>
+                            {{ char }}
+                          </span>
                         </span>
                         <span
                           v-if="item.badge"
                           :class="useClsx(
-                            'rounded bg-[#3F3C3C] px-1.5 py-0.5 text-sm font-mono',
+                            'relative z-10 rounded bg-[#3F3C3C] px-1.5 py-0.5 text-sm font-mono',
                             headerFgClass,
                           )"
                         >
@@ -421,49 +321,25 @@ watch(colorMode, () => {
                           <NuxtLink
                             :to="item.href"
                             :class="useClsx(
-                              'group w-fit flex items-center gap-2 text-lg md:text-2xl',
+                              'group osmo-animate-chars w-fit flex items-center gap-2 text-lg md:text-2xl',
                               headerFgClass,
                             )"
-                            @mouseenter="hoveredLabel = item.name"
-                            @mouseleave="hoveredLabel = null"
                           >
-                            <span class="relative inline-block h-[1.4em] overflow-hidden">
-                              <Motion
-                                as="span"
-                                class="inline-flex"
-                                :variants="containerVariants"
-                                initial="hidden"
-                                :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
+                            <span class="osmo-animate-chars__text" data-button-animate-chars>
+                              <span
+                                v-for="(char, charIndex) in getLabelChars(item.name)"
+                                :key="`label-explore-${item.name}-${charIndex}`"
+                                class="osmo-animate-chars__char"
+                                :style="[
+                                  getCharStaggerStyle(charIndex),
+                                  {
+                                    display: char === ' ' ? 'inline' : 'inline-block',
+                                    whiteSpace: char === ' ' ? 'pre' : 'normal',
+                                  },
+                                ]"
                               >
-                                <Motion
-                                  v-for="(char, charIndex) in getLabelChars(item.name)"
-                                  :key="`first-explore-${item.name}-${charIndex}`"
-                                  as="span"
-                                  :variants="charVariants"
-                                  class="inline-block"
-                                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
-                                >
-                                  {{ char }}
-                                </Motion>
-                              </Motion>
-                              <Motion
-                                as="span"
-                                class="absolute inset-0 inline-flex items-center"
-                                :variants="containerVariants"
-                                initial="hidden"
-                                :animate="hoveredLabel === item.name ? 'visible' : 'exit'"
-                              >
-                                <Motion
-                                  v-for="(char, charIndex) in getLabelChars(item.name)"
-                                  :key="`second-explore-${item.name}-${charIndex}`"
-                                  as="span"
-                                  :variants="charVariants2"
-                                  class="inline-block"
-                                  :style="{ display: char === ' ' ? 'inline' : 'inline-block', whiteSpace: 'pre' }"
-                                >
-                                  {{ char }}
-                                </Motion>
-                              </Motion>
+                                {{ char }}
+                              </span>
                             </span>
                           </NuxtLink>
                         </Motion>
@@ -567,3 +443,34 @@ watch(colorMode, () => {
     </Motion>
   </div>
 </template>
+
+<style scoped>
+.osmo-animate-chars {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  text-decoration: none;
+}
+
+.osmo-animate-chars__text {
+  display: inline-block;
+  white-space: nowrap;
+  line-height: 1.3;
+  overflow: hidden;
+}
+
+.osmo-animate-chars__char {
+  display: inline-block;
+  position: relative;
+  text-shadow: 0 1.3em currentColor;
+  transform: translateY(0) rotate(0.001deg);
+  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+  will-change: transform;
+}
+
+.osmo-animate-chars:hover .osmo-animate-chars__char,
+.osmo-animate-chars:focus-visible .osmo-animate-chars__char {
+  transform: translateY(-1.3em) rotate(0.001deg);
+}
+</style>
