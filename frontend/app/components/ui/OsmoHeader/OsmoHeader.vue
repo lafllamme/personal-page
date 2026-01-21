@@ -124,7 +124,7 @@ watch(colorMode, () => {
         <Motion
           as="div"
           :class="useClsx(
-            'bg-pureWhite/50 dark:bg-pureBlack/50 overflow-visible rounded-lg shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] ring-1 backdrop-blur-2xl',
+            'overflow-visible rounded-lg shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] ring-1 backdrop-blur-2xl',
             headerOutlineClass,
           )"
           :animate="{ height: menuPhase === 'full' ? 'auto' : 'auto' }"
