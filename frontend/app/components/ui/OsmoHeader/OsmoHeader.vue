@@ -417,7 +417,7 @@ watch(colorMode, () => {
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: var(--size-container, 80rem);
+  max-width: var(--osmo-size-container);
   padding: 1.25em;
   gap: 0.375em;
 }
@@ -736,8 +736,9 @@ watch(colorMode, () => {
 .osmo-nav-bar__bottom-col {
   display: flex;
   flex-direction: column;
+  flex: 0 1 auto;
   width: 100%;
-  padding: 2em;
+  padding: 2.5em;
   gap: 1.375em;
 }
 
@@ -1089,13 +1090,13 @@ watch(colorMode, () => {
 .osmo-marquee {
   display: flex;
   justify-content: center;
-  padding: 0.375em 0.5em;
+  padding: 0.375em 1.875em;
   pointer-events: auto;
 }
 
 .osmo-marquee__inner {
   max-width: var(--osmo-nav-bar-max-width);
-  width: calc(100vw - 2.5em);
+  width: 100%;
   padding: 0.25em 0;
   border-radius: 0.25em;
   background-color: #01E2B6;
