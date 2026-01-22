@@ -513,10 +513,10 @@ watch(colorMode, () => {
 .osmo-nav-bar__outline {
   position: absolute;
   inset: calc(var(--osmo-stroke-weight) * -1);
-  border-radius: 0.3125em;
+  border-radius: 0.4375em;
   pointer-events: none;
   transition: opacity 0.2s ease;
-  opacity: 0.08;
+  opacity: 0.1;
 }
 
 .osmo-nav.is--light .osmo-nav-bar__outline {
@@ -1027,7 +1027,7 @@ watch(colorMode, () => {
 }
 
 .osmo-h-m {
-  font-size: 2.5rem;
+  font-size: clamp(1.75em, 5vw + 0.5em, 2.5em);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.075em;
