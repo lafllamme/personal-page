@@ -11,7 +11,7 @@ const sublineFontClass = 'font-baskerville'
 </script>
 
 <template>
-  <main class="touch-pan-y bg-pureWhite dark:bg-pureBlack">
+  <section class="touch-pan-y">
     <PageBleed>
       <section class="relative min-h-[100svh] flex items-start justify-center px-8 pb-24 pt-32">
         <div class="pointer-events-none absolute bottom-0 left-0 right-0 z-0 mx-[calc(50%-50vw)] h-[calc(100%+var(--header-height,0px))] w-screen overflow-visible -top-[var(--header-height,0px)]">
@@ -30,5 +30,5 @@ const sublineFontClass = 'font-baskerville'
       </section>
     </PageBleed>
     <HorizontalScroll />
-  </main>
+  </section>
 </template>
