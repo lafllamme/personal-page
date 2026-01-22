@@ -125,13 +125,42 @@ watch(colorMode, () => {
               <div class="osmo-nav-bar__buttons">
                 <!-- Color Mode Toggle -->
                 <ColorMode class="osmo-nav-bar__color-mode" :tone="headerTone" />
-                <!-- Join: visible on all sizes -->
-                <NuxtLink
-                  to="/join"
-                  class="osmo-nav-bar__join-btn"
-                >
-                  <span>Join</span>
-                </NuxtLink>
+                
+                <!-- Login Button (hidden on mobile) -->
+                <div class="osmo-nav-bar__login-button">
+                  <NuxtLink
+                    to="/login"
+                    :class="useClsx('osmo-nav-bar__button is--login', headerFgClass)"
+                  >
+                    <div class="osmo-nav-bar__button-bg" />
+                    <div class="osmo-nav-bar__button-label-wrap">
+                      <div class="osmo-nav-bar__button-label">
+                        <span>Login</span>
+                      </div>
+                      <div aria-hidden="true" class="osmo-nav-bar__button-label">
+                        <span>Login</span>
+                      </div>
+                    </div>
+                  </NuxtLink>
+                </div>
+                
+                <!-- Join Button -->
+                <div class="osmo-nav-bar__signup-button">
+                  <NuxtLink
+                    to="/join"
+                    class="osmo-nav-bar__button is--join"
+                  >
+                    <div class="osmo-nav-bar__button-bg" />
+                    <div class="osmo-nav-bar__button-label-wrap">
+                      <div class="osmo-nav-bar__button-label">
+                        <span>Join</span>
+                      </div>
+                      <div aria-hidden="true" class="osmo-nav-bar__button-label">
+                        <span>Join</span>
+                      </div>
+                    </div>
+                  </NuxtLink>
+                </div>
               </div>
 
               <!-- Line separator -->
@@ -495,7 +524,7 @@ watch(colorMode, () => {
 .osmo-nav-bar__bg {
   position: absolute;
   inset: 0;
-  border-radius: 0.375em;
+  border-radius: 0.5em;
   pointer-events: none;
   background-color: #201d1d;
   transition: background-color 0.2s ease;
@@ -504,10 +533,10 @@ watch(colorMode, () => {
 .osmo-nav-bar__outline {
   position: absolute;
   inset: calc(var(--osmo-stroke-weight) * -1);
-  border-radius: 0.4375em;
+  border-radius: 0.5833em;
   pointer-events: none;
   background-color: #f4f4f4;
-  opacity: 0.1;
+  opacity: 0.08;
   transition: opacity 0.2s ease;
 }
 
@@ -531,8 +560,7 @@ watch(colorMode, () => {
   align-items: center;
   gap: 0.625em;
   height: 100%;
-  padding-left: 0.625em;
-  padding-right: 1em;
+  padding: 0 1em 0 0.625em;
   border-radius: 0.125em;
   cursor: pointer;
   background: transparent;
@@ -621,25 +649,101 @@ watch(colorMode, () => {
   align-items: center;
   height: 2.5em;
   gap: 0.5em;
+  margin-left: auto;
 }
 
-.osmo-nav-bar__join-btn {
+.osmo-nav-bar__login-button,
+.osmo-nav-bar__signup-button {
+  display: flex;
+  align-items: center;
+  height: 2.5em;
+}
+
+.osmo-nav-bar__button {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 2.5em;
-  padding: 0 1em;
-  border-radius: 0.25em;
-  background-color: #a1ff62;
-  color: #1e1e1e;
-  font-size: 0.875rem;
-  font-weight: 500;
+  padding: 0 1.125em 0.0625em;
+  font-size: 1rem;
+  font-weight: 400;
   text-decoration: none;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+}
+
+.osmo-nav-bar__button.is--login {
+  border-radius: 3em;
+}
+
+.osmo-nav-bar__button.is--join {
+  border-radius: 0.125em;
+  color: #201d1d;
+}
+
+.osmo-nav-bar__button-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
   transition: background-color 0.2s ease;
 }
 
-.osmo-nav-bar__join-btn:hover {
+.osmo-nav-bar__button.is--login .osmo-nav-bar__button-bg {
+  background-color: transparent;
+  transition: background-color 0.2s ease;
+}
+
+.osmo-nav.is--dark .osmo-nav-bar__button.is--login:hover .osmo-nav-bar__button-bg {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.osmo-nav.is--light .osmo-nav-bar__button.is--login:hover .osmo-nav-bar__button-bg {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.osmo-nav-bar__button.is--join .osmo-nav-bar__button-bg {
+  background-color: #a1ff62;
+  transition: background-color 0.2s ease;
+}
+
+.osmo-nav-bar__button.is--join:hover .osmo-nav-bar__button-bg {
   background-color: #8ae650;
+}
+
+.osmo-nav-bar__button-label-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  height: 1.3em;
+  line-height: 1.3;
+}
+
+.osmo-nav-bar__button-label {
+  display: block;
+  line-height: 1;
+  white-space: nowrap;
+  transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
+}
+
+.osmo-nav-bar__button-label span {
+  display: inline-block;
+}
+
+.osmo-nav-bar__button-label:nth-child(2) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(1.3em);
+}
+
+.osmo-nav-bar__button:hover .osmo-nav-bar__button-label:nth-child(1) {
+  transform: translateY(-1.3em);
+}
+
+.osmo-nav-bar__button:hover .osmo-nav-bar__button-label:nth-child(2) {
+  transform: translateY(0);
 }
 
 .osmo-nav-bar__color-mode {
@@ -1260,6 +1364,11 @@ watch(colorMode, () => {
   .osmo-nav-bar__top {
     height: var(--osmo-nav-bar-height);
     padding: 1em;
+  }
+
+  /* Hide login button on mobile */
+  .osmo-nav-bar__login-button {
+    display: none;
   }
 
   /* Bottom inner - full viewport width, scrollable */
