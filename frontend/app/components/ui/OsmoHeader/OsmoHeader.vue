@@ -5,7 +5,6 @@ import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/Langua
 import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
 import OsmoLogoMark from './OsmoLogoMark.vue'
 import OsmoMenuIcon from './OsmoMenuIcon.vue'
-import OsmoScrambleTextButton from './OsmoScrambleTextButton.vue'
 
 const isScrolled = ref(false)
 const colorMode = useColorMode()
@@ -124,14 +123,6 @@ watch(colorMode, () => {
 
               <!-- Buttons -->
               <div class="osmo-nav-bar__buttons">
-                <!-- Login: hidden on mobile -->
-                <OsmoScrambleTextButton
-                  text="Login"
-                  :class="useClsx(
-                    'osmo-nav-bar__login-btn hidden md:flex',
-                    headerFgClass,
-                  )"
-                />
                 <!-- Join: visible on all sizes -->
                 <NuxtLink
                   to="/join"
@@ -139,6 +130,8 @@ watch(colorMode, () => {
                 >
                   <span>Join</span>
                 </NuxtLink>
+                <!-- Color Mode Toggle -->
+                <ColorMode class="osmo-nav-bar__color-mode" :tone="headerTone" />
               </div>
 
               <!-- Line separator -->
@@ -210,7 +203,7 @@ watch(colorMode, () => {
 
                     <!-- Column 2: Explore -->
                     <div class="osmo-nav-bar__bottom-col">
-                      <div class="osmo-nav-bar__tag-row">
+                      <div class="osmo-nav-bar__tag-row is--membership">
                         <span :class="useClsx('osmo-eyebrow', headerFgClass)">Explore</span>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
@@ -604,24 +597,6 @@ watch(colorMode, () => {
   gap: 0.5em;
 }
 
-.osmo-nav-bar__login-btn {
-  height: 2.5em;
-  padding: 0 1em;
-  border-radius: 9999px;
-  background-color: transparent;
-  font-size: 0.875rem;
-}
-
-.osmo-nav.is--dark .osmo-nav-bar__login-btn {
-  background-color: #4f4c4c;
-  color: white;
-}
-
-.osmo-nav.is--light .osmo-nav-bar__login-btn {
-  background-color: rgba(0, 0, 0, 0.08);
-  color: black;
-}
-
 .osmo-nav-bar__join-btn {
   display: flex;
   align-items: center;
@@ -639,6 +614,12 @@ watch(colorMode, () => {
 
 .osmo-nav-bar__join-btn:hover {
   background-color: #8ae650;
+}
+
+.osmo-nav-bar__color-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ========================= Line Separator ========================= */
@@ -898,19 +879,13 @@ watch(colorMode, () => {
   height: 1.25em;
 }
 
-/* Mobile Buttons */
+/* Mobile Buttons (hidden by default, shown in mobile media query) */
 .osmo-nav-bar__mobile-buttons {
   display: none;
   flex-direction: column;
   gap: 0.625em;
   width: 100%;
-  padding-top: 1em;
-}
-
-@media screen and (max-width: 767px) {
-  .osmo-nav-bar__mobile-buttons {
-    display: flex;
-  }
+  padding: 1em;
 }
 
 .osmo-mobile-button {
@@ -1102,14 +1077,12 @@ watch(colorMode, () => {
   border-radius: 0.25em;
   background-color: #01E2B6;
   overflow: hidden;
-  transition:
-    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
-    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+  transform: translateY(0) scale(1) rotate(0.001deg);
+  transition: all var(--osmo-animation);
 }
 
 .osmo-marquee.is--hidden {
-  opacity: 0;
-  transform: translateY(-30px);
+  transform: translateY(-2em) scale(0.975) rotate(0.001deg);
   pointer-events: none;
 }
 
@@ -1176,22 +1149,101 @@ watch(colorMode, () => {
   transform: translateY(-1.3em) rotate(0.001deg);
 }
 
-/* ========================= Responsive ========================= */
+/* ========================= Responsive (Mobile: max-width 767px) ========================= */
 @media screen and (max-width: 767px) {
-  .osmo-nav-bar__bottom-row {
-    flex-direction: column;
+  /* Nav bar width - edge to edge padding */
+  .osmo-nav-bar__width {
+    padding: 0;
   }
 
+  /* Nav bar back - creates "pill" look when closed on mobile */
+  .osmo-nav-bar__back {
+    inset: 0.5em;
+  }
+
+  /* When open on mobile, expand to edges */
+  .osmo-nav.is--active .osmo-nav-bar__back {
+    inset: -0.25em 0;
+  }
+
+  /* Top bar height */
+  .osmo-nav-bar__top {
+    height: var(--osmo-nav-bar-height);
+    padding: 1em;
+  }
+
+  /* Bottom inner - full viewport width, scrollable */
+  .osmo-nav-bar__bottom-inner {
+    max-height: calc(100dvh - var(--osmo-nav-bar-height));
+    width: 100vw;
+    padding: 1em 1em 1.25em;
+    overflow: scroll;
+  }
+
+  /* Line separator - closed state has inset, open is edge-to-edge */
+  .osmo-nav-bar__line {
+    left: 0.5em;
+    right: 0.5em;
+  }
+
+  .osmo-nav.is--active .osmo-nav-bar__line {
+    left: 0;
+    right: 0;
+  }
+
+  /* Bottom row - vertical stacking, no gap */
+  .osmo-nav-bar__bottom-row {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Bottom columns */
   .osmo-nav-bar__bottom-col {
-    padding: 1.5em;
+    gap: 1em;
+    padding: 1.25em 2.25em 2em;
   }
 
   .osmo-nav-bar__bottom-col.is--products {
-    order: 1;
+    gap: 0.5em;
+    padding-top: 2em;
+    padding-bottom: 1em;
   }
 
-  .osmo-nav-bar__bottom-col:not(.is--products):not(.is--ad) {
-    order: 2;
+  /* Hide Explore label on mobile */
+  .osmo-nav-bar__tag-row.is--membership {
+    display: none;
+  }
+
+  /* Menu item links - smaller padding and font on mobile */
+  .osmo-nav-bar__big-a {
+    padding-top: 0.8125em;
+    padding-bottom: 0.875em;
+    font-size: 1.25em;
+  }
+
+  /* Hide Easings (small-ul) on mobile */
+  .osmo-nav-bar__small-ul {
+    display: none;
+  }
+
+  /* Hide socials on mobile */
+  .osmo-nav-bar__socials {
+    display: none;
+    padding-top: 0;
+  }
+
+  /* Mobile buttons - full width with negative margins to bleed */
+  .osmo-nav-bar__mobile-buttons {
+    display: flex;
+    width: calc(100% + 4em);
+    margin-left: -2em;
+    margin-bottom: -2em;
+    padding-top: 0.5em;
+  }
+
+  /* Hide language switcher label on mobile (optional) */
+  .osmo-nav-bar__language {
+    display: none;
   }
 
   .osmo-marquee {
@@ -1199,9 +1251,21 @@ watch(colorMode, () => {
   }
 }
 
+/* Hide Featured card on tablet and below */
+@media screen and (max-width: 991px) {
+  .osmo-nav-bar__bottom-col.is--ad {
+    display: none;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .osmo-marquee {
     top: 6rem;
+  }
+
+  /* Hide mobile buttons on desktop */
+  .osmo-nav-bar__mobile-buttons {
+    display: none;
   }
 }
 </style>
