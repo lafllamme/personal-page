@@ -125,7 +125,7 @@ watch(colorMode, () => {
               <div class="osmo-nav-bar__buttons">
                 <!-- Color Mode Toggle -->
                 <ColorMode class="osmo-nav-bar__color-mode" :tone="headerTone" />
-                
+
                 <!-- Login Button (hidden on mobile) -->
                 <div class="osmo-nav-bar__login-button">
                   <NuxtLink
@@ -143,7 +143,7 @@ watch(colorMode, () => {
                     </div>
                   </NuxtLink>
                 </div>
-                
+
                 <!-- Join Button -->
                 <div class="osmo-nav-bar__signup-button">
                   <NuxtLink
@@ -339,14 +339,20 @@ watch(colorMode, () => {
                       class="osmo-mobile-button is--neutral"
                       @click="closeMenu"
                     >
-                      <span>Member Login</span>
+                      <div class="osmo-mobile-button__bg" />
+                      <div class="osmo-mobile-button__label">
+                        <span>Member Login</span>
+                      </div>
                     </NuxtLink>
                     <NuxtLink
                       to="/join"
                       class="osmo-mobile-button is--electric"
                       @click="closeMenu"
                     >
-                      <span>Join Osmo</span>
+                      <div class="osmo-mobile-button__bg" />
+                      <div class="osmo-mobile-button__label">
+                        <span>Join Osmo</span>
+                      </div>
                     </NuxtLink>
                   </div>
                 </div>
@@ -513,12 +519,15 @@ watch(colorMode, () => {
   transition: inset var(--osmo-animation);
 }
 
-.osmo-nav.is--scrolled .osmo-nav-bar__back {
-  inset: 0.1875em;
-}
+/* Desktop only: shrink on scroll */
+@media screen and (min-width: 768px) {
+  .osmo-nav.is--scrolled .osmo-nav-bar__back {
+    inset: 0.1875em;
+  }
 
-.osmo-nav.is--scrolled.is--active .osmo-nav-bar__back {
-  inset: 0;
+  .osmo-nav.is--scrolled.is--active .osmo-nav-bar__back {
+    inset: 0;
+  }
 }
 
 .osmo-nav-bar__bg {
@@ -649,7 +658,6 @@ watch(colorMode, () => {
   align-items: center;
   height: 2.5em;
   gap: 0.5em;
-  margin-left: auto;
 }
 
 .osmo-nav-bar__login-button,
@@ -670,7 +678,12 @@ watch(colorMode, () => {
   font-weight: 400;
   text-decoration: none;
   overflow: hidden;
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.625, 0.05, 0, 1);
+  cursor: pointer;
+}
+
+.osmo-nav-bar__button:hover {
+  transform: scale(0.98) rotate(0.001deg);
 }
 
 .osmo-nav-bar__button.is--login {
@@ -713,6 +726,7 @@ watch(colorMode, () => {
 
 .osmo-nav-bar__button-label-wrap {
   position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -1003,10 +1017,11 @@ watch(colorMode, () => {
   flex-direction: column;
   gap: 0.625em;
   width: 100%;
-  padding: 1em;
+  padding-bottom: 2em;
 }
 
 .osmo-mobile-button {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1016,25 +1031,51 @@ watch(colorMode, () => {
   font-size: 1rem;
   font-weight: 500;
   text-decoration: none;
-  transition: background-color 0.2s ease;
+  overflow: hidden;
+  transition: transform 0.2s cubic-bezier(0.625, 0.05, 0, 1);
+  cursor: pointer;
 }
 
-.osmo-mobile-button.is--neutral {
+.osmo-mobile-button:hover {
+  transform: scale(0.99) rotate(0.001deg);
+}
+
+.osmo-mobile-button__bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  transition:
+    background-color 0.2s ease,
+    filter 0.2s ease;
+}
+
+.osmo-mobile-button.is--neutral .osmo-mobile-button__bg {
   background-color: #312e2e;
-  color: white;
 }
 
-.osmo-mobile-button.is--neutral:hover {
+.osmo-mobile-button.is--neutral:hover .osmo-mobile-button__bg {
   background-color: #3f3c3c;
 }
 
-.osmo-mobile-button.is--electric {
+.osmo-mobile-button.is--electric .osmo-mobile-button__bg {
   background-color: #a1ff62;
-  color: #1e1e1e;
 }
 
-.osmo-mobile-button.is--electric:hover {
+.osmo-mobile-button.is--electric:hover .osmo-mobile-button__bg {
   background-color: #8ae650;
+}
+
+.osmo-mobile-button__label {
+  position: relative;
+  z-index: 1;
+}
+
+.osmo-mobile-button.is--neutral {
+  color: white;
+}
+
+.osmo-mobile-button.is--electric {
+  color: #1e1e1e;
 }
 
 .osmo-line {
@@ -1193,8 +1234,8 @@ watch(colorMode, () => {
   right: 0;
   z-index: 50;
   padding-top: var(--osmo-nav-bar-height);
-  padding-left: 1.875em;
-  padding-right: 1.875em;
+  padding-left: 2.5em;
+  padding-right: 2.5em;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1213,17 +1254,29 @@ watch(colorMode, () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 0.375em;
+  padding-top: 0.5em;
+}
+
+/* Mobile/Tablet adjustments */
+@media screen and (max-width: 767px) {
+  .osmo-marquee-wrap {
+    padding-left: 0.64em;
+    padding-right: 0.64em;
+  }
+
+  .osmo-marquee-wrap__inner {
+    padding-top: 0.25em;
+  }
 }
 
 .osmo-marquee {
   background-color: #a1ff62;
   pointer-events: auto;
   color: #201d1d;
-  border-radius: 0.1875em;
+  border-radius: 0.25em;
   flex: none;
   width: 100%;
-  height: 1.25em;
+  height: 1.667em;
   text-decoration: none;
   display: flex;
   flex-direction: row;
@@ -1256,8 +1309,8 @@ watch(colorMode, () => {
   display: flex !important;
   align-items: center;
   flex-direction: row;
-  gap: 1.5em;
-  padding-right: 1.5em;
+  gap: 2em;
+  padding-right: 2em;
   padding-left: 0 !important;
   padding-top: 0 !important;
   padding-bottom: 0 !important;
@@ -1269,9 +1322,16 @@ watch(colorMode, () => {
   margin: 0 !important;
 }
 
+@media screen and (max-width: 767px) {
+  .osmo-marquee__item {
+    gap: 1.92em;
+    padding-right: 1.92em;
+  }
+}
+
 .osmo-marquee__text {
   display: block !important;
-  font-size: 0.6875rem;
+  font-size: 0.917em;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0;
@@ -1291,7 +1351,7 @@ watch(colorMode, () => {
 
 .osmo-marquee__star {
   display: block;
-  width: 0.4375em;
+  width: 0.583em;
   height: auto;
   flex-shrink: 0;
   color: #201d1d;
@@ -1432,8 +1492,7 @@ watch(colorMode, () => {
   /* Mobile buttons - full width with negative margins to bleed */
   .osmo-nav-bar__mobile-buttons {
     display: flex;
-    width: calc(100% + 4em);
-    margin-left: -2em;
+    width: 100%;
     margin-bottom: -2em;
     padding-top: 0.5em;
   }
@@ -1441,12 +1500,6 @@ watch(colorMode, () => {
   /* Hide language switcher label on mobile (optional) */
   .osmo-nav-bar__language {
     display: none;
-  }
-
-  /* Marquee adjustments for mobile */
-  .osmo-marquee {
-    padding-left: 0.5em;
-    padding-right: 0.5em;
   }
 }
 
