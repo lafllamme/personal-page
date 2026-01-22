@@ -333,32 +333,60 @@ watch(colorMode, () => {
       class="osmo-marquee-wrap"
       :class="{ 'is--hidden': marqueeHidden }"
     >
-      <NuxtLink to="/showcase" class="osmo-marquee">
-        <div class="osmo-marquee__inner">
-          <!-- First list -->
-          <div class="osmo-marquee__list">
-            <div
-              v-for="index in 4"
-              :key="'a-' + index"
-              class="osmo-marquee__item"
-            >
-              <span class="osmo-marquee__text">{{ marqueeMessage }}</span>
-              <span class="osmo-marquee__star">✦</span>
+      <div class="osmo-marquee-wrap__inner">
+        <NuxtLink to="/showcase" class="osmo-marquee">
+          <div class="osmo-marquee__scroll">
+            <!-- First list -->
+            <div class="osmo-marquee__list">
+              <div
+                v-for="index in 4"
+                :key="`a-${index}`"
+                class="osmo-marquee__item"
+              >
+                <p class="osmo-marquee__text">
+                  {{ marqueeMessage }}
+                </p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="100%"
+                  viewBox="0 0 187 187"
+                  fill="none"
+                  class="osmo-marquee__star"
+                >
+                  <path
+                    d="M126.049 76.7471L167.276 35.5197L150.805 19.0486L109.577 60.276C107.82 62.0398 104.808 60.7915 104.808 58.3009V0H81.517V70.3375C81.517 76.511 76.511 81.517 70.3375 81.517H0V104.808H58.3009C60.7915 104.808 62.0398 107.82 60.276 109.577L19.0548 150.805L35.5259 167.276L76.7533 126.049C78.5109 124.291 81.5232 125.533 81.5232 128.024V186.324H104.814V115.987C104.814 109.813 109.82 104.808 115.993 104.808H186.331V81.517H128.03C125.539 81.517 124.291 78.5047 126.055 76.7471H126.049Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+            </div>
+            <!-- Second list (duplicate for seamless loop) -->
+            <div class="osmo-marquee__list">
+              <div
+                v-for="index in 4"
+                :key="`b-${index}`"
+                class="osmo-marquee__item"
+              >
+                <p class="osmo-marquee__text">
+                  {{ marqueeMessage }}
+                </p>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="100%"
+                  viewBox="0 0 187 187"
+                  fill="none"
+                  class="osmo-marquee__star"
+                >
+                  <path
+                    d="M126.049 76.7471L167.276 35.5197L150.805 19.0486L109.577 60.276C107.82 62.0398 104.808 60.7915 104.808 58.3009V0H81.517V70.3375C81.517 76.511 76.511 81.517 70.3375 81.517H0V104.808H58.3009C60.7915 104.808 62.0398 107.82 60.276 109.577L19.0548 150.805L35.5259 167.276L76.7533 126.049C78.5109 124.291 81.5232 125.533 81.5232 128.024V186.324H104.814V115.987C104.814 109.813 109.82 104.808 115.993 104.808H186.331V81.517H128.03C125.539 81.517 124.291 78.5047 126.055 76.7471H126.049Z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
             </div>
           </div>
-          <!-- Second list (duplicate for seamless loop) -->
-          <div class="osmo-marquee__list">
-            <div
-              v-for="index in 4"
-              :key="'b-' + index"
-              class="osmo-marquee__item"
-            >
-              <span class="osmo-marquee__text">{{ marqueeMessage }}</span>
-              <span class="osmo-marquee__star">✦</span>
-            </div>
-          </div>
-        </div>
-      </NuxtLink>
+        </NuxtLink>
+      </div>
     </div>
   </div>
 </template>
@@ -467,7 +495,7 @@ watch(colorMode, () => {
 .osmo-nav-bar__bg {
   position: absolute;
   inset: 0;
-  border-radius: 0.1875em;
+  border-radius: 0.375em;
   pointer-events: none;
   transition: background-color 0.2s ease;
 }
@@ -1081,55 +1109,98 @@ watch(colorMode, () => {
   transform: translateY(-2em) scale(0.975) rotate(0.001deg);
 }
 
-.osmo-marquee {
+.osmo-marquee-wrap__inner {
+  max-width: var(--osmo-nav-bar-max-width);
+  width: 100%;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: var(--osmo-nav-bar-max-width);
+  align-items: center;
   padding-top: 0.375em;
-  text-decoration: none;
-  pointer-events: auto;
 }
 
-.osmo-marquee__inner {
+.osmo-marquee {
+  background-color: #a1ff62;
+  pointer-events: auto;
+  color: #201d1d;
+  border-radius: 0.1875em;
+  flex: none;
   width: 100%;
   height: 1.25em;
-  border-radius: 0.1875em;
-  background-color: #a1ff62;
+  text-decoration: none;
   display: flex;
-  overflow: hidden;
+  flex-direction: row;
   position: relative;
+  overflow: hidden;
+}
+
+.osmo-marquee__scroll {
+  width: var(--osmo-nav-bar-max-width);
+  flex: none;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  overflow: hidden;
 }
 
 .osmo-marquee__list {
-  display: flex;
+  flex: none;
   align-items: center;
-  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  position: relative;
   animation: osmo-marquee 30s linear infinite;
+  background-color: transparent;
+  border-radius: 0;
 }
 
 .osmo-marquee__item {
-  display: flex;
+  display: flex !important;
   align-items: center;
+  flex-direction: row;
   gap: 1.5em;
   padding-right: 1.5em;
-  flex-shrink: 0;
+  padding-left: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  flex: 0;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
 }
 
 .osmo-marquee__text {
+  display: block !important;
   font-size: 0.6875rem;
   font-weight: 400;
   text-transform: uppercase;
   letter-spacing: 0;
   color: #201d1d;
   white-space: nowrap;
+  margin-top: 0.0625em;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  line-height: 1;
 }
 
 .osmo-marquee__star {
-  color: #201d1d;
+  display: block;
   width: 0.4375em;
-  height: 0.4375em;
+  height: auto;
   flex-shrink: 0;
+  color: #201d1d;
+  background-color: transparent;
+  border-radius: 0;
+  margin: 0;
+  padding: 0;
 }
 
 @keyframes osmo-marquee {
