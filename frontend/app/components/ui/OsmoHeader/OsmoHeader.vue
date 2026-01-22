@@ -766,10 +766,10 @@ watch(colorMode, () => {
 }
 
 .osmo-eyebrow {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0;
 }
 
 .osmo-nav-bar__ul-big {
@@ -786,11 +786,11 @@ watch(colorMode, () => {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 1em 0;
+  padding: 1.0625em 0 1.125em;
   text-decoration: none;
   font-size: 1.5em;
-  font-weight: 430;
-  line-height: 1;
+  font-weight: 400;
+  line-height: 1.25;
 }
 
 .osmo-nav-bar__a-tag {
@@ -817,9 +817,9 @@ watch(colorMode, () => {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 0.3125em 0;
+  padding: 0.3125em 0 0.25em;
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 .osmo-nav-bar__small-span {
@@ -941,17 +941,18 @@ watch(colorMode, () => {
 /* ========================= Tags ========================= */
 .osmo-tag {
   display: inline-block;
-  padding: 0.25em 0.5em;
-  font-size: 0.75rem;
+  padding: 0.25em 0.375em 0.1875em;
+  font-size: 0.6875rem;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.02em;
-  border-radius: 0.25em;
+  letter-spacing: 0;
+  border-radius: 0.125em;
 }
 
 .osmo-tag.is--purple {
   background-color: #8023fe;
   color: white;
+  border-radius: 9999px;
 }
 
 .osmo-tag.is--muted {
@@ -968,15 +969,7 @@ watch(colorMode, () => {
   width: 100%;
   border-radius: 1em;
   overflow: hidden;
-  backdrop-filter: blur(20px);
-}
-
-.osmo-nav.is--light .osmo-nav-banner {
-  background-color: rgba(0, 0, 0, 0.03);
-}
-
-.osmo-nav.is--dark .osmo-nav-banner {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #2a2727;
 }
 
 .osmo-nav-banner__before {
@@ -989,7 +982,7 @@ watch(colorMode, () => {
   flex-direction: column;
   width: 100%;
   height: 100%;
-  padding: 2em;
+  padding: 2.5em;
 }
 
 .osmo-nav-banner__tags {
@@ -1011,9 +1004,9 @@ watch(colorMode, () => {
 }
 
 .osmo-h-m {
-  font-size: 2rem;
-  font-weight: 500;
-  line-height: 1.1;
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.05;
 }
 
 .osmo-nav-banner__btn {
