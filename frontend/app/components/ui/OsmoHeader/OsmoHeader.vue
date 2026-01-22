@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
-import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
 import OsmoLogoMark from './OsmoLogoMark.vue'
@@ -124,7 +123,6 @@ watch(colorMode, () => {
               <!-- Buttons -->
               <div class="osmo-nav-bar__buttons">
                 <!-- Color Mode Toggle -->
-                <ColorMode class="osmo-nav-bar__color-mode" :tone="headerTone" />
 
                 <!-- Login Button (hidden on mobile) -->
                 <div class="osmo-nav-bar__login-button">
@@ -579,8 +577,25 @@ watch(colorMode, () => {
     gap var(--osmo-animation);
 }
 
+.osmo-nav-menu:hover {
+  background-color: rgba(249, 249, 249, 0.06);
+}
+
+.osmo-nav.is--dark .osmo-nav-menu:hover {
+  background-color: rgba(249, 249, 249, 0.06);
+}
+
+.osmo-nav.is--light .osmo-nav-menu:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
 .osmo-nav.is--active .osmo-nav-menu {
   gap: 0.1875em;
+  background-color: rgba(249, 249, 249, 0.06);
+}
+
+.osmo-nav.is--active.is--light .osmo-nav-menu {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 .osmo-nav-menu__label {
@@ -1100,6 +1115,11 @@ watch(colorMode, () => {
   opacity: 0.08;
 }
 
+/* Hide last divider in menu lists */
+.osmo-nav-bar__big-li:last-child .osmo-line {
+  display: none;
+}
+
 /* ========================= Tags ========================= */
 .osmo-tag {
   display: inline-block;
@@ -1245,7 +1265,8 @@ watch(colorMode, () => {
 }
 
 .osmo-marquee-wrap.is--hidden {
-  transform: translateY(-2em) scale(0.975) rotate(0.001deg);
+  transform: translateY(-3em) scale(0.975) rotate(0.001deg);
+  opacity: 0;
 }
 
 .osmo-marquee-wrap__inner {
@@ -1324,8 +1345,12 @@ watch(colorMode, () => {
 
 @media screen and (max-width: 767px) {
   .osmo-marquee__item {
-    gap: 1.92em;
-    padding-right: 1.92em;
+    gap: 1.5em;
+    padding-right: 1.5em;
+  }
+
+  .osmo-marquee__star {
+    width: 0.44em;
   }
 }
 
@@ -1347,6 +1372,12 @@ watch(colorMode, () => {
   border: none !important;
   box-shadow: none !important;
   line-height: 1;
+}
+
+@media screen and (max-width: 767px) {
+  .osmo-marquee__text {
+    font-size: 0.7em;
+  }
 }
 
 .osmo-marquee__star {
@@ -1415,9 +1446,9 @@ watch(colorMode, () => {
     inset: 0.5em;
   }
 
-  /* When open on mobile, expand to edges */
+  /* When open on mobile, expand with NEGATIVE inset to hide border radius */
   .osmo-nav.is--active .osmo-nav-bar__back {
-    inset: 0;
+    inset: -0.25em 0;
   }
 
   /* Top bar height */
@@ -1459,8 +1490,7 @@ watch(colorMode, () => {
 
   .osmo-nav-bar__bottom-col.is--products {
     gap: 0.5em;
-    padding-top: 2em;
-    padding-bottom: 1em;
+    padding: 2em 2.25em 1em;
   }
 
   /* Hide Explore label on mobile */
@@ -1476,6 +1506,8 @@ watch(colorMode, () => {
 
   .osmo-nav-bar__big-span {
     font-size: 1.25em;
+    font-weight: 400;
+    font-variation-settings: 'wght' 400;
   }
 
   /* Hide Easings (small-ul) on mobile */
