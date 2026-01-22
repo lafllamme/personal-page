@@ -333,20 +333,32 @@ watch(colorMode, () => {
       class="osmo-marquee-wrap"
       :class="{ 'is--hidden': marqueeHidden }"
     >
-      <div class="osmo-marquee">
+      <NuxtLink to="/showcase" class="osmo-marquee">
         <div class="osmo-marquee__inner">
-          <div class="osmo-marquee__track">
-            <span
-              v-for="index in 10"
-              :key="index"
+          <!-- First list -->
+          <div class="osmo-marquee__list">
+            <div
+              v-for="index in 4"
+              :key="'a-' + index"
               class="osmo-marquee__item"
             >
-              {{ marqueeMessage }}
+              <span class="osmo-marquee__text">{{ marqueeMessage }}</span>
               <span class="osmo-marquee__star">✦</span>
-            </span>
+            </div>
+          </div>
+          <!-- Second list (duplicate for seamless loop) -->
+          <div class="osmo-marquee__list">
+            <div
+              v-for="index in 4"
+              :key="'b-' + index"
+              class="osmo-marquee__item"
+            >
+              <span class="osmo-marquee__text">{{ marqueeMessage }}</span>
+              <span class="osmo-marquee__star">✦</span>
+            </div>
           </div>
         </div>
-      </div>
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -668,7 +680,7 @@ watch(colorMode, () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 0;
+  height: 10000%;
   overflow: hidden;
 }
 
@@ -691,42 +703,28 @@ watch(colorMode, () => {
 
 .osmo-nav-bar__bottom-row > * {
   transform: translateY(2em) rotate(0.001deg);
-  opacity: 0;
-  transition:
-    transform var(--osmo-animation) 0s,
-    opacity var(--osmo-animation) 0s;
+  transition: transform var(--osmo-animation) 0s;
 }
 
 .osmo-nav-bar__bottom-row > *:nth-child(2) {
-  transition:
-    transform var(--osmo-animation) 0.075s,
-    opacity var(--osmo-animation) 0.075s;
+  transition: transform var(--osmo-animation) 0.075s;
 }
 
 .osmo-nav-bar__bottom-row > *:nth-child(3) {
-  transition:
-    transform var(--osmo-animation) 0.15s,
-    opacity var(--osmo-animation) 0.15s;
+  transition: transform var(--osmo-animation) 0.15s;
 }
 
 .osmo-nav.is--active .osmo-nav-bar__bottom-row > * {
   transform: translateY(0) rotate(0.001deg);
-  opacity: 1;
-  transition:
-    transform var(--osmo-animation-onehalf) 0.3s,
-    opacity var(--osmo-animation-onehalf) 0.3s;
+  transition: transform var(--osmo-animation-onehalf) 0.3s;
 }
 
 .osmo-nav.is--active .osmo-nav-bar__bottom-row > *:nth-child(2) {
-  transition:
-    transform var(--osmo-animation-onehalf) 0.375s,
-    opacity var(--osmo-animation-onehalf) 0.375s;
+  transition: transform var(--osmo-animation-onehalf) 0.375s;
 }
 
 .osmo-nav.is--active .osmo-nav-bar__bottom-row > *:nth-child(3) {
-  transition:
-    transform var(--osmo-animation-onehalf) 0.45s,
-    opacity var(--osmo-animation-onehalf) 0.45s;
+  transition: transform var(--osmo-animation-onehalf) 0.45s;
 }
 
 /* ========================= Bottom Columns ========================= */
@@ -993,7 +991,7 @@ watch(colorMode, () => {
   flex-direction: column;
   flex: 1;
   justify-content: center;
-  padding-bottom: 2em;
+  align-items: center;
 }
 
 .osmo-nav-banner__title {
@@ -1069,6 +1067,11 @@ watch(colorMode, () => {
   right: 0;
   z-index: 50;
   padding-top: var(--osmo-nav-bar-height);
+  padding-left: 1.875em;
+  padding-right: 1.875em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   transform: translateY(0) scale(1) rotate(0.001deg);
   transition: all var(--osmo-animation);
   pointer-events: none;
@@ -1080,22 +1083,28 @@ watch(colorMode, () => {
 
 .osmo-marquee {
   display: flex;
-  justify-content: center;
-  padding: 0.375em 1.875em 0;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--osmo-nav-bar-max-width);
+  padding-top: 0.375em;
+  text-decoration: none;
   pointer-events: auto;
 }
 
 .osmo-marquee__inner {
-  max-width: var(--osmo-nav-bar-max-width);
   width: 100%;
+  height: 1.25em;
   border-radius: 0.1875em;
   background-color: #a1ff62;
+  display: flex;
   overflow: hidden;
+  position: relative;
 }
 
-.osmo-marquee__track {
+.osmo-marquee__list {
   display: flex;
-  white-space: nowrap;
+  align-items: center;
+  flex-shrink: 0;
   animation: osmo-marquee 30s linear infinite;
 }
 
@@ -1104,15 +1113,23 @@ watch(colorMode, () => {
   align-items: center;
   gap: 1.5em;
   padding-right: 1.5em;
+  flex-shrink: 0;
+}
+
+.osmo-marquee__text {
   font-size: 0.6875rem;
   font-weight: 400;
   text-transform: uppercase;
+  letter-spacing: 0;
   color: #201d1d;
+  white-space: nowrap;
 }
 
 .osmo-marquee__star {
   color: #201d1d;
   width: 0.4375em;
+  height: 0.4375em;
+  flex-shrink: 0;
 }
 
 @keyframes osmo-marquee {
@@ -1120,7 +1137,7 @@ watch(colorMode, () => {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 
