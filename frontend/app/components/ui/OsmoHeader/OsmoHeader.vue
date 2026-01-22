@@ -328,20 +328,24 @@ watch(colorMode, () => {
       </div>
     </nav>
 
-    <!-- Marquee -->
+    <!-- Marquee Wrapper (fixed, uses padding-top like Osmo) -->
     <div
-      class="osmo-marquee"
+      class="osmo-marquee-wrap"
       :class="{ 'is--hidden': marqueeHidden }"
     >
-      <div class="osmo-marquee__track">
-        <span
-          v-for="index in 10"
-          :key="index"
-          class="osmo-marquee__item"
-        >
-          {{ marqueeMessage }}
-          <span class="osmo-marquee__star">✦</span>
-        </span>
+      <div class="osmo-marquee">
+        <div class="osmo-marquee__inner">
+          <div class="osmo-marquee__track">
+            <span
+              v-for="index in 10"
+              :key="index"
+              class="osmo-marquee__item"
+            >
+              {{ marqueeMessage }}
+              <span class="osmo-marquee__star">✦</span>
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -358,7 +362,8 @@ watch(colorMode, () => {
   --osmo-animation-onehalf: var(--osmo-duration-onehalf) var(--osmo-cubic);
   --osmo-animation-half: var(--osmo-duration-half) var(--osmo-cubic);
   --osmo-nav-bar-height: 4.625em;
-  --osmo-nav-bar-max-width: 40em;
+  --osmo-nav-bar-max-width: 38em;
+  --osmo-size-container: clamp(992px, 100vw, 1920px);
   --osmo-stroke-weight: 1px;
 }
 </style>
@@ -675,7 +680,8 @@ watch(colorMode, () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  width: calc(var(--osmo-size-container) - 2.5em);
+  max-width: 100%;
   padding: 1.5em;
 }
 
@@ -1063,27 +1069,37 @@ watch(colorMode, () => {
   object-fit: cover;
 }
 
-/* ========================= Marquee ========================= */
-.osmo-marquee {
+/* ========================= Marquee Container ========================= */
+.osmo-marquee-wrap {
   position: fixed;
-  top: 5.5rem;
+  top: 0;
   left: 0;
   right: 0;
-  z-index: 30;
-  margin: 0 auto;
+  z-index: 50;
+  padding-top: var(--osmo-nav-bar-height);
+  transform: translateY(0) scale(1) rotate(0.001deg);
+  transition: all var(--osmo-animation);
+  pointer-events: none;
+}
+
+.osmo-marquee-wrap.is--hidden {
+  transform: translateY(-2em) scale(0.975) rotate(0.001deg);
+}
+
+.osmo-marquee {
+  display: flex;
+  justify-content: center;
+  padding: 0.375em 0.5em;
+  pointer-events: auto;
+}
+
+.osmo-marquee__inner {
   max-width: var(--osmo-nav-bar-max-width);
-  width: calc(100vw - 40px);
+  width: calc(100vw - 2.5em);
   padding: 0.25em 0;
   border-radius: 0.25em;
   background-color: #01E2B6;
   overflow: hidden;
-  transform: translateY(0) scale(1) rotate(0.001deg);
-  transition: all var(--osmo-animation);
-}
-
-.osmo-marquee.is--hidden {
-  transform: translateY(-2em) scale(0.975) rotate(0.001deg);
-  pointer-events: none;
 }
 
 .osmo-marquee__track {
@@ -1246,8 +1262,10 @@ watch(colorMode, () => {
     display: none;
   }
 
+  /* Marquee adjustments for mobile */
   .osmo-marquee {
-    top: 5.5rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
   }
 }
 
@@ -1259,10 +1277,6 @@ watch(colorMode, () => {
 }
 
 @media screen and (min-width: 768px) {
-  .osmo-marquee {
-    top: 6rem;
-  }
-
   /* Hide mobile buttons on desktop */
   .osmo-nav-bar__mobile-buttons {
     display: none;
