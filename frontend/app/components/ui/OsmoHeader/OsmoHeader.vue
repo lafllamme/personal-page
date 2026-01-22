@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
+import { AnimatePresence, Motion } from 'motion-v'
+import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
 import OsmoLogoMark from './OsmoLogoMark.vue'
@@ -115,31 +117,36 @@ watch(colorMode, () => {
               <!-- Logo -->
               <div class="osmo-nav-bar__logo">
                 <NuxtLink to="/" class="osmo-nav-logo" aria-label="Go to homepage">
-                  <span class="osmo-nav-logo__wordmark font-cabinet tracking-tight" :class="headerFgClass">TECNEWS</span>
-                  <OsmoLogoMark class="osmo-nav-logo__icon" />
+                  <AnimatePresence mode="wait">
+                    <Motion
+                      v-if="isScrolled && !isMenuOpen"
+                      key="mark"
+                      :initial="{ opacity: 0, scale: 0.8, rotate: -180 }"
+                      :animate="{ opacity: 1, scale: 1, rotate: 0 }"
+                      :exit="{ opacity: 0, scale: 0.8, rotate: 180 }"
+                      :transition="{ duration: 0.3 }"
+                    >
+                      <OsmoLogoMark class="osmo-nav-logo__icon" />
+                    </Motion>
+                    <Motion
+                      v-else
+                      key="logo"
+                      :initial="{ opacity: 0, y: -10 }"
+                      :animate="{ opacity: 1, y: 0 }"
+                      :exit="{ opacity: 0, y: 10 }"
+                      :transition="{ duration: 0.3 }"
+                    >
+                      <span class="osmo-nav-logo__wordmark font-cabinet tracking-tight" :class="headerFgClass">TECNEWS</span>
+                    </Motion>
+                  </AnimatePresence>
                 </NuxtLink>
               </div>
 
               <!-- Buttons -->
               <div class="osmo-nav-bar__buttons">
                 <!-- Color Mode Toggle -->
-
-                <!-- Login Button (hidden on mobile) -->
-                <div class="osmo-nav-bar__login-button">
-                  <NuxtLink
-                    to="/login"
-                    :class="useClsx('osmo-nav-bar__button is--login', headerFgClass)"
-                  >
-                    <div class="osmo-nav-bar__button-bg" />
-                    <div class="osmo-nav-bar__button-label-wrap">
-                      <div class="osmo-nav-bar__button-label">
-                        <span>Login</span>
-                      </div>
-                      <div aria-hidden="true" class="osmo-nav-bar__button-label">
-                        <span>Login</span>
-                      </div>
-                    </div>
-                  </NuxtLink>
+                <div class="osmo-nav-bar__color-mode">
+                  <ColorMode :tone="headerTone" />
                 </div>
 
                 <!-- Join Button -->
@@ -191,7 +198,7 @@ watch(colorMode, () => {
                             :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
                             @click="closeMenu"
                           >
-                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
+                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-${item.name}-${charIndex}`"
@@ -244,7 +251,7 @@ watch(colorMode, () => {
                             :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
                             @click="closeMenu"
                           >
-                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
+                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-explore-${item.name}-${charIndex}`"
@@ -552,9 +559,9 @@ watch(colorMode, () => {
 .osmo-nav-bar__outline {
   position: absolute;
   inset: calc(var(--osmo-stroke-weight) * -1);
-  border-radius: 0.5833em;
+  border-radius: 0.4375em;
   pointer-events: none;
-  background-color: #f4f4f4;
+  background-color: #201d1d;
   opacity: 0.08;
   transition: opacity 0.2s ease;
 }
@@ -640,41 +647,10 @@ watch(colorMode, () => {
   display: block;
   font-size: 1.75rem;
   letter-spacing: -0.02em;
-  transition:
-    transform var(--osmo-animation),
-    opacity var(--osmo-animation-half) 0.15s;
-  transform: translateY(0) rotate(0.001deg);
-  opacity: 1;
-}
-
-.osmo-nav.is--scrolled .osmo-nav-logo__wordmark {
-  transform: translateY(0.75em) rotate(0.001deg);
-  opacity: 0;
-}
-
-.osmo-nav.is--scrolled.is--active .osmo-nav-logo__wordmark {
-  transform: translateY(0) rotate(0.001deg);
-  opacity: 1;
 }
 
 .osmo-nav-logo__icon {
-  position: absolute;
   width: 1.375em;
-  opacity: 0;
-  transition:
-    transform var(--osmo-animation),
-    opacity var(--osmo-animation-half) 0.15s;
-  transform: translateY(-0.75em) rotate(0.001deg);
-}
-
-.osmo-nav.is--scrolled .osmo-nav-logo__icon {
-  transform: translateY(0) rotate(0.001deg);
-  opacity: 1;
-}
-
-.osmo-nav.is--scrolled.is--active .osmo-nav-logo__icon {
-  transform: translateY(-0.75em) rotate(0.001deg);
-  opacity: 0;
 }
 
 /* ========================= Buttons ========================= */
@@ -685,10 +661,16 @@ watch(colorMode, () => {
   gap: 0.5em;
 }
 
-.osmo-nav-bar__login-button,
 .osmo-nav-bar__signup-button {
   display: flex;
   align-items: center;
+  height: 2.5em;
+}
+
+.osmo-nav-bar__color-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 2.5em;
 }
 
@@ -711,10 +693,6 @@ watch(colorMode, () => {
   transform: scale(0.98) rotate(0.001deg);
 }
 
-.osmo-nav-bar__button.is--login {
-  border-radius: 3em;
-}
-
 .osmo-nav-bar__button.is--join {
   border-radius: 0.125em;
   color: #201d1d;
@@ -727,26 +705,9 @@ watch(colorMode, () => {
   transition: background-color 0.2s ease;
 }
 
-.osmo-nav-bar__button.is--login .osmo-nav-bar__button-bg {
-  background-color: transparent;
-  transition: background-color 0.2s ease;
-}
-
-.osmo-nav.is--dark .osmo-nav-bar__button.is--login:hover .osmo-nav-bar__button-bg {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.osmo-nav.is--light .osmo-nav-bar__button.is--login:hover .osmo-nav-bar__button-bg {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
 .osmo-nav-bar__button.is--join .osmo-nav-bar__button-bg {
   background-color: #0bd8b6;
   transition: background-color 0.2s ease;
-}
-
-.osmo-nav-bar__button.is--join:hover .osmo-nav-bar__button-bg {
-  background-color: #8ae650;
 }
 
 .osmo-nav-bar__button-label-wrap {
@@ -935,7 +896,6 @@ watch(colorMode, () => {
 }
 
 .osmo-nav-bar__big-span {
-  font-variation-settings: 'wght' 430;
   font-size: 1.5em;
   font-weight: 400;
   line-height: 1;
@@ -1468,11 +1428,6 @@ watch(colorMode, () => {
   .osmo-nav-bar__top {
     height: var(--osmo-nav-bar-height);
     padding: 1em;
-  }
-
-  /* Hide login button on mobile */
-  .osmo-nav-bar__login-button {
-    display: none;
   }
 
   /* Bottom inner - full viewport width, scrollable */
