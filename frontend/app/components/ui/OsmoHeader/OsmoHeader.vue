@@ -428,7 +428,7 @@ watch(colorMode, () => {
   width: 100%;
   max-width: var(--osmo-nav-bar-max-width);
   pointer-events: auto;
-  border-radius: 0.5em;
+  border-radius: 0.25em;
   transition: max-width var(--osmo-animation-onehalf) 0.2s;
 }
 
@@ -454,11 +454,8 @@ watch(colorMode, () => {
 
 .osmo-nav-bar__bg {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border-radius: 0.375em;
+  inset: 0;
+  border-radius: 0.1875em;
   pointer-events: none;
   transition: background-color 0.2s ease;
 }
@@ -476,7 +473,7 @@ watch(colorMode, () => {
 .osmo-nav-bar__outline {
   position: absolute;
   inset: calc(var(--osmo-stroke-weight) * -1);
-  border-radius: 0.4375em;
+  border-radius: 0.3125em;
   pointer-events: none;
   transition: opacity 0.2s ease;
   opacity: 0.08;
@@ -1007,6 +1004,7 @@ watch(colorMode, () => {
   font-size: 2.5rem;
   font-weight: 400;
   line-height: 1.05;
+  letter-spacing: -0.075em;
 }
 
 .osmo-nav-banner__btn {
@@ -1017,11 +1015,11 @@ watch(colorMode, () => {
 
 .osmo-button {
   height: 2.5em;
-  padding: 0 1.25em;
+  padding: 0 1.125em 0.0625em;
   border: none;
-  border-radius: 0.25em;
+  border-radius: 0.125em;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -1083,38 +1081,38 @@ watch(colorMode, () => {
 .osmo-marquee {
   display: flex;
   justify-content: center;
-  padding: 0.375em 1.875em;
+  padding: 0.375em 1.875em 0;
   pointer-events: auto;
 }
 
 .osmo-marquee__inner {
   max-width: var(--osmo-nav-bar-max-width);
   width: 100%;
-  padding: 0.25em 0;
-  border-radius: 0.25em;
-  background-color: #01E2B6;
+  border-radius: 0.1875em;
+  background-color: #a1ff62;
   overflow: hidden;
 }
 
 .osmo-marquee__track {
   display: flex;
   white-space: nowrap;
-  animation: osmo-marquee 40s linear infinite;
+  animation: osmo-marquee 30s linear infinite;
 }
 
 .osmo-marquee__item {
   display: flex;
   align-items: center;
-  gap: 1em;
-  margin: 0 1em;
-  font-size: 0.75rem;
-  font-weight: 500;
+  gap: 1.5em;
+  padding-right: 1.5em;
+  font-size: 0.6875rem;
+  font-weight: 400;
   text-transform: uppercase;
-  color: #1e1e1e;
+  color: #201d1d;
 }
 
 .osmo-marquee__star {
-  color: #1e1e1e;
+  color: #201d1d;
+  width: 0.4375em;
 }
 
 @keyframes osmo-marquee {
