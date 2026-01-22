@@ -108,14 +108,14 @@ watch(colorMode, () => {
                   @click="toggleMenu"
                 >
                   <OsmoMenuIcon :is-open="isMenuOpen" :tone="headerTone" />
-                  <span class="osmo-nav-menu__label">Menu</span>
+                  <span class="osmo-nav-menu__label font-manrope font-normal">Menu</span>
                 </button>
               </div>
 
               <!-- Logo -->
               <div class="osmo-nav-bar__logo">
                 <NuxtLink to="/" class="osmo-nav-logo" aria-label="Go to homepage">
-                  <span class="osmo-nav-logo__wordmark" :class="headerFgClass">TECNEWS</span>
+                  <span class="osmo-nav-logo__wordmark font-cabinet tracking-tight" :class="headerFgClass">TECNEWS</span>
                   <OsmoLogoMark class="osmo-nav-logo__icon" />
                 </NuxtLink>
               </div>
@@ -151,7 +151,7 @@ watch(colorMode, () => {
                     <div class="osmo-nav-bar__button-bg" />
                     <div class="osmo-nav-bar__button-label-wrap">
                       <div class="osmo-nav-bar__button-label">
-                        <span>Join</span>
+                        <span class="font-manrope font-normal">Join</span>
                       </div>
                       <div aria-hidden="true" class="osmo-nav-bar__button-label">
                         <span>Join</span>
@@ -374,7 +374,7 @@ watch(colorMode, () => {
               <div
                 v-for="index in 4"
                 :key="`a-${index}`"
-                class="osmo-marquee__item"
+                class="osmo-marquee__item font-clash-regular"
               >
                 <p class="osmo-marquee__text">
                   {{ marqueeMessage }}
@@ -398,7 +398,7 @@ watch(colorMode, () => {
               <div
                 v-for="index in 4"
                 :key="`b-${index}`"
-                class="osmo-marquee__item"
+                class="osmo-marquee__item font-clash-regular"
               >
                 <p class="osmo-marquee__text">
                   {{ marqueeMessage }}
@@ -612,7 +612,6 @@ watch(colorMode, () => {
 
 .osmo-nav-menu__label {
   font-size: 1.125em;
-  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1;
   margin-bottom: 0.0625em;
@@ -639,7 +638,6 @@ watch(colorMode, () => {
 
 .osmo-nav-logo__wordmark {
   display: block;
-  font-family: var(--font-cabinet, 'Cabinet Grotesk', sans-serif);
   font-size: 1.75rem;
   letter-spacing: -0.02em;
   transition:
@@ -743,7 +741,7 @@ watch(colorMode, () => {
 }
 
 .osmo-nav-bar__button.is--join .osmo-nav-bar__button-bg {
-  background-color: #a1ff62;
+  background-color: #0bd8b6;
   transition: background-color 0.2s ease;
 }
 
@@ -1085,7 +1083,7 @@ watch(colorMode, () => {
 }
 
 .osmo-mobile-button.is--electric .osmo-mobile-button__bg {
-  background-color: #a1ff62;
+  background-color: #0bd8b6;
 }
 
 .osmo-mobile-button.is--electric:hover .osmo-mobile-button__bg {
@@ -1303,7 +1301,7 @@ watch(colorMode, () => {
 }
 
 .osmo-marquee {
-  background-color: #a1ff62;
+  background-color: #0bd8b6;
   pointer-events: auto;
   color: #201d1d;
   border-radius: 0.25em;
