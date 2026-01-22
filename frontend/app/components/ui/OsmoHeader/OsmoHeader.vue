@@ -2,7 +2,7 @@
 import { useEventListener } from '@vueuse/core'
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
-import { avatars, easings, explore, marqueeMessage, ourProducts } from './OsmoHeader.model'
+import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
 import OsmoLogoMark from './OsmoLogoMark.vue'
 import OsmoMenuIcon from './OsmoMenuIcon.vue'
 import OsmoScrambleTextButton from './OsmoScrambleTextButton.vue'
@@ -124,6 +124,7 @@ watch(colorMode, () => {
 
               <!-- Buttons -->
               <div class="osmo-nav-bar__buttons">
+                <!-- Login: hidden on mobile -->
                 <OsmoScrambleTextButton
                   text="Login"
                   :class="useClsx(
@@ -131,7 +132,13 @@ watch(colorMode, () => {
                     headerFgClass,
                   )"
                 />
-                <ColorMode class="osmo-nav-bar__color-mode" :tone="headerTone" />
+                <!-- Join: visible on all sizes -->
+                <NuxtLink
+                  to="/join"
+                  class="osmo-nav-bar__join-btn"
+                >
+                  <span>Join</span>
+                </NuxtLink>
               </div>
 
               <!-- Line separator -->
@@ -228,11 +235,29 @@ watch(colorMode, () => {
                                 ]"
                               >{{ char }}</span>
                             </span>
+                            <!-- Count badge (like "145" for Collection) -->
+                            <span v-if="item.count" class="osmo-nav-bar__big-span-number">{{ item.count }}</span>
                           </NuxtLink>
                           <div class="osmo-line is--nav-transparent" />
                         </li>
                       </ul>
+                      <!-- Social Icons -->
                       <div class="osmo-nav-bar__socials">
+                        <div class="osmo-button-row">
+                          <a
+                            v-for="social in socialLinks"
+                            :key="social.name"
+                            :href="social.href"
+                            target="_blank"
+                            :aria-label="social.name"
+                            class="osmo-square-button"
+                          >
+                            <Icon :name="social.icon" class="osmo-square-button__icon" />
+                          </a>
+                        </div>
+                      </div>
+                      <!-- Mobile: Language Switcher -->
+                      <div class="osmo-nav-bar__language md:hidden">
                         <LanguageSwitcher variant="stepper" tone="osmo" />
                       </div>
                     </div>
@@ -283,6 +308,24 @@ watch(colorMode, () => {
                         </div>
                       </div>
                     </div>
+                  </div>
+
+                  <!-- Mobile Buttons (visible only on mobile) -->
+                  <div class="osmo-nav-bar__mobile-buttons">
+                    <NuxtLink
+                      to="/login"
+                      class="osmo-mobile-button is--neutral"
+                      @click="closeMenu"
+                    >
+                      <span>Member Login</span>
+                    </NuxtLink>
+                    <NuxtLink
+                      to="/join"
+                      class="osmo-mobile-button is--electric"
+                      @click="closeMenu"
+                    >
+                      <span>Join Osmo</span>
+                    </NuxtLink>
                   </div>
                 </div>
               </div>
@@ -565,14 +608,37 @@ watch(colorMode, () => {
   height: 2.5em;
   padding: 0 1em;
   border-radius: 9999px;
-  background-color: #01E2B6;
+  background-color: transparent;
   font-size: 0.875rem;
 }
 
-.osmo-nav-bar__color-mode {
+.osmo-nav.is--dark .osmo-nav-bar__login-btn {
+  background-color: #4f4c4c;
+  color: white;
+}
+
+.osmo-nav.is--light .osmo-nav-bar__login-btn {
+  background-color: rgba(0, 0, 0, 0.08);
+  color: black;
+}
+
+.osmo-nav-bar__join-btn {
   display: flex;
   align-items: center;
   justify-content: center;
+  height: 2.5em;
+  padding: 0 1em;
+  border-radius: 0.25em;
+  background-color: #a1ff62;
+  color: #1e1e1e;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.osmo-nav-bar__join-btn:hover {
+  background-color: #8ae650;
 }
 
 /* ========================= Line Separator ========================= */
@@ -777,6 +843,105 @@ watch(colorMode, () => {
   margin-top: auto;
   padding-top: 2em;
   display: flex;
+}
+
+.osmo-nav-bar__language {
+  padding-top: 1em;
+}
+
+/* Count badge (e.g., "145" for Collection) */
+.osmo-nav-bar__big-span-number {
+  margin-left: 0.25em;
+  margin-top: -0.75em;
+  font-size: 0.5em;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+/* Social Icons Row */
+.osmo-button-row {
+  display: flex;
+  gap: 0.5em;
+}
+
+.osmo-square-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5em;
+  height: 2.5em;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.osmo-nav.is--dark .osmo-square-button {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.osmo-nav.is--light .osmo-square-button {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: black;
+}
+
+.osmo-square-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.osmo-nav.is--light .osmo-square-button:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.osmo-square-button__icon {
+  width: 1.25em;
+  height: 1.25em;
+}
+
+/* Mobile Buttons */
+.osmo-nav-bar__mobile-buttons {
+  display: none;
+  flex-direction: column;
+  gap: 0.625em;
+  width: 100%;
+  padding-top: 1em;
+}
+
+@media screen and (max-width: 767px) {
+  .osmo-nav-bar__mobile-buttons {
+    display: flex;
+  }
+}
+
+.osmo-mobile-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 3.5em;
+  border-radius: 0.375em;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.osmo-mobile-button.is--neutral {
+  background-color: #312e2e;
+  color: white;
+}
+
+.osmo-mobile-button.is--neutral:hover {
+  background-color: #3f3c3c;
+}
+
+.osmo-mobile-button.is--electric {
+  background-color: #a1ff62;
+  color: #1e1e1e;
+}
+
+.osmo-mobile-button.is--electric:hover {
+  background-color: #8ae650;
 }
 
 .osmo-line {

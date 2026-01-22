@@ -2,6 +2,7 @@ export interface OsmoMenuItem {
   name: string
   href: string
   badge?: string
+  count?: number // For items like "Collection 145"
 }
 
 export interface OsmoAvatar {
@@ -34,9 +35,9 @@ export const ourProducts: OsmoMenuItem[] = [
 ]
 
 export const explore: OsmoMenuItem[] = [
-  { name: 'Osmo Showcase', href: '#' },
-  { name: 'Updates', href: '#' },
-  { name: 'Pricing', href: '#' },
+  { name: 'Osmo Showcase', href: '/showcase' },
+  { name: 'Collection', href: '/collection', count: 145 },
+  { name: 'Pricing', href: '/pricing' },
 ]
 
 export const easings: OsmoMenuItem[] = [
