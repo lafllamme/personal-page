@@ -14,6 +14,7 @@ const headerTone = useState<'light' | 'dark'>(
   () => (colorMode.value === 'dark' ? 'dark' : 'light'),
 )
 const isHeaderHidden = useState<boolean>('osmo-header-hidden', () => false)
+const headerOffset = useState<number>('osmo-header-offset', () => 0)
 const isMenuOpen = ref(false)
 
 function toggleMenu() {
@@ -77,7 +78,11 @@ watch(colorMode, () => {
 </script>
 
 <template>
-  <div>
+  <div
+    :style="{
+      pointerEvents: isHeaderHidden ? 'none' : undefined,
+    }"
+  >
     <!-- Main nav container -->
     <nav
       class="osmo-nav"
@@ -86,6 +91,10 @@ watch(colorMode, () => {
         isScrolled ? 'is--scrolled' : '',
         headerTone === 'dark' ? 'is--dark' : 'is--light',
       ]"
+      :style="{
+        transform: `translateY(${headerOffset}px)`,
+        transition: 'transform 0.35s cubic-bezier(0.33, 0, 0.2, 1)',
+      }"
     >
       <!-- Background overlay (click to close) -->
       <div class="osmo-nav__bg" @click="closeMenu" />
