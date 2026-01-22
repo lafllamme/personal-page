@@ -52,6 +52,10 @@ function getHeaderOffset(): number {
   return Number.isFinite(parsed) ? parsed + 16 : 96
 }
 
+/**
+ * Hide header exactly when the slides section top hits the header bottom (light→black boundary).
+ * Binary: fully pushed out or visible. Smooth, quick CSS transition handles the animation.
+ */
 const updateHeaderVisibility = useThrottleFn(() => {
   const section = scrollSectionRef.value
   if (!section) {
@@ -62,38 +66,13 @@ const updateHeaderVisibility = useThrottleFn(() => {
   }
 
   const rect = section.getBoundingClientRect()
-  const offset = getHeaderOffset()
-  const isCoveringHeader = rect.top <= offset && rect.bottom >= offset
+  const height = getHeaderOffset()
+  const atSlidesBoundary = rect.top <= height && rect.bottom > 0
 
-  headerHidden.value = isCoveringHeader
-  if (isCoveringHeader) {
-    const progress = Math.min(1, Math.max(0, (offset - rect.top) / Math.max(1, offset)))
-    headerOffset.value = -120 * progress
-  }
-  else {
-    headerOffset.value = 0
-  }
-
-  if (isCoveringHeader && totalSlides > 0) {
-    const totalScrollable = Math.max(1, rect.height - window.innerHeight)
-    const scrollProgress = Math.min(1, Math.max(0, (-rect.top) / totalScrollable))
-
-    // Delay tone change until section is scrolled enough (threshold ~5% into scroll)
-    const toneChangeThreshold = 0.05
-    if (scrollProgress < toneChangeThreshold) {
-      headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
-      return
-    }
-
-    const index = Math.min(totalSlides - 1, Math.max(0, Math.floor(scrollProgress * totalSlides)))
-    const isEven = index % 2 === 0
-    const isLightBackground = colorMode.value === 'dark' ? isEven : !isEven
-    headerTone.value = isLightBackground ? 'light' : 'dark'
-    return
-  }
-
+  headerHidden.value = atSlidesBoundary
+  headerOffset.value = atSlidesBoundary ? -height : 0
   headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
-}, 80)
+}, 16)
 function slideThemeClasses(index: number) {
   const isEven = index % 2 === 0
   return isEven
