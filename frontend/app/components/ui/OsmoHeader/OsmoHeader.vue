@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
-import { AnimatePresence, Motion } from 'motion-v'
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import { avatars, easings, explore, marqueeMessage, ourProducts } from './OsmoHeader.model'
@@ -15,49 +14,24 @@ const headerTone = useState<'light' | 'dark'>(
   () => (colorMode.value === 'dark' ? 'dark' : 'light'),
 )
 const isHeaderHidden = useState<boolean>('osmo-header-hidden', () => false)
-const headerOffset = useState<number>('osmo-header-offset', () => 0)
 const isMenuOpen = ref(false)
-const menuPhase = ref<'closed' | 'width' | 'full'>('closed')
-let menuPhaseTimer: ReturnType<typeof setTimeout> | null = null
-
-function clearMenuPhaseTimer() {
-  if (menuPhaseTimer) {
-    clearTimeout(menuPhaseTimer)
-    menuPhaseTimer = null
-  }
-}
-
-watch(isMenuOpen, (open) => {
-  if (!open) {
-    menuPhase.value = 'closed'
-    return
-  }
-
-  menuPhase.value = 'width'
-  clearMenuPhaseTimer()
-  menuPhaseTimer = setTimeout(() => {
-    menuPhase.value = 'full'
-  }, 300)
-})
 
 function toggleMenu() {
-  if (isMenuOpen.value) {
-    menuPhase.value = 'width'
-    clearMenuPhaseTimer()
-    menuPhaseTimer = setTimeout(() => {
-      menuPhase.value = 'closed'
-      isMenuOpen.value = false
-    }, 300)
-    return
-  }
+  isMenuOpen.value = !isMenuOpen.value
+}
 
-  isMenuOpen.value = true
+function closeMenu() {
+  isMenuOpen.value = false
+}
+
+// Close on Escape key
+function handleKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape' || e.key === 'Esc') {
+    closeMenu()
+  }
 }
 
 const marqueeHidden = computed(() => isScrolled.value || isMenuOpen.value || isHeaderHidden.value)
-const headerStyle = computed<Record<string, string>>(() => ({
-  pointerEvents: isHeaderHidden.value ? 'none' : 'auto',
-}))
 const headerFgClass = computed(() => (headerTone.value === 'light' ? 'color-pureBlack' : 'color-pureWhite'))
 const headerDividerClass = computed(() => (headerTone.value === 'light' ? 'border-pureBlack/10' : 'border-pureWhite/10'))
 const headerOutlineClass = computed(() => (headerTone.value === 'light' ? 'ring-pureBlack/20' : 'ring-pureWhite/20'))
@@ -84,10 +58,6 @@ function getCharStaggerStyle(index: number) {
   }
 }
 
-onBeforeUnmount(() => {
-  clearMenuPhaseTimer()
-})
-
 onMounted(() => {
   if (!import.meta.client)
     return
@@ -98,6 +68,7 @@ onMounted(() => {
 
   updateScrollState()
   useEventListener(window, 'scroll', updateScrollState, { passive: true })
+  useEventListener(document, 'keydown', handleKeydown)
 })
 
 watch(colorMode, () => {
@@ -107,215 +78,144 @@ watch(colorMode, () => {
 
 <template>
   <div>
-    <AnimatePresence>
-      <Motion
-        as="header"
-        class="fixed left-1/2 top-4 z-50 md:top-6"
-        :initial="{ x: '-50%', y: -100, opacity: 0 }"
-        :animate="{
-          x: '-50%',
-          y: headerOffset,
-          opacity: 1,
-          width: isMenuOpen ? 'calc(100% - 40px)' : 'auto',
-        }"
-        :transition="{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }"
-        :style="headerStyle"
-      >
-        <Motion
-          as="div"
-          :class="useClsx(
-            'overflow-visible rounded-lg shadow-[0_24px_80px_-40px_rgba(0,0,0,0.5)] ring-1 backdrop-blur-2xl',
-            headerOutlineClass,
-          )"
-          :animate="{ height: menuPhase === 'full' ? 'auto' : 'auto' }"
-          :transition="{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }"
-        >
-          <div class="bg-white/10 sticky top-0 z-50 w-[calc(100vw-40px)] flex items-center justify-between rounded-lg px-3 py-3 backdrop-blur-2xl md:min-w-[640px] md:w-auto">
-            <button
-              :class="useClsx(
-                'h-10 flex cursor-pointer items-center gap-2 rounded-sm px-2.5 transition-opacity md:gap-3 md:px-4 hover:opacity-80',
-                headerFgClass,
-                headerHoverBgClass,
-              )"
-              @click="toggleMenu"
-            >
-              <OsmoMenuIcon :is-open="isMenuOpen" :tone="headerTone" />
-              <span class="figtree-regular text-sm font-medium md:text-base">Menu</span>
-            </button>
+    <!-- Main nav container -->
+    <nav
+      class="osmo-nav"
+      :class="[
+        isMenuOpen ? 'is--active' : 'is--inactive',
+        isScrolled ? 'is--scrolled' : '',
+        headerTone === 'dark' ? 'is--dark' : 'is--light',
+      ]"
+    >
+      <!-- Background overlay (click to close) -->
+      <div class="osmo-nav__bg" @click="closeMenu" />
 
-            <div class="absolute left-1/2 -translate-x-1/2">
-              <AnimatePresence mode="wait">
-                <Motion
-                  v-if="isScrolled && !isMenuOpen"
-                  key="mark"
-                  :initial="{ opacity: 0, scale: 0.8, rotate: -180 }"
-                  :animate="{ opacity: 1, scale: 1, rotate: 0 }"
-                  :exit="{ opacity: 0, scale: 0.8, rotate: 180 }"
-                  :transition="{ duration: 0.3 }"
-                >
-                  <OsmoLogoMark />
-                </Motion>
-                <Motion
-                  v-else
-                  key="logo"
-                  :initial="{ opacity: 0, y: -10 }"
-                  :animate="{ opacity: 1, y: 0 }"
-                  :exit="{ opacity: 0, y: 10 }"
-                  :transition="{ duration: 0.3 }"
-                >
-                  <span :class="useClsx('font-cabinet text-3xl tracking-tight', headerFgClass)">TECNEWS</span>
-                </Motion>
-              </AnimatePresence>
+      <!-- Nav bar wrapper -->
+      <div class="osmo-nav-bar__wrap">
+        <div class="osmo-nav-bar__width">
+          <div class="osmo-nav-bar">
+            <!-- Background layers -->
+            <div class="osmo-nav-bar__back">
+              <div class="osmo-nav-bar__outline" />
+              <div class="osmo-nav-bar__bg" />
             </div>
 
-            <div class="flex items-center gap-2">
-              <OsmoScrambleTextButton
-                text="Login"
-                :class="useClsx(
-                  'hidden h-10 rounded-full bg-[#01E2B6] px-4 text-sm md:block md:text-base',
-                  headerFgClass,
-                )"
-              />
-              <ColorMode class="items-center justify-center" :tone="headerTone" />
-              <!--              <OsmoScrambleTextButton
-                text="Join"
-                class="h-10 rounded-none bg-[#A1FF62] px-4 text-sm text-[#1E1E1E] md:text-base"
-              /> -->
+            <!-- Top bar (always visible) -->
+            <div class="osmo-nav-bar__top">
+              <!-- Menu toggle button -->
+              <div class="osmo-nav-bar__menu">
+                <button
+                  class="osmo-nav-menu"
+                  :class="[headerFgClass, headerHoverBgClass]"
+                  @click="toggleMenu"
+                >
+                  <OsmoMenuIcon :is-open="isMenuOpen" :tone="headerTone" />
+                  <span class="osmo-nav-menu__label">Menu</span>
+                </button>
+              </div>
+
+              <!-- Logo -->
+              <div class="osmo-nav-bar__logo">
+                <NuxtLink to="/" class="osmo-nav-logo" aria-label="Go to homepage">
+                  <span class="osmo-nav-logo__wordmark" :class="headerFgClass">TECNEWS</span>
+                  <OsmoLogoMark class="osmo-nav-logo__icon" />
+                </NuxtLink>
+              </div>
+
+              <!-- Buttons -->
+              <div class="osmo-nav-bar__buttons">
+                <OsmoScrambleTextButton
+                  text="Login"
+                  :class="useClsx(
+                    'osmo-nav-bar__login-btn hidden md:flex',
+                    headerFgClass,
+                  )"
+                />
+                <ColorMode class="osmo-nav-bar__color-mode" :tone="headerTone" />
+              </div>
+
+              <!-- Line separator -->
+              <div class="osmo-nav-bar__line" />
             </div>
-          </div>
 
-          <AnimatePresence>
-            <Motion
-              v-if="menuPhase === 'full'"
-              key="menu"
-              :initial="{ height: 0, opacity: 0 }"
-              :animate="{ height: 'auto', opacity: 1 }"
-              :exit="{ height: 0, opacity: 0 }"
-              :transition="{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }"
-              :class="useClsx(
-                'max-h-[calc(100dvh-36px)] overflow-hidden overflow-y-auto border-t pt-4 md:overflow-y-hidden',
-                headerDividerClass,
-              )"
-            >
-              <div class="font-clash-regular px-6 pb-6 pt-2">
-                <div class="grid gap-0 md:grid-cols-2 xl:grid-cols-3 md:gap-12">
-                  <Motion
-                    :class="useClsx(
-                      'bg-white/8 rounded-xl p-4 ring-1 backdrop-blur-xl md:p-8',
-                      headerOutlineClass,
-                    )"
-                    :initial="{ opacity: 0, y: 20 }"
-                    :animate="{ opacity: 1, y: 0 }"
-                    :transition="{ delay: 0.1 }"
-                  >
-                    <h3 :class="useClsx('figtree-regular mb-2 text-sm font-300 uppercase', headerFgClass)">
-                      Our Products
-                    </h3>
-                    <ul>
-                      <Motion
-                        v-for="(item, index) in ourProducts"
-                        :key="item.name"
-                        :class="useClsx(
-                          'border-b border-solid py-4 last:border-b-0',
-                          headerDividerClass,
-                        )"
-                        :initial="{ opacity: 0, x: -10 }"
-                        :animate="{ opacity: 1, x: 0 }"
-                        :transition="{ delay: 0.15 + index * 0.05 }"
-                      >
-                        <NuxtLink
-                          :to="item.href"
-                          :class="useClsx(
-                            'group osmo-animate-chars w-fit flex items-center gap-2 text-lg md:text-2xl',
-                            headerFgClass,
-                          )"
-                        >
-                          <span class="osmo-animate-chars__text" data-button-animate-chars>
-                            <span
-                              v-for="(char, charIndex) in getLabelChars(item.name)"
-                              :key="`label-${item.name}-${charIndex}`"
-                              class="osmo-animate-chars__char"
-                              :style="[
-                                getCharStaggerStyle(charIndex),
-                                char === ' ' ? { whiteSpace: 'pre' } : {},
-                              ]"
-                            >{{ char }}</span>
-                          </span>
-                          <span
-                            v-if="item.badge"
-                            :class="useClsx(
-                              'relative z-10 rounded bg-[#8023fe] px-1.5 py-0.5 text-sm',
-                              headerFgClass,
-                            )"
-                          >
-                            {{ item.badge }}
-                          </span>
-                        </NuxtLink>
-                      </Motion>
-                    </ul>
-
-                    <div class="mt-8">
-                      <NuxtLink
-                        v-for="item in easings"
-                        :key="item.name"
-                        :to="item.href"
-                        :class="useClsx(
-                          'osmo-animate-chars flex items-center gap-2 text-base md:text-xl',
-                          headerFgClass,
-                        )"
-                      >
-                        <span class="osmo-animate-chars__text" data-button-animate-chars>
-                          <span
-                            v-for="(char, charIndex) in getLabelChars(item.name)"
-                            :key="`label-easing-${item.name}-${charIndex}`"
-                            class="osmo-animate-chars__char"
-                            :style="[
-                              getCharStaggerStyle(charIndex),
-                              char === ' ' ? { whiteSpace: 'pre' } : {},
-                            ]"
-                          >{{ char }}</span>
-                        </span>
-                        <span
-                          v-if="item.badge"
-                          :class="useClsx(
-                            'relative z-10 rounded bg-[#3F3C3C] px-1.5 py-0.5 text-sm font-mono',
-                            headerFgClass,
-                          )"
-                        >
-                          {{ item.badge }}
-                        </span>
-                      </NuxtLink>
-                    </div>
-                  </Motion>
-
-                  <Motion
-                    class="h-full flex flex-col justify-between rounded-xl bg-transparent p-4 md:p-8"
-                    :initial="{ opacity: 0, y: 20 }"
-                    :animate="{ opacity: 1, y: 0 }"
-                    :transition="{ delay: 0.15 }"
-                  >
-                    <div>
-                      <h3 :class="useClsx('figtree-regular mb-4 text-sm font-300 uppercase', headerFgClass)">
-                        Explore
-                      </h3>
-                      <ul>
-                        <Motion
-                          v-for="(item, index) in explore"
+            <!-- Dropdown content -->
+            <div class="osmo-nav-bar__bottom">
+              <div class="osmo-nav-bar__bottom-overflow">
+                <div class="osmo-nav-bar__bottom-inner">
+                  <div class="osmo-nav-bar__bottom-row">
+                    <!-- Column 1: Products -->
+                    <div
+                      :class="useClsx(
+                        'osmo-nav-bar__bottom-col is--products',
+                        headerOutlineClass,
+                      )"
+                    >
+                      <div class="osmo-nav-bar__tag-row">
+                        <span :class="useClsx('osmo-eyebrow', headerFgClass)">Our Products</span>
+                      </div>
+                      <ul class="osmo-nav-bar__ul-big">
+                        <li
+                          v-for="item in ourProducts"
                           :key="item.name"
-                          :class="useClsx(
-                            'border-b border-solid py-4 last:border-b-0',
-                            headerDividerClass,
-                          )"
-                          :initial="{ opacity: 0, x: -10 }"
-                          :animate="{ opacity: 1, x: 0 }"
-                          :transition="{ delay: 0.2 + index * 0.05 }"
+                          class="osmo-nav-bar__big-li"
                         >
                           <NuxtLink
                             :to="item.href"
-                            :class="useClsx(
-                              'group osmo-animate-chars w-fit flex items-center gap-2 text-lg md:text-2xl',
-                              headerFgClass,
-                            )"
+                            :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
+                            @click="closeMenu"
+                          >
+                            <span class="osmo-animate-chars__text" data-button-animate-chars>
+                              <span
+                                v-for="(char, charIndex) in getLabelChars(item.name)"
+                                :key="`label-${item.name}-${charIndex}`"
+                                class="osmo-animate-chars__char"
+                                :style="[
+                                  getCharStaggerStyle(charIndex),
+                                  char === ' ' ? { whiteSpace: 'pre' } : {},
+                                ]"
+                              >{{ char }}</span>
+                            </span>
+                            <span
+                              v-if="item.badge"
+                              class="osmo-nav-bar__a-tag"
+                            >
+                              <span class="osmo-tag is--purple">{{ item.badge }}</span>
+                            </span>
+                          </NuxtLink>
+                          <div class="osmo-line is--nav-transparent" />
+                        </li>
+                      </ul>
+                      <ul class="osmo-nav-bar__small-ul">
+                        <li
+                          v-for="item in easings"
+                          :key="item.name"
+                          class="osmo-nav-bar__small-li"
+                        >
+                          <span :class="useClsx('osmo-nav-bar__small-a', headerFgClass)">
+                            <span class="osmo-nav-bar__small-span">{{ item.name }}</span>
+                            <span v-if="item.badge" class="osmo-nav-bar__a-tag is--small">
+                              <span class="osmo-tag is--muted">{{ item.badge }}</span>
+                            </span>
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <!-- Column 2: Explore -->
+                    <div class="osmo-nav-bar__bottom-col">
+                      <div class="osmo-nav-bar__tag-row">
+                        <span :class="useClsx('osmo-eyebrow', headerFgClass)">Explore</span>
+                      </div>
+                      <ul class="osmo-nav-bar__ul-big">
+                        <li
+                          v-for="item in explore"
+                          :key="item.name"
+                          class="osmo-nav-bar__big-li"
+                        >
+                          <NuxtLink
+                            :to="item.href"
+                            :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
+                            @click="closeMenu"
                           >
                             <span class="osmo-animate-chars__text" data-button-animate-chars>
                               <span
@@ -329,110 +229,756 @@ watch(colorMode, () => {
                               >{{ char }}</span>
                             </span>
                           </NuxtLink>
-                        </Motion>
+                          <div class="osmo-line is--nav-transparent" />
+                        </li>
                       </ul>
-                    </div>
-
-                    <Motion
-                      class="flex items-center justify-start"
-                      :initial="{ opacity: 0 }"
-                      :animate="{ opacity: 1 }"
-                      :transition="{ delay: 0.35 }"
-                    >
-                      <LanguageSwitcher variant="stepper" tone="osmo" />
-                    </Motion>
-                  </Motion>
-
-                  <Motion
-                    :class="useClsx(
-                      'bg-white/8 relative hidden min-h-[420px] items-center overflow-hidden rounded-xl p-4 text-center ring-1 backdrop-blur-xl xl:block md:p-8',
-                      headerOutlineClass,
-                    )"
-                    :initial="{ opacity: 0, y: 20 }"
-                    :animate="{ opacity: 1, y: 0 }"
-                    :transition="{ delay: 0.2 }"
-                  >
-                    <div class="z-10 mb-8 mt-4 w-full flex justify-center gap-0">
-                      <span :class="useClsx('rounded-none bg-[#3F3C3C] px-2 py-1 text-sm font-medium font-mono uppercase', headerFgClass)">
-                        Featured
-                      </span>
-                      <span :class="useClsx('rounded-full bg-[#8023fe] px-2 py-1 text-sm font-medium uppercase', headerFgClass)">
-                        Milestone
-                      </span>
-                    </div>
-
-                    <h4 :class="useClsx('relative z-10 mb-4 text-4xl font-medium leading-none', headerFgClass)">
-                      We hit 1600
-                      <br>
-                      Members!
-                    </h4>
-
-                    <button class="z-10 h-10 cursor-pointer rounded-none bg-pureBlack px-4 text-base text-[#1E1E1E] font-medium transition-colors dark:bg-pureWhite">
-                      Join them
-                    </button>
-
-                    <div class="absolute left-1/2 w-full -bottom-20 -translate-x-1/2">
-                      <div
-                        v-for="(avatar, index) in avatarPositions"
-                        :key="avatar.src"
-                        class="absolute left-1/2 top-1/2"
-                        :style="{ transform: `translate3d(${avatar.x}px, ${avatar.y}px, 0)` }"
-                      >
-                        <Motion
-                          class="absolute size-20 overflow-hidden border-4 border-[#2A2727] rounded-full bg-[#2A2727] -ml-10 -mt-10 2xl:size-24"
-                          :initial="{ opacity: 0, scale: 0 }"
-                          :animate="{ opacity: 1, scale: 1 }"
-                          :transition="{ delay: 0.3 + index * 0.05, type: 'spring' }"
-                        >
-                          <NuxtImg
-                            :src="avatar.src"
-                            :alt="avatar.alt"
-                            class="h-full w-full object-cover"
-                            loading="lazy"
-                          />
-                        </Motion>
+                      <div class="osmo-nav-bar__socials">
+                        <LanguageSwitcher variant="stepper" tone="osmo" />
                       </div>
                     </div>
-                  </Motion>
+
+                    <!-- Column 3: Featured -->
+                    <div
+                      :class="useClsx(
+                        'osmo-nav-bar__bottom-col is--ad hidden xl:flex',
+                        headerOutlineClass,
+                      )"
+                    >
+                      <div class="osmo-nav-banner">
+                        <div class="osmo-nav-banner__before" />
+                        <div class="osmo-nav-banner__content">
+                          <div class="osmo-nav-banner__tags">
+                            <span class="osmo-tag is--muted">Featured</span>
+                            <span class="osmo-tag is--purple">Milestone</span>
+                          </div>
+                          <div class="osmo-nav-banner__center-content">
+                            <div class="osmo-nav-banner__title">
+                              <h2 :class="useClsx('osmo-h-m', headerFgClass)">
+                                We hit 1700
+                                <br>
+                                Members!
+                              </h2>
+                            </div>
+                            <div class="osmo-nav-banner__btn">
+                              <button class="osmo-button is--light">
+                                <span>Join them</span>
+                              </button>
+                            </div>
+                          </div>
+                          <div class="osmo-nav-banner__avatars">
+                            <div
+                              v-for="avatar in avatarPositions"
+                              :key="avatar.src"
+                              class="osmo-nav-banner__avatar"
+                              :style="{ transform: `translate3d(${avatar.x}px, ${avatar.y}px, 0)` }"
+                            >
+                              <NuxtImg
+                                :src="avatar.src"
+                                :alt="avatar.alt"
+                                class="osmo-nav-banner__avatar-img"
+                                loading="lazy"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </Motion>
-          </AnimatePresence>
-        </Motion>
-      </Motion>
-    </AnimatePresence>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
 
-    <Motion
-      key="osmo-marquee"
-      class="fixed left-0 right-0 top-[5.5rem] z-30 mx-auto max-w-[640px] w-[calc(100vw-40px)] overflow-hidden rounded-sm bg-[#01E2B6] py-1 md:top-24"
-      :initial="{ opacity: 0, y: -50 }"
-      :animate="{
-        opacity: marqueeHidden ? 0 : 1,
-        y: marqueeHidden ? -30 : 0,
-      }"
-      :transition="{ duration: 0.5, delay: 0.3, ease: [0.4, 0, 0.2, 1] }"
-      :style="{ pointerEvents: marqueeHidden ? 'none' : 'auto' }"
+    <!-- Marquee -->
+    <div
+      class="osmo-marquee"
+      :class="{ 'is--hidden': marqueeHidden }"
     >
-      <Motion
-        class="flex whitespace-nowrap"
-        :animate="{ x: [0, -1000] }"
-        :transition="{ duration: 40, repeat: Infinity, ease: 'linear' }"
-      >
+      <div class="osmo-marquee__track">
         <span
           v-for="index in 10"
           :key="index"
-          class="font-clash-regular mx-4 flex items-center gap-4 text-xs text-[#1E1E1E] uppercase"
+          class="osmo-marquee__item"
         >
           {{ marqueeMessage }}
-          <span class="text-[#1E1E1E]">✦</span>
+          <span class="osmo-marquee__star">✦</span>
         </span>
-      </Motion>
-    </Motion>
+      </div>
+    </div>
   </div>
 </template>
 
+<style>
+/* ========================= CSS Variables (Global) ========================= */
+:root {
+  --osmo-cubic: cubic-bezier(0.625, 0.05, 0, 1);
+  --osmo-duration: 0.6s;
+  --osmo-duration-onehalf: 0.9s;
+  --osmo-duration-half: 0.3s;
+  --osmo-animation: var(--osmo-duration) var(--osmo-cubic);
+  --osmo-animation-onehalf: var(--osmo-duration-onehalf) var(--osmo-cubic);
+  --osmo-animation-half: var(--osmo-duration-half) var(--osmo-cubic);
+  --osmo-nav-bar-height: 4.625em;
+  --osmo-nav-bar-max-width: 40em;
+  --osmo-stroke-weight: 1px;
+}
+</style>
+
 <style scoped>
-/* Parent link - matches demo structure */
+/* ========================= Main Nav Container ========================= */
+.osmo-nav {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  opacity: 1;
+  visibility: visible;
+}
+
+/* ========================= Background Overlay ========================= */
+.osmo-nav__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    opacity var(--osmo-animation),
+    visibility var(--osmo-animation);
+}
+
+.osmo-nav.is--active .osmo-nav__bg {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ========================= Nav Bar Wrapper ========================= */
+.osmo-nav-bar__wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--osmo-nav-bar-height);
+  display: flex;
+  justify-content: center;
+}
+
+.osmo-nav-bar__width {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: var(--size-container, 80rem);
+  padding: 1.25em;
+  gap: 0.375em;
+}
+
+/* ========================= Nav Bar (The Pill) ========================= */
+.osmo-nav-bar {
+  position: relative;
+  width: 100%;
+  max-width: var(--osmo-nav-bar-max-width);
+  pointer-events: auto;
+  border-radius: 0.5em;
+  transition: max-width var(--osmo-animation-onehalf) 0.2s;
+}
+
+.osmo-nav.is--active .osmo-nav-bar {
+  max-width: 100%;
+  transition: max-width var(--osmo-animation) 0s;
+}
+
+/* ========================= Background Layers ========================= */
+.osmo-nav-bar__back {
+  position: absolute;
+  inset: 0;
+  transition: inset var(--osmo-animation);
+}
+
+.osmo-nav.is--scrolled .osmo-nav-bar__back {
+  inset: 0.1875em;
+}
+
+.osmo-nav.is--scrolled.is--active .osmo-nav-bar__back {
+  inset: 0;
+}
+
+.osmo-nav-bar__bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0.375em;
+  pointer-events: none;
+  transition: background-color 0.2s ease;
+}
+
+/* Light theme */
+.osmo-nav.is--light .osmo-nav-bar__bg {
+  background-color: #f4f4f4;
+}
+
+/* Dark theme */
+.osmo-nav.is--dark .osmo-nav-bar__bg {
+  background-color: #201d1d;
+}
+
+.osmo-nav-bar__outline {
+  position: absolute;
+  inset: calc(var(--osmo-stroke-weight) * -1);
+  border-radius: 0.4375em;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  opacity: 0.08;
+}
+
+.osmo-nav.is--light .osmo-nav-bar__outline {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.osmo-nav.is--dark .osmo-nav-bar__outline {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ========================= Top Bar ========================= */
+.osmo-nav-bar__top {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3.375em;
+  padding: 0.4375em;
+}
+
+.osmo-nav-bar__menu {
+  height: 2.5em;
+  margin-right: auto;
+}
+
+.osmo-nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 0.625em;
+  height: 100%;
+  padding-left: 0.625em;
+  padding-right: 1em;
+  border-radius: 0.125em;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  transition:
+    background-color var(--osmo-animation-half),
+    gap var(--osmo-animation);
+}
+
+.osmo-nav.is--active .osmo-nav-menu {
+  gap: 0.1875em;
+}
+
+.osmo-nav-menu__label {
+  font-size: 1.125em;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 0.0625em;
+}
+
+/* ========================= Logo ========================= */
+.osmo-nav-bar__logo {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2.5em;
+}
+
+.osmo-nav-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0 0.5em;
+  border-radius: 0.5em;
+  text-decoration: none;
+}
+
+.osmo-nav-logo__wordmark {
+  display: block;
+  font-family: var(--font-cabinet, 'Cabinet Grotesk', sans-serif);
+  font-size: 1.75rem;
+  letter-spacing: -0.02em;
+  transition:
+    transform var(--osmo-animation),
+    opacity var(--osmo-animation-half) 0.15s;
+  transform: translateY(0) rotate(0.001deg);
+  opacity: 1;
+}
+
+.osmo-nav.is--scrolled .osmo-nav-logo__wordmark {
+  transform: translateY(0.75em) rotate(0.001deg);
+  opacity: 0;
+}
+
+.osmo-nav.is--scrolled.is--active .osmo-nav-logo__wordmark {
+  transform: translateY(0) rotate(0.001deg);
+  opacity: 1;
+}
+
+.osmo-nav-logo__icon {
+  position: absolute;
+  width: 1.375em;
+  opacity: 0;
+  transition:
+    transform var(--osmo-animation),
+    opacity var(--osmo-animation-half) 0.15s;
+  transform: translateY(-0.75em) rotate(0.001deg);
+}
+
+.osmo-nav.is--scrolled .osmo-nav-logo__icon {
+  transform: translateY(0) rotate(0.001deg);
+  opacity: 1;
+}
+
+.osmo-nav.is--scrolled.is--active .osmo-nav-logo__icon {
+  transform: translateY(-0.75em) rotate(0.001deg);
+  opacity: 0;
+}
+
+/* ========================= Buttons ========================= */
+.osmo-nav-bar__buttons {
+  display: flex;
+  align-items: center;
+  height: 2.5em;
+  gap: 0.5em;
+}
+
+.osmo-nav-bar__login-btn {
+  height: 2.5em;
+  padding: 0 1em;
+  border-radius: 9999px;
+  background-color: #01E2B6;
+  font-size: 0.875rem;
+}
+
+.osmo-nav-bar__color-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ========================= Line Separator ========================= */
+.osmo-nav-bar__line {
+  position: absolute;
+  bottom: 0;
+  left: 0.5em;
+  right: 0.5em;
+  height: var(--osmo-stroke-weight);
+  opacity: 0;
+  transition: opacity var(--osmo-animation) 0s;
+}
+
+.osmo-nav.is--light .osmo-nav-bar__line {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.osmo-nav.is--dark .osmo-nav-bar__line {
+  background-color: #312e2e;
+}
+
+.osmo-nav.is--active .osmo-nav-bar__line {
+  opacity: 1;
+  transition: opacity var(--osmo-animation) 0.1s;
+}
+
+/* ========================= Bottom Dropdown (CSS Grid Trick!) ========================= */
+.osmo-nav-bar__bottom {
+  position: relative;
+  width: 100%;
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  transition: grid-template-rows var(--osmo-animation) 0s;
+}
+
+.osmo-nav.is--active .osmo-nav-bar__bottom {
+  grid-template-rows: 1fr;
+  transition: grid-template-rows var(--osmo-animation-onehalf) 0.3s;
+}
+
+.osmo-nav-bar__bottom-overflow {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.osmo-nav-bar__bottom-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 1.5em;
+}
+
+/* ========================= Bottom Row (Staggered Columns) ========================= */
+.osmo-nav-bar__bottom-row {
+  display: flex;
+  width: 100%;
+  gap: 1.5em;
+}
+
+.osmo-nav-bar__bottom-row > * {
+  transform: translateY(2em) rotate(0.001deg);
+  opacity: 0;
+  transition:
+    transform var(--osmo-animation) 0s,
+    opacity var(--osmo-animation) 0s;
+}
+
+.osmo-nav-bar__bottom-row > *:nth-child(2) {
+  transition:
+    transform var(--osmo-animation) 0.075s,
+    opacity var(--osmo-animation) 0.075s;
+}
+
+.osmo-nav-bar__bottom-row > *:nth-child(3) {
+  transition:
+    transform var(--osmo-animation) 0.15s,
+    opacity var(--osmo-animation) 0.15s;
+}
+
+.osmo-nav.is--active .osmo-nav-bar__bottom-row > * {
+  transform: translateY(0) rotate(0.001deg);
+  opacity: 1;
+  transition:
+    transform var(--osmo-animation-onehalf) 0.3s,
+    opacity var(--osmo-animation-onehalf) 0.3s;
+}
+
+.osmo-nav.is--active .osmo-nav-bar__bottom-row > *:nth-child(2) {
+  transition:
+    transform var(--osmo-animation-onehalf) 0.375s,
+    opacity var(--osmo-animation-onehalf) 0.375s;
+}
+
+.osmo-nav.is--active .osmo-nav-bar__bottom-row > *:nth-child(3) {
+  transition:
+    transform var(--osmo-animation-onehalf) 0.45s,
+    opacity var(--osmo-animation-onehalf) 0.45s;
+}
+
+/* ========================= Bottom Columns ========================= */
+.osmo-nav-bar__bottom-col {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 2em;
+  gap: 1.375em;
+}
+
+.osmo-nav-bar__bottom-col.is--products {
+  border-radius: 1em;
+  backdrop-filter: blur(20px);
+}
+
+.osmo-nav.is--light .osmo-nav-bar__bottom-col.is--products {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.osmo-nav.is--dark .osmo-nav-bar__bottom-col.is--products {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.osmo-nav-bar__bottom-col.is--ad {
+  padding: 0;
+}
+
+/* ========================= Menu Items ========================= */
+.osmo-nav-bar__tag-row {
+  display: flex;
+  opacity: 0.8;
+}
+
+.osmo-eyebrow {
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.osmo-nav-bar__ul-big {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.osmo-nav-bar__big-li {
+  position: relative;
+}
+
+.osmo-nav-bar__big-a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1em 0;
+  text-decoration: none;
+  font-size: 1.5em;
+  font-weight: 430;
+  line-height: 1;
+}
+
+.osmo-nav-bar__a-tag {
+  padding-top: 0.25em;
+  padding-left: 0.625em;
+}
+
+.osmo-nav-bar__a-tag.is--small {
+  padding-top: 0.125em;
+  font-size: 0.8em;
+}
+
+.osmo-nav-bar__small-ul {
+  margin-top: auto;
+  list-style: none;
+  padding: 0;
+}
+
+.osmo-nav-bar__small-li {
+  cursor: not-allowed;
+}
+
+.osmo-nav-bar__small-a {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0.3125em 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.osmo-nav-bar__small-span {
+  font-size: 1em;
+  line-height: 1;
+}
+
+.osmo-nav-bar__socials {
+  margin-top: auto;
+  padding-top: 2em;
+  display: flex;
+}
+
+.osmo-line {
+  height: var(--osmo-stroke-weight);
+}
+
+.osmo-nav.is--dark .osmo-line.is--nav-transparent {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.osmo-nav.is--light .osmo-line.is--nav-transparent {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* ========================= Tags ========================= */
+.osmo-tag {
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border-radius: 0.25em;
+}
+
+.osmo-tag.is--purple {
+  background-color: #8023fe;
+  color: white;
+}
+
+.osmo-tag.is--muted {
+  background-color: #3f3c3c;
+  color: white;
+}
+
+/* ========================= Featured Banner ========================= */
+.osmo-nav-banner {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  border-radius: 1em;
+  overflow: hidden;
+  backdrop-filter: blur(20px);
+}
+
+.osmo-nav.is--light .osmo-nav-banner {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.osmo-nav.is--dark .osmo-nav-banner {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.osmo-nav-banner__before {
+  padding-top: 110%;
+}
+
+.osmo-nav-banner__content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  padding: 2em;
+}
+
+.osmo-nav-banner__tags {
+  display: flex;
+  justify-content: center;
+  gap: 0.25em;
+}
+
+.osmo-nav-banner__center-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  padding-bottom: 2em;
+}
+
+.osmo-nav-banner__title {
+  text-align: center;
+}
+
+.osmo-h-m {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 1.1;
+}
+
+.osmo-nav-banner__btn {
+  display: flex;
+  justify-content: center;
+  padding-top: 1.5em;
+}
+
+.osmo-button {
+  height: 2.5em;
+  padding: 0 1.25em;
+  border: none;
+  border-radius: 0.25em;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.osmo-button.is--light {
+  background-color: #f4f4f4;
+  color: #1e1e1e;
+}
+
+.osmo-button.is--light:hover {
+  background-color: #e0e0e0;
+}
+
+.osmo-nav-banner__avatars {
+  position: absolute;
+  left: 50%;
+  bottom: -5em;
+  transform: translateX(-50%);
+  width: 100%;
+}
+
+.osmo-nav-banner__avatar {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4em;
+  height: 4em;
+  margin-left: -2em;
+  margin-top: -2em;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #2a2727;
+  background-color: #2a2727;
+}
+
+.osmo-nav-banner__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ========================= Marquee ========================= */
+.osmo-marquee {
+  position: fixed;
+  top: 5.5rem;
+  left: 0;
+  right: 0;
+  z-index: 30;
+  margin: 0 auto;
+  max-width: var(--osmo-nav-bar-max-width);
+  width: calc(100vw - 40px);
+  padding: 0.25em 0;
+  border-radius: 0.25em;
+  background-color: #01E2B6;
+  overflow: hidden;
+  transition:
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s,
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.osmo-marquee.is--hidden {
+  opacity: 0;
+  transform: translateY(-30px);
+  pointer-events: none;
+}
+
+.osmo-marquee__track {
+  display: flex;
+  white-space: nowrap;
+  animation: osmo-marquee 40s linear infinite;
+}
+
+.osmo-marquee__item {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  margin: 0 1em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #1e1e1e;
+}
+
+.osmo-marquee__star {
+  color: #1e1e1e;
+}
+
+@keyframes osmo-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* ========================= Character Animation ========================= */
 .osmo-animate-chars {
   position: relative;
   display: inline-flex;
@@ -442,20 +988,17 @@ watch(colorMode, () => {
   text-decoration: none;
 }
 
-/* Text wrapper with line-height for proper clipping */
 .osmo-animate-chars__text {
   white-space: nowrap;
   line-height: 1.3;
 }
 
-/* Character container with overflow hidden */
 .osmo-animate-chars [data-button-animate-chars] {
   overflow: hidden;
   position: relative;
   display: inline-block;
 }
 
-/* Individual characters */
 .osmo-animate-chars [data-button-animate-chars] span {
   display: inline-block;
   position: relative;
@@ -464,8 +1007,36 @@ watch(colorMode, () => {
   transition: transform 0.6s cubic-bezier(0.625, 0.05, 0, 1);
 }
 
-/* Hover state */
 .osmo-animate-chars:hover [data-button-animate-chars] span {
   transform: translateY(-1.3em) rotate(0.001deg);
+}
+
+/* ========================= Responsive ========================= */
+@media screen and (max-width: 767px) {
+  .osmo-nav-bar__bottom-row {
+    flex-direction: column;
+  }
+
+  .osmo-nav-bar__bottom-col {
+    padding: 1.5em;
+  }
+
+  .osmo-nav-bar__bottom-col.is--products {
+    order: 1;
+  }
+
+  .osmo-nav-bar__bottom-col:not(.is--products):not(.is--ad) {
+    order: 2;
+  }
+
+  .osmo-marquee {
+    top: 5.5rem;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .osmo-marquee {
+    top: 6rem;
+  }
 }
 </style>
