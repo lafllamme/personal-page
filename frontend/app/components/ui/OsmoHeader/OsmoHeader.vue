@@ -123,6 +123,8 @@ watch(colorMode, () => {
 
               <!-- Buttons -->
               <div class="osmo-nav-bar__buttons">
+                <!-- Color Mode Toggle -->
+                <ColorMode class="osmo-nav-bar__color-mode" :tone="headerTone" />
                 <!-- Join: visible on all sizes -->
                 <NuxtLink
                   to="/join"
@@ -130,8 +132,6 @@ watch(colorMode, () => {
                 >
                   <span>Join</span>
                 </NuxtLink>
-                <!-- Color Mode Toggle -->
-                <ColorMode class="osmo-nav-bar__color-mode" :tone="headerTone" />
               </div>
 
               <!-- Line separator -->
@@ -164,7 +164,7 @@ watch(colorMode, () => {
                             :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
                             @click="closeMenu"
                           >
-                            <span class="osmo-animate-chars__text" data-button-animate-chars>
+                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-${item.name}-${charIndex}`"
@@ -217,7 +217,7 @@ watch(colorMode, () => {
                             :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
                             @click="closeMenu"
                           >
-                            <span class="osmo-animate-chars__text" data-button-animate-chars>
+                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-explore-${item.name}-${charIndex}`"
@@ -497,17 +497,8 @@ watch(colorMode, () => {
   inset: 0;
   border-radius: 0.375em;
   pointer-events: none;
-  transition: background-color 0.2s ease;
-}
-
-/* Light theme */
-.osmo-nav.is--light .osmo-nav-bar__bg {
-  background-color: #f4f4f4;
-}
-
-/* Dark theme */
-.osmo-nav.is--dark .osmo-nav-bar__bg {
   background-color: #201d1d;
+  transition: background-color 0.2s ease;
 }
 
 .osmo-nav-bar__outline {
@@ -515,16 +506,9 @@ watch(colorMode, () => {
   inset: calc(var(--osmo-stroke-weight) * -1);
   border-radius: 0.4375em;
   pointer-events: none;
-  transition: opacity 0.2s ease;
+  background-color: #f4f4f4;
   opacity: 0.1;
-}
-
-.osmo-nav.is--light .osmo-nav-bar__outline {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.osmo-nav.is--dark .osmo-nav-bar__outline {
-  background-color: rgba(255, 255, 255, 0.1);
+  transition: opacity 0.2s ease;
 }
 
 /* ========================= Top Bar ========================= */
@@ -671,16 +655,9 @@ watch(colorMode, () => {
   left: 0.5em;
   right: 0.5em;
   height: var(--osmo-stroke-weight);
+  background-color: #312e2e;
   opacity: 0;
   transition: opacity var(--osmo-animation) 0s;
-}
-
-.osmo-nav.is--light .osmo-nav-bar__line {
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.osmo-nav.is--dark .osmo-nav-bar__line {
-  background-color: #312e2e;
 }
 
 .osmo-nav.is--active .osmo-nav-bar__line {
@@ -809,11 +786,16 @@ watch(colorMode, () => {
   display: flex;
   align-items: center;
   width: 100%;
-  padding: 1.0625em 0 1.125em;
+  padding-top: 1.0625em;
+  padding-bottom: 1.125em;
   text-decoration: none;
+}
+
+.osmo-nav-bar__big-span {
+  font-variation-settings: 'wght' 430;
   font-size: 1.5em;
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1;
 }
 
 .osmo-nav-bar__a-tag {
@@ -862,11 +844,13 @@ watch(colorMode, () => {
 
 /* Count badge (e.g., "145" for Collection) */
 .osmo-nav-bar__big-span-number {
+  display: block;
+  position: relative;
   margin-left: 0.25em;
   margin-top: -0.75em;
-  font-size: 0.5em;
+  font-size: 0.75em;
   line-height: 1;
-  opacity: 0.5;
+  color: #312e2e;
 }
 
 /* Social Icons Row */
@@ -950,15 +934,25 @@ watch(colorMode, () => {
 }
 
 .osmo-line {
+  position: relative;
+  width: 100%;
   height: var(--osmo-stroke-weight);
+  z-index: 3;
+}
+
+.osmo-line.is--nav-transparent {
+  background-color: rgba(255, 255, 255, 0.9);
+  opacity: 0.08;
 }
 
 .osmo-nav.is--dark .osmo-line.is--nav-transparent {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.9);
+  opacity: 0.08;
 }
 
 .osmo-nav.is--light .osmo-line.is--nav-transparent {
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.9);
+  opacity: 0.08;
 }
 
 /* ========================= Tags ========================= */
@@ -1259,7 +1253,7 @@ watch(colorMode, () => {
 
   /* When open on mobile, expand to edges */
   .osmo-nav.is--active .osmo-nav-bar__back {
-    inset: -0.25em 0;
+    inset: 0;
   }
 
   /* Top bar height */
@@ -1276,13 +1270,8 @@ watch(colorMode, () => {
     overflow: scroll;
   }
 
-  /* Line separator - closed state has inset, open is edge-to-edge */
+  /* Line separator - edge-to-edge on mobile when active */
   .osmo-nav-bar__line {
-    left: 0.5em;
-    right: 0.5em;
-  }
-
-  .osmo-nav.is--active .osmo-nav-bar__line {
     left: 0;
     right: 0;
   }
@@ -1314,6 +1303,9 @@ watch(colorMode, () => {
   .osmo-nav-bar__big-a {
     padding-top: 0.8125em;
     padding-bottom: 0.875em;
+  }
+
+  .osmo-nav-bar__big-span {
     font-size: 1.25em;
   }
 
@@ -1324,8 +1316,8 @@ watch(colorMode, () => {
 
   /* Hide socials on mobile */
   .osmo-nav-bar__socials {
-    display: none;
     padding-top: 0;
+    display: none;
   }
 
   /* Mobile buttons - full width with negative margins to bleed */
