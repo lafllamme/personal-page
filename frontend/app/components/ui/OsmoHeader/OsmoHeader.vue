@@ -491,8 +491,8 @@ watch(colorMode, () => {
   align-items: center;
   width: 100%;
   max-width: var(--osmo-size-container);
-  padding: 1.25em;
-  gap: 0.375em;
+  padding: 1.3125em;
+  gap: 0.39375em;
 }
 
 /* ========================= Nav Bar (The Pill) ========================= */
@@ -501,8 +501,14 @@ watch(colorMode, () => {
   width: 100%;
   max-width: var(--osmo-nav-bar-max-width);
   pointer-events: auto;
-  border-radius: 0.25em;
+  border-radius: 0.2625em;
   transition: max-width var(--osmo-animation-onehalf) 0.2s;
+}
+
+@media screen and (max-width: 767px) {
+  .osmo-nav-bar {
+    border-radius: 0.25em;
+  }
 }
 
 .osmo-nav.is--active .osmo-nav-bar {
@@ -531,10 +537,16 @@ watch(colorMode, () => {
 .osmo-nav-bar__bg {
   position: absolute;
   inset: 0;
-  border-radius: 0.5em;
+  border-radius: 0.39375em;
   pointer-events: none;
   background-color: #201d1d;
   transition: background-color 0.2s ease;
+}
+
+@media screen and (max-width: 767px) {
+  .osmo-nav-bar__bg {
+    border-radius: 0.375em;
+  }
 }
 
 .osmo-nav-bar__outline {
@@ -1275,7 +1287,7 @@ watch(colorMode, () => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 0.5em;
+  padding-top: 0.39375em;
 }
 
 /* Mobile/Tablet adjustments */
@@ -1286,7 +1298,7 @@ watch(colorMode, () => {
   }
 
   .osmo-marquee-wrap__inner {
-    padding-top: 0.25em;
+    padding-top: 0;
   }
 }
 
@@ -1297,12 +1309,13 @@ watch(colorMode, () => {
   border-radius: 0.25em;
   flex: none;
   width: 100%;
-  height: 1.667em;
+  height: 1.3125em;
   text-decoration: none;
   display: flex;
   flex-direction: row;
   position: relative;
   overflow: hidden;
+  padding: 0;
 }
 
 .osmo-marquee__scroll {
@@ -1356,13 +1369,14 @@ watch(colorMode, () => {
 
 .osmo-marquee__text {
   display: block !important;
-  font-size: 0.917em;
+  font-size: 0.72em;
   font-weight: 400;
+  font-variation-settings: 'wght' 460;
   text-transform: uppercase;
   letter-spacing: 0;
   color: #201d1d;
   white-space: nowrap;
-  margin-top: 0.0625em;
+  margin-top: 0.045em;
   margin-left: 0 !important;
   margin-right: 0 !important;
   margin-bottom: 0 !important;
@@ -1376,7 +1390,8 @@ watch(colorMode, () => {
 
 @media screen and (max-width: 767px) {
   .osmo-marquee__text {
-    font-size: 0.7em;
+    font-size: 0.69em;
+    margin-top: 0.043em;
   }
 }
 
@@ -1448,7 +1463,7 @@ watch(colorMode, () => {
 
   /* When open on mobile, expand with NEGATIVE inset to hide border radius */
   .osmo-nav.is--active .osmo-nav-bar__back {
-    inset: -0.25em 0;
+    inset: -0.25em 0.00052em;
   }
 
   /* Top bar height */
