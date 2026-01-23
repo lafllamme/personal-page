@@ -82,7 +82,7 @@ export function createDefaultGlassMetaballsSettings(): GlassMetaballsSettings {
   return {
     perf: {
       dprMax: 1,
-      marchingResolution: 80,
+      marchingResolution: 48,
       marchingMaxPoly: 90000,
     },
 
