@@ -552,7 +552,7 @@ watch(colorMode, () => {
   .osmo-nav.is--scrolled.is--light .osmo-nav-bar__bg {
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    box-shadow: 
+    box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
       0 12px 40px rgba(0, 0, 0, 0.08);
   }
@@ -560,7 +560,7 @@ watch(colorMode, () => {
   .osmo-nav.is--scrolled.is--dark .osmo-nav-bar__bg {
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    box-shadow: 
+    box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
       0 12px 40px rgba(0, 0, 0, 0.3);
   }
@@ -578,14 +578,14 @@ watch(colorMode, () => {
 
 .osmo-nav.is--light .osmo-nav-bar__bg {
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
     0 8px 32px rgba(0, 0, 0, 0.06);
 }
 
 .osmo-nav.is--dark .osmo-nav-bar__bg {
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
     0 8px 32px rgba(0, 0, 0, 0.2);
 }
@@ -818,21 +818,11 @@ watch(colorMode, () => {
 }
 
 .osmo-nav.is--light .osmo-nav-bar__line {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.1) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
 }
 
 .osmo-nav.is--dark .osmo-nav-bar__line {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.15) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
 }
 
 .osmo-nav.is--active .osmo-nav-bar__line {
@@ -922,14 +912,14 @@ watch(colorMode, () => {
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid transparent;
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
     0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .osmo-nav.is--light .osmo-nav-bar__bottom-col.is--products {
   border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.03),
     0 4px 16px rgba(0, 0, 0, 0.05);
@@ -937,7 +927,7 @@ watch(colorMode, () => {
 
 .osmo-nav.is--dark .osmo-nav-bar__bottom-col.is--products {
   border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
     inset 0 -1px 0 0 rgba(0, 0, 0, 0.2),
     0 4px 16px rgba(0, 0, 0, 0.2);
@@ -1062,7 +1052,7 @@ watch(colorMode, () => {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: white;
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
     0 2px 8px rgba(0, 0, 0, 0.15);
 }
@@ -1072,7 +1062,7 @@ watch(colorMode, () => {
   -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.06);
   color: black;
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
     0 2px 8px rgba(0, 0, 0, 0.03);
 }
@@ -1084,14 +1074,14 @@ watch(colorMode, () => {
 
 .osmo-nav.is--dark .osmo-square-button:hover {
   border-color: rgba(255, 255, 255, 0.18);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
     0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .osmo-nav.is--light .osmo-square-button:hover {
   border-color: rgba(0, 0, 0, 0.08);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
     0 4px 12px rgba(0, 0, 0, 0.05);
 }
@@ -1145,14 +1135,14 @@ watch(colorMode, () => {
 .osmo-mobile-button.is--neutral .osmo-mobile-button__bg {
   background-color: rgba(49, 46, 46, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
     0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .osmo-mobile-button.is--neutral:hover .osmo-mobile-button__bg {
   background-color: rgba(63, 60, 60, 0.9);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
     0 6px 16px rgba(0, 0, 0, 0.3);
 }
@@ -1160,7 +1150,7 @@ watch(colorMode, () => {
 .osmo-mobile-button.is--electric .osmo-mobile-button__bg {
   background-color: rgba(11, 216, 182, 0.9);
   border: 1px solid rgba(11, 216, 182, 0.3);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
     0 4px 12px rgba(11, 216, 182, 0.3);
 }
@@ -1168,7 +1158,7 @@ watch(colorMode, () => {
 .osmo-mobile-button.is--electric:hover .osmo-mobile-button__bg {
   background-color: rgba(138, 230, 80, 0.95);
   border-color: rgba(138, 230, 80, 0.4);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
     0 6px 16px rgba(138, 230, 80, 0.4);
 }
@@ -1198,22 +1188,12 @@ watch(colorMode, () => {
 }
 
 .osmo-nav.is--dark .osmo-line.is--nav-transparent {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.12) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.12) 50%, transparent 100%);
   box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
 .osmo-nav.is--light .osmo-line.is--nav-transparent {
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(0, 0, 0, 0.1) 50%,
-    transparent 100%
-  );
+  background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.03);
 }
 
@@ -1259,14 +1239,14 @@ watch(colorMode, () => {
 
 .osmo-nav.is--light .osmo-nav-banner {
   border: 1px solid rgba(0, 0, 0, 0.08);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
     0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
 .osmo-nav.is--dark .osmo-nav-banner {
   border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 
+  box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
     0 8px 24px rgba(0, 0, 0, 0.2);
 }
@@ -1359,14 +1339,14 @@ watch(colorMode, () => {
 
 .osmo-nav.is--light .osmo-nav-banner__avatar {
   border: 2px solid rgba(0, 0, 0, 0.12);
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
 }
 
 .osmo-nav.is--dark .osmo-nav-banner__avatar {
   border: 2px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 
+  box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.2),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
 }
