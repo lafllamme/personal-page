@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useIntersectionObserver } from '@vueuse/core'
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useEventListener, useIntersectionObserver } from '@vueuse/core'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 interface AccordionItem {
   id: string
@@ -208,19 +208,14 @@ function resizeHandler() {
     updatePanelHeight(expandedId.value)
 }
 
+useEventListener(() => window, 'resize', resizeHandler)
+
 onMounted(() => {
   nextTick(() => {
     const expandedItem = props.items.find(item => item.id === expandedId.value && item.content)
     if (expandedItem)
       updatePanelHeight(expandedItem.id)
   })
-  if (typeof window !== 'undefined')
-    window.addEventListener('resize', resizeHandler)
-})
-
-onUnmounted(() => {
-  if (typeof window !== 'undefined')
-    window.removeEventListener('resize', resizeHandler)
 })
 
 function handleImageLoad(itemId: string) {
@@ -228,6 +223,7 @@ function handleImageLoad(itemId: string) {
     updatePanelHeight(itemId)
   })
 }
+
 </script>
 
 <template>
@@ -284,7 +280,7 @@ function handleImageLoad(itemId: string) {
           <div
             v-for="(item, itemIndex) in items"
             :key="item.id"
-            class="group mb-0 w-full overflow-visible rounded-none py-2"
+            class="mb-0 w-full overflow-visible rounded-none py-2"
             :class="[
               isExpanded(item.id) && 'data-active',
             ]"
@@ -292,7 +288,7 @@ function handleImageLoad(itemId: string) {
           >
             <!-- Button wrapper - animates with blur + slide -->
             <div
-              class="transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:bg-jade-5 dark:group-hover:bg-teal-3"
+              class="transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-jade-5 dark:hover:bg-teal-3"
               :style="!animatedItems[itemIndex] ? 'filter: blur(20px); opacity: 0; transform: translateY(40px)' : 'filter: blur(0px); opacity: 1; transform: none'"
             >
               <button
@@ -375,20 +371,26 @@ function handleImageLoad(itemId: string) {
                       v-if="item.imageUrl"
                       class="relative"
                     >
-                      <img
-                        :src="item.imageUrl"
-                        :alt="item.heading"
-                        class="h-64 w-full rounded-md object-cover sm:h-96"
-                        loading="lazy"
-                        @load="handleImageLoad(item.id)"
+                      <div
+                        class="group inline-block w-full [perspective:1000px]"
                       >
-                      <span class="absolute bottom-4 left-4 z-10 h-12 w-12 flex items-center justify-center border border-pureBlack/10 rounded-lg bg-pureWhite sm:h-20 sm:w-20 dark:border-pureWhite/10 dark:bg-pureBlack">
-                        <Icon
-                          name="lucide:arrow-up-right"
-                          class="h-8 w-8 color-pureBlack sm:h-12 sm:w-12 dark:color-pureWhite"
-                          aria-hidden="true"
-                        />
-                      </span>
+                        <div class="relative h-64 w-full overflow-hidden rounded-md [transform-style:preserve-3d] transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] shadow-[0_12px_30px_rgba(0,0,0,0.16)] will-change-transform group-hover:[transform:rotateX(5deg)_rotateY(-8deg)_scale(1.05)] group-hover:shadow-[-20px_30px_60px_rgba(0,0,0,0.25)] motion-reduce:transition-none sm:h-96">
+                          <img
+                            :src="item.imageUrl"
+                            :alt="item.heading"
+                            class="h-full w-full object-cover transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform group-hover:[transform:scale(1.12)_translateZ(20px)] motion-reduce:transition-none"
+                            loading="lazy"
+                            @load="handleImageLoad(item.id)"
+                          >
+                          <span class="absolute bottom-4 left-4 z-10 h-12 w-12 flex items-center justify-center border border-pureBlack/10 rounded-lg bg-pureWhite/95 shadow-[0_4px_24px_rgba(0,0,0,0.1)] transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform group-hover:[transform:translateZ(60px)_scale(1.2)_rotate(360deg)] group-hover:bg-pureBlack/90 group-hover:color-pureWhite motion-reduce:transition-none dark:border-pureWhite/10 dark:bg-pureWhite dark:color-pureBlack sm:h-20 sm:w-20">
+                            <Icon
+                              name="lucide:arrow-up-right"
+                              class="h-8 w-8 sm:h-12 sm:w-12"
+                              aria-hidden="true"
+                            />
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
