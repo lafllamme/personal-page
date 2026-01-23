@@ -10,7 +10,6 @@ import {
   useElementVisibility,
   useEventListener,
   useRafFn,
-  useTimeoutFn,
   useWindowSize,
 } from '@vueuse/core'
 import {
@@ -136,17 +135,6 @@ const colorPalette = [
 const pointerInside = ref(false)
 const pointerActive = ref(false)
 const shouldRaycast = ref(false)
-const isTouchInteracting = ref(false)
-const touchPressId = ref<number | null>(null)
-const touchStartPos = shallowRef<{ x: number, y: number } | null>(null)
-const lastTouchEvent = shallowRef<PointerEvent | null>(null)
-const TOUCH_LONG_PRESS_MS = 180
-const TOUCH_MOVE_THRESHOLD_PX = 8
-const { start: startTouchHold, stop: stopTouchHold } = useTimeoutFn(() => {
-  isTouchInteracting.value = true
-  if (lastTouchEvent.value)
-    updatePointerFromEvent(lastTouchEvent.value)
-}, TOUCH_LONG_PRESS_MS, { immediate: false })
 
 function clamp(v: number, min: number, max: number) {
   return Math.max(min, Math.min(max, v))
@@ -787,15 +775,7 @@ if (import.meta.client) {
   useEventListener(window, 'pointerdown', updatePointerFromEvent, { passive: true })
 }
 
-useEventListener(container, 'pointerdown', handleTouchPressStart, { passive: true })
-useEventListener(container, 'pointermove', handleTouchPressMove, { passive: false })
-useEventListener(container, 'pointerup', handleTouchPressEnd, { passive: true })
-useEventListener(container, 'pointercancel', handleTouchPressEnd, { passive: true })
-
 function updatePointerFromEvent(event: PointerEvent) {
-  if (event.pointerType === 'touch' && !isTouchInteracting.value)
-    return
-
   const el = container.value
   if (!el)
     return
@@ -840,66 +820,6 @@ function updatePointerFromEvent(event: PointerEvent) {
     shouldRaycast.value = false
     mouseTarget.set(0, 0, settings.mouse.parkZ)
   }
-}
-
-function resetPointerState() {
-  pointerActive.value = false
-  shouldRaycast.value = false
-  mouseTarget.set(0, 0, settings.mouse.parkZ)
-}
-
-function clearTouchPress() {
-  stopTouchHold()
-  touchPressId.value = null
-  touchStartPos.value = null
-  lastTouchEvent.value = null
-  isTouchInteracting.value = false
-  resetPointerState()
-}
-
-function handleTouchPressStart(event: PointerEvent) {
-  if (event.pointerType !== 'touch')
-    return
-
-  touchPressId.value = event.pointerId
-  touchStartPos.value = { x: event.clientX, y: event.clientY }
-  lastTouchEvent.value = event
-  isTouchInteracting.value = false
-  startTouchHold()
-}
-
-function handleTouchPressMove(event: PointerEvent) {
-  if (event.pointerType !== 'touch')
-    return
-  if (touchPressId.value !== event.pointerId)
-    return
-
-  lastTouchEvent.value = event
-
-  if (!isTouchInteracting.value) {
-    const start = touchStartPos.value
-    if (!start)
-      return
-
-    const dx = event.clientX - start.x
-    const dy = event.clientY - start.y
-    if (Math.hypot(dx, dy) > TOUCH_MOVE_THRESHOLD_PX)
-      clearTouchPress()
-
-    return
-  }
-
-  event.preventDefault()
-  updatePointerFromEvent(event)
-}
-
-function handleTouchPressEnd(event: PointerEvent) {
-  if (event.pointerType !== 'touch')
-    return
-  if (touchPressId.value !== event.pointerId)
-    return
-
-  clearTouchPress()
 }
 
 const isApplyingPreset = ref(false)
@@ -1153,16 +1073,10 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div
-    ref="container"
-    class="relative h-full w-full"
-    :class="[
-      isTouchInteracting ? 'touch-none' : 'touch-pan-y',
-    ]"
-  >
+  <div ref="container" class="relative h-full w-full touch-none">
     <ClientOnly>
       <!-- Canvas is non-interactive so the page can scroll / click through. -->
-      <div class="pointer-events-none absolute inset-0 touch-pan-y">
+      <div class="pointer-events-none absolute inset-0 touch-none">
         <TresCanvas
           :dpr="dpr"
           :alpha="true"
