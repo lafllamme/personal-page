@@ -178,6 +178,8 @@ function onCanvasReady(ctx: TresContext) {
     rAny.toneMapping = ACESFilmicToneMapping
   if ('outputColorSpace' in rAny)
     rAny.outputColorSpace = SRGBColorSpace
+  if ('setClearColor' in rAny)
+    rAny.setClearColor(0x000000, 0)
 
   sceneRef.value.background = null
 
@@ -1081,7 +1083,7 @@ onBeforeUnmount(() => {
           :dpr="dpr"
           :alpha="true"
           :clear-alpha="0"
-          clear-color="#06090f"
+          clear-color="transparent"
           :render-mode="renderMode"
           @ready="onCanvasReady"
         >
