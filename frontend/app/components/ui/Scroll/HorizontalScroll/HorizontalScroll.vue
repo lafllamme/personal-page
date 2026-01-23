@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener, useThrottleFn } from '@vueuse/core'
+import { useEventListener } from '@vueuse/core'
 import { animate, scroll, spring } from 'motion-v'
 
 interface HorizontalScrollItem {
@@ -56,7 +56,10 @@ function getHeaderOffset(): number {
  * Hide header exactly when the slides section top hits the header bottom (light→black boundary).
  * Binary: fully pushed out or visible. Smooth, quick CSS transition handles the animation.
  */
-const updateHeaderVisibility = useThrottleFn(() => {
+const HEADER_TOGGLE_BUFFER = 6
+let lastAtSlidesBoundary = false
+
+function updateHeaderVisibility() {
   const section = scrollSectionRef.value
   if (!section) {
     headerHidden.value = false
@@ -67,12 +70,29 @@ const updateHeaderVisibility = useThrottleFn(() => {
 
   const rect = section.getBoundingClientRect()
   const height = getHeaderOffset()
-  const atSlidesBoundary = rect.top <= height && rect.bottom > 0
+  const enterBoundary = rect.top <= height - HEADER_TOGGLE_BUFFER && rect.bottom > 0
+  const exitBoundary = rect.top >= height + HEADER_TOGGLE_BUFFER || rect.bottom <= 0
+  const atSlidesBoundary = lastAtSlidesBoundary ? !exitBoundary : enterBoundary
 
-  headerHidden.value = atSlidesBoundary
-  headerOffset.value = atSlidesBoundary ? -height : 0
+  if (atSlidesBoundary !== lastAtSlidesBoundary) {
+    lastAtSlidesBoundary = atSlidesBoundary
+    headerHidden.value = atSlidesBoundary
+    headerOffset.value = atSlidesBoundary ? -height : 0
+  }
+
   headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
-}, 16)
+}
+
+let headerRaf = 0
+function scheduleHeaderUpdate() {
+  if (headerRaf)
+    return
+
+  headerRaf = requestAnimationFrame(() => {
+    headerRaf = 0
+    updateHeaderVisibility()
+  })
+}
 function slideThemeClasses(index: number) {
   const isEven = index % 2 === 0
   return isEven
@@ -123,8 +143,8 @@ onMounted(async () => {
   })
 
   updateHeaderVisibility()
-  useEventListener(window, 'scroll', updateHeaderVisibility, { passive: true })
-  useEventListener(window, 'resize', updateHeaderVisibility, { passive: true })
+  useEventListener(window, 'scroll', scheduleHeaderUpdate, { passive: true })
+  useEventListener(window, 'resize', scheduleHeaderUpdate, { passive: true })
 })
 
 watch(colorMode, () => {
@@ -134,6 +154,10 @@ watch(colorMode, () => {
 onBeforeUnmount(() => {
   cleanupFns.forEach(stop => stop())
   cleanupFns.length = 0
+  if (headerRaf) {
+    cancelAnimationFrame(headerRaf)
+    headerRaf = 0
+  }
   headerHidden.value = false
   headerOffset.value = 0
   headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'

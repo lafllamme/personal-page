@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { useIntersectionObserver, useMouse, useRafFn, useThrottleFn, useWindowSize } from '@vueuse/core'
+import {
+  breakpointsTailwind,
+  useBreakpoints,
+  useIntersectionObserver,
+  useMouse,
+  useRafFn,
+  useThrottleFn,
+  useWindowSize,
+} from '@vueuse/core'
 import Issues from '@/components/Issues.vue'
 import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
 import HorizontalScroll from '@/components/ui/Scroll/HorizontalScroll/HorizontalScroll.vue'
@@ -17,6 +25,8 @@ const displayPointerX = ref(0)
 const displayPointerY = ref(0)
 const viewportLabel = computed(() => `${width.value}x${height.value}`)
 const pointerLabel = computed(() => `${Math.round(displayPointerX.value)}, ${Math.round(displayPointerY.value)}`)
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
 const updateHeroVisibility = useThrottleFn((visible: boolean) => {
@@ -32,6 +42,9 @@ useIntersectionObserver(
 )
 
 useRafFn(() => {
+  if (!isHeroVisible.value || !isLgUp.value)
+    return
+
   const ease = 0.12
   displayPointerX.value += (pointerX.value - displayPointerX.value) * ease
   displayPointerY.value += (pointerY.value - displayPointerY.value) * ease
@@ -41,7 +54,7 @@ useRafFn(() => {
 <template>
   <section>
     <section ref="heroRef" class="relative min-h-[100svh] flex items-center justify-center <lg:select-none md:items-start md:pt-32">
-      <div v-if="isHeroVisible" class="pointer-events-auto absolute left-0 right-0 top-0 z-10 hidden items-start justify-between text-xs lg:flex -translate-y-full">
+      <div v-if="isHeroVisible && isLgUp" class="pointer-events-auto absolute left-0 right-0 top-0 z-10 flex items-start justify-between text-xs -translate-y-full">
         <div class="font-reign flex items-center gap-2">
           <div class="h-2 w-2 animate-spin animate-duration-[9000ms] border border-teal-11 border-solid" />
           <div>
