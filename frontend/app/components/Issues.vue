@@ -126,10 +126,11 @@ useIntersectionObserver(
   { threshold: 0.1, rootMargin: '0px' },
 )
 
-/* Animation timing - matched to reference page exactly */
-const letterDelay = (i: number) => i * 50 // ms - matched timing
-const descDelay = (props.title?.length ?? 0) * 50 + 300 // ms after title completes
-const itemDelay = (i: number) => descDelay + 200 + (i * 80) // ms - start after desc, staggered
+/* Animation timing - Title und Items starten zeitgleich, schneller gestaggert */
+const letterDelay = (i: number) => i * 40 // ms - schneller für smoother feel
+const itemStartDelay = 50 // ms - Items starten kurz nach Title beginnt (zeitgleich)
+const itemStagger = 50 // ms - schnellerer Stagger zwischen Items
+const descDelay = itemStartDelay + (3 * itemStagger) + 100 // ms - Description kommt nach ersten 3 Items
 
 /* Track which elements should be animated (staggered) */
 const animatedLetters = ref<Record<number, boolean>>({})
@@ -148,24 +149,24 @@ watch(isSectionVisible, (visible) => {
   nextTick(() => {
     const titleLength = props.title?.length ?? 0
     
-    // Animate letters with stagger
+    // Title startet sofort
     for (let i = 0; i < titleLength; i++) {
       setTimeout(() => {
         animatedLetters.value[i] = true
       }, letterDelay(i))
     }
     
-    // Animate description after title
-    setTimeout(() => {
-      animatedDesc.value = true
-    }, descDelay)
-    
-    // Animate accordion items with stagger
+    // Items starten zeitgleich mit Title (nach kurzer Verzögerung)
     props.items.forEach((_, i) => {
       setTimeout(() => {
         animatedItems.value[i] = true
-      }, itemDelay(i))
+      }, itemStartDelay + (i * itemStagger))
     })
+    
+    // Description kommt später (nach den ersten Items)
+    setTimeout(() => {
+      animatedDesc.value = true
+    }, descDelay)
   })
 }, { immediate: true })
 
