@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Issues from '@/components/Issues.vue'
 import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
 import PageBleed from '@/components/ui/Partials/PageContainer/PageBleed.vue'
 import HorizontalScroll from '@/components/ui/Scroll/HorizontalScroll/HorizontalScroll.vue'
@@ -30,5 +31,6 @@ const sublineFontClass = 'font-baskerville'
       </section>
     </PageBleed>
     <HorizontalScroll />
+    <Issues />
   </section>
 </template>
