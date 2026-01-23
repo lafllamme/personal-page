@@ -1582,7 +1582,7 @@ watch(colorMode, () => {
 
   /* When open on mobile, expand with NEGATIVE inset to hide border radius */
   .osmo-nav.is--active .osmo-nav-bar__back {
-    inset: -0.25em 0.00052em;
+    inset: -0.25em;
   }
 
   /* Top bar height */
