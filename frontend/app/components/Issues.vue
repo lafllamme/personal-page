@@ -248,7 +248,7 @@ const handleImageLoad = (itemId: string) => {
                   <span
                     class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,transform]"
                     :class="{
-                      'opacity-0 translate-y-[0.5em]': !animatedLetters[index],
+                      'opacity-0 translate-y-full': !animatedLetters[index],
                       'opacity-100 translate-y-0': animatedLetters[index],
                     }"
                   >{{ char }}</span>
@@ -259,7 +259,7 @@ const handleImageLoad = (itemId: string) => {
           <div
             class="sm:w-96 space-y-1.5 sm:pt-0 pt-4 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,filter,transform]"
             :class="{
-              'opacity-0 blur-[15px] translate-y-5': !animatedDesc,
+              'opacity-0 blur-[20px] translate-y-[40px]': !animatedDesc,
               'opacity-100 blur-0 translate-y-0': animatedDesc,
             }"
           >
@@ -284,7 +284,7 @@ const handleImageLoad = (itemId: string) => {
             <div
               class="transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,filter,transform]"
               :class="{
-                'opacity-0 blur-[15px] translate-y-5': !animatedItems[itemIndex],
+                'opacity-0 blur-[20px] translate-y-[40px]': !animatedItems[itemIndex],
                 'opacity-100 blur-0 translate-y-0': animatedItems[itemIndex],
               }"
             >
@@ -307,10 +307,9 @@ const handleImageLoad = (itemId: string) => {
 
             <!-- Expanded Panel wrapper - also animates with blur + slide -->
             <div
-              v-if="item.content"
               class="transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,filter,transform]"
               :class="{
-                'opacity-0 blur-[15px] translate-y-5': !animatedItems[itemIndex],
+                'opacity-0 blur-[20px] translate-y-[40px]': !animatedItems[itemIndex],
                 'opacity-100 blur-0 translate-y-0': animatedItems[itemIndex],
               }"
             >
@@ -391,7 +390,6 @@ const handleImageLoad = (itemId: string) => {
                 </div>
               </div>
             </div>
-            <div v-else />
           </div>
         </div>
       </div>
