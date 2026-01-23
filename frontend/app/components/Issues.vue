@@ -127,9 +127,9 @@ useIntersectionObserver(
 )
 
 /* Animation timing - Everything starts simultaneously with staggered delays */
-const letterDelay = (i: number) => i * 35 // ms - Character stagger (slower, smoother)
-const descWordDelay = (i: number) => i * 35 // ms - Word stagger (slower, smoother)
-const itemDelay = (i: number) => i * 80 // ms - Item stagger (slower, smoother)
+const letterDelay = (i: number) => i * 30 // ms - Character stagger (30ms per char)
+const descWordDelay = (i: number) => i * 30 // ms - Word stagger (30ms per word)
+const itemDelay = (i: number) => i * 60 // ms - Item stagger (60ms per item, starts immediately)
 
 /* Split description into first line and body for more accurate animation */
 const descLines = computed(() => {
@@ -260,7 +260,7 @@ function handleImageLoad(itemId: string) {
               >
                 <span class="whitespace-pre-wrap relative">
                   <span
-                    class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    class="inline-block transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                     :style="!animatedLetters[index] ? 'transform: translateY(100%)' : 'transform: none'"
                   >{{ char }}</span>
                 </span>
@@ -279,7 +279,7 @@ function handleImageLoad(itemId: string) {
               >
                 <span class="whitespace-pre-wrap relative">
                   <span
-                    class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    class="inline-block transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                     :style="!animatedDescWords[idx] ? 'transform: translateY(-100%)' : 'transform: none'"
                   >{{ word }}{{ idx < descLines[0].length - 1 ? ' ' : '' }}</span>
                 </span>
