@@ -16,7 +16,7 @@ const sublineFontClass = 'font-baskerville'
     <section class="relative min-h-[100svh] flex items-center justify-center md:items-start md:pt-32">
       <!-- three wrapper: touch-none, damit pointer moves nicht vom Browser als scroll gesture gekapert werden -->
       <div
-        class="absolute z-0 h-[calc(100%+var(--header-height,0px))] w-screen touch-none -top-[var(--header-height,0px)]"
+        class="pointer-events-none absolute z-0 h-[calc(100%+var(--header-height,0px))] w-screen -top-[var(--header-height,0px)]"
       >
         <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
       </div>
