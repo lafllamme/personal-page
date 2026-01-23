@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useIntersectionObserver } from '@vueuse/core'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface AccordionItem {
   id: string
@@ -94,11 +95,9 @@ const props = withDefaults(defineProps<{
 })
 
 const expandedId = ref<string | null>(props.items[2]?.id || null)
-
 function toggleItem(id: string) {
   expandedId.value = expandedId.value === id ? null : id
 }
-
 const isExpanded = (id: string) => expandedId.value === id
 
 /* -------------------------------------------------------------------------- */
@@ -120,54 +119,68 @@ useIntersectionObserver(
     else {
       isSectionVisible.value = false
       animatedLetters.value = {}
-      animatedDesc.value = false
+      animatedDescWords.value = {}
       animatedItems.value = {}
     }
   },
   { threshold: 0.1, rootMargin: '0px' },
 )
 
-/* Animation timing - Title und Items starten zeitgleich, schneller gestaggert */
-const letterDelay = (i: number) => i * 40 // ms - schneller für smoother feel
-const itemStartDelay = 50 // ms - Items starten kurz nach Title beginnt (zeitgleich)
-const itemStagger = 50 // ms - schnellerer Stagger zwischen Items
-const descDelay = itemStartDelay + (3 * itemStagger) + 100 // ms - Description kommt nach ersten 3 Items
+/* Animation timing - Everything starts simultaneously with staggered delays */
+const letterDelay = (i: number) => i * 35 // ms - Character stagger (slower, smoother)
+const descWordDelay = (i: number) => i * 35 // ms - Word stagger (slower, smoother)
+const itemDelay = (i: number) => i * 80 // ms - Item stagger (slower, smoother)
+
+/* Split description into first line and body for more accurate animation */
+const descLines = computed(() => {
+  const words = (props.description || '').split(/\s+/)
+  // use the first 5 words as the prominent line, remainder as the body
+  const firstCount = Math.min(5, words.length)
+  return [
+    words.slice(0, firstCount),
+    words.slice(firstCount),
+  ]
+})
 
 /* Track which elements should be animated (staggered) */
 const animatedLetters = ref<Record<number, boolean>>({})
-const animatedDesc = ref(false)
+const animatedDescWords = ref<Record<number, boolean>>({})
 const animatedItems = ref<Record<number, boolean>>({})
 
 /* Stagger animations when section becomes visible */
 watch(isSectionVisible, (visible) => {
   if (!visible) {
     animatedLetters.value = {}
-    animatedDesc.value = false
+    animatedDescWords.value = {}
     animatedItems.value = {}
     return
   }
 
   nextTick(() => {
     const titleLength = props.title?.length ?? 0
+    const totalDescWords = descLines.value[0].length + descLines.value[1].length
 
-    // Title startet sofort
+    // ALL animations start simultaneously with staggered delays
+    // Heading characters
     for (let i = 0; i < titleLength; i++) {
       setTimeout(() => {
         animatedLetters.value[i] = true
       }, letterDelay(i))
     }
 
-    // Items starten zeitgleich mit Title (nach kurzer Verzögerung)
+    // Description words (start immediately, same time as heading)
+    for (let i = 0; i < totalDescWords; i++) {
+      setTimeout(() => {
+        animatedDescWords.value[i] = true
+      }, descWordDelay(i))
+    }
+
+    // Items (start immediately, same time as heading)
     props.items.forEach((_, i) => {
       setTimeout(() => {
         animatedItems.value[i] = true
-      }, itemStartDelay + (i * itemStagger))
+      }, itemDelay(i))
     })
-
-    // Description kommt später (nach den ersten Items)
-    setTimeout(() => {
-      animatedDesc.value = true
-    }, descDelay)
   })
 }, { immediate: true })
 
@@ -193,7 +206,6 @@ watch(expandedId, (newId, oldId) => {
         panel.style.height = '0px'
       }
     }
-
     if (newId) {
       updatePanelHeight(newId)
     }
@@ -240,33 +252,55 @@ function handleImageLoad(itemId: string) {
           <h1 class="font-manrope text-6xl color-pureBlack/80 font-medium uppercase md:text-8xl dark:color-pureWhite/80">
             <span class="flex flex-wrap whitespace-pre-wrap">
               <span class="sr-only">{{ title }}</span>
-              <span aria-hidden="true" class="inline-flex overflow-hidden">
-                <span
-                  v-for="(char, index) in title.split('')"
-                  :key="index"
-                  class="relative whitespace-pre-wrap"
-                >
+              <span
+                v-for="(char, index) in title.split('')"
+                :key="index"
+                aria-hidden="true"
+                class="inline-flex overflow-hidden"
+              >
+                <span class="whitespace-pre-wrap relative">
                   <span
-                    class="will-change-[opacity,transform] inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                    :class="{
-                      'opacity-0 translate-y-full': !animatedLetters[index],
-                      'opacity-100 translate-y-0': animatedLetters[index],
-                    }"
+                    class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    :style="!animatedLetters[index] ? 'transform: translateY(100%)' : 'transform: none'"
                   >{{ char }}</span>
                 </span>
               </span>
             </span>
           </h1>
-          <div
-            class="will-change-[opacity,filter,transform] pt-4 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] sm:w-96 space-y-1.5 sm:pt-0"
-            :class="{
-              'opacity-0 blur-[20px] translate-y-[40px]': !animatedDesc,
-              'opacity-100 blur-0 translate-y-0': animatedDesc,
-            }"
-          >
-            <p class="font-clash-regular text-justify text-xs sm:text-sm">
-              {{ description }}
-            </p>
+          <!-- Description (split into two lines) -->
+          <div class="w-full pt-4 sm:w-96 space-y-1.5 sm:pt-0">
+            <span class="flex flex-wrap whitespace-pre-wrap">
+              <span class="sr-only">{{ descLines[0].join(' ') }}</span>
+              <span
+                v-for="(word, idx) in descLines[0]"
+                :key="`desc1-${idx}`"
+                aria-hidden="true"
+                class="inline-flex overflow-hidden"
+              >
+                <span class="whitespace-pre-wrap relative">
+                  <span
+                    class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    :style="!animatedDescWords[idx] ? 'transform: translateY(-100%)' : 'transform: none'"
+                  >{{ word }}{{ idx < descLines[0].length - 1 ? ' ' : '' }}</span>
+                </span>
+              </span>
+            </span>
+            <span class="flex flex-wrap whitespace-pre-wrap text-xs">
+              <span class="sr-only">{{ descLines[1].join(' ') }}</span>
+              <span
+                v-for="(word, idx2) in descLines[1]"
+                :key="`desc2-${idx2}`"
+                aria-hidden="true"
+                class="inline-flex overflow-hidden"
+              >
+                <span class="whitespace-pre-wrap relative">
+                  <span
+                    class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+                    :style="!animatedDescWords[descLines[0].length + idx2] ? 'transform: translateY(-100%)' : 'transform: none'"
+                  >{{ word }}{{ idx2 < descLines[1].length - 1 ? ' ' : '' }}</span>
+                </span>
+              </span>
+            </span>
           </div>
         </article>
 
@@ -283,11 +317,8 @@ function handleImageLoad(itemId: string) {
           >
             <!-- Button wrapper - animates with blur + slide -->
             <div
-              class="will-change-[opacity,filter,transform] transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              :class="{
-                'opacity-0 blur-[20px] translate-y-[40px]': !animatedItems[itemIndex],
-                'opacity-100 blur-0 translate-y-0': animatedItems[itemIndex],
-              }"
+              class="transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+              :style="!animatedItems[itemIndex] ? 'filter: blur(20px); opacity: 0; transform: translateY(40px)' : 'filter: blur(0px); opacity: 1; transform: none'"
             >
               <button
                 :id="`accordion-header-item-${item.id}`"
@@ -308,11 +339,8 @@ function handleImageLoad(itemId: string) {
 
             <!-- Expanded Panel wrapper - also animates with blur + slide -->
             <div
-              class="will-change-[opacity,filter,transform] transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              :class="{
-                'opacity-0 blur-[20px] translate-y-[40px]': !animatedItems[itemIndex],
-                'opacity-100 blur-0 translate-y-0': animatedItems[itemIndex],
-              }"
+              class="transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+              :style="!animatedItems[itemIndex] ? 'filter: blur(20px); opacity: 0; transform: translateY(40px)' : 'filter: blur(0px); opacity: 1; transform: none'"
             >
               <div
                 :id="`accordion-panel-item-${item.id}`"
