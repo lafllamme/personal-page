@@ -7,7 +7,7 @@ interface AccordionItem {
   heading: string
   description: string
   year?: string
-  role?: string
+  subheading?: string
   content?: string
   tags?: string[]
   imageUrl?: string
@@ -19,75 +19,75 @@ const props = withDefaults(defineProps<{
   items?: AccordionItem[]
 }>(), {
   title: 'ISSUES',
-  description: 'Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat aperiam dolorem voluptates mollitia necessitatibus voluptatibus porro alias repellendus quasi maiores!',
+  description: 'Tecnews at a glance: highlights, deep dives, and curated magazine issues, all in one place.',
   items: () => [
     {
       id: '1',
-      heading: 'ISSUE/N17',
-      description: 'Silly myths about wooden houses',
-      year: '(2020-2021)',
-      role: 'a. Design director',
-      content: 'We specialize in custom AI solutions including chatbots, predictive analytics, computer vision, NLP, and automation workflows tailored to your business needs.',
+      heading: 'Agentic Workflows',
+      description: 'How small teams ship faster with AI copilots',
+      year: '(2026 January)',
+      subheading: 'Playbooks for teams of five',
+      content: 'From prompt reviews to agent guardrails, we map practical workflows that turn AI copilots into dependable teammates.',
       tags: ['AI', 'Design', 'Development'],
       imageUrl: 'https://images.unsplash.com/photo-1751554933476-d029737d58b2?q=80&w=880&auto=format&fit=crop',
     },
     {
       id: '2',
-      heading: 'ISSUE/N17',
-      description: 'Silly myths about wooden houses',
-      year: '(2019-2020)',
-      role: 'Seniour designer',
-      content: 'We offer flexible pricing based on project complexity and duration—ranging from fixed project fees to retainer and hourly models.',
+      heading: 'Frontends, Reimagined',
+      description: 'RSC, islands, and the return of speed',
+      year: '(2026 February)',
+      subheading: 'Shipping UX without the weight',
+      content: 'A tour of the newest rendering models and why lighter bundles keep experiences feeling instant.',
       tags: ['AI', 'Design', 'Development'],
       imageUrl: 'https://images.unsplash.com/photo-1752350434868-af7431a9f14b?q=80&w=880&auto=format&fit=crop',
     },
     {
       id: '3',
-      heading: 'ISSUE/N17',
-      description: 'Silly myths about wooden houses',
-      year: '(2018-2019)',
-      role: 'PRODUCT DESIGNER',
-      content: 'Absolutely! We offer seamless integration with CRMs, ERPs, databases, APIs, and other third-party tools your business relies on.',
+      heading: 'Designing for LLMs',
+      description: 'Prompt UX patterns that actually scale',
+      year: '(2026 March)',
+      subheading: 'Interfaces for generative flows',
+      content: 'Reusable prompt and feedback patterns that keep outputs consistent, explainable, and easy to steer.',
       tags: ['AI', 'Design', 'Development'],
       imageUrl: 'https://images.unsplash.com/photo-1751704549146-6cae1f348143?q=80&w=880&auto=format&fit=crop',
     },
     {
       id: '4',
-      heading: 'ISSUE/N17',
-      description: 'Silly myths about wooden houses',
-      year: '(2017-2018)',
-      role: 'UX Designer',
-      content: 'Our team follows agile methodologies with regular sprints, stand-ups, and client check-ins to ensure transparency and timely delivery.',
+      heading: 'Edge-First Apps',
+      description: 'Latency wins with modern runtimes',
+      year: '(2026 April)',
+      subheading: 'Compute closer to users',
+      content: 'Real-world edge patterns for routing, caching, and personalization without the ops overhead.',
       tags: ['AI', 'Design', 'Development'],
       imageUrl: 'https://images.unsplash.com/photo-1751554933476-d029737d58b2?q=80&w=880&auto=format&fit=crop',
     },
     {
       id: '5',
-      heading: 'ISSUE/N17',
-      description: 'Silly myths about wooden houses',
-      year: '(2016-2017)',
-      role: 'Creative Director',
-      content: 'Yes, we provide comprehensive support including bug fixes, feature updates, and maintenance plans to keep your solution running smoothly.',
+      heading: 'AI in the Toolchain',
+      description: 'From codegen to CI, what sticks',
+      year: '(2026 May)',
+      subheading: 'Automation that survives prod',
+      content: 'We separate hype from habits and show which AI tools are earning a permanent spot in teams.',
       tags: ['AI', 'Design', 'Development'],
       imageUrl: 'https://images.unsplash.com/photo-1752350434868-af7431a9f14b?q=80&w=880&auto=format&fit=crop',
     },
     {
       id: '6',
-      heading: 'ISSUE/N17',
-      description: 'Silly myths about wooden houses',
-      year: '(2015-2016)',
-      role: 'Lead Designer',
-      content: 'We use industry-standard tools and technologies including React, Node.js, Python, TensorFlow, and cloud platforms like AWS and Azure.',
+      heading: 'Systems for Scale',
+      description: 'Practical patterns for resilient platforms',
+      year: '(2026 June)',
+      subheading: 'Calm architecture in chaos',
+      content: 'Blueprints for observability, fault tolerance, and shared services that grow with your product.',
       tags: ['AI', 'Design', 'Development'],
       imageUrl: 'https://images.unsplash.com/photo-1751704549146-6cae1f348143?q=80&w=880&auto=format&fit=crop',
     },
     {
       id: '7',
-      heading: 'ISSUE/N17',
-      description: 'Silly myths about wooden houses',
-      year: '(2014-2015)',
-      role: 'Senior Designer',
-      content: 'Our typical project timeline ranges from 4-12 weeks depending on scope, with MVP delivery possible in as little as 2-3 weeks for smaller projects.',
+      heading: 'WebPerf Signals',
+      description: 'Real-world CWV tactics that move LCP',
+      year: '(2026 July)',
+      subheading: 'Speed as a product feature',
+      content: 'Actionable wins for LCP, INP, and CLS that keep your pages snappy under real traffic.',
       tags: ['AI', 'Design', 'Development'],
       imageUrl: 'https://images.unsplash.com/photo-1751554933476-d029737d58b2?q=80&w=880&auto=format&fit=crop',
     },
@@ -99,6 +99,10 @@ function toggleItem(id: string) {
   expandedId.value = expandedId.value === id ? null : id
 }
 const isExpanded = (id: string) => expandedId.value === id
+
+function getIssueNumber(index: number, total: number) {
+  return String(total - index).padStart(2, '0')
+}
 
 /* -------------------------------------------------------------------------- */
 /*  Intersection: animate when whole section is visible (VueUse)               */
@@ -298,10 +302,10 @@ function handleImageLoad(itemId: string) {
                 class="data-active:bg-transparent relative w-full flex cursor-pointer items-center justify-between gap-5 border-t-2 border-pureBlack p-0 py-2 text-left text-sm transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] dark:border-pureWhite hover:bg-transparent sm:text-base hover:no-underline"
                 @click="toggleItem(item.id)"
               >
-                <h1 class="font-manrope text-xl font-medium uppercase md:text-6xl sm:text-4xl">
-                  {{ item.heading }}
+                <h1 class="font-manrope text-xl font-semibold uppercase md:text-6xl sm:text-4xl">
+                  ISSUE/N{{ getIssueNumber(itemIndex, items.length) }}
                 </h1>
-                <p class="geist-regular w-60 gap-10 text-sm font-normal tracking-normal space-x-2 md:text-2xl sm:text-xl">
+                <p class="geist-regular w-60 gap-10 text-sm font-medium tracking-normal space-x-2 md:text-2xl sm:text-xl">
                   {{ item.description }}
                 </p>
               </button>
@@ -334,20 +338,20 @@ function handleImageLoad(itemId: string) {
                       <span class="flex flex-col space-y-2">
                         <span
                           v-if="item.year"
-                          class="text-sm font-normal font-['Poppins','Poppins_Fallback',sans-serif] italic sm:text-base"
+                          class="font-manrope text-sm font-normal italic sm:text-base"
                         >
                           {{ item.year }}
                         </span>
                         <span
-                          v-if="item.role"
-                          class="font-medium font-['Poppins','Poppins_Fallback',sans-serif] uppercase sm:text-xl"
+                          v-if="item.subheading"
+                          class="font-manrope font-medium uppercase sm:text-xl"
                         >
-                          {{ item.role }}
+                          {{ item.subheading }}
                         </span>
                       </span>
                       <p
                         v-if="item.content"
-                        class="text-sm font-['Poppins','Poppins_Fallback',sans-serif] sm:text-base"
+                        class="font-manrope text-sm sm:text-base"
                       >
                         {{ item.content }}
                       </p>
@@ -358,7 +362,7 @@ function handleImageLoad(itemId: string) {
                         <span
                           v-for="tag in item.tags"
                           :key="tag"
-                          class="border border-pureBlack rounded-md bg-pureBlack px-2 py-1 color-pureWhite font-['Poppins','Poppins_Fallback',sans-serif] dark:border-pureWhite dark:bg-pureWhite dark:color-pureBlack"
+                          class="font-manrope border border-pureBlack rounded-md bg-pureBlack px-2 py-1 color-pureWhite dark:border-pureWhite dark:bg-pureWhite dark:color-pureBlack"
                         >
                           {{ tag }}
                         </span>
