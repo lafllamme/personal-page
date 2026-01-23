@@ -21,7 +21,7 @@ const sublineFontClass = 'font-baskerville'
         <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
       </div>
 
-      <h1 class="relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12">
+      <h1 class="relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12 <sm:select-none">
         <span :class="headlineFontClass" class="block font-semibold <sm:text-[clamp(3.4rem,11vw,6rem)]">Web evolves.</span>
         <span :class="sublineFontClass" class="block color-pureBlack/85 italic <sm:text-[clamp(2.2rem,7vw,3.8rem)] dark:color-pureWhite/85">We track it.</span>
       </h1>
