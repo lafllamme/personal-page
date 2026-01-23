@@ -13,7 +13,7 @@ const sublineFontClass = 'font-baskerville'
 <template>
   <!-- outer: kein touch-pan-y mehr -->
   <section>
-    <section class="relative min-h-[100svh] flex items-center justify-center md:items-start md:pt-32">
+    <section class="relative min-h-[100svh] flex items-center justify-center <lg:select-none md:items-start md:pt-32">
       <!-- three wrapper: touch-none, damit pointer moves nicht vom Browser als scroll gesture gekapert werden -->
       <div
         class="pointer-events-none absolute z-0 h-[calc(100%+var(--header-height,0px))] w-screen -top-[var(--header-height,0px)]"
@@ -21,7 +21,7 @@ const sublineFontClass = 'font-baskerville'
         <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
       </div>
 
-      <h1 class="relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12 <sm:select-none">
+      <h1 class="pointer-events-none relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12">
         <span :class="headlineFontClass" class="block font-semibold <sm:text-[clamp(3.4rem,11vw,6rem)]">Web evolves.</span>
         <span :class="sublineFontClass" class="block color-pureBlack/85 italic <sm:text-[clamp(2.2rem,7vw,3.8rem)] dark:color-pureWhite/85">We track it.</span>
       </h1>
