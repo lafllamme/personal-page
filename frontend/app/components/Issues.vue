@@ -24,7 +24,7 @@ const props = withDefaults(defineProps<{
     {
       id: '1',
       heading: 'Agentic Workflows',
-      description: 'How small teams ship faster with AI copilots',
+      description: 'Ship faster with AI copilots',
       year: '(2026 January)',
       subheading: 'Playbooks for teams of five',
       content: 'From prompt reviews to agent guardrails, we map practical workflows that turn AI copilots into dependable teammates.',
@@ -34,7 +34,7 @@ const props = withDefaults(defineProps<{
     {
       id: '2',
       heading: 'Frontends, Reimagined',
-      description: 'RSC, islands, and the return of speed',
+      description: 'RSC, islands, speed',
       year: '(2026 February)',
       subheading: 'Shipping UX without the weight',
       content: 'A tour of the newest rendering models and why lighter bundles keep experiences feeling instant.',
@@ -44,7 +44,7 @@ const props = withDefaults(defineProps<{
     {
       id: '3',
       heading: 'Designing for LLMs',
-      description: 'Prompt UX patterns that actually scale',
+      description: 'Prompt UX that scales',
       year: '(2026 March)',
       subheading: 'Interfaces for generative flows',
       content: 'Reusable prompt and feedback patterns that keep outputs consistent, explainable, and easy to steer.',
@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<{
     {
       id: '4',
       heading: 'Edge-First Apps',
-      description: 'Latency wins with modern runtimes',
+      description: 'Latency wins at the edge',
       year: '(2026 April)',
       subheading: 'Compute closer to users',
       content: 'Real-world edge patterns for routing, caching, and personalization without the ops overhead.',
@@ -64,7 +64,7 @@ const props = withDefaults(defineProps<{
     {
       id: '5',
       heading: 'AI in the Toolchain',
-      description: 'From codegen to CI, what sticks',
+      description: 'AI tools that stick',
       year: '(2026 May)',
       subheading: 'Automation that survives prod',
       content: 'We separate hype from habits and show which AI tools are earning a permanent spot in teams.',
@@ -74,7 +74,7 @@ const props = withDefaults(defineProps<{
     {
       id: '6',
       heading: 'Systems for Scale',
-      description: 'Practical patterns for resilient platforms',
+      description: 'Resilient platform patterns',
       year: '(2026 June)',
       subheading: 'Calm architecture in chaos',
       content: 'Blueprints for observability, fault tolerance, and shared services that grow with your product.',
@@ -84,7 +84,7 @@ const props = withDefaults(defineProps<{
     {
       id: '7',
       heading: 'WebPerf Signals',
-      description: 'Real-world CWV tactics that move LCP',
+      description: 'CWV wins that move LCP',
       year: '(2026 July)',
       subheading: 'Speed as a product feature',
       content: 'Actionable wins for LCP, INP, and CLS that keep your pages snappy under real traffic.',
