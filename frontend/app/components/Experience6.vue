@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useIntersectionObserver } from '@vueuse/core'
+
 interface AccordionItem {
   id: string
   heading: string
@@ -91,13 +93,66 @@ const props = withDefaults(defineProps<{
   ],
 })
 
-const expandedId = ref<string | null>(props.items[0]?.id || null)
+const expandedId = ref<string | null>(props.items[2]?.id || null)
 
 const toggleItem = (id: string) => {
   expandedId.value = expandedId.value === id ? null : id
 }
 
 const isExpanded = (id: string) => expandedId.value === id
+
+/* -------------------------------------------------------------------------- */
+/*  Intersection: animate when whole section is visible (VueUse)               */
+/*  Matches reference: JS-controlled inline styles, not CSS animations          */
+/* -------------------------------------------------------------------------- */
+
+const sectionRef = ref<HTMLElement | null>(null)
+const isSectionVisible = ref(false)
+
+useIntersectionObserver(
+  sectionRef,
+  ([entry]) => {
+    if (entry?.isIntersecting && !isSectionVisible.value)
+      isSectionVisible.value = true
+  },
+  { threshold: 0.1, rootMargin: '0px' },
+)
+
+/* Animation timing - matches reference page */
+const letterDelay = (i: number) => i * 40 // ms
+const descDelay = (props.title?.length ?? 0) * 40 + 200 // ms after title
+const itemDelay = (i: number) => i * 60 // ms
+
+/* Track which elements should be animated (staggered) */
+const animatedLetters = ref<Record<number, boolean>>({})
+const animatedDesc = ref(false)
+const animatedItems = ref<Record<number, boolean>>({})
+
+/* Stagger animations when section becomes visible */
+watch(isSectionVisible, (visible) => {
+  if (!visible) return
+  
+  const titleLength = props.title?.length ?? 0
+  
+  // Animate letters with stagger
+  for (let i = 0; i < titleLength; i++) {
+    setTimeout(() => {
+      animatedLetters.value[i] = true
+    }, letterDelay(i))
+  }
+  
+  // Animate description after title
+  setTimeout(() => {
+    animatedDesc.value = true
+  }, descDelay)
+  
+  // Animate accordion items with stagger
+  props.items.forEach((_, i) => {
+    setTimeout(() => {
+      animatedItems.value[i] = true
+    }, itemDelay(i))
+  })
+}, { immediate: true })
 
 // Panel refs for height calculations
 const panelRefs = ref<Record<string, HTMLElement | null>>({})
@@ -130,29 +185,24 @@ watch(expandedId, (newId, oldId) => {
   })
 })
 
+const resizeHandler = () => {
+  if (expandedId.value)
+    updatePanelHeight(expandedId.value)
+}
+
 onMounted(() => {
-  // Set initial height for expanded panel
   nextTick(() => {
     const expandedItem = props.items.find(item => item.id === expandedId.value && item.content)
-    if (expandedItem) {
+    if (expandedItem)
       updatePanelHeight(expandedItem.id)
-    }
   })
-  
-  // Handle window resize
-  if (typeof window !== 'undefined') {
-    window.addEventListener('resize', () => {
-      if (expandedId.value) {
-        updatePanelHeight(expandedId.value)
-      }
-    })
-  }
+  if (typeof window !== 'undefined')
+    window.addEventListener('resize', resizeHandler)
 })
 
 onUnmounted(() => {
-  if (typeof window !== 'undefined') {
-    window.removeEventListener('resize', () => {})
-  }
+  if (typeof window !== 'undefined')
+    window.removeEventListener('resize', resizeHandler)
 })
 
 // Watch for image loads to recalculate height
@@ -164,7 +214,11 @@ const handleImageLoad = (itemId: string) => {
 </script>
 
 <template>
-  <section class="flex justify-center items-center min-h-screen rounded-md">
+  <section
+    ref="sectionRef"
+    class="experience6-section flex justify-center items-center min-h-screen rounded-md"
+    :class="{ 'is-visible': isSectionVisible }"
+  >
     <div class="w-full">
       <div class="sm:p-10 p-6 mx-auto bg-pureWhite dark:bg-pureBlack color-pureBlack dark:color-pureWhite min-h-screen w-full shadow-xs">
         <!-- Header Section -->
@@ -178,12 +232,22 @@ const handleImageLoad = (itemId: string) => {
                   :key="index"
                   class="whitespace-pre-wrap relative"
                 >
-                  <span class="inline-block" style="transform: none;">{{ char }}</span>
+                  <span
+                    class="inline-block"
+                    :style="{ transform: animatedLetters[index] ? 'none' : 'translateY(-0.5em)', opacity: animatedLetters[index] ? '1' : '0' }"
+                  >{{ char }}</span>
                 </span>
               </span>
             </span>
           </h1>
-          <div class="sm:w-96 space-y-1.5 sm:pt-0 pt-4">
+          <div
+            class="sm:w-96 space-y-1.5 sm:pt-0 pt-4"
+            :style="{ 
+              filter: animatedDesc ? 'blur(0px)' : 'blur(10px)', 
+              opacity: animatedDesc ? '1' : '0', 
+              transform: animatedDesc ? 'none' : 'translateY(30px)' 
+            }"
+          >
             <p class="text-justify sm:text-sm text-xs" style="font-family: 'Poppins', 'Poppins Fallback', sans-serif;">
               {{ description }}
             </p>
@@ -193,7 +257,7 @@ const handleImageLoad = (itemId: string) => {
         <!-- Accordion Section -->
         <div class="mt-3 max-w-7xl mx-auto">
           <div
-            v-for="item in items"
+            v-for="(item, itemIndex) in items"
             :key="item.id"
             :class="[
               'group mb-0 rounded-none overflow-visible bg-transparent w-full py-2',
@@ -201,7 +265,13 @@ const handleImageLoad = (itemId: string) => {
             ]"
             :data-active="isExpanded(item.id) ? 'true' : undefined"
           >
-            <div style="filter: blur(0px); opacity: 1; transform: none;">
+            <div
+              :style="{ 
+                filter: animatedItems[itemIndex] ? 'blur(0px)' : 'blur(10px)', 
+                opacity: animatedItems[itemIndex] ? '1' : '0', 
+                transform: animatedItems[itemIndex] ? 'none' : 'translateY(30px)' 
+              }"
+            >
               <button
                 type="button"
                 :aria-expanded="isExpanded(item.id)"
@@ -221,9 +291,14 @@ const handleImageLoad = (itemId: string) => {
             </div>
 
             <!-- Expanded Panel - ALL items have content now -->
+            <!-- Second wrapper div that also animates (matches reference) -->
             <div
               v-if="item.content"
-              style="filter: blur(0px); opacity: 1; transform: none;"
+              :style="{ 
+                filter: animatedItems[itemIndex] ? 'blur(0px)' : 'blur(10px)', 
+                opacity: animatedItems[itemIndex] ? '1' : '0', 
+                transform: animatedItems[itemIndex] ? 'none' : 'translateY(30px)' 
+              }"
             >
               <div
                 :ref="el => panelRefs[item.id] = el as HTMLElement"
@@ -309,10 +384,7 @@ const handleImageLoad = (itemId: string) => {
                 </div>
               </div>
             </div>
-            <div
-              v-else
-              style="filter: blur(0px); opacity: 1; transform: none;"
-            />
+            <div v-else />
           </div>
         </div>
       </div>
@@ -329,5 +401,29 @@ const handleImageLoad = (itemId: string) => {
 /* Exact transition matching original */
 .group[data-active="true"] [role="region"] {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* -------------------------------------------------------------------------- */
+/*  Animations: JS-controlled inline styles with transitions (matches reference) */
+/*  Reference uses inline styles set by JS, then CSS transitions animate them    */
+/* -------------------------------------------------------------------------- */
+
+/* Letter animation - matches reference: transition on all properties */
+.whitespace-pre-wrap .inline-block {
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+/* Description blur + slide animation - matches reference */
+.sm\\:w-96 {
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter, transform;
+}
+
+/* Accordion item blur + slide animation - matches reference */
+/* BOTH wrapper divs animate: first (button) and second (panel) */
+.group > div {
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, filter, transform;
 }
 </style>
