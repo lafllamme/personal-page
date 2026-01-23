@@ -128,19 +128,10 @@ useIntersectionObserver(
 
 /* Animation timing - Everything starts simultaneously with staggered delays */
 const letterDelay = (i: number) => i * 50 // ms - Character stagger (30ms per char)
-const descWordDelay = (i: number) => i * 45 // ms - Word stagger (30ms per word)
+const descWordDelay = (i: number) => i * 60 // ms - Word stagger (30ms per word)
 const itemDelay = (i: number) => i * 150 // ms - Item stagger (60ms per item, starts immediately)
 
-/* Split description into first line and body for more accurate animation */
-const descLines = computed(() => {
-  const words = (props.description || '').split(/\s+/)
-  // use the first 5 words as the prominent line, remainder as the body
-  const firstCount = Math.min(5, words.length)
-  return [
-    words.slice(0, firstCount),
-    words.slice(firstCount),
-  ]
-})
+const descWords = computed(() => (props.description || '').split(/\s+/))
 
 /* Track which elements should be animated (staggered) */
 const animatedLetters = ref<Record<number, boolean>>({})
@@ -158,7 +149,7 @@ watch(isSectionVisible, (visible) => {
 
   nextTick(() => {
     const titleLength = props.title?.length ?? 0
-    const totalDescWords = descLines.value[0].length + descLines.value[1].length
+    const totalDescWords = descWords.value.length
 
     // ALL animations start simultaneously with staggered delays
     // Heading characters
@@ -267,13 +258,13 @@ function handleImageLoad(itemId: string) {
               </span>
             </span>
           </h1>
-          <!-- Description (split into two lines) -->
+          <!-- Description -->
           <div class="w-full pt-4 sm:w-96 space-y-1.5 sm:pt-0">
-            <span class="flex flex-wrap whitespace-pre-wrap">
-              <span class="sr-only">{{ descLines[0].join(' ') }}</span>
+            <span class="flex flex-wrap whitespace-pre-wrap text-xs">
+              <span class="sr-only">{{ descWords.join(' ') }}</span>
               <span
-                v-for="(word, idx) in descLines[0]"
-                :key="`desc1-${idx}`"
+                v-for="(word, idx) in descWords"
+                :key="`desc-${idx}`"
                 aria-hidden="true"
                 class="inline-flex overflow-hidden"
               >
@@ -281,23 +272,7 @@ function handleImageLoad(itemId: string) {
                   <span
                     class="inline-block transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                     :style="!animatedDescWords[idx] ? 'transform: translateY(-100%)' : 'transform: none'"
-                  >{{ word }}{{ idx < descLines[0].length - 1 ? ' ' : '' }}</span>
-                </span>
-              </span>
-            </span>
-            <span class="flex flex-wrap whitespace-pre-wrap text-xs">
-              <span class="sr-only">{{ descLines[1].join(' ') }}</span>
-              <span
-                v-for="(word, idx2) in descLines[1]"
-                :key="`desc2-${idx2}`"
-                aria-hidden="true"
-                class="inline-flex overflow-hidden"
-              >
-                <span class="relative whitespace-pre-wrap">
-                  <span
-                    class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-                    :style="!animatedDescWords[descLines[0].length + idx2] ? 'transform: translateY(-100%)' : 'transform: none'"
-                  >{{ word }}{{ idx2 < descLines[1].length - 1 ? ' ' : '' }}</span>
+                  >{{ word }}{{ idx < descWords.length - 1 ? ' ' : '' }}</span>
                 </span>
               </span>
             </span>
