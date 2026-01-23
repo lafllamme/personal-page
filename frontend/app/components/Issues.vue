@@ -127,9 +127,9 @@ useIntersectionObserver(
 )
 
 /* Animation timing - Everything starts simultaneously with staggered delays */
-const letterDelay = (i: number) => i * 30 // ms - Character stagger (30ms per char)
-const descWordDelay = (i: number) => i * 30 // ms - Word stagger (30ms per word)
-const itemDelay = (i: number) => i * 60 // ms - Item stagger (60ms per item, starts immediately)
+const letterDelay = (i: number) => i * 50 // ms - Character stagger (30ms per char)
+const descWordDelay = (i: number) => i * 45 // ms - Word stagger (30ms per word)
+const itemDelay = (i: number) => i * 150 // ms - Item stagger (60ms per item, starts immediately)
 
 /* Split description into first line and body for more accurate animation */
 const descLines = computed(() => {
@@ -258,7 +258,7 @@ function handleImageLoad(itemId: string) {
                 aria-hidden="true"
                 class="inline-flex overflow-hidden"
               >
-                <span class="whitespace-pre-wrap relative">
+                <span class="relative whitespace-pre-wrap">
                   <span
                     class="inline-block transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                     :style="!animatedLetters[index] ? 'transform: translateY(100%)' : 'transform: none'"
@@ -277,7 +277,7 @@ function handleImageLoad(itemId: string) {
                 aria-hidden="true"
                 class="inline-flex overflow-hidden"
               >
-                <span class="whitespace-pre-wrap relative">
+                <span class="relative whitespace-pre-wrap">
                   <span
                     class="inline-block transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                     :style="!animatedDescWords[idx] ? 'transform: translateY(-100%)' : 'transform: none'"
@@ -293,7 +293,7 @@ function handleImageLoad(itemId: string) {
                 aria-hidden="true"
                 class="inline-flex overflow-hidden"
               >
-                <span class="whitespace-pre-wrap relative">
+                <span class="relative whitespace-pre-wrap">
                   <span
                     class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                     :style="!animatedDescWords[descLines[0].length + idx2] ? 'transform: translateY(-100%)' : 'transform: none'"
@@ -317,7 +317,7 @@ function handleImageLoad(itemId: string) {
           >
             <!-- Button wrapper - animates with blur + slide -->
             <div
-              class="transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+              class="transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
               :style="!animatedItems[itemIndex] ? 'filter: blur(20px); opacity: 0; transform: translateY(40px)' : 'filter: blur(0px); opacity: 1; transform: none'"
             >
               <button
@@ -339,7 +339,7 @@ function handleImageLoad(itemId: string) {
 
             <!-- Expanded Panel wrapper - also animates with blur + slide -->
             <div
-              class="transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+              class="transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
               :style="!animatedItems[itemIndex] ? 'filter: blur(20px); opacity: 0; transform: translateY(40px)' : 'filter: blur(0px); opacity: 1; transform: none'"
             >
               <div
