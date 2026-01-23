@@ -223,7 +223,6 @@ function handleImageLoad(itemId: string) {
     updatePanelHeight(itemId)
   })
 }
-
 </script>
 
 <template>
@@ -296,7 +295,7 @@ function handleImageLoad(itemId: string) {
                 type="button"
                 :aria-expanded="isExpanded(item.id)"
                 :data-active="isExpanded(item.id) ? 'true' : undefined"
-                class="data-active:bg-transparent relative w-full flex cursor-pointer items-center justify-between gap-5 border-t-2 border-pureBlack p-0 py-2 text-left text-sm color-pureBlack transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] dark:border-pureWhite hover:bg-transparent sm:text-base dark:color-pureWhite hover:color-pureBlack hover:no-underline dark:hover:color-pureWhite"
+                class="data-active:bg-transparent relative w-full flex cursor-pointer items-center justify-between gap-5 border-t-2 border-pureBlack p-0 py-2 text-left text-sm transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] dark:border-pureWhite hover:bg-transparent sm:text-base hover:no-underline"
                 @click="toggleItem(item.id)"
               >
                 <h1 class="font-manrope text-xl font-medium uppercase md:text-6xl sm:text-4xl">
@@ -326,7 +325,7 @@ function handleImageLoad(itemId: string) {
               >
                 <div
                   :ref="el => contentRefs[item.id] = el as HTMLElement"
-                  class="rounded-lg bg-pureWhite p-4 space-y-2 dark:bg-pureBlack sm:p-10"
+                  class="rounded-lg p-4 space-y-2 sm:p-10"
                   style="clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0% 100%);"
                 >
                   <div class="grid justify-between gap-4 sm:grid-cols-2">
@@ -372,9 +371,9 @@ function handleImageLoad(itemId: string) {
                       class="relative"
                     >
                       <div
-                        class="group inline-block w-full [perspective:1000px]"
+                        class="group [perspective:1000px] inline-block w-full"
                       >
-                        <div class="relative h-64 w-full overflow-hidden rounded-md [transform-style:preserve-3d] transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] shadow-[0_12px_30px_rgba(0,0,0,0.16)] will-change-transform group-hover:[transform:rotateX(5deg)_rotateY(-8deg)_scale(1.05)] group-hover:shadow-[-20px_30px_60px_rgba(0,0,0,0.25)] motion-reduce:transition-none sm:h-96">
+                        <div class="[transform-style:preserve-3d] relative h-64 w-full overflow-hidden rounded-md shadow-[0_12px_30px_rgba(0,0,0,0.16)] transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform group-hover:[transform:rotateX(5deg)_rotateY(-8deg)_scale(1.05)] sm:h-96 group-hover:shadow-[-20px_30px_60px_rgba(0,0,0,0.25)] motion-reduce:transition-none">
                           <img
                             :src="item.imageUrl"
                             :alt="item.heading"
@@ -382,7 +381,7 @@ function handleImageLoad(itemId: string) {
                             loading="lazy"
                             @load="handleImageLoad(item.id)"
                           >
-                          <span class="absolute bottom-4 left-4 z-10 h-12 w-12 flex items-center justify-center border border-pureBlack/10 rounded-lg bg-pureWhite/95 shadow-[0_4px_24px_rgba(0,0,0,0.1)] transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform group-hover:[transform:translateZ(60px)_scale(1.2)_rotate(360deg)] group-hover:bg-pureBlack/90 group-hover:color-pureWhite motion-reduce:transition-none dark:border-pureWhite/10 dark:bg-pureWhite dark:color-pureBlack sm:h-20 sm:w-20">
+                          <span class="absolute bottom-4 left-4 z-10 h-12 w-12 flex items-center justify-center border border-pureBlack/10 rounded-lg bg-pureWhite/95 color-pureBlack shadow-[0_4px_24px_rgba(0,0,0,0.1)] transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform group-hover:[transform:translateZ(60px)_scale(1.2)_rotate(360deg)] sm:h-20 sm:w-20 dark:border-pureWhite/15 dark:bg-pureBlack group-hover:bg-pureBlack/90 dark:color-pureWhite group-hover:color-pureWhite motion-reduce:transition-none dark:group-hover:bg-pureWhite dark:group-hover:color-pureBlack">
                             <Icon
                               name="lucide:arrow-up-right"
                               class="h-8 w-8 sm:h-12 sm:w-12"
