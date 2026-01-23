@@ -95,7 +95,7 @@ const props = withDefaults(defineProps<{
 
 const expandedId = ref<string | null>(props.items[2]?.id || null)
 
-const toggleItem = (id: string) => {
+function toggleItem(id: string) {
   expandedId.value = expandedId.value === id ? null : id
 }
 
@@ -116,7 +116,8 @@ useIntersectionObserver(
       if (!isSectionVisible.value) {
         isSectionVisible.value = true
       }
-    } else {
+    }
+    else {
       isSectionVisible.value = false
       animatedLetters.value = {}
       animatedDesc.value = false
@@ -145,24 +146,24 @@ watch(isSectionVisible, (visible) => {
     animatedItems.value = {}
     return
   }
-  
+
   nextTick(() => {
     const titleLength = props.title?.length ?? 0
-    
+
     // Title startet sofort
     for (let i = 0; i < titleLength; i++) {
       setTimeout(() => {
         animatedLetters.value[i] = true
       }, letterDelay(i))
     }
-    
+
     // Items starten zeitgleich mit Title (nach kurzer Verzögerung)
     props.items.forEach((_, i) => {
       setTimeout(() => {
         animatedItems.value[i] = true
       }, itemStartDelay + (i * itemStagger))
     })
-    
+
     // Description kommt später (nach den ersten Items)
     setTimeout(() => {
       animatedDesc.value = true
@@ -174,7 +175,7 @@ watch(isSectionVisible, (visible) => {
 const panelRefs = ref<Record<string, HTMLElement | null>>({})
 const contentRefs = ref<Record<string, HTMLElement | null>>({})
 
-const updatePanelHeight = (itemId: string) => {
+function updatePanelHeight(itemId: string) {
   if (contentRefs.value[itemId] && panelRefs.value[itemId] && isExpanded(itemId)) {
     const content = contentRefs.value[itemId]
     const panel = panelRefs.value[itemId]
@@ -192,14 +193,14 @@ watch(expandedId, (newId, oldId) => {
         panel.style.height = '0px'
       }
     }
-    
+
     if (newId) {
       updatePanelHeight(newId)
     }
   })
 })
 
-const resizeHandler = () => {
+function resizeHandler() {
   if (expandedId.value)
     updatePanelHeight(expandedId.value)
 }
@@ -219,7 +220,7 @@ onUnmounted(() => {
     window.removeEventListener('resize', resizeHandler)
 })
 
-const handleImageLoad = (itemId: string) => {
+function handleImageLoad(itemId: string) {
   nextTick(() => {
     updatePanelHeight(itemId)
   })
@@ -229,24 +230,24 @@ const handleImageLoad = (itemId: string) => {
 <template>
   <section
     ref="sectionRef"
-    class="flex justify-center items-center min-h-screen rounded-md"
+    class="min-h-screen flex items-center justify-center rounded-md"
     :class="{ 'is-visible': isSectionVisible }"
   >
     <div class="w-full">
-      <div class="sm:p-10 p-6 mx-auto bg-pureWhite dark:bg-pureBlack color-pureBlack dark:color-pureWhite min-h-screen w-full shadow-xs">
+      <div class="shadow-xs mx-auto min-h-screen w-full bg-pureWhite p-6 color-pureBlack dark:bg-pureBlack sm:p-10 dark:color-pureWhite">
         <!-- Header Section -->
-        <article class="max-w-7xl mx-auto sm:flex justify-between items-end py-10 gap-4">
-          <h1 class="md:text-8xl text-6xl font-medium color-pureBlack/80 dark:color-pureWhite/80 uppercase font-['Poppins','Poppins_Fallback',sans-serif]">
+        <article class="mx-auto max-w-7xl items-end justify-between gap-4 py-10 sm:flex">
+          <h1 class="font-manrope text-6xl color-pureBlack/80 font-medium uppercase md:text-8xl dark:color-pureWhite/80">
             <span class="flex flex-wrap whitespace-pre-wrap">
               <span class="sr-only">{{ title }}</span>
               <span aria-hidden="true" class="inline-flex overflow-hidden">
                 <span
                   v-for="(char, index) in title.split('')"
                   :key="index"
-                  class="whitespace-pre-wrap relative"
+                  class="relative whitespace-pre-wrap"
                 >
                   <span
-                    class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,transform]"
+                    class="will-change-[opacity,transform] inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
                     :class="{
                       'opacity-0 translate-y-full': !animatedLetters[index],
                       'opacity-100 translate-y-0': animatedLetters[index],
@@ -257,49 +258,49 @@ const handleImageLoad = (itemId: string) => {
             </span>
           </h1>
           <div
-            class="sm:w-96 space-y-1.5 sm:pt-0 pt-4 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,filter,transform]"
+            class="will-change-[opacity,filter,transform] pt-4 transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] sm:w-96 space-y-1.5 sm:pt-0"
             :class="{
               'opacity-0 blur-[20px] translate-y-[40px]': !animatedDesc,
               'opacity-100 blur-0 translate-y-0': animatedDesc,
             }"
           >
-            <p class="text-justify sm:text-sm text-xs font-['Poppins','Poppins_Fallback',sans-serif]">
+            <p class="font-clash-regular text-justify text-xs sm:text-sm">
               {{ description }}
             </p>
           </div>
         </article>
 
         <!-- Accordion Section -->
-        <div class="mt-3 max-w-7xl mx-auto">
+        <div class="mx-auto mt-3 max-w-7xl">
           <div
             v-for="(item, itemIndex) in items"
             :key="item.id"
+            class="group mb-0 w-full overflow-visible rounded-none bg-transparent py-2"
             :class="[
-              'group mb-0 rounded-none overflow-visible bg-transparent w-full py-2',
               isExpanded(item.id) && 'data-active',
             ]"
             :data-active="isExpanded(item.id) ? 'true' : undefined"
           >
             <!-- Button wrapper - animates with blur + slide -->
             <div
-              class="transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,filter,transform]"
+              class="will-change-[opacity,filter,transform] transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
               :class="{
                 'opacity-0 blur-[20px] translate-y-[40px]': !animatedItems[itemIndex],
                 'opacity-100 blur-0 translate-y-0': animatedItems[itemIndex],
               }"
             >
               <button
+                :id="`accordion-header-item-${item.id}`"
                 type="button"
                 :aria-expanded="isExpanded(item.id)"
                 :data-active="isExpanded(item.id) ? 'true' : undefined"
-                :id="`accordion-header-item-${item.id}`"
-                class="cursor-pointer w-full transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] font-semibold hover:color-pureBlack dark:hover:color-pureWhite text-left hover:no-underline gap-5 border-t-2 border-pureBlack dark:border-pureWhite p-0 flex justify-between items-center py-2 relative data-active:bg-transparent hover:bg-transparent color-pureBlack dark:color-pureWhite sm:text-base text-sm font-['Poppins','Poppins_Fallback',sans-serif]"
+                class="data-active:bg-transparent relative w-full flex cursor-pointer items-center justify-between gap-5 border-t-2 border-pureBlack p-0 py-2 text-left text-sm color-pureBlack font-semibold font-['Poppins','Poppins_Fallback',sans-serif] transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] dark:border-pureWhite hover:bg-transparent sm:text-base dark:color-pureWhite hover:color-pureBlack hover:no-underline dark:hover:color-pureWhite"
                 @click="toggleItem(item.id)"
               >
-                <h1 class="md:text-6xl sm:text-4xl text-xl font-medium uppercase font-['Poppins','Poppins_Fallback',sans-serif]">
+                <h1 class="font-manrope text-xl font-medium uppercase md:text-6xl sm:text-4xl">
                   {{ item.heading }}
                 </h1>
-                <p class="md:text-2xl sm:text-xl text-sm space-x-2 gap-10 w-60 font-medium font-['Poppins','Poppins_Fallback',sans-serif]">
+                <p class="geist-regular w-60 gap-10 text-sm font-medium space-x-2 md:text-2xl sm:text-xl">
                   {{ item.description }}
                 </p>
               </button>
@@ -307,48 +308,48 @@ const handleImageLoad = (itemId: string) => {
 
             <!-- Expanded Panel wrapper - also animates with blur + slide -->
             <div
-              class="transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,filter,transform]"
+              class="will-change-[opacity,filter,transform] transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
               :class="{
                 'opacity-0 blur-[20px] translate-y-[40px]': !animatedItems[itemIndex],
                 'opacity-100 blur-0 translate-y-0': animatedItems[itemIndex],
               }"
             >
               <div
+                :id="`accordion-panel-item-${item.id}`"
                 :ref="el => panelRefs[item.id] = el as HTMLElement"
                 :data-active="isExpanded(item.id) ? 'true' : undefined"
                 role="region"
-                :id="`accordion-panel-item-${item.id}`"
                 :aria-labelledby="`accordion-header-item-${item.id}`"
-                class="color-pureBlack dark:color-pureWhite space-y-4 w-full mx-auto bg-pureWhite dark:bg-pureBlack data-active:bg-pureWhite dark:data-active:bg-pureBlack px-0 rounded-lg overflow-hidden transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] font-['Poppins','Poppins_Fallback',sans-serif]"
+                class="data-active:bg-pureWhite dark:data-active:bg-pureBlack mx-auto w-full overflow-hidden rounded-lg bg-pureWhite px-0 color-pureBlack font-['Poppins','Poppins_Fallback',sans-serif] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] space-y-4 dark:bg-pureBlack dark:color-pureWhite"
                 :style="{
                   height: isExpanded(item.id) ? (contentRefs[item.id] ? `${contentRefs[item.id].scrollHeight}px` : 'auto') : '0px',
                 }"
               >
                 <div
                   :ref="el => contentRefs[item.id] = el as HTMLElement"
-                  class="space-y-2 bg-pureWhite dark:bg-pureBlack sm:p-10 p-4 rounded-lg"
+                  class="rounded-lg bg-pureWhite p-4 space-y-2 dark:bg-pureBlack sm:p-10"
                   style="clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0% 100%);"
                 >
-                  <div class="gap-4 justify-between grid sm:grid-cols-2">
+                  <div class="grid justify-between gap-4 sm:grid-cols-2">
                     <!-- Left Column: Text Content -->
-                    <div class="sm:w-[80%] w-full space-y-10">
+                    <div class="w-full sm:w-[80%] space-y-10">
                       <span class="flex flex-col space-y-2">
                         <span
                           v-if="item.year"
-                          class="text-sm sm:text-base italic font-normal font-['Poppins','Poppins_Fallback',sans-serif]"
+                          class="text-sm font-normal font-['Poppins','Poppins_Fallback',sans-serif] italic sm:text-base"
                         >
                           {{ item.year }}
                         </span>
                         <span
                           v-if="item.role"
-                          class="sm:text-xl uppercase font-medium font-['Poppins','Poppins_Fallback',sans-serif]"
+                          class="font-medium font-['Poppins','Poppins_Fallback',sans-serif] uppercase sm:text-xl"
                         >
                           {{ item.role }}
                         </span>
                       </span>
                       <p
                         v-if="item.content"
-                        class="text-sm sm:text-base font-['Poppins','Poppins_Fallback',sans-serif]"
+                        class="text-sm font-['Poppins','Poppins_Fallback',sans-serif] sm:text-base"
                       >
                         {{ item.content }}
                       </p>
@@ -359,7 +360,7 @@ const handleImageLoad = (itemId: string) => {
                         <span
                           v-for="tag in item.tags"
                           :key="tag"
-                          class="px-2 py-1 rounded-md bg-pureBlack dark:bg-pureWhite color-pureWhite dark:color-pureBlack border border-pureBlack dark:border-pureWhite font-['Poppins','Poppins_Fallback',sans-serif]"
+                          class="border border-pureBlack rounded-md bg-pureBlack px-2 py-1 color-pureWhite font-['Poppins','Poppins_Fallback',sans-serif] dark:border-pureWhite dark:bg-pureWhite dark:color-pureBlack"
                         >
                           {{ tag }}
                         </span>
@@ -374,14 +375,14 @@ const handleImageLoad = (itemId: string) => {
                       <img
                         :src="item.imageUrl"
                         :alt="item.heading"
-                        class="w-full sm:h-96 h-64 object-cover rounded-md"
+                        class="h-64 w-full rounded-md object-cover sm:h-96"
                         loading="lazy"
                         @load="handleImageLoad(item.id)"
                       >
-                      <span class="absolute bottom-4 left-4 sm:w-20 sm:h-20 w-12 h-12 bg-pureWhite dark:bg-pureBlack z-10 rounded-lg flex items-center justify-center border border-pureBlack/10 dark:border-pureWhite/10">
+                      <span class="absolute bottom-4 left-4 z-10 h-12 w-12 flex items-center justify-center border border-pureBlack/10 rounded-lg bg-pureWhite sm:h-20 sm:w-20 dark:border-pureWhite/10 dark:bg-pureBlack">
                         <Icon
                           name="lucide:arrow-up-right"
-                          class="color-pureBlack dark:color-pureWhite sm:h-12 sm:w-12 h-8 w-8"
+                          class="h-8 w-8 color-pureBlack sm:h-12 sm:w-12 dark:color-pureWhite"
                           aria-hidden="true"
                         />
                       </span>
