@@ -45,7 +45,7 @@ const props = withDefaults(defineProps<{
       heading: 'ISSUE/N17',
       description: 'Silly myths about wooden houses',
       year: '(2018-2019)',
-      role: 'Product designer',
+      role: 'PRODUCT DESIGNER',
       content: 'Absolutely! We offer seamless integration with CRMs, ERPs, databases, APIs, and other third-party tools your business relies on.',
       tags: ['AI', 'Design', 'Development'],
       imageUrl: 'https://images.unsplash.com/photo-1751704549146-6cae1f348143?q=80&w=880&auto=format&fit=crop',
@@ -126,10 +126,10 @@ useIntersectionObserver(
   { threshold: 0.1, rootMargin: '0px' },
 )
 
-/* Animation timing - refined for smoother, more alive feel */
-const letterDelay = (i: number) => i * 40 // ms - slightly slower for smoother feel
-const descDelay = (props.title?.length ?? 0) * 40 + 200 // ms after title
-const itemDelay = (i: number) => i * 60 // ms - slower stagger for smoother slide-in
+/* Animation timing - matched to reference page exactly */
+const letterDelay = (i: number) => i * 50 // ms - matched timing
+const descDelay = (props.title?.length ?? 0) * 50 + 300 // ms after title completes
+const itemDelay = (i: number) => descDelay + 200 + (i * 80) // ms - start after desc, staggered
 
 /* Track which elements should be animated (staggered) */
 const animatedLetters = ref<Record<number, boolean>>({})
@@ -234,7 +234,7 @@ const handleImageLoad = (itemId: string) => {
     <div class="w-full">
       <div class="sm:p-10 p-6 mx-auto bg-pureWhite dark:bg-pureBlack color-pureBlack dark:color-pureWhite min-h-screen w-full shadow-xs">
         <!-- Header Section -->
-        <article class="max-w-[1280px] mx-auto sm:flex justify-between items-end py-10 gap-4 px-0 sm:mx-[76px] mx-4 max-sm:mx-4">
+        <article class="max-w-7xl mx-auto sm:flex justify-between items-end py-10 gap-4">
           <h1 class="md:text-8xl text-6xl font-medium color-pureBlack/80 dark:color-pureWhite/80 uppercase font-['Poppins','Poppins_Fallback',sans-serif]">
             <span class="flex flex-wrap whitespace-pre-wrap">
               <span class="sr-only">{{ title }}</span>
@@ -245,7 +245,7 @@ const handleImageLoad = (itemId: string) => {
                   class="whitespace-pre-wrap relative"
                 >
                   <span
-                    class="inline-block transition-all duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,transform]"
+                    class="inline-block transition-all duration-[1000ms] ease-[cubic-bezier(0.16,1,0.3,1)] will-change-[opacity,transform]"
                     :class="{
                       'opacity-0 translate-y-[0.5em]': !animatedLetters[index],
                       'opacity-100 translate-y-0': animatedLetters[index],
@@ -269,7 +269,7 @@ const handleImageLoad = (itemId: string) => {
         </article>
 
         <!-- Accordion Section -->
-        <div class="mt-3 max-w-[1280px] mx-auto sm:mx-[76px] max-sm:mx-4">
+        <div class="mt-3 max-w-7xl mx-auto">
           <div
             v-for="(item, itemIndex) in items"
             :key="item.id"
