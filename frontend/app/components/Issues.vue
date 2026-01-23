@@ -237,10 +237,10 @@ function handleImageLoad(itemId: string) {
     :class="{ 'is-visible': isSectionVisible }"
   >
     <div class="w-full">
-      <div class="shadow-xs mx-auto min-h-screen w-full bg-pureWhite p-6 color-pureBlack dark:bg-pureBlack sm:p-10 dark:color-pureWhite">
+      <div class="mx-auto min-h-screen w-full color-pureBlack dark:color-pureWhite">
         <!-- Header Section -->
-        <article class="mx-auto max-w-7xl items-end justify-between gap-4 py-10 sm:flex">
-          <h1 class="font-manrope text-6xl color-pureBlack/80 font-medium uppercase md:text-8xl dark:color-pureWhite/80">
+        <article class="items-end justify-between gap-4 py-10 sm:flex">
+          <h1 class="font-manrope text-6xl color-teal-11 font-semibold uppercase md:text-8xl dark:color-teal-10">
             <span class="flex flex-wrap whitespace-pre-wrap">
               <span class="sr-only">{{ title }}</span>
               <span
@@ -260,7 +260,7 @@ function handleImageLoad(itemId: string) {
           </h1>
           <!-- Description -->
           <div class="w-full pt-4 sm:w-96 space-y-1.5 sm:pt-0">
-            <span class="flex flex-wrap whitespace-pre-wrap text-xs">
+            <span class="font-clash-regular flex flex-wrap whitespace-pre-wrap text-justify text-xs leading-relaxed tracking-wide sm:text-sm">
               <span class="sr-only">{{ descWords.join(' ') }}</span>
               <span
                 v-for="(word, idx) in descWords"
@@ -280,11 +280,11 @@ function handleImageLoad(itemId: string) {
         </article>
 
         <!-- Accordion Section -->
-        <div class="mx-auto mt-3 max-w-7xl">
+        <div class="mt-3">
           <div
             v-for="(item, itemIndex) in items"
             :key="item.id"
-            class="group mb-0 w-full overflow-visible rounded-none bg-transparent py-2"
+            class="group mb-0 w-full overflow-visible rounded-none py-2"
             :class="[
               isExpanded(item.id) && 'data-active',
             ]"
@@ -292,7 +292,7 @@ function handleImageLoad(itemId: string) {
           >
             <!-- Button wrapper - animates with blur + slide -->
             <div
-              class="transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
+              class="transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:bg-jade-5 dark:group-hover:bg-teal-3"
               :style="!animatedItems[itemIndex] ? 'filter: blur(20px); opacity: 0; transform: translateY(40px)' : 'filter: blur(0px); opacity: 1; transform: none'"
             >
               <button
@@ -300,13 +300,13 @@ function handleImageLoad(itemId: string) {
                 type="button"
                 :aria-expanded="isExpanded(item.id)"
                 :data-active="isExpanded(item.id) ? 'true' : undefined"
-                class="data-active:bg-transparent relative w-full flex cursor-pointer items-center justify-between gap-5 border-t-2 border-pureBlack p-0 py-2 text-left text-sm color-pureBlack font-semibold font-['Poppins','Poppins_Fallback',sans-serif] transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] dark:border-pureWhite hover:bg-transparent sm:text-base dark:color-pureWhite hover:color-pureBlack hover:no-underline dark:hover:color-pureWhite"
+                class="data-active:bg-transparent relative w-full flex cursor-pointer items-center justify-between gap-5 border-t-2 border-pureBlack p-0 py-2 text-left text-sm color-pureBlack transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] dark:border-pureWhite hover:bg-transparent sm:text-base dark:color-pureWhite hover:color-pureBlack hover:no-underline dark:hover:color-pureWhite"
                 @click="toggleItem(item.id)"
               >
                 <h1 class="font-manrope text-xl font-medium uppercase md:text-6xl sm:text-4xl">
                   {{ item.heading }}
                 </h1>
-                <p class="geist-regular w-60 gap-10 text-sm font-medium space-x-2 md:text-2xl sm:text-xl">
+                <p class="geist-regular w-60 gap-10 text-sm font-normal tracking-normal space-x-2 md:text-2xl sm:text-xl">
                   {{ item.description }}
                 </p>
               </button>
