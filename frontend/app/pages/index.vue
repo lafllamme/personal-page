@@ -9,6 +9,7 @@ import {
   useThrottleFn,
   useWindowSize,
 } from '@vueuse/core'
+import { Motion } from 'motion-v'
 import Issues from '@/components/Issues.vue'
 import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
 import HorizontalScroll from '@/components/ui/Scroll/HorizontalScroll/HorizontalScroll.vue'
@@ -30,7 +31,9 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
 const headlineRef = ref<HTMLElement | null>(null)
+const headlineMotionRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
+const isHeadlineInView = ref(false)
 const isMetaballsActive = ref(true)
 const isMenuOpen = useState<boolean>('osmo-menu-open', () => false)
 const heroHeightPx = ref(0)
@@ -53,6 +56,15 @@ useIntersectionObserver(
     updateHeroVisibility(Boolean(entry?.isIntersecting))
   },
   { threshold: 0.3 },
+)
+
+useIntersectionObserver(
+  headlineMotionRef,
+  ([entry]) => {
+    if (entry?.isIntersecting)
+      isHeadlineInView.value = true
+  },
+  { rootMargin: '75% 0px', threshold: 0 },
 )
 
 const METABALLS_THRESHOLD = 0.2
@@ -80,6 +92,17 @@ const { pause: pausePointerRaf, resume: resumePointerRaf } = useRafFn(() => {
   displayPointerX.value += (pointerX.value - displayPointerX.value) * ease
   displayPointerY.value += (pointerY.value - displayPointerY.value) * ease
 }, { immediate: false, fpsLimit: 24 })
+const headlineMotion = {
+  initial: { y: '100%' },
+  enter: {
+    y: '0%',
+    transition: {
+      duration: 0.75,
+      ease: [0.33, 1, 0.68, 1],
+      delay: 2.5,
+    },
+  },
+}
 
 function updateHeroHeight() {
   if (!import.meta.client)
@@ -166,10 +189,19 @@ watch(shouldAnimatePointer, (active) => {
       </div>
 
       <!-- Fallthrough headline for animation     -->
-      <h1 ref="headlineRef" class="pointer-events-none relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12">
-        <span class="zalando-sans-expanded block font-semibold <sm:text-[clamp(3.4rem,11vw,6rem)]">Web evolves.</span>
-        <span class="font-baskerville block color-pureBlack/85 italic <sm:text-[clamp(2.2rem,7vw,3.8rem)] dark:color-pureWhite/85">We track it.</span>
-      </h1>
+      <div ref="headlineMotionRef" class="overflow-hidden">
+        <Motion
+          ref="headlineRef"
+          as="h1"
+          class="pointer-events-none relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12"
+          :variants="headlineMotion"
+          initial="initial"
+          :animate="isHeadlineInView ? 'enter' : 'initial'"
+        >
+          <span class="zalando-sans-expanded block font-semibold <sm:text-[clamp(3.4rem,11vw,6rem)]">Web evolves.</span>
+          <span class="font-baskerville block color-pureBlack/85 italic <sm:text-[clamp(2.2rem,7vw,3.8rem)] dark:color-pureWhite/85">We track it.</span>
+        </Motion>
+      </div>
 
       <!--  Indicator    -->
       <div class="absolute bottom-24 left-1/2 z-10 flex flex-col items-center gap-2 -translate-x-1/2">
