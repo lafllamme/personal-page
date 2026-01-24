@@ -29,19 +29,20 @@ export const avatars: OsmoAvatar[] = [
 
 export const ourProducts: OsmoMenuItem[] = [
   { name: 'The Vault', href: '#' },
-  { name: 'Page Transition Course', href: '#', badge: 'WIP' },
-  { name: 'Icon Library', href: '#' },
-  { name: 'Community', href: '#' },
+  { name: 'Animation Concepts', href: '#', badge: 'WIP' },
+  { name: 'UI Libraries', href: '#' },
+  { name: 'Daily Brief', href: '#' },
 ]
 
 export const explore: OsmoMenuItem[] = [
-  { name: 'Osmo Showcase', href: '/showcase' },
+  { name: 'Creative Studio', href: '#' },
+  { name: 'Design Lab', href: '#' },
   { name: 'Collection', href: '/collection', count: 145 },
-  { name: 'Pricing', href: '/pricing' },
+  { name: 'Editorial', href: '/about' },
 ]
 
 export const easings: OsmoMenuItem[] = [
-  { name: 'Easings', href: '#', badge: 'SOON' },
+  { name: 'Trend Reports', href: '#', badge: 'SOON' },
 ]
 
 export const socialLinks: OsmoSocialLink[] = [
