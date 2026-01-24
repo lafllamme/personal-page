@@ -2,6 +2,7 @@
 import {
   breakpointsTailwind,
   useBreakpoints,
+  useEventListener,
   useIntersectionObserver,
   useMouse,
   useRafFn,
@@ -29,6 +30,16 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
+const heroHeightPx = ref(0)
+const lastWindowWidth = ref(0)
+const heroStyle = computed(() => {
+  if (!heroHeightPx.value)
+    return undefined
+
+  return {
+    '--hero-static-height': `${heroHeightPx.value}px`,
+  }
+})
 const updateHeroVisibility = useThrottleFn((visible: boolean) => {
   isHeroVisible.value = visible
 }, 150)
@@ -40,6 +51,31 @@ useIntersectionObserver(
   },
   { threshold: 0.3 },
 )
+
+function updateHeroHeight() {
+  if (!import.meta.client)
+    return
+
+  const rect = heroRef.value?.getBoundingClientRect()
+  const nextHeight = rect?.height || window.innerHeight
+  if (!nextHeight)
+    return
+
+  heroHeightPx.value = nextHeight
+  lastWindowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  updateHeroHeight()
+})
+
+useEventListener(window, 'resize', () => {
+  if (!import.meta.client)
+    return
+
+  if (window.innerWidth !== lastWindowWidth.value)
+    updateHeroHeight()
+})
 
 useRafFn(() => {
   if (!isHeroVisible.value || !isLgUp.value)
@@ -53,7 +89,11 @@ useRafFn(() => {
 
 <template>
   <section>
-    <section ref="heroRef" class="relative h-[100lvh] flex items-center justify-center <lg:select-none">
+    <section
+      ref="heroRef"
+      :style="heroStyle"
+      class="relative h-[var(--hero-static-height,100svh)] flex items-center justify-center <lg:select-none"
+    >
       <div v-if="isHeroVisible && isLgUp" class="pointer-events-auto absolute left-0 right-0 top-0 z-10 flex items-start justify-between text-xs -translate-y-full">
         <div class="font-reign flex items-center gap-2">
           <div class="h-2 w-2 animate-spin animate-duration-[9000ms] border border-teal-11 border-solid" />
