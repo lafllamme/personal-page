@@ -41,7 +41,6 @@ const headerTone = useState<'light' | 'dark'>(
   'osmo-header-tone',
   () => (colorMode.value === 'dark' ? 'dark' : 'light'),
 )
-const totalSlides = items.length
 
 function getHeaderOffset(): number {
   if (!import.meta.client)

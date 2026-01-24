@@ -41,11 +41,11 @@ defineProps<{
 }
 
 /* Open state - X shape */
-.osmo-hamburger[data-open="true"] .osmo-hamburger__bar:nth-child(1) {
+.osmo-hamburger[data-open='true'] .osmo-hamburger__bar:nth-child(1) {
   transform: translateY(0) rotate(-45deg) scaleX(0.75);
 }
 
-.osmo-hamburger[data-open="true"] .osmo-hamburger__bar:nth-child(2) {
+.osmo-hamburger[data-open='true'] .osmo-hamburger__bar:nth-child(2) {
   transform: translateY(0) rotate(45deg) scaleX(0.75);
 }
 </style>
