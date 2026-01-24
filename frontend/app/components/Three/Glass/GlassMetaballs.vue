@@ -50,8 +50,13 @@ const props = withDefaults(defineProps<{
    * - none: hide the built-in settings UI
    */
   controlsMode?: 'absolute' | 'fixed' | 'none'
+  /**
+   * External visibility gate (e.g. from page intersection observers).
+   */
+  active?: boolean
 }>(), {
   controlsMode: 'absolute',
+  active: true,
 })
 
 interface GlassBody {
@@ -134,6 +139,7 @@ const dpr = computed(() => Math.min(pixelRatio.value || 1, settings.perf.dprMax)
 const documentVisibility = useDocumentVisibility()
 const elementVisible = useElementVisibility(container)
 const isVisible = computed(() => elementVisible.value && documentVisibility.value === 'visible')
+const isActive = computed(() => isVisible.value && props.active)
 const renderMode = computed<RenderMode>(() => (isVisible.value ? 'always' : 'on-demand'))
 
 const raycaster = new Raycaster()
@@ -792,7 +798,7 @@ function stepSimulation({ delta, timestamp }: { delta: number, timestamp: number
 
 const { pause, resume } = useRafFn(stepSimulation, { immediate: false })
 
-watch(isVisible, (active) => {
+watch(isActive, (active) => {
   if (active)
     resume()
   else

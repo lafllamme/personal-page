@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
+import { useEventListener, useScroll } from '@vueuse/core'
 import { AnimatePresence, Motion } from 'motion-v'
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
@@ -16,6 +16,12 @@ const headerTone = useState<'light' | 'dark'>(
 const isHeaderHidden = useState<boolean>('osmo-header-hidden', () => false)
 const headerOffset = useState<number>('osmo-header-offset', () => 0)
 const isMenuOpen = ref(false)
+const menuOpenState = useState<boolean>('osmo-menu-open', () => false)
+const navBarRef = ref<HTMLElement | null>(null)
+const scrollTarget = ref<Window | null>(null)
+let menuStateTimeout: ReturnType<typeof setTimeout> | null = null
+const MENU_TRANSITION_FALLBACK_MS = 700
+const labelCharsCache = new Map<string, string[]>()
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -51,28 +57,76 @@ const avatarPositions = computed(() => {
 })
 
 const charStagger = 0.01
-const getLabelChars = (label: string) => Array.from(label)
+function getLabelChars(label: string) {
+  const cached = labelCharsCache.get(label)
+  if (cached)
+    return cached
+  const chars = Array.from(label)
+  labelCharsCache.set(label, chars)
+  return chars
+}
 function getCharStaggerStyle(index: number) {
   return {
     transitionDelay: `${index * charStagger}s`,
   }
 }
 
+const { y: scrollY } = useScroll(scrollTarget, { throttle: 100 })
+watch(scrollY, (value) => {
+  isScrolled.value = value > 50
+}, { immediate: true })
+
 onMounted(() => {
   if (!import.meta.client)
     return
-
-  const updateScrollState = () => {
-    isScrolled.value = window.scrollY > 50
-  }
-
-  updateScrollState()
-  useEventListener(window, 'scroll', updateScrollState, { passive: true })
+  scrollTarget.value = window
   useEventListener(document, 'keydown', handleKeydown)
 })
 
+useEventListener(navBarRef, 'transitionend', (event) => {
+  if (event.propertyName !== 'max-width')
+    return
+  if (!isMenuOpen.value)
+    return
+
+  menuOpenState.value = true
+  if (menuStateTimeout) {
+    clearTimeout(menuStateTimeout)
+    menuStateTimeout = null
+  }
+})
+
+watch(isMenuOpen, (next) => {
+  if (!import.meta.client || !navBarRef.value) {
+    menuOpenState.value = next
+    return
+  }
+
+  if (!next) {
+    menuOpenState.value = false
+    if (menuStateTimeout) {
+      clearTimeout(menuStateTimeout)
+      menuStateTimeout = null
+    }
+    return
+  }
+
+  if (menuStateTimeout)
+    clearTimeout(menuStateTimeout)
+  menuStateTimeout = window.setTimeout(() => {
+    menuOpenState.value = true
+  }, MENU_TRANSITION_FALLBACK_MS)
+}, { immediate: true })
+
 watch(colorMode, () => {
   headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
+})
+
+onBeforeUnmount(() => {
+  if (menuStateTimeout) {
+    clearTimeout(menuStateTimeout)
+    menuStateTimeout = null
+  }
 })
 </script>
 
@@ -101,7 +155,7 @@ watch(colorMode, () => {
       <!-- Nav bar wrapper -->
       <div class="osmo-nav-bar__wrap">
         <div class="osmo-nav-bar__width">
-          <div class="osmo-nav-bar">
+          <div ref="navBarRef" class="osmo-nav-bar">
             <!-- Background layers -->
             <div class="osmo-nav-bar__back">
               <div class="osmo-nav-bar__outline" />
