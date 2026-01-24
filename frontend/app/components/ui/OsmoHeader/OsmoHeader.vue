@@ -1224,8 +1224,8 @@ watch(colorMode, () => {
 .osmo-tag.is--wip {
   padding: 0.35em 0.6em 0.3em;
   border-radius: 0.125em;
-  background-color: #0bd8b6;
-  color: #1e1e1e;
+  background-color: #8023fe;
+  color: #fff;
   letter-spacing: 0.08em;
 }
 
