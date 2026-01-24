@@ -13,6 +13,7 @@ const shouldHideContent = computed(() => overlayVisible.value && !overlayExiting
 const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
 const bodyRef = ref<HTMLElement | null>(null)
 const isBodyScrollLocked = useScrollLock(bodyRef, false)
+const overlayDone = useState<boolean>('intro-overlay-done', () => false)
 const overlayDurationMs = 2000
 const overlayExitDurationMs = 1000
 const { start: startOverlayExit, stop: stopOverlayExit } = useTimeoutFn(() => {
@@ -21,6 +22,7 @@ const { start: startOverlayExit, stop: stopOverlayExit } = useTimeoutFn(() => {
 }, overlayDurationMs, { immediate: false })
 const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(() => {
   overlayVisible.value = false
+  overlayDone.value = true
   isBodyScrollLocked.value = false
   document.body.style.cursor = 'default'
   window.scrollTo(0, 0)
@@ -29,6 +31,7 @@ const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(() => {
 onMounted(() => {
   if (!import.meta.client)
     return
+  overlayDone.value = false
   bodyRef.value = document.body
   isBodyScrollLocked.value = true
   document.body.style.cursor = 'wait'
