@@ -102,10 +102,7 @@ watch([containerWidth, containerHeight, windowWidth, windowHeight], ([cw, ch, ww
   }
 
   const widthDelta = Math.abs(nextW - stableWidth.value)
-  const heightDelta = Math.abs(nextH - stableHeight.value)
-  const shouldUpdate = widthDelta > 80 || heightDelta > 80
-
-  if (shouldUpdate) {
+  if (widthDelta > 24) {
     stableWidth.value = nextW
     stableHeight.value = nextH
   }
