@@ -90,7 +90,7 @@ onBeforeUnmount(() => {
   <Motion
     as="div"
     :class="useClsx(
-      'fixed inset-0 z-[9999] flex h-100vh w-100vw items-center justify-center bg-teal-9',
+      'fixed inset-0 z-[9999] flex h-100vh w-100vw items-center justify-center bg-teal-8',
       classNames,
     )"
     :initial="{ y: 0 }"
@@ -100,18 +100,18 @@ onBeforeUnmount(() => {
     <template v-if="dimension.width > 0">
       <Motion
         as="p"
-        class="absolute z-[1] flex items-center text-[42px] color-pureBlack max-[450px]:text-[26px]"
+        class="absolute z-[1] flex items-center text-[42px] color-pureBlack max-[450px]:text-[26px] dark:color-pureWhite"
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 0.75 }"
         :transition="{ duration: 1, delay: 0.2 }"
       >
-        <span class="mr-[10px] block h-[10px] w-[10px] rounded-full bg-pureBlack" />
+        <span class="mr-[10px] block size-[10px] rounded-full bg-pureBlack dark:bg-pureWhite" />
         {{ words[index] }}
       </Motion>
       <svg class="absolute top-0 h-[calc(100%+300px)] w-full max-[450px]:bottom-0 max-[450px]:h-[0%]">
         <Motion
           as="path"
-          class="fill-teal-9"
+          class="fill-teal-8"
           :initial="{ d: initialPath }"
           :animate="{ d: isExiting ? targetPath : initialPath }"
           :transition="pathTransition"
