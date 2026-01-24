@@ -7,11 +7,9 @@ import {
   useDebounceFn,
   useDevicePixelRatio,
   useDocumentVisibility,
-  useElementSize,
   useElementVisibility,
   useEventListener,
   useRafFn,
-  useWindowSize,
 } from '@vueuse/core'
 import {
   ACESFilmicToneMapping,
@@ -84,33 +82,26 @@ const metaballs = shallowRef<MarchingCubes | null>(null)
 const metaMaterial = shallowRef<MeshPhysicalMaterial | null>(null)
 const mousePlane = shallowRef<Mesh | null>(null)
 
-const { width: windowWidth, height: windowHeight } = useWindowSize({ type: 'outer' })
-const { width: containerWidth, height: containerHeight } = useElementSize(container)
 const stableWidth = ref(0)
 const stableHeight = ref(0)
 
-watch([containerWidth, containerHeight, windowWidth, windowHeight], ([cw, ch, ww, wh]) => {
-  const nextW = cw || ww
-  const nextH = ch || wh
+function updateStableSize() {
+  if (!import.meta.client)
+    return
+
+  const rect = container.value?.getBoundingClientRect()
+  const nextW = rect?.width || window.innerWidth
+  const nextH = rect?.height || window.innerHeight
   if (!nextW || !nextH)
     return
 
-  if (!stableWidth.value || !stableHeight.value) {
-    stableWidth.value = nextW
-    stableHeight.value = nextH
-    return
-  }
-
-  const widthDelta = Math.abs(nextW - stableWidth.value)
-  if (widthDelta > 24) {
-    stableWidth.value = nextW
-    stableHeight.value = nextH
-  }
-}, { immediate: true })
+  stableWidth.value = nextW
+  stableHeight.value = nextH
+}
 
 const aspectRatio = computed(() => {
-  const w = stableWidth.value || containerWidth.value || windowWidth.value
-  const h = stableHeight.value || containerHeight.value || windowHeight.value
+  const w = stableWidth.value
+  const h = stableHeight.value
   return h ? w / h : 1
 })
 const { pixelRatio } = useDevicePixelRatio()
@@ -1069,6 +1060,7 @@ watch(
 )
 
 onMounted(async () => {
+  updateStableSize()
   createMetaballs()
   createMousePlane()
   await rebuildPhysics()
@@ -1078,6 +1070,17 @@ onMounted(async () => {
 
   if (container.value?.matches(':hover'))
     pointerInside.value = true
+})
+
+useEventListener(window, 'orientationchange', updateStableSize)
+useEventListener(window, 'resize', () => {
+  const rect = container.value?.getBoundingClientRect()
+  if (!rect)
+    return
+
+  const widthDelta = Math.abs(rect.width - stableWidth.value)
+  if (widthDelta > 24)
+    updateStableSize()
 })
 
 onBeforeUnmount(() => {
