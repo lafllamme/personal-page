@@ -78,7 +78,7 @@
     "@unocss/nuxt": "catalog:",
     "@unocss/preset-mini": "catalog:",
     "animated-unocss": "catalog:",
-    "baseline-browser-mapping": "catalog:",
+    "baseline-browser-mapping": "^2.9.17",
     "eslint": "catalog:",
     "eslint-plugin-format": "catalog:",
     "sass-embedded": "catalog:",
