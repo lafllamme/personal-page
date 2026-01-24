@@ -7,6 +7,7 @@ import {
   useDebounceFn,
   useDevicePixelRatio,
   useDocumentVisibility,
+  useElementSize,
   useElementVisibility,
   useEventListener,
   useRafFn,
@@ -83,8 +84,13 @@ const metaballs = shallowRef<MarchingCubes | null>(null)
 const metaMaterial = shallowRef<MeshPhysicalMaterial | null>(null)
 const mousePlane = shallowRef<Mesh | null>(null)
 
-const { width, height } = useWindowSize()
-const aspectRatio = computed(() => (height.value ? width.value / height.value : 1))
+const { width: windowWidth, height: windowHeight } = useWindowSize({ type: 'outer' })
+const { width: containerWidth, height: containerHeight } = useElementSize(container)
+const aspectRatio = computed(() => {
+  const w = containerWidth.value || windowWidth.value
+  const h = containerHeight.value || windowHeight.value
+  return h ? w / h : 1
+})
 const { pixelRatio } = useDevicePixelRatio()
 
 /**
