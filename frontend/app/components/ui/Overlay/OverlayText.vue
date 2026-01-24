@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import type { OverlayTextProps } from './OverlayText.model'
 import { Motion } from 'motion-v'
-import { OverlayTextDefaultProps } from './OverlayText.model'
 import { useClsx } from '~/composables/useClsx'
+import { OverlayTextDefaultProps } from './OverlayText.model'
 
 const props = withDefaults(defineProps<OverlayTextProps>(), OverlayTextDefaultProps)
 const { class: classNames, isExiting } = toRefs(props)
@@ -42,7 +42,7 @@ const pathTransition = computed(() => {
   }
 })
 let wordTimeout: ReturnType<typeof setTimeout> | null = null
-let exitTimeout: ReturnType<typeof setTimeout> | null = null
+const exitTimeout: ReturnType<typeof setTimeout> | null = null
 
 const initialPath = computed(() => {
   if (!dimension.value.width || !dimension.value.height)
@@ -89,7 +89,10 @@ onBeforeUnmount(() => {
 <template>
   <Motion
     as="div"
-    :class="useClsx('introduction', classNames)"
+    :class="useClsx(
+      'fixed inset-0 z-[9999] flex h-100vh w-100vw items-center justify-center bg-teal-9',
+      classNames,
+    )"
     :initial="{ y: 0 }"
     :animate="isExiting ? { y: '-100vh' } : { y: 0 }"
     :transition="slideTransition"
@@ -97,16 +100,18 @@ onBeforeUnmount(() => {
     <template v-if="dimension.width > 0">
       <Motion
         as="p"
+        class="absolute z-[1] flex items-center text-[42px] color-pureBlack max-[450px]:text-[26px]"
         :initial="{ opacity: 0 }"
         :animate="{ opacity: 0.75 }"
         :transition="{ duration: 1, delay: 0.2 }"
       >
-        <span />
+        <span class="mr-[10px] block h-[10px] w-[10px] rounded-full bg-pureBlack" />
         {{ words[index] }}
       </Motion>
-      <svg>
+      <svg class="absolute top-0 h-[calc(100%+300px)] w-full max-[450px]:bottom-0 max-[450px]:h-[0%]">
         <Motion
           as="path"
+          class="fill-teal-9"
           :initial="{ d: initialPath }"
           :animate="{ d: isExiting ? targetPath : initialPath }"
           :transition="pathTransition"
@@ -115,56 +120,3 @@ onBeforeUnmount(() => {
     </template>
   </Motion>
 </template>
-
-<style scoped>
-.introduction {
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  z-index: 9999;
-  background-color: #b1d134;
-}
-
-.introduction svg {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: calc(100% + 300px);
-}
-
-.introduction svg path {
-  fill: #b1d134;
-}
-
-.introduction p {
-  display: flex;
-  color: rgb(0, 0, 0);
-  font-size: 42px;
-  align-items: center;
-  position: absolute;
-  z-index: 1;
-}
-
-.introduction p span {
-  display: block;
-  width: 10px;
-  height: 10px;
-  background-color: rgb(0, 0, 0);
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-@media screen and (max-width: 450px) {
-  .introduction p {
-    font-size: 26px;
-  }
-
-  .introduction svg {
-    bottom: 0;
-    height: calc(0%);
-  }
-}
-</style>
