@@ -86,9 +86,34 @@ const mousePlane = shallowRef<Mesh | null>(null)
 
 const { width: windowWidth, height: windowHeight } = useWindowSize({ type: 'outer' })
 const { width: containerWidth, height: containerHeight } = useElementSize(container)
+const stableWidth = ref(0)
+const stableHeight = ref(0)
+
+watch([containerWidth, containerHeight, windowWidth, windowHeight], ([cw, ch, ww, wh]) => {
+  const nextW = cw || ww
+  const nextH = ch || wh
+  if (!nextW || !nextH)
+    return
+
+  if (!stableWidth.value || !stableHeight.value) {
+    stableWidth.value = nextW
+    stableHeight.value = nextH
+    return
+  }
+
+  const widthDelta = Math.abs(nextW - stableWidth.value)
+  const heightDelta = Math.abs(nextH - stableHeight.value)
+  const shouldUpdate = widthDelta > 80 || heightDelta > 80
+
+  if (shouldUpdate) {
+    stableWidth.value = nextW
+    stableHeight.value = nextH
+  }
+}, { immediate: true })
+
 const aspectRatio = computed(() => {
-  const w = containerWidth.value || windowWidth.value
-  const h = containerHeight.value || windowHeight.value
+  const w = stableWidth.value || containerWidth.value || windowWidth.value
+  const h = stableHeight.value || containerHeight.value || windowHeight.value
   return h ? w / h : 1
 })
 const { pixelRatio } = useDevicePixelRatio()
