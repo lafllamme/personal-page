@@ -194,7 +194,7 @@ watch(colorMode, () => {
                       )"
                     >
                       <div class="osmo-nav-bar__tag-row">
-                        <span :class="useClsx('osmo-eyebrow', headerFgClass)">Our Products</span>
+                        <span :class="useClsx('osmo-eyebrow', headerFgClass)">Newsroom</span>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
                         <li
@@ -222,7 +222,9 @@ watch(colorMode, () => {
                               v-if="item.badge"
                               class="osmo-nav-bar__a-tag"
                             >
-                              <span class="osmo-tag is--purple">{{ item.badge }}</span>
+                              <span :class="useClsx('osmo-tag', item.badge === 'WIP' ? 'is--wip' : 'is--purple')">
+                                {{ item.badge }}
+                              </span>
                             </span>
                           </NuxtLink>
                           <div class="osmo-line is--nav-transparent" />
@@ -1217,6 +1219,14 @@ watch(colorMode, () => {
   background-color: #8023fe;
   color: white;
   border-radius: 9999px;
+}
+
+.osmo-tag.is--wip {
+  padding: 0.35em 0.6em 0.3em;
+  border-radius: 0.125em;
+  background-color: #0bd8b6;
+  color: #1e1e1e;
+  letter-spacing: 0.08em;
 }
 
 .osmo-tag.is--muted {
