@@ -1,59 +1,58 @@
-<script setup>
+<script setup lang="ts">
+import { useScrollLock } from '@vueuse/core'
 import ScrollTopButton from '@/components/ui/Buttons/ScrollTopButton/ScrollTopButton.vue'
 import Footer from '@/components/ui/Footer/Footer.vue'
 import OsmoHeader from '@/components/ui/OsmoHeader/OsmoHeader.vue'
 import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.vue'
-import TextBand from '@/components/ui/TextBand/TextBand.vue'
+import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
 
 const route = useRoute()
 const overlayVisible = ref(true)
+const overlayExiting = ref(false)
+const shouldHideContent = computed(() => overlayVisible.value && !overlayExiting.value)
 const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
-
-let hasMounted = false
-let iterationsSinceMount = 0
+const bodyRef = ref<HTMLElement | null>(null)
+const isBodyScrollLocked = useScrollLock(bodyRef, false)
+const overlayDurationMs = 2000
+const overlayExitDurationMs = 1000
+const { start: startOverlayExit, stop: stopOverlayExit } = useTimeoutFn(() => {
+  overlayExiting.value = true
+  startOverlayHide()
+}, overlayDurationMs, { immediate: false })
+const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(() => {
+  overlayVisible.value = false
+  isBodyScrollLocked.value = false
+  document.body.style.cursor = 'default'
+  window.scrollTo(0, 0)
+}, overlayExitDurationMs, { immediate: false })
 
 onMounted(() => {
-  hasMounted = true
-  iterationsSinceMount = 0
+  if (!import.meta.client)
+    return
+  bodyRef.value = document.body
+  isBodyScrollLocked.value = true
+  document.body.style.cursor = 'wait'
+  startOverlayExit()
 })
 
-function handleOverlayIteration() {
-  const isReady = hasMounted
-  if (!overlayVisible.value) {
-    return
-  }
-
-  if (!isReady) {
-    return
-  }
-
-  iterationsSinceMount += 1
-
-  const shouldHide = iterationsSinceMount >= 1
-  if (!shouldHide)
-    return
-
-  overlayVisible.value = false
-}
+onBeforeUnmount(() => {
+  stopOverlayExit()
+  stopOverlayHide()
+  isBodyScrollLocked.value = false
+})
 </script>
 
 <template>
   <div class="relative">
-    <div v-if="overlayVisible" class="fixed inset-0 z-[9999] overflow-hidden">
-      <TextBand
-        text="TECNEWS"
-        class="pointer-events-none h-full w-full"
-        @iteration="handleOverlayIteration"
-      />
-    </div>
+    <OverlayText v-if="overlayVisible" :is-exiting="overlayExiting" />
     <!-- Main Content -->
     <div
       :class="useClsx(
         'relative z-10',
         'bg-pureWhite  dark:bg-pureBlack',
-        overlayVisible && 'pointer-events-none',
+        shouldHideContent && 'pointer-events-none',
       )"
-      :style="overlayVisible ? { visibility: 'hidden' } : {}"
+      :style="shouldHideContent ? { visibility: 'hidden' } : {}"
     >
       <OsmoHeader />
       <main
