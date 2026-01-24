@@ -53,7 +53,7 @@ useRafFn(() => {
 
 <template>
   <section>
-    <section ref="heroRef" class="relative min-h-[100svh] flex items-center justify-center <lg:select-none md:items-start md:pt-32">
+    <section ref="heroRef" class="relative h-[100svh] flex items-center justify-center <lg:select-none md:items-start md:pt-32">
       <div v-if="isHeroVisible && isLgUp" class="pointer-events-auto absolute left-0 right-0 top-0 z-10 flex items-start justify-between text-xs -translate-y-full">
         <div class="font-reign flex items-center gap-2">
           <div class="h-2 w-2 animate-spin animate-duration-[9000ms] border border-teal-11 border-solid" />
