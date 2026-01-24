@@ -31,6 +31,8 @@ const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
 const headlineRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
+const isMetaballsActive = ref(true)
+const isMenuOpen = useState<boolean>('osmo-menu-open', () => false)
 const heroHeightPx = ref(0)
 const lastWindowWidth = ref(0)
 const heroStyle = computed(() => {
@@ -51,6 +53,22 @@ useIntersectionObserver(
     updateHeroVisibility(Boolean(entry?.isIntersecting))
   },
   { threshold: 0.3 },
+)
+
+const METABALLS_THRESHOLD = 0.2
+const METABALLS_ROOT_MARGIN = '200px 0px 200px 0px'
+let lastMetaballsActive = isMetaballsActive.value
+useIntersectionObserver(
+  heroRef,
+  ([entry]) => {
+    const ratio = entry?.intersectionRatio ?? 0
+    const nextActive = ratio >= METABALLS_THRESHOLD
+    if (nextActive !== lastMetaballsActive) {
+      lastMetaballsActive = nextActive
+      isMetaballsActive.value = nextActive
+    }
+  },
+  { threshold: METABALLS_THRESHOLD, rootMargin: METABALLS_ROOT_MARGIN },
 )
 
 const { x: pointerX, y: pointerY } = useMouseInElement(heroRef, {
@@ -144,7 +162,7 @@ watch(shouldAnimatePointer, (active) => {
       <div
         class="pointer-events-none absolute left-0 right-0 z-0 h-[calc(100%+var(--header-height,0px))] w-full -top-[var(--header-height,0px)]"
       >
-        <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
+        <GlassMetaballs :active="isMetaballsActive && !isMenuOpen" controls-mode="fixed" class="h-full w-full" />
       </div>
 
       <!-- Fallthrough headline for animation     -->
