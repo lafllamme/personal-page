@@ -84,6 +84,7 @@ const mousePlane = shallowRef<Mesh | null>(null)
 
 const stableWidth = ref(0)
 const stableHeight = ref(0)
+const lastWindowWidth = ref(0)
 const stableSizeStyle = computed(() => {
   if (!stableWidth.value || !stableHeight.value)
     return undefined
@@ -94,6 +95,15 @@ const stableSizeStyle = computed(() => {
   }
 })
 
+function setStableSize(nextW: number, nextH: number) {
+  if (!nextW || !nextH)
+    return
+
+  stableWidth.value = nextW
+  stableHeight.value = nextH
+  lastWindowWidth.value = window.innerWidth
+}
+
 function updateStableSize() {
   if (!import.meta.client)
     return
@@ -101,11 +111,7 @@ function updateStableSize() {
   const rect = container.value?.getBoundingClientRect()
   const nextW = rect?.width || window.innerWidth
   const nextH = rect?.height || window.innerHeight
-  if (!nextW || !nextH)
-    return
-
-  stableWidth.value = nextW
-  stableHeight.value = nextH
+  setStableSize(nextW, nextH)
 }
 
 const aspectRatio = computed(() => {
@@ -1085,14 +1091,8 @@ useEventListener(window, 'orientationchange', updateStableSize)
 useEventListener(window, 'resize', () => {
   if (!import.meta.client)
     return
-
-  const rect = container.value?.getBoundingClientRect()
-  if (!rect)
-    return
-
-  const widthDelta = Math.abs(rect.width - stableWidth.value)
-  if (widthDelta > 40)
-    updateStableSize()
+  if (window.innerWidth !== lastWindowWidth.value)
+    setStableSize(window.innerWidth, window.innerHeight)
 })
 
 onBeforeUnmount(() => {
