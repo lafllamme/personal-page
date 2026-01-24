@@ -34,7 +34,6 @@ function handleKeydown(e: KeyboardEvent) {
 
 const marqueeHidden = computed(() => isScrolled.value || isMenuOpen.value || isHeaderHidden.value)
 const headerFgClass = computed(() => (headerTone.value === 'light' ? 'color-pureBlack' : 'color-pureWhite'))
-const headerDividerClass = computed(() => (headerTone.value === 'light' ? 'border-pureBlack/10' : 'border-pureWhite/10'))
 const headerOutlineClass = computed(() => (headerTone.value === 'light' ? 'ring-pureBlack/20' : 'ring-pureWhite/20'))
 const headerHoverBgClass = computed(() => (headerTone.value === 'light' ? 'hover:bg-pureBlack/10' : 'hover:bg-pureWhite/10'))
 
@@ -119,7 +118,7 @@ watch(colorMode, () => {
                   @click="toggleMenu"
                 >
                   <OsmoMenuIcon :is-open="isMenuOpen" :tone="headerTone" />
-                  <span class="osmo-nav-menu__label font-manrope font-normal">Menu</span>
+                  <span class="font-manrope osmo-nav-menu__label font-normal">Menu</span>
                 </button>
               </div>
 
@@ -207,7 +206,7 @@ watch(colorMode, () => {
                             :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
                             @click="closeMenu"
                           >
-                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
+                            <span class="font-clash-regular osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-${item.name}-${charIndex}`"
@@ -392,7 +391,7 @@ watch(colorMode, () => {
               <div
                 v-for="index in 4"
                 :key="`a-${index}`"
-                class="osmo-marquee__item font-clash-regular"
+                class="font-clash-regular osmo-marquee__item"
               >
                 <p class="osmo-marquee__text">
                   {{ marqueeMessage }}

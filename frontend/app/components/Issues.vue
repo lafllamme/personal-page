@@ -111,6 +111,9 @@ function getIssueNumber(index: number, total: number) {
 
 const sectionRef = ref<HTMLElement | null>(null)
 const isSectionVisible = ref(false)
+const animatedLetters = ref<Record<number, boolean>>({})
+const animatedDescWords = ref<Record<number, boolean>>({})
+const animatedItems = ref<Record<number, boolean>>({})
 
 useIntersectionObserver(
   sectionRef,
@@ -136,11 +139,6 @@ const descWordDelay = (i: number) => i * 60 // ms - Word stagger (30ms per word)
 const itemDelay = (i: number) => i * 150 // ms - Item stagger (60ms per item, starts immediately)
 
 const descWords = computed(() => (props.description || '').split(/\s+/))
-
-/* Track which elements should be animated (staggered) */
-const animatedLetters = ref<Record<number, boolean>>({})
-const animatedDescWords = ref<Record<number, boolean>>({})
-const animatedItems = ref<Record<number, boolean>>({})
 
 /* Stagger animations when section becomes visible */
 watch(isSectionVisible, (visible) => {
