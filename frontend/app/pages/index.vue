@@ -4,7 +4,7 @@ import {
   useBreakpoints,
   useEventListener,
   useIntersectionObserver,
-  useMouse,
+  useMouseInElement,
   useRafFn,
   useThrottleFn,
   useWindowSize,
@@ -21,14 +21,15 @@ const { width, height } = useWindowSize()
 const mouseEventFilter = useThrottleFn((invoke) => {
   invoke()
 }, 80)
-const { x: pointerX, y: pointerY } = useMouse({ eventFilter: mouseEventFilter })
 const displayPointerX = ref(0)
 const displayPointerY = ref(0)
 const viewportLabel = computed(() => `${width.value}x${height.value}`)
-const pointerLabel = computed(() => `${Math.round(displayPointerX.value)}, ${Math.round(displayPointerY.value)}`)
+const pointerXLabel = computed(() => `${Math.round(displayPointerX.value)}`.padStart(4, '0'))
+const pointerYLabel = computed(() => `${Math.round(displayPointerY.value)}`.padStart(4, '0'))
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
+const headlineRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
 const heroHeightPx = ref(0)
 const lastWindowWidth = ref(0)
@@ -45,12 +46,22 @@ const updateHeroVisibility = useThrottleFn((visible: boolean) => {
 }, 150)
 
 useIntersectionObserver(
-  heroRef,
+  headlineRef,
   ([entry]) => {
     updateHeroVisibility(Boolean(entry?.isIntersecting))
   },
   { threshold: 0.3 },
 )
+
+const { x: pointerX, y: pointerY } = useMouseInElement(heroRef, {
+  eventFilter: mouseEventFilter,
+})
+const shouldAnimatePointer = computed(() => isHeroVisible.value && isLgUp.value)
+const { pause: pausePointerRaf, resume: resumePointerRaf } = useRafFn(() => {
+  const ease = 0.18
+  displayPointerX.value += (pointerX.value - displayPointerX.value) * ease
+  displayPointerY.value += (pointerY.value - displayPointerY.value) * ease
+}, { immediate: false, fpsLimit: 24 })
 
 function updateHeroHeight() {
   if (!import.meta.client)
@@ -77,14 +88,12 @@ useEventListener(window, 'resize', () => {
     updateHeroHeight()
 })
 
-useRafFn(() => {
-  if (!isHeroVisible.value || !isLgUp.value)
-    return
-
-  const ease = 0.12
-  displayPointerX.value += (pointerX.value - displayPointerX.value) * ease
-  displayPointerY.value += (pointerY.value - displayPointerY.value) * ease
-})
+watch(shouldAnimatePointer, (active) => {
+  if (active)
+    resumePointerRaf()
+  else
+    pausePointerRaf()
+}, { immediate: true })
 </script>
 
 <template>
@@ -94,20 +103,31 @@ useRafFn(() => {
       :style="heroStyle"
       class="relative h-[var(--hero-static-height,100svh)] flex items-center justify-center <lg:select-none"
     >
-      <div v-if="isHeroVisible && isLgUp" class="pointer-events-auto absolute left-0 right-0 top-0 z-10 flex items-start justify-between text-xs -translate-y-full">
-        <div class="font-reign flex items-center gap-2">
-          <div class="h-2 w-2 animate-spin animate-duration-[9000ms] border border-teal-11 border-solid" />
+      <div
+        :class="isHeroVisible && isLgUp
+          ? 'opacity-100 blur-0 translate-y-0 pointer-events-auto'
+          : 'opacity-0 blur-[8px] -translate-y-2 pointer-events-none'"
+        class="font-now will-change-[opacity,filter,transform] absolute left-0 right-0 top-0 z-10 flex items-start justify-between text-xs transition-[opacity,filter,transform] duration-1200 ease-out -translate-y-full"
+      >
+        <div class="flex items-center gap-2">
           <div>
             <div class="text-[10px] color-pureBlack/60 tracking-widest uppercase dark:color-pureWhite/60">
               Pointer
             </div>
-            <div class="color-pureBlack/80 dark:color-pureWhite/80">
-              {{ pointerLabel }}
+            <div class="flex items-center gap-3 text-[11px] color-pureBlack/80 tracking-widest dark:color-pureWhite/80">
+              <span class="flex items-center gap-1">
+                <span class="color-teal-11">X</span>
+                <span class="lining-nums tabular-nums">{{ pointerXLabel }}</span>
+              </span>
+              <span class="flex items-center gap-1">
+                <span class="color-teal-11">Y</span>
+                <span class="lining-nums tabular-nums">{{ pointerYLabel }}</span>
+              </span>
             </div>
           </div>
         </div>
-        <div class="flex items-start gap-4">
-          <div class="font-reign flex items-center gap-2 text-right">
+        <div class="flex items-start gap-6">
+          <div class="flex items-center gap-2 text-right">
             <div>
               <div class="text-[10px] color-pureBlack/60 tracking-widest uppercase dark:color-pureWhite/60">
                 Viewport
@@ -128,7 +148,7 @@ useRafFn(() => {
       </div>
 
       <!-- Fallthrough headline for animation     -->
-      <h1 class="pointer-events-none relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12">
+      <h1 ref="headlineRef" class="pointer-events-none relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12">
         <span class="zalando-sans-expanded block font-semibold <sm:text-[clamp(3.4rem,11vw,6rem)]">Web evolves.</span>
         <span class="font-baskerville block color-pureBlack/85 italic <sm:text-[clamp(2.2rem,7vw,3.8rem)] dark:color-pureWhite/85">We track it.</span>
       </h1>
