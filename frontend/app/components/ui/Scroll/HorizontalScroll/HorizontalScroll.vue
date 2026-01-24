@@ -168,12 +168,12 @@ onBeforeUnmount(() => {
   <article class="relative mx-[calc(50%-50svw)] w-[100svw] bg-pureWhite dark:bg-pureBlack">
     <div class="pointer-events-none h-[16vh] w-full from-pureWhite to-transparent bg-gradient-to-b dark:from-pureBlack dark:to-transparent" />
 
-    <section ref="scrollSectionRef" class="relative h-[500vh]">
+    <section ref="scrollSectionRef" class="relative h-[500svh]">
       <ul ref="ulRef" class="sticky top-0 m-0 flex flex-nowrap list-none p-0 will-change-transform">
         <li
           v-for="(item, index) in items"
           :key="index"
-          class="relative h-screen w-screen flex flex-none items-center justify-center overflow-hidden"
+          class="relative h-[100svh] w-[100svw] flex flex-none items-center justify-center overflow-hidden"
           :class="slideThemeClasses(index)"
         >
           <h2
@@ -194,7 +194,7 @@ onBeforeUnmount(() => {
       </ul>
     </section>
 
-    <footer class="grid h-[80vh] place-content-center bg-pureWhite color-pureBlack font-medium dark:bg-pureBlack dark:color-pureWhite">
+    <footer class="grid h-[80svh] place-content-center bg-pureWhite color-pureBlack font-medium dark:bg-pureBlack dark:color-pureWhite">
       <p>
         Inspired By
         <a
