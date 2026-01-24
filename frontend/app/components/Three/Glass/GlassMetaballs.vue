@@ -1082,6 +1082,18 @@ onMounted(async () => {
 })
 
 useEventListener(window, 'orientationchange', updateStableSize)
+useEventListener(window, 'resize', () => {
+  if (!import.meta.client)
+    return
+
+  const rect = container.value?.getBoundingClientRect()
+  if (!rect)
+    return
+
+  const widthDelta = Math.abs(rect.width - stableWidth.value)
+  if (widthDelta > 40)
+    updateStableSize()
+})
 
 onBeforeUnmount(() => {
   pause()
