@@ -82,7 +82,7 @@ useRafFn(() => {
       </div>
       <!--   Three Metaballs   -->
       <div
-        class="pointer-events-none absolute z-0 h-[calc(100%+var(--header-height,0px))] w-screen -top-[var(--header-height,0px)]"
+        class="pointer-events-none absolute z-0 h-[calc(100%+var(--header-height,0px))] w-[100svw] -top-[var(--header-height,0px)]"
       >
         <GlassMetaballs controls-mode="fixed" class="h-full w-full" />
       </div>
