@@ -1,6 +1,7 @@
 export interface OverlayTextProps {
   class?: string
   onComplete?: () => void
+  isExiting?: boolean
   /**
    * Automatically hide after first full band cycle when allowed to complete.
    */
@@ -14,6 +15,7 @@ export interface OverlayTextProps {
 export const OverlayTextDefaultProps: OverlayTextProps = {
   class: '',
   onComplete: undefined,
+  isExiting: false,
   autoHide: true,
   canComplete: true,
 }
