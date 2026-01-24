@@ -84,6 +84,15 @@ const mousePlane = shallowRef<Mesh | null>(null)
 
 const stableWidth = ref(0)
 const stableHeight = ref(0)
+const stableSizeStyle = computed(() => {
+  if (!stableWidth.value || !stableHeight.value)
+    return undefined
+
+  return {
+    width: `${stableWidth.value}px`,
+    height: `${stableHeight.value}px`,
+  }
+})
 
 function updateStableSize() {
   if (!import.meta.client)
@@ -1073,15 +1082,6 @@ onMounted(async () => {
 })
 
 useEventListener(window, 'orientationchange', updateStableSize)
-useEventListener(window, 'resize', () => {
-  const rect = container.value?.getBoundingClientRect()
-  if (!rect)
-    return
-
-  const widthDelta = Math.abs(rect.width - stableWidth.value)
-  if (widthDelta > 24)
-    updateStableSize()
-})
 
 onBeforeUnmount(() => {
   pause()
@@ -1106,7 +1106,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="container" class="relative h-full w-full touch-none">
+  <div ref="container" class="relative h-full w-full touch-none" :style="stableSizeStyle">
     <ClientOnly>
       <!-- Canvas is non-interactive so the page can scroll / click through. -->
       <div class="pointer-events-none absolute inset-0 touch-none">
