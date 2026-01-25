@@ -7,13 +7,13 @@ import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
 import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.vue'
 
 const route = useRoute()
-const overlayVisible = ref(true)
 const overlayExiting = ref(false)
 const shouldHideContent = computed(() => overlayVisible.value && !overlayExiting.value)
 const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
 const bodyRef = ref<HTMLElement | null>(null)
 const isBodyScrollLocked = useScrollLock(bodyRef, false)
 const overlayDone = useState<boolean>('intro-overlay-done', () => false)
+const overlayVisible = ref(!overlayDone.value)
 const overlayDurationMs = 2000
 const overlayExitDurationMs = 1000
 const { start: startOverlayExit, stop: stopOverlayExit } = useTimeoutFn(() => {
@@ -31,7 +31,11 @@ const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(() => {
 onMounted(() => {
   if (!import.meta.client)
     return
-  overlayDone.value = false
+  if (overlayDone.value) {
+    overlayVisible.value = false
+    overlayExiting.value = false
+    return
+  }
   bodyRef.value = document.body
   isBodyScrollLocked.value = true
   document.body.style.cursor = 'wait'
