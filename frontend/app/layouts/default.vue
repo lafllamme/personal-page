@@ -3,8 +3,8 @@ import { useScrollLock } from '@vueuse/core'
 import ScrollTopButton from '@/components/ui/Buttons/ScrollTopButton/ScrollTopButton.vue'
 import Footer from '@/components/ui/Footer/Footer.vue'
 import OsmoHeader from '@/components/ui/OsmoHeader/OsmoHeader.vue'
-import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.vue'
 import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
+import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.vue'
 
 const route = useRoute()
 const overlayVisible = ref(true)
@@ -47,7 +47,10 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="relative">
-    <OverlayText v-if="overlayVisible" :is-exiting="overlayExiting" />
+    <OverlayText
+      v-if="overlayVisible"
+      :is-exiting="overlayExiting"
+    />
     <!-- Main Content -->
     <div
       :class="useClsx(
