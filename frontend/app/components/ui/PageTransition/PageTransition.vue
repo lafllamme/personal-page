@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { START_LOCATION } from 'vue-router'
 
-const stripCount = 20
+const stripCount = 17
 const STRIP_DURATION_MS = 900
 const STRIP_STAGGER_MS = 24
 const TOTAL_DURATION_MS = STRIP_DURATION_MS + (stripCount - 1) * STRIP_STAGGER_MS
@@ -40,11 +40,7 @@ function delayForCover(index: number) {
 }
 
 function delayForReveal(index: number) {
-  if (variant.value === 'center') {
-    const offCenter = Math.round((stripCount - 1) * 0.6)
-    return delayFromOrigin(index, offCenter)
-  }
-  return delayFromOrigin(index, stripCount - 1)
+  return delayForCover(index)
 }
 
 function stripStyle(index: number) {
@@ -159,20 +155,19 @@ onBeforeUnmount(() => {
   left: calc((100% / var(--strip-count)) * var(--strip-index));
   width: calc(100% / var(--strip-count) + 1px);
   background: var(--strip-color);
-  transform: scaleY(0);
-  transform-origin: bottom;
+  transform: translateY(100%);
   transition: transform var(--strip-duration);
   will-change: transform;
 }
 
 .transition-strips.is-cover .transition-strip {
-  transform: scaleY(1);
+  transform: translateY(0);
   transition-delay: var(--delay-in);
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .transition-strips.is-reveal .transition-strip {
-  transform: scaleY(0);
+  transform: translateY(-100%);
   transition-delay: var(--delay-out);
   transition-timing-function: cubic-bezier(0.6, 0, 0.9, 0.3);
 }
