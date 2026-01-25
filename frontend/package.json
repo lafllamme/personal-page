@@ -44,6 +44,7 @@
     "clsx": "catalog:",
     "consola": "catalog:",
     "focus-trap": "catalog:",
+    "gsap": "^3.14.2",
     "lenis": "catalog:",
     "monaco-editor": "catalog:",
     "motion-v": "catalog:",
