@@ -67,7 +67,7 @@ async function buildGrid(options: { keepVisible?: boolean } = {}) {
   const fragment = document.createDocumentFragment()
   for (let i = 0; i < totalBlocks; i++) {
     const block = document.createElement('div')
-    block.classList.add('transition-block')
+    block.classList.add('transition-block', 'bg-teal-8')
     fragment.appendChild(block)
   }
   transitionEl.appendChild(fragment)
@@ -183,16 +183,13 @@ onBeforeUnmount(() => {
 <template>
   <div
     ref="transitionRef"
-    class="transition"
+    class="transition bg-teal-8"
   />
 </template>
 
 <style>
 .transition {
   z-index: 100;
-  --transition-bg: #ff4c24;
-  --transition-pixel: #ff4c24;
-  background-color: var(--transition-bg);
   flex-flow: wrap;
   grid-template-columns: repeat(8, 1fr);
   place-content: center;
@@ -208,13 +205,7 @@ onBeforeUnmount(() => {
 
 .transition-block {
   aspect-ratio: 1;
-  background-color: var(--transition-pixel);
   width: 100%;
-}
-
-.dark .transition {
-  --transition-bg: #ff4c24;
-  --transition-pixel: #ff4c24;
 }
 
 @media screen and (max-width: 767px) {
