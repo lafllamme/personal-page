@@ -28,21 +28,21 @@ export const avatars: OsmoAvatar[] = [
 ]
 
 export const ourProducts: OsmoMenuItem[] = [
-  { name: 'The Vault', href: '#' },
-  { name: 'Animation Concepts', href: '#', badge: 'WIP' },
-  { name: 'UI Libraries', href: '#' },
-  { name: 'Daily Brief', href: '#' },
+  { name: 'The Vault', href: '/check' },
+  { name: 'Animation Concepts', href: '/about', badge: 'WIP' },
+  { name: 'UI Libraries', href: '/blog' },
+  { name: 'Daily Brief', href: '/issues' },
 ]
 
 export const explore: OsmoMenuItem[] = [
-  { name: 'Creative Studio', href: '#' },
-  { name: 'Design Lab', href: '#' },
-  { name: 'Collection', href: '/collection', count: 145 },
-  { name: 'Editorial', href: '/about' },
+  { name: 'Creative Studio', href: '/three' },
+  { name: 'Design Lab', href: '/cave' },
+  { name: 'Collection', href: '/font', count: 145 },
+  { name: 'Editorial', href: '/demo' },
 ]
 
 export const easings: OsmoMenuItem[] = [
-  { name: 'Trend Reports', href: '#', badge: 'SOON' },
+  { name: 'Trend Reports', href: '/section', badge: 'SOON' },
 ]
 
 export const socialLinks: OsmoSocialLink[] = [
