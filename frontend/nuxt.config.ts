@@ -279,6 +279,13 @@ export default defineNuxtConfig({
     '@/assets/reset/main.ts',
   ],
 
+  app: {
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
+    },
+  },
+
   // Auto-imports
   imports: {
     presets: [
