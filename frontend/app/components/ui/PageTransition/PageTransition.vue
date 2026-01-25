@@ -5,23 +5,55 @@ const stripCount = 20
 const STRIP_DURATION_MS = 1300
 const STRIP_STAGGER_MS = 35
 const TOTAL_DURATION_MS = STRIP_DURATION_MS + (stripCount - 1) * STRIP_STAGGER_MS
+const STAGGER_MAX_MS = STRIP_STAGGER_MS * (stripCount - 1)
+const STAGGER_CURVE = 0.82
 const colorMode = useColorMode()
 const stripColor = computed(() => (colorMode.value === 'dark' ? '#012622' : '#9CE0D0'))
 
 const isVisible = ref(false)
-const isStripsAnimating = ref(false)
+const phase = ref<'idle' | 'cover' | 'reveal'>('idle')
+const variant = ref<'center' | 'sweep'>('center')
 const isTransitioning = ref(false)
 const isPageTransitionActive = useState('isPageTransitionActive', () => false)
 const hasPlayedInitial = ref(false)
 let stopBefore: void | (() => void)
 let stopAfter: void | (() => void)
 
+function clamp(value: number, min: number, max: number) {
+  return Math.min(max, Math.max(min, value))
+}
+
+function delayFromOrigin(index: number, originIndex: number) {
+  const maxDist = Math.max(originIndex, (stripCount - 1) - originIndex)
+  if (maxDist <= 0)
+    return 0
+  const dist = Math.abs(index - originIndex) / maxDist
+  return Math.pow(clamp(dist, 0, 1), STAGGER_CURVE) * STAGGER_MAX_MS
+}
+
+function delayForCover(index: number) {
+  if (variant.value === 'center') {
+    const centerIndex = (stripCount - 1) / 2
+    return delayFromOrigin(index, centerIndex)
+  }
+  return delayFromOrigin(index, 0)
+}
+
+function delayForReveal(index: number) {
+  if (variant.value === 'center') {
+    const offCenter = Math.round((stripCount - 1) * 0.6)
+    return delayFromOrigin(index, offCenter)
+  }
+  return delayFromOrigin(index, stripCount - 1)
+}
+
 function stripStyle(index: number) {
   return {
     '--strip-index': index,
     '--strip-count': stripCount,
-    'transform': isStripsAnimating.value ? 'translateY(100%)' : 'translateY(0)',
-    'transition': `transform ${STRIP_DURATION_MS}ms cubic-bezier(0.83, 0, 0.17, 1) ${index * STRIP_STAGGER_MS}ms`,
+    '--delay-in': `${delayForCover(index)}ms`,
+    '--delay-out': `${delayForReveal(index)}ms`,
+    'opacity': index % 2 === 0 ? '1' : '0.92',
   }
 }
 
@@ -34,23 +66,27 @@ async function playOut() {
     return
 
   isVisible.value = true
-  isStripsAnimating.value = false
+  phase.value = 'idle'
   await nextTick()
   await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
+  phase.value = 'cover'
+  await delay(TOTAL_DURATION_MS)
 }
 
 async function playIn() {
   if (!import.meta.client)
     return
 
-  isStripsAnimating.value = true
+  phase.value = 'reveal'
   await delay(TOTAL_DURATION_MS)
   isVisible.value = false
+  phase.value = 'idle'
 }
 
 onMounted(async () => {
   if (!hasPlayedInitial.value) {
     hasPlayedInitial.value = true
+    variant.value = Math.random() > 0.5 ? 'center' : 'sweep'
     isPageTransitionActive.value = true
     await playOut()
     await playIn()
@@ -64,6 +100,7 @@ onMounted(async () => {
       return true
 
     isTransitioning.value = true
+    variant.value = Math.random() > 0.5 ? 'center' : 'sweep'
     isPageTransitionActive.value = true
     await playOut()
     return true
@@ -89,6 +126,10 @@ onBeforeUnmount(() => {
   <div
     v-show="isVisible"
     class="transition-strips"
+    :class="{
+      'is-cover': phase === 'cover',
+      'is-reveal': phase === 'reveal',
+    }"
     :style="{ '--strip-color': stripColor }"
   >
     <div
@@ -116,6 +157,21 @@ onBeforeUnmount(() => {
   left: calc((100% / var(--strip-count)) * var(--strip-index));
   width: calc(100% / var(--strip-count) + 1px);
   background: var(--strip-color);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 1.3s;
   will-change: transform;
+}
+
+.transition-strips.is-cover .transition-strip {
+  transform: scaleY(1);
+  transition-delay: var(--delay-in);
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.transition-strips.is-reveal .transition-strip {
+  transform: scaleY(0);
+  transition-delay: var(--delay-out);
+  transition-timing-function: cubic-bezier(0.6, 0, 0.9, 0.3);
 }
 </style>
