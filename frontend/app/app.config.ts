@@ -1,6 +1,5 @@
 // app.config.ts
 export default defineAppConfig({
-  pageTransition: { name: 'page', mode: 'out-in' },
   meta: {
     title: 'TecNews – Tech News & Trends',
     viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
