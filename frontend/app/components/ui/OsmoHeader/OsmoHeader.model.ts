@@ -36,8 +36,8 @@ export const ourProducts: OsmoMenuItem[] = [
 
 export const explore: OsmoMenuItem[] = [
   { name: 'Creative Studio', href: '/three' },
-  { name: 'Design Lab', href: '/cave' },
-  { name: 'Collection', href: '/font', count: 145 },
+  { name: 'Design Lab', href: '/showcase' },
+  { name: 'Collection', href: '/login', count: 145 },
   { name: 'Editorial', href: '/demo' },
 ]
 
