@@ -2,8 +2,8 @@
 import { START_LOCATION } from 'vue-router'
 
 const stripCount = 20
-const STRIP_DURATION_MS = 1300
-const STRIP_STAGGER_MS = 35
+const STRIP_DURATION_MS = 900
+const STRIP_STAGGER_MS = 24
 const TOTAL_DURATION_MS = STRIP_DURATION_MS + (stripCount - 1) * STRIP_STAGGER_MS
 const STAGGER_MAX_MS = STRIP_STAGGER_MS * (stripCount - 1)
 const STAGGER_CURVE = 0.82
@@ -53,7 +53,6 @@ function stripStyle(index: number) {
     '--strip-count': stripCount,
     '--delay-in': `${delayForCover(index)}ms`,
     '--delay-out': `${delayForReveal(index)}ms`,
-    'opacity': index % 2 === 0 ? '1' : '0.92',
   }
 }
 
@@ -130,7 +129,10 @@ onBeforeUnmount(() => {
       'is-cover': phase === 'cover',
       'is-reveal': phase === 'reveal',
     }"
-    :style="{ '--strip-color': stripColor }"
+    :style="{
+      '--strip-color': stripColor,
+      '--strip-duration': `${STRIP_DURATION_MS}ms`,
+    }"
   >
     <div
       v-for="index in stripCount"
@@ -159,7 +161,7 @@ onBeforeUnmount(() => {
   background: var(--strip-color);
   transform: scaleY(0);
   transform-origin: bottom;
-  transition: transform 1.3s;
+  transition: transform var(--strip-duration);
   will-change: transform;
 }
 
