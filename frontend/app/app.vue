@@ -6,9 +6,7 @@ const loadingGradient = ref('linear-gradient(90deg, #059669, #064e3b, #6d28d9)')
 const appConfig = useAppConfig()
 const { meta } = appConfig as { meta: HeadMeta }
 const lenisOptions = {
-  duration: 1.1,
-  smoothWheel: true,
-  smoothTouch: false,
+  autoRaf: true,
 }
 
 // If we are in development mode, we set consola log level to 5
