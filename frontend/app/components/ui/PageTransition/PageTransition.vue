@@ -9,7 +9,8 @@ const TRANSITION_DELAY_MS = 600
 
 const isVisible = ref(false)
 const isTransitioning = ref(false)
-const isPageTransitionActive = useState('isPageTransitionActive', () => false)
+const { runTransition, resetTransition } = useTransition()
+const { introOverlayActive } = useOverlay()
 const lineRefs = ref<HTMLElement[]>([])
 const lineHRefs = ref<HTMLElement[]>([])
 const backRefs = ref<HTMLElement[]>([])
@@ -17,7 +18,6 @@ const { width, height } = useWindowSize()
 const isPortrait = computed(() => width.value < height.value)
 let stopBefore: void | (() => void)
 let hideTimeout: number | null = null
-let fadeTimeout: number | null = null
 
 onBeforeUpdate(() => {
   lineRefs.value = []
@@ -177,13 +177,7 @@ async function playTransition() {
     hideTimeout = null
   }, Math.max(TRANSITION_DELAY_MS, totalDuration * 1000 + 100))
 
-  document.body.classList.add('is-page-transitioning')
-  if (fadeTimeout)
-    window.clearTimeout(fadeTimeout)
-  fadeTimeout = window.setTimeout(() => {
-    document.body.classList.remove('is-page-transitioning')
-    fadeTimeout = null
-  }, Math.max(TRANSITION_DELAY_MS, totalDuration * 1000 + 100))
+  runTransition(Math.max(TRANSITION_DELAY_MS, totalDuration * 1000 + 100))
 
   await delay(TRANSITION_DELAY_MS)
 }
@@ -195,14 +189,12 @@ onMounted(() => {
   const router = useRouter()
   stopBefore = router.beforeEach(async (to, from) => {
     const isHashOnlyNavigation = to.path === from.path && to.hash && to.hash !== from.hash
-    if (isTransitioning.value || from === START_LOCATION || isHashOnlyNavigation)
+    if (isTransitioning.value || from === START_LOCATION || isHashOnlyNavigation || introOverlayActive.value)
       return true
 
     isTransitioning.value = true
-    isPageTransitionActive.value = true
     await playTransition()
     isTransitioning.value = false
-    isPageTransitionActive.value = false
     return true
   })
 })
@@ -212,9 +204,7 @@ onBeforeUnmount(() => {
     stopBefore()
   if (hideTimeout)
     window.clearTimeout(hideTimeout)
-  if (fadeTimeout)
-    window.clearTimeout(fadeTimeout)
-  document.body.classList.remove('is-page-transitioning')
+  resetTransition()
 })
 </script>
 
