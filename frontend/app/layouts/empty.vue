@@ -1,3 +1,5 @@
 <template>
-  <slot name="default" />
+  <div class="page-transition-root">
+    <slot name="default" />
+  </div>
 </template>
