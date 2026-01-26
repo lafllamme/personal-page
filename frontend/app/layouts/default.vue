@@ -58,7 +58,7 @@ onBeforeUnmount(() => {
     <!-- Main Content -->
     <div
       :class="useClsx(
-        'relative z-10',
+        'relative z-10 page-transition-root',
         'bg-pureWhite  dark:bg-pureBlack',
         shouldHideContent && 'pointer-events-none',
       )"
