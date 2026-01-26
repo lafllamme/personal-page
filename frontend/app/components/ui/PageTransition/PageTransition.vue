@@ -2,10 +2,10 @@
 import { START_LOCATION } from 'vue-router'
 
 const stripCount = 17
-const STRIP_DURATION_MS = 900
-const STRIP_STAGGER_MS = 24
-const TOTAL_DURATION_MS = STRIP_DURATION_MS + (stripCount - 1) * STRIP_STAGGER_MS
-const STAGGER_MAX_MS = STRIP_STAGGER_MS * (stripCount - 1)
+const STRIP_DURATION_MS = 700
+const STRIP_STAGGER_MS = 16
+const CENTER_DURATION_MS = 640
+const CENTER_STAGGER_MS = 12
 const STAGGER_CURVE = 0.82
 const colorMode = useColorMode()
 const stripColor = computed(() => (colorMode.value === 'dark' ? '#012622' : '#9CE0D0'))
@@ -18,9 +18,24 @@ const isPageTransitionActive = useState('isPageTransitionActive', () => false)
 const hasPlayedInitial = ref(false)
 let stopBefore: void | (() => void)
 let stopAfter: void | (() => void)
+let revealPromise: Promise<void> | null = null
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(max, Math.max(min, value))
+}
+
+function getStripDurationMs() {
+  return variant.value === 'center' ? CENTER_DURATION_MS : STRIP_DURATION_MS
+}
+
+function getStripStaggerMs() {
+  return variant.value === 'center' ? CENTER_STAGGER_MS : STRIP_STAGGER_MS
+}
+
+function getTotalDurationMs() {
+  const duration = getStripDurationMs()
+  const stagger = getStripStaggerMs()
+  return duration + (stripCount - 1) * stagger
 }
 
 function delayFromOrigin(index: number, originIndex: number) {
@@ -28,7 +43,8 @@ function delayFromOrigin(index: number, originIndex: number) {
   if (maxDist <= 0)
     return 0
   const dist = Math.abs(index - originIndex) / maxDist
-  return Math.pow(clamp(dist, 0, 1), STAGGER_CURVE) * STAGGER_MAX_MS
+  const staggerMax = getStripStaggerMs() * (stripCount - 1)
+  return Math.pow(clamp(dist, 0, 1), STAGGER_CURVE) * staggerMax
 }
 
 function delayForCover(index: number) {
@@ -36,7 +52,7 @@ function delayForCover(index: number) {
     const centerIndex = (stripCount - 1) / 2
     return delayFromOrigin(index, centerIndex)
   }
-  return delayFromOrigin(index, 0)
+  return delayFromOrigin(index, stripCount - 1)
 }
 
 function delayForReveal(index: number) {
@@ -49,6 +65,7 @@ function stripStyle(index: number) {
     '--strip-count': stripCount,
     '--delay-in': `${delayForCover(index)}ms`,
     '--delay-out': `${delayForReveal(index)}ms`,
+    '--strip-duration': `${getStripDurationMs()}ms`,
   }
 }
 
@@ -65,7 +82,7 @@ async function playOut() {
   await nextTick()
   await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
   phase.value = 'cover'
-  await delay(TOTAL_DURATION_MS)
+  await delay(getTotalDurationMs())
 }
 
 async function playIn() {
@@ -73,7 +90,7 @@ async function playIn() {
     return
 
   phase.value = 'reveal'
-  await delay(TOTAL_DURATION_MS)
+  await delay(getTotalDurationMs())
   isVisible.value = false
   phase.value = 'idle'
 }
@@ -98,14 +115,18 @@ onMounted(async () => {
     variant.value = Math.random() > 0.5 ? 'center' : 'sweep'
     isPageTransitionActive.value = true
     await playOut()
+    revealPromise = (async () => {
+      await playIn()
+      isTransitioning.value = false
+      isPageTransitionActive.value = false
+      revealPromise = null
+    })()
     return true
   })
 
-  stopAfter = router.afterEach(async () => {
-    await nextTick()
-    await playIn()
-    isTransitioning.value = false
-    isPageTransitionActive.value = false
+  stopAfter = router.afterEach(() => {
+    if (revealPromise)
+      revealPromise.catch(() => {})
   })
 })
 
@@ -127,7 +148,6 @@ onBeforeUnmount(() => {
     }"
     :style="{
       '--strip-color': stripColor,
-      '--strip-duration': `${STRIP_DURATION_MS}ms`,
     }"
   >
     <div
