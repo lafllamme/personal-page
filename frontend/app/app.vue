@@ -9,7 +9,7 @@ const { meta } = appConfig as { meta: HeadMeta }
 const lenisOptions = {
   autoRaf: true,
 }
-const isPageTransitionActive = useState('isPageTransitionActive', () => false)
+const { isTransitionActive } = useTransition()
 
 // If we are in development mode, we set the consola log level to 5
 if (import.meta.dev) {
@@ -52,7 +52,7 @@ useHead(() => {
   >
     <NuxtLayout>
       <NuxtLoadingIndicator
-        v-if="!isPageTransitionActive"
+        v-if="!isTransitionActive"
         :color="loadingGradient"
       />
       <PageTransition />
