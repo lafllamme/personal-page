@@ -6,7 +6,8 @@ const STRIP_DURATION_MS = 700
 const STRIP_STAGGER_MS = 16
 const CENTER_DURATION_MS = 640
 const CENTER_STAGGER_MS = 12
-const STAGGER_CURVE = 0.82
+const CENTER_STAGGER_CURVE = 0.82
+const SWEEP_STAGGER_CURVE = 1
 const colorMode = useColorMode()
 const stripColor = computed(() => (colorMode.value === 'dark' ? '#012622' : '#9CE0D0'))
 
@@ -38,21 +39,21 @@ function getTotalDurationMs() {
   return duration + (stripCount - 1) * stagger
 }
 
-function delayFromOrigin(index: number, originIndex: number) {
+function delayFromOrigin(index: number, originIndex: number, curve: number) {
   const maxDist = Math.max(originIndex, (stripCount - 1) - originIndex)
   if (maxDist <= 0)
     return 0
   const dist = Math.abs(index - originIndex) / maxDist
   const staggerMax = getStripStaggerMs() * (stripCount - 1)
-  return Math.pow(clamp(dist, 0, 1), STAGGER_CURVE) * staggerMax
+  return Math.pow(clamp(dist, 0, 1), curve) * staggerMax
 }
 
 function delayForCover(index: number) {
   if (variant.value === 'center') {
     const centerIndex = (stripCount - 1) / 2
-    return delayFromOrigin(index, centerIndex)
+    return delayFromOrigin(index, centerIndex, CENTER_STAGGER_CURVE)
   }
-  return delayFromOrigin(index, stripCount - 1)
+  return delayFromOrigin(index, stripCount - 1, SWEEP_STAGGER_CURVE)
 }
 
 function delayForReveal(index: number) {
