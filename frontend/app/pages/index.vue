@@ -32,7 +32,9 @@ const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
 const headlineRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
-const overlayDone = useState<boolean>('intro-overlay-done', () => false)
+const { introOverlayDone, introOverlayActive } = useOverlay({ manageLifecycle: false })
+const { isTransitionActive } = useTransition()
+const overlayDone = introOverlayDone
 const isMetaballsActive = ref(true)
 const isMenuOpen = useState<boolean>('osmo-menu-open', () => false)
 const heroHeightPx = ref(0)
@@ -48,6 +50,14 @@ const heroStyle = computed(() => {
 const updateHeroVisibility = useThrottleFn((visible: boolean) => {
   isHeroVisible.value = visible
 }, 150)
+
+const canRenderMetaballs = computed(() => {
+  return introOverlayDone.value
+    && !isTransitionActive.value
+    && isMetaballsActive.value
+})
+
+const canAnimateMetaballs = computed(() => canRenderMetaballs.value && !isMenuOpen.value)
 
 useIntersectionObserver(
   headlineRef,
@@ -175,7 +185,12 @@ watch(shouldAnimatePointer, (active) => {
       <div
         class="pointer-events-none absolute left-0 right-0 z-0 h-[calc(100%+var(--header-height,0px))] w-full -top-[var(--header-height,0px)]"
       >
-        <GlassMetaballs :active="isMetaballsActive && !isMenuOpen" controls-mode="fixed" class="h-full w-full" />
+        <GlassMetaballs
+          v-show="canRenderMetaballs"
+          :active="canAnimateMetaballs"
+          controls-mode="fixed"
+          class="h-full w-full"
+        />
       </div>
 
       <!-- Fallthrough headline for animation     -->
