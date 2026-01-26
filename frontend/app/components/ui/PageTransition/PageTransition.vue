@@ -1,110 +1,139 @@
 <script setup lang="ts">
 import { START_LOCATION } from 'vue-router'
+import gsap from 'gsap'
 
-const stripCount = 17
-const STRIP_DURATION_MS = 700
-const STRIP_STAGGER_MS = 16
-const CENTER_DURATION_MS = 640
-const CENTER_STAGGER_MS = 12
-const CENTER_STAGGER_CURVE = 0.82
-const SWEEP_STAGGER_CURVE = 1
-const colorMode = useColorMode()
-const stripColor = computed(() => (colorMode.value === 'dark' ? '#012622' : '#9CE0D0'))
+const LINE_COUNT = 17
+const LINE_H_COUNT = 9
+const BACK_BLOCK_COUNT = 3
+const TRANSITION_DELAY_MS = 600
 
 const isVisible = ref(false)
-const phase = ref<'idle' | 'cover' | 'reveal'>('idle')
-const variant = ref<'center' | 'sweep'>('center')
 const isTransitioning = ref(false)
 const isPageTransitionActive = useState('isPageTransitionActive', () => false)
 const hasPlayedInitial = ref(false)
+const currentBackIndex = ref(0)
+const lineRefs = ref<HTMLElement[]>([])
+const lineHRefs = ref<HTMLElement[]>([])
+const backRefs = ref<HTMLElement[]>([])
+const { width, height } = useWindowSize()
+const isPortrait = computed(() => width.value < height.value)
 let stopBefore: void | (() => void)
-let stopAfter: void | (() => void)
-let revealPromise: Promise<void> | null = null
 
-function clamp(value: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, value))
+onBeforeUpdate(() => {
+  lineRefs.value = []
+  lineHRefs.value = []
+  backRefs.value = []
+})
+
+function setLineRef(el: HTMLElement | null) {
+  if (el)
+    lineRefs.value.push(el)
 }
 
-function getStripDurationMs() {
-  return variant.value === 'center' ? CENTER_DURATION_MS : STRIP_DURATION_MS
+function setLineHRef(el: HTMLElement | null) {
+  if (el)
+    lineHRefs.value.push(el)
 }
 
-function getStripStaggerMs() {
-  return variant.value === 'center' ? CENTER_STAGGER_MS : STRIP_STAGGER_MS
-}
-
-function getTotalDurationMs() {
-  const duration = getStripDurationMs()
-  const stagger = getStripStaggerMs()
-  return duration + (stripCount - 1) * stagger
-}
-
-function delayFromOrigin(index: number, originIndex: number, curve: number) {
-  const maxDist = Math.max(originIndex, (stripCount - 1) - originIndex)
-  if (maxDist <= 0)
-    return 0
-  const dist = Math.abs(index - originIndex) / maxDist
-  const staggerMax = getStripStaggerMs() * (stripCount - 1)
-  return Math.pow(clamp(dist, 0, 1), curve) * staggerMax
-}
-
-function delayForCover(index: number) {
-  if (variant.value === 'center') {
-    const centerIndex = (stripCount - 1) / 2
-    return delayFromOrigin(index, centerIndex, CENTER_STAGGER_CURVE)
-  }
-  return delayFromOrigin(index, stripCount - 1, SWEEP_STAGGER_CURVE)
-}
-
-function delayForReveal(index: number) {
-  return delayForCover(index)
-}
-
-function stripStyle(index: number) {
-  return {
-    '--strip-index': index,
-    '--strip-count': stripCount,
-    '--delay-in': `${delayForCover(index)}ms`,
-    '--delay-out': `${delayForReveal(index)}ms`,
-    '--strip-duration': `${getStripDurationMs()}ms`,
-  }
+function setBackRef(el: HTMLElement | null) {
+  if (el)
+    backRefs.value.push(el)
 }
 
 function delay(ms: number) {
   return new Promise<void>(resolve => window.setTimeout(resolve, ms))
 }
 
-async function playOut() {
+function setTransitionColor(path: string) {
+  const color = path === '/'
+    ? '#CCFF79'
+    : path.includes('about')
+      ? '#e8d0ed'
+      : '#FF49AB'
+  document.documentElement.style.setProperty('--transi-color', color)
+}
+
+function triggerBackBlock() {
+  const blocks = backRefs.value
+  if (!blocks.length)
+    return
+
+  const block = blocks[currentBackIndex.value % blocks.length]
+  currentBackIndex.value += 1
+
+  const timeline = gsap.timeline()
+  timeline
+    .set(block, { scaleY: 0, transformOrigin: 'bottom' })
+    .to(block, { scaleY: 1, duration: 0.3, ease: 'cubic.out' }, 0)
+    .set(block, { transformOrigin: 'top' }, 0.32)
+    .to(block, { scaleY: 0, duration: 0.3, ease: 'cubic.in' }, 0.32)
+}
+
+function triggerLines(path: string) {
+  const useHorizontal = path.includes('about') || isPortrait.value
+  const lines = useHorizontal ? lineHRefs.value : lineRefs.value
+  if (!lines.length)
+    return
+
+  const axis = useHorizontal ? 'xPercent' : 'yPercent'
+  const enterFrom = useHorizontal ? -100 : 100
+  const exitTo = useHorizontal ? 100 : -100
+  const isHome = path === '/'
+
+  lines.forEach((line, index) => {
+    gsap.killTweensOf(line)
+    gsap.set(line, { autoAlpha: 1, [axis]: enterFrom })
+
+    const baseDelay = useHorizontal
+      ? index * 0.03
+      : isHome
+        ? Math.abs((index - (lines.length - 1) / 2) * 0.03)
+        : index * 0.018
+    const inDuration = useHorizontal ? 0.8 : (isHome ? 0.5 : 0.4)
+    const outDuration = useHorizontal ? 0.4 : 0.5
+
+    gsap.to(line, {
+      [axis]: 0,
+      scaleX: 1.2,
+      scaleY: 1.2,
+      duration: inDuration,
+      delay: baseDelay,
+      ease: 'cubic.out',
+      onComplete: () => {
+        gsap.to(line, {
+          [axis]: exitTo,
+          scaleX: 1,
+          scaleY: 1,
+          duration: outDuration,
+          delay: 0.2,
+          ease: 'cubic.inOut',
+          onComplete: () => {
+            gsap.set(line, { autoAlpha: 0 })
+          },
+        })
+      },
+    })
+  })
+}
+
+async function playTransition(path: string) {
   if (!import.meta.client)
     return
 
   isVisible.value = true
-  phase.value = 'idle'
   await nextTick()
   await new Promise<void>(resolve => requestAnimationFrame(() => resolve()))
-  phase.value = 'cover'
-  await delay(getTotalDurationMs())
-}
 
-async function playIn() {
-  if (!import.meta.client)
-    return
-
-  phase.value = 'reveal'
-  await delay(getTotalDurationMs())
+  setTransitionColor(path)
+  triggerBackBlock()
+  triggerLines(path)
+  await delay(TRANSITION_DELAY_MS)
   isVisible.value = false
-  phase.value = 'idle'
 }
 
-onMounted(async () => {
-  if (!hasPlayedInitial.value) {
+onMounted(() => {
+  if (!hasPlayedInitial.value)
     hasPlayedInitial.value = true
-    variant.value = Math.random() > 0.5 ? 'center' : 'sweep'
-    isPageTransitionActive.value = true
-    await playOut()
-    await playIn()
-    isPageTransitionActive.value = false
-  }
 
   const router = useRouter()
   stopBefore = router.beforeEach(async (to, from) => {
@@ -113,55 +142,51 @@ onMounted(async () => {
       return true
 
     isTransitioning.value = true
-    variant.value = Math.random() > 0.5 ? 'center' : 'sweep'
     isPageTransitionActive.value = true
-    await playOut()
-    revealPromise = (async () => {
-      await playIn()
-      isTransitioning.value = false
-      isPageTransitionActive.value = false
-      revealPromise = null
-    })()
+    await playTransition(to.path)
+    isTransitioning.value = false
+    isPageTransitionActive.value = false
     return true
-  })
-
-  stopAfter = router.afterEach(() => {
-    if (revealPromise)
-      revealPromise.catch(() => {})
   })
 })
 
 onBeforeUnmount(() => {
   if (typeof stopBefore === 'function')
     stopBefore()
-  if (typeof stopAfter === 'function')
-    stopAfter()
 })
 </script>
 
 <template>
-  <div
-    v-show="isVisible"
-    class="transition-strips"
-    :class="{
-      'is-cover': phase === 'cover',
-      'is-reveal': phase === 'reveal',
-    }"
-    :style="{
-      '--strip-color': stripColor,
-    }"
-  >
+  <div v-show="isVisible" class="transition-blocks">
     <div
-      v-for="index in stripCount"
-      :key="index"
-      class="transition-strip"
-      :style="stripStyle(index - 1)"
+      v-for="index in BACK_BLOCK_COUNT"
+      :key="`back-${index}`"
+      class="transition-blocks__back-el"
+      :ref="setBackRef"
     />
+    <div class="transition-blocks__lines">
+      <div
+        v-for="index in LINE_COUNT"
+        :key="`line-${index}`"
+        class="transition-blocks__line"
+        :style="`animation-delay: ${(index - 1) * 0.08}s;`"
+        :ref="setLineRef"
+      />
+    </div>
+    <div class="transition-blocks__lines-h">
+      <div
+        v-for="index in LINE_H_COUNT"
+        :key="`line-h-${index}`"
+        class="transition-blocks__line-h"
+        :style="`animation-delay: ${(index - 1) * 0.08}s;`"
+        :ref="setLineHRef"
+      />
+    </div>
   </div>
 </template>
 
 <style>
-.transition-strips {
+.transition-blocks {
   position: fixed;
   inset: 0;
   z-index: 80;
@@ -169,27 +194,62 @@ onBeforeUnmount(() => {
   overflow: hidden;
 }
 
-.transition-strip {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: calc((100% / var(--strip-count)) * var(--strip-index));
-  width: calc(100% / var(--strip-count) + 1px);
-  background: var(--strip-color);
-  transform: translateY(100%);
-  transition: transform var(--strip-duration);
-  will-change: transform;
+:root {
+  --transi-color: #fee3e3;
 }
 
-.transition-strips.is-cover .transition-strip {
-  transform: translateY(0);
-  transition-delay: var(--delay-in);
-  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+.transition-blocks__back-el {
+  position: fixed;
+  inset: 0;
+  background: #fffae6;
+  transform: scaleY(0);
+  transform-origin: bottom;
 }
 
-.transition-strips.is-reveal .transition-strip {
-  transform: translateY(-100%);
-  transition-delay: var(--delay-out);
-  transition-timing-function: cubic-bezier(0.6, 0, 0.9, 0.3);
+.transition-blocks__lines,
+.transition-blocks__lines-h {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.transition-blocks__lines-h {
+  flex-direction: column;
+}
+
+.transition-blocks__line,
+.transition-blocks__line-h {
+  visibility: hidden;
+  flex: 1;
+  background-image: linear-gradient(80deg, #fff, var(--transi-color));
+  background-size: 300% 100%;
+  animation: gradient2 2s ease infinite;
+  will-change: transform, opacity;
+}
+
+.transition-blocks__line {
+  width: 100%;
+  height: 100%;
+  transform: scaleX(1.1);
+}
+
+.transition-blocks__line-h {
+  width: 100%;
+  height: 100%;
+  transform: scale(1.01);
+}
+
+@keyframes gradient2 {
+  0% {
+    background-position: 0 0;
+  }
+  50% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0 0;
+  }
 }
 </style>
