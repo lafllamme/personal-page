@@ -5,6 +5,9 @@ definePageMeta({
   layout: 'empty',
 })
 
+const { isTransitionActive } = useTransition()
+const canRenderMetaballs = computed(() => !isTransitionActive.value)
+
 useHead({
   title: 'Liquid Glass',
   meta: [
@@ -19,7 +22,11 @@ useHead({
 <template>
   <main class="relative min-h-screen overflow-hidden bg-[#06090f] text-pureWhite">
     <div class="absolute inset-0">
-      <GlassMetaballs class="h-full w-full" />
+      <GlassMetaballs
+        v-if="canRenderMetaballs"
+        :active="canRenderMetaballs"
+        class="h-full w-full"
+      />
     </div>
     <div class="pointer-events-none absolute inset-0">
       <div class="absolute top-[-10%] h-[520px] w-[520px] rounded-full bg-[radial-gradient(circle,rgba(120,210,255,0.28),transparent_60%)] blur-2xl -left-24" />

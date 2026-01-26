@@ -1,4 +1,9 @@
-export function useOverlay() {
+type UseOverlayOptions = {
+  manageLifecycle?: boolean
+}
+
+export function useOverlay(options: UseOverlayOptions = {}) {
+  const { manageLifecycle = true } = options
   const introOverlayDone = useState<boolean>('intro-overlay-done', () => false)
   const introOverlayActive = useState<boolean>('intro-overlay-active', () => false)
 
@@ -26,30 +31,32 @@ export function useOverlay() {
     window.scrollTo(0, 0)
   }, overlayExitDurationMs, { immediate: false })
 
-  watch(overlayVisible, (value) => {
-    introOverlayActive.value = value
-  }, { immediate: true })
+  if (manageLifecycle) {
+    watch(overlayVisible, (value) => {
+      introOverlayActive.value = value
+    }, { immediate: true })
 
-  onMounted(() => {
-    if (!import.meta.client)
-      return
-    if (introOverlayDone.value) {
-      overlayVisible.value = false
-      overlayExiting.value = false
-      introOverlayActive.value = false
-      return
-    }
-    bodyRef.value = document.body
-    isBodyScrollLocked.value = true
-    document.body.style.cursor = 'wait'
-    startOverlayExit()
-  })
+    onMounted(() => {
+      if (!import.meta.client)
+        return
+      if (introOverlayDone.value) {
+        overlayVisible.value = false
+        overlayExiting.value = false
+        introOverlayActive.value = false
+        return
+      }
+      bodyRef.value = document.body
+      isBodyScrollLocked.value = true
+      document.body.style.cursor = 'wait'
+      startOverlayExit()
+    })
 
-  onBeforeUnmount(() => {
-    stopOverlayExit()
-    stopOverlayHide()
-    isBodyScrollLocked.value = false
-  })
+    onBeforeUnmount(() => {
+      stopOverlayExit()
+      stopOverlayHide()
+      isBodyScrollLocked.value = false
+    })
+  }
 
   return {
     overlayVisible,
