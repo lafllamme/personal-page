@@ -66,7 +66,7 @@ const variants: TransitionVariant[] = [
     outDuration: 0.53,
     exitDelay: 0.2,
     delayForIndex: (index, total) => Math.abs((index - (total - 1) / 2) * 0.03),
-    color: '#CCFF79',
+    color: 'var(--un-preset-radix-teal8)',
   },
   {
     id: 'sweep',
@@ -77,7 +77,7 @@ const variants: TransitionVariant[] = [
     outDuration: 0.5,
     exitDelay: 0.2,
     delayForIndex: (index) => index * 0.018,
-    color: '#FF49AB',
+    color: 'var(--un-preset-radix-violet9)',
   },
   {
     id: 'side',
@@ -88,7 +88,7 @@ const variants: TransitionVariant[] = [
     outDuration: 0.4,
     exitDelay: 0.1,
     delayForIndex: (index) => index * 0.03,
-    color: '#e8d0ed',
+    color: 'var(--un-preset-radix-mint8)',
   },
 ]
 
