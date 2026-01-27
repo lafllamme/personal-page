@@ -857,12 +857,6 @@ function stepSimulation({ delta, timestamp }: { delta: number, timestamp: number
 const { pause, resume } = useRafFn(stepSimulation, { immediate: false })
 
 watch(isActive, (active) => {
-  if (!active) {
-    materialReveal.value = 0
-    if (metaMaterial.value)
-      applyMaterialReveal(metaMaterial.value)
-  }
-
   if (active)
     resume()
   else
@@ -875,6 +869,18 @@ watch(isActive, (active) => {
       rendererLoop.value.stop()
   }
 }, { immediate: true })
+
+watch(
+  () => props.revealActive,
+  (active) => {
+    if (!active) {
+      materialReveal.value = 0
+      if (metaMaterial.value)
+        applyMaterialReveal(metaMaterial.value)
+    }
+  },
+  { immediate: true },
+)
 
 if (import.meta.client) {
   useEventListener(window, 'pointermove', updatePointerFromEvent, { passive: true })
