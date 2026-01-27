@@ -44,12 +44,12 @@ const updateHeroVisibility = useThrottleFn((visible: boolean) => {
 
 const canRenderMetaballs = computed(() => {
   return introOverlayDone.value
-    && isHeadlineAnimationDone.value
     && !isTransitionActive.value
     && isMetaballsActive.value
 })
 
 const canAnimateMetaballs = computed(() => canRenderMetaballs.value && !isMenuOpen.value)
+const canRevealMetaballs = computed(() => isHeadlineAnimationDone.value)
 
 useIntersectionObserver(
   headlineRef,
@@ -160,6 +160,7 @@ watch(shouldAnimatePointer, (active) => {
         <GlassMetaballs
           v-show="canRenderMetaballs"
           :active="canAnimateMetaballs"
+          :reveal-active="canRevealMetaballs"
           controls-mode="fixed"
           class="h-full w-full"
         />
