@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { START_LOCATION } from 'vue-router'
 import gsap from 'gsap'
+import { START_LOCATION } from 'vue-router'
 
 const LINE_COUNT = 17
 const LINE_H_COUNT = 9
@@ -44,7 +44,7 @@ function delay(ms: number) {
   return new Promise<void>(resolve => window.setTimeout(resolve, ms))
 }
 
-type TransitionVariant = {
+interface TransitionVariant {
   id: 'center' | 'sweep' | 'side'
   axis: 'xPercent' | 'yPercent'
   enterFrom: number
@@ -76,7 +76,7 @@ const variants: TransitionVariant[] = [
     inDuration: 0.4,
     outDuration: 0.5,
     exitDelay: 0.2,
-    delayForIndex: (index) => index * 0.018,
+    delayForIndex: index => index * 0.018,
     color: 'var(--un-preset-radix-violet9)',
   },
   {
@@ -87,7 +87,7 @@ const variants: TransitionVariant[] = [
     inDuration: 0.8,
     outDuration: 0.4,
     exitDelay: 0.1,
-    delayForIndex: (index) => index * 0.03,
+    delayForIndex: index => index * 0.03,
     color: 'var(--un-preset-radix-mint8)',
   },
 ]
@@ -213,25 +213,25 @@ onBeforeUnmount(() => {
     <div
       v-for="index in BACK_BLOCK_COUNT"
       :key="`back-${index}`"
-      class="transition-blocks__back-el"
       :ref="setBackRef"
+      class="transition-blocks__back-el"
     />
     <div class="transition-blocks__lines">
       <div
         v-for="index in LINE_COUNT"
         :key="`line-${index}`"
+        :ref="setLineRef"
         class="transition-blocks__line"
         :style="`animation-delay: ${(index - 1) * 0.08}s;`"
-        :ref="setLineRef"
       />
     </div>
     <div class="transition-blocks__lines-h">
       <div
         v-for="index in LINE_H_COUNT"
         :key="`line-h-${index}`"
+        :ref="setLineHRef"
         class="transition-blocks__line-h"
         :style="`animation-delay: ${(index - 1) * 0.08}s;`"
-        :ref="setLineHRef"
       />
     </div>
   </div>
