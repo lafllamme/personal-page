@@ -2,6 +2,7 @@
 import {
   breakpointsTailwind,
   useBreakpoints,
+  useEventListener,
   useIntersectionObserver,
   useMouseInElement,
   useRafFn,
@@ -37,6 +38,21 @@ const overlayDone = introOverlayDone
 const isHeadlineAnimationDone = ref(false)
 const isMetaballsActive = ref(true)
 const isMenuOpen = useState<boolean>('osmo-menu-open', () => false)
+
+/**
+ * Computed style for a hero section, dynamically adjusting height based on viewport.
+ * Sets initial hero height based on viewport dimensions and adjusts on window resize and orientation change.
+ */
+const heroHeightPx = ref(0)
+const lastWindowWidth = ref(0)
+const heroStyle = computed(() => {
+  if (!heroHeightPx.value)
+    return undefined
+
+  return {
+    '--hero-static-height': `${heroHeightPx.value}px`,
+  }
+})
 const updateHeroVisibility = useThrottleFn((visible: boolean) => {
   isHeroVisible.value = visible
 }, 150)
@@ -101,6 +117,34 @@ function handleHeadlineComplete() {
   isHeadlineAnimationDone.value = true
 }
 
+function updateHeroHeight() {
+  if (!import.meta.client)
+    return
+
+  const viewportHeight = window.visualViewport?.height || window.innerHeight
+  if (!viewportHeight)
+    return
+
+  heroHeightPx.value = viewportHeight
+  lastWindowWidth.value = window.innerWidth
+}
+
+onMounted(() => {
+  updateHeroHeight()
+})
+
+useEventListener(window, 'resize', () => {
+  if (!import.meta.client)
+    return
+
+  if (window.innerWidth !== lastWindowWidth.value)
+    updateHeroHeight()
+})
+
+useEventListener(window, 'orientationchange', () => {
+  updateHeroHeight()
+})
+
 watch(shouldAnimatePointer, (active) => {
   if (active)
     resumePointerRaf()
@@ -110,10 +154,11 @@ watch(shouldAnimatePointer, (active) => {
 </script>
 
 <template>
-    <section>
+  <section>
     <section
       ref="heroRef"
-      class="hero-viewport relative flex items-center justify-center <lg:select-none"
+      :style="heroStyle"
+      class="relative h-[var(--hero-static-height,100svh)] flex items-center justify-center <lg:select-none"
     >
       <div
         :class="isHeroVisible && isLgUp
@@ -127,14 +172,16 @@ watch(shouldAnimatePointer, (active) => {
               Pointer
             </div>
             <div class="flex items-center gap-3 text-[11px] color-pureBlack/80 tracking-widest dark:color-pureWhite/80">
-              <span class="flex items-center gap-1">
-                <span class="color-teal-11">X</span>
-                <span class="lining-nums tabular-nums">{{ pointerXLabel }}</span>
-              </span>
-              <span class="flex items-center gap-1">
-                <span class="color-teal-11">Y</span>
-                <span class="lining-nums tabular-nums">{{ pointerYLabel }}</span>
-              </span>
+              <ClientOnly>
+                <span class="flex items-center gap-1">
+                  <span class="color-teal-11">X</span>
+                  <span class="lining-nums tabular-nums">{{ pointerXLabel }}</span>
+                </span>
+                <span class="flex items-center gap-1">
+                  <span class="color-teal-11">Y</span>
+                  <span class="lining-nums tabular-nums">{{ pointerYLabel }}</span>
+                </span>
+              </ClientOnly>
             </div>
           </div>
         </div>
@@ -144,11 +191,9 @@ watch(shouldAnimatePointer, (active) => {
               <div class="text-[10px] color-pureBlack/60 tracking-widest uppercase dark:color-pureWhite/60">
                 Viewport
               </div>
-              <ClientOnly>
-                <div class="color-pureBlack/80 dark:color-pureWhite/80">
-                  {{ viewportLabel }}
-                </div>
-              </ClientOnly>
+              <div class="color-pureBlack/80 dark:color-pureWhite/80">
+                {{ viewportLabel }}
+              </div>
             </div>
             <div class="h-2 w-2 animate-ping animate-duration-[3000ms] border border-teal-11 border-solid" />
           </div>
