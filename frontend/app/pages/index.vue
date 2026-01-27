@@ -2,7 +2,6 @@
 import {
   breakpointsTailwind,
   useBreakpoints,
-  useEventListener,
   useIntersectionObserver,
   useMouseInElement,
   useRafFn,
@@ -37,16 +36,7 @@ const { isTransitionActive } = useTransition()
 const overlayDone = introOverlayDone
 const isMetaballsActive = ref(true)
 const isMenuOpen = useState<boolean>('osmo-menu-open', () => false)
-const heroHeightPx = ref(0)
-const lastWindowWidth = ref(0)
-const heroStyle = computed(() => {
-  if (!heroHeightPx.value)
-    return undefined
-
-  return {
-    '--hero-static-height': `${heroHeightPx.value}px`,
-  }
-})
+// TODO: consider restoring dynamic hero height if needed for layout tuning
 const updateHeroVisibility = useThrottleFn((visible: boolean) => {
   isHeroVisible.value = visible
 }, 150)
@@ -104,30 +94,6 @@ const headlineMotion = {
   },
 }
 
-function updateHeroHeight() {
-  if (!import.meta.client)
-    return
-
-  const rect = heroRef.value?.getBoundingClientRect()
-  const nextHeight = rect?.height || window.innerHeight
-  if (!nextHeight)
-    return
-
-  heroHeightPx.value = nextHeight
-  lastWindowWidth.value = window.innerWidth
-}
-
-onMounted(() => {
-  updateHeroHeight()
-})
-
-useEventListener(window, 'resize', () => {
-  if (!import.meta.client)
-    return
-
-  if (window.innerWidth !== lastWindowWidth.value)
-    updateHeroHeight()
-})
 
 watch(shouldAnimatePointer, (active) => {
   if (active)
@@ -141,8 +107,7 @@ watch(shouldAnimatePointer, (active) => {
   <section>
     <section
       ref="heroRef"
-      :style="heroStyle"
-      class="relative h-[var(--hero-static-height,100svh)] flex items-center justify-center <lg:select-none"
+      class="relative min-h-[100svh] flex items-center justify-center <lg:select-none"
     >
       <div
         :class="isHeroVisible && isLgUp
