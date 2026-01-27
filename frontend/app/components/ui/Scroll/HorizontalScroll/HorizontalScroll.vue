@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useEventListener } from '@vueuse/core'
 import { animate, scroll, spring } from 'motion-v'
 
 interface HorizontalScrollItem {
@@ -34,64 +33,9 @@ const ulRef = ref<HTMLUListElement | null>(null)
 const scrollSectionRef = ref<HTMLElement | null>(null)
 const headerRefs = ref<(HTMLElement | null)[]>([])
 const cleanupFns: Array<() => void> = []
-const headerHidden = useState<boolean>('osmo-header-hidden', () => false)
-const headerOffset = useState<number>('osmo-header-offset', () => 0)
-const colorMode = useColorMode()
-const headerTone = useState<'light' | 'dark'>(
-  'osmo-header-tone',
-  () => (colorMode.value === 'dark' ? 'dark' : 'light'),
-)
-
-function getHeaderOffset(): number {
-  if (!import.meta.client)
-    return 0
-
-  const raw = getComputedStyle(document.documentElement).getPropertyValue('--header-height').trim()
-  const parsed = Number.parseFloat(raw)
-  return Number.isFinite(parsed) ? parsed + 16 : 96
-}
-
-/**
- * Hide header exactly when the slides section top hits the header bottom (light→black boundary).
- * Binary: fully pushed out or visible. Smooth, quick CSS transition handles the animation.
- */
-const HEADER_TOGGLE_BUFFER = 6
-let lastAtSlidesBoundary = false
-
-function updateHeaderVisibility() {
-  const section = scrollSectionRef.value
-  if (!section) {
-    headerHidden.value = false
-    headerOffset.value = 0
-    headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
-    return
-  }
-
-  const rect = section.getBoundingClientRect()
-  const height = getHeaderOffset()
-  const enterBoundary = rect.top <= height - HEADER_TOGGLE_BUFFER && rect.bottom > 0
-  const exitBoundary = rect.top >= height + HEADER_TOGGLE_BUFFER || rect.bottom <= 0
-  const atSlidesBoundary = lastAtSlidesBoundary ? !exitBoundary : enterBoundary
-
-  if (atSlidesBoundary !== lastAtSlidesBoundary) {
-    lastAtSlidesBoundary = atSlidesBoundary
-    headerHidden.value = atSlidesBoundary
-    headerOffset.value = atSlidesBoundary ? -height : 0
-  }
-
-  headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
-}
-
-let headerRaf = 0
-function scheduleHeaderUpdate() {
-  if (headerRaf)
-    return
-
-  headerRaf = requestAnimationFrame(() => {
-    headerRaf = 0
-    updateHeaderVisibility()
-  })
-}
+useHeaderVisibility({
+  sectionRef: scrollSectionRef,
+})
 function slideThemeClasses(index: number) {
   const isEven = index % 2 === 0
   return isEven
@@ -141,25 +85,11 @@ onMounted(async () => {
     cleanupFns.push(() => control.stop())
   })
 
-  updateHeaderVisibility()
-  useEventListener(window, 'scroll', scheduleHeaderUpdate, { passive: true })
-  useEventListener(window, 'resize', scheduleHeaderUpdate, { passive: true })
-})
-
-watch(colorMode, () => {
-  updateHeaderVisibility()
 })
 
 onBeforeUnmount(() => {
   cleanupFns.forEach(stop => stop())
   cleanupFns.length = 0
-  if (headerRaf) {
-    cancelAnimationFrame(headerRaf)
-    headerRaf = 0
-  }
-  headerHidden.value = false
-  headerOffset.value = 0
-  headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
 })
 </script>
 
