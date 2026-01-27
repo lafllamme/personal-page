@@ -31,9 +31,10 @@ const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
 const headlineRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
-const { introOverlayDone, introOverlayActive } = useOverlay({ manageLifecycle: false })
+const { introOverlayDone } = useOverlay({ manageLifecycle: false })
 const { isTransitionActive } = useTransition()
 const overlayDone = introOverlayDone
+const isHeadlineAnimationDone = ref(false)
 const isMetaballsActive = ref(true)
 const isMenuOpen = useState<boolean>('osmo-menu-open', () => false)
 // TODO: consider restoring dynamic hero height if needed for layout tuning
@@ -43,6 +44,7 @@ const updateHeroVisibility = useThrottleFn((visible: boolean) => {
 
 const canRenderMetaballs = computed(() => {
   return introOverlayDone.value
+    && isHeadlineAnimationDone.value
     && !isTransitionActive.value
     && isMetaballsActive.value
 })
@@ -94,6 +96,11 @@ const headlineMotion = {
   },
 }
 
+function handleHeadlineComplete() {
+  if (!overlayDone.value)
+    return
+  isHeadlineAnimationDone.value = true
+}
 
 watch(shouldAnimatePointer, (active) => {
   if (active)
@@ -181,6 +188,7 @@ watch(shouldAnimatePointer, (active) => {
             :variants="headlineMotion"
             initial="initial"
             :animate="overlayDone ? 'enter' : 'initial'"
+            :on-animation-complete="handleHeadlineComplete"
           >
             We track it.
           </Motion>
