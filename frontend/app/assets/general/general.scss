@@ -41,3 +41,13 @@ html[data-theme-transitioning='true']::view-transition-new(root) {
     --header-height: 77px;
   }
 }
+
+.hero-viewport {
+  min-height: 100svh;
+}
+
+@supports (height: 100lvh) {
+  .hero-viewport {
+    min-height: 100lvh;
+  }
+}
