@@ -54,9 +54,14 @@ const props = withDefaults(defineProps<{
    * External visibility gate (e.g. from page intersection observers).
    */
   active?: boolean
+  /**
+   * When false, render but keep the material invisible.
+   */
+  revealActive?: boolean
 }>(), {
   controlsMode: 'absolute',
   active: true,
+  revealActive: true,
 })
 
 interface GlassBody {
@@ -73,6 +78,17 @@ interface MouseBall {
   update: (position: Vector3) => void
 }
 
+interface MaterialBase {
+  transmission: number
+  thickness: number
+  ior: number
+  roughness: number
+  metalness: number
+  envMapIntensity: number
+  clearcoat: number
+  clearcoatRoughness: number
+}
+
 type RenderMode = 'always' | 'on-demand'
 
 const container = ref<HTMLElement | null>(null)
@@ -86,6 +102,10 @@ const invalidateFrame = shallowRef<null | (() => void)>(null)
 const metaballs = shallowRef<MarchingCubes | null>(null)
 const metaMaterial = shallowRef<MeshPhysicalMaterial | null>(null)
 const mousePlane = shallowRef<Mesh | null>(null)
+const materialReveal = ref(0)
+
+const MATERIAL_REVEAL_IN_MS = 700
+const MATERIAL_REVEAL_OUT_MS = 350
 
 const stableWidth = ref(0)
 const stableHeight = ref(0)
@@ -249,14 +269,37 @@ function applyMaterialSettings() {
   if (sceneRef.value)
     sceneRef.value.environmentIntensity = settings.material.envMapIntensity
 
-  material.transmission = settings.material.transmission
-  material.thickness = settings.material.thickness
-  material.ior = settings.material.ior
-  material.roughness = settings.material.roughness
-  material.metalness = settings.material.metalness
-  material.envMapIntensity = settings.material.envMapIntensity
-  material.clearcoat = settings.material.clearcoat
-  material.clearcoatRoughness = settings.material.clearcoatRoughness
+  setMaterialBase(material)
+  applyMaterialReveal(material)
+}
+
+function setMaterialBase(material: MeshPhysicalMaterial) {
+  const base = (material.userData.baseMaterial ??= {} as MaterialBase) as MaterialBase
+  base.transmission = settings.material.transmission
+  base.thickness = settings.material.thickness
+  base.ior = settings.material.ior
+  base.roughness = settings.material.roughness
+  base.metalness = settings.material.metalness
+  base.envMapIntensity = settings.material.envMapIntensity
+  base.clearcoat = settings.material.clearcoat
+  base.clearcoatRoughness = settings.material.clearcoatRoughness
+}
+
+function applyMaterialReveal(material: MeshPhysicalMaterial) {
+  const base = material.userData.baseMaterial as MaterialBase | undefined
+  if (!base)
+    return
+
+  const reveal = materialReveal.value
+  material.transmission = base.transmission * reveal
+  material.thickness = base.thickness * reveal
+  material.ior = base.ior
+  material.roughness = base.roughness
+  material.metalness = base.metalness
+  material.envMapIntensity = base.envMapIntensity * reveal
+  material.clearcoat = base.clearcoat * reveal
+  material.clearcoatRoughness = base.clearcoatRoughness
+  material.opacity = reveal
 }
 
 const environmentBackground = shallowRef<Texture | null>(null)
@@ -533,6 +576,8 @@ function createMetaballs() {
 
   metaballs.value = marching
   metaMaterial.value = material
+  setMaterialBase(material)
+  applyMaterialReveal(material)
   applyFieldSettings()
   requestRender()
 }
@@ -770,10 +815,23 @@ function handleRaycast() {
     mouseTarget.copy(raycastHits[0].point)
 }
 
+function updateMaterialReveal(deltaMs: number) {
+  const material = metaMaterial.value
+  if (!material)
+    return
+
+  const target = props.revealActive ? 1 : 0
+  const duration = target > materialReveal.value ? MATERIAL_REVEAL_IN_MS : MATERIAL_REVEAL_OUT_MS
+  const t = duration > 0 ? 1 - Math.exp(-deltaMs / duration) : 1
+  materialReveal.value += (target - materialReveal.value) * t
+  applyMaterialReveal(material)
+}
+
 function stepSimulation({ delta, timestamp }: { delta: number, timestamp: number }) {
   if (!world || !metaballs.value)
     return
 
+  updateMaterialReveal(delta)
   handleRaycast()
 
   mousePos.lerp(mouseTarget, settings.mouse.lerp)
@@ -799,6 +857,12 @@ function stepSimulation({ delta, timestamp }: { delta: number, timestamp: number
 const { pause, resume } = useRafFn(stepSimulation, { immediate: false })
 
 watch(isActive, (active) => {
+  if (!active) {
+    materialReveal.value = 0
+    if (metaMaterial.value)
+      applyMaterialReveal(metaMaterial.value)
+  }
+
   if (active)
     resume()
   else
