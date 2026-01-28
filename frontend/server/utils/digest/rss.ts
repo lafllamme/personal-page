@@ -1,5 +1,4 @@
 import type { NormalizedItem, SourceConfig } from './types'
-import { createHash } from 'node:crypto'
 import { XMLParser } from 'fast-xml-parser'
 import { fetchWithRetry } from './fetch'
 
@@ -44,9 +43,7 @@ function toIsoDate(input: string | undefined): string {
 }
 
 function createId(sourceId: string, url: string, title: string, publishedAt: string): string {
-  return createHash('sha256')
-    .update(`${sourceId}:${url}:${title}:${publishedAt}`)
-    .digest('hex')
+  return `${sourceId}::${url}::${title}::${publishedAt}`
 }
 
 function extractRssItems(feed: any): any[] {
@@ -77,7 +74,7 @@ export async function fetchRssItems(source: SourceConfig): Promise<NormalizedIte
 
   const rssItems = extractRssItems(parsed)
   if (rssItems.length) {
-    return rssItems.map((item) => {
+    const mapped = rssItems.map((item) => {
       const title = item?.title?.['#text'] ?? item?.title ?? ''
       const url = item?.link?.['#text'] ?? item?.link ?? ''
       const publishedAt = toIsoDate(item?.pubDate ?? item?.published ?? item?.updated)
@@ -103,10 +100,11 @@ export async function fetchRssItems(source: SourceConfig): Promise<NormalizedIte
         raw: item,
       }
     })
+    return mapped
   }
 
   const atomEntries = extractAtomEntries(parsed)
-  return atomEntries.map((entry) => {
+  const mapped = atomEntries.map((entry) => {
     const title = entry?.title?.['#text'] ?? entry?.title ?? ''
     const url = getAtomLink(entry)
     const publishedAt = toIsoDate(entry?.published ?? entry?.updated)
@@ -130,4 +128,5 @@ export async function fetchRssItems(source: SourceConfig): Promise<NormalizedIte
       raw: entry,
     }
   })
+  return mapped
 }
