@@ -1,6 +1,7 @@
-import type { NormalizedItem, SourcePreset } from '../../utils/digest/types'
-import { fetchRssItems } from '../../utils/digest/rss'
-import { sources } from '../../utils/digest/sources'
+import type { NormalizedItem } from '../../services/digest/types'
+import { buildGoogleNewsUrl, resolveGoogleParams } from '../../services/digest/google'
+import { presets } from '../../services/digest/presets'
+import { fetchRssItems } from '../../services/digest/rss'
 
 function shouldExclude(_item: NormalizedItem): boolean {
   return false
@@ -27,46 +28,6 @@ function parseLimit(value: unknown, fallback = 80): number {
   return Math.min(num, 200)
 }
 
-function buildGoogleNewsUrl(opts: {
-  mode: 'top' | 'search' | 'topic' | 'topic-section'
-  query?: string
-  topicId?: string
-  sectionId?: string
-  hl?: string
-  gl?: string
-  ceid?: string
-}): string | undefined {
-  const base = 'https://news.google.com/rss'
-  let path = ''
-
-  if (opts.mode === 'search') {
-    if (!opts.query)
-      return undefined
-    path = `/search?q=${encodeURIComponent(opts.query)}`
-  }
-  else if (opts.mode === 'topic') {
-    if (!opts.topicId)
-      return undefined
-    path = `/topics/${encodeURIComponent(opts.topicId)}`
-  }
-  else if (opts.mode === 'topic-section') {
-    if (!opts.topicId || !opts.sectionId)
-      return undefined
-    path = `/topics/${encodeURIComponent(opts.topicId)}/sections/${encodeURIComponent(opts.sectionId)}`
-  }
-
-  const params = new URLSearchParams()
-  if (opts.hl)
-    params.set('hl', opts.hl)
-  if (opts.gl)
-    params.set('gl', opts.gl)
-  if (opts.ceid)
-    params.set('ceid', opts.ceid)
-
-  const query = params.toString()
-  return `${base}${path}${query ? `?${query}` : ''}`
-}
-
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const windowHours = parseWindowHours(query.windowHours, 24)
@@ -76,25 +37,20 @@ export default defineEventHandler(async (event) => {
   const errors: { sourceId: string, message: string }[] = []
 
   const presetId = asString(query.presetId)
-  const preset = presetId ? sources.find(item => item.id === presetId) : undefined
+  const preset = presetId ? presets.find(item => item.id === presetId) : undefined
 
-  const googleMode = (asString(query.googleMode) as SourcePreset['googleMode'] | undefined) ?? preset?.googleMode ?? 'search'
-  const googleQuery = asString(query.googleQuery) ?? preset?.googleQuery
-  const googleTopicId = asString(query.googleTopicId) ?? preset?.googleTopicId
-  const googleSectionId = asString(query.googleSectionId) ?? preset?.googleSectionId
-  const googleHl = asString(query.googleHl) ?? preset?.googleHl ?? 'de-DE'
-  const googleGl = asString(query.googleGl) ?? preset?.googleGl ?? 'DE'
-  const googleCeid = asString(query.googleCeid) ?? preset?.googleCeid
-
-  const googleUrl = buildGoogleNewsUrl({
-    mode: googleMode,
-    query: googleQuery,
-    topicId: googleTopicId,
-    sectionId: googleSectionId,
-    hl: googleHl || undefined,
-    gl: googleGl || undefined,
-    ceid: googleCeid || undefined,
+  const resolved = resolveGoogleParams({
+    preset,
+    mode: asString(query.googleMode) as any,
+    query: asString(query.googleQuery),
+    topicId: asString(query.googleTopicId),
+    sectionId: asString(query.googleSectionId),
+    hl: asString(query.googleHl),
+    gl: asString(query.googleGl),
+    ceid: asString(query.googleCeid),
   })
+
+  const googleUrl = buildGoogleNewsUrl(resolved)
 
   if (!googleUrl) {
     errors.push({ sourceId: preset?.id ?? 'google-custom', message: 'Invalid Google News query' })
@@ -106,7 +62,7 @@ export default defineEventHandler(async (event) => {
         name: preset?.name ?? 'Google News',
         type: 'rss' as const,
         url: googleUrl,
-        language: preset?.language ?? (googleHl?.startsWith('de') ? 'de' : 'en'),
+        language: preset?.language ?? (resolved.hl?.startsWith('de') ? 'de' : 'en'),
         topics: preset?.topics ?? ['tech', 'news'],
         weight: preset?.weight ?? 0.8,
       }
@@ -144,7 +100,7 @@ export default defineEventHandler(async (event) => {
       itemsReturned: Math.min(clean.length, limit),
       itemsExcluded: recent.length - clean.length,
       errors,
-      presets: sources.map(source => ({
+      presets: presets.map(source => ({
         id: source.id,
         name: source.name,
         googleMode: source.googleMode,
