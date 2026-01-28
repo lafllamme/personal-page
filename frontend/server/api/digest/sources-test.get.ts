@@ -1,5 +1,4 @@
-import type { NormalizedItem } from '../../utils/digest/types'
-import { fetchJsonItems } from '../../utils/digest/json'
+import type { NormalizedItem, SourcePreset } from '../../utils/digest/types'
 import { fetchRssItems } from '../../utils/digest/rss'
 import { sources } from '../../utils/digest/sources'
 
@@ -12,14 +11,6 @@ function asString(value: unknown): string | undefined {
     return undefined
   const trimmed = value.trim()
   return trimmed || undefined
-}
-
-function asBoolean(value: unknown): boolean {
-  if (value === 'true' || value === true)
-    return true
-  if (value === 'false' || value === false)
-    return false
-  return false
 }
 
 function parseWindowHours(value: unknown, fallback = 24): number {
@@ -69,13 +60,8 @@ function buildGoogleNewsUrl(opts: {
     params.set('hl', opts.hl)
   if (opts.gl)
     params.set('gl', opts.gl)
-  if (opts.ceid) {
+  if (opts.ceid)
     params.set('ceid', opts.ceid)
-  }
-  else if (opts.gl && opts.hl) {
-    const lang = opts.hl.split('-')[0] ?? opts.hl
-    params.set('ceid', `${opts.gl}:${lang}`)
-  }
 
   const query = params.toString()
   return `${base}${path}${query ? `?${query}` : ''}`
@@ -86,62 +72,54 @@ export default defineEventHandler(async (event) => {
   const windowHours = parseWindowHours(query.windowHours, 24)
   const limit = parseLimit(query.limit, 120)
 
-  const maxSources = 20
-  const sourceList = sources.slice(0, maxSources)
-
   const fetched: NormalizedItem[] = []
   const errors: { sourceId: string, message: string }[] = []
 
-  const useGoogle = asBoolean(query.google)
-  const googleOnly = asBoolean(query.googleOnly)
-  const googleMode = (asString(query.googleMode) as 'top' | 'search' | 'topic' | 'topic-section' | undefined) ?? 'search'
-  const googleQuery = asString(query.googleQuery)
-  const googleTopicId = asString(query.googleTopicId)
-  const googleSectionId = asString(query.googleSectionId)
-  const googleHl = asString(query.googleHl)
-  const googleGl = asString(query.googleGl)
-  const googleCeid = asString(query.googleCeid)
+  const presetId = asString(query.presetId)
+  const preset = presetId ? sources.find(item => item.id === presetId) : undefined
 
-  const googleUrl = useGoogle
-    ? buildGoogleNewsUrl({
-        mode: googleMode,
-        query: googleQuery,
-        topicId: googleTopicId,
-        sectionId: googleSectionId,
-        hl: googleHl,
-        gl: googleGl,
-        ceid: googleCeid,
-      })
-    : undefined
+  const googleMode = (asString(query.googleMode) as SourcePreset['googleMode'] | undefined) ?? preset?.googleMode ?? 'search'
+  const googleQuery = asString(query.googleQuery) ?? preset?.googleQuery
+  const googleTopicId = asString(query.googleTopicId) ?? preset?.googleTopicId
+  const googleSectionId = asString(query.googleSectionId) ?? preset?.googleSectionId
+  const googleHl = asString(query.googleHl) ?? preset?.googleHl ?? 'de-DE'
+  const googleGl = asString(query.googleGl) ?? preset?.googleGl ?? 'DE'
+  const googleCeid = asString(query.googleCeid) ?? preset?.googleCeid
 
-  const runtimeSources = googleOnly ? [] : sourceList
-  if (useGoogle) {
-    if (googleUrl) {
-      runtimeSources.push({
-        id: 'google-news',
-        name: 'Google News',
-        type: 'rss',
-        url: googleUrl,
-        language: (googleHl?.startsWith('de') ? 'de' : 'en'),
-        topics: ['tech', 'news'],
-        weight: 0.8,
-      })
-    }
-    else {
-      errors.push({ sourceId: 'google-news', message: 'Invalid Google News query' })
-    }
+  const googleUrl = buildGoogleNewsUrl({
+    mode: googleMode,
+    query: googleQuery,
+    topicId: googleTopicId,
+    sectionId: googleSectionId,
+    hl: googleHl || undefined,
+    gl: googleGl || undefined,
+    ceid: googleCeid || undefined,
+  })
+
+  if (!googleUrl) {
+    errors.push({ sourceId: preset?.id ?? 'google-custom', message: 'Invalid Google News query' })
   }
 
-  for (const source of runtimeSources) {
+  const runtimeSource = googleUrl
+    ? {
+        id: preset?.id ?? 'google-custom',
+        name: preset?.name ?? 'Google News',
+        type: 'rss' as const,
+        url: googleUrl,
+        language: preset?.language ?? (googleHl?.startsWith('de') ? 'de' : 'en'),
+        topics: preset?.topics ?? ['tech', 'news'],
+        weight: preset?.weight ?? 0.8,
+      }
+    : undefined
+
+  if (runtimeSource) {
     try {
-      const items = source.type === 'json'
-        ? await fetchJsonItems(source)
-        : await fetchRssItems(source)
+      const items = await fetchRssItems(runtimeSource)
       fetched.push(...items)
     }
     catch (err: any) {
-      errors.push({ sourceId: source.id, message: err?.message ?? 'Unknown error' })
-      console.warn(`[digest][fetch] ${source.id} failed`, err)
+      errors.push({ sourceId: runtimeSource.id, message: err?.message ?? 'Unknown error' })
+      console.warn(`[digest][fetch] ${runtimeSource.id} failed`, err)
     }
   }
 
@@ -160,12 +138,25 @@ export default defineEventHandler(async (event) => {
     meta: {
       generatedAt: new Date().toISOString(),
       windowHours,
-      sourcesRequested: sourceList.length,
-      sourcesSucceeded: sourceList.length - errors.length,
+      sourcesRequested: runtimeSource ? 1 : 0,
+      sourcesSucceeded: runtimeSource ? Math.max(0, 1 - errors.length) : 0,
       itemsTotal: fetched.length,
       itemsReturned: Math.min(clean.length, limit),
       itemsExcluded: recent.length - clean.length,
       errors,
+      presets: sources.map(source => ({
+        id: source.id,
+        name: source.name,
+        googleMode: source.googleMode,
+        googleQuery: source.googleQuery,
+        googleTopicId: source.googleTopicId,
+        googleSectionId: source.googleSectionId,
+        googleHl: source.googleHl,
+        googleGl: source.googleGl,
+        googleCeid: source.googleCeid,
+        language: source.language,
+        topics: source.topics,
+      })),
     },
     items: clean.slice(0, limit),
   }
