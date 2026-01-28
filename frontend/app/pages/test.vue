@@ -22,6 +22,19 @@ interface DigestMeta {
   itemsTotal: number
   itemsReturned: number
   errors: { sourceId: string, message: string }[]
+  presets?: {
+    id: string
+    name: string
+    googleMode: 'search' | 'topic' | 'topic-section' | 'top'
+    googleQuery?: string
+    googleTopicId?: string
+    googleSectionId?: string
+    googleHl?: string
+    googleGl?: string
+    googleCeid?: string
+    language: 'de' | 'en'
+    topics: string[]
+  }[]
 }
 
 interface DigestResponse {
@@ -30,58 +43,41 @@ interface DigestResponse {
 }
 
 const windowHours = ref(24)
-const sourceFilter = ref('all')
+const presetId = ref('golem')
 const sortMode = ref<'recent' | 'source' | 'rich' | 'no-excerpt'>('recent')
 const pageSize = ref(30)
 const currentPage = ref(1)
 const expanded = ref<Record<string, boolean>>({})
 const isMounted = ref(false)
-const useGoogleNews = ref(false)
-const googleOnly = ref(false)
 const googleMode = ref<'search' | 'topic' | 'topic-section' | 'top'>('search')
 const googleQuery = ref('site:reuters.com/technology')
 const googleTopicId = ref('')
 const googleSectionId = ref('')
-const googleHl = ref('en-US')
-const googleGl = ref('US')
-const googleCeid = ref('US:en')
+const googleHl = ref('de-DE')
+const googleGl = ref('DE')
+const googleCeid = ref('')
+const localePreset = ref<'de' | 'en' | 'custom'>('de')
 const { data, pending, error, refresh } = await useFetch<DigestResponse>('/api/digest/sources-test', {
   query: computed(() => ({
     windowHours: windowHours.value,
-    google: useGoogleNews.value ? 'true' : undefined,
-    googleOnly: googleOnly.value ? 'true' : undefined,
-    googleMode: useGoogleNews.value ? googleMode.value : undefined,
-    googleQuery: useGoogleNews.value ? googleQuery.value : undefined,
-    googleTopicId: useGoogleNews.value ? googleTopicId.value : undefined,
-    googleSectionId: useGoogleNews.value ? googleSectionId.value : undefined,
-    googleHl: useGoogleNews.value ? googleHl.value : undefined,
-    googleGl: useGoogleNews.value ? googleGl.value : undefined,
-    googleCeid: useGoogleNews.value ? googleCeid.value : undefined,
+    presetId: presetId.value,
+    googleMode: googleMode.value,
+    googleQuery: googleQuery.value,
+    googleTopicId: googleTopicId.value || undefined,
+    googleSectionId: googleSectionId.value || undefined,
+    googleHl: googleHl.value || undefined,
+    googleGl: googleGl.value || undefined,
+    googleCeid: googleCeid.value || undefined,
   })),
 })
 
 useHead({
-  title: 'Digest Sources Test',
+  title: 'Digest Explorer',
 })
 
-const sourcesList = computed(() => {
-  const items = data.value?.items ?? []
-  return Array.from(new Set(items.map(item => item.sourceName))).sort()
-})
+const presets = computed(() => data.value?.meta.presets ?? [])
 
-const hasGolemSources = computed(() => {
-  const items = data.value?.items ?? []
-  return items.some(item => item.sourceId.startsWith('golem-'))
-})
-
-const filteredItems = computed(() => {
-  const items = data.value?.items ?? []
-  if (sourceFilter.value === 'all')
-    return items
-  if (sourceFilter.value === 'golem-all')
-    return items.filter(item => item.sourceId.startsWith('golem-'))
-  return items.filter(item => item.sourceName === sourceFilter.value)
-})
+const filteredItems = computed(() => data.value?.items ?? [])
 
 const sortedItems = computed(() => {
   const items = [...filteredItems.value]
@@ -130,12 +126,59 @@ function formatPublishedAt(value: string) {
   return date.toLocaleString()
 }
 
+watch(localePreset, (value) => {
+  if (value === 'de') {
+    if (googleHl.value !== 'de-DE')
+      googleHl.value = 'de-DE'
+    if (googleGl.value !== 'DE')
+      googleGl.value = 'DE'
+    return
+  }
+  if (value === 'en') {
+    if (googleHl.value !== 'en-US')
+      googleHl.value = 'en-US'
+    if (googleGl.value !== 'US')
+      googleGl.value = 'US'
+  }
+})
+
+watch([googleHl, googleGl], () => {
+  if (googleHl.value === 'de-DE' && googleGl.value === 'DE') {
+    if (localePreset.value !== 'de')
+      localePreset.value = 'de'
+    return
+  }
+  if (googleHl.value === 'en-US' && googleGl.value === 'US') {
+    if (localePreset.value !== 'en')
+      localePreset.value = 'en'
+    return
+  }
+  if (localePreset.value !== 'custom')
+    localePreset.value = 'custom'
+})
+
 watch(
-  [sourceFilter, sortMode, pageSize, useGoogleNews, googleOnly, googleMode, googleQuery, googleTopicId, googleSectionId, googleHl, googleGl, googleCeid],
+  [presetId, sortMode, pageSize, googleMode, googleQuery, googleTopicId, googleSectionId, googleHl, googleGl, googleCeid],
   () => {
-  currentPage.value = 1
+    currentPage.value = 1
   },
 )
+
+watch(presetId, () => {
+  const preset = presets.value.find(item => item.id === presetId.value)
+  if (!preset)
+    return
+  googleMode.value = preset.googleMode
+  googleQuery.value = preset.googleQuery ?? ''
+  googleTopicId.value = preset.googleTopicId ?? ''
+  googleSectionId.value = preset.googleSectionId ?? ''
+  if (preset.googleHl)
+    googleHl.value = preset.googleHl
+  if (preset.googleGl)
+    googleGl.value = preset.googleGl
+  if (preset.googleCeid !== undefined)
+    googleCeid.value = preset.googleCeid ?? ''
+})
 
 onMounted(() => {
   isMounted.value = true
@@ -144,15 +187,15 @@ onMounted(() => {
 
 <template>
   <div class="min-h-screen bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
-    <div class="mx-auto max-w-6xl w-full px-4 py-12 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-6xl w-full px-0 py-8">
       <header class="mb-10 space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4">
-          <h1 class="font-cabinet text-3xl tracking-tight">
-            Digest Sources Test
+          <h1 class="font-prata text-4xl md:text-5xl tracking-tight text-balance">
+            Digest Explorer
           </h1>
           <div class="flex flex-wrap items-center gap-2">
             <button
-              class="border-black/10 bg-white hover:bg-black/5 dark:border-white/15 dark:bg-black dark:hover:bg-white/10 border rounded-full px-4 py-2 text-xs tracking-[0.18em] uppercase transition"
+              class="border-black/10 bg-pureWhite text-pureBlack hover:bg-black/5 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:hover:bg-white/10 border rounded-full px-4 py-2 text-xs tracking-[0.18em] uppercase transition"
               @click="refresh()"
             >
               Refresh
@@ -160,29 +203,27 @@ onMounted(() => {
           </div>
         </div>
         <p class="text-black/70 dark:text-white/70 max-w-2xl text-sm">
-          Live fetch of RSS sources. Items can be filtered, sorted, and expanded for excerpts.
+          Google News RSS explorer. Adjust query and locale to slice the feed, then sort and inspect excerpts.
         </p>
         <div class="flex flex-wrap items-center gap-4">
           <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
-            Window (hours)
+            Posted Date (hours)
             <input
               v-model.number="windowHours"
               type="number"
               min="1"
               max="72"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black w-20 border rounded px-2 py-1 text-sm"
+              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 w-24 border rounded px-2 py-1 text-sm"
             >
           </label>
           <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
-            Source
+            Source preset
             <select
-              v-model="sourceFilter"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-40 border rounded px-2 py-1 text-sm"
+              v-model="presetId"
+              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite min-w-52 border rounded px-2 py-1 text-sm"
             >
-              <option value="all">All</option>
-              <option v-if="hasGolemSources" value="golem-all">Golem – All</option>
-              <option v-for="source in sourcesList" :key="source" :value="source">
-                {{ source }}
+              <option v-for="preset in presets" :key="preset.id" :value="preset.id">
+                {{ preset.name }}
               </option>
             </select>
           </label>
@@ -190,7 +231,7 @@ onMounted(() => {
             Sort
             <select
               v-model="sortMode"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-36 border rounded px-2 py-1 text-sm"
+              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite min-w-36 border rounded px-2 py-1 text-sm"
             >
               <option value="recent">Most recent</option>
               <option value="source">By source</option>
@@ -202,7 +243,7 @@ onMounted(() => {
             Page size
             <select
               v-model.number="pageSize"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black w-24 border rounded px-2 py-1 text-sm"
+              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite w-24 border rounded px-2 py-1 text-sm"
             >
               <option :value="20">20</option>
               <option :value="30">30</option>
@@ -218,24 +259,26 @@ onMounted(() => {
         </div>
         <div class="border-black/10 dark:border-white/10 flex flex-wrap items-center gap-4 border rounded-lg p-4">
           <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
-            <input v-model="useGoogleNews" type="checkbox" class="accent-black dark:accent-white">
-            Use Google News
-          </label>
-          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
-            <input v-model="googleOnly" type="checkbox" class="accent-black dark:accent-white" :disabled="!useGoogleNews">
-            Google only
-          </label>
-          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
             Mode
             <select
               v-model="googleMode"
-              :disabled="!useGoogleNews"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-36 border rounded px-2 py-1 text-sm"
+              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite min-w-36 border rounded px-2 py-1 text-sm"
             >
               <option value="top">Top</option>
               <option value="search">Search</option>
               <option value="topic">Topic</option>
               <option value="topic-section">Topic + Section</option>
+            </select>
+          </label>
+          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
+            Locale preset
+            <select
+              v-model="localePreset"
+              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite min-w-32 border rounded px-2 py-1 text-sm"
+            >
+              <option value="de">Deutsch (DE)</option>
+              <option value="en">English (US)</option>
+              <option value="custom">Custom</option>
             </select>
           </label>
           <label
@@ -245,8 +288,7 @@ onMounted(() => {
             Query
             <input
               v-model="googleQuery"
-              :disabled="!useGoogleNews"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-64 border rounded px-2 py-1 text-sm"
+              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 min-w-64 border rounded px-2 py-1 text-sm"
               placeholder="site:reuters.com/technology"
             >
           </label>
@@ -257,8 +299,7 @@ onMounted(() => {
             Topic ID
             <input
               v-model="googleTopicId"
-              :disabled="!useGoogleNews"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-64 border rounded px-2 py-1 text-sm"
+              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 min-w-64 border rounded px-2 py-1 text-sm"
               placeholder="CAAqJggKIiBDQkFTR..."
             >
           </label>
@@ -269,36 +310,32 @@ onMounted(() => {
             Section ID
             <input
               v-model="googleSectionId"
-              :disabled="!useGoogleNews"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-64 border rounded px-2 py-1 text-sm"
+              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 min-w-64 border rounded px-2 py-1 text-sm"
               placeholder="CAQiSkNCQV..."
             >
           </label>
           <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
-            hl
+            Home language (hl)
             <input
               v-model="googleHl"
-              :disabled="!useGoogleNews"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black w-24 border rounded px-2 py-1 text-sm"
-              placeholder="en-US"
+              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 w-24 border rounded px-2 py-1 text-sm"
+              placeholder="de-DE"
             >
           </label>
           <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
-            gl
+            Group language (gl)
             <input
               v-model="googleGl"
-              :disabled="!useGoogleNews"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black w-16 border rounded px-2 py-1 text-sm"
-              placeholder="US"
+              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 w-16 border rounded px-2 py-1 text-sm"
+              placeholder="DE"
             >
           </label>
           <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
             ceid
             <input
               v-model="googleCeid"
-              :disabled="!useGoogleNews"
-              class="border-black/10 bg-white dark:border-white/15 dark:bg-black w-28 border rounded px-2 py-1 text-sm"
-              placeholder="US:en"
+              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 w-28 border rounded px-2 py-1 text-sm"
+              placeholder="(optional)"
             >
           </label>
         </div>
