@@ -115,12 +115,37 @@ const pagedItems = computed(() => {
   return sortedItems.value.slice(start, start + pageSize.value)
 })
 
+const copyStatus = ref<'idle' | 'ok' | 'error'>('idle')
+
 function clampWindowHours(value: number) {
   return Math.min(72, Math.max(1, value))
 }
 
 function incrementWindowHours(delta: number) {
   windowHours.value = clampWindowHours(windowHours.value + delta)
+}
+
+async function copyCurrentList() {
+  if (!import.meta.client)
+    return
+  copyStatus.value = 'idle'
+  const payload = {
+    meta: {
+      generatedAt: data.value?.meta.generatedAt ?? new Date().toISOString(),
+      windowHours: windowHours.value,
+      totalItems: sortedItems.value.length,
+      pageSize: pageSize.value,
+      currentPage: currentPage.value,
+    },
+    items: pagedItems.value,
+  }
+  const text = JSON.stringify(payload, null, 2)
+  try {
+    await navigator.clipboard.writeText(text)
+    copyStatus.value = 'ok'
+  } catch {
+    copyStatus.value = 'error'
+  }
 }
 
 function toggleExpand(id: string) {
@@ -222,6 +247,13 @@ onMounted(() => {
             @click="refresh()"
           >
             ↻
+          </button>
+          <button
+            class="border-black/10 hover:bg-black/5 dark:border-white/15 dark:hover:bg-white/10 border rounded-full bg-pureWhite px-4 py-2 text-[10px] text-pureBlack tracking-[0.18em] uppercase transition dark:bg-pureBlack dark:text-pureWhite"
+            type="button"
+            @click="copyCurrentList()"
+          >
+            {{ copyStatus === 'ok' ? 'Copied' : 'Copy list' }}
           </button>
         </div>
         <div class="font-manrope flex flex-wrap items-center gap-4">
