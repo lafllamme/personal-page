@@ -383,13 +383,13 @@ function handleImageLoad(itemId: string) {
                             loading="lazy"
                             @load="handleImageLoad(item.id)"
                           >
-                          <a href="/blog" class="absolute bottom-4 left-4 z-10 h-12 w-12 flex items-center justify-center border border-pureBlack/10 rounded-lg bg-pureWhite/95 color-pureBlack shadow-[0_4px_24px_rgba(0,0,0,0.1)] transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform group-hover:[transform:translateZ(60px)_scale(1.2)_rotate(360deg)] sm:h-20 sm:w-20 dark:border-pureWhite/15 dark:bg-pureBlack group-hover:bg-pureBlack/90 dark:color-pureWhite group-hover:color-pureWhite motion-reduce:transition-none dark:group-hover:bg-pureWhite dark:group-hover:color-pureBlack">
+                          <NuxtLink to="/blog" class="absolute bottom-4 left-4 z-10 h-12 w-12 flex items-center justify-center border border-pureBlack/10 rounded-lg bg-pureWhite/95 color-pureBlack shadow-[0_4px_24px_rgba(0,0,0,0.1)] transition-all duration-[600ms] ease-[cubic-bezier(0.23,1,0.32,1)] will-change-transform group-hover:[transform:translateZ(60px)_scale(1.2)_rotate(360deg)] sm:h-20 sm:w-20 dark:border-pureWhite/15 dark:bg-pureBlack group-hover:bg-pureBlack/90 dark:color-pureWhite group-hover:color-pureWhite motion-reduce:transition-none dark:group-hover:bg-pureWhite dark:group-hover:color-pureBlack">
                             <Icon
                               name="lucide:arrow-up-right"
                               class="h-8 w-8 sm:h-12 sm:w-12"
                               aria-hidden="true"
                             />
-                          </a>
+                          </NuxtLink>
                         </div>
                       </div>
                     </div>
