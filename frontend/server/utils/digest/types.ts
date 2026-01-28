@@ -17,6 +17,8 @@ export interface NormalizedItem {
   url: string
   publishedAt: string
   excerpt?: string
+  contentKind?: 'content' | 'summary' | 'description'
+  contentLength?: number
   topics: string[]
   raw?: Record<string, unknown>
 }

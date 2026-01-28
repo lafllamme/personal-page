@@ -2,6 +2,13 @@ import type { NormalizedItem } from '../../utils/digest/types'
 import { fetchRssItems } from '../../utils/digest/rss'
 import { sources } from '../../utils/digest/sources'
 
+const EXCLUDE_TITLE_RE = /(anzeige|deal|coupon)/i
+const EXCLUDE_URL_RE = /(coupon|promo-code)/i
+
+function shouldExclude(item: NormalizedItem): boolean {
+  return EXCLUDE_TITLE_RE.test(item.title) || EXCLUDE_URL_RE.test(item.url)
+}
+
 function parseWindowHours(value: unknown, fallback = 24): number {
   const num = Number(value)
   if (!Number.isFinite(num) || num <= 0)
@@ -43,7 +50,14 @@ export default defineEventHandler(async (event) => {
 
   const cutoff = Date.now() - windowHours * 60 * 60 * 1000
   const recent = fetched.filter(item => new Date(item.publishedAt).getTime() >= cutoff)
-  recent.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
+  const clean = recent
+    .filter(item => !shouldExclude(item))
+    .map(item => ({
+      ...item,
+      hasRichContent: item.contentKind === 'content' || (item.contentLength ?? 0) >= 600,
+    }))
+
+  clean.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
 
   return {
     meta: {
@@ -52,9 +66,10 @@ export default defineEventHandler(async (event) => {
       sourcesRequested: sourceList.length,
       sourcesSucceeded: sourceList.length - errors.length,
       itemsTotal: fetched.length,
-      itemsReturned: Math.min(recent.length, limit),
+      itemsReturned: Math.min(clean.length, limit),
+      itemsExcluded: recent.length - clean.length,
       errors,
     },
-    items: recent.slice(0, limit),
+    items: clean.slice(0, limit),
   }
 })
