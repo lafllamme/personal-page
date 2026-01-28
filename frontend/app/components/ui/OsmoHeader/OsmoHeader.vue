@@ -3,8 +3,8 @@ import { useEventListener, useScroll } from '@vueuse/core'
 import { AnimatePresence, Motion } from 'motion-v'
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
+import LogoMark from './LogoMark.vue'
 import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
-import OsmoLogoMark from './OsmoLogoMark.vue'
 import OsmoMenuIcon from './OsmoMenuIcon.vue'
 
 const isScrolled = ref(false)
@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
                       :exit="{ opacity: 0, scale: 0.8, rotate: 180 }"
                       :transition="{ duration: 0.3 }"
                     >
-                      <OsmoLogoMark class="osmo-nav-logo__icon" />
+                      <LogoMark class="osmo-nav-logo__icon" />
                     </Motion>
                     <Motion
                       v-else
@@ -215,9 +215,9 @@ onBeforeUnmount(() => {
                 <div class="osmo-nav-bar__signup-button">
                   <NuxtLink
                     to="/join"
-                    class="osmo-nav-bar__button is--join"
+                    class="osmo-nav-bar__button is--join text-pureBlack dark:text-pureWhite"
                   >
-                    <div class="osmo-nav-bar__button-bg" />
+                    <div class="osmo-nav-bar__button-bg bg-[#0bd8b6] dark:bg-[#0aa88f]" />
                     <div class="osmo-nav-bar__button-label-wrap">
                       <div class="osmo-nav-bar__button-label">
                         <span class="font-manrope color-pureBlack font-500 tracking-tight dark:color-pureWhite">Join</span>
@@ -438,7 +438,10 @@ onBeforeUnmount(() => {
       :class="{ 'is--hidden': marqueeHidden }"
     >
       <div class="osmo-marquee-wrap__inner">
-        <NuxtLink to="/showcase" class="osmo-marquee">
+        <NuxtLink
+          to="/showcase"
+          class="osmo-marquee bg-[#0bd8b6] text-pureBlack dark:bg-[#0aa88f] dark:text-pureWhite"
+        >
           <div class="osmo-marquee__scroll">
             <!-- First list -->
             <div class="osmo-marquee__list">
@@ -802,7 +805,6 @@ onBeforeUnmount(() => {
 
 .osmo-nav-bar__button.is--join {
   border-radius: 0.125em;
-  color: #201d1d;
 }
 
 .osmo-nav-bar__button-bg {
@@ -813,7 +815,6 @@ onBeforeUnmount(() => {
 }
 
 .osmo-nav-bar__button.is--join .osmo-nav-bar__button-bg {
-  background-color: #0bd8b6;
   transition: background-color 0.2s ease;
 }
 
@@ -1200,22 +1201,6 @@ onBeforeUnmount(() => {
     0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-.osmo-mobile-button.is--electric .osmo-mobile-button__bg {
-  background-color: rgba(11, 216, 182, 0.9);
-  border: 1px solid rgba(11, 216, 182, 0.3);
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
-    0 4px 12px rgba(11, 216, 182, 0.3);
-}
-
-.osmo-mobile-button.is--electric:hover .osmo-mobile-button__bg {
-  background-color: rgba(138, 230, 80, 0.95);
-  border-color: rgba(138, 230, 80, 0.4);
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
-    0 6px 16px rgba(138, 230, 80, 0.4);
-}
-
 .osmo-mobile-button__label {
   position: relative;
   z-index: 1;
@@ -1223,10 +1208,6 @@ onBeforeUnmount(() => {
 
 .osmo-mobile-button.is--neutral {
   color: white;
-}
-
-.osmo-mobile-button.is--electric {
-  color: #1e1e1e;
 }
 
 .osmo-line {
@@ -1461,9 +1442,7 @@ onBeforeUnmount(() => {
 }
 
 .osmo-marquee {
-  background-color: #0bd8b6;
   pointer-events: auto;
-  color: #201d1d;
   border-radius: 0.25em;
   flex: none;
   width: 100%;
@@ -1715,3 +1694,21 @@ onBeforeUnmount(() => {
   }
 }
 </style>
+.osmo-mobile-button.is--electric .osmo-mobile-button__bg {
+  background-color: rgba(11, 216, 182, 0.9);
+  border: 1px solid rgba(11, 216, 182, 0.3);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
+    0 4px 12px rgba(11, 216, 182, 0.3);
+}
+
+.osmo-mobile-button.is--electric:hover .osmo-mobile-button__bg {
+  background-color: rgba(138, 230, 80, 0.95);
+  border-color: rgba(138, 230, 80, 0.4);
+  box-shadow:
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
+    0 6px 16px rgba(138, 230, 80, 0.4);
+}
+.osmo-mobile-button.is--electric {
+  color: #1e1e1e;
+}
