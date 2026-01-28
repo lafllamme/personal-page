@@ -35,8 +35,29 @@ const sortMode = ref<'recent' | 'source' | 'rich' | 'no-excerpt'>('recent')
 const pageSize = ref(30)
 const currentPage = ref(1)
 const expanded = ref<Record<string, boolean>>({})
+const isMounted = ref(false)
+const useGoogleNews = ref(false)
+const googleOnly = ref(false)
+const googleMode = ref<'search' | 'topic' | 'topic-section' | 'top'>('search')
+const googleQuery = ref('site:reuters.com/technology')
+const googleTopicId = ref('')
+const googleSectionId = ref('')
+const googleHl = ref('en-US')
+const googleGl = ref('US')
+const googleCeid = ref('US:en')
 const { data, pending, error, refresh } = await useFetch<DigestResponse>('/api/digest/sources-test', {
-  query: computed(() => ({ windowHours: windowHours.value })),
+  query: computed(() => ({
+    windowHours: windowHours.value,
+    google: useGoogleNews.value ? 'true' : undefined,
+    googleOnly: googleOnly.value ? 'true' : undefined,
+    googleMode: useGoogleNews.value ? googleMode.value : undefined,
+    googleQuery: useGoogleNews.value ? googleQuery.value : undefined,
+    googleTopicId: useGoogleNews.value ? googleTopicId.value : undefined,
+    googleSectionId: useGoogleNews.value ? googleSectionId.value : undefined,
+    googleHl: useGoogleNews.value ? googleHl.value : undefined,
+    googleGl: useGoogleNews.value ? googleGl.value : undefined,
+    googleCeid: useGoogleNews.value ? googleCeid.value : undefined,
+  })),
 })
 
 useHead({
@@ -48,10 +69,17 @@ const sourcesList = computed(() => {
   return Array.from(new Set(items.map(item => item.sourceName))).sort()
 })
 
+const hasGolemSources = computed(() => {
+  const items = data.value?.items ?? []
+  return items.some(item => item.sourceId.startsWith('golem-'))
+})
+
 const filteredItems = computed(() => {
   const items = data.value?.items ?? []
   if (sourceFilter.value === 'all')
     return items
+  if (sourceFilter.value === 'golem-all')
+    return items.filter(item => item.sourceId.startsWith('golem-'))
   return items.filter(item => item.sourceName === sourceFilter.value)
 })
 
@@ -95,8 +123,22 @@ function toggleExpand(id: string) {
   expanded.value[id] = !expanded.value[id]
 }
 
-watch([sourceFilter, sortMode, pageSize], () => {
+function formatPublishedAt(value: string) {
+  const date = new Date(value)
+  if (Number.isNaN(date.getTime()))
+    return value
+  return date.toLocaleString()
+}
+
+watch(
+  [sourceFilter, sortMode, pageSize, useGoogleNews, googleOnly, googleMode, googleQuery, googleTopicId, googleSectionId, googleHl, googleGl, googleCeid],
+  () => {
   currentPage.value = 1
+  },
+)
+
+onMounted(() => {
+  isMounted.value = true
 })
 </script>
 
@@ -108,15 +150,17 @@ watch([sourceFilter, sortMode, pageSize], () => {
           <h1 class="font-cabinet text-3xl tracking-tight">
             Digest Sources Test
           </h1>
-          <button
-            class="border-black/10 bg-white hover:bg-black/5 dark:border-white/15 dark:bg-black dark:hover:bg-white/10 border rounded-full px-4 py-2 text-xs tracking-[0.18em] uppercase transition"
-            @click="refresh()"
-          >
-            Refresh
-          </button>
+          <div class="flex flex-wrap items-center gap-2">
+            <button
+              class="border-black/10 bg-white hover:bg-black/5 dark:border-white/15 dark:bg-black dark:hover:bg-white/10 border rounded-full px-4 py-2 text-xs tracking-[0.18em] uppercase transition"
+              @click="refresh()"
+            >
+              Refresh
+            </button>
+          </div>
         </div>
         <p class="text-black/70 dark:text-white/70 max-w-2xl text-sm">
-          Live fetch of RSS sources. Items can be filtered, sorted, and expanded when richer content is available.
+          Live fetch of RSS sources. Items can be filtered, sorted, and expanded for excerpts.
         </p>
         <div class="flex flex-wrap items-center gap-4">
           <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
@@ -136,6 +180,7 @@ watch([sourceFilter, sortMode, pageSize], () => {
               class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-40 border rounded px-2 py-1 text-sm"
             >
               <option value="all">All</option>
+              <option v-if="hasGolemSources" value="golem-all">Golem – All</option>
               <option v-for="source in sourcesList" :key="source" :value="source">
                 {{ source }}
               </option>
@@ -170,6 +215,92 @@ watch([sourceFilter, sortMode, pageSize], () => {
           <span v-else-if="error" class="text-red-600 text-xs tracking-widest uppercase">
             Error loading feeds
           </span>
+        </div>
+        <div class="border-black/10 dark:border-white/10 flex flex-wrap items-center gap-4 border rounded-lg p-4">
+          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
+            <input v-model="useGoogleNews" type="checkbox" class="accent-black dark:accent-white">
+            Use Google News
+          </label>
+          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
+            <input v-model="googleOnly" type="checkbox" class="accent-black dark:accent-white" :disabled="!useGoogleNews">
+            Google only
+          </label>
+          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
+            Mode
+            <select
+              v-model="googleMode"
+              :disabled="!useGoogleNews"
+              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-36 border rounded px-2 py-1 text-sm"
+            >
+              <option value="top">Top</option>
+              <option value="search">Search</option>
+              <option value="topic">Topic</option>
+              <option value="topic-section">Topic + Section</option>
+            </select>
+          </label>
+          <label
+            v-if="googleMode === 'search'"
+            class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase"
+          >
+            Query
+            <input
+              v-model="googleQuery"
+              :disabled="!useGoogleNews"
+              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-64 border rounded px-2 py-1 text-sm"
+              placeholder="site:reuters.com/technology"
+            >
+          </label>
+          <label
+            v-if="googleMode === 'topic' || googleMode === 'topic-section'"
+            class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase"
+          >
+            Topic ID
+            <input
+              v-model="googleTopicId"
+              :disabled="!useGoogleNews"
+              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-64 border rounded px-2 py-1 text-sm"
+              placeholder="CAAqJggKIiBDQkFTR..."
+            >
+          </label>
+          <label
+            v-if="googleMode === 'topic-section'"
+            class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase"
+          >
+            Section ID
+            <input
+              v-model="googleSectionId"
+              :disabled="!useGoogleNews"
+              class="border-black/10 bg-white dark:border-white/15 dark:bg-black min-w-64 border rounded px-2 py-1 text-sm"
+              placeholder="CAQiSkNCQV..."
+            >
+          </label>
+          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
+            hl
+            <input
+              v-model="googleHl"
+              :disabled="!useGoogleNews"
+              class="border-black/10 bg-white dark:border-white/15 dark:bg-black w-24 border rounded px-2 py-1 text-sm"
+              placeholder="en-US"
+            >
+          </label>
+          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
+            gl
+            <input
+              v-model="googleGl"
+              :disabled="!useGoogleNews"
+              class="border-black/10 bg-white dark:border-white/15 dark:bg-black w-16 border rounded px-2 py-1 text-sm"
+              placeholder="US"
+            >
+          </label>
+          <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
+            ceid
+            <input
+              v-model="googleCeid"
+              :disabled="!useGoogleNews"
+              class="border-black/10 bg-white dark:border-white/15 dark:bg-black w-28 border rounded px-2 py-1 text-sm"
+              placeholder="US:en"
+            >
+          </label>
         </div>
       </header>
 
@@ -217,7 +348,7 @@ watch([sourceFilter, sortMode, pageSize], () => {
             <div class="text-black/60 dark:text-white/60 mb-2 flex flex-wrap items-center gap-2 text-xs tracking-widest uppercase">
               <span>{{ item.sourceName }}</span>
               <span>•</span>
-              <span>{{ new Date(item.publishedAt).toLocaleString() }}</span>
+              <span>{{ isMounted ? formatPublishedAt(item.publishedAt) : item.publishedAt }}</span>
               <span>•</span>
               <span class="border-black/10 dark:border-white/20 border rounded-full px-2 py-0.5">
                 {{ item.language.toUpperCase() }}

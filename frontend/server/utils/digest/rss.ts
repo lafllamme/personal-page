@@ -22,12 +22,12 @@ function stripHtml(input: string | undefined): string | undefined {
   return input.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
 }
 
-type ContentPick = {
+interface ContentPick {
   text?: string
   kind?: 'content' | 'summary' | 'description'
 }
 
-function pickContent(candidates: Array<{ value?: string; kind: ContentPick['kind'] }>): ContentPick {
+function pickContent(candidates: Array<{ value?: string, kind: ContentPick['kind'] }>): ContentPick {
   for (const candidate of candidates) {
     const cleaned = stripHtml(candidate.value)
     if (cleaned)
