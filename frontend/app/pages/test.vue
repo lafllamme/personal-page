@@ -172,13 +172,23 @@ watch(presetId, () => {
   googleQuery.value = preset.googleQuery ?? ''
   googleTopicId.value = preset.googleTopicId ?? ''
   googleSectionId.value = preset.googleSectionId ?? ''
+  if (preset.language === 'de') {
+    googleHl.value = 'de-DE'
+    googleGl.value = 'DE'
+    localePreset.value = 'de'
+  }
+  else if (preset.language === 'en') {
+    googleHl.value = 'en-US'
+    googleGl.value = 'US'
+    localePreset.value = 'en'
+  }
   if (preset.googleHl)
     googleHl.value = preset.googleHl
   if (preset.googleGl)
     googleGl.value = preset.googleGl
   if (preset.googleCeid !== undefined)
     googleCeid.value = preset.googleCeid ?? ''
-})
+}, { immediate: true })
 
 onMounted(() => {
   isMounted.value = true
@@ -190,12 +200,12 @@ onMounted(() => {
     <div class="mx-auto max-w-6xl w-full px-0 py-8">
       <header class="mb-10 space-y-6">
         <div class="flex flex-wrap items-center justify-between gap-4">
-          <h1 class="font-prata text-4xl md:text-5xl tracking-tight text-balance">
+          <h1 class="font-prata text-balance text-4xl tracking-tight md:text-5xl">
             Digest Explorer
           </h1>
           <div class="flex flex-wrap items-center gap-2">
             <button
-              class="border-black/10 bg-pureWhite text-pureBlack hover:bg-black/5 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:hover:bg-white/10 border rounded-full px-4 py-2 text-xs tracking-[0.18em] uppercase transition"
+              class="border-black/10 hover:bg-black/5 dark:border-white/15 dark:hover:bg-white/10 border rounded-full bg-pureWhite px-4 py-2 text-xs text-pureBlack tracking-[0.18em] uppercase transition dark:bg-pureBlack dark:text-pureWhite"
               @click="refresh()"
             >
               Refresh
@@ -213,14 +223,14 @@ onMounted(() => {
               type="number"
               min="1"
               max="72"
-              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 w-24 border rounded px-2 py-1 text-sm"
+              class="border-black/10 placeholder:text-black/40 dark:border-white/15 dark:placeholder:text-white/40 w-24 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
             >
           </label>
           <label class="text-black/60 dark:text-white/60 flex items-center gap-2 text-xs tracking-widest uppercase">
             Source preset
             <select
               v-model="presetId"
-              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite min-w-52 border rounded px-2 py-1 text-sm"
+              class="border-black/10 dark:border-white/15 min-w-52 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
             >
               <option v-for="preset in presets" :key="preset.id" :value="preset.id">
                 {{ preset.name }}
@@ -231,7 +241,7 @@ onMounted(() => {
             Sort
             <select
               v-model="sortMode"
-              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite min-w-36 border rounded px-2 py-1 text-sm"
+              class="border-black/10 dark:border-white/15 min-w-36 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
             >
               <option value="recent">Most recent</option>
               <option value="source">By source</option>
@@ -243,7 +253,7 @@ onMounted(() => {
             Page size
             <select
               v-model.number="pageSize"
-              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite w-24 border rounded px-2 py-1 text-sm"
+              class="border-black/10 dark:border-white/15 w-24 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
             >
               <option :value="20">20</option>
               <option :value="30">30</option>
@@ -262,7 +272,7 @@ onMounted(() => {
             Mode
             <select
               v-model="googleMode"
-              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite min-w-36 border rounded px-2 py-1 text-sm"
+              class="border-black/10 dark:border-white/15 min-w-36 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
             >
               <option value="top">Top</option>
               <option value="search">Search</option>
@@ -274,7 +284,7 @@ onMounted(() => {
             Locale preset
             <select
               v-model="localePreset"
-              class="border-black/10 bg-pureWhite text-pureBlack dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite min-w-32 border rounded px-2 py-1 text-sm"
+              class="border-black/10 dark:border-white/15 min-w-32 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
             >
               <option value="de">Deutsch (DE)</option>
               <option value="en">English (US)</option>
@@ -288,7 +298,7 @@ onMounted(() => {
             Query
             <input
               v-model="googleQuery"
-              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 min-w-64 border rounded px-2 py-1 text-sm"
+              class="border-black/10 placeholder:text-black/40 dark:border-white/15 dark:placeholder:text-white/40 min-w-64 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
               placeholder="site:reuters.com/technology"
             >
           </label>
@@ -299,7 +309,7 @@ onMounted(() => {
             Topic ID
             <input
               v-model="googleTopicId"
-              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 min-w-64 border rounded px-2 py-1 text-sm"
+              class="border-black/10 placeholder:text-black/40 dark:border-white/15 dark:placeholder:text-white/40 min-w-64 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
               placeholder="CAAqJggKIiBDQkFTR..."
             >
           </label>
@@ -310,7 +320,7 @@ onMounted(() => {
             Section ID
             <input
               v-model="googleSectionId"
-              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 min-w-64 border rounded px-2 py-1 text-sm"
+              class="border-black/10 placeholder:text-black/40 dark:border-white/15 dark:placeholder:text-white/40 min-w-64 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
               placeholder="CAQiSkNCQV..."
             >
           </label>
@@ -318,7 +328,7 @@ onMounted(() => {
             Home language (hl)
             <input
               v-model="googleHl"
-              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 w-24 border rounded px-2 py-1 text-sm"
+              class="border-black/10 placeholder:text-black/40 dark:border-white/15 dark:placeholder:text-white/40 w-24 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
               placeholder="de-DE"
             >
           </label>
@@ -326,7 +336,7 @@ onMounted(() => {
             Group language (gl)
             <input
               v-model="googleGl"
-              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 w-16 border rounded px-2 py-1 text-sm"
+              class="border-black/10 placeholder:text-black/40 dark:border-white/15 dark:placeholder:text-white/40 w-16 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
               placeholder="DE"
             >
           </label>
@@ -334,7 +344,7 @@ onMounted(() => {
             ceid
             <input
               v-model="googleCeid"
-              class="border-black/10 bg-pureWhite text-pureBlack placeholder:text-black/40 dark:border-white/15 dark:bg-pureBlack dark:text-pureWhite dark:placeholder:text-white/40 w-28 border rounded px-2 py-1 text-sm"
+              class="border-black/10 placeholder:text-black/40 dark:border-white/15 dark:placeholder:text-white/40 w-28 border rounded bg-pureWhite px-2 py-1 text-sm text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
               placeholder="(optional)"
             >
           </label>
@@ -351,7 +361,9 @@ onMounted(() => {
             <div>Window Hours: {{ data.meta.windowHours }}</div>
             <div>Sources: {{ data.meta.sourcesSucceeded }} / {{ data.meta.sourcesRequested }}</div>
             <div>Items: {{ data.meta.itemsReturned }} / {{ data.meta.itemsTotal }}</div>
-            <div v-if="data.meta.itemsExcluded">Excluded: {{ data.meta.itemsExcluded }}</div>
+            <div v-if="data.meta.itemsExcluded">
+              Excluded: {{ data.meta.itemsExcluded }}
+            </div>
           </div>
         </div>
         <div class="border-black/10 dark:border-white/10 border rounded-lg p-5">
