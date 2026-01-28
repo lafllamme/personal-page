@@ -45,7 +45,7 @@ const headerHoverBgClass = computed(() => (headerTone.value === 'light' ? 'hover
 
 const avatarPositions = computed(() => {
   const total = Math.max(1, avatars.length - 1)
-  const radius = 200
+  const radius = 180
   return avatars.map((avatar, index) => {
     const angle = Math.PI + (index / total) * Math.PI
     return {
@@ -172,7 +172,7 @@ onBeforeUnmount(() => {
                   @click="toggleMenu"
                 >
                   <OsmoMenuIcon :is-open="isMenuOpen" :tone="headerTone" />
-                  <span class="font-manrope osmo-nav-menu__label font-normal">Menu</span>
+                  <span class="osmo-nav-menu__label font-manrope font-500 tracking-tight">Menu</span>
                 </button>
               </div>
 
@@ -220,7 +220,7 @@ onBeforeUnmount(() => {
                     <div class="osmo-nav-bar__button-bg" />
                     <div class="osmo-nav-bar__button-label-wrap">
                       <div class="osmo-nav-bar__button-label">
-                        <span class="font-manrope font-normal">Join</span>
+                        <span class="font-manrope color-pureBlack font-500 tracking-tight dark:color-pureWhite">Join</span>
                       </div>
                       <div aria-hidden="true" class="osmo-nav-bar__button-label">
                         <span>Join</span>
@@ -247,7 +247,7 @@ onBeforeUnmount(() => {
                       )"
                     >
                       <div class="osmo-nav-bar__tag-row">
-                        <span :class="useClsx('osmo-eyebrow', headerFgClass)">Newsroom</span>
+                        <span :class="useClsx('osmo-eyebrow space-grotesk-regular', headerFgClass)">Newsroom</span>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
                         <li
@@ -260,7 +260,7 @@ onBeforeUnmount(() => {
                             :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
                             @click="closeMenu"
                           >
-                            <span class="font-clash-regular osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
+                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-${item.name}-${charIndex}`"
@@ -275,7 +275,7 @@ onBeforeUnmount(() => {
                               v-if="item.badge"
                               class="osmo-nav-bar__a-tag"
                             >
-                              <span :class="useClsx('osmo-tag', item.badge === 'WIP' ? 'is--wip' : 'is--purple')">
+                              <span :class="useClsx('osmo-tag space-grotesk-regular', item.badge === 'WIP' ? 'is--wip' : 'is--purple')">
                                 {{ item.badge }}
                               </span>
                             </span>
@@ -287,11 +287,11 @@ onBeforeUnmount(() => {
                         <li
                           v-for="item in easings"
                           :key="item.name"
-                          class="osmo-nav-bar__small-li"
+                          class="osmo-nav-bar__small-li font-clash-regular"
                         >
                           <span :class="useClsx('osmo-nav-bar__small-a', headerFgClass)">
                             <span class="osmo-nav-bar__small-span">{{ item.name }}</span>
-                            <span v-if="item.badge" class="osmo-nav-bar__a-tag is--small">
+                            <span v-if="item.badge" class="space-grotesk-regular osmo-nav-bar__a-tag is--small">
                               <span class="osmo-tag is--muted">{{ item.badge }}</span>
                             </span>
                           </span>
@@ -302,7 +302,7 @@ onBeforeUnmount(() => {
                     <!-- Column 2: Explore -->
                     <div class="osmo-nav-bar__bottom-col">
                       <div class="osmo-nav-bar__tag-row is--membership">
-                        <span :class="useClsx('osmo-eyebrow', headerFgClass)">Explore</span>
+                        <span :class="useClsx('osmo-eyebrow space-grotesk-regular', headerFgClass)">Explore</span>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
                         <li
@@ -364,19 +364,19 @@ onBeforeUnmount(() => {
                         <div class="osmo-nav-banner__before" />
                         <div class="osmo-nav-banner__content">
                           <div class="osmo-nav-banner__tags">
-                            <span class="osmo-tag is--muted">Featured</span>
-                            <span class="osmo-tag is--purple">Milestone</span>
+                            <span class="osmo-tag space-grotesk-regular is--muted">Featured</span>
+                            <span class="osmo-tag space-grotesk-regular is--purple">Milestone</span>
                           </div>
                           <div class="osmo-nav-banner__center-content">
                             <div class="osmo-nav-banner__title">
-                              <h2 :class="useClsx('osmo-h-m', headerFgClass)">
+                              <h2 :class="useClsx('osmo-h-m font-500 font-clash-regular', headerFgClass)">
                                 We hit 1700
                                 <br>
                                 Members!
                               </h2>
                             </div>
-                            <div class="osmo-nav-banner__btn">
-                              <button class="osmo-button is--light">
+                            <div class="osmo-nav-banner__btn pb-4">
+                              <button class="osmo-button is--light font-manrope">
                                 <span>Join them</span>
                               </button>
                             </div>
@@ -447,7 +447,7 @@ onBeforeUnmount(() => {
                 :key="`a-${index}`"
                 class="font-clash-regular osmo-marquee__item"
               >
-                <p class="osmo-marquee__text">
+                <p class="osmo-marquee__text color-pureBlack dark:color-pureWhite">
                   {{ marqueeMessage }}
                 </p>
                 <svg
@@ -455,11 +455,10 @@ onBeforeUnmount(() => {
                   width="100%"
                   viewBox="0 0 187 187"
                   fill="none"
-                  class="osmo-marquee__star"
+                  class="osmo-marquee__star fill-pureBlack dark:fill-pureWhite"
                 >
                   <path
                     d="M126.049 76.7471L167.276 35.5197L150.805 19.0486L109.577 60.276C107.82 62.0398 104.808 60.7915 104.808 58.3009V0H81.517V70.3375C81.517 76.511 76.511 81.517 70.3375 81.517H0V104.808H58.3009C60.7915 104.808 62.0398 107.82 60.276 109.577L19.0548 150.805L35.5259 167.276L76.7533 126.049C78.5109 124.291 81.5232 125.533 81.5232 128.024V186.324H104.814V115.987C104.814 109.813 109.82 104.808 115.993 104.808H186.331V81.517H128.03C125.539 81.517 124.291 78.5047 126.055 76.7471H126.049Z"
-                    fill="currentColor"
                   />
                 </svg>
               </div>
@@ -471,7 +470,7 @@ onBeforeUnmount(() => {
                 :key="`b-${index}`"
                 class="osmo-marquee__item font-clash-regular"
               >
-                <p class="osmo-marquee__text">
+                <p class="osmo-marquee__text color-pureBlack dark:color-pureWhite">
                   {{ marqueeMessage }}
                 </p>
                 <svg
@@ -479,11 +478,10 @@ onBeforeUnmount(() => {
                   width="100%"
                   viewBox="0 0 187 187"
                   fill="none"
-                  class="osmo-marquee__star"
+                  class="osmo-marquee__star fill-pureBlack dark:fill-pureWhite"
                 >
                   <path
                     d="M126.049 76.7471L167.276 35.5197L150.805 19.0486L109.577 60.276C107.82 62.0398 104.808 60.7915 104.808 58.3009V0H81.517V70.3375C81.517 76.511 76.511 81.517 70.3375 81.517H0V104.808H58.3009C60.7915 104.808 62.0398 107.82 60.276 109.577L19.0548 150.805L35.5259 167.276L76.7533 126.049C78.5109 124.291 81.5232 125.533 81.5232 128.024V186.324H104.814V115.987C104.814 109.813 109.82 104.808 115.993 104.808H186.331V81.517H128.03C125.539 81.517 124.291 78.5047 126.055 76.7471H126.049Z"
-                    fill="currentColor"
                   />
                 </svg>
               </div>
@@ -1347,9 +1345,7 @@ onBeforeUnmount(() => {
 
 .osmo-h-m {
   font-size: clamp(1.75em, 5vw + 0.5em, 2.5em);
-  font-weight: 400;
   line-height: 1.05;
-  letter-spacing: -0.075em;
 }
 
 .osmo-nav-banner__btn {
@@ -1390,8 +1386,8 @@ onBeforeUnmount(() => {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 4em;
-  height: 4em;
+  width: 4.5em;
+  height: 4.5em;
   margin-left: -2em;
   margin-top: -2em;
   border-radius: 50%;
@@ -1536,7 +1532,6 @@ onBeforeUnmount(() => {
   font-variation-settings: 'wght' 460;
   text-transform: uppercase;
   letter-spacing: 0;
-  color: #201d1d;
   white-space: nowrap;
   margin-top: 0.045em;
   margin-left: 0 !important;
@@ -1562,7 +1557,6 @@ onBeforeUnmount(() => {
   width: 0.583em;
   height: auto;
   flex-shrink: 0;
-  color: #201d1d;
   background-color: transparent;
   border-radius: 0;
   margin: 0;
