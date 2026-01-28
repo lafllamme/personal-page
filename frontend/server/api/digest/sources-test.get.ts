@@ -2,11 +2,8 @@ import type { NormalizedItem } from '../../utils/digest/types'
 import { fetchRssItems } from '../../utils/digest/rss'
 import { sources } from '../../utils/digest/sources'
 
-const EXCLUDE_TITLE_RE = /(anzeige|deal|coupon)/i
-const EXCLUDE_URL_RE = /(coupon|promo-code)/i
-
-function shouldExclude(item: NormalizedItem): boolean {
-  return EXCLUDE_TITLE_RE.test(item.title) || EXCLUDE_URL_RE.test(item.url)
+function shouldExclude(_item: NormalizedItem): boolean {
+  return false
 }
 
 function parseWindowHours(value: unknown, fallback = 24): number {
