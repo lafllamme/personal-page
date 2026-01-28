@@ -137,6 +137,15 @@ export const sources: SourceConfig[] = [
     weight: 0.9,
   },
   {
+    id: 'reuters-tech',
+    name: 'Reuters – Technology (RSS.app)',
+    type: 'json',
+    url: 'https://rss.app/feeds/v1.1/INOw5Gizjy2c2l5k.json',
+    language: 'en',
+    topics: ['tech', 'business'],
+    weight: 0.85,
+  },
+  {
     id: 'mittr',
     name: 'MIT Technology Review',
     type: 'rss',
