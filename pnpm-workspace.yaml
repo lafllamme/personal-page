@@ -25,12 +25,12 @@ catalogs:
     '@nuxtjs/color-mode': ^3.5.2
     '@nuxtjs/i18n': ^10.2.1
     '@nuxtjs/sitemap': ^7.6.0
-    '@payloadcms/db-postgres': 3.69.0
-    '@payloadcms/next': 3.69.0
-    '@payloadcms/payload-cloud': 3.69.0
-    '@payloadcms/richtext-lexical': 3.69.0
-    '@payloadcms/storage-vercel-blob': 3.69.0
-    '@payloadcms/ui': 3.69.0
+    '@payloadcms/db-postgres': 3.73.0
+    '@payloadcms/next': 3.73.0
+    '@payloadcms/payload-cloud': 3.73.0
+    '@payloadcms/richtext-lexical': 3.73.0
+    '@payloadcms/storage-vercel-blob': 3.73.0
+    '@payloadcms/ui': 3.73.0
     '@pinia/nuxt': ^0.11.3
     '@playwright/test': 1.57.0
     '@radix-ui/colors': ^3.0.0
@@ -76,7 +76,7 @@ catalogs:
     motion-v: ^1.10.2
     next: 16.1.1
     nuxt: ^4.3.0
-    payload: 3.69.0
+    payload: 3.73.0
     pinia: ^3.0.4
     playwright: 1.57.0
     playwright-core: 1.57.0
