@@ -47,22 +47,6 @@
     "onlyBuiltDependencies": [
       "sharp",
       "esbuild"
-    ],
-    "peerDependencyRules": {
-      "ignoreMissing": [
-        "@types/react",
-        "react",
-        "react-dom"
-      ],
-      "allowedVersions": {
-        "react": "19",
-        "react-dom": "19",
-        "vite": "7",
-        "@unocss/webpack": "0.65.4 || 66.3.3"
-      },
-      "ignorePatterns": [
-        "@theme-toggles/react"
-      ]
-    }
+    ]
   }
 }
