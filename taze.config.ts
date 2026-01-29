@@ -5,7 +5,7 @@ export default defineConfig({
   write: true,
   // We install separately via pnpm scripts
   install: false,
-  // Respect monorepo, but skip generated and build outputs
+  // Respect monorepo but skip generated and build outputs
   ignorePaths: [
     '**/node_modules/**',
     '**/dist/**',

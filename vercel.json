@@ -1,7 +1,0 @@
-{
-  "version": 2,
-  "framework": "nuxtjs",
-  "buildCommand": "cd frontend && pnpm build",
-  "installCommand": "pnpm install --frozen-lockfile",
-  "outputDirectory": "frontend/.output"
-} 
