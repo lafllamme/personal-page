@@ -17,12 +17,12 @@
     "type-check": "turbo type-check",
     "lint": "turbo lint",
     "payload:generate-types": "turbo generate:types --filter=@tec/cms && cp cms/src/payload-types.ts shared/types/payload-types.ts",
-    "deps:safe": "pnpm dlx taze -r --write",
-    "deps:minor": "pnpm dlx taze -r --write minor",
-    "deps:patch": "pnpm dlx taze -r --write patch",
-    "deps:major": "pnpm dlx taze -r --write major",
-    "deps:latest": "pnpm dlx taze -r --write latest",
-    "deps:peer": "pnpm dlx taze -r --write --peer",
+    "deps:safe": "pnpm taze -r --write",
+    "deps:minor": "pnpm taze -r --write minor",
+    "deps:patch": "pnpm taze -r --write patch",
+    "deps:major": "pnpm taze -r --write major",
+    "deps:latest": "pnpm taze -r --write latest",
+    "deps:peer": "pnpm taze -r --write --peer",
     "deps:install": "pnpm install",
     "deps:upgrade:safe": "pnpm run deps:safe && pnpm run deps:install",
     "deps:upgrade:major": "pnpm run deps:major && pnpm run deps:install",
@@ -37,18 +37,19 @@
     "eslint": "catalog:",
     "eslint-config-next": "catalog:",
     "eslint-plugin-yml": "catalog:",
+    "taze": "catalog:",
+    "turbo": "catalog:",
     "vue-eslint-parser": "catalog:",
-    "yaml-eslint-parser": "catalog:",
-    "turbo": "catalog:"
+    "yaml-eslint-parser": "catalog:"
   },
-  "packageManager": "pnpm@10.18.3",
+  "packageManager": "pnpm@10.28.2",
   "pnpm": {
     "onlyBuiltDependencies": [
       "sharp",
       "esbuild"
     ],
     "overrides": {
-      "@dnd-kit/core": "^6.3.0"
+      "@dnd-kit/core": "^6.3.1"
     },
     "peerDependencyRules": {
       "ignoreMissing": [
