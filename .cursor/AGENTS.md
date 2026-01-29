@@ -12,6 +12,7 @@ Rules
 
 When to use which doc
 * Product, UX, UI, animation, tone, content decisions → `PRODUCT.md`
+* Design tokens, colors, typography, spacing, visual effects, component patterns → `DESIGNSYSTEM.md`
 
 
 ## Repository context
@@ -173,6 +174,7 @@ Payload changes
 Frontend UI
 * UnoCSS utility patterns with consistent spacing scale
 * Keep components responsive with mobile first utilities
+* Follow design tokens, colors, typography, and patterns defined in `DESIGNSYSTEM.md`
 
 Component libraries
 * Prefer shadcn vue and radix vue when a library is useful
