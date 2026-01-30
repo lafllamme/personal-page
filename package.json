@@ -29,18 +29,18 @@
     "deps:upgrade:latest": "pnpm run deps:latest && pnpm run deps:install && pnpm -w dedupe"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "catalog:",
-    "@eslint/eslintrc": "catalog:",
-    "@next/eslint-plugin-next": "catalog:",
-    "@typescript-eslint/parser": "catalog:",
-    "concurrently": "catalog:",
-    "eslint": "catalog:",
-    "eslint-config-next": "catalog:",
-    "eslint-plugin-yml": "catalog:",
-    "taze": "catalog:",
-    "turbo": "catalog:",
-    "vue-eslint-parser": "catalog:",
-    "yaml-eslint-parser": "catalog:"
+    "@antfu/eslint-config": "catalog:dev",
+    "@eslint/eslintrc": "catalog:dev",
+    "@next/eslint-plugin-next": "catalog:dev",
+    "@typescript-eslint/parser": "catalog:dev",
+    "concurrently": "catalog:dev",
+    "eslint": "catalog:dev",
+    "eslint-config-next": "catalog:dev",
+    "eslint-plugin-yml": "catalog:dev",
+    "taze": "catalog:dev",
+    "turbo": "catalog:dev",
+    "vue-eslint-parser": "catalog:dev",
+    "yaml-eslint-parser": "catalog:dev"
   },
   "packageManager": "pnpm@10.28.2",
   "pnpm": {

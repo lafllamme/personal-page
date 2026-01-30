@@ -89,18 +89,18 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@dnd-kit/core": "catalog:",
-    "@payloadcms/db-postgres": "catalog:",
-    "@payloadcms/next": "catalog:",
-    "@payloadcms/richtext-lexical": "catalog:",
-    "@vercel/blob": "catalog:",
-    "monaco-editor": "catalog:",
-    "payload": "catalog:",
-    "sharp": "catalog:"
+    "@dnd-kit/core": "catalog:cms",
+    "@payloadcms/db-postgres": "catalog:cms",
+    "@payloadcms/next": "catalog:cms",
+    "@payloadcms/richtext-lexical": "catalog:cms",
+    "@vercel/blob": "catalog:cms",
+    "monaco-editor": "catalog:common",
+    "payload": "catalog:cms",
+    "sharp": "catalog:common"
   },
   "devDependencies": {
-    "@types/node": "catalog:",
-    "@types/react": "catalog:",
-    "typescript": "catalog:"
+    "@types/node": "catalog:types",
+    "@types/react": "catalog:types",
+    "typescript": "catalog:dev"
   }
 }
