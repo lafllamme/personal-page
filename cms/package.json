@@ -18,6 +18,7 @@
     "test:int": "vitest run --config ./vitest.config.mts"
   },
   "dependencies": {
+    "bufferutil": "catalog:cms",
     "@dnd-kit/core": "catalog:cms",
     "@payloadcms/db-postgres": "catalog:cms",
     "@payloadcms/next": "catalog:cms",
@@ -35,10 +36,12 @@
     "payload": "catalog:cms",
     "react": "catalog:cms",
     "react-dom": "catalog:cms",
-    "sharp": "catalog:common"
+    "sharp": "catalog:common",
+    "utf-8-validate": "catalog:cms"
   },
   "devDependencies": {
     "@playwright/test": "catalog:dev",
+    "@rspack/core": "catalog:build",
     "@testing-library/react": "catalog:dev",
     "@types/node": "catalog:types",
     "@types/react": "catalog:types",
@@ -50,6 +53,7 @@
     "eslint-plugin-react": "catalog:dev",
     "eslint-plugin-react-hooks": "catalog:dev",
     "jsdom": "catalog:dev",
+    "next-rspack": "catalog:build",
     "playwright": "catalog:dev",
     "playwright-core": "catalog:dev",
     "prettier": "catalog:dev",
