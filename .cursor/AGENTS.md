@@ -13,24 +13,13 @@ Rules
 When to use which doc
 * Product, UX, UI, animation, tone, content decisions → `PRODUCT.md`
 * Design tokens, colors, typography, spacing, visual effects, component patterns → `DESIGNSYSTEM.md`
+* Architecture, tooling, monorepo layout, bundlers, deploy topology → `docs/ARCHITECTURE.md`
 
 
 ## Repository context
 
-This is a Turborepo monorepo using pnpm workspaces.
-
-Primary deployables
-* `frontend/` Nuxt 4, Vue 3, UnoCSS (Tailwind compatible utility patterns)
-* `cms/` Next.js, Payload CMS
-
-Shared code lives in `shared/`.
-
-Local development is monorepo first. Deployments are split per app, but the monorepo structure must remain intact.
-
-Note
-* Ignore `DEPLOYMENT.md` for now
-* Current hosting is Cloudflare for `frontend` and Netlify for `cms`
-* Payload is hosted separately from the Nuxt frontend, so integration must happen through well typed APIs and shared contracts
+See `docs/ARCHITECTURE.md` for the canonical monorepo architecture, tooling, and deployment notes.
+Keep app boundaries intact and share code via `shared/`.
 
 ## Nuxt 4 and Vue 3 ecosystem emphasis
 

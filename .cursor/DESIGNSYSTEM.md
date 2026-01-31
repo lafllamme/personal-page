@@ -4,6 +4,13 @@ Design tokens, patterns, and visual guidelines for TecNews.
 
 ## Color System
 
+### Radix Palette Reference
+
+The full Radix Colors palette (all scales, including dark and alpha variants) is documented in:
+- `docs/COLORSCHEME.md`
+
+Use this as the source of truth for hex values when you need exact palette steps.
+
 ### Base Colors
 
 **Pure Black & White**
@@ -117,7 +124,6 @@ Uses UnoCSS/Tailwind spacing scale (0.25rem increments):
 Glass-like backgrounds with backdrop blur:
 ```css
 backdrop-filter: blur(20px);
--webkit-backdrop-filter: blur(20px);
 border: 1px solid rgba(0, 0, 0, 0.08); /* light mode */
 border: 1px solid rgba(255, 255, 255, 0.1); /* dark mode */
 ```
@@ -126,6 +132,8 @@ border: 1px solid rgba(255, 255, 255, 0.1); /* dark mode */
 - Navigation bars
 - Cards and overlays
 - Modal backgrounds
+
+Avoid vendor-prefixed `-webkit-backdrop-filter` in new work unless a tested Safari-only fix is required.
 
 ### Shadows
 
