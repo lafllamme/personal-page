@@ -3,16 +3,14 @@ import type { CursorProps, CursorType } from '@/components/ui/Cursor/Cursor.mode
 import { defineAsyncComponent } from 'vue'
 import { CursorDefaultProps } from '@/components/ui/Cursor/Cursor.model'
 
-// TODO: Is the fade duration necessary? It seems unclear in terms of usage.
 const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps)
 
 const LazySpinningText = defineAsyncComponent(() =>
   import('@/components/ui/Text/SpinningText/SpinningText.vue'),
 )
 
-// ms, for fade in/out
-const FADE_IN_DELAY = 3000 // 3 seconds!
-const FADE_DURATION = 0
+// ms, delay before showing spinning text when cursor returns to default
+const FADE_IN_DELAY = 3000
 
 const {
   clickableElements,
@@ -32,12 +30,9 @@ const cursorRef = ref<HTMLElement | null>(null)
 const cursorType = ref<CursorType>('default')
 const delayedCursorType = ref<CursorType>('default')
 const hasPointer = ref<boolean>(false)
-const firstRender = ref<boolean>(true)
+const isFirstRender = ref<boolean>(true)
 const textHeight = ref<number>(0)
-
-// Fade logic
 const showSpinningText = ref(false)
-let fadeInTimeout: ReturnType<typeof setTimeout> | null = null
 
 const pointerClass = computed(() => (hasPointer.value ? 'has-pointer' : ''))
 
@@ -50,31 +45,21 @@ useHead({
   },
 })
 
+// Use VueUse timeout for better cleanup
+const { start: startSpinningTextFadeIn, stop: stopSpinningTextFadeIn } = useTimeoutFn(
+  () => {
+    showSpinningText.value = true
+  },
+  FADE_IN_DELAY,
+  { immediate: false },
+)
+
 function centerCursor() {
-  if (firstRender.value && cursorRef.value) {
+  if (isFirstRender.value && cursorRef.value) {
     cursorRef.value.style.left = `${width.value / 2}px`
     cursorRef.value.style.top = `${height.value / 2}px`
   }
-  firstRender.value = false
-}
-
-function setCursorStyle(pointer = true) {
-  hasPointer.value = pointer
-}
-
-function checkCursor() {
-  setCursorStyle(isPointer.value)
-}
-
-function setTextCursor(el: HTMLElement | null) {
-  cursorType.value = 'text'
-  const fontSize = el ? Number.parseFloat(getComputedStyle(el).fontSize) : size.value
-  textHeight.value = calculateTextBarHeight(
-    el,
-    fontSize,
-    minTextHeight.value,
-    size.value,
-  )
+  isFirstRender.value = false
 }
 
 function calculateTextBarHeight(
@@ -82,7 +67,7 @@ function calculateTextBarHeight(
   fontSize: number,
   minHeight: number,
   baseSize: number,
-) {
+): number {
   if (!el)
     return Math.max(baseSize * 1.2, minHeight)
   if (['input', 'textarea'].includes(el.tagName.toLowerCase())) {
@@ -97,10 +82,21 @@ function calculateTextBarHeight(
   return Math.max(fontSize * 1.2, minHeight)
 }
 
+function setTextCursor(el: HTMLElement | null) {
+  cursorType.value = 'text'
+  const fontSize = el ? Number.parseFloat(getComputedStyle(el).fontSize) : size.value
+  textHeight.value = calculateTextBarHeight(
+    el,
+    fontSize,
+    minTextHeight.value,
+    size.value,
+  )
+}
+
 function checkElementType(e: MouseEvent) {
   const target = e.target as HTMLElement
 
-  // 1. Check force types first
+  // 1. Check force types first (highest priority)
   const forceTypeClass = forceType.value?.find(cls =>
     target.classList.contains(cls) || !!target.closest(`.${cls}`),
   )
@@ -147,9 +143,8 @@ function checkElementType(e: MouseEvent) {
       .filter(Boolean)[0] as HTMLElement | null
     setTextCursor(textEl)
   }
-  else {
-    if (cursorType.value !== 'default')
-      cursorType.value = 'default'
+  else if (cursorType.value !== 'default') {
+    cursorType.value = 'default'
   }
 }
 
@@ -169,59 +164,40 @@ function initListeners() {
   useEventListener('mousemove', throttledTypeCheck, { passive: true })
 }
 
-// ========== FADE/SPINNING TEXT HELPERS ==========
+// ========== SPINNING TEXT FADE HELPERS ==========
 
 function scheduleSpinningTextFadeIn() {
-  if (fadeInTimeout)
-    clearTimeout(fadeInTimeout)
+  stopSpinningTextFadeIn()
   showSpinningText.value = false
-  fadeInTimeout = setTimeout(() => {
-    showSpinningText.value = true
-  }, FADE_IN_DELAY)
+  startSpinningTextFadeIn()
 }
 
 function hideSpinningTextImmediately() {
-  if (fadeInTimeout)
-    clearTimeout(fadeInTimeout)
+  stopSpinningTextFadeIn()
   showSpinningText.value = false
-}
-
-// ========== CLICK DELAY HELPERS ==========
-
-let clickDelayTimeout: ReturnType<typeof setTimeout> | null = null
-
-function scheduleDelayedCursorType(newType: CursorType, oldType: CursorType) {
-  if (oldType === 'default' && newType === 'click') {
-    if (clickDelayTimeout)
-      clearTimeout(clickDelayTimeout)
-    delayedCursorType.value = 'default'
-    clickDelayTimeout = setTimeout(() => {
-      delayedCursorType.value = 'click'
-    }, FADE_DURATION)
-  }
-  else {
-    if (clickDelayTimeout)
-      clearTimeout(clickDelayTimeout)
-    delayedCursorType.value = newType
-  }
 }
 
 // ========== WATCHERS ==========
 
-watch(cursorType, (newType, oldType) => {
+watch(cursorType, (newType) => {
   if (newType === 'default') {
     scheduleSpinningTextFadeIn()
   }
   else {
     hideSpinningTextImmediately()
   }
-  scheduleDelayedCursorType(newType, oldType!)
+  // Update delayed cursor type immediately (removed unnecessary delay logic)
+  delayedCursorType.value = newType
 }, { immediate: true })
 
 onMounted(() => {
-  checkCursor()
+  hasPointer.value = isPointer.value
   centerCursor()
   initListeners()
+})
+
+onBeforeUnmount(() => {
+  stopSpinningTextFadeIn()
 })
 </script>
 
@@ -242,7 +218,7 @@ onMounted(() => {
         transition:
           'width .2s, height .2s, border-radius .2s, transform .2s, background-color .2s',
       }"
-      class="pointer-events-none fixed left-0 top-0 z-9999 translate-z-0 will-change-transform"
+      class="pointer-events-none fixed left-0 top-0 z-[9990] translate-z-0 will-change-transform"
       inert
     >
       <!-- Orbit container always present in 'default', only opacity of SpinningText changes -->
