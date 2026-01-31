@@ -84,7 +84,6 @@ onMounted(async () => {
     )
     cleanupFns.push(() => control.stop())
   })
-
 })
 
 onBeforeUnmount(() => {
@@ -124,15 +123,15 @@ onBeforeUnmount(() => {
     </section>
 
     <footer class="grid h-[80svh] place-content-center bg-pureWhite color-pureBlack font-medium dark:bg-pureBlack dark:color-pureWhite">
-      <p>
-        Inspired By
+      <p class="font-mondea text-[4vw] tracking-wide uppercase">
+        Feel the
         <a
           target="_blank"
           href="https://twitter.com/mattgperry"
           class="underline"
           rel="noopener noreferrer"
         >
-          Matt Perry
+          Motion
         </a>
       </p>
     </footer>
