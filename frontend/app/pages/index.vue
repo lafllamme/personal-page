@@ -32,30 +32,20 @@ const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
 const headlineRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
-const { introOverlayDone, headlineShouldStart, startOverlayExit } = useOverlay({ manageLifecycle: false })
+const { introOverlayDone, headlineShouldStart, startOverlayExit, triggerHeadlineAnimation } = useOverlay({ manageLifecycle: false })
 const { isTransitionActive } = useTransition()
 // Use headlineShouldStart from overlay composable for optimal timing
 const overlayDone = headlineShouldStart
 
-// Debug: Watch headlineShouldStart
-watch(headlineShouldStart, (value) => {
-  console.log('[index.vue] headlineShouldStart changed:', value)
-}, { immediate: true })
-
-// Debug: Watch overlayDone
-watch(overlayDone, (value) => {
-  console.log('[index.vue] overlayDone changed:', value)
-}, { immediate: true })
-
-// Start overlay if not already done
+// Start overlay if not already done, or trigger headline animation if overlay was already shown
 onMounted(() => {
   if (!import.meta.client)
     return
   if (!introOverlayDone.value) {
-    console.log('[index.vue] Starting overlay exit timer')
     startOverlayExit()
   } else {
-    console.log('[index.vue] Overlay already done, headlineShouldStart should be true')
+    // If navigating back to home page, still animate headline and show metaballs
+    triggerHeadlineAnimation()
   }
 })
 const isHeadlineAnimationDone = ref(false)

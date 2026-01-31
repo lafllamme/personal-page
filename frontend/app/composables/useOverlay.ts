@@ -1,4 +1,4 @@
-type UseOverlayOptions = {
+interface UseOverlayOptions {
   manageLifecycle?: boolean
 }
 
@@ -19,27 +19,24 @@ export function useOverlay(options: UseOverlayOptions = {}) {
   // Headline starts during overlay exit animation (after exit slide delay) to show full slide motion
   // Overlay exit slide: delay 200ms, duration 800ms (starts at 2200ms, ends at 3000ms)
   // Headline should start around 2200-2300ms to run parallel and show full slide animation
-  const headlineStartDelayMs = 350 // Start when overlay exit slide animation begins
-  
+  // Updated delay: 350ms (increased from 200ms for better timing)
+  const headlineStartDelayMs = 350
+
   // Track when headline should start (starts during overlay exit animation)
   const headlineShouldStart = ref(false)
-  
+
   const { start: startOverlayExit, stop: stopOverlayExit } = useTimeoutFn(() => {
-    console.log('[useOverlay] startOverlayExit timeout fired, setting overlayExiting to true')
     overlayExiting.value = true
     // Start headline animation with small delay after exit begins (parallel to overlay exit animation)
     setTimeout(() => {
       headlineShouldStart.value = true
-      console.log('[useOverlay] headlineShouldStart set to true (during exit animation)')
     }, headlineStartDelayMs)
     // Start fallback timeout when exit begins
     startOverlayHide()
   }, overlayDurationMs, { immediate: false })
-  
+
   function handleOverlayComplete() {
-    console.log('[useOverlay] handleOverlayComplete called', { headlineShouldStart: headlineShouldStart.value })
     headlineShouldStart.value = true
-    console.log('[useOverlay] headlineShouldStart set to', headlineShouldStart.value)
     overlayVisible.value = false
     introOverlayDone.value = true
     introOverlayActive.value = false
@@ -83,6 +80,11 @@ export function useOverlay(options: UseOverlayOptions = {}) {
     })
   }
 
+  // Function to manually trigger headline animation (useful when navigating back to home)
+  function triggerHeadlineAnimation() {
+    headlineShouldStart.value = true
+  }
+
   // Expose startOverlayExit for manual control when manageLifecycle is false
   return {
     overlayVisible,
@@ -93,5 +95,6 @@ export function useOverlay(options: UseOverlayOptions = {}) {
     headlineShouldStart: computed(() => headlineShouldStart.value),
     handleOverlayComplete,
     startOverlayExit,
+    triggerHeadlineAnimation,
   }
 }
