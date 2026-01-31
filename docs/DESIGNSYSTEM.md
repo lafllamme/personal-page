@@ -105,6 +105,29 @@ Uses UnoCSS/Tailwind spacing scale (0.25rem increments):
 - Medium gaps: `gap-6` to `gap-8` (1.5rem - 2rem)
 - Large gaps: `gap-12` to `gap-24` (3rem - 6rem)
 
+### UnoCSS Over Inline Styles
+
+Prefer UnoCSS arbitrary values over inline `:style` attributes for better maintainability, consistency, and performance.
+
+**Avoid inline styles**
+```vue
+<!-- ❌ Bad: Using inline style attribute -->
+<div :style="{ left: 'calc(50% - 50vw)', width: '100vw' }">
+```
+
+**Prefer UnoCSS arbitrary values**
+```vue
+<!-- ✅ Good: Using UnoCSS arbitrary values -->
+<div class="left-[calc(50%-50vw)] w-screen">
+```
+
+Benefits:
+- Consistent with utility-first approach
+- Better performance (CSS classes are optimized)
+- Easier to maintain and refactor
+- Works with UnoCSS's JIT compiler
+- Supports responsive variants: `md:left-[calc(50%-50vw)]`
+
 ### Container Patterns
 
 - Max width containers: `max-w-4xl`, `max-w-6xl`, `max-w-7xl`

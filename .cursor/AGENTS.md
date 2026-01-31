@@ -142,6 +142,19 @@ VueUse policy
 Styling
 * Prefer UnoCSS utility first patterns
 * Prefer utility based arbitrary values when needed instead of adding new SCSS
+* Prefer UnoCSS arbitrary values over inline `:style` attributes
+
+**Avoid inline styles**
+```vue
+<!-- ❌ Bad: Using inline style attribute -->
+<div :style="{ left: 'calc(50% - 50vw)', width: '100vw' }">
+```
+
+**Prefer UnoCSS arbitrary values**
+```vue
+<!-- ✅ Good: Using UnoCSS arbitrary values -->
+<div class="left-[calc(50%-50vw)] w-screen">
+```
 
 ## Next.js and Payload CMS guidelines
 
