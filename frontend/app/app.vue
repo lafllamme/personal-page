@@ -43,6 +43,8 @@ useHead(() => {
     ],
   }
 })
+
+// TODO: Make a wrapper for Cursor
 </script>
 
 <template>
@@ -56,7 +58,9 @@ useHead(() => {
         :color="loadingGradient"
       />
       <PageTransition />
-      <Cursor />
+      <ClientOnly>
+        <Cursor />
+      </ClientOnly>
       <NuxtPage />
     </NuxtLayout>
   </VueLenis>
