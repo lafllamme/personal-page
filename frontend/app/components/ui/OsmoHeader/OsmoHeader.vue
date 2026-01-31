@@ -607,7 +607,6 @@ onBeforeUnmount(() => {
   /* Enhanced glass effect when scrolled */
   .osmo-nav.is--scrolled.is--light .osmo-nav-bar__bg {
     backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
       0 12px 40px rgba(0, 0, 0, 0.08);
@@ -615,7 +614,6 @@ onBeforeUnmount(() => {
 
   .osmo-nav.is--scrolled.is--dark .osmo-nav-bar__bg {
     backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
       0 12px 40px rgba(0, 0, 0, 0.3);
@@ -628,7 +626,6 @@ onBeforeUnmount(() => {
   border-radius: 0.39375em;
   pointer-events: none;
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
   transition: opacity 0.2s ease;
 }
 
@@ -658,7 +655,6 @@ onBeforeUnmount(() => {
   border-radius: 0.4375em;
   pointer-events: none;
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: opacity 0.2s ease;
 }
 
@@ -702,7 +698,6 @@ onBeforeUnmount(() => {
 
 .osmo-nav-menu:hover {
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .osmo-nav.is--dark .osmo-nav-menu:hover {
@@ -716,7 +711,6 @@ onBeforeUnmount(() => {
 .osmo-nav.is--active .osmo-nav-menu {
   gap: 0.1875em;
   backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
 }
 
 .osmo-nav.is--active.is--dark .osmo-nav-menu {
@@ -964,7 +958,6 @@ onBeforeUnmount(() => {
 .osmo-nav-bar__bottom-col.is--products {
   border-radius: 1em;
   backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
   border: 1px solid transparent;
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
