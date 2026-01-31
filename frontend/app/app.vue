@@ -66,9 +66,3 @@ useHead(() => {
   </VueLenis>
 </template>
 
-<style>
-html,
-body {
-  overflow-x: clip;
-}
-</style>

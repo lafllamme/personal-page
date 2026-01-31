@@ -5,18 +5,26 @@
   }
 }
 
+/* Base scroll and overflow behavior */
 html,
 body {
   @apply scroll-smooth;
   scrollbar-gutter: stable;
+  overflow-x: clip;
+  /* Prevent iOS pull-to-refresh overscroll bounce */
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  min-height: 100%;
 }
 
 html {
   @include theme-bg(bg-pureWhite, bg-pureBlack);
+  height: 100%;
 }
 
 body {
   @apply bg-pureWhite;
+  position: relative;
 }
 
 html.dark body {
