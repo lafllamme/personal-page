@@ -1,9 +1,11 @@
 <script lang="ts" setup>
+import { useLenis } from 'lenis/vue'
 import { useMenu } from '~/stores/menu'
 
 const { y } = useWindowScroll()
 const { height } = useWindowSize()
 const menuStore = useMenu()
+const lenis = useLenis()
 
 const { isOpen } = toRefs(menuStore)
 
@@ -15,31 +17,19 @@ const scrollThreshold = computed(() => {
 const showButton = computed(() => y.value > scrollThreshold.value)
 const debouncedShowButton = useDebounce(showButton, 120)
 
-/* --- smooth-scroll to first focusable element in <main> --------------- */
+/* --- smooth-scroll to top using Lenis for consistent smooth scrolling --- */
 function scrollToTop() {
-  const main = document.querySelector<HTMLElement>('main')
-  if (!main)
-    return
-
-  // scrol top top position of whole page
-  window.scrollTo({ top: 0, behavior: 'smooth' })
-
-  /* const focusables
-      = 'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]),'
-        + 'select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-
-  const first = main.querySelector<HTMLElement>(focusables) ?? main
-  consola.debug('first focusable element', first)
-
-  // avoid the abrupt default scroll caused by focus()
-  if (first !== main)
-    first.focus({ preventScroll: true })
-
-  first.scrollIntoView({
-    behavior: 'smooth',
-    block: 'end',
-    inline: 'nearest',
-  }) */
+  // Use Lenis for smooth scrolling if available, fallback to native smooth scroll
+  if (lenis.value) {
+    lenis.value.scrollTo(0, {
+      duration: 1.2,
+      easing: t => Math.min(1, 1.001 - 2 ** (-10 * t)),
+    })
+  }
+  else {
+    // Fallback to native smooth scroll if Lenis is not available
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 }
 </script>
 
