@@ -202,6 +202,9 @@ catalogs:
     '@iconify-json/uil':
       specifier: ^1.2.3
       version: 1.2.3
+    '@nuxt/devtools-kit':
+      specifier: 3.1.1
+      version: 3.1.1
     '@nuxt/icon':
       specifier: ^2.2.1
       version: 2.2.1
@@ -668,6 +671,9 @@ importers:
       '@inspira-ui/plugins':
         specifier: catalog:build
         version: 0.0.1
+      '@nuxt/devtools-kit':
+        specifier: catalog:frontend
+        version: 3.1.1(magicast@0.5.1)(vite@7.3.1(@types/node@25.1.0)(jiti@2.6.1)(lightningcss@1.30.2)(sass-embedded@1.97.3)(sass@1.97.3)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
       '@nuxt/fonts':
         specifier: catalog:build
         version: 0.13.0(@netlify/blobs@9.1.2)(@vercel/blob@2.0.1)(db0@0.3.4(drizzle-orm@0.44.7(@types/pg@8.10.2)(pg@8.16.3)))(ioredis@5.9.2)(magicast@0.5.1)(vite@7.3.1(@types/node@25.1.0)(jiti@2.6.1)(lightningcss@1.30.2)(sass-embedded@1.97.3)(sass@1.97.3)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.2))
