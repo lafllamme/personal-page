@@ -10,6 +10,7 @@ export interface CursorProps {
   textWidth?: number
   clickScale?: number
   minTextHeight?: number
+  maxTextHeight?: number
 }
 
 export type CursorType = 'default' | 'click' | 'text'
@@ -44,4 +45,5 @@ export const CursorDefaultProps = {
   textWidth: 4,
   clickScale: 1.8,
   minTextHeight: 18,
+  maxTextHeight: 30,
 }

@@ -23,6 +23,7 @@ const {
   textWidth,
   clickScale,
   minTextHeight,
+  maxTextHeight,
   forceType,
 } = toRefs(props)
 
@@ -66,20 +67,25 @@ function calculateTextBarHeight(
   el: HTMLElement | null,
   fontSize: number,
   minHeight: number,
+  maxHeight: number,
   baseSize: number,
 ): number {
+  let calculatedHeight: number
   if (!el)
-    return Math.max(baseSize * 1.2, minHeight)
-  if (['input', 'textarea'].includes(el.tagName.toLowerCase())) {
-    return Math.max(el.clientHeight * 1.2, minHeight)
+    calculatedHeight = Math.max(baseSize * 1.2, minHeight)
+  else if (['input', 'textarea'].includes(el.tagName.toLowerCase())) {
+    calculatedHeight = Math.max(el.clientHeight * 1.2, minHeight)
   }
-  if (fontSize < 16) {
-    return Math.max(fontSize * 2.1, minHeight)
+  else if (fontSize < 16) {
+    calculatedHeight = Math.max(fontSize * 2.1, minHeight)
   }
-  if (fontSize < 24) {
-    return Math.max(fontSize * 1.75, minHeight)
+  else if (fontSize < 24) {
+    calculatedHeight = Math.max(fontSize * 1.75, minHeight)
   }
-  return Math.max(fontSize * 1.2, minHeight)
+  else {
+    calculatedHeight = Math.max(fontSize * 1.2, minHeight)
+  }
+  return Math.min(calculatedHeight, maxHeight)
 }
 
 function setTextCursor(el: HTMLElement | null) {
@@ -89,6 +95,7 @@ function setTextCursor(el: HTMLElement | null) {
     el,
     fontSize,
     minTextHeight.value,
+    maxTextHeight.value,
     size.value,
   )
 }
