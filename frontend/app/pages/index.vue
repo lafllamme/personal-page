@@ -204,9 +204,9 @@ watch(shouldAnimatePointer, (active) => {
           </div>
         </div>
       </div>
-      <!--   Three Metaballs   -->
+      <!--   Three Liquid Glass - Centered canvas container -->
       <div
-        class="pointer-events-none absolute left-0 right-0 z-0 h-[calc(100%+var(--header-height,0px))] w-full -top-[var(--header-height,0px)]"
+        class="pointer-events-none absolute left-[calc(50%-50vw)] z-0 h-[calc(100%+var(--header-height,0px))] w-screen -top-[var(--header-height,0px)]"
       >
         <GlassMetaballs
           v-show="canRenderMetaballs"
@@ -217,7 +217,7 @@ watch(shouldAnimatePointer, (active) => {
         />
       </div>
 
-      <!-- Fallthrough headline for animation     -->
+      <!-- Fallthrough headline for animation -->
       <h1
         ref="headlineRef"
         class="pointer-events-none relative z-10 text-center text-[clamp(2.6rem,9vw,4.8rem)] color-pureBlack uppercase md:mt-32 xl:mt-0 md:whitespace-nowrap md:text-[clamp(3.5rem,10vw,9rem)] dark:color-pureWhite <sm:-mt-12"
