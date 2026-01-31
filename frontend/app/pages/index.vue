@@ -13,6 +13,7 @@ import { Motion } from 'motion-v'
 import Issues from '@/components/Issues.vue'
 import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
 import HorizontalScroll from '@/components/ui/Scroll/HorizontalScroll/HorizontalScroll.vue'
+import ScrollMarquee from '@/components/ui/Scroll/ScrollMarquee/ScrollMarquee.vue'
 
 useHead({
   title: 'Liquid Symmetry',
@@ -43,7 +44,8 @@ onMounted(() => {
     return
   if (!introOverlayDone.value) {
     startOverlayExit()
-  } else {
+  }
+  else {
     // If navigating back to home page, still animate headline and show metaballs
     triggerHeadlineAnimation()
   }
@@ -270,6 +272,25 @@ watch(shouldAnimatePointer, (active) => {
     <!-- Horizontal Scroll Container -->
     <section class="touch-pan-y">
       <HorizontalScroll />
+    </section>
+
+    <!-- Scroll Marquee -->
+    <section class="grid h-[500px] place-content-center">
+      <ScrollMarquee
+        :base-velocity="-3"
+        :scroll-dependent="true"
+        class-name="font-bold font-nohemi uppercase leading-none color-pureBlack dark:color-pureWhite tracking-normal"
+      >
+        Benchmarks you can trust
+      </ScrollMarquee>
+
+      <ScrollMarquee
+        :base-velocity="3"
+        :scroll-dependent="true"
+        class-name="font-bold font-nohemi uppercase leading-none color-pureBlack dark:color-pureWhite tracking-normal"
+      >
+        Numbers you can trust
+      </ScrollMarquee>
     </section>
 
     <Issues />
