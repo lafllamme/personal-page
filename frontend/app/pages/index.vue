@@ -192,7 +192,12 @@ watch(shouldAnimatePointer, (active) => {
                 Viewport
               </div>
               <div class="color-pureBlack/80 dark:color-pureWhite/80">
-                {{ viewportLabel }}
+                <ClientOnly>
+                  {{ viewportLabel }}
+                  <template #fallback>
+                    --
+                  </template>
+                </ClientOnly>
               </div>
             </div>
             <div class="h-2 w-2 animate-ping animate-duration-[3000ms] border border-teal-11 border-solid" />
