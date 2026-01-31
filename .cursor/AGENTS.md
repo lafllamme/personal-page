@@ -11,8 +11,8 @@ Rules
 * If a requested change conflicts with a reference doc, mention it very briefly and ask one targeted question
 
 When to use which doc
-* Product, UX, UI, animation, tone, content decisions → `PRODUCT.md`
-* Design tokens, colors, typography, spacing, visual effects, component patterns → `DESIGNSYSTEM.md`
+* Product, UX, UI, animation, tone, content decisions → `docs/PRODUCT.md`
+* Design tokens, colors, typography, spacing, visual effects, component patterns → `docs/DESIGNSYSTEM.md`
 * Architecture, tooling, monorepo layout, bundlers, deploy topology → `docs/ARCHITECTURE.md`
 
 
