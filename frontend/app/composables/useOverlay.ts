@@ -16,19 +16,43 @@ export function useOverlay(options: UseOverlayOptions = {}) {
 
   const overlayDurationMs = 2000
   const overlayExitDurationMs = 1000
-
+  // Headline starts during overlay exit animation (after exit slide delay) to show full slide motion
+  // Overlay exit slide: delay 200ms, duration 800ms (starts at 2200ms, ends at 3000ms)
+  // Headline should start around 2200-2300ms to run parallel and show full slide animation
+  const headlineStartDelayMs = 350 // Start when overlay exit slide animation begins
+  
+  // Track when headline should start (starts during overlay exit animation)
+  const headlineShouldStart = ref(false)
+  
   const { start: startOverlayExit, stop: stopOverlayExit } = useTimeoutFn(() => {
+    console.log('[useOverlay] startOverlayExit timeout fired, setting overlayExiting to true')
     overlayExiting.value = true
+    // Start headline animation with small delay after exit begins (parallel to overlay exit animation)
+    setTimeout(() => {
+      headlineShouldStart.value = true
+      console.log('[useOverlay] headlineShouldStart set to true (during exit animation)')
+    }, headlineStartDelayMs)
+    // Start fallback timeout when exit begins
     startOverlayHide()
   }, overlayDurationMs, { immediate: false })
-
-  const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(() => {
+  
+  function handleOverlayComplete() {
+    console.log('[useOverlay] handleOverlayComplete called', { headlineShouldStart: headlineShouldStart.value })
+    headlineShouldStart.value = true
+    console.log('[useOverlay] headlineShouldStart set to', headlineShouldStart.value)
     overlayVisible.value = false
     introOverlayDone.value = true
     introOverlayActive.value = false
     isBodyScrollLocked.value = false
     document.body.style.cursor = 'default'
     window.scrollTo(0, 0)
+  }
+
+  // Fallback: if animation callback doesn't fire, trigger after exit duration
+  const { start: startOverlayHide, stop: stopOverlayHide } = useTimeoutFn(() => {
+    if (!headlineShouldStart.value) {
+      handleOverlayComplete()
+    }
   }, overlayExitDurationMs, { immediate: false })
 
   if (manageLifecycle) {
@@ -43,6 +67,7 @@ export function useOverlay(options: UseOverlayOptions = {}) {
         overlayVisible.value = false
         overlayExiting.value = false
         introOverlayActive.value = false
+        headlineShouldStart.value = true
         return
       }
       bodyRef.value = document.body
@@ -58,11 +83,15 @@ export function useOverlay(options: UseOverlayOptions = {}) {
     })
   }
 
+  // Expose startOverlayExit for manual control when manageLifecycle is false
   return {
     overlayVisible,
     overlayExiting,
     shouldHideContent,
     introOverlayDone,
     introOverlayActive,
+    headlineShouldStart: computed(() => headlineShouldStart.value),
+    handleOverlayComplete,
+    startOverlayExit,
   }
 }

@@ -6,7 +6,7 @@ import OverlayText from '@/components/ui/Overlay/OverlayText.vue'
 import PageContainer from '@/components/ui/Partials/PageContainer/PageContainer.vue'
 
 const route = useRoute()
-const { overlayExiting, overlayVisible, shouldHideContent } = useOverlay()
+const { overlayExiting, overlayVisible, shouldHideContent, handleOverlayComplete } = useOverlay()
 const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
 </script>
 
@@ -15,6 +15,7 @@ const pageContainerProps = computed(() => route.meta?.pageContainer ?? {})
     <OverlayText
       v-if="overlayVisible"
       :is-exiting="overlayExiting"
+      :on-complete="handleOverlayComplete"
     />
     <!-- Main Content -->
     <div

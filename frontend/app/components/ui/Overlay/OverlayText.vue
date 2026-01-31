@@ -121,6 +121,15 @@ onBeforeUnmount(() => {
   if (exitTimeout)
     clearTimeout(exitTimeout)
 })
+
+function handleAnimationComplete(target: any) {
+  console.log('[OverlayText] animationComplete fired', { isExiting: isExiting.value, target, hasCallback: !!props.onComplete })
+  // Trigger when exit animation completes
+  if (isExiting.value && props.onComplete) {
+    console.log('[OverlayText] Calling onComplete callback')
+    props.onComplete()
+  }
+}
 </script>
 
 <template>
@@ -133,6 +142,7 @@ onBeforeUnmount(() => {
     :initial="{ y: 0 }"
     :animate="isExiting ? { y: '-100vh' } : { y: 0 }"
     :transition="slideTransition"
+    @animationComplete="handleAnimationComplete"
   >
     <template v-if="dimension.width > 0">
       <div

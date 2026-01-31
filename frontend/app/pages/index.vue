@@ -32,9 +32,32 @@ const isLgUp = breakpoints.greaterOrEqual('lg')
 const heroRef = ref<HTMLElement | null>(null)
 const headlineRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
-const { introOverlayDone } = useOverlay({ manageLifecycle: false })
+const { introOverlayDone, headlineShouldStart, startOverlayExit } = useOverlay({ manageLifecycle: false })
 const { isTransitionActive } = useTransition()
-const overlayDone = introOverlayDone
+// Use headlineShouldStart from overlay composable for optimal timing
+const overlayDone = headlineShouldStart
+
+// Debug: Watch headlineShouldStart
+watch(headlineShouldStart, (value) => {
+  console.log('[index.vue] headlineShouldStart changed:', value)
+}, { immediate: true })
+
+// Debug: Watch overlayDone
+watch(overlayDone, (value) => {
+  console.log('[index.vue] overlayDone changed:', value)
+}, { immediate: true })
+
+// Start overlay if not already done
+onMounted(() => {
+  if (!import.meta.client)
+    return
+  if (!introOverlayDone.value) {
+    console.log('[index.vue] Starting overlay exit timer')
+    startOverlayExit()
+  } else {
+    console.log('[index.vue] Overlay already done, headlineShouldStart should be true')
+  }
+})
 const isHeadlineAnimationDone = ref(false)
 const isMetaballsActive = ref(true)
 const isMenuOpen = useState<boolean>('osmo-menu-open', () => false)
@@ -104,7 +127,7 @@ const headlineMotion = {
   enter: {
     y: '0%',
     transition: {
-      duration: 0.75,
+      duration: 0.75, // Original duration
       ease: [0.33, 1, 0.68, 1],
       delay: 0,
     },
