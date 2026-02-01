@@ -12,7 +12,7 @@ import Shader from '~/components/ui/Shaders/Shader.vue'
 
     <!-- Main Content -->
     <div
-      class="relative z-10 overflow-y-auto page-transition-root"
+      class="page-transition-root relative z-10 overflow-y-auto"
     >
       <Header />
       <main>

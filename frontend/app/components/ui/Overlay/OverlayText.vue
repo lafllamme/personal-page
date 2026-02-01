@@ -39,7 +39,7 @@ const exitPathDelayMs = 300
 
 const slideTransition = computed(() => ({
   duration: exitSlideDurationMs / 1000,
-  ease: [0.76, 0, 0.24, 1],
+  ease: [0.76, 0, 0.24, 1] as any,
   delay: isExiting.value ? exitSlideDelayMs / 1000 : 0,
 }))
 
@@ -49,7 +49,7 @@ const pathTransition = computed(() => {
   }
   return {
     duration: exitPathDurationMs / 1000,
-    ease: [0.76, 0, 0.24, 1],
+    ease: [0.76, 0, 0.24, 1] as any,
     delay: exitPathDelayMs / 1000,
   }
 })
@@ -71,8 +71,9 @@ const targetPath = computed(() => {
 function shuffleWords(list: string[]) {
   for (let i = list.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
-    const tmp = list[i]
-    list[i] = list[j]
+    const tmp = list[i]!
+    const jVal = list[j]!
+    list[i] = jVal
     list[j] = tmp
   }
   return list
@@ -122,11 +123,9 @@ onBeforeUnmount(() => {
     clearTimeout(exitTimeout)
 })
 
-function handleAnimationComplete(target: any) {
-  console.log('[OverlayText] animationComplete fired', { isExiting: isExiting.value, target, hasCallback: !!props.onComplete })
+function handleAnimationComplete(_target: any) {
   // Trigger when exit animation completes
   if (isExiting.value && props.onComplete) {
-    console.log('[OverlayText] Calling onComplete callback')
     props.onComplete()
   }
 }
@@ -142,7 +141,7 @@ function handleAnimationComplete(target: any) {
     :initial="{ y: 0 }"
     :animate="isExiting ? { y: '-100vh' } : { y: 0 }"
     :transition="slideTransition"
-    @animationComplete="handleAnimationComplete"
+    @animation-complete="handleAnimationComplete"
   >
     <template v-if="dimension.width > 0">
       <div
@@ -167,7 +166,6 @@ function handleAnimationComplete(target: any) {
           class="mr-[10px] block size-[24px] overflow-visible lg:size-[32px] md:size-[28px]"
           viewBox="0 0 256 256"
           preserveAspectRatio="xMidYMid meet"
-          xmlns="http://www.w3.org/2000/svg"
           :animate="{ rotate: 360 }"
           :transition="{ duration: 3, repeat: Infinity, ease: 'linear' }"
         >

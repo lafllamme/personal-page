@@ -21,7 +21,7 @@ const items: HorizontalScrollItem[] = [
   },
   {
     title: 'REVIEW',
-    imageUrl: 'https://i.imgur.com/I5mAdz0.png',
+    imageUrl: 'https://i.imgur.com/I5mAdz0.pngp',
   },
   {
     title: 'SHIP',
@@ -55,12 +55,14 @@ onMounted(async () => {
   if (itemCount === 0)
     return
 
+  if (!ulRef.value)
+    return
   const controls = animate(
-    ulRef.value,
+    ulRef.value as any,
     {
-      transform: ['none', `translateX(-${itemCount - 1}00vw)`],
-    },
-    { easing: spring() },
+      x: [`0%`, `${-(itemCount - 1) * 100}vw`],
+    } as any,
+    { easing: spring() } as any,
   )
 
   cleanupFns.push(scroll(controls, { target: scrollSectionRef.value }))

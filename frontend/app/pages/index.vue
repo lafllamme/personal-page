@@ -120,7 +120,7 @@ const headlineMotion = {
     y: '0%',
     transition: {
       duration: 0.75, // Original duration
-      ease: [0.33, 1, 0.68, 1],
+      ease: [0.33, 1, 0.68, 1] as any,
       delay: 0,
     },
   },

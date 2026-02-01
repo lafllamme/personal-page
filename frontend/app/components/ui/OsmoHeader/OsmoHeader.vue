@@ -115,7 +115,7 @@ watch(isMenuOpen, (next) => {
     clearTimeout(menuStateTimeout)
   menuStateTimeout = window.setTimeout(() => {
     menuOpenState.value = true
-  }, MENU_TRANSITION_FALLBACK_MS)
+  }, MENU_TRANSITION_FALLBACK_MS) as unknown as ReturnType<typeof setTimeout>
 }, { immediate: true })
 
 watch(colorMode, () => {
@@ -172,7 +172,7 @@ onBeforeUnmount(() => {
                   @click="toggleMenu"
                 >
                   <OsmoMenuIcon :is-open="isMenuOpen" :tone="headerTone" />
-                  <span class="osmo-nav-menu__label font-manrope font-500 tracking-tight">Menu</span>
+                  <span class="font-manrope osmo-nav-menu__label font-500 tracking-tight">Menu</span>
                 </button>
               </div>
 
@@ -260,7 +260,7 @@ onBeforeUnmount(() => {
                             :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
                             @click="closeMenu"
                           >
-                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
+                            <span class="font-clash-regular osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-${item.name}-${charIndex}`"
@@ -287,7 +287,7 @@ onBeforeUnmount(() => {
                         <li
                           v-for="item in easings"
                           :key="item.name"
-                          class="osmo-nav-bar__small-li font-clash-regular"
+                          class="font-clash-regular osmo-nav-bar__small-li"
                         >
                           <span :class="useClsx('osmo-nav-bar__small-a', headerFgClass)">
                             <span class="osmo-nav-bar__small-span">{{ item.name }}</span>
@@ -376,7 +376,7 @@ onBeforeUnmount(() => {
                               </h2>
                             </div>
                             <div class="osmo-nav-banner__btn pb-4">
-                              <button class="osmo-button is--light font-manrope">
+                              <button class="font-manrope osmo-button is--light">
                                 <span>Join them</span>
                               </button>
                             </div>

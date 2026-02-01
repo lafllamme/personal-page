@@ -25,18 +25,18 @@ onBeforeUpdate(() => {
   backRefs.value = []
 })
 
-function setLineRef(el: HTMLElement | null) {
-  if (el)
+const setLineRef = (el: any) => {
+  if (el && el instanceof HTMLElement)
     lineRefs.value.push(el)
 }
 
-function setLineHRef(el: HTMLElement | null) {
-  if (el)
+const setLineHRef = (el: any) => {
+  if (el && el instanceof HTMLElement)
     lineHRefs.value.push(el)
 }
 
-function setBackRef(el: HTMLElement | null) {
-  if (el)
+const setBackRef = (el: any) => {
+  if (el && el instanceof HTMLElement)
     backRefs.value.push(el)
 }
 
@@ -92,8 +92,9 @@ const variants: TransitionVariant[] = [
   },
 ]
 
-function pickVariant() {
-  return variants[Math.floor(Math.random() * variants.length)]
+function pickVariant(): TransitionVariant {
+  const index = Math.floor(Math.random() * variants.length)
+  return variants[index] ?? variants[0]!
 }
 
 function setTransitionColor(color: string) {
@@ -106,6 +107,9 @@ function triggerBackBlock() {
     return
 
   const block = blocks[Math.floor(Math.random() * blocks.length)]
+  if (!block)
+    return
+    
   const timeline = gsap.timeline()
   timeline
     .set(block, { scaleY: 0, transformOrigin: 'bottom' })

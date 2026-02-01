@@ -25,16 +25,6 @@ export function useOverlay(options: UseOverlayOptions = {}) {
   // Track when headline should start (starts during overlay exit animation)
   const headlineShouldStart = ref(false)
 
-  const { start: startOverlayExit, stop: stopOverlayExit } = useTimeoutFn(() => {
-    overlayExiting.value = true
-    // Start headline animation with small delay after exit begins (parallel to overlay exit animation)
-    setTimeout(() => {
-      headlineShouldStart.value = true
-    }, headlineStartDelayMs)
-    // Start fallback timeout when exit begins
-    startOverlayHide()
-  }, overlayDurationMs, { immediate: false })
-
   function handleOverlayComplete() {
     headlineShouldStart.value = true
     overlayVisible.value = false
@@ -51,6 +41,16 @@ export function useOverlay(options: UseOverlayOptions = {}) {
       handleOverlayComplete()
     }
   }, overlayExitDurationMs, { immediate: false })
+
+  const { start: startOverlayExit, stop: stopOverlayExit } = useTimeoutFn(() => {
+    overlayExiting.value = true
+    // Start headline animation with small delay after exit begins (parallel to overlay exit animation)
+    setTimeout(() => {
+      headlineShouldStart.value = true
+    }, headlineStartDelayMs)
+    // Start fallback timeout when exit begins
+    startOverlayHide()
+  }, overlayDurationMs, { immediate: false })
 
   if (manageLifecycle) {
     watch(overlayVisible, (value) => {

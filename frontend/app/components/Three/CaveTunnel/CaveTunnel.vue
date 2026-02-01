@@ -89,15 +89,20 @@ async function copySettingsJson() {
 function getElevation(x: number, z: number, isTop: boolean) {
   const settings = state.value
   const offset = isTop ? 9999 : 0
-  let y = noise2D((x + offset) / settings.scale, (z + offset) / settings.scale) * settings.heightMultiplier
+  const scale = settings.scale ?? caveTunnelDefaults.scale
+  const heightMultiplier = settings.heightMultiplier ?? caveTunnelDefaults.heightMultiplier
+  const detailStrength = settings.detailStrength ?? caveTunnelDefaults.detailStrength
+  const valleyWidth = settings.valleyWidth ?? caveTunnelDefaults.valleyWidth
+  
+  let y = noise2D((x + offset) / scale, (z + offset) / scale) * heightMultiplier
 
-  const detailScale = settings.scale * 0.4
+  const detailScale = scale * 0.4
   y
     += noise2D((x + offset) / detailScale, (z + offset) / detailScale)
-      * (settings.heightMultiplier * settings.detailStrength)
+      * (heightMultiplier * detailStrength)
 
   const dist = Math.abs(x)
-  const valley = (dist / settings.valleyWidth) ** 2.5
+  const valley = (dist / valleyWidth) ** 2.5
   y += valley
 
   return y
@@ -109,20 +114,20 @@ function createChunk(index: number): CaveChunk {
 
   const settings = state.value
   const matGround = new MeshStandardMaterial({
-    color: settings.groundColor,
+    color: settings.groundColor ?? caveTunnelDefaults.groundColor,
     roughness: 0.9,
-    flatShading: settings.flatShading,
-    wireframe: settings.wireframe,
+    flatShading: settings.flatShading ?? caveTunnelDefaults.flatShading,
+    wireframe: settings.wireframe ?? caveTunnelDefaults.wireframe,
     fog: true,
     side: DoubleSide,
     dithering: true,
   })
 
   const matCeil = new MeshStandardMaterial({
-    color: settings.ceilingColor,
+    color: settings.ceilingColor ?? caveTunnelDefaults.ceilingColor,
     roughness: 0.9,
-    flatShading: settings.flatShading,
-    wireframe: settings.wireframe,
+    flatShading: settings.flatShading ?? caveTunnelDefaults.flatShading,
+    wireframe: settings.wireframe ?? caveTunnelDefaults.wireframe,
     fog: true,
     side: DoubleSide,
     dithering: true,
@@ -130,7 +135,7 @@ function createChunk(index: number): CaveChunk {
 
   const meshGround = new Mesh(geometry, matGround)
   const meshCeil = new Mesh(geometry.clone(), matCeil)
-  meshCeil.visible = settings.showCeiling
+  meshCeil.visible = settings.showCeiling ?? caveTunnelDefaults.showCeiling
 
   const group = new Group()
   group.add(meshGround)
@@ -150,8 +155,11 @@ function updateChunk(chunk: CaveChunk) {
 
   const geoG = chunk.meshGround.geometry
   const posG = geoG.attributes.position
+  if (!posG) return
+  
   const geoC = chunk.meshCeil.geometry
   const posC = geoC.attributes.position
+  if (!posC) return
 
   for (let i = 0; i < posG.count; i++) {
     const x = posG.getX(i)
@@ -185,7 +193,7 @@ function syncCeilingVisibility() {
 
   const settings = state.value
   chunks.forEach((chunk) => {
-    chunk.meshCeil.visible = settings.showCeiling
+    chunk.meshCeil.visible = settings.showCeiling ?? caveTunnelDefaults.showCeiling
   })
 }
 
@@ -194,10 +202,11 @@ function syncShading() {
     return
 
   const settings = state.value
+  const flatShading = settings.flatShading ?? caveTunnelDefaults.flatShading
   chunks.forEach((chunk) => {
-    chunk.meshGround.material.flatShading = settings.flatShading
+    chunk.meshGround.material.flatShading = flatShading
     chunk.meshGround.material.needsUpdate = true
-    chunk.meshCeil.material.flatShading = settings.flatShading
+    chunk.meshCeil.material.flatShading = flatShading
     chunk.meshCeil.material.needsUpdate = true
   })
 
@@ -209,9 +218,10 @@ function syncWireframe() {
     return
 
   const settings = state.value
+  const wireframe = settings.wireframe ?? caveTunnelDefaults.wireframe
   chunks.forEach((chunk) => {
-    chunk.meshGround.material.wireframe = settings.wireframe
-    chunk.meshCeil.material.wireframe = settings.wireframe
+    chunk.meshGround.material.wireframe = wireframe
+    chunk.meshCeil.material.wireframe = wireframe
   })
 }
 
@@ -221,8 +231,8 @@ function syncMaterialColors() {
 
   const settings = state.value
   chunks.forEach((chunk) => {
-    chunk.meshGround.material.color.set(settings.groundColor)
-    chunk.meshCeil.material.color.set(settings.ceilingColor)
+    chunk.meshGround.material.color.set(settings.groundColor ?? caveTunnelDefaults.groundColor)
+    chunk.meshCeil.material.color.set(settings.ceilingColor ?? caveTunnelDefaults.ceilingColor)
   })
 }
 
@@ -232,19 +242,22 @@ function syncSceneAtmosphere() {
     return
 
   const settings = state.value
+  const bgColor = settings.bgColor ?? caveTunnelDefaults.bgColor
   if (scene.background instanceof Color)
-    scene.background.set(settings.bgColor)
+    scene.background.set(bgColor)
   else
-    scene.background = new Color(settings.bgColor)
+    scene.background = new Color(bgColor)
 }
 
 function syncFog() {
   const settings = state.value
+  const bgColor = settings.bgColor ?? caveTunnelDefaults.bgColor
+  const fogDensity = settings.fogDensity ?? caveTunnelDefaults.fogDensity
   if (!fogRef.value)
-    fogRef.value = new FogExp2(settings.bgColor, settings.fogDensity)
+    fogRef.value = new FogExp2(bgColor, fogDensity)
 
-  fogRef.value.color.set(settings.bgColor)
-  fogRef.value.density = settings.fogDensity
+  fogRef.value.color.set(bgColor)
+  fogRef.value.density = fogDensity
 }
 
 function disposeTunnel() {
@@ -284,7 +297,7 @@ const { pause, resume } = useRafFn(({ delta }) => {
     return
 
   const dt = delta / 1000
-  camera.position.z -= state.value.speed * dt
+  camera.position.z -= (state.value.speed ?? caveTunnelDefaults.speed) * dt
   camLightRef.value?.position.copy(camera.position)
 
   let maxIndex = 0
@@ -445,7 +458,7 @@ onBeforeUnmount(() => {
         <div class="grid gap-4">
           <div class="grid gap-2">
             <label class="text-xs text-muted-foreground font-semibold">
-              Speed: {{ state.speed.toFixed(1) }}
+              Speed: {{ (state.speed ?? caveTunnelDefaults.speed).toFixed(1) }}
             </label>
             <input v-model.number="state.speed" type="range" min="0" max="50" step="0.1">
           </div>

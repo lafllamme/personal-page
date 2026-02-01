@@ -26,7 +26,10 @@ const currentIndex = computed(() => {
   const index = sortedLanguages.value.findIndex(lang => lang.code === locale.value)
   return index >= 0 ? index : 0
 })
-const currentLabel = computed(() => t(sortedLanguages.value[currentIndex.value].labelKey))
+const currentLabel = computed(() => {
+  const lang = sortedLanguages.value[currentIndex.value]
+  return lang ? t(lang.labelKey) : ''
+})
 const labelChars = computed(() => currentLabel.value.split(''))
 const isHovered = ref(false)
 
@@ -52,14 +55,14 @@ const charVariants = {
     y: -30,
     transition: {
       duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: [0.25, 0.46, 0.45, 0.94] as any,
     },
   },
   exit: {
     y: 2,
     transition: {
       duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: [0.25, 0.46, 0.45, 0.94] as any,
     },
   },
 }
@@ -70,14 +73,14 @@ const charVariants2 = {
     y: 0,
     transition: {
       duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: [0.25, 0.46, 0.45, 0.94] as any,
     },
   },
   exit: {
     y: 30,
     transition: {
       duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: [0.25, 0.46, 0.45, 0.94] as any,
     },
   },
 }
@@ -89,12 +92,16 @@ function setLanguage(code: string) {
 
 function goNext() {
   const nextIndex = (currentIndex.value + 1) % sortedLanguages.value.length
-  setLanguage(sortedLanguages.value[nextIndex].code)
+  const lang = sortedLanguages.value[nextIndex]
+  if (lang)
+    setLanguage(lang.code)
 }
 
 function goPrev() {
   const prevIndex = (currentIndex.value - 1 + sortedLanguages.value.length) % sortedLanguages.value.length
-  setLanguage(sortedLanguages.value[prevIndex].code)
+  const lang = sortedLanguages.value[prevIndex]
+  if (lang)
+    setLanguage(lang.code)
 }
 </script>
 

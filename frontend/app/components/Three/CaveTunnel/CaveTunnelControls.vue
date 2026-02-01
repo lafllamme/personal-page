@@ -44,7 +44,7 @@ function resetControls() {
     <div class="grid gap-4">
       <div class="grid gap-2">
         <label class="text-xs text-muted-foreground font-semibold">
-          Speed: {{ state.speed.toFixed(1) }}
+          Speed: {{ (state.speed ?? caveTunnelDefaults.speed).toFixed(1) }}
         </label>
         <input v-model.number="state.speed" type="range" min="0" max="50" step="0.1">
       </div>

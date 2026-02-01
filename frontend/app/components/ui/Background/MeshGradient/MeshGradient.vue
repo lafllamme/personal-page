@@ -125,7 +125,8 @@ function advanceTime(delta: number) {
   nextTime = normalizeTime(nextTime)
 
   localTime.value = nextTime
-  shaderUniforms.value.uTime.value = nextTime
+  if (shaderUniforms.value?.uTime)
+    shaderUniforms.value.uTime.value = nextTime
 }
 
 function normalizeTime(value: number) {
@@ -197,7 +198,7 @@ function buildGeometry() {
 
 function buildMaterial() {
   material.value?.dispose()
-  material.value = new MeshPhysicalMaterial({
+  const mat = new MeshPhysicalMaterial({
     metalness: 0.2,
     roughness: clamp(1 - props.reflection, 0, 1),
     envMapIntensity: props.brightness,
@@ -205,7 +206,8 @@ function buildMaterial() {
     transparent: false,
     depthWrite: false,
     wireframe: props.wireframe,
-    onBeforeCompile: (shader) => {
+  })
+  ;(mat as any).onBeforeCompile = (shader: any) => {
       if (shaderUniforms.value && colorUniforms.value) {
         shader.uniforms = {
           ...shader.uniforms,
@@ -215,8 +217,8 @@ function buildMaterial() {
       }
       shader.vertexShader = shaderGradientSphereVertex
       shader.fragmentShader = shaderGradientSphereFragment
-    },
-  })
+    }
+  material.value = mat
   if (envTexture.value)
     material.value.envMap = envTexture.value
 }
@@ -258,22 +260,25 @@ function createShaderUniforms(): ShaderUniformMap {
 
 function createColorUniforms(colors: string[]): ColorUniformMap {
   const [c1, c2, c3] = colors.map(hex => hexToUnitColor(hex))
+  const c1Safe = c1 ?? { r: 0, g: 0, b: 0 }
+  const c2Safe = c2 ?? { r: 0, g: 0, b: 0 }
+  const c3Safe = c3 ?? { r: 0, g: 0, b: 0 }
 
   return {
-    uC1r: { value: c1.r },
-    uC1g: { value: c1.g },
-    uC1b: { value: c1.b },
-    uC2r: { value: c2.r },
-    uC2g: { value: c2.g },
-    uC2b: { value: c2.b },
-    uC3r: { value: c3.r },
-    uC3g: { value: c3.g },
-    uC3b: { value: c3.b },
+    uC1r: { value: c1Safe.r },
+    uC1g: { value: c1Safe.g },
+    uC1b: { value: c1Safe.b },
+    uC2r: { value: c2Safe.r },
+    uC2g: { value: c2Safe.g },
+    uC2b: { value: c2Safe.b },
+    uC3r: { value: c3Safe.r },
+    uC3g: { value: c3Safe.g },
+    uC3b: { value: c3Safe.b },
   }
 }
 
 function applyColorUniforms([color1, color2, color3]: string[]) {
-  if (!colorUniforms.value)
+  if (!colorUniforms.value || !color1 || !color2 || !color3)
     return
 
   const c1 = hexToUnitColor(color1)
@@ -340,11 +345,16 @@ watch(
   () => {
     if (!shaderUniforms.value || !material.value)
       return
-    shaderUniforms.value.uSpeed.value = props.speed
-    shaderUniforms.value.uNoiseStrength.value = props.strength
-    shaderUniforms.value.uNoiseDensity.value = props.density
-    shaderUniforms.value.uFrequency.value = props.frequency
-    shaderUniforms.value.uAmplitude.value = props.amplitude
+    if (shaderUniforms.value.uSpeed)
+      shaderUniforms.value.uSpeed.value = props.speed
+    if (shaderUniforms.value.uNoiseStrength)
+      shaderUniforms.value.uNoiseStrength.value = props.strength
+    if (shaderUniforms.value.uNoiseDensity)
+      shaderUniforms.value.uNoiseDensity.value = props.density
+    if (shaderUniforms.value.uFrequency)
+      shaderUniforms.value.uFrequency.value = props.frequency
+    if (shaderUniforms.value.uAmplitude)
+      shaderUniforms.value.uAmplitude.value = props.amplitude
   },
 )
 
@@ -381,10 +391,13 @@ watch(
   () => {
     if (!shaderUniforms.value)
       return
-    shaderUniforms.value.uLoop.value = props.loop === 'on' ? 1 : 0
-    shaderUniforms.value.uLoopDuration.value = props.loopDuration
+    if (shaderUniforms.value.uLoop)
+      shaderUniforms.value.uLoop.value = props.loop === 'on' ? 1 : 0
+    if (shaderUniforms.value.uLoopDuration)
+      shaderUniforms.value.uLoopDuration.value = props.loopDuration
     localTime.value = normalizeTime(localTime.value)
-    shaderUniforms.value.uTime.value = localTime.value
+    if (shaderUniforms.value.uTime)
+      shaderUniforms.value.uTime.value = localTime.value
   },
   { immediate: true },
 )
@@ -398,7 +411,7 @@ watch(() => props.animate, (value) => {
 
 watch(() => props.uTime, (value) => {
   localTime.value = value
-  if (shaderUniforms.value)
+  if (shaderUniforms.value?.uTime)
     shaderUniforms.value.uTime.value = value
 })
 

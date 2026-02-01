@@ -181,6 +181,18 @@ watch(isSectionVisible, (visible) => {
 const panelRefs = ref<Record<string, HTMLElement | null>>({})
 const contentRefs = ref<Record<string, HTMLElement | null>>({})
 
+function getContentHeight(itemId: string): string {
+  const refs = contentRefs.value
+  const ref = refs[itemId]
+  return ref ? `${ref.scrollHeight}px` : 'auto'
+}
+
+function setContentRef(itemId: string, el: HTMLElement | null) {
+  if (el) {
+    contentRefs.value[itemId] = el
+  }
+}
+
 function updatePanelHeight(itemId: string) {
   if (contentRefs.value[itemId] && panelRefs.value[itemId] && isExpanded(itemId)) {
     const content = contentRefs.value[itemId]
@@ -322,11 +334,11 @@ function handleImageLoad(itemId: string) {
                 :aria-labelledby="`accordion-header-item-${item.id}`"
                 class="data-active:bg-pureWhite dark:data-active:bg-pureBlack mx-auto w-full overflow-hidden rounded-lg bg-pureWhite px-0 color-pureBlack font-['Poppins','Poppins_Fallback',sans-serif] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] space-y-4 dark:bg-pureBlack dark:color-pureWhite"
                 :style="{
-                  height: isExpanded(item.id) ? (contentRefs[item.id] ? `${contentRefs[item.id].scrollHeight}px` : 'auto') : '0px',
+                  height: isExpanded(item.id) ? getContentHeight(item.id) : '0px',
                 }"
               >
                 <div
-                  :ref="el => contentRefs[item.id] = el as HTMLElement"
+                  :ref="(el: any) => setContentRef(item.id, el)"
                   class="rounded-lg p-4 space-y-2 sm:p-10"
                   style="clip-path: polygon(0px 0px, 100% 0px, 100% 100%, 0% 100%);"
                 >

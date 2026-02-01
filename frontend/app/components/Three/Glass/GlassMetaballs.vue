@@ -415,16 +415,18 @@ function syncTransmissionBackdrop() {
   ensureTransmissionBackdrop()
 
   const material = transmissionBackdropMaterial.value
-  if (!material)
+  if (!material || !material.uniforms)
     return
 
-  if (material.uniforms.envMap.value !== environmentMap.value) {
+  if (material.uniforms.envMap && material.uniforms.envMap.value !== environmentMap.value) {
     material.uniforms.envMap.value = environmentMap.value
     material.needsUpdate = true
   }
 
-  material.uniforms.backgroundBlurriness.value = settings.environment.backgroundBlurriness
-  material.uniforms.backgroundIntensity.value = settings.environment.backgroundIntensity
+  if (material.uniforms.backgroundBlurriness)
+    material.uniforms.backgroundBlurriness.value = settings.environment.backgroundBlurriness
+  if (material.uniforms.backgroundIntensity)
+    material.uniforms.backgroundIntensity.value = settings.environment.backgroundIntensity
 }
 
 function applyBackgroundSceneSettings() {
@@ -811,7 +813,7 @@ function handleRaycast() {
   raycaster.setFromCamera(pointerPos, cameraRef.value)
   raycastHits.length = 0
   raycaster.intersectObject(mousePlane.value, false, raycastHits)
-  if (raycastHits.length > 0)
+  if (raycastHits.length > 0 && raycastHits[0])
     mouseTarget.copy(raycastHits[0].point)
 }
 
@@ -841,12 +843,16 @@ function stepSimulation({ delta, timestamp }: { delta: number, timestamp: number
   world.step()
 
   const timeS = timestamp / 1000
-  for (let i = 0; i < bodies.length; i++)
-    bodies[i].updatePhysics(timeS)
+  for (let i = 0; i < bodies.length; i++) {
+    const body = bodies[i]
+    if (body)
+      body.updatePhysics(timeS)
+  }
 
   metaballs.value.reset()
   for (let i = 0; i < bodies.length; i++) {
     const b = bodies[i]
+    if (!b) continue
     const p = b.getMetaPos()
     metaballs.value.addBall(p.x, p.y, p.z, b.strength, b.subtract, b.color)
   }
@@ -1222,7 +1228,7 @@ onBeforeUnmount(() => {
 
       <Teleport v-if="props.controlsMode === 'fixed'" to="body">
         <GlassMetaballsControls
-          v-if="props.controlsMode !== 'none'"
+          v-if="props.controlsMode === 'fixed'"
           v-model:settings="settingsModel"
           v-model:preset-name="presetName"
           position="fixed"

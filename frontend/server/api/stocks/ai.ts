@@ -68,7 +68,7 @@ export default defineEventHandler(async (event): Promise<StockQuote[]> => {
   }
 
   consola.info('🔄 Cache miss, fetching fresh data…')
-  const apiKey = useRuntimeConfig().api.finnHub
+  const apiKey = (useRuntimeConfig().api as any).finnHub
   if (!apiKey)
     throw createError({ statusCode: 500, statusMessage: 'Finnhub API key not configured' })
 

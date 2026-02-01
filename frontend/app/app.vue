@@ -65,4 +65,3 @@ useHead(() => {
     </NuxtLayout>
   </VueLenis>
 </template>
-

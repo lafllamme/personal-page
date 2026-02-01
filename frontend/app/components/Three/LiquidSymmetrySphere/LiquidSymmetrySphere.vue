@@ -417,7 +417,8 @@ function measureFrames({ warmup = WARMUP_FRAMES, measure = MEASURE_FRAMES } = {}
       if (count >= warmup + measure) {
         samples.sort((a, b) => a - b)
         const avg = samples.reduce((sum, v) => sum + v, 0) / samples.length
-        const p90 = samples[Math.floor(samples.length * 0.9)]
+        const p90Index = Math.floor(samples.length * 0.9)
+        const p90 = samples[p90Index] ?? samples[samples.length - 1] ?? 0
         resolve({ avgMs: avg, p90Ms: p90 })
         return
       }
@@ -436,9 +437,12 @@ async function autoQualityBoot() {
   const measured = pickPreset(stats)
 
   const cachedPreset = cached?.preset
-  const chosen = cachedPreset
-    ? QUALITY_ORDER[Math.max(QUALITY_ORDER.indexOf(cachedPreset), QUALITY_ORDER.indexOf(measured))]
-    : measured
+  const cachedIndex = cachedPreset ? QUALITY_ORDER.indexOf(cachedPreset) : -1
+  const measuredIndex = QUALITY_ORDER.indexOf(measured)
+  const chosenIndex = cachedPreset
+    ? Math.max(cachedIndex >= 0 ? cachedIndex : 0, measuredIndex >= 0 ? measuredIndex : 0)
+    : (measuredIndex >= 0 ? measuredIndex : 0)
+  const chosen: QualityPresetName = QUALITY_ORDER[chosenIndex] ?? 'low'
 
   if (chosen !== currentPresetName.value) {
     applyPreset(chosen, {

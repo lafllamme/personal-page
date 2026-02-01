@@ -71,8 +71,9 @@ function calculateTextBarHeight(
   baseSize: number,
 ): number {
   let calculatedHeight: number
-  if (!el)
+  if (!el) {
     calculatedHeight = Math.max(baseSize * 1.2, minHeight)
+  }
   else if (['input', 'textarea'].includes(el.tagName.toLowerCase())) {
     calculatedHeight = Math.max(el.clientHeight * 1.2, minHeight)
   }
