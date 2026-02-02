@@ -1202,7 +1202,6 @@ onBeforeUnmount(() => {
           :dpr="dpr"
           :alpha="true"
           :clear-alpha="0"
-          clear-color="transparent"
           :render-mode="renderMode"
           @ready="onCanvasReady"
         >
@@ -1220,9 +1219,8 @@ onBeforeUnmount(() => {
         </TresCanvas>
       </div>
 
-      <Teleport v-if="props.controlsMode === 'fixed'" to="body">
+      <Teleport v-if="controlsMode === 'fixed'" to="body">
         <GlassMetaballsControls
-          v-if="props.controlsMode !== 'none'"
           v-model:settings="settingsModel"
           v-model:preset-name="presetName"
           position="fixed"
@@ -1235,7 +1233,7 @@ onBeforeUnmount(() => {
       </Teleport>
 
       <GlassMetaballsControls
-        v-else-if="props.controlsMode !== 'none'"
+        v-else-if="controlsMode !== 'none'"
         v-model:settings="settingsModel"
         v-model:preset-name="presetName"
         position="absolute"
