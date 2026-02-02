@@ -8,24 +8,24 @@ interface HorizontalScrollItem {
 
 const items: HorizontalScrollItem[] = [
   {
-    title: 'PASSION',
-    imageUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=600&fit=crop',
+    title: 'DISCOVER',
+    imageUrl: 'https://i.imgur.com/HYs39g6.png',
   },
   {
-    title: 'WORK',
-    imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=600&fit=crop',
+    title: 'DESIGN',
+    imageUrl: 'https://i.imgur.com/7fU3K9f.png',
   },
   {
-    title: 'MOTIVATION',
-    imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&h=600&fit=crop',
+    title: 'BUILD',
+    imageUrl: 'https://i.imgur.com/O0HAWKr.png',
   },
   {
-    title: 'INSPIRATION',
-    imageUrl: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?w=600&h=600&fit=crop',
+    title: 'REVIEW',
+    imageUrl: 'https://i.imgur.com/I5mAdz0.pngp',
   },
   {
-    title: 'BELIVE',
-    imageUrl: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&h=600&fit=crop',
+    title: 'SHIP',
+    imageUrl: 'https://i.imgur.com/L3X22Xi.png',
   },
 ]
 
@@ -84,7 +84,6 @@ onMounted(async () => {
     )
     cleanupFns.push(() => control.stop())
   })
-
 })
 
 onBeforeUnmount(() => {
@@ -95,6 +94,18 @@ onBeforeUnmount(() => {
 
 <template>
   <article class="relative mx-[calc(50%-50svw)] w-[100svw] bg-pureWhite dark:bg-pureBlack">
+    <!-- Hidden SVG with clipPath definitions -->
+    <svg class="clipppy absolute h-0 w-0 -left-[999px] -top-[999px]">
+      <defs>
+        <clipPath id="clip-horizontal-scroll" clipPathUnits="objectBoundingBox">
+          <path
+            d="M0.401463 0.0407795L0.0407795 0.401463C0.0146671 0.427608 0 0.463048 0 0.5C0 0.536952 0.0146671 0.572392 0.0407795 0.598537L0.401463 0.95922C0.427608 0.985333 0.463048 1 0.5 1C0.536952 1 0.572392 0.985333 0.598537 0.95922L0.95922 0.598537C0.985333 0.572392 1 0.536952 1 0.5C1 0.463048 0.985333 0.427608 0.95922 0.401463L0.598537 0.0407795C0.572392 0.0146671 0.536952 0 0.5 0C0.463048 0 0.427608 0.0146671 0.401463 0.0407795Z"
+            fill="#D9D9D9"
+          />
+        </clipPath>
+      </defs>
+    </svg>
+
     <div class="pointer-events-none h-[16vh] w-full from-pureWhite to-transparent bg-gradient-to-b dark:from-pureBlack dark:to-transparent" />
 
     <section ref="scrollSectionRef" class="relative h-[500svh]">
@@ -107,32 +118,37 @@ onBeforeUnmount(() => {
         >
           <h2
             :ref="(el) => { if (el) headerRefs[index] = el as HTMLElement }"
-            class="relative bottom-5 inline-block text-[20vw] font-semibold"
+            class="font-nohemi relative bottom-5 inline-block text-[20vw] font-semibold"
           >
             {{ item.title }}
           </h2>
-          <NuxtImg
-            :src="item.imageUrl"
-            :alt="item.title"
-            :width="500"
-            :height="500"
-            class="pointer-events-none absolute bottom-0 w-[380px] select-none 2xl:w-[550px]"
-            loading="lazy"
-          />
+          <figure
+            class="absolute bottom-0 w-[380px] 2xl:w-[550px]"
+            style="clip-path: url(#clip-horizontal-scroll);"
+          >
+            <NuxtImg
+              :src="item.imageUrl"
+              :alt="item.title"
+              :width="500"
+              :height="500"
+              class="aspect-4/5 min-h-full w-full cursor-pointer select-none object-cover align-bottom transition-all duration-300 hover:scale-105"
+              loading="lazy"
+            />
+          </figure>
         </li>
       </ul>
     </section>
 
     <footer class="grid h-[80svh] place-content-center bg-pureWhite color-pureBlack font-medium dark:bg-pureBlack dark:color-pureWhite">
-      <p>
-        Inspired By
+      <p class="font-mondea text-[4vw] tracking-wide uppercase">
+        Feel the
         <a
           target="_blank"
           href="https://twitter.com/mattgperry"
           class="underline"
           rel="noopener noreferrer"
         >
-          Matt Perry
+          Motion
         </a>
       </p>
     </footer>
