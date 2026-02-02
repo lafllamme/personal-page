@@ -5,6 +5,7 @@ packages:
 
 catalogs:
   frontend:
+    '@nuxt/devtools-kit': 3.1.1
     '@dimforge/rapier3d-compat': ^0.19.3
     '@iconify-json/lucide': ^1.2.87
     '@iconify-json/radix-icons': ^1.2.6
@@ -115,6 +116,7 @@ catalogs:
     typescript: ^5.9.3
     vitest: 4.0.16
     vue-eslint-parser: ^10.2.0
+    vue-tsc: ^3.2.4
     yaml-eslint-parser: ^2.0.0
   types:
     '@types/node': ^25.1.0

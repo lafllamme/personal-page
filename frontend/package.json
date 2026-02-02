@@ -73,6 +73,7 @@
     "@iconify-json/ri": "catalog:frontend",
     "@iconify-json/uil": "catalog:frontend",
     "@inspira-ui/plugins": "catalog:build",
+    "@nuxt/devtools-kit": "catalog:frontend",
     "@nuxt/fonts": "catalog:build",
     "@types/node": "catalog:types",
     "@types/three": "catalog:types",
@@ -87,6 +88,7 @@
     "unocss": "catalog:build",
     "unocss-preset-animations": "catalog:build",
     "unocss-preset-radix": "catalog:build",
+    "vue-tsc": "catalog:dev",
     "wrangler": "catalog:build"
   }
 }
