@@ -11,26 +11,15 @@ Rules
 * If a requested change conflicts with a reference doc, mention it very briefly and ask one targeted question
 
 When to use which doc
-* Product, UX, UI, animation, tone, content decisions → `PRODUCT.md`
-* Design tokens, colors, typography, spacing, visual effects, component patterns → `DESIGNSYSTEM.md`
+* Product, UX, UI, animation, tone, content decisions → `docs/PRODUCT.md`
+* Design tokens, colors, typography, spacing, visual effects, component patterns → `docs/DESIGNSYSTEM.md`
+* Architecture, tooling, monorepo layout, bundlers, deploy topology → `docs/ARCHITECTURE.md`
 
 
 ## Repository context
 
-This is a Turborepo monorepo using pnpm workspaces.
-
-Primary deployables
-* `frontend/` Nuxt 4, Vue 3, UnoCSS (Tailwind compatible utility patterns)
-* `cms/` Next.js, Payload CMS
-
-Shared code lives in `shared/`.
-
-Local development is monorepo first. Deployments are split per app, but the monorepo structure must remain intact.
-
-Note
-* Ignore `DEPLOYMENT.md` for now
-* Current hosting is Cloudflare for `frontend` and Netlify for `cms`
-* Payload is hosted separately from the Nuxt frontend, so integration must happen through well typed APIs and shared contracts
+See `docs/ARCHITECTURE.md` for the canonical monorepo architecture, tooling, and deployment notes.
+Keep app boundaries intact and share code via `shared/`.
 
 ## Nuxt 4 and Vue 3 ecosystem emphasis
 
@@ -153,6 +142,19 @@ VueUse policy
 Styling
 * Prefer UnoCSS utility first patterns
 * Prefer utility based arbitrary values when needed instead of adding new SCSS
+* Prefer UnoCSS arbitrary values over inline `:style` attributes
+
+**Avoid inline styles**
+```vue
+<!-- ❌ Bad: Using inline style attribute -->
+<div :style="{ left: 'calc(50% - 50vw)', width: '100vw' }">
+```
+
+**Prefer UnoCSS arbitrary values**
+```vue
+<!-- ✅ Good: Using UnoCSS arbitrary values -->
+<div class="left-[calc(50%-50vw)] w-screen">
+```
 
 ## Next.js and Payload CMS guidelines
 

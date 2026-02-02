@@ -4,6 +4,13 @@ Design tokens, patterns, and visual guidelines for TecNews.
 
 ## Color System
 
+### Radix Palette Reference
+
+The full Radix Colors palette (all scales, including dark and alpha variants) is documented in:
+- `docs/COLORSCHEME.md`
+
+Use this as the source of truth for hex values when you need exact palette steps.
+
 ### Base Colors
 
 **Pure Black & White**
@@ -98,6 +105,29 @@ Uses UnoCSS/Tailwind spacing scale (0.25rem increments):
 - Medium gaps: `gap-6` to `gap-8` (1.5rem - 2rem)
 - Large gaps: `gap-12` to `gap-24` (3rem - 6rem)
 
+### UnoCSS Over Inline Styles
+
+Prefer UnoCSS arbitrary values over inline `:style` attributes for better maintainability, consistency, and performance.
+
+**Avoid inline styles**
+```vue
+<!-- ❌ Bad: Using inline style attribute -->
+<div :style="{ left: 'calc(50% - 50vw)', width: '100vw' }">
+```
+
+**Prefer UnoCSS arbitrary values**
+```vue
+<!-- ✅ Good: Using UnoCSS arbitrary values -->
+<div class="left-[calc(50%-50vw)] w-screen">
+```
+
+Benefits:
+- Consistent with utility-first approach
+- Better performance (CSS classes are optimized)
+- Easier to maintain and refactor
+- Works with UnoCSS's JIT compiler
+- Supports responsive variants: `md:left-[calc(50%-50vw)]`
+
 ### Container Patterns
 
 - Max width containers: `max-w-4xl`, `max-w-6xl`, `max-w-7xl`
@@ -117,7 +147,6 @@ Uses UnoCSS/Tailwind spacing scale (0.25rem increments):
 Glass-like backgrounds with backdrop blur:
 ```css
 backdrop-filter: blur(20px);
--webkit-backdrop-filter: blur(20px);
 border: 1px solid rgba(0, 0, 0, 0.08); /* light mode */
 border: 1px solid rgba(255, 255, 255, 0.1); /* dark mode */
 ```
@@ -126,6 +155,8 @@ border: 1px solid rgba(255, 255, 255, 0.1); /* dark mode */
 - Navigation bars
 - Cards and overlays
 - Modal backgrounds
+
+Avoid vendor-prefixed `-webkit-backdrop-filter` in new work unless a tested Safari-only fix is required.
 
 ### Shadows
 
