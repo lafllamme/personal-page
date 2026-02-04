@@ -11,6 +11,7 @@ import {
   useEventListener,
   useRafFn,
 } from '@vueuse/core'
+import { consola } from 'consola'
 import {
   ACESFilmicToneMapping,
   BackSide,
@@ -160,7 +161,7 @@ const documentVisibility = useDocumentVisibility()
 const elementVisible = useElementVisibility(container)
 const isVisible = computed(() => elementVisible.value && documentVisibility.value === 'visible')
 const isActive = computed(() => isVisible.value && props.active)
-const renderMode = computed<RenderMode>(() => (isVisible.value ? 'always' : 'on-demand'))
+const renderMode = computed<RenderMode>(() => (isActive.value ? 'always' : 'on-demand'))
 
 const raycaster = new Raycaster()
 const pointerPos = new Vector2(0, 0)
@@ -201,7 +202,7 @@ function clamp(v: number, min: number, max: number) {
 }
 
 function requestRender() {
-  if (renderMode.value === 'always')
+  if (!isActive.value || renderMode.value === 'always')
     return
   invalidateFrame.value?.()
 }
@@ -868,7 +869,37 @@ watch(isActive, (active) => {
     else
       rendererLoop.value.stop()
   }
+
+  if (!active) {
+    pointerInside.value = false
+    pointerActive.value = false
+    shouldRaycast.value = false
+    mouseTarget.set(0, 0, settings.mouse.parkZ)
+  }
 }, { immediate: true })
+
+if (import.meta.client) {
+  const logState = useDebounceFn((label: string) => {
+    consola.info(`[GlassMetaballs] ${label}`, {
+      active: isActive.value,
+      visible: isVisible.value,
+      docVisible: documentVisibility.value,
+      renderMode: renderMode.value,
+    })
+  }, 60)
+
+  watch(isVisible, (visible) => {
+    logState(`visibility ${visible ? 'entered' : 'left'}`)
+  }, { immediate: true })
+
+  watch(isActive, (active) => {
+    logState(`active ${active ? 'resumed' : 'paused'}`)
+  }, { immediate: true })
+
+  watch(documentVisibility, (state) => {
+    logState(`document ${state}`)
+  }, { immediate: true })
+}
 
 watch(
   () => props.revealActive,
@@ -888,6 +919,9 @@ if (import.meta.client) {
 }
 
 function updatePointerFromEvent(event: PointerEvent) {
+  if (!isActive.value)
+    return
+
   const el = container.value
   if (!el)
     return
