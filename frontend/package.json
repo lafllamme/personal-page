@@ -4,7 +4,7 @@
   "version": "1.0.1-beta.1",
   "private": true,
   "packageManager": "pnpm@10.28.2",
-  "description": "Personal page frontend built with Nuxt 3",
+  "description": "Personal page frontend built with Nuxt 4",
   "author": "Dogan Teke",
   "license": "MIT",
   "scripts": {
