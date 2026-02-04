@@ -1,7 +1,7 @@
 ---
 name: hydration-fix-skill
 description: Diagnose and fix Nuxt 4 hydration mismatches in a proposal-first workflow (analysis before changes).
-disable-model-invocation: false
+disable-model-invocation: true
 ---
 
 # Hydration Fix Skill (Nuxt 4)

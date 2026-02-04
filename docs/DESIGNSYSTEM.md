@@ -109,6 +109,10 @@ Uses UnoCSS/Tailwind spacing scale (0.25rem increments):
 
 Prefer UnoCSS arbitrary values over inline `:style` attributes for better maintainability, consistency, and performance.
 
+**Exception (allowed inline styles)**
+- `clip-path`/`mask` bindings that require `url(#id)` or SVG `clipPath` references
+- Dynamic CSS variables where UnoCSS cannot express the runtime value cleanly
+
 **Avoid inline styles**
 ```vue
 <!-- ❌ Bad: Using inline style attribute -->

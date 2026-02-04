@@ -2,6 +2,12 @@
 
 Instructions for code agents (Cursor Agent, Codex) working in this repository.
 
+## Source of truth
+
+Project truth lives in `docs/`. Treat `.cursor/` content as agent runtime guidance only.
+
+Note: Some generic skills may mention Nuxt 3 or older defaults. In this repo, treat those as Nuxt 4 equivalents unless `docs/ARCHITECTURE.md` says otherwise.
+
 ## Reference docs and source of truth
 
 This repository contains additional markdown docs that define product intent, design direction, and operational constraints.
