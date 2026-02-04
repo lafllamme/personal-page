@@ -9,25 +9,27 @@ interface HorizontalScrollItem {
 const items: HorizontalScrollItem[] = [
   {
     title: 'DISCOVER',
-    imageUrl: 'https://i.imgur.com/HYs39g6.png',
+    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
   },
   {
     title: 'DESIGN',
-    imageUrl: 'https://i.imgur.com/7fU3K9f.png',
+    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
   },
   {
     title: 'BUILD',
-    imageUrl: 'https://i.imgur.com/O0HAWKr.png',
+    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
   },
   {
     title: 'REVIEW',
-    imageUrl: 'https://i.imgur.com/I5mAdz0.pngp',
+    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
   },
   {
     title: 'SHIP',
-    imageUrl: 'https://i.imgur.com/L3X22Xi.png',
+    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
   },
 ]
+
+const imageMaskStyle = { clipPath: 'url(#clip-selected)' }
 
 const ulRef = ref<HTMLUListElement | null>(null)
 const scrollSectionRef = ref<HTMLElement | null>(null)
@@ -97,10 +99,11 @@ onBeforeUnmount(() => {
     <!-- Hidden SVG with clipPath definitions -->
     <svg class="clipppy absolute h-0 w-0 -left-[999px] -top-[999px]">
       <defs>
-        <clipPath id="clip-horizontal-scroll" clipPathUnits="objectBoundingBox">
+        <clipPath id="clip-selected" clipPathUnits="objectBoundingBox">
           <path
-            d="M0.401463 0.0407795L0.0407795 0.401463C0.0146671 0.427608 0 0.463048 0 0.5C0 0.536952 0.0146671 0.572392 0.0407795 0.598537L0.401463 0.95922C0.427608 0.985333 0.463048 1 0.5 1C0.536952 1 0.572392 0.985333 0.598537 0.95922L0.95922 0.598537C0.985333 0.572392 1 0.536952 1 0.5C1 0.463048 0.985333 0.427608 0.95922 0.401463L0.598537 0.0407795C0.572392 0.0146671 0.536952 0 0.5 0C0.463048 0 0.427608 0.0146671 0.401463 0.0407795Z"
-            fill="#D9D9D9"
+            d="M 256 256 L 178 256 C 150.386 256 128 233.614 128 206 L 128 256 L 0 256 L 0 192 C 0 156.654 28.654 128 64 128 C 99.346 128 128 156.654 128 192 L 128 128 L 256 128 Z M 78 0 C 105.614 0 128 22.386 128 50 L 128 0 L 256 0 L 256 64 C 256 99.346 227.346 128 192 128 C 156.654 128 128 99.346 128 64 L 128 128 L 0 128 L 0 0 Z"
+            transform="scale(0.00390625)"
+            fill="black"
           />
         </clipPath>
       </defs>
@@ -118,20 +121,20 @@ onBeforeUnmount(() => {
         >
           <h2
             :ref="(el) => { if (el) headerRefs[index] = el as HTMLElement }"
-            class="font-nohemi relative bottom-5 inline-block text-[20vw] font-semibold"
+            class="font-nohemi relative bottom-5 z-20 inline-block text-[clamp(3.25rem,18vw,12rem)] font-semibold leading-[0.9]"
           >
             {{ item.title }}
           </h2>
           <figure
-            class="absolute bottom-0 w-[380px] 2xl:w-[550px]"
-            style="clip-path: url(#clip-horizontal-scroll);"
+            class="absolute bottom-0 aspect-[5/5] w-[clamp(220px,55vw,480px)] 2xl:h-[44rem] lg:w-[clamp(200px,30vw,380px)]"
+            :style="imageMaskStyle"
           >
             <NuxtImg
               :src="item.imageUrl"
               :alt="item.title"
               :width="500"
               :height="500"
-              class="aspect-4/5 min-h-full w-full cursor-pointer select-none object-cover align-bottom transition-all duration-300 hover:scale-105"
+              class="h-full w-full cursor-pointer select-none object-cover align-bottom transition-all duration-300 hover:scale-105"
               loading="lazy"
             />
           </figure>
