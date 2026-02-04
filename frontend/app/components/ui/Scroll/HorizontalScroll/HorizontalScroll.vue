@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { animate, scroll, spring } from 'motion-v'
+import { animate, scroll } from 'motion-v'
 
 interface HorizontalScrollItem {
   title: string
+  subtitle?: string
+  description?: string
   imageUrl: string
 }
 
@@ -60,9 +62,9 @@ onMounted(async () => {
   const controls = animate(
     ulRef.value,
     {
-      transform: ['none', `translateX(-${itemCount - 1}00vw)`],
+      transform: ['none', `translateX(-${(itemCount - 1) * 100}svw)`],
     },
-    { easing: spring() },
+    { easing: 'linear' },
   )
 
   cleanupFns.push(scroll(controls, { target: scrollSectionRef.value }))
@@ -74,7 +76,7 @@ onMounted(async () => {
     if (!header)
       return
 
-    const control = animate(header, { x: [800, -800] })
+    const control = animate(header, { x: [800, -800] }, { easing: 'linear' })
     cleanupFns.push(
       scroll(control, {
         target: scrollSectionRef.value as HTMLElement,
@@ -121,7 +123,7 @@ onBeforeUnmount(() => {
         >
           <h2
             :ref="(el) => { if (el) headerRefs[index] = el as HTMLElement }"
-            class="font-nohemi relative bottom-5 z-20 inline-block text-[clamp(3.25rem,18vw,12rem)] font-semibold leading-[0.9]"
+            class="font-nohemi relative bottom-5 z-20 inline-block text-[clamp(3.25rem,18vw,12rem)] font-semibold leading-[0.9] will-change-transform"
           >
             {{ item.title }}
           </h2>
