@@ -123,7 +123,7 @@ onBeforeUnmount(() => {
         >
           <h2
             :ref="(el) => { if (el) headerRefs[index] = el as HTMLElement }"
-            class="font-nohemi relative bottom-5 z-20 inline-block text-[clamp(3.25rem,18vw,12rem)] font-semibold leading-[0.9] will-change-transform"
+            class="font-nohemi relative bottom-5 z-20 inline-block text-[clamp(4rem,22vw,16rem)] font-semibold leading-[0.9] will-change-transform"
           >
             {{ item.title }}
           </h2>
