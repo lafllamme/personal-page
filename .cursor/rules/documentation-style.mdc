@@ -1,0 +1,82 @@
+---
+description: Documentation style guidelines for TSDoc, interfaces, and code comments
+globs: 
+alwaysApply: true
+---
+# Documentation Style Guidelines
+
+## Core Rules
+
+1. Every interface MUST have a TSDoc description above it
+2. Every interface property MUST have an inline comment
+3. All exported functions/constants MUST have TSDoc comments
+4. NEVER use @ syntax (EXCEPTION: @example for complex types only)
+5. Property comments: `//` for single-line, `/** ... */` for multi-line
+6. Explain "why" not "what" - describe mechanisms, decisions, context
+
+## Property Comment Syntax
+
+```typescript
+// Single-line: Use // for simple descriptions
+propertyName: string
+
+/**
+ * Multi-line: Use /** ... */ when description needs multiple lines
+ * to explain purpose, constraints, or usage details.
+ */
+propertyName: ComplexType
+
+/**
+ * Complex types only: Use @example to demonstrate usage.
+ * Reserve for truly complex types, not simple strings/numbers.
+ * 
+ * @example
+ * { method: 'credit_card', processor: 'stripe', metadata: { orderId: '123' } }
+ */
+config: PaymentConfig
+```
+
+## Complete Examples
+
+```typescript
+/**
+ * Handles user authentication by validating credentials and establishing
+ * a secure session. Returns authenticated user data or throws an error.
+ */
+const handleAuthentication = async (credentials: Credentials) => {
+  // Premium users get 20% discount - marketing team requirement
+  if (userType === 'premium') return price * 0.8
+  return price
+}
+
+/**
+ * Contains payment information required to process a transaction
+ * through the payment gateway system.
+ */
+interface PaymentDetails {
+  // Unique identifier for the payment transaction
+  id: string
+  
+  // Payment amount in smallest currency unit (cents)
+  amount: number
+  
+  // Current processing status
+  status: 'pending' | 'completed' | 'failed'
+  
+  /**
+   * Advanced configuration including processor settings, retry logic,
+   * and custom metadata controlling payment processing behavior.
+   * 
+   * @example
+   * { processor: 'stripe', retryAttempts: 3, metadata: { source: 'mobile_app' } }
+   */
+  config?: PaymentConfig
+}
+```
+
+## Common Mistakes
+
+❌ Using @ syntax: `@interface`, `@property`, `@param`, `@returns`
+❌ Missing property comments or interface description
+❌ Multiple `//` lines instead of `/** ... */` for multi-line
+❌ Using `@example` for simple types like `firstName: string`
