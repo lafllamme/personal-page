@@ -53,10 +53,14 @@ onMounted(async () => {
   if (!ulRef.value || !scrollSectionRef.value)
     return
 
-  const listItems = ulRef.value.querySelectorAll('li')
+  const listItems = Array.from(ulRef.value.children) as HTMLLIElement[]
   const itemCount = listItems.length
 
   if (itemCount === 0)
+    return
+
+  const section = scrollSectionRef.value
+  if (!section)
     return
 
   const controls = animate(
@@ -67,19 +71,20 @@ onMounted(async () => {
     { easing: 'linear' },
   )
 
-  cleanupFns.push(scroll(controls, { target: scrollSectionRef.value }))
+  cleanupFns.push(scroll(controls, { target: section }))
   cleanupFns.push(() => controls.stop())
 
   const segmentLength = 1 / itemCount
+  const headers = listItems.map(item => item.querySelector('h2'))
 
-  headerRefs.value.forEach((header, index) => {
+  headers.forEach((header, index) => {
     if (!header)
       return
 
     const control = animate(header, { x: [800, -800] }, { easing: 'linear' })
     cleanupFns.push(
       scroll(control, {
-        target: scrollSectionRef.value as HTMLElement,
+        target: section,
         offset: [
           [index * segmentLength, 1],
           [(index + 1) * segmentLength, 0],
