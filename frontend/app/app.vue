@@ -8,6 +8,9 @@ const appConfig = useAppConfig()
 const { meta } = appConfig as { meta: HeadMeta }
 const lenisOptions = {
   autoRaf: true,
+  smoothWheel: true,
+  syncTouch: false,
+  autoResize: true,
 }
 const { isTransitionActive } = useTransition()
 
