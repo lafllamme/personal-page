@@ -162,8 +162,9 @@ import { newsSectionContent } from './NewsSection.model'
           </article>
         </div>
 
-        <div class="mt-16 border-t-2 border-pureBlack pt-8 dark:border-pureWhite">
-          <div class="flex items-center justify-center gap-4">
+        <div class="mt-16 pt-8">
+          <div class="h-px w-full bg-pureBlack/70 dark:bg-pureWhite/70" />
+          <div class="mt-8 flex items-center justify-center gap-4">
             <div class="h-px flex-1 bg-pureBlack/20 dark:bg-pureWhite/20" />
             <p class="text-[9px] color-pureBlack/55 font-bold tracking-[0.3em] dark:color-pureWhite/55">
               {{ newsSectionContent.bottomLabel }}
