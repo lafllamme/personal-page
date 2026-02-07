@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { animate, scroll } from 'motion-v'
+import { animate, scroll, spring } from 'motion-v'
 
 interface HorizontalScrollItem {
   title: string
@@ -10,7 +10,7 @@ interface HorizontalScrollItem {
 
 const items: HorizontalScrollItem[] = [
   {
-    title: 'DISCOVER',
+    title: 'EXPLORE',
     imageUrl: 'https://i.imgur.com/o8ch4y7.jpeg',
   },
   {
@@ -18,15 +18,15 @@ const items: HorizontalScrollItem[] = [
     imageUrl: 'https://i.imgur.com/Nd4xs6g.jpeg',
   },
   {
-    title: 'BUILD',
+    title: 'MOTIVATION',
     imageUrl: 'https://i.imgur.com/zMvrbgk.jpeg',
   },
   {
-    title: 'REVIEW',
+    title: 'INSPIRATION',
     imageUrl: 'https://i.imgur.com/ej73kzL.jpeg',
   },
   {
-    title: 'SHIP',
+    title: 'DELIVERY',
     imageUrl: 'https://i.imgur.com/GSwURfo.jpeg',
   },
 ]
@@ -37,6 +37,7 @@ const ulRef = ref<HTMLUListElement | null>(null)
 const scrollSectionRef = ref<HTMLElement | null>(null)
 const headerRefs = ref<(HTMLElement | null)[]>([])
 const cleanupFns: Array<() => void> = []
+
 useHeaderVisibility({
   sectionRef: scrollSectionRef,
 })
@@ -68,7 +69,7 @@ onMounted(async () => {
     {
       transform: ['none', `translateX(-${(itemCount - 1) * 100}svw)`],
     },
-    { easing: 'linear' },
+    { easing: spring() },
   )
 
   cleanupFns.push(scroll(controls, { target: section }))
@@ -82,6 +83,7 @@ onMounted(async () => {
       return
 
     const control = animate(header, { x: [800, -800] }, { easing: 'linear' })
+
     cleanupFns.push(
       scroll(control, {
         target: section,
