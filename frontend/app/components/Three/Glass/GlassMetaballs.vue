@@ -179,6 +179,7 @@ const bodies: GlassBody[] = []
 let mouseBall: MouseBall | null = null
 let world: RapierWorld | null = null
 let rapier: RapierModule | null = null
+const showDevControls = import.meta.dev
 
 const colorPalette = [
   0x0067B1,
@@ -1253,7 +1254,7 @@ onBeforeUnmount(() => {
         </TresCanvas>
       </div>
 
-      <Teleport v-if="controlsMode === 'fixed'" to="body">
+      <Teleport v-if="showDevControls && controlsMode === 'fixed'" to="body">
         <GlassMetaballsControls
           v-model:settings="settingsModel"
           v-model:preset-name="presetName"
@@ -1267,7 +1268,7 @@ onBeforeUnmount(() => {
       </Teleport>
 
       <GlassMetaballsControls
-        v-else-if="controlsMode !== 'none'"
+        v-else-if="showDevControls && controlsMode !== 'none'"
         v-model:settings="settingsModel"
         v-model:preset-name="presetName"
         position="absolute"
