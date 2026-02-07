@@ -6,6 +6,7 @@ export interface NewsTickerItem {
 }
 
 export interface NewsSectionContent {
+  topBarRightLabel: string
   brand: string
   masthead: string
   straplineLeft: string
@@ -22,6 +23,7 @@ export interface NewsSectionContent {
 }
 
 export const newsSectionContent: NewsSectionContent = {
+  topBarRightLabel: 'VIVEKVISUALS',
   brand: 'TECH PROPHET',
   masthead: 'DAILY PROPHET',
   straplineLeft: 'PRINTED IN SILICON VALLEY',

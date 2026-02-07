@@ -22,34 +22,32 @@ import { newsSectionContent } from './NewsSection.model'
           </span>
         </div>
       </div>
-
-      <div class="absolute bottom-8 left-1/2 hidden items-center gap-4 lg:flex -translate-x-1/2">
-        <span class="h-px w-24 bg-pureBlack/25 dark:bg-pureWhite/25" />
-        <span class="text-[9px] color-pureBlack/55 tracking-[0.33em] dark:color-pureWhite/55">
-          {{ newsSectionContent.bottomLabel }}
-        </span>
-        <span class="h-px w-24 bg-pureBlack/25 dark:bg-pureWhite/25" />
-      </div>
     </div>
 
     <div>
       <header class="border-b border-pureBlack/20 border-solid dark:border-pureWhite/20">
-        <div class="mx-auto max-w-[1500px] flex items-center justify-between py-3 text-[9px] tracking-[0.28em]">
+        <div class="mx-auto max-w-[1500px] flex items-center justify-between px-6 py-3 text-[9px] tracking-[0.3em] sm:px-8">
           <span class="font-bold">INSPIRED BY MODERN WEB EXPERIENCES</span>
-          <span class="font-black">{{ newsSectionContent.brand }}</span>
+          <span class="font-bold">{{ newsSectionContent.topBarRightLabel }}</span>
         </div>
       </header>
 
       <nav class="border-b border-pureBlack/20 border-solid dark:border-pureWhite/20">
-        <div class="mx-auto max-w-[1500px] flex items-center justify-between px-6 py-4 md:px-10">
-          <div class="text-[10px] tracking-[0.24em]">
-            SEARCH
+        <div class="mx-auto max-w-[1500px] flex items-center justify-between px-6 py-4 sm:px-8">
+          <div class="flex items-center gap-6">
+            <button class="p-2 transition-colors hover:bg-gray-3/60 dark:hover:bg-gray-8/60" aria-label="Search">
+              <Icon name="lucide:search" class="h-4 w-4" />
+            </button>
+            <span class="text-xs font-semibold tracking-wider">RESUME</span>
           </div>
           <div class="text-3xl font-black tracking-tight">
             {{ newsSectionContent.brand }}
           </div>
-          <div class="text-[10px] tracking-[0.24em]">
-            ABOUT
+          <div class="flex items-center gap-6">
+            <span class="text-xs font-semibold tracking-wider">ABOUT</span>
+            <button class="p-2 transition-colors hover:bg-gray-3/60 dark:hover:bg-gray-8/60" aria-label="Menu">
+              <Icon name="lucide:menu" class="h-4 w-4" />
+            </button>
           </div>
         </div>
       </nav>
@@ -81,7 +79,7 @@ import { newsSectionContent } from './NewsSection.model'
               <div class="text-[9px] font-black tracking-[0.35em]">
                 DESCRIBING MODERN WEB EXPERIENCES
               </div>
-              <h2 class="text-[clamp(2.2rem,6vw,5rem)] font-black leading-[0.9]">
+              <h2 class="text-6xl font-black leading-[0.88] tracking-tight">
                 {{ newsSectionContent.leadTitle }}
               </h2>
               <span class="inline-flex rounded-full bg-pureBlack px-3 py-1 text-[9px] color-pureWhite font-black tracking-[0.2em] dark:bg-pureWhite dark:color-pureBlack">
@@ -117,7 +115,7 @@ import { newsSectionContent } from './NewsSection.model'
             </div>
 
             <div class="text-center space-y-2">
-              <h3 class="text-[clamp(2rem,4.2vw,4rem)] font-black leading-[0.92] tracking-tight">
+              <h3 class="text-5xl font-black leading-tight tracking-tight">
                 KNOW MORE!
               </h3>
               <p class="text-[9px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
@@ -127,11 +125,11 @@ import { newsSectionContent } from './NewsSection.model'
           </article>
 
           <article class="lg:col-span-4 space-y-8">
-            <h2 class="text-[clamp(2.2rem,6vw,5.7rem)] font-black leading-[0.9]">
+            <h2 class="text-7xl font-black leading-[0.85] tracking-tight">
               {{ newsSectionContent.rightTitle }}
             </h2>
 
-            <div class="border-2 border-pureBlack px-4 py-8 text-center dark:border-pureWhite">
+            <div class="border-2 border-pureBlack border-solid px-4 py-8 text-center dark:border-pureWhite">
               <div class="text-[clamp(4rem,11vw,8rem)] font-black leading-none tracking-tight">
                 {{ newsSectionContent.score }}
               </div>
@@ -140,7 +138,7 @@ import { newsSectionContent } from './NewsSection.model'
               VERSION RELEASE
             </p>
 
-            <div class="border-t border-pureBlack/25 pt-6 dark:border-pureWhite/25">
+            <div class="border-t border-pureBlack/25 border-solid pt-6 dark:border-pureWhite/25">
               <h3 class="mb-4 text-[10px] font-black tracking-[0.3em]">
                 LATEST HEADLINES
               </h3>
@@ -153,7 +151,7 @@ import { newsSectionContent } from './NewsSection.model'
                 <div class="mb-2 text-[9px] color-pureBlack/55 tracking-[0.24em] dark:color-pureWhite/55">
                   {{ item.tag }}
                 </div>
-                <h4 class="text-[clamp(1.1rem,2vw,1.5rem)] font-bold leading-tight">
+                <h4 class="text-lg font-bold leading-tight">
                   {{ item.title }}
                 </h4>
                 <p class="mt-2 text-sm color-pureBlack/70 leading-relaxed dark:color-pureWhite/70">
@@ -162,6 +160,16 @@ import { newsSectionContent } from './NewsSection.model'
               </div>
             </div>
           </article>
+        </div>
+
+        <div class="mt-16 border-t-2 border-pureBlack pt-8 dark:border-pureWhite">
+          <div class="flex items-center justify-center gap-4">
+            <div class="h-px flex-1 bg-pureBlack/20 dark:bg-pureWhite/20" />
+            <p class="text-[9px] color-pureBlack/55 font-bold tracking-[0.3em] dark:color-pureWhite/55">
+              {{ newsSectionContent.bottomLabel }}
+            </p>
+            <div class="h-px flex-1 bg-pureBlack/20 dark:bg-pureWhite/20" />
+          </div>
         </div>
       </section>
     </div>
