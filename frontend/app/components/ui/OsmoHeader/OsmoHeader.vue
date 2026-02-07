@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener, useScroll } from '@vueuse/core'
+import { useEventListener, useScroll, useTimeoutFn } from '@vueuse/core'
 import { AnimatePresence, Motion } from 'motion-v'
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
@@ -8,20 +8,17 @@ import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } f
 import OsmoMenuIcon from './OsmoMenuIcon.vue'
 
 const isScrolled = ref(false)
-const colorMode = useColorMode()
-const headerTone = useState<'light' | 'dark'>(
-  'osmo-header-tone',
-  () => (colorMode.value === 'dark' ? 'dark' : 'light'),
-)
 const isHeaderHidden = useState<boolean>('osmo-header-hidden', () => false)
 const headerOffset = useState<number>('osmo-header-offset', () => 0)
 const isMenuOpen = ref(false)
 const menuOpenState = useState<boolean>('osmo-menu-open', () => false)
 const navBarRef = ref<HTMLElement | null>(null)
 const scrollTarget = ref<Window | null>(null)
-let menuStateTimeout: ReturnType<typeof setTimeout> | null = null
 const MENU_TRANSITION_FALLBACK_MS = 700
 const labelCharsCache = new Map<string, string[]>()
+const { start: startMenuFallbackTimeout, stop: stopMenuFallbackTimeout } = useTimeoutFn(() => {
+  menuOpenState.value = true
+}, MENU_TRANSITION_FALLBACK_MS, { immediate: false })
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -39,9 +36,6 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 const marqueeHidden = computed(() => isScrolled.value || isMenuOpen.value || isHeaderHidden.value)
-const headerFgClass = computed(() => (headerTone.value === 'light' ? 'color-pureBlack' : 'color-pureWhite'))
-const headerOutlineClass = computed(() => (headerTone.value === 'light' ? 'ring-pureBlack/20' : 'ring-pureWhite/20'))
-const headerHoverBgClass = computed(() => (headerTone.value === 'light' ? 'hover:bg-pureBlack/10' : 'hover:bg-pureWhite/10'))
 
 const avatarPositions = computed(() => {
   const total = Math.max(1, avatars.length - 1)
@@ -89,44 +83,29 @@ useEventListener(navBarRef, 'transitionend', (event) => {
   if (!isMenuOpen.value)
     return
 
+  stopMenuFallbackTimeout()
   menuOpenState.value = true
-  if (menuStateTimeout) {
-    clearTimeout(menuStateTimeout)
-    menuStateTimeout = null
-  }
 })
 
 watch(isMenuOpen, (next) => {
   if (!import.meta.client || !navBarRef.value) {
+    stopMenuFallbackTimeout()
     menuOpenState.value = next
     return
   }
 
   if (!next) {
+    stopMenuFallbackTimeout()
     menuOpenState.value = false
-    if (menuStateTimeout) {
-      clearTimeout(menuStateTimeout)
-      menuStateTimeout = null
-    }
     return
   }
 
-  if (menuStateTimeout)
-    clearTimeout(menuStateTimeout)
-  menuStateTimeout = window.setTimeout(() => {
-    menuOpenState.value = true
-  }, MENU_TRANSITION_FALLBACK_MS)
+  stopMenuFallbackTimeout()
+  startMenuFallbackTimeout()
 }, { immediate: true })
 
-watch(colorMode, () => {
-  headerTone.value = colorMode.value === 'dark' ? 'dark' : 'light'
-})
-
 onBeforeUnmount(() => {
-  if (menuStateTimeout) {
-    clearTimeout(menuStateTimeout)
-    menuStateTimeout = null
-  }
+  stopMenuFallbackTimeout()
 })
 </script>
 
@@ -142,7 +121,6 @@ onBeforeUnmount(() => {
       :class="[
         isMenuOpen ? 'is--active' : 'is--inactive',
         isScrolled ? 'is--scrolled' : '',
-        headerTone === 'dark' ? 'is--dark' : 'is--light',
       ]"
       :style="{
         transform: `translateY(${headerOffset}px)`,
@@ -167,11 +145,10 @@ onBeforeUnmount(() => {
               <!-- Menu toggle button -->
               <div class="osmo-nav-bar__menu">
                 <button
-                  class="osmo-nav-menu"
-                  :class="[headerFgClass, headerHoverBgClass]"
+                  class="osmo-nav-menu color-pureBlack dark:color-pureWhite hover:bg-pureBlack/10 dark:hover:bg-pureWhite/10"
                   @click="toggleMenu"
                 >
-                  <OsmoMenuIcon :is-open="isMenuOpen" :tone="headerTone" />
+                  <OsmoMenuIcon :is-open="isMenuOpen" />
                   <span class="osmo-nav-menu__label font-manrope font-500 tracking-tight">Menu</span>
                 </button>
               </div>
@@ -198,7 +175,7 @@ onBeforeUnmount(() => {
                       :exit="{ opacity: 0, y: 10 }"
                       :transition="{ duration: 0.3 }"
                     >
-                      <span class="osmo-nav-logo__wordmark font-cabinet tracking-tight" :class="headerFgClass">TECNEWS</span>
+                      <span class="osmo-nav-logo__wordmark font-cabinet tracking-tight color-pureBlack dark:color-pureWhite">TECNEWS</span>
                     </Motion>
                   </AnimatePresence>
                 </NuxtLink>
@@ -208,7 +185,7 @@ onBeforeUnmount(() => {
               <div class="osmo-nav-bar__buttons">
                 <!-- Color Mode Toggle -->
                 <div class="osmo-nav-bar__color-mode">
-                  <ColorMode :tone="headerTone" />
+                  <ColorMode />
                 </div>
 
                 <!-- Join Button -->
@@ -242,12 +219,11 @@ onBeforeUnmount(() => {
                     <!-- Column 1: Products -->
                     <div
                       :class="useClsx(
-                        'osmo-nav-bar__bottom-col is--products',
-                        headerOutlineClass,
+                        'osmo-nav-bar__bottom-col is--products ring-pureBlack/20 dark:ring-pureWhite/20',
                       )"
                     >
                       <div class="osmo-nav-bar__tag-row">
-                        <span :class="useClsx('osmo-eyebrow space-grotesk-regular', headerFgClass)">Newsroom</span>
+                        <span class="osmo-eyebrow space-grotesk-regular color-pureBlack dark:color-pureWhite">Newsroom</span>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
                         <li
@@ -257,7 +233,7 @@ onBeforeUnmount(() => {
                         >
                           <NuxtLink
                             :to="item.href"
-                            :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
+                            class="osmo-nav-bar__big-a osmo-animate-chars color-pureBlack dark:color-pureWhite"
                             @click="closeMenu"
                           >
                             <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
@@ -289,7 +265,7 @@ onBeforeUnmount(() => {
                           :key="item.name"
                           class="osmo-nav-bar__small-li font-clash-regular"
                         >
-                          <span :class="useClsx('osmo-nav-bar__small-a', headerFgClass)">
+                          <span class="osmo-nav-bar__small-a color-pureBlack dark:color-pureWhite">
                             <span class="osmo-nav-bar__small-span">{{ item.name }}</span>
                             <span v-if="item.badge" class="space-grotesk-regular osmo-nav-bar__a-tag is--small">
                               <span class="osmo-tag is--muted">{{ item.badge }}</span>
@@ -302,7 +278,7 @@ onBeforeUnmount(() => {
                     <!-- Column 2: Explore -->
                     <div class="osmo-nav-bar__bottom-col">
                       <div class="osmo-nav-bar__tag-row is--membership">
-                        <span :class="useClsx('osmo-eyebrow space-grotesk-regular', headerFgClass)">Explore</span>
+                        <span class="osmo-eyebrow space-grotesk-regular color-pureBlack dark:color-pureWhite">Explore</span>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
                         <li
@@ -312,7 +288,7 @@ onBeforeUnmount(() => {
                         >
                           <NuxtLink
                             :to="item.href"
-                            :class="useClsx('osmo-nav-bar__big-a osmo-animate-chars', headerFgClass)"
+                            class="osmo-nav-bar__big-a osmo-animate-chars color-pureBlack dark:color-pureWhite"
                             @click="closeMenu"
                           >
                             <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
@@ -356,8 +332,7 @@ onBeforeUnmount(() => {
                     <!-- Column 3: Featured -->
                     <div
                       :class="useClsx(
-                        'osmo-nav-bar__bottom-col is--ad hidden xl:flex',
-                        headerOutlineClass,
+                        'osmo-nav-bar__bottom-col is--ad hidden xl:flex ring-pureBlack/20 dark:ring-pureWhite/20',
                       )"
                     >
                       <div class="osmo-nav-banner">
@@ -369,7 +344,7 @@ onBeforeUnmount(() => {
                           </div>
                           <div class="osmo-nav-banner__center-content">
                             <div class="osmo-nav-banner__title">
-                              <h2 :class="useClsx('osmo-h-m font-500 font-clash-regular', headerFgClass)">
+                              <h2 class="osmo-h-m font-500 font-clash-regular color-pureBlack dark:color-pureWhite">
                                 We hit 1700
                                 <br>
                                 Members!
@@ -405,7 +380,7 @@ onBeforeUnmount(() => {
                   <div class="osmo-nav-bar__mobile-buttons">
                     <NuxtLink
                       to="/login"
-                      class="osmo-mobile-button is--neutral"
+                      class="osmo-mobile-button is--neutral bg-pureBlack color-pureWhite dark:bg-pureWhite dark:color-pureBlack"
                       @click="closeMenu"
                     >
                       <div class="osmo-mobile-button__bg" />
@@ -605,14 +580,14 @@ onBeforeUnmount(() => {
   }
 
   /* Enhanced glass effect when scrolled */
-  .osmo-nav.is--scrolled.is--light .osmo-nav-bar__bg {
+  html:not(.dark) .osmo-nav.is--scrolled .osmo-nav-bar__bg {
     backdrop-filter: blur(24px);
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
       0 12px 40px rgba(0, 0, 0, 0.08);
   }
 
-  .osmo-nav.is--scrolled.is--dark .osmo-nav-bar__bg {
+  html.dark .osmo-nav.is--scrolled .osmo-nav-bar__bg {
     backdrop-filter: blur(24px);
     box-shadow:
       inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
@@ -629,14 +604,14 @@ onBeforeUnmount(() => {
   transition: opacity 0.2s ease;
 }
 
-.osmo-nav.is--light .osmo-nav-bar__bg {
+html:not(.dark) .osmo-nav .osmo-nav-bar__bg {
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
     0 8px 32px rgba(0, 0, 0, 0.06);
 }
 
-.osmo-nav.is--dark .osmo-nav-bar__bg {
+html.dark .osmo-nav .osmo-nav-bar__bg {
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.08),
@@ -658,11 +633,11 @@ onBeforeUnmount(() => {
   transition: opacity 0.2s ease;
 }
 
-.osmo-nav.is--light .osmo-nav-bar__outline {
+html:not(.dark) .osmo-nav .osmo-nav-bar__outline {
   border: 1px solid rgba(0, 0, 0, 0.04);
 }
 
-.osmo-nav.is--dark .osmo-nav-bar__outline {
+html.dark .osmo-nav .osmo-nav-bar__outline {
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -700,11 +675,11 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(10px);
 }
 
-.osmo-nav.is--dark .osmo-nav-menu:hover {
+html.dark .osmo-nav .osmo-nav-menu:hover {
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 }
 
-.osmo-nav.is--light .osmo-nav-menu:hover {
+html:not(.dark) .osmo-nav .osmo-nav-menu:hover {
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -713,11 +688,11 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(10px);
 }
 
-.osmo-nav.is--active.is--dark .osmo-nav-menu {
+html.dark .osmo-nav.is--active .osmo-nav-menu {
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
 }
 
-.osmo-nav.is--active.is--light .osmo-nav-menu {
+html:not(.dark) .osmo-nav.is--active .osmo-nav-menu {
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
 }
 
@@ -865,11 +840,11 @@ onBeforeUnmount(() => {
   transition: opacity var(--osmo-animation) 0s;
 }
 
-.osmo-nav.is--light .osmo-nav-bar__line {
+html:not(.dark) .osmo-nav .osmo-nav-bar__line {
   background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
 }
 
-.osmo-nav.is--dark .osmo-nav-bar__line {
+html.dark .osmo-nav .osmo-nav-bar__line {
   background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.15) 50%, transparent 100%);
 }
 
@@ -964,7 +939,7 @@ onBeforeUnmount(() => {
     0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.osmo-nav.is--light .osmo-nav-bar__bottom-col.is--products {
+html:not(.dark) .osmo-nav .osmo-nav-bar__bottom-col.is--products {
   border-color: rgba(0, 0, 0, 0.08);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
@@ -972,7 +947,7 @@ onBeforeUnmount(() => {
     0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
-.osmo-nav.is--dark .osmo-nav-bar__bottom-col.is--products {
+html.dark .osmo-nav .osmo-nav-bar__bottom-col.is--products {
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
@@ -1094,7 +1069,7 @@ onBeforeUnmount(() => {
   transition: background-color 0.2s ease;
 }
 
-.osmo-nav.is--dark .osmo-square-button {
+html.dark .osmo-nav .osmo-square-button {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: white;
@@ -1103,7 +1078,7 @@ onBeforeUnmount(() => {
     0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.osmo-nav.is--light .osmo-square-button {
+html:not(.dark) .osmo-nav .osmo-square-button {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 0, 0, 0.06);
   color: black;
@@ -1116,14 +1091,14 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(12px);
 }
 
-.osmo-nav.is--dark .osmo-square-button:hover {
+html.dark .osmo-nav .osmo-square-button:hover {
   border-color: rgba(255, 255, 255, 0.18);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
     0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.osmo-nav.is--light .osmo-square-button:hover {
+html:not(.dark) .osmo-nav .osmo-square-button:hover {
   border-color: rgba(0, 0, 0, 0.08);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.4),
@@ -1176,7 +1151,6 @@ onBeforeUnmount(() => {
 }
 
 .osmo-mobile-button.is--neutral .osmo-mobile-button__bg {
-  background-color: rgba(49, 46, 46, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
@@ -1195,10 +1169,6 @@ onBeforeUnmount(() => {
   z-index: 1;
 }
 
-.osmo-mobile-button.is--neutral {
-  color: white;
-}
-
 .osmo-line {
   position: relative;
   width: 100%;
@@ -1210,12 +1180,12 @@ onBeforeUnmount(() => {
   opacity: 1;
 }
 
-.osmo-nav.is--dark .osmo-line.is--nav-transparent {
+html.dark .osmo-nav .osmo-line.is--nav-transparent {
   background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.12) 50%, transparent 100%);
   box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05);
 }
 
-.osmo-nav.is--light .osmo-line.is--nav-transparent {
+html:not(.dark) .osmo-nav .osmo-line.is--nav-transparent {
   background: linear-gradient(90deg, transparent 0%, rgba(0, 0, 0, 0.1) 50%, transparent 100%);
   box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.03);
 }
@@ -1267,14 +1237,14 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(20px);
 }
 
-.osmo-nav.is--light .osmo-nav-banner {
+html:not(.dark) .osmo-nav .osmo-nav-banner {
   border: 1px solid rgba(0, 0, 0, 0.08);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
     0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
-.osmo-nav.is--dark .osmo-nav-banner {
+html.dark .osmo-nav .osmo-nav-banner {
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
     inset 0 1px 0 0 rgba(255, 255, 255, 0.1),
@@ -1364,14 +1334,14 @@ onBeforeUnmount(() => {
   backdrop-filter: blur(10px);
 }
 
-.osmo-nav.is--light .osmo-nav-banner__avatar {
+html:not(.dark) .osmo-nav .osmo-nav-banner__avatar {
   border: 2px solid rgba(0, 0, 0, 0.12);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.06),
     inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
 }
 
-.osmo-nav.is--dark .osmo-nav-banner__avatar {
+html.dark .osmo-nav .osmo-nav-banner__avatar {
   border: 2px solid rgba(255, 255, 255, 0.15);
   box-shadow:
     0 4px 12px rgba(0, 0, 0, 0.2),
