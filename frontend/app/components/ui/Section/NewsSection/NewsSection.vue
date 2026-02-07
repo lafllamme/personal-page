@@ -1,0 +1,169 @@
+<script setup lang="ts">
+import { newsSectionContent } from './NewsSection.model'
+</script>
+
+<template>
+  <section class="relative min-h-screen bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
+    <div class="pointer-events-none absolute inset-y-0 z-30 hidden -inset-x-4 lg:block md:-inset-x-12">
+      <div class="absolute inset-x-0 bottom-6 top-3 border border-pureBlack/20 dark:border-pureWhite/20" />
+
+      <div class="absolute inset-y-0 left-0 w-12 border-r border-pureBlack/25 border-solid dark:border-pureWhite/25">
+        <div class="sticky top-[calc(var(--header-height,0px)+0.75rem)] h-[calc(100svh-var(--header-height,0px)-1.5rem)] flex items-center justify-center">
+          <span class="whitespace-nowrap text-[9px] tracking-[0.35em] -rotate-90">
+            {{ newsSectionContent.sideLeft }}
+          </span>
+        </div>
+      </div>
+
+      <div class="absolute inset-y-0 right-0 w-12 border-l border-pureBlack/25 border-solid dark:border-pureWhite/25">
+        <div class="sticky top-[calc(var(--header-height,0px)+0.75rem)] h-[calc(100svh-var(--header-height,0px)-1.5rem)] flex items-center justify-center">
+          <span class="rotate-90 whitespace-nowrap text-[9px] tracking-[0.35em]">
+            {{ newsSectionContent.sideRight }}
+          </span>
+        </div>
+      </div>
+
+      <div class="absolute bottom-8 left-1/2 hidden items-center gap-4 lg:flex -translate-x-1/2">
+        <span class="h-px w-24 bg-pureBlack/25 dark:bg-pureWhite/25" />
+        <span class="text-[9px] color-pureBlack/55 tracking-[0.33em] dark:color-pureWhite/55">
+          {{ newsSectionContent.bottomLabel }}
+        </span>
+        <span class="h-px w-24 bg-pureBlack/25 dark:bg-pureWhite/25" />
+      </div>
+    </div>
+
+    <div>
+      <header class="border-b border-pureBlack/20 border-solid dark:border-pureWhite/20">
+        <div class="mx-auto max-w-[1500px] flex items-center justify-between py-3 text-[9px] tracking-[0.28em]">
+          <span class="font-bold">INSPIRED BY MODERN WEB EXPERIENCES</span>
+          <span class="font-black">{{ newsSectionContent.brand }}</span>
+        </div>
+      </header>
+
+      <nav class="border-b border-pureBlack/20 border-solid dark:border-pureWhite/20">
+        <div class="mx-auto max-w-[1500px] flex items-center justify-between px-6 py-4 md:px-10">
+          <div class="text-[10px] tracking-[0.24em]">
+            SEARCH
+          </div>
+          <div class="text-3xl font-black tracking-tight">
+            {{ newsSectionContent.brand }}
+          </div>
+          <div class="text-[10px] tracking-[0.24em]">
+            ABOUT
+          </div>
+        </div>
+      </nav>
+
+      <section class="bg-pureBlack py-8 color-pureWhite md:py-10">
+        <div class="mx-auto max-w-[1500px] px-6 md:px-10">
+          <div class="mb-4 flex items-center justify-between text-[9px] tracking-[0.35em] opacity-80">
+            <span>{{ newsSectionContent.straplineLeft }}</span>
+            <span>{{ newsSectionContent.straplineRight }}</span>
+          </div>
+
+          <h1 class="text-center text-[clamp(3rem,11vw,11rem)] font-black leading-[0.86] tracking-[-0.02em]">
+            {{ newsSectionContent.masthead }}
+          </h1>
+
+          <div class="mt-4 flex items-center justify-between text-[9px] tracking-[0.3em]">
+            <span class="rounded-full bg-pureWhite px-3 py-1 color-pureBlack font-black">
+              EXCLUSIVE EDITION
+            </span>
+            <span>SCROLL DOWN ↓</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="mx-auto max-w-[1500px] px-6 py-10 md:px-10 md:py-14">
+        <div class="grid gap-8 lg:grid-cols-12">
+          <article class="border-solid lg:col-span-4 space-y-6 lg:border-r lg:border-pureBlack/25 lg:pr-8 dark:lg:border-pureWhite/25">
+            <div class="space-y-4">
+              <div class="text-[9px] font-black tracking-[0.35em]">
+                DESCRIBING MODERN WEB EXPERIENCES
+              </div>
+              <h2 class="text-[clamp(2.2rem,6vw,5rem)] font-black leading-[0.9]">
+                {{ newsSectionContent.leadTitle }}
+              </h2>
+              <span class="inline-flex rounded-full bg-pureBlack px-3 py-1 text-[9px] color-pureWhite font-black tracking-[0.2em] dark:bg-pureWhite dark:color-pureBlack">
+                {{ newsSectionContent.leadTag }}
+              </span>
+            </div>
+
+            <div class="text-lg color-pureBlack/70 leading-relaxed space-y-4 dark:color-pureWhite/70">
+              <p v-for="(paragraph, index) in newsSectionContent.leadCopy" :key="`lead-${index}`">
+                {{ paragraph }}
+              </p>
+            </div>
+
+            <button class="w-full bg-pureBlack py-4 text-[11px] color-pureWhite font-black tracking-[0.24em] transition-opacity dark:bg-pureWhite dark:color-pureBlack hover:opacity-90">
+              READ FULL ARTICLE
+            </button>
+          </article>
+
+          <article class="border-solid lg:col-span-4 space-y-5 lg:border-r lg:border-pureBlack/25 lg:pr-8 dark:lg:border-pureWhite/25">
+            <div class="relative aspect-[3/4] overflow-hidden from-gray-11 via-gray-8 to-gray-6 bg-gradient-to-br shadow-xl">
+              <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center color-pureWhite">
+                <div class="text-8xl font-black">
+                  AI
+                </div>
+                <div class="my-5 h-px w-24 bg-pureWhite/70" />
+                <div class="text-[clamp(1rem,2.2vw,1.7rem)] leading-snug tracking-[0.22em]">
+                  NEURAL<br>NETWORKS
+                </div>
+                <div class="mt-6 text-[9px] tracking-[0.3em] opacity-70">
+                  VISUALIZATION
+                </div>
+              </div>
+            </div>
+
+            <div class="text-center space-y-2">
+              <h3 class="text-[clamp(2rem,4.2vw,4rem)] font-black leading-[0.92] tracking-tight">
+                KNOW MORE!
+              </h3>
+              <p class="text-[9px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
+                EXCLUSIVE INSIGHTS • DEEP DIVE
+              </p>
+            </div>
+          </article>
+
+          <article class="lg:col-span-4 space-y-8">
+            <h2 class="text-[clamp(2.2rem,6vw,5.7rem)] font-black leading-[0.9]">
+              {{ newsSectionContent.rightTitle }}
+            </h2>
+
+            <div class="border-2 border-pureBlack px-4 py-8 text-center dark:border-pureWhite">
+              <div class="text-[clamp(4rem,11vw,8rem)] font-black leading-none tracking-tight">
+                {{ newsSectionContent.score }}
+              </div>
+            </div>
+            <p class="text-center text-[9px] color-pureBlack/55 tracking-[0.33em] dark:color-pureWhite/55">
+              VERSION RELEASE
+            </p>
+
+            <div class="border-t border-pureBlack/25 pt-6 dark:border-pureWhite/25">
+              <h3 class="mb-4 text-[10px] font-black tracking-[0.3em]">
+                LATEST HEADLINES
+              </h3>
+
+              <div
+                v-for="item in newsSectionContent.ticker"
+                :key="item.id"
+                class="border-b border-pureBlack/15 border-solid py-4 last:border-b-0 dark:border-pureWhite/15"
+              >
+                <div class="mb-2 text-[9px] color-pureBlack/55 tracking-[0.24em] dark:color-pureWhite/55">
+                  {{ item.tag }}
+                </div>
+                <h4 class="text-[clamp(1.1rem,2vw,1.5rem)] font-bold leading-tight">
+                  {{ item.title }}
+                </h4>
+                <p class="mt-2 text-sm color-pureBlack/70 leading-relaxed dark:color-pureWhite/70">
+                  {{ item.excerpt }}
+                </p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </section>
+</template>
