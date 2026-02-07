@@ -20,6 +20,7 @@ When to use which doc
 * Product, UX, UI, animation, tone, content decisions → `docs/PRODUCT.md`
 * Design tokens, colors, typography, spacing, visual effects, component patterns → `docs/DESIGNSYSTEM.md`
 * Architecture, tooling, monorepo layout, bundlers, deploy topology → `docs/ARCHITECTURE.md`
+* Lenis smooth-scroll integration and animation-loop guidance → `.cursor/references/lenis.md`
 
 
 ## Repository context
