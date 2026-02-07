@@ -128,21 +128,24 @@ onBeforeUnmount(() => {
         >
           <h2
             :ref="(el) => { if (el) headerRefs[index] = el as HTMLElement }"
-            class="font-nohemi relative bottom-5 z-20 inline-block text-[clamp(4.5rem,24vw,20rem)] font-semibold leading-[0.9] will-change-transform"
+            class="font-nohemi relative bottom-5 z-30 inline-block text-[clamp(4.5rem,24vw,20rem)] font-semibold leading-[0.9] will-change-transform"
           >
             {{ item.title }}
           </h2>
           <figure
-            class="absolute bottom-0 aspect-[5/5] w-[clamp(220px,55vw,480px)] 2xl:h-[44rem] lg:w-[clamp(200px,30vw,380px)]"
+            aria-hidden="true"
+            class="absolute bottom-0 z-20 aspect-square w-[clamp(250px,68vw,500px)] 2xl:h-[40rem] lg:w-[clamp(220px,28vw,400px)] sm:w-[clamp(260px,52vw,500px)]"
             :style="imageMaskStyle"
           >
             <NuxtImg
               :src="item.imageUrl"
-              :alt="item.title"
-              :width="500"
-              :height="500"
-              class="h-full w-full cursor-pointer select-none object-cover align-bottom transition-all duration-300 hover:scale-105"
-              loading="lazy"
+              alt=""
+              :width="1200"
+              :height="1200"
+              :loading="index === 0 ? 'eager' : 'lazy'"
+              :fetchpriority="index === 0 ? 'high' : 'auto'"
+              sizes="(max-width: 640px) 68vw, (max-width: 1024px) 52vw, 28vw"
+              class="h-full w-full select-none object-cover align-bottom transition-transform duration-300 hover:scale-105 motion-reduce:transform-none"
             />
           </figure>
         </li>
