@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useEventListener, useIntersectionObserver } from '@vueuse/core'
+import { useIntersectionObserver, useResizeObserver } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, watch } from 'vue'
 
 interface AccordionItem {
@@ -151,52 +151,69 @@ function itemStyle(i: number) {
   }
 }
 
-// Panel refs for height calculations
-const panelRefs = ref<Record<string, HTMLElement | null>>({})
+// Content refs for dynamic panel heights
 const contentRefs = ref<Record<string, HTMLElement | null>>({})
+const panelHeights = ref<Record<string, number>>({})
 
-function updatePanelHeight(itemId: string) {
-  if (contentRefs.value[itemId] && panelRefs.value[itemId] && isExpanded(itemId)) {
-    const content = contentRefs.value[itemId]
-    const panel = panelRefs.value[itemId]
-    if (content && panel) {
-      panel.style.height = `${content.scrollHeight}px`
-    }
-  }
+function measurePanelHeight(itemId: string) {
+  const content = contentRefs.value[itemId]
+  if (!content)
+    return
+  // Use intrinsic content height for reliable first-open sizing.
+  const measured = content.scrollHeight || content.getBoundingClientRect().height
+  panelHeights.value[itemId] = Math.ceil(measured)
+}
+
+function getPanelHeight(itemId: string) {
+  if (!isExpanded(itemId))
+    return '0px'
+
+  const measured = panelHeights.value[itemId]
+  if (measured && measured > 0)
+    return `${measured}px`
+
+  const content = contentRefs.value[itemId]
+  if (content)
+    return `${Math.ceil(content.scrollHeight)}px`
+
+  return 'auto'
 }
 
 watch(expandedId, (newId, oldId) => {
   nextTick(() => {
-    if (oldId && panelRefs.value[oldId]) {
-      const panel = panelRefs.value[oldId]
-      if (panel) {
-        panel.style.height = '0px'
-      }
-    }
-    if (newId) {
-      updatePanelHeight(newId)
-    }
+    if (oldId)
+      panelHeights.value[oldId] = 0
+    if (newId)
+      measurePanelHeight(newId)
   })
+}, { flush: 'post' })
+
+const activeContentRef = computed(() => {
+  if (!expandedId.value)
+    return null
+  return contentRefs.value[expandedId.value] ?? null
 })
 
-function resizeHandler() {
-  if (expandedId.value)
-    updatePanelHeight(expandedId.value)
-}
-
-useEventListener(() => window, 'resize', resizeHandler)
+useResizeObserver(activeContentRef, (entries) => {
+  if (!expandedId.value)
+    return
+  const entry = entries[0]
+  if (!entry)
+    return
+  panelHeights.value[expandedId.value] = Math.ceil(entry.contentRect.height)
+})
 
 onMounted(() => {
   nextTick(() => {
     const expandedItem = props.items.find(item => item.id === expandedId.value && item.content)
     if (expandedItem)
-      updatePanelHeight(expandedItem.id)
+      measurePanelHeight(expandedItem.id)
   })
 })
 
 function handleImageLoad(itemId: string) {
   nextTick(() => {
-    updatePanelHeight(itemId)
+    measurePanelHeight(itemId)
   })
 }
 </script>
@@ -291,13 +308,12 @@ function handleImageLoad(itemId: string) {
             >
               <div
                 :id="`accordion-panel-item-${item.id}`"
-                :ref="el => panelRefs[item.id] = el as HTMLElement"
                 :data-active="isExpanded(item.id) ? 'true' : undefined"
                 role="region"
                 :aria-labelledby="`accordion-header-item-${item.id}`"
                 class="data-active:bg-pureWhite dark:data-active:bg-pureBlack mx-auto w-full overflow-hidden rounded-lg bg-pureWhite px-0 color-pureBlack font-['Poppins','Poppins_Fallback',sans-serif] transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] space-y-4 dark:bg-pureBlack dark:color-pureWhite"
                 :style="{
-                  height: isExpanded(item.id) ? (contentRefs[item.id] ? `${contentRefs[item.id].scrollHeight}px` : 'auto') : '0px',
+                  height: getPanelHeight(item.id),
                 }"
               >
                 <div
