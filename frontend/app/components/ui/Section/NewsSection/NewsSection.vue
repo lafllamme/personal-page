@@ -52,22 +52,30 @@ import { newsSectionContent } from './NewsSection.model'
         </div>
       </nav>
 
-      <section class="bg-pureBlack py-8 color-pureWhite md:py-10">
-        <div class="mx-auto max-w-[1500px] px-6 md:px-10">
-          <div class="mb-4 flex items-center justify-between text-[9px] tracking-[0.35em] opacity-80">
-            <span>{{ newsSectionContent.straplineLeft }}</span>
-            <span>{{ newsSectionContent.straplineRight }}</span>
-          </div>
+      <section class="bg-pureBlack py-12 color-pureWhite lg:py-18 md:py-14">
+        <div class="mx-auto max-w-[1500px]">
+          <div class="grid gap-2 lg:grid-cols-[minmax(150px,18vw)_minmax(0,1fr)_minmax(150px,18vw)] lg:items-stretch xl:gap-3">
+            <div class="flex flex-col justify-between border border-pureWhite/20 px-3 py-3 xl:px-4">
+              <span class="text-[9px] tracking-[0.35em] opacity-80">
+                {{ newsSectionContent.straplineLeft }}
+              </span>
+              <span class="w-max inline-flex bg-pureWhite px-3 py-1 text-[9px] color-pureBlack font-black tracking-[0.25em]">
+                EXCLUSIVE EDITION
+              </span>
+            </div>
 
-          <h1 class="text-center text-[clamp(3rem,11vw,11rem)] font-black leading-[0.86] tracking-[-0.02em]">
-            {{ newsSectionContent.masthead }}
-          </h1>
+            <h1 class="self-center whitespace-nowrap text-center text-[clamp(2.6rem,8vw,7.8rem)] font-black leading-[0.86] tracking-[-0.02em]">
+              {{ newsSectionContent.masthead }}
+            </h1>
 
-          <div class="mt-4 flex items-center justify-between text-[9px] tracking-[0.3em]">
-            <span class="rounded-full bg-pureWhite px-3 py-1 color-pureBlack font-black">
-              EXCLUSIVE EDITION
-            </span>
-            <span>SCROLL DOWN ↓</span>
+            <div class="flex flex-col justify-between border border-pureWhite/20 px-3 py-3 xl:px-4 lg:text-right">
+              <span class="text-[9px] tracking-[0.35em] opacity-80">
+                {{ newsSectionContent.straplineRight }}
+              </span>
+              <span class="text-[9px] tracking-[0.35em] opacity-90">
+                SCROLL DOWN ↓
+              </span>
+            </div>
           </div>
         </div>
       </section>
@@ -99,7 +107,7 @@ import { newsSectionContent } from './NewsSection.model'
           </article>
 
           <article class="border-solid lg:col-span-4 space-y-5 lg:border-r lg:border-pureBlack/25 lg:pr-8 dark:lg:border-pureWhite/25">
-            <div class="relative aspect-[3/4] overflow-hidden from-gray-11 via-gray-8 to-gray-6 bg-gradient-to-br shadow-xl">
+            <div class="relative aspect-video overflow-hidden from-gray-11 via-gray-8 to-gray-6 bg-gradient-to-br shadow-xl">
               <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center color-pureWhite">
                 <div class="text-8xl font-black">
                   AI
@@ -162,9 +170,9 @@ import { newsSectionContent } from './NewsSection.model'
           </article>
         </div>
 
-        <div class="mt-16 pt-8">
+        <div class="mt-14 pt-6">
           <div class="h-px w-full bg-pureBlack/70 dark:bg-pureWhite/70" />
-          <div class="mt-8 flex items-center justify-center gap-4">
+          <div class="mt-6 flex items-center justify-center gap-4">
             <div class="h-px flex-1 bg-pureBlack/20 dark:bg-pureWhite/20" />
             <p class="text-[9px] color-pureBlack/55 font-bold tracking-[0.3em] dark:color-pureWhite/55">
               {{ newsSectionContent.bottomLabel }}
