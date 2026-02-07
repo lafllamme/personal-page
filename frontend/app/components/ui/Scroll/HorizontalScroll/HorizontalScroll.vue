@@ -11,23 +11,23 @@ interface HorizontalScrollItem {
 const items: HorizontalScrollItem[] = [
   {
     title: 'DISCOVER',
-    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
+    imageUrl: 'https://i.imgur.com/o8ch4y7.jpeg',
   },
   {
     title: 'DESIGN',
-    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
+    imageUrl: 'https://i.imgur.com/Nd4xs6g.jpeg',
   },
   {
     title: 'BUILD',
-    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
+    imageUrl: 'https://i.imgur.com/zMvrbgk.jpeg',
   },
   {
     title: 'REVIEW',
-    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
+    imageUrl: 'https://i.imgur.com/ej73kzL.jpeg',
   },
   {
     title: 'SHIP',
-    imageUrl: 'https://i.imgur.com/kkw92Bd.jpeg',
+    imageUrl: 'https://i.imgur.com/GSwURfo.jpeg',
   },
 ]
 
@@ -128,7 +128,7 @@ onBeforeUnmount(() => {
         >
           <h2
             :ref="(el) => { if (el) headerRefs[index] = el as HTMLElement }"
-            class="font-nohemi relative bottom-5 z-20 inline-block text-[clamp(4rem,22vw,16rem)] font-semibold leading-[0.9] will-change-transform"
+            class="font-nohemi relative bottom-5 z-20 inline-block text-[clamp(4.5rem,24vw,20rem)] font-semibold leading-[0.9] will-change-transform"
           >
             {{ item.title }}
           </h2>
