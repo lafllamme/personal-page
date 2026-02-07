@@ -125,6 +125,7 @@ const letterDelay = (i: number) => i * 50 // ms - Character stagger (30ms per ch
 const descWordDelay = (i: number) => i * 60 // ms - Word stagger (30ms per word)
 const itemDelay = (i: number) => i * 150 // ms - Item stagger (60ms per item, starts immediately)
 
+const titleChars = computed(() => (props.title || '').split(''))
 const descWords = computed(() => (props.description || '').split(/\s+/))
 
 function letterStyle(i: number) {
@@ -214,7 +215,7 @@ function handleImageLoad(itemId: string) {
             <span class="flex flex-wrap whitespace-pre-wrap">
               <span class="sr-only">{{ title }}</span>
               <span
-                v-for="(char, index) in title.split('')"
+                v-for="(char, index) in titleChars"
                 :key="index"
                 aria-hidden="true"
                 class="inline-flex overflow-hidden"
@@ -254,6 +255,7 @@ function handleImageLoad(itemId: string) {
           <div
             v-for="(item, itemIndex) in items"
             :key="item.id"
+            v-memo="[item.id, isExpanded(item.id), isSectionVisible]"
             class="mb-0 w-full overflow-visible rounded-none py-2"
             :class="[
               isExpanded(item.id) && 'data-active',
