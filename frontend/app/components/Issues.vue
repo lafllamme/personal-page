@@ -111,24 +111,11 @@ function getIssueNumber(index: number, total: number) {
 
 const sectionRef = ref<HTMLElement | null>(null)
 const isSectionVisible = ref(false)
-const animatedLetters = ref<Record<number, boolean>>({})
-const animatedDescWords = ref<Record<number, boolean>>({})
-const animatedItems = ref<Record<number, boolean>>({})
 
 useIntersectionObserver(
   sectionRef,
   ([entry]) => {
-    if (entry?.isIntersecting) {
-      if (!isSectionVisible.value) {
-        isSectionVisible.value = true
-      }
-    }
-    else {
-      isSectionVisible.value = false
-      animatedLetters.value = {}
-      animatedDescWords.value = {}
-      animatedItems.value = {}
-    }
+    isSectionVisible.value = Boolean(entry?.isIntersecting)
   },
   { threshold: 0.1, rootMargin: '0px' },
 )
@@ -140,42 +127,28 @@ const itemDelay = (i: number) => i * 150 // ms - Item stagger (60ms per item, st
 
 const descWords = computed(() => (props.description || '').split(/\s+/))
 
-/* Stagger animations when section becomes visible */
-watch(isSectionVisible, (visible) => {
-  if (!visible) {
-    animatedLetters.value = {}
-    animatedDescWords.value = {}
-    animatedItems.value = {}
-    return
+function letterStyle(i: number) {
+  return {
+    transform: isSectionVisible.value ? 'none' : 'translateY(100%)',
+    transitionDelay: `${letterDelay(i)}ms`,
   }
+}
 
-  nextTick(() => {
-    const titleLength = props.title?.length ?? 0
-    const totalDescWords = descWords.value.length
+function descWordStyle(i: number) {
+  return {
+    transform: isSectionVisible.value ? 'none' : 'translateY(-100%)',
+    transitionDelay: `${descWordDelay(i)}ms`,
+  }
+}
 
-    // ALL animations start simultaneously with staggered delays
-    // Heading characters
-    for (let i = 0; i < titleLength; i++) {
-      setTimeout(() => {
-        animatedLetters.value[i] = true
-      }, letterDelay(i))
-    }
-
-    // Description words (start immediately, same time as heading)
-    for (let i = 0; i < totalDescWords; i++) {
-      setTimeout(() => {
-        animatedDescWords.value[i] = true
-      }, descWordDelay(i))
-    }
-
-    // Items (start immediately, same time as heading)
-    props.items.forEach((_, i) => {
-      setTimeout(() => {
-        animatedItems.value[i] = true
-      }, itemDelay(i))
-    })
-  })
-}, { immediate: true })
+function itemStyle(i: number) {
+  return {
+    filter: isSectionVisible.value ? 'blur(0px)' : 'blur(20px)',
+    opacity: isSectionVisible.value ? '1' : '0',
+    transform: isSectionVisible.value ? 'none' : 'translateY(40px)',
+    transitionDelay: `${itemDelay(i)}ms`,
+  }
+}
 
 // Panel refs for height calculations
 const panelRefs = ref<Record<string, HTMLElement | null>>({})
@@ -249,7 +222,7 @@ function handleImageLoad(itemId: string) {
                 <span class="relative whitespace-pre-wrap">
                   <span
                     class="inline-block transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    :style="!animatedLetters[index] ? 'transform: translateY(100%)' : 'transform: none'"
+                    :style="letterStyle(index)"
                   >{{ char }}</span>
                 </span>
               </span>
@@ -268,7 +241,7 @@ function handleImageLoad(itemId: string) {
                 <span class="relative whitespace-pre-wrap">
                   <span
                     class="inline-block transition-all duration-[600ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
-                    :style="!animatedDescWords[idx] ? 'transform: translateY(-100%)' : 'transform: none'"
+                    :style="descWordStyle(idx)"
                   >{{ word }}{{ idx < descWords.length - 1 ? ' ' : '' }}</span>
                 </span>
               </span>
@@ -290,7 +263,7 @@ function handleImageLoad(itemId: string) {
             <!-- Button wrapper - animates with blur + slide -->
             <div
               class="transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)] hover:bg-jade-5 dark:hover:bg-teal-3"
-              :style="!animatedItems[itemIndex] ? 'filter: blur(20px); opacity: 0; transform: translateY(40px)' : 'filter: blur(0px); opacity: 1; transform: none'"
+              :style="itemStyle(itemIndex)"
             >
               <button
                 :id="`accordion-header-item-${item.id}`"
@@ -312,7 +285,7 @@ function handleImageLoad(itemId: string) {
             <!-- Expanded Panel wrapper - also animates with blur + slide -->
             <div
               class="transition-all duration-[1200ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
-              :style="!animatedItems[itemIndex] ? 'filter: blur(20px); opacity: 0; transform: translateY(40px)' : 'filter: blur(0px); opacity: 1; transform: none'"
+              :style="itemStyle(itemIndex)"
             >
               <div
                 :id="`accordion-panel-item-${item.id}`"
