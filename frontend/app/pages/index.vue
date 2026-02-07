@@ -7,6 +7,7 @@ import {
   useMouseInElement,
   useRafFn,
   useThrottleFn,
+  useTimeoutFn,
   useWindowSize,
 } from '@vueuse/core'
 import { Motion } from 'motion-v'
@@ -14,37 +15,51 @@ import Issues from '@/components/Issues.vue'
 import GlassMetaballs from '@/components/Three/Glass/GlassMetaballs.vue'
 import HorizontalScroll from '@/components/ui/Scroll/HorizontalScroll/HorizontalScroll.vue'
 
+/**
+ * Page meta
+ */
 useHead({
   title: 'Liquid Symmetry',
 })
 
-const { width, height } = useWindowSize()
-const mouseEventFilter = useThrottleFn((invoke) => {
-  invoke()
-}, 80)
-const displayPointerX = ref(0)
-const displayPointerY = ref(0)
-const viewportLabel = computed(() => `${width.value}x${height.value}`)
-const pointerXLabel = computed(() => `${Math.round(displayPointerX.value)}`.padStart(4, '0'))
-const pointerYLabel = computed(() => `${Math.round(displayPointerY.value)}`.padStart(4, '0'))
-const breakpoints = useBreakpoints(breakpointsTailwind)
-const isLgUp = breakpoints.greaterOrEqual('lg')
+/**
+ * Constants
+ */
+const METABALLS_THRESHOLD = 0.2
+const METABALLS_ROOT_MARGIN = '200px 0px 200px 0px'
+const POINTER_INTERVAL = 200
+
+/**
+ * Reactive state (refs)
+ */
 const heroRef = ref<HTMLElement | null>(null)
 const headlineRef = ref<HTMLElement | null>(null)
 const isHeroVisible = ref(false)
-const { introOverlayDone } = useOverlay({ manageLifecycle: false })
-const { isTransitionActive } = useTransition()
-const overlayDone = introOverlayDone
 const isHeadlineAnimationDone = ref(false)
 const isMetaballsActive = ref(true)
+const isPointerActive = ref(false)
+const heroHeightPx = ref(0)
+const lastWindowWidth = ref(0)
+const displayPointerX = ref(0)
+const displayPointerY = ref(0)
 const isMenuOpen = useState<boolean>('osmo-menu-open', () => false)
 
 /**
- * Computed style for a hero section, dynamically adjusting height based on viewport.
- * Sets initial hero height based on viewport dimensions and adjusts on window resize and orientation change.
+ * External composables
  */
-const heroHeightPx = ref(0)
-const lastWindowWidth = ref(0)
+const { width, height } = useWindowSize()
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isLgUp = breakpoints.greaterOrEqual('lg')
+const { introOverlayDone } = useOverlay({ manageLifecycle: false })
+const { isTransitionActive } = useTransition()
+const overlayDone = introOverlayDone
+
+/**
+ * Derived state (computed)
+ */
+const viewportLabel = computed(() => `${width.value}x${height.value}`)
+const pointerXLabel = computed(() => `${Math.round(displayPointerX.value)}`.padStart(4, '0'))
+const pointerYLabel = computed(() => `${Math.round(displayPointerY.value)}`.padStart(4, '0'))
 const heroStyle = computed(() => {
   if (!heroHeightPx.value)
     return undefined
@@ -53,52 +68,19 @@ const heroStyle = computed(() => {
     '--hero-static-height': `${heroHeightPx.value}px`,
   }
 })
-const updateHeroVisibility = useThrottleFn((visible: boolean) => {
-  isHeroVisible.value = visible
-}, 150)
 
 const canRenderMetaballs = computed(() => {
   return introOverlayDone.value
     && !isTransitionActive.value
     && isMetaballsActive.value
 })
-
 const canAnimateMetaballs = computed(() => canRenderMetaballs.value && !isMenuOpen.value)
 const canRevealMetaballs = computed(() => isHeadlineAnimationDone.value)
+const shouldAnimatePointer = computed(() => isHeroVisible.value && isLgUp.value && isPointerActive.value)
 
-useIntersectionObserver(
-  headlineRef,
-  ([entry]) => {
-    updateHeroVisibility(Boolean(entry?.isIntersecting))
-  },
-  { threshold: 0.3 },
-)
-
-const METABALLS_THRESHOLD = 0.2
-const METABALLS_ROOT_MARGIN = '200px 0px 200px 0px'
-let lastMetaballsActive = isMetaballsActive.value
-useIntersectionObserver(
-  heroRef,
-  ([entry]) => {
-    const ratio = entry?.intersectionRatio ?? 0
-    const nextActive = ratio >= METABALLS_THRESHOLD
-    if (nextActive !== lastMetaballsActive) {
-      lastMetaballsActive = nextActive
-      isMetaballsActive.value = nextActive
-    }
-  },
-  { threshold: METABALLS_THRESHOLD, rootMargin: METABALLS_ROOT_MARGIN },
-)
-
-const { x: pointerX, y: pointerY } = useMouseInElement(heroRef, {
-  eventFilter: mouseEventFilter,
-})
-const shouldAnimatePointer = computed(() => isHeroVisible.value && isLgUp.value)
-const { pause: pausePointerRaf, resume: resumePointerRaf } = useRafFn(() => {
-  const ease = 0.18
-  displayPointerX.value += (pointerX.value - displayPointerX.value) * ease
-  displayPointerY.value += (pointerY.value - displayPointerY.value) * ease
-}, { immediate: false, fpsLimit: 24 })
+/**
+ * Motion config
+ */
 const headlineMotion = {
   initial: { y: '100%' },
   enter: {
@@ -111,6 +93,27 @@ const headlineMotion = {
   },
 }
 
+/**
+ * Pointer smoothing (idle-aware)
+ */
+const mouseEventFilter = useThrottleFn((invoke) => {
+  invoke()
+}, 80)
+const { x: pointerX, y: pointerY } = useMouseInElement(heroRef, {
+  eventFilter: mouseEventFilter,
+})
+const { start: startPointerIdle, stop: stopPointerIdle } = useTimeoutFn(() => {
+  isPointerActive.value = false
+}, POINTER_INTERVAL)
+const { pause: pausePointerRaf, resume: resumePointerRaf } = useRafFn(() => {
+  const ease = 0.18
+  displayPointerX.value += (pointerX.value - displayPointerX.value) * ease
+  displayPointerY.value += (pointerY.value - displayPointerY.value) * ease
+}, { immediate: false, fpsLimit: 24 })
+
+/**
+ * Handlers
+ */
 function handleHeadlineComplete() {
   if (!overlayDone.value)
     return
@@ -129,6 +132,43 @@ function updateHeroHeight() {
   lastWindowWidth.value = window.innerWidth
 }
 
+function handlePointerMove() {
+  isPointerActive.value = true
+  startPointerIdle()
+}
+
+/**
+ * Visibility observers
+ */
+const updateHeroVisibility = useThrottleFn((visible: boolean) => {
+  isHeroVisible.value = visible
+}, 150)
+
+useIntersectionObserver(
+  headlineRef,
+  ([entry]) => {
+    updateHeroVisibility(Boolean(entry?.isIntersecting))
+  },
+  { threshold: 0.3 },
+)
+
+let lastMetaballsActive = isMetaballsActive.value
+useIntersectionObserver(
+  heroRef,
+  ([entry]) => {
+    const ratio = entry?.intersectionRatio ?? 0
+    const nextActive = ratio >= METABALLS_THRESHOLD
+    if (nextActive !== lastMetaballsActive) {
+      lastMetaballsActive = nextActive
+      isMetaballsActive.value = nextActive
+    }
+  },
+  { threshold: METABALLS_THRESHOLD, rootMargin: METABALLS_ROOT_MARGIN },
+)
+
+/**
+ * Lifecycle + listeners
+ */
 onMounted(() => {
   updateHeroHeight()
 })
@@ -143,6 +183,12 @@ useEventListener(window, 'resize', () => {
 
 useEventListener(window, 'orientationchange', () => {
   updateHeroHeight()
+})
+
+useEventListener(heroRef, 'pointermove', handlePointerMove, { passive: true })
+useEventListener(heroRef, 'pointerleave', () => {
+  isPointerActive.value = false
+  stopPointerIdle()
 })
 
 watch(shouldAnimatePointer, (active) => {
