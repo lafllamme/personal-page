@@ -6,9 +6,7 @@ const contentTextFontClass = ref('font-druk-bold')
 const contentTextFontOptions = computed(() => fonts)
 
 const mastheadFontClass = 'font-druk-bold'
-const mastheadMinSize = 3.2
-const mastheadFluidSize = '14vw'
-const mastheadMaxSize = ref(18)
+const mastheadMaxSize = ref(12.4)
 const isHeadlinePanelVisible = ref(true)
 const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}rem`)
 
@@ -104,7 +102,7 @@ onBeforeUnmount(() => {
           v-model.number="mastheadMaxSize"
           type="range"
           min="8"
-          max="26"
+          max="14.5"
           step="0.1"
           class="w-full accent-pureBlack dark:accent-pureWhite"
         >
@@ -162,38 +160,43 @@ onBeforeUnmount(() => {
         </div>
       </nav>
 
-      <section class="bg-pureBlack px-6 py-5 color-pureWhite sm:px-8 sm:py-6">
+      <section class="bg-pureBlack px-6 color-pureWhite sm:px-8">
         <div class="mx-auto max-w-[1500px]">
-          <div class="grid min-h-[320px] gap-2 lg:grid-cols-[minmax(220px,16.5vw)_minmax(0,1fr)_minmax(220px,16.5vw)] lg:min-h-[360px] lg:items-stretch xl:gap-3">
-            <div class="flex flex-col justify-between border border-pureWhite/20 px-6 py-7 xl:px-7">
+          <div
+            class="hero-masthead-grid grid min-h-[290px] gap-2 lg:grid-cols-[minmax(220px,16.5vw)_minmax(0,1fr)_minmax(220px,16.5vw)] lg:min-h-[320px] lg:items-stretch xl:gap-3"
+            :style="{
+              '--masthead-size': `clamp(5rem, 9.2vw, ${mastheadMaxSize}rem)`,
+            }"
+          >
+            <div class="hero-side-cell border border-pureWhite/20 px-6 py-7 xl:px-7">
               <span
-                class="font-recoleta block whitespace-pre-line text-[15px] leading-none tracking-normal uppercase opacity-80"
+                class="hero-side-top font-recoleta block whitespace-pre-line text-[15px] leading-none tracking-normal uppercase opacity-80"
               >
                 {{ newsSectionContent.straplineLeft }}
               </span>
-              <span class="font-druk-bold w-max inline-flex bg-pureWhite px-3 py-1 text-lg color-pureBlack leading-none tracking-wide">
+              <span class="hero-side-bottom font-druk-bold w-max inline-flex bg-pureWhite px-3 py-1 text-lg color-pureBlack leading-none tracking-wide">
                 EXCLUSIVE EDITION
               </span>
             </div>
 
             <h1
-              class="flex items-center self-stretch justify-center whitespace-nowrap text-center leading-[0.84]"
+              class="hero-masthead-box flex items-center self-center justify-center whitespace-nowrap text-center"
               :class="[mastheadFontClass]"
-              :style="{ fontSize: `clamp(${mastheadMinSize}rem, ${mastheadFluidSize}, ${mastheadMaxSize}rem)` }"
+              :style="{ fontSize: 'var(--masthead-size)' }"
             >
-              <span class="inline-block -translate-y-[0.02em]">
+              <span class="hero-masthead-text block">
                 {{ newsSectionContent.masthead }}
               </span>
             </h1>
 
-            <div class="flex flex-col justify-between border border-pureWhite/20 px-6 py-7 xl:px-7">
+            <div class="hero-side-cell border border-pureWhite/20 px-6 py-7 xl:px-7">
               <span
-                class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-80"
+                class="hero-side-top font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-80"
               >
                 {{ newsSectionContent.straplineRight }}
               </span>
               <span
-                class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-90"
+                class="hero-side-bottom font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-90"
               >
                 SCROLL DOWN ↓
               </span>
@@ -228,25 +231,21 @@ onBeforeUnmount(() => {
           </article>
 
           <article class="border-solid lg:col-span-4 space-y-5 lg:border-r lg:border-pureBlack/25 lg:pr-8 dark:lg:border-pureWhite/25">
-            <div class="relative aspect-video overflow-hidden from-gray-11 via-gray-8 to-gray-6 bg-gradient-to-br shadow-xl">
-              <div class="absolute inset-0 flex flex-col items-center justify-center p-8 text-center color-pureWhite">
-                <div class="text-8xl font-black">
-                  AI
-                </div>
-                <div class="my-5 h-px w-24 bg-pureWhite/70" />
-                <div class="text-[clamp(1rem,2.2vw,1.7rem)] leading-snug tracking-[0.22em]">
-                  NEURAL<br>NETWORKS
-                </div>
-                <div class="mt-6 text-[9px] tracking-[0.3em] opacity-70">
-                  VISUALIZATION
-                </div>
-              </div>
+            <div class="relative aspect-video overflow-hidden shadow-xl">
+              <video
+                class="h-full w-full object-cover"
+                src="https://i.imgur.com/FXgSiNd.mp4"
+                autoplay
+                loop
+                muted
+                playsinline
+              />
             </div>
 
             <div class="text-center space-y-2">
-              <h3 class="text-5xl" :class="[mastheadFontClass]">
+              <h3 class="text-7xl" :class="[mastheadFontClass]">
                 <span class="inline-block">
-                  KNOW MORE!
+                  NO MORE!
                 </span>
               </h3>
               <p class="text-[9px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
@@ -309,3 +308,41 @@ onBeforeUnmount(() => {
     </div>
   </section>
 </template>
+
+<style scoped>
+.hero-masthead-grid {
+  --masthead-line-height: 0.84;
+  --masthead-height: calc(var(--masthead-size) * var(--masthead-line-height));
+}
+
+.hero-masthead-box {
+  height: var(--masthead-height);
+  line-height: var(--masthead-line-height);
+}
+
+.hero-masthead-text {
+  line-height: inherit;
+}
+
+@media (min-width: 1024px) {
+  .hero-side-cell {
+    position: relative;
+    display: block;
+  }
+
+  .hero-side-top,
+  .hero-side-bottom {
+    left: 1.5rem;
+    position: absolute;
+  }
+
+  .hero-side-top {
+    top: calc(50% - (var(--masthead-height) / 2));
+  }
+
+  .hero-side-bottom {
+    top: calc(50% + (var(--masthead-height) / 2));
+    transform: translateY(-100%);
+  }
+}
+</style>
