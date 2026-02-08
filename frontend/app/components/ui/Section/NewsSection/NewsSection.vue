@@ -119,26 +119,6 @@ onBeforeUnmount(() => {
         </div>
       </header>
 
-      <nav class="border-b border-pureBlack/20 border-solid dark:border-pureWhite/20">
-        <div class="mx-auto max-w-[1500px] flex items-center justify-between px-6 py-4 sm:px-8">
-          <div class="flex items-center gap-6">
-            <button class="p-2 transition-colors hover:bg-gray-3/60 dark:hover:bg-gray-8/60" aria-label="Search">
-              <Icon name="lucide:search" class="h-4 w-4" />
-            </button>
-            <span class="text-xs font-semibold tracking-wider">RESUME</span>
-          </div>
-          <div class="font-clash text-3xl font-black tracking-tight">
-            {{ newsSectionContent.brand }}
-          </div>
-          <div class="flex items-center gap-6">
-            <span class="text-xs font-semibold tracking-wider">ABOUT</span>
-            <button class="p-2 transition-colors hover:bg-gray-3/60 dark:hover:bg-gray-8/60" aria-label="Menu">
-              <Icon name="lucide:menu" class="h-4 w-4" />
-            </button>
-          </div>
-        </div>
-      </nav>
-
       <section class="bg-pureBlack px-6 color-pureWhite sm:px-8">
         <div class="mx-auto max-w-[1500px]">
           <div class="grid grid-rows-[1fr_auto_1fr] grid-cols-1 min-h-56 gap-x-2 lg:grid-cols-[minmax(220px,16.5vw)_minmax(0,1fr)_minmax(220px,16.5vw)] lg:min-h-64 xl:gap-x-3">
