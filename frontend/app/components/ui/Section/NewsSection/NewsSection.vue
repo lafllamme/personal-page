@@ -5,10 +5,7 @@ import { newsSectionContent } from './NewsSection.model'
 const contentTextFontClass = ref('font-druk-bold')
 const contentTextFontOptions = computed(() => fonts)
 
-const mastheadFontClass = 'font-druk-bold'
-const mastheadMaxSize = ref(12.4)
 const isHeadlinePanelVisible = ref(true)
-const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}rem`)
 
 function cycleContentTextFont() {
   const fontClasses = contentTextFontOptions.value.map(font => font.class)
@@ -89,24 +86,6 @@ onBeforeUnmount(() => {
         </select>
       </div>
 
-      <div class="mt-4 space-y-2">
-        <div class="flex items-center justify-between">
-          <label class="text-[10px] font-bold tracking-[0.1em] uppercase">
-            Masthead Size
-          </label>
-          <span class="text-[10px] font-bold tracking-[0.08em] uppercase">
-            {{ mastheadMaxSizeLabel }}
-          </span>
-        </div>
-        <input
-          v-model.number="mastheadMaxSize"
-          type="range"
-          min="8"
-          max="14.5"
-          step="0.1"
-          class="w-full accent-pureBlack dark:accent-pureWhite"
-        >
-      </div>
       <p class="mt-3 text-[9px] tracking-[0.16em] uppercase opacity-70">
         V wechselt News Content Font
       </p>
@@ -162,44 +141,33 @@ onBeforeUnmount(() => {
 
       <section class="bg-pureBlack px-6 color-pureWhite sm:px-8">
         <div class="mx-auto max-w-[1500px]">
-          <div
-            class="hero-masthead-grid grid min-h-[290px] gap-2 lg:grid-cols-[minmax(220px,16.5vw)_minmax(0,1fr)_minmax(220px,16.5vw)] lg:min-h-[320px] lg:items-stretch xl:gap-3"
-            :style="{
-              '--masthead-size': `clamp(5rem, 9.2vw, ${mastheadMaxSize}rem)`,
-            }"
-          >
-            <div class="hero-side-cell border border-pureWhite/20 px-6 py-7 xl:px-7">
-              <span
-                class="hero-side-top font-recoleta block whitespace-pre-line text-[15px] leading-none tracking-normal uppercase opacity-80"
-              >
-                {{ newsSectionContent.straplineLeft }}
-              </span>
-              <span class="hero-side-bottom font-druk-bold w-max inline-flex bg-pureWhite px-3 py-1 text-lg color-pureBlack leading-none tracking-wide">
-                EXCLUSIVE EDITION
-              </span>
+          <div class="grid grid-rows-[1fr_auto_1fr] grid-cols-1 min-h-[290px] gap-x-2 lg:grid-cols-[minmax(220px,16.5vw)_minmax(0,1fr)_minmax(220px,16.5vw)] lg:min-h-[320px] xl:gap-x-3">
+            <div class="row-start-2 hidden border border-pureWhite/20 px-6 py-7 lg:flex xl:px-7">
+              <div class="h-full w-full flex flex-col items-start justify-between">
+                <span class="font-recoleta block whitespace-pre-line text-[15px] leading-none tracking-normal uppercase opacity-80">
+                  {{ newsSectionContent.straplineLeft }}
+                </span>
+                <span class="font-druk-bold w-max inline-flex bg-pureWhite px-3 py-1 text-lg color-pureBlack leading-none tracking-wide">
+                  EXCLUSIVE EDITION
+                </span>
+              </div>
             </div>
 
-            <h1
-              class="hero-masthead-box flex items-center self-center justify-center whitespace-nowrap text-center"
-              :class="[mastheadFontClass]"
-              :style="{ fontSize: 'var(--masthead-size)' }"
-            >
+            <h1 class="font-druk-bold row-start-2 flex items-center self-center justify-center whitespace-nowrap text-center text-[clamp(8rem,12vw,8.6875rem)] leading-[1] lg:col-start-2">
               <span class="block">
                 {{ newsSectionContent.masthead }}
               </span>
             </h1>
 
-            <div class="hero-side-cell border border-pureWhite/20 px-6 py-7 xl:px-7">
-              <span
-                class="hero-side-top font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-80"
-              >
-                {{ newsSectionContent.straplineRight }}
-              </span>
-              <span
-                class="hero-side-bottom font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-90"
-              >
-                SCROLL DOWN ↓
-              </span>
+            <div class="row-start-2 hidden border border-pureWhite/20 px-6 py-7 lg:flex xl:px-7">
+              <div class="h-full w-full flex flex-col items-start justify-between">
+                <span class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-80">
+                  {{ newsSectionContent.straplineRight }}
+                </span>
+                <span class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-90">
+                  SCROLL DOWN ↓
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -212,7 +180,7 @@ onBeforeUnmount(() => {
               <div class="text-[9px] font-black tracking-[0.35em]">
                 DESCRIBING MODERN WEB EXPERIENCES
               </div>
-              <h2 class="text-6xl" :class="[mastheadFontClass]">
+              <h2 class="font-druk-bold text-6xl">
                 <span class="inline-block">
                   {{ newsSectionContent.leadTitle }}
                 </span>
@@ -243,7 +211,7 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="text-center space-y-2">
-              <h3 class="text-7xl" :class="[mastheadFontClass]">
+              <h3 class="font-druk-bold text-7xl">
                 <span class="inline-block">
                   NO MORE!
                 </span>
@@ -255,7 +223,7 @@ onBeforeUnmount(() => {
           </article>
 
           <article class="lg:col-span-4 space-y-8">
-            <h2 class="text-7xl" :class="[mastheadFontClass]">
+            <h2 class="font-druk-bold text-7xl">
               <span class="inline-block">
                 {{ newsSectionContent.rightTitle }}
               </span>
@@ -308,37 +276,3 @@ onBeforeUnmount(() => {
     </div>
   </section>
 </template>
-
-<style scoped>
-.hero-masthead-grid {
-  --masthead-line-height: 0.84;
-  --masthead-height: calc(var(--masthead-size) * var(--masthead-line-height));
-}
-
-.hero-masthead-box {
-  height: var(--masthead-height);
-  line-height: var(--masthead-line-height);
-}
-
-@media (min-width: 1024px) {
-  .hero-side-cell {
-    position: relative;
-    display: block;
-  }
-
-  .hero-side-top,
-  .hero-side-bottom {
-    left: 1.5rem;
-    position: absolute;
-  }
-
-  .hero-side-top {
-    top: calc(50% - (var(--masthead-height) / 2));
-  }
-
-  .hero-side-bottom {
-    top: calc(50% + (var(--masthead-height) / 2));
-    transform: translateY(-100%);
-  }
-}
-</style>
