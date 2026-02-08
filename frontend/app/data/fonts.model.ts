@@ -12,6 +12,7 @@ export const fonts: FontOption[] = [
   { name: 'Chiqueta', class: 'font-chiqueta', category: 'display' },
   { name: 'Clash Display', class: 'font-clash', category: 'display' },
   { name: 'Clash Display Regular', class: 'font-clash-regular', category: 'display' },
+  { name: 'Druk Bold Trial', class: 'font-druk-bold', category: 'display' },
   { name: 'Cormorant Garamond', class: 'font-cormorant-garamond', category: 'serif' },
   { name: 'Crimson Text', class: 'crimson-text-regular', category: 'serif' },
   { name: 'Djingo', class: 'font-djingo', category: 'display' },

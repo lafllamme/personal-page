@@ -75,6 +75,13 @@
 }
 
 @font-face {
+  font-family: 'DrukBoldTrial';
+  src: url('Headline/Druk-Bold-Trial.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'Font-Chiqueta';
   src: url('Headline/Chiqueta-Regular.otf') format('opentype');
   font-weight: normal;
@@ -203,6 +210,10 @@
 
 .font-clash-regular {
   font-family: 'ClashDisplay-Regular', sans-serif;
+}
+
+.font-druk-bold {
+  font-family: 'DrukBoldTrial', sans-serif;
 }
 
 .font-chiqueta {
