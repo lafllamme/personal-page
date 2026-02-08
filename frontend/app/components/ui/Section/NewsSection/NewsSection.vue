@@ -149,7 +149,7 @@ const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}
               >
                 {{ newsSectionContent.straplineLeft }}
               </span>
-              <span class="font-druk-bold w-max inline-flex bg-pureWhite px-3 py-1 text-xs color-pureBlack font-black tracking-tight">
+              <span class="font-druk-bold w-max inline-flex bg-pureWhite px-3 py-1 text-lg color-pureBlack leading-none tracking-wide">
                 EXCLUSIVE EDITION
               </span>
             </div>
