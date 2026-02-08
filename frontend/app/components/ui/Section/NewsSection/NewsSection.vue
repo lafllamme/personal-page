@@ -4,9 +4,6 @@ import { newsSectionContent } from './NewsSection.model'
 
 const contentTextFontClass = ref('font-druk-bold')
 const contentTextFontOptions = computed(() => fonts)
-const contentTextFontName = computed(() =>
-  contentTextFontOptions.value.find(font => font.class === contentTextFontClass.value)?.name ?? contentTextFontClass.value,
-)
 
 const mastheadFontClass = 'font-druk-bold'
 const mastheadMinSize = 3.2
@@ -14,6 +11,38 @@ const mastheadFluidSize = '14vw'
 const mastheadMaxSize = ref(18)
 const isHeadlinePanelVisible = ref(true)
 const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}rem`)
+
+function cycleContentTextFont() {
+  const fontClasses = contentTextFontOptions.value.map(font => font.class)
+  const currentFontClass = contentTextFontClass.value
+  const currentIndex = fontClasses.indexOf(currentFontClass)
+  const nextIndex = currentIndex >= 0
+    ? (currentIndex + 1) % fontClasses.length
+    : 0
+
+  const nextFontClass = fontClasses[nextIndex]
+  contentTextFontClass.value = nextFontClass ?? fontClasses[0] ?? contentTextFontClass.value
+}
+
+function handleHeadlineShortcut(event: KeyboardEvent) {
+  const target = event.target as HTMLElement | null
+  if (target?.closest('input, textarea, select, [contenteditable="true"]'))
+    return
+
+  if (event.key.toLowerCase() !== 'v')
+    return
+
+  event.preventDefault()
+  cycleContentTextFont()
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleHeadlineShortcut)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleHeadlineShortcut)
+})
 </script>
 
 <template>
@@ -25,24 +54,6 @@ const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}
       {{ isHeadlinePanelVisible ? 'Hide Text Controls' : 'Show Text Controls' }}
     </button>
 
-    <div
-      v-if="!isHeadlinePanelVisible"
-      class="fixed right-4 top-[calc(var(--header-height,0px)+3.6rem)] z-60 w-[min(92vw,360px)] border border-pureBlack/25 bg-pureWhite/95 px-3 py-2 backdrop-blur-sm dark:border-pureWhite/25 dark:bg-pureBlack/90"
-    >
-      <div class="text-[9px] tracking-[0.16em] uppercase opacity-70">
-        Content Text Font
-      </div>
-      <div class="mt-1 text-xs font-bold tracking-[0.06em]">
-        {{ contentTextFontName }}
-      </div>
-      <div class="mt-3 text-[9px] tracking-[0.16em] uppercase opacity-70">
-        Masthead Max Size
-      </div>
-      <div class="mt-1 text-xs font-bold tracking-[0.06em]">
-        {{ mastheadMaxSizeLabel }}
-      </div>
-    </div>
-
     <aside
       v-if="isHeadlinePanelVisible"
       class="fixed right-4 top-[calc(var(--header-height,0px)+3.6rem)] z-50 w-[min(92vw,360px)] border border-pureBlack/25 bg-pureWhite/95 p-4 backdrop-blur-sm dark:border-pureWhite/25 dark:bg-pureBlack/90"
@@ -51,7 +62,15 @@ const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}
         <h3 class="text-[10px] font-black tracking-[0.3em] uppercase">
           Text Controls
         </h3>
-        <span class="text-[9px] tracking-[0.18em] uppercase opacity-60">Live</span>
+        <div class="flex items-center gap-2">
+          <span class="text-[9px] tracking-[0.18em] uppercase opacity-60">Live</span>
+          <button
+            class="border border-pureBlack/25 px-2 py-1 text-[9px] font-black tracking-[0.16em] uppercase dark:border-pureWhite/25"
+            @click="isHeadlinePanelVisible = false"
+          >
+            Close
+          </button>
+        </div>
       </div>
 
       <div class="space-y-2">
@@ -90,6 +109,9 @@ const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}
           class="w-full accent-pureBlack dark:accent-pureWhite"
         >
       </div>
+      <p class="mt-3 text-[9px] tracking-[0.16em] uppercase opacity-70">
+        V wechselt News Content Font
+      </p>
     </aside>
 
     <div class="pointer-events-none absolute inset-y-0 z-30 hidden -inset-x-4 lg:block md:-inset-x-12">
@@ -140,12 +162,12 @@ const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}
         </div>
       </nav>
 
-      <section class="bg-pureBlack color-pureWhite">
+      <section class="bg-pureBlack px-6 py-5 color-pureWhite sm:px-8 sm:py-6">
         <div class="mx-auto max-w-[1500px]">
-          <div class="grid gap-2 lg:grid-cols-[minmax(150px,18vw)_minmax(0,1fr)_minmax(150px,18vw)] lg:items-stretch xl:gap-3">
-            <div class="flex flex-col justify-between border border-pureWhite/20 px-3 py-3 xl:px-4">
+          <div class="grid min-h-[320px] gap-2 lg:grid-cols-[minmax(220px,16.5vw)_minmax(0,1fr)_minmax(220px,16.5vw)] lg:min-h-[360px] lg:items-stretch xl:gap-3">
+            <div class="flex flex-col justify-between border border-pureWhite/20 px-6 py-7 xl:px-7">
               <span
-                class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-80"
+                class="font-recoleta block whitespace-pre-line text-[15px] leading-none tracking-normal uppercase opacity-80"
               >
                 {{ newsSectionContent.straplineLeft }}
               </span>
@@ -155,16 +177,16 @@ const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}
             </div>
 
             <h1
-              class="self-center whitespace-nowrap text-center tracking-wide"
+              class="flex items-center self-stretch justify-center whitespace-nowrap text-center leading-[0.84]"
               :class="[mastheadFontClass]"
               :style="{ fontSize: `clamp(${mastheadMinSize}rem, ${mastheadFluidSize}, ${mastheadMaxSize}rem)` }"
             >
-              <span class="inline-block">
+              <span class="inline-block -translate-y-[0.02em]">
                 {{ newsSectionContent.masthead }}
               </span>
             </h1>
 
-            <div class="flex flex-col justify-between border border-pureWhite/20 px-3 py-3 xl:px-4">
+            <div class="flex flex-col justify-between border border-pureWhite/20 px-6 py-7 xl:px-7">
               <span
                 class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-80"
               >
@@ -250,7 +272,7 @@ const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}
             </p>
 
             <div class="border-t border-pureBlack/25 border-solid pt-6 dark:border-pureWhite/25">
-              <h3 class="font-druk-bold mb-4 text-[10px] font-black tracking-[0.3em]">
+              <h3 class="font-druk-bold mb-4 text-[10px] tracking-[0.3em]">
                 LATEST HEADLINES
               </h3>
 

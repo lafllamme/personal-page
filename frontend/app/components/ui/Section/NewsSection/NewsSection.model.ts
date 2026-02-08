@@ -26,7 +26,7 @@ export const newsSectionContent: NewsSectionContent = {
   topBarRightLabel: 'VIVEKVISUALS',
   brand: 'TECH PROPHET',
   masthead: 'DAILY PROPHET',
-  straplineLeft: 'PRINTED IN SILICON VALLEY',
+  straplineLeft: 'PRINTED IN COLOGNE,\nMADE OF GOOD TASTE',
   straplineRight: 'ISSUE DATE 02/07/2026',
   sideLeft: 'BREAKING TECH NEWS DAILY',
   sideRight: 'FEBRUARY 7 2026 EDITION',
