@@ -2,7 +2,7 @@
 import { fonts } from '@/data/fonts.model'
 import { newsSectionContent } from './NewsSection.model'
 
-const contentTextFontClass = ref('font-druk-bold')
+const contentTextFontClass = ref('font-manrope')
 const contentTextFontOptions = computed(() => fonts)
 
 const isHeadlinePanelVisible = ref(true)
@@ -141,7 +141,7 @@ onBeforeUnmount(() => {
 
       <section class="bg-pureBlack px-6 color-pureWhite sm:px-8">
         <div class="mx-auto max-w-[1500px]">
-          <div class="grid grid-rows-[1fr_auto_1fr] grid-cols-1 min-h-[290px] gap-x-2 lg:grid-cols-[minmax(220px,16.5vw)_minmax(0,1fr)_minmax(220px,16.5vw)] lg:min-h-[320px] xl:gap-x-3">
+          <div class="grid grid-rows-[1fr_auto_1fr] grid-cols-1 min-h-56 gap-x-2 lg:grid-cols-[minmax(220px,16.5vw)_minmax(0,1fr)_minmax(220px,16.5vw)] lg:min-h-64 xl:gap-x-3">
             <div class="row-start-2 hidden border border-pureWhite/20 px-6 py-7 lg:flex xl:px-7">
               <div class="h-full w-full flex flex-col items-start justify-between">
                 <span class="font-recoleta block whitespace-pre-line text-[15px] leading-none tracking-normal uppercase opacity-80">
@@ -177,7 +177,7 @@ onBeforeUnmount(() => {
         <div class="grid gap-8 lg:grid-cols-12">
           <article class="border-solid lg:col-span-4 space-y-6 lg:border-r lg:border-pureBlack/25 lg:pr-8 dark:lg:border-pureWhite/25">
             <div class="space-y-4">
-              <div class="text-[9px] font-black tracking-[0.35em]">
+              <div class="space-grotesk-regular text-[9px] font-black tracking-[0.35em]">
                 DESCRIBING MODERN WEB EXPERIENCES
               </div>
               <h2 class="font-druk-bold text-6xl">
@@ -188,7 +188,11 @@ onBeforeUnmount(() => {
             </div>
 
             <div :class="[contentTextFontClass]" class="text-lg color-pureBlack/70 leading-relaxed space-y-4 dark:color-pureWhite/70">
-              <p v-for="(paragraph, index) in newsSectionContent.leadCopy" :key="`lead-${index}`">
+              <p
+                v-for="(paragraph, index) in newsSectionContent.leadCopy"
+                :key="`lead-${index}`"
+                class="font-light"
+              >
                 {{ paragraph }}
               </p>
             </div>
@@ -216,7 +220,7 @@ onBeforeUnmount(() => {
                   NO MORE!
                 </span>
               </h3>
-              <p class="text-[9px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
+              <p class="space-grotesk-regular text-[9px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
                 EXCLUSIVE INSIGHTS • DEEP DIVE
               </p>
             </div>
@@ -234,12 +238,12 @@ onBeforeUnmount(() => {
                 {{ newsSectionContent.score }}
               </div>
             </div>
-            <p class="text-center text-[9px] color-pureBlack/55 tracking-[0.33em] dark:color-pureWhite/55">
+            <p class="space-grotesk-regular text-center text-[9px] color-pureBlack/55 tracking-[0.33em] dark:color-pureWhite/55">
               VERSION RELEASE
             </p>
 
             <div class="border-t border-pureBlack/25 border-solid pt-6 dark:border-pureWhite/25">
-              <h3 class="font-druk-bold mb-4 text-[10px] tracking-[0.3em]">
+              <h3 class="space-grotesk-regular mb-4 text-base tracking-[0.2em]">
                 LATEST HEADLINES
               </h3>
 
@@ -248,10 +252,10 @@ onBeforeUnmount(() => {
                 :key="item.id"
                 class="border-b border-pureBlack/15 border-solid py-4 last:border-b-0 dark:border-pureWhite/15"
               >
-                <div class="mb-2 text-[9px] color-pureBlack/55 tracking-[0.24em] dark:color-pureWhite/55">
+                <div class="space-grotesk-regular mb-2 text-[9px] color-pureBlack/55 tracking-[0.24em] dark:color-pureWhite/55">
                   {{ item.tag }}
                 </div>
-                <h4 class="font-druk-bold text-lg font-bold leading-tight">
+                <h4 class="font-druk-bold text-3xl leading-normal tracking-normal">
                   {{ item.title }}
                 </h4>
                 <p :class="[contentTextFontClass]" class="mt-2 text-sm color-pureBlack/70 leading-relaxed dark:color-pureWhite/70">
@@ -266,7 +270,7 @@ onBeforeUnmount(() => {
           <div class="h-px w-full bg-pureBlack/70 dark:bg-pureWhite/70" />
           <div class="mt-6 flex items-center justify-center gap-4">
             <div class="h-px flex-1 bg-pureBlack/20 dark:bg-pureWhite/20" />
-            <p class="text-[9px] color-pureBlack/55 font-bold tracking-[0.3em] dark:color-pureWhite/55">
+            <p class="space-grotesk-regular text-[9px] color-pureBlack/55 font-bold tracking-[0.3em] dark:color-pureWhite/55">
               {{ newsSectionContent.bottomLabel }}
             </p>
             <div class="h-px flex-1 bg-pureBlack/20 dark:bg-pureWhite/20" />
