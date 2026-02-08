@@ -2,44 +2,18 @@
 import { fonts } from '@/data/fonts.model'
 import { newsSectionContent } from './NewsSection.model'
 
-const headerInfoFontClass = ref('font-recoleta')
-const headerInfoFontOptions = computed(() => fonts)
-const isHeadlinePanelVisible = ref(true)
-
-const headerInfoFontName = computed(() =>
-  headerInfoFontOptions.value.find(font => font.class === headerInfoFontClass.value)?.name ?? headerInfoFontClass.value,
+const contentTextFontClass = ref('font-druk-bold')
+const contentTextFontOptions = computed(() => fonts)
+const contentTextFontName = computed(() =>
+  contentTextFontOptions.value.find(font => font.class === contentTextFontClass.value)?.name ?? contentTextFontClass.value,
 )
 
-function cycleHeaderInfoFont() {
-  const fontClasses = headerInfoFontOptions.value.map(font => font.class)
-  const currentFontClass = headerInfoFontClass.value
-  const currentIndex = fontClasses.indexOf(currentFontClass)
-  const nextIndex = currentIndex >= 0
-    ? (currentIndex + 1) % fontClasses.length
-    : 0
-
-  headerInfoFontClass.value = fontClasses[nextIndex]
-}
-
-function handleHeadlineShortcut(event: KeyboardEvent) {
-  if (event.key.toLowerCase() !== 'v')
-    return
-
-  const target = event.target as HTMLElement | null
-  if (target?.closest('input, textarea, select, [contenteditable="true"]'))
-    return
-
-  event.preventDefault()
-  cycleHeaderInfoFont()
-}
-
-onMounted(() => {
-  window.addEventListener('keydown', handleHeadlineShortcut)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleHeadlineShortcut)
-})
+const mastheadFontClass = 'font-druk-bold'
+const mastheadMinSize = 3.2
+const mastheadFluidSize = '14vw'
+const mastheadMaxSize = ref(18)
+const isHeadlinePanelVisible = ref(true)
+const mastheadMaxSizeLabel = computed(() => `${mastheadMaxSize.value.toFixed(1)}rem`)
 </script>
 
 <template>
@@ -48,7 +22,7 @@ onBeforeUnmount(() => {
       class="fixed right-4 top-[calc(var(--header-height,0px)+1rem)] z-60 border border-pureBlack/25 bg-pureWhite/95 px-3 py-2 text-[10px] font-black tracking-[0.2em] uppercase backdrop-blur-sm dark:border-pureWhite/25 dark:bg-pureBlack/90"
       @click="isHeadlinePanelVisible = !isHeadlinePanelVisible"
     >
-      {{ isHeadlinePanelVisible ? 'Hide Header UI' : 'Show Header UI' }}
+      {{ isHeadlinePanelVisible ? 'Hide Text Controls' : 'Show Text Controls' }}
     </button>
 
     <div
@@ -56,10 +30,16 @@ onBeforeUnmount(() => {
       class="fixed right-4 top-[calc(var(--header-height,0px)+3.6rem)] z-60 w-[min(92vw,360px)] border border-pureBlack/25 bg-pureWhite/95 px-3 py-2 backdrop-blur-sm dark:border-pureWhite/25 dark:bg-pureBlack/90"
     >
       <div class="text-[9px] tracking-[0.16em] uppercase opacity-70">
-        Header Info Font
+        Content Text Font
       </div>
       <div class="mt-1 text-xs font-bold tracking-[0.06em]">
-        {{ headerInfoFontName }}
+        {{ contentTextFontName }}
+      </div>
+      <div class="mt-3 text-[9px] tracking-[0.16em] uppercase opacity-70">
+        Masthead Max Size
+      </div>
+      <div class="mt-1 text-xs font-bold tracking-[0.06em]">
+        {{ mastheadMaxSizeLabel }}
       </div>
     </div>
 
@@ -69,21 +49,21 @@ onBeforeUnmount(() => {
     >
       <div class="mb-3 flex items-center justify-between">
         <h3 class="text-[10px] font-black tracking-[0.3em] uppercase">
-          Header Info Font
+          Text Controls
         </h3>
         <span class="text-[9px] tracking-[0.18em] uppercase opacity-60">Live</span>
       </div>
 
       <div class="space-y-2">
         <label class="text-[10px] font-bold tracking-[0.1em] uppercase">
-          Printed / Issue Date / Scroll Down
+          News Content Text
         </label>
         <select
-          v-model="headerInfoFontClass"
+          v-model="contentTextFontClass"
           class="w-full border border-pureBlack/25 bg-transparent px-2.5 py-2 text-xs outline-none dark:border-pureWhite/25"
         >
           <option
-            v-for="fontOption in headerInfoFontOptions"
+            v-for="fontOption in contentTextFontOptions"
             :key="fontOption.class"
             :value="fontOption.class"
           >
@@ -91,9 +71,25 @@ onBeforeUnmount(() => {
           </option>
         </select>
       </div>
-      <p class="mt-3 text-[9px] tracking-[0.16em] uppercase opacity-70">
-        V wechselt Header-Info Font
-      </p>
+
+      <div class="mt-4 space-y-2">
+        <div class="flex items-center justify-between">
+          <label class="text-[10px] font-bold tracking-[0.1em] uppercase">
+            Masthead Size
+          </label>
+          <span class="text-[10px] font-bold tracking-[0.08em] uppercase">
+            {{ mastheadMaxSizeLabel }}
+          </span>
+        </div>
+        <input
+          v-model.number="mastheadMaxSize"
+          type="range"
+          min="8"
+          max="26"
+          step="0.1"
+          class="w-full accent-pureBlack dark:accent-pureWhite"
+        >
+      </div>
     </aside>
 
     <div class="pointer-events-none absolute inset-y-0 z-30 hidden -inset-x-4 lg:block md:-inset-x-12">
@@ -144,39 +140,38 @@ onBeforeUnmount(() => {
         </div>
       </nav>
 
-      <section class="bg-pureBlack py-12 color-pureWhite lg:py-18 md:py-14">
+      <section class="bg-pureBlack color-pureWhite">
         <div class="mx-auto max-w-[1500px]">
           <div class="grid gap-2 lg:grid-cols-[minmax(150px,18vw)_minmax(0,1fr)_minmax(150px,18vw)] lg:items-stretch xl:gap-3">
             <div class="flex flex-col justify-between border border-pureWhite/20 px-3 py-3 xl:px-4">
               <span
-                class="block text-[15px] leading-none tracking-normal uppercase opacity-80"
-                :class="headerInfoFontClass"
+                class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-80"
               >
                 {{ newsSectionContent.straplineLeft }}
               </span>
-              <span class="font-clash w-max inline-flex bg-pureWhite px-3 py-1 text-xs color-pureBlack font-black tracking-tight">
+              <span class="font-druk-bold w-max inline-flex bg-pureWhite px-3 py-1 text-xs color-pureBlack font-black tracking-tight">
                 EXCLUSIVE EDITION
               </span>
             </div>
 
             <h1
-              class="font-clash self-center whitespace-nowrap text-center text-[clamp(2.2rem,7vw,6.8rem)] font-black leading-tight tracking-normal"
+              class="self-center whitespace-nowrap text-center tracking-wide"
+              :class="[mastheadFontClass]"
+              :style="{ fontSize: `clamp(${mastheadMinSize}rem, ${mastheadFluidSize}, ${mastheadMaxSize}rem)` }"
             >
-              <span class="[transform-origin:center] inline-block uppercase sm:scale-x-92 sm:scale-y-112">
+              <span class="inline-block">
                 {{ newsSectionContent.masthead }}
               </span>
             </h1>
 
             <div class="flex flex-col justify-between border border-pureWhite/20 px-3 py-3 xl:px-4">
               <span
-                class="block text-[15px] leading-none tracking-normal uppercase opacity-80"
-                :class="headerInfoFontClass"
+                class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-80"
               >
                 {{ newsSectionContent.straplineRight }}
               </span>
               <span
-                class="block text-[15px] leading-none tracking-normal uppercase opacity-90"
-                :class="headerInfoFontClass"
+                class="font-recoleta block text-[15px] leading-none tracking-normal uppercase opacity-90"
               >
                 SCROLL DOWN ↓
               </span>
@@ -192,14 +187,14 @@ onBeforeUnmount(() => {
               <div class="text-[9px] font-black tracking-[0.35em]">
                 DESCRIBING MODERN WEB EXPERIENCES
               </div>
-              <h2 class="font-clash text-6xl font-black leading-[0.88] tracking-tight">
-                <span class="[transform-origin:center] inline-block leading-[0.8] tracking-[-0.03em] uppercase sm:scale-x-92 sm:scale-y-112">
+              <h2 class="text-6xl" :class="[mastheadFontClass]">
+                <span class="inline-block">
                   {{ newsSectionContent.leadTitle }}
                 </span>
               </h2>
             </div>
 
-            <div class="text-lg color-pureBlack/70 leading-relaxed space-y-4 dark:color-pureWhite/70">
+            <div :class="[contentTextFontClass]" class="text-lg color-pureBlack/70 leading-relaxed space-y-4 dark:color-pureWhite/70">
               <p v-for="(paragraph, index) in newsSectionContent.leadCopy" :key="`lead-${index}`">
                 {{ paragraph }}
               </p>
@@ -227,8 +222,8 @@ onBeforeUnmount(() => {
             </div>
 
             <div class="text-center space-y-2">
-              <h3 class="font-clash text-5xl font-black leading-tight tracking-tight">
-                <span class="[transform-origin:center] inline-block leading-[0.8] tracking-[-0.03em] uppercase sm:scale-x-92 sm:scale-y-112">
+              <h3 class="text-5xl" :class="[mastheadFontClass]">
+                <span class="inline-block">
                   KNOW MORE!
                 </span>
               </h3>
@@ -239,8 +234,8 @@ onBeforeUnmount(() => {
           </article>
 
           <article class="lg:col-span-4 space-y-8">
-            <h2 class="font-clash text-7xl font-black leading-[0.85] tracking-tight">
-              <span class="[transform-origin:center] inline-block leading-[0.8] tracking-[-0.03em] uppercase sm:scale-x-92 sm:scale-y-112">
+            <h2 class="text-7xl" :class="[mastheadFontClass]">
+              <span class="inline-block">
                 {{ newsSectionContent.rightTitle }}
               </span>
             </h2>
@@ -255,7 +250,7 @@ onBeforeUnmount(() => {
             </p>
 
             <div class="border-t border-pureBlack/25 border-solid pt-6 dark:border-pureWhite/25">
-              <h3 class="font-clash mb-4 text-[10px] font-black tracking-[0.3em]">
+              <h3 class="font-druk-bold mb-4 text-[10px] font-black tracking-[0.3em]">
                 LATEST HEADLINES
               </h3>
 
@@ -267,10 +262,10 @@ onBeforeUnmount(() => {
                 <div class="mb-2 text-[9px] color-pureBlack/55 tracking-[0.24em] dark:color-pureWhite/55">
                   {{ item.tag }}
                 </div>
-                <h4 class="font-clash text-lg font-bold leading-tight">
+                <h4 class="font-druk-bold text-lg font-bold leading-tight">
                   {{ item.title }}
                 </h4>
-                <p class="mt-2 text-sm color-pureBlack/70 leading-relaxed dark:color-pureWhite/70">
+                <p :class="[contentTextFontClass]" class="mt-2 text-sm color-pureBlack/70 leading-relaxed dark:color-pureWhite/70">
                   {{ item.excerpt }}
                 </p>
               </div>
