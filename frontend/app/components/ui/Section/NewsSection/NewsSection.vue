@@ -184,7 +184,7 @@ onBeforeUnmount(() => {
               :class="[mastheadFontClass]"
               :style="{ fontSize: 'var(--masthead-size)' }"
             >
-              <span class="hero-masthead-text block">
+              <span class="block">
                 {{ newsSectionContent.masthead }}
               </span>
             </h1>
@@ -318,10 +318,6 @@ onBeforeUnmount(() => {
 .hero-masthead-box {
   height: var(--masthead-height);
   line-height: var(--masthead-line-height);
-}
-
-.hero-masthead-text {
-  line-height: inherit;
 }
 
 @media (min-width: 1024px) {
