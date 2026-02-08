@@ -174,13 +174,13 @@ onBeforeUnmount(() => {
       </section>
 
       <section class="mx-auto max-w-[1500px] px-6 py-10 md:px-10 md:py-14">
-        <div class="grid gap-8 lg:grid-cols-12">
-          <article class="border-solid lg:col-span-4 space-y-6 lg:border-r lg:border-pureBlack/25 lg:pr-8 dark:lg:border-pureWhite/25">
+        <div class="grid gap-5 lg:grid-cols-[minmax(300px,0.95fr)_minmax(460px,1.28fr)_minmax(300px,0.95fr)] xl:grid-cols-[minmax(320px,0.95fr)_minmax(520px,1.32fr)_minmax(320px,0.95fr)] 2xl:grid-cols-[420px_580px_420px]">
+          <article class="border-solid space-y-6 lg:border-r lg:border-pureBlack/25 lg:pr-6 dark:lg:border-pureWhite/25">
             <div class="space-y-4">
               <div class="space-grotesk-regular text-[9px] font-black tracking-[0.35em]">
                 DESCRIBING MODERN WEB EXPERIENCES
               </div>
-              <h2 class="font-druk-bold text-6xl">
+              <h2 class="font-druk-bold text-7xl leading-[0.88] xl:text-8xl">
                 <span class="inline-block">
                   {{ newsSectionContent.leadTitle }}
                 </span>
@@ -202,8 +202,8 @@ onBeforeUnmount(() => {
             </button>
           </article>
 
-          <article class="border-solid lg:col-span-4 space-y-5 lg:border-r lg:border-pureBlack/25 lg:pr-8 dark:lg:border-pureWhite/25">
-            <div class="relative aspect-video overflow-hidden shadow-xl">
+          <article class="border-solid space-y-4 lg:border-r lg:border-pureBlack/25 lg:px-4 lg:pr-6 dark:lg:border-pureWhite/25">
+            <div class="relative aspect-[3/2] overflow-hidden">
               <video
                 class="h-full w-full object-cover"
                 src="https://i.imgur.com/FXgSiNd.mp4"
@@ -214,8 +214,8 @@ onBeforeUnmount(() => {
               />
             </div>
 
-            <div class="text-center space-y-2">
-              <h3 class="font-druk-bold text-7xl">
+            <div class="space-y-2 text-center">
+              <h3 class="font-druk-bold text-7xl leading-[0.9] xl:text-8xl">
                 <span class="inline-block">
                   NO MORE!
                 </span>
@@ -226,8 +226,8 @@ onBeforeUnmount(() => {
             </div>
           </article>
 
-          <article class="lg:col-span-4 space-y-8">
-            <h2 class="font-druk-bold text-7xl">
+          <article class="space-y-8">
+            <h2 class="font-druk-bold text-7xl leading-[0.88] xl:text-8xl">
               <span class="inline-block">
                 {{ newsSectionContent.rightTitle }}
               </span>
