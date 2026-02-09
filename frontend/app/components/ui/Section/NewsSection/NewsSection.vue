@@ -154,7 +154,7 @@ onBeforeUnmount(() => {
       </section>
 
       <section class="mx-auto max-w-[1500px] px-6 py-10 md:px-10 md:py-14">
-        <div class="grid gap-5 lg:grid-cols-[minmax(300px,0.95fr)_minmax(460px,1.28fr)_minmax(300px,0.95fr)] xl:grid-cols-[minmax(320px,0.95fr)_minmax(520px,1.32fr)_minmax(320px,0.95fr)] 2xl:grid-cols-[420px_580px_420px]">
+        <div class="grid gap-5 2xl:grid-cols-[420px_580px_420px] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.28fr)_minmax(0,0.95fr)] xl:grid-cols-[minmax(280px,0.95fr)_minmax(460px,1.28fr)_minmax(280px,0.95fr)]">
           <article class="border-solid space-y-6 lg:border-r lg:border-pureBlack/25 lg:pr-6 dark:lg:border-pureWhite/25">
             <div class="space-y-4">
               <div class="space-grotesk-regular text-[9px] font-black tracking-[0.35em]">
@@ -194,7 +194,7 @@ onBeforeUnmount(() => {
               />
             </div>
 
-            <div class="space-y-2 text-center">
+            <div class="text-center space-y-2">
               <h3 class="font-druk-bold text-7xl leading-[0.9] xl:text-8xl">
                 <span class="inline-block">
                   NO MORE!
