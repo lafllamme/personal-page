@@ -180,6 +180,74 @@ onBeforeUnmount(() => {
             <button class="w-full bg-pureBlack py-4 text-[11px] color-pureWhite font-black tracking-[0.24em] transition-opacity dark:bg-pureWhite dark:color-pureBlack hover:opacity-90">
               READ FULL ARTICLE
             </button>
+
+            <div class="border-t border-pureBlack/20 border-solid pt-6 space-y-6 dark:border-pureWhite/20">
+              <div class="grid gap-4 sm:grid-cols-2">
+                <div class="space-y-1">
+                  <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.3em] dark:color-pureWhite/55">
+                    AUTHOR
+                  </p>
+                  <p class="space-grotesk-regular text-[11px] font-bold tracking-[0.08em]">
+                    {{ newsSectionContent.leadMeta.author }}
+                  </p>
+                </div>
+                <div class="space-y-1">
+                  <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.3em] dark:color-pureWhite/55">
+                    PUBLISHED
+                  </p>
+                  <p class="space-grotesk-regular text-[11px] font-bold tracking-[0.08em]">
+                    {{ newsSectionContent.leadMeta.publishedAt }}
+                  </p>
+                </div>
+                <div class="space-y-1">
+                  <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.3em] dark:color-pureWhite/55">
+                    READING TIME
+                  </p>
+                  <p class="space-grotesk-regular text-[11px] font-bold tracking-[0.08em]">
+                    {{ newsSectionContent.leadMeta.readingTime }}
+                  </p>
+                </div>
+                <div class="space-y-1">
+                  <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.3em] dark:color-pureWhite/55">
+                    CATEGORY
+                  </p>
+                  <p class="space-grotesk-regular text-[11px] font-bold tracking-[0.08em]">
+                    {{ newsSectionContent.leadMeta.category }}
+                  </p>
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <h3 class="space-grotesk-regular text-[9px] tracking-[0.26em]">
+                  KEY TAKEAWAYS
+                </h3>
+                <ul :class="[contentTextFontClass]" class="space-y-2 text-sm color-pureBlack/75 dark:color-pureWhite/75">
+                  <li
+                    v-for="(takeaway, index) in newsSectionContent.leadTakeaways"
+                    :key="`takeaway-${index}`"
+                    class="flex gap-2 leading-relaxed"
+                  >
+                    <span class="mt-[0.48rem] h-1 w-1 flex-none rounded-full bg-pureBlack/55 dark:bg-pureWhite/55" />
+                    <span>{{ takeaway }}</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="space-y-3">
+                <h3 class="space-grotesk-regular text-[9px] tracking-[0.26em]">
+                  RELATED TOPICS
+                </h3>
+                <div class="flex flex-wrap gap-2">
+                  <span
+                    v-for="topic in newsSectionContent.leadTopics"
+                    :key="topic"
+                    class="space-grotesk-regular inline-flex border border-pureBlack/30 border-solid px-2.5 py-1 text-[9px] tracking-[0.2em] dark:border-pureWhite/30"
+                  >
+                    {{ topic }}
+                  </span>
+                </div>
+              </div>
+            </div>
           </article>
 
           <article class="border-solid space-y-4 lg:border-r lg:border-pureBlack/25 lg:px-4 lg:pr-6 dark:lg:border-pureWhite/25">
@@ -203,6 +271,66 @@ onBeforeUnmount(() => {
               <p class="space-grotesk-regular text-[9px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
                 EXCLUSIVE INSIGHTS • DEEP DIVE
               </p>
+            </div>
+
+            <div class="space-y-4">
+              <div class="border border-pureBlack/20 border-solid px-4 py-4 dark:border-pureWhite/20">
+                <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+                  <div>
+                    <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
+                      ISSUE
+                    </p>
+                    <p class="space-grotesk-regular mt-1 text-[11px] font-bold tracking-[0.1em]">
+                      {{ newsSectionContent.featurePanel.issue }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
+                      LOCATION
+                    </p>
+                    <p class="space-grotesk-regular mt-1 text-[11px] font-bold tracking-[0.1em]">
+                      {{ newsSectionContent.featurePanel.location }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
+                      UPDATED
+                    </p>
+                    <p class="space-grotesk-regular mt-1 text-[11px] font-bold tracking-[0.1em]">
+                      {{ newsSectionContent.featurePanel.updatedAt }}
+                    </p>
+                  </div>
+                  <div>
+                    <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.28em] dark:color-pureWhite/55">
+                      STATUS
+                    </p>
+                    <p class="space-grotesk-regular mt-1 text-[11px] font-bold tracking-[0.1em]">
+                      {{ newsSectionContent.featurePanel.status }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <blockquote class="border-y border-pureBlack/20 border-solid py-5 text-center dark:border-pureWhite/20">
+                <p class="font-recoleta text-[clamp(1.2rem,2vw,1.6rem)] leading-[1.25] italic">
+                  "{{ newsSectionContent.featurePanel.quote }}"
+                </p>
+              </blockquote>
+
+              <div class="grid grid-cols-3 gap-3">
+                <div
+                  v-for="signal in newsSectionContent.featureSignals"
+                  :key="signal.label"
+                  class="border border-pureBlack/20 border-solid px-3 py-3 text-center dark:border-pureWhite/20"
+                >
+                  <p class="space-grotesk-regular text-[8px] color-pureBlack/55 tracking-[0.26em] dark:color-pureWhite/55">
+                    {{ signal.label }}
+                  </p>
+                  <p class="font-druk-bold mt-1 text-3xl leading-none">
+                    {{ signal.value }}
+                  </p>
+                </div>
+              </div>
             </div>
           </article>
 
