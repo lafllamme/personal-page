@@ -136,7 +136,7 @@ onBeforeUnmount(() => {
           </h2>
           <figure
             aria-hidden="true"
-            class="absolute bottom-0 z-20 aspect-square w-[clamp(250px,68vw,500px)] 2xl:h-[40rem] lg:w-[clamp(220px,28vw,400px)] sm:w-[clamp(260px,52vw,500px)]"
+            class="absolute bottom-0 left-1/2 z-20 aspect-square w-[clamp(250px,68vw,500px)] lg:w-[clamp(220px,28vw,420px)] sm:w-[clamp(260px,52vw,500px)] -translate-x-1/2"
             :style="imageMaskStyle"
           >
             <NuxtImg
