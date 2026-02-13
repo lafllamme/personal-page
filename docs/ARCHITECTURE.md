@@ -28,6 +28,7 @@ Core stack
 Nuxt modules
 - `@nuxt/image`, `@nuxt/icon`
 - `@unocss/nuxt` (UnoCSS)
+- `lenis/nuxt` (smooth scrolling)
 - `@nuxtjs/color-mode`
 - `@nuxtjs/i18n`
 - `@tresjs/nuxt` (3D)
@@ -36,6 +37,9 @@ Nuxt modules
 - `@pinia/nuxt`
 - `@nuxtjs/sitemap`
 - `@nuxt/fonts`
+
+Lenis reference
+- See `docs/LENIS-REFERENCE.md` for approved options and presets.
 
 Runtime config (see `frontend/nuxt.config.ts`)
 - Public CMS URLs: `NUXT_PAYLOAD_PUBLIC_SERVER_URL` (builds `payloadApiUrl` and `payloadUrl`).

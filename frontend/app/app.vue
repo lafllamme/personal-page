@@ -6,12 +6,8 @@ import PageTransition from '@/components/ui/PageTransition/PageTransition.vue'
 const loadingGradient = ref('linear-gradient(90deg, #059669, #064e3b, #6d28d9)')
 const appConfig = useAppConfig()
 const { meta } = appConfig as { meta: HeadMeta }
-const lenisOptions = {
-  autoRaf: true,
-  smoothWheel: true,
-  syncTouch: false,
-  autoResize: true,
-}
+const { lenisOptions } = useLenisOsmo()
+
 const { isTransitionActive } = useTransition()
 
 // If we are in development mode, we set the consola log level to 5
