@@ -120,7 +120,7 @@ export const presets: SourcePreset[] = [
   },
   {
     id: 'simonwillison',
-    name: "Simon Willison's Weblog",
+    name: 'Simon Willison\'s Weblog',
     googleMode: 'search',
     googleQuery: 'site:simonwillison.net',
     language: 'en',
@@ -219,7 +219,7 @@ export const presets: SourcePreset[] = [
   },
   {
     id: 'tomshardware',
-    name: "Tom's Hardware",
+    name: 'Tom\'s Hardware',
     googleMode: 'search',
     googleQuery: 'site:tomshardware.com',
     language: 'en',
