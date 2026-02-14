@@ -145,11 +145,11 @@ onBeforeUnmount(() => {
               <!-- Menu toggle button -->
               <div class="osmo-nav-bar__menu">
                 <button
-                  class="osmo-nav-menu color-pureBlack dark:color-pureWhite hover:bg-pureBlack/10 dark:hover:bg-pureWhite/10"
+                  class="osmo-nav-menu color-pureBlack hover:bg-pureBlack/10 dark:color-pureWhite dark:hover:bg-pureWhite/10"
                   @click="toggleMenu"
                 >
                   <OsmoMenuIcon :is-open="isMenuOpen" />
-                  <span class="osmo-nav-menu__label font-manrope font-500 tracking-tight">Menu</span>
+                  <span class="font-manrope osmo-nav-menu__label font-500 tracking-tight">Menu</span>
                 </button>
               </div>
 
@@ -175,7 +175,7 @@ onBeforeUnmount(() => {
                       :exit="{ opacity: 0, y: 10 }"
                       :transition="{ duration: 0.3 }"
                     >
-                      <span class="osmo-nav-logo__wordmark font-cabinet tracking-tight color-pureBlack dark:color-pureWhite">TECNEWS</span>
+                      <span class="font-cabinet osmo-nav-logo__wordmark color-pureBlack tracking-tight dark:color-pureWhite">TECNEWS</span>
                     </Motion>
                   </AnimatePresence>
                 </NuxtLink>
@@ -223,7 +223,7 @@ onBeforeUnmount(() => {
                       )"
                     >
                       <div class="osmo-nav-bar__tag-row">
-                        <span class="osmo-eyebrow space-grotesk-regular color-pureBlack dark:color-pureWhite">Newsroom</span>
+                        <span class="space-grotesk-regular osmo-eyebrow color-pureBlack dark:color-pureWhite">Newsroom</span>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
                         <li
@@ -236,7 +236,7 @@ onBeforeUnmount(() => {
                             class="osmo-nav-bar__big-a osmo-animate-chars color-pureBlack dark:color-pureWhite"
                             @click="closeMenu"
                           >
-                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
+                            <span class="font-clash-regular osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-${item.name}-${charIndex}`"
@@ -263,7 +263,7 @@ onBeforeUnmount(() => {
                         <li
                           v-for="item in easings"
                           :key="item.name"
-                          class="osmo-nav-bar__small-li font-clash-regular"
+                          class="font-clash-regular osmo-nav-bar__small-li"
                         >
                           <span class="osmo-nav-bar__small-a color-pureBlack dark:color-pureWhite">
                             <span class="osmo-nav-bar__small-span">{{ item.name }}</span>
@@ -344,14 +344,14 @@ onBeforeUnmount(() => {
                           </div>
                           <div class="osmo-nav-banner__center-content">
                             <div class="osmo-nav-banner__title">
-                              <h2 class="osmo-h-m font-500 font-clash-regular color-pureBlack dark:color-pureWhite">
+                              <h2 class="font-clash-regular osmo-h-m color-pureBlack font-500 dark:color-pureWhite">
                                 We hit 1700
                                 <br>
                                 Members!
                               </h2>
                             </div>
                             <div class="osmo-nav-banner__btn pb-4">
-                              <button class="osmo-button is--light font-manrope">
+                              <button class="font-manrope osmo-button is--light">
                                 <span>Join them</span>
                               </button>
                             </div>

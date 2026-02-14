@@ -221,7 +221,7 @@ onBeforeUnmount(() => {
                 <h3 class="space-grotesk-regular text-[9px] tracking-[0.26em]">
                   KEY TAKEAWAYS
                 </h3>
-                <ul :class="[contentTextFontClass]" class="space-y-2 text-sm color-pureBlack/75 dark:color-pureWhite/75">
+                <ul :class="[contentTextFontClass]" class="text-sm color-pureBlack/75 space-y-2 dark:color-pureWhite/75">
                   <li
                     v-for="(takeaway, index) in newsSectionContent.leadTakeaways"
                     :key="`takeaway-${index}`"
