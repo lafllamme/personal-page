@@ -143,7 +143,8 @@ async function copyCurrentList() {
   try {
     await navigator.clipboard.writeText(text)
     copyStatus.value = 'ok'
-  } catch {
+  }
+  catch {
     copyStatus.value = 'error'
   }
 }
@@ -338,7 +339,7 @@ onMounted(() => {
             Query
             <input
               v-model="googleQuery"
-              class="border-black/10 placeholder:text-black/40 dark:border-white/15 dark:placeholder:text-white/40 mt-2 w-full border rounded-lg bg-pureWhite px-3 py-3 text-base text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
+              class="border-black/10 dark:border-white/15 placeholder:text-black/40 dark:placeholder:text-white/40 mt-2 w-full border rounded-lg bg-pureWhite px-3 py-3 text-base text-pureBlack dark:bg-pureBlack dark:text-pureWhite"
               placeholder="site:reuters.com/technology"
             >
           </label>
@@ -443,7 +444,7 @@ onMounted(() => {
           <article
             v-for="item in pagedItems"
             :key="item.id"
-            class="border-black/10 hover:border-black/30 dark:border-white/10 dark:hover:border-white/30 border rounded-lg p-5 transition"
+            class="border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 border rounded-lg p-5 transition"
           >
             <div class="text-black/60 dark:text-white/60 mb-2 flex flex-wrap items-center gap-2 text-xs tracking-widest uppercase">
               <span>{{ item.sourceName }}</span>
@@ -455,7 +456,7 @@ onMounted(() => {
               </span>
               <span
                 v-if="item.hasRichContent"
-                class="border-emerald-500/30 dark:border-emerald-400/40 text-emerald-600 dark:text-emerald-300 border rounded-full px-2 py-0.5"
+                class="border-emerald-500/30 text-emerald-600 dark:border-emerald-400/40 dark:text-emerald-300 border rounded-full px-2 py-0.5"
               >
                 Rich RSS
               </span>
@@ -477,7 +478,7 @@ onMounted(() => {
             </a>
             <div v-if="item.excerpt" class="mt-3">
               <button
-                class="text-black/50 hover:text-black dark:text-white/50 dark:hover:text-white text-xs tracking-widest uppercase transition"
+                class="text-black/50 dark:text-white/50 hover:text-black dark:hover:text-white text-xs tracking-widest uppercase transition"
                 @click="toggleExpand(item.id)"
               >
                 {{ expanded[item.id] ? 'Hide excerpt' : 'Show excerpt' }}

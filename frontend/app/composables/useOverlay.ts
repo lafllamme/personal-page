@@ -1,4 +1,4 @@
-type UseOverlayOptions = {
+interface UseOverlayOptions {
   manageLifecycle?: boolean
 }
 
