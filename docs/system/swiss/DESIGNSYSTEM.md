@@ -176,9 +176,14 @@ Avoid vendor-prefixed `-webkit-backdrop-filter` in new work unless a tested Safa
 
 ### Borders
 
+- Standard in Utilities: `border-solid` immer zusammen mit `border*` Klassen verwenden.
 - Subtle: `border-pureBlack/10` (light), `border-pureWhite/10` (dark)
 - Medium: `border-pureBlack/20` (light), `border-pureWhite/20` (dark)
 - Accent: `border-teal-11` or `border-mint-11`
+
+Recommended examples:
+- `border-solid border border-pureBlack/10 dark:border-pureWhite/10`
+- `border-solid border-b border-pureBlack/20 dark:border-pureWhite/20`
 
 ## Animation & Motion
 
