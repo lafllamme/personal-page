@@ -29,11 +29,13 @@ export function buildGoogleNewsUrl(opts: GoogleNewsParams): string | undefined {
     if (!opts.query)
       return undefined
     path = `/search?q=${encodeURIComponent(opts.query)}`
-  } else if (opts.mode === 'topic') {
+  }
+  else if (opts.mode === 'topic') {
     if (!opts.topicId)
       return undefined
     path = `/topics/${encodeURIComponent(opts.topicId)}`
-  } else if (opts.mode === 'topic-section') {
+  }
+  else if (opts.mode === 'topic-section') {
     if (!opts.topicId || !opts.sectionId)
       return undefined
     path = `/topics/${encodeURIComponent(opts.topicId)}/sections/${encodeURIComponent(opts.sectionId)}`
