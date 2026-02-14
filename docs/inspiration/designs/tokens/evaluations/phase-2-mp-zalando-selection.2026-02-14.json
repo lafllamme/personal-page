@@ -1,0 +1,34 @@
+{
+  "generatedAt": "2026-02-14T16:00:00.000Z",
+  "context": {
+    "page": "/exploration",
+    "phase": "phase-2-mp-zalando-selection",
+    "method": "clone-delta-comparison"
+  },
+  "decision": {
+    "winnerPack": "P04-MPZ01",
+    "winnerName": "Swiss Signal Orange Clone (MP Zalando)",
+    "selectedFrom": [
+      "P04",
+      "P04-MPZ01",
+      "P04-Z01",
+      "P04-T01",
+      "P04-T01-MPZ01"
+    ],
+    "summary": "Winner keeps OG Swiss Signal Orange behavior and updates only Market Pulse metric typography to Zalando Sans Expanded."
+  },
+  "deltas": [
+    {
+      "pack": "P04-MPZ01",
+      "basePack": "P04",
+      "delta": "Market Pulse metric font: Druk Bold Trial -> Zalando Sans Expanded",
+      "status": "winner"
+    },
+    {
+      "pack": "P04-T01-MPZ01",
+      "basePack": "P04-T01",
+      "delta": "Market Pulse metric font: Cabinet Grotesk -> Zalando Sans Expanded",
+      "status": "candidate"
+    }
+  ]
+}

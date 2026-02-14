@@ -1,0 +1,118 @@
+{
+  "id": "CANDIDATE-2026-02-14-A",
+  "createdAt": "2026-02-14",
+  "basePack": "P04",
+  "status": "active-reference",
+  "intent": "Freeze the winning exploration state and branch P04-focused variants without layout drift.",
+  "winnerSnapshot": {
+    "pack": "P04",
+    "name": "Swiss Signal Orange",
+    "scoreAverage": 4.8,
+    "rank": 1,
+    "reasoning": [
+      "Strong first-3-seconds hierarchy",
+      "Fast scanability on dense information",
+      "Best Swiss + TechNews brand fit"
+    ]
+  },
+  "variants": {
+    "P04-C01": {
+      "name": "P04 Core Mono Signal",
+      "density": "dense",
+      "fonts": {
+        "display": "Cabinet Grotesk",
+        "headline": "Clash Display",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "sources": ["brand", "run", "sport", "estate"],
+      "accentIdea": {
+        "name": "signal-orange",
+        "light": "#FF4D00",
+        "dark": "#FF4D00"
+      },
+      "light": {
+        "bg": "#F4F1EB",
+        "surface": "#FFFFFF",
+        "text": "#111111",
+        "muted": "#66615A",
+        "border": "rgba(17, 17, 17, 0.22)"
+      },
+      "dark": {
+        "bg": "#0B0B0B",
+        "surface": "#161616",
+        "text": "#F7F7F7",
+        "muted": "#A8A8A8",
+        "border": "rgba(247, 247, 247, 0.2)"
+      }
+    },
+    "P04-C02": {
+      "name": "P04 Editorial Olive",
+      "density": "balanced",
+      "fonts": {
+        "display": "Cabinet Grotesk",
+        "headline": "Nohemi",
+        "body": "Geist",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "sources": ["cloth", "fashion", "magazine", "magazine-2", "photography"],
+      "accentIdea": {
+        "name": "editorial-olive",
+        "light": "#5D6B1F",
+        "dark": "#9EB23F"
+      },
+      "light": {
+        "bg": "#F0EEE7",
+        "surface": "#FFFFFF",
+        "text": "#141414",
+        "muted": "#5F6553",
+        "border": "rgba(20, 20, 20, 0.18)"
+      },
+      "dark": {
+        "bg": "#090A06",
+        "surface": "#12140D",
+        "text": "#ECE9DF",
+        "muted": "#B9BEAA",
+        "border": "rgba(236, 233, 223, 0.2)"
+      }
+    },
+    "P04-C03": {
+      "name": "P04 Tech Electric",
+      "density": "dense",
+      "fonts": {
+        "display": "Druk Bold Trial",
+        "headline": "Cabinet Grotesk",
+        "body": "Geist",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "sources": ["tech", "construct", "construct-2", "product", "skate"],
+      "accentIdea": {
+        "name": "tech-electric-blue",
+        "light": "#0074B8",
+        "dark": "#2CA6FF"
+      },
+      "light": {
+        "bg": "#EEF1F4",
+        "surface": "#FFFFFF",
+        "text": "#12161B",
+        "muted": "#4B5B67",
+        "border": "rgba(18, 22, 27, 0.18)"
+      },
+      "dark": {
+        "bg": "#06090C",
+        "surface": "#10151C",
+        "text": "#EEF1F4",
+        "muted": "#AAB7C2",
+        "border": "rgba(238, 241, 244, 0.2)"
+      }
+    }
+  },
+  "rules": [
+    "No layout drift against the locked TechNews frame",
+    "Accent identity must stay visible in light and dark mode",
+    "Every candidate update requires a new candidate id"
+  ]
+}

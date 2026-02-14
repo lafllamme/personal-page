@@ -1,0 +1,294 @@
+{
+  "version": "1.1.0",
+  "contract": {
+    "typography": [
+      "font.display",
+      "font.headline",
+      "font.body",
+      "font.meta",
+      "font.quote",
+      "font.metric"
+    ],
+    "typeScale": ["type.h1", "type.h2", "type.body", "type.meta", "type.quote", "type.metric"],
+    "spacing": ["density.mode", "space.section", "space.block", "space.inline"],
+    "colors": [
+      "color.bg",
+      "color.surface",
+      "color.text",
+      "color.muted",
+      "color.accent",
+      "color.border"
+    ],
+    "media": ["media.ratio.hero", "media.ratio.card", "media.overlay"]
+  },
+  "defaults": {
+    "type": {
+      "h1": { "desktop": 96, "tablet": 72, "mobile": 48, "lineHeight": 1.0 },
+      "h2": { "desktop": 56, "tablet": 42, "mobile": 32, "lineHeight": 1.05 },
+      "body": { "desktop": 18, "tablet": 17, "mobile": 16, "lineHeight": 1.55 },
+      "meta": { "desktop": 13, "tablet": 13, "mobile": 12, "lineHeight": 1.4 },
+      "quote": { "desktop": 34, "tablet": 28, "mobile": 22, "lineHeight": 1.2 },
+      "metric": { "desktop": 28, "tablet": 24, "mobile": 20, "lineHeight": 1.0 }
+    },
+    "spacing": {
+      "airy": { "section": 128, "block": 40, "inline": 20 },
+      "balanced": { "section": 96, "block": 32, "inline": 16 },
+      "dense": { "section": 72, "block": 24, "inline": 12 }
+    },
+    "media": {
+      "ratio": { "hero": "16:9", "card": "4:5" },
+      "overlay": 0.12
+    }
+  },
+  "packs": {
+    "P01": {
+      "name": "Swiss Neutral Light",
+      "density": "airy",
+      "fonts": {
+        "display": "Cabinet Grotesk",
+        "headline": "Manrope",
+        "body": "Geist",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "colors": {
+        "bg": "#F7F7F5",
+        "surface": "#FFFFFF",
+        "text": "#111111",
+        "muted": "#6B6B6B",
+        "accent": "#1E1E1E",
+        "border": "#DADADA"
+      },
+      "media": { "ratio": { "hero": "16:9", "card": "4:5" }, "overlay": 0.08 }
+    },
+    "P02": {
+      "name": "Swiss Editorial Serif",
+      "density": "balanced",
+      "fonts": {
+        "display": "Nohemi",
+        "headline": "Cabinet Grotesk",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "colors": {
+        "bg": "#F4F1EB",
+        "surface": "#FFFFFF",
+        "text": "#151515",
+        "muted": "#707070",
+        "accent": "#2A2A2A",
+        "border": "#D8D2C9"
+      },
+      "media": { "ratio": { "hero": "3:2", "card": "4:5" }, "overlay": 0.1 }
+    },
+    "P03": {
+      "name": "Swiss Dark Impact",
+      "density": "dense",
+      "fonts": {
+        "display": "Druk Bold",
+        "headline": "Now",
+        "body": "Geist",
+        "meta": "Space Grotesk",
+        "quote": "Manrope"
+      },
+      "colors": {
+        "bg": "#090909",
+        "surface": "#121212",
+        "text": "#F3F3F3",
+        "muted": "#A0A0A0",
+        "accent": "#FFFFFF",
+        "border": "#2A2A2A"
+      },
+      "media": { "ratio": { "hero": "21:9", "card": "4:5" }, "overlay": 0.2 }
+    },
+    "P04": {
+      "name": "Swiss Signal Orange",
+      "density": "dense",
+      "fonts": {
+        "display": "Druk Bold",
+        "headline": "Clash Display",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "colors": {
+        "bg": "#0B0B0B",
+        "surface": "#161616",
+        "text": "#F7F7F7",
+        "muted": "#A8A8A8",
+        "accent": "#FF4D00",
+        "border": "#2D2D2D"
+      },
+      "media": { "ratio": { "hero": "16:9", "card": "3:4" }, "overlay": 0.18 }
+    },
+    "P05": {
+      "name": "Swiss Tech Luxe",
+      "density": "balanced",
+      "fonts": {
+        "display": "Nohemi",
+        "headline": "Cabinet Grotesk",
+        "body": "Geist",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "colors": {
+        "bg": "#EDEBE5",
+        "surface": "#10312C",
+        "text": "#111111",
+        "muted": "#5E6663",
+        "accent": "#E34A1A",
+        "border": "#C9C2B8"
+      },
+      "media": { "ratio": { "hero": "16:10", "card": "4:5" }, "overlay": 0.14 }
+    },
+    "P06": {
+      "name": "Swiss Fashion Olive",
+      "density": "balanced",
+      "fonts": {
+        "display": "Nohemi",
+        "headline": "Cabinet Grotesk",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Recoleta"
+      },
+      "colors": {
+        "bg": "#ECE7DC",
+        "surface": "#101205",
+        "text": "#1A1A1A",
+        "muted": "#6D6D6D",
+        "accent": "#5D6B1F",
+        "border": "#D2CCBF"
+      },
+      "media": { "ratio": { "hero": "3:2", "card": "4:5" }, "overlay": 0.13 }
+    },
+    "P07": {
+      "name": "Swiss Corporate Mono",
+      "density": "balanced",
+      "fonts": {
+        "display": "Cabinet Grotesk",
+        "headline": "Manrope",
+        "body": "Geist",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "colors": {
+        "bg": "#F2F2F2",
+        "surface": "#FFFFFF",
+        "text": "#131313",
+        "muted": "#656565",
+        "accent": "#2A2A2A",
+        "border": "#D7D7D7"
+      },
+      "media": { "ratio": { "hero": "16:10", "card": "4:5" }, "overlay": 0.09 }
+    },
+    "P08": {
+      "name": "Swiss Kinetic Night",
+      "density": "dense",
+      "fonts": {
+        "display": "Now",
+        "headline": "Clash Display",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville"
+      },
+      "colors": {
+        "bg": "#07090D",
+        "surface": "#10131A",
+        "text": "#F6F8FC",
+        "muted": "#9FA8B5",
+        "accent": "#C7FF2E",
+        "border": "#252B36"
+      },
+      "media": { "ratio": { "hero": "21:9", "card": "3:4" }, "overlay": 0.22 }
+    },
+    "P04-MPZ01": {
+      "name": "Swiss Signal Orange Clone (MP Zalando)",
+      "density": "dense",
+      "fonts": {
+        "display": "Druk Bold Trial",
+        "headline": "Clash Display",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville",
+        "metric": "Zalando Sans Expanded"
+      },
+      "colors": {
+        "bg": "#0B0B0B",
+        "surface": "#161616",
+        "text": "#F7F7F7",
+        "muted": "#A8A8A8",
+        "accent": "#FF4D00",
+        "border": "#2D2D2D"
+      },
+      "media": { "ratio": { "hero": "16:9", "card": "3:4" }, "overlay": 0.18 }
+    },
+    "P04-Z01": {
+      "name": "P04 Zalando Signal",
+      "density": "dense",
+      "fonts": {
+        "display": "Zalando Sans Expanded",
+        "headline": "Cabinet Grotesk",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville",
+        "metric": "Cabinet Grotesk"
+      },
+      "colors": {
+        "bg": "#0A0A0A",
+        "surface": "#151515",
+        "text": "#F5F2E9",
+        "muted": "#B2ACA1",
+        "accent": "#FF5C2E",
+        "border": "#2F2F2F"
+      },
+      "media": { "ratio": { "hero": "16:9", "card": "3:4" }, "overlay": 0.2 }
+    },
+    "P04-T01": {
+      "name": "P04 Neon Turquoise",
+      "density": "balanced",
+      "fonts": {
+        "display": "Cabinet Grotesk",
+        "headline": "Clash Display",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville",
+        "metric": "Cabinet Grotesk"
+      },
+      "colors": {
+        "bg": "#0A0A0A",
+        "surface": "#161616",
+        "text": "#F6F3EA",
+        "muted": "#B7B1A5",
+        "accent": "#31FFF5",
+        "border": "#303030"
+      },
+      "media": { "ratio": { "hero": "16:9", "card": "3:4" }, "overlay": 0.2 }
+    },
+    "P04-T01-MPZ01": {
+      "name": "P04 Neon Turquoise Clone (MP Zalando)",
+      "density": "balanced",
+      "fonts": {
+        "display": "Cabinet Grotesk",
+        "headline": "Clash Display",
+        "body": "Manrope",
+        "meta": "Space Grotesk",
+        "quote": "Libre Baskerville",
+        "metric": "Zalando Sans Expanded"
+      },
+      "colors": {
+        "bg": "#0A0A0A",
+        "surface": "#161616",
+        "text": "#F6F3EA",
+        "muted": "#B7B1A5",
+        "accent": "#31FFF5",
+        "border": "#303030"
+      },
+      "media": { "ratio": { "hero": "16:9", "card": "3:4" }, "overlay": 0.2 }
+    }
+  },
+  "candidateRefs": {
+    "active": "CANDIDATE-2026-02-14-B",
+    "candidateFile": "docs/inspiration/designs/tokens/candidates/candidate-2026-02-14-b.json",
+    "evaluationFile": "docs/inspiration/designs/tokens/evaluations/phase-2-mp-zalando-selection.2026-02-14.json"
+  }
+}

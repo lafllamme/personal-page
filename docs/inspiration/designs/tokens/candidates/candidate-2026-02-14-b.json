@@ -1,0 +1,48 @@
+{
+  "id": "CANDIDATE-2026-02-14-B",
+  "createdAt": "2026-02-14",
+  "basePack": "P04",
+  "status": "active-reference",
+  "intent": "Promote the Market Pulse Zalando font experiment as the active winner while preserving Swiss Signal Orange baseline.",
+  "winnerSnapshot": {
+    "pack": "P04-MPZ01",
+    "name": "Swiss Signal Orange Clone (MP Zalando)",
+    "reasoning": [
+      "Keeps original Swiss Signal Orange structure and contrast",
+      "Improves Market Pulse typographic character",
+      "Minimal delta, high confidence for rollout"
+    ]
+  },
+  "variants": {
+    "P04": {
+      "role": "control",
+      "basePack": "P04",
+      "delta": "none"
+    },
+    "P04-MPZ01": {
+      "role": "winner",
+      "basePack": "P04",
+      "delta": "Market Pulse metric font: Druk Bold Trial -> Zalando Sans Expanded"
+    },
+    "P04-Z01": {
+      "role": "candidate",
+      "basePack": "P04-Z01",
+      "delta": "none"
+    },
+    "P04-T01": {
+      "role": "candidate",
+      "basePack": "P04-T01",
+      "delta": "none"
+    },
+    "P04-T01-MPZ01": {
+      "role": "candidate",
+      "basePack": "P04-T01",
+      "delta": "Market Pulse metric font: Cabinet Grotesk -> Zalando Sans Expanded"
+    }
+  },
+  "rules": [
+    "No layout drift against locked TechNews benchmark",
+    "basePack + experimentDelta + status mandatory in Reference Inputs",
+    "Any future winner change requires a new candidate id"
+  ]
+}

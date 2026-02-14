@@ -1,0 +1,198 @@
+{
+  "generatedAt": "2026-02-14T14:06:00.556Z",
+  "context": {
+    "page": "/exploration",
+    "phase": "phase-1-technews-benchmark",
+    "method": "same-layout-token-variation"
+  },
+  "criteria": [
+    {
+      "key": "hierarchy",
+      "label": "Hierarchy",
+      "hint": "first 3 seconds"
+    },
+    {
+      "key": "readability",
+      "label": "Readability",
+      "hint": "longform comfort"
+    },
+    {
+      "key": "scanability",
+      "label": "Scanability",
+      "hint": "cards + meta rails"
+    },
+    {
+      "key": "brandFit",
+      "label": "Brand Fit",
+      "hint": "Swiss + TechNews fit"
+    },
+    {
+      "key": "systemFit",
+      "label": "System Fit",
+      "hint": "same layout, stable pattern"
+    }
+  ],
+  "ranking": [
+    {
+      "pack": "P04",
+      "demoId": "02",
+      "name": "Swiss Signal Orange",
+      "average": 4.8,
+      "decision": "winner"
+    },
+    {
+      "pack": "P01",
+      "demoId": "01",
+      "name": "Swiss Neutral Light",
+      "average": 4,
+      "decision": ""
+    },
+    {
+      "pack": "P05",
+      "demoId": "03",
+      "name": "Swiss Tech Luxe",
+      "average": 3.6,
+      "decision": ""
+    }
+  ],
+  "winnerPack": "P04",
+  "variants": [
+    {
+      "demoId": "01",
+      "pack": "P01",
+      "name": "Swiss Neutral Light",
+      "sourceFolders": [
+        "agency",
+        "company",
+        "studio",
+        "portfolio-2"
+      ],
+      "sourceIdea": "Light editorial and corporate references with strong whitespace and restrained contrast.",
+      "fonts": [
+        {
+          "role": "Display",
+          "family": "Cabinet Grotesk"
+        },
+        {
+          "role": "Headline",
+          "family": "Manrope"
+        },
+        {
+          "role": "Body",
+          "family": "Geist"
+        },
+        {
+          "role": "Meta",
+          "family": "Space Grotesk"
+        },
+        {
+          "role": "Quote",
+          "family": "Libre Baskerville"
+        }
+      ],
+      "density": "airy",
+      "scores": {
+        "hierarchy": 4,
+        "readability": 4,
+        "scanability": 5,
+        "brandFit": 3,
+        "systemFit": 4
+      },
+      "average": 4,
+      "decision": "",
+      "likes": "overall feeeling good. but very common feeling.",
+      "concerns": "feels kinda thick and not elegant more genrous and misses a fancy touch. Nothing special and apealing, this is a more neutral tone without a message or bringing feelings to the design."
+    },
+    {
+      "demoId": "02",
+      "pack": "P04",
+      "name": "Swiss Signal Orange",
+      "sourceFolders": [
+        "brand",
+        "run",
+        "sport",
+        "estate"
+      ],
+      "sourceIdea": "Campaign-driven references using orange accents, dense rails, and strong display moments.",
+      "fonts": [
+        {
+          "role": "Display",
+          "family": "Druk Bold Trial"
+        },
+        {
+          "role": "Headline",
+          "family": "Clash Display"
+        },
+        {
+          "role": "Body",
+          "family": "Manrope"
+        },
+        {
+          "role": "Meta",
+          "family": "Space Grotesk"
+        },
+        {
+          "role": "Quote",
+          "family": "Libre Baskerville"
+        }
+      ],
+      "density": "dense",
+      "scores": {
+        "hierarchy": 5,
+        "readability": 4,
+        "scanability": 5,
+        "brandFit": 5,
+        "systemFit": 5
+      },
+      "average": 4.8,
+      "decision": "winner",
+      "likes": "I really like the overall feeling, the composition make it look very modern and elegant, espccially the hight accent color. Its fast to scan and very appealing with a sharp tone.",
+      "concerns": "the headlines in Market Pulse section are a bit hard too need, maybe more space or diff alingment?"
+    },
+    {
+      "demoId": "03",
+      "pack": "P05",
+      "name": "Swiss Tech Luxe",
+      "sourceFolders": [
+        "tech",
+        "construct-2",
+        "construct"
+      ],
+      "sourceIdea": "Tech-architecture references with premium surfaces, precise meta rails, and measured contrast.",
+      "fonts": [
+        {
+          "role": "Display",
+          "family": "Nohemi"
+        },
+        {
+          "role": "Headline",
+          "family": "Cabinet Grotesk"
+        },
+        {
+          "role": "Body",
+          "family": "Geist"
+        },
+        {
+          "role": "Meta",
+          "family": "Space Grotesk"
+        },
+        {
+          "role": "Quote",
+          "family": "Libre Baskerville"
+        }
+      ],
+      "density": "balanced",
+      "scores": {
+        "hierarchy": 4,
+        "readability": 4,
+        "scanability": 4,
+        "brandFit": 3,
+        "systemFit": 3
+      },
+      "average": 3.6,
+      "decision": "",
+      "likes": "It feels organic and vibrant, while staying elegant, especially in comparison with light mode varaitns with others. the general idea having a organic variant with a touch of color is good. top headline is nice",
+      "concerns": "the orange with the green we have is not fitting."
+    }
+  ]
+}
