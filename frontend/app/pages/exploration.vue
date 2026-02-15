@@ -239,14 +239,14 @@ const accentPresets: AccentPreset[] = [
   },
 ]
 
-const activeAccentPresetId = ref('teal-core')
+const activeAccentPresetId = ref('radix-teal')
 
 const variants = reactive<Variant[]>([
   {
     id: '01',
     pack: 'P04-MPZ01',
     basePack: 'P04',
-    experimentDelta: 'Market Pulse metric font only: Druk Bold Trial -> Zalando Sans Expanded. Accent preset: Teal Core.',
+    experimentDelta: 'Market Pulse metric font only: Druk Bold Trial -> Zalando Sans Expanded. Accent preset: Radix Teal 9/11.',
     status: 'winner',
     name: 'Swiss Signal Orange Clone (MP Zalando)',
     goal: 'OG winner clone with Market Pulse in Zalando Sans Expanded',
@@ -273,7 +273,7 @@ const variants = reactive<Variant[]>([
         surface: '#FFFFFF',
         text: '#111111',
         muted: '#66615A',
-        accent: '#FF4D00',
+        accent: '#12A594',
         border: 'rgba(17, 17, 17, 0.22)',
         surfaceText: '#111111',
         surfaceMuted: '#66615A',
@@ -285,7 +285,7 @@ const variants = reactive<Variant[]>([
         surface: '#161616',
         text: '#F7F7F7',
         muted: '#A8A8A8',
-        accent: '#0AA88F',
+        accent: '#0BD8B6',
         border: 'rgba(247, 247, 247, 0.2)',
         surfaceText: '#F7F7F7',
         surfaceMuted: '#A8A8A8',
