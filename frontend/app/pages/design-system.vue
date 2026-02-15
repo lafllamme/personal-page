@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
+import DsColorScheme from '@/components/ui/DesignSystem/DsColorScheme.vue'
 import DsSectionContainer from '@/components/ui/DesignSystem/DsSectionContainer.vue'
 import DsTextLink from '@/components/ui/DesignSystem/DsTextLink.vue'
 
@@ -24,6 +25,7 @@ useHead({
       <p class="font-manrope mt-4 max-w-3xl text-sm leading-relaxed opacity-78 md:text-base">
         Pure black and pure white as base. Accent appears only as signal for interaction and hierarchy.
       </p>
+      <DsColorScheme />
     </DsSectionContainer>
 
     <DsSectionContainer spacing="sm" layout="block">
@@ -55,49 +57,104 @@ useHead({
         </h2>
       </div>
 
-      <div class="grid gap-6 lg:grid-cols-2">
-        <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
-          <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-            Variants
-          </p>
-          <div class="mt-4 flex flex-wrap gap-3">
-            <DsButton variant="primary">
+      <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
+        <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
+          Variant State Matrix
+        </p>
+        <div class="grid mt-4 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <section class="border border-pureBlack/12 rounded-lg border-solid p-3 dark:border-pureWhite/12">
+            <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
               Primary
-            </DsButton>
-            <DsButton variant="secondary">
-              Secondary
-            </DsButton>
-            <DsButton variant="tertiary">
-              Tertiary
-            </DsButton>
-            <DsButton variant="link">
-              Link Button
-            </DsButton>
-          </div>
-        </article>
+            </p>
+            <div class="mt-3 flex flex-col items-start gap-2">
+              <DsButton variant="primary">
+                primary
+              </DsButton>
+              <DsButton variant="primary" preview-state="hover">
+                primary-hover
+              </DsButton>
+              <DsButton variant="primary" preview-state="active">
+                primary-active
+              </DsButton>
+              <DsButton variant="primary" preview-state="focus-visible">
+                primary-focus-visible
+              </DsButton>
+              <DsButton variant="primary" disabled>
+                primary-disabled
+              </DsButton>
+            </div>
+          </section>
 
-        <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
-          <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-            States
-          </p>
-          <div class="mt-4 flex flex-wrap gap-3">
-            <DsButton variant="primary" disabled>
-              Disabled
-            </DsButton>
-            <DsButton variant="secondary">
-              Hover me
-            </DsButton>
-            <DsButton variant="tertiary">
-              Focus me (tab)
-            </DsButton>
-          </div>
-          <ul class="font-manrope mt-4 text-xs leading-relaxed opacity-75 space-y-1">
-            <li>Hover: signal tint without changing structural layout.</li>
-            <li>Focus: clear ring for keyboard navigation.</li>
-            <li>Disabled: reduced opacity and no pointer interaction.</li>
-          </ul>
-        </article>
-      </div>
+          <section class="border border-pureBlack/12 rounded-lg border-solid p-3 dark:border-pureWhite/12">
+            <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
+              Secondary
+            </p>
+            <div class="mt-3 flex flex-col items-start gap-2">
+              <DsButton variant="secondary">
+                secondary
+              </DsButton>
+              <DsButton variant="secondary" preview-state="hover">
+                secondary-hover
+              </DsButton>
+              <DsButton variant="secondary" preview-state="active">
+                secondary-active
+              </DsButton>
+              <DsButton variant="secondary" preview-state="focus-visible">
+                secondary-focus-visible
+              </DsButton>
+              <DsButton variant="secondary" disabled>
+                secondary-disabled
+              </DsButton>
+            </div>
+          </section>
+
+          <section class="border border-pureBlack/12 rounded-lg border-solid p-3 dark:border-pureWhite/12">
+            <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
+              Tertiary
+            </p>
+            <div class="mt-3 flex flex-col items-start gap-2">
+              <DsButton variant="tertiary">
+                tertiary
+              </DsButton>
+              <DsButton variant="tertiary" preview-state="hover">
+                tertiary-hover
+              </DsButton>
+              <DsButton variant="tertiary" preview-state="active">
+                tertiary-active
+              </DsButton>
+              <DsButton variant="tertiary" preview-state="focus-visible">
+                tertiary-focus-visible
+              </DsButton>
+              <DsButton variant="tertiary" disabled>
+                tertiary-disabled
+              </DsButton>
+            </div>
+          </section>
+
+          <section class="border border-pureBlack/12 rounded-lg border-solid p-3 dark:border-pureWhite/12">
+            <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
+              Quartery
+            </p>
+            <div class="mt-3 flex flex-col items-start gap-2">
+              <DsButton variant="quartery">
+                quartery
+              </DsButton>
+              <DsButton variant="quartery" preview-state="hover">
+                quartery-hover
+              </DsButton>
+              <DsButton variant="quartery" preview-state="active">
+                quartery-active
+              </DsButton>
+              <DsButton variant="quartery" preview-state="focus-visible">
+                quartery-focus-visible
+              </DsButton>
+              <DsButton variant="quartery" disabled>
+                quartery-disabled
+              </DsButton>
+            </div>
+          </section>
+        </div>
+      </article>
 
       <article class="mt-6 border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
         <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
@@ -107,7 +164,7 @@ useHead({
           <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Font</span> → Space Grotesk</li>
           <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Weight</span> → 400 (uppercase meta cadence)</li>
           <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Intention</span> → Fast CTA scan, compact editorial control</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Color</span> → Pure black/white base + teal accent for focus/hover</li>
+          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Color</span> → Teal role matrix for primary/secondary/tertiary/quartery + full interaction states</li>
         </ul>
       </article>
     </DsSectionContainer>
