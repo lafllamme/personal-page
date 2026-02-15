@@ -54,3 +54,14 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenzen: `img_1`, `img_3`
+### Bildanalyse
+- `img_1` liefert klares Post-Kartenmuster mit Meta-Labels.
+- `img_3` zeigt Carousel/Slider-Logik fuer Featured Content.
+- Wichtig fuer System: statische Card-Basis + optionale horizontale Bewegung.
+
+### Abgeleitete Basis-Komponenten
+- `EditorialPostCard`
+- `FeaturedCarousel`
+- `CarouselNavControls`

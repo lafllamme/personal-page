@@ -1,122 +1,73 @@
-# Component Matrix v1 (Layout Fixed)
+# Component Matrix v2 - Foundation Only
 
-> Zweck: Ein fixes Seiten-Skelett definieren, damit wir Typografie, Spacing und Color fair vergleichen koennen.
-> Status: Explorativ, aber als verbindliche Arbeitsbasis fuer die naechste Iteration gedacht.
+> Status: Active Build Matrix (2026-02-15)
+> Ziel: Nur Basis-Komponenten definieren, damit wir danach gezielt Screens und Storybook-artige Demos bauen.
+> Scope: Pure Black / Pure White + Accent-Familie (Radix Teal), Swiss-Style Struktur, TechNews Demo-Content.
 
-## 1) Fixed Layout Blueprint
+## 1) Arbeitsprinzip
+- Layoutstruktur bleibt stabil (`Section -> Container -> Grid/Stack`).
+- Komponenten werden zuerst neutral/foundation gebaut, danach erst in komplexe Kompositionen ueberfuehrt.
+- Jede Foundation-Komponente bekommt feste States und klare Token-Abhaengigkeiten.
 
-### 1.1 Container und Grid
-| Regel | Desktop | Tablet | Mobile |
-|---|---|---|---|
-| Max Content Width | 1440px | 100% | 100% |
-| Seitenpadding | 48px | 32px | 20px |
-| Spalten | 12 | 8 | 4 |
-| Gutter | 24px | 20px | 16px |
-| Baseline Unit | 8px | 8px | 8px |
+## 2) Quellenbasis (dieser Sprint)
+- `agency/img_4`
+- `brand/img_3`
+- `cloth/img_2`, `cloth/img_3`, `cloth/img_4`, `cloth/img_5`, `cloth/img_7`
+- `construct/img_1`, `construct/img_3`
+- `construct-2/img_1`, `construct-2/img_2`
+- `estate/img_2`
+- `fashion/img`
+- `furniture/img_1`
+- `magazine-2/img`
+- `magazine-3/img_1`, `magazine-3/img_3`
+- `music` (Landing)
+- `photography/img_4`
+- `portfolio/img_1`
+- `product/img_1`
+- `run/img_1`
+- `skate` (whole concept)
+- `sport/img_1`
+- `studio` (whole concept)
+- `tech/img_1`
 
-### 1.2 Vertikaler Seitenrhythmus
-| Token | Wert | Einsatz |
-|---|---|---|
-| `space.section.xl` | 160px | Hero zu Main Transition |
-| `space.section.l` | 112px | Hauptsektionen |
-| `space.section.m` | 80px | Sektionen in dichteren Views |
-| `space.section.s` | 56px | engere Gruppierungen |
-| `space.block` | 32px | innerhalb einer Komponente |
-| `space.inline` | 16px | innerhalb von Rows |
+## 3) Foundation-Komponenten (P0 zuerst)
 
-### 1.3 Page Skeleton (Reihenfolge fix)
-1. `Top Utility / Micro Nav`
-2. `Hero` (HeroSplit oder HeroStack)
-3. `Meta Row` (Author, Tags, Date, Reading Time)
-4. `Primary Content Rail/Grid`
-5. `Narrative Block` (Longform oder Quote)
-6. `CTA Strip`
-7. `Footer Data Block`
+| Prio | Komponente | Zweck | Pflicht-States | Primäre Referenzen | Demo-Content (TechNews) |
+|---|---|---|---|---|---|
+| P0 | `DsSection` | Vollbreiten-Sektionsblock mit vertikalem Rhythmus | n/a | `cloth/img_2`, `studio`, `tech/img_1` | Kapitel: Hero, Pulse, Features, Footer |
+| P0 | `DsPageContainer` | Content-Breite + responsive Gutter | n/a | `agency/img_4`, `construct/img_1` | 12/8/4 Spalten mit festen Rändern |
+| P0 | `DsGrid` | Rastersteuerung fuer asymmetrische/gleichmaessige Layouts | n/a | `construct-2/img_1`, `estate/img_2` | Storygrid, Market-Pulse-Rail |
+| P0 | `DsHeadingBlock` | Kicker + Title + Dek + Meta | n/a | `cloth/img_2`, `brand/img_3`, `run/img_1` | "TechNews Weekly", Datum, Autor |
+| P0 | `DsButton` | Primary/Secondary/Tertiary/Quartery CTA | `default,hover,active,focus-visible,disabled` | `brand/img_3`, `music`, `sport/img_1` | "Read Brief", "View Signals" |
+| P0 | `DsTextLink` | Inline Aktion im Fliesstext | `default,hover,focus-visible,visited,disabled` | `magazine-2/img`, `portfolio/img_1` | "Read full report" |
+| P0 | `DsInput` | Eingabe-Feldsystem | `default,hover,focus-visible,error,disabled` | `magazine-2/img`, `agency/img_4` | Search, Newsletter, Filter |
+| P0 | `DsTag` | Kategorisierung/Filterchips | `default,hover,active,focus-visible,disabled` | `cloth/img_3`, `magazine-3/img_1` | AI, Infra, Policy, Security |
+| P0 | `DsCard` | Universelle Kartenflaeche fuer Story/Media/Meta | `default,hover,focus-within,disabled` | `agency/img_4`, `estate/img_2`, `photography/img_4` | Storykarten mit Bild+Teaser |
+| P0 | `DsDivider` | Kapitel- und Modultrenner | n/a | `portfolio/img_1`, `construct/img_3` | horizontale Rules im Feed |
 
-## 2) Invariant vs Variant (Systemregel)
+## 4) Foundation-Komponenten (P1 direkt danach)
 
-| Ebene | Fix (Invariant) | Variabel (Variant) |
-|---|---|---|
-| Informationsarchitektur | Reihenfolge der 7 Slots | keine |
-| Komponenten-Anatomie | Pflichtfelder je Komponente | Typostil, spacing-dichte, Farbe |
-| Grid | 12/8/4 + Gutter + Seitenpadding | keine |
-| Typografie | Rollenmodell (Display, Headline, Body, Meta, Quote, Signal) | konkrete Fontfamilien pro Rolle |
-| Spacing | Tokenstruktur (`section`, `block`, `inline`) | Wertepack (`airy`, `balanced`, `dense`) |
-| Farbe | Rollen (`bg`, `surface`, `text`, `muted`, `accent`) | Hex-Werte je Pack |
+| Prio | Komponente | Zweck | Pflicht-States | Primäre Referenzen | Demo-Content (TechNews) |
+|---|---|---|---|---|---|
+| P1 | `DsAuthorRow` | Autor, Rolle, Datum, Lesedauer | n/a | `cloth/img_2`, `magazine-3/img_1` | "Mara Stein / 8 min / Feb 2026" |
+| P1 | `DsMarketPulseItem` | Kennzahl + Label + Note | n/a | `run/img_1`, `construct-2/img_2`, `tech/img_1` | "Critical incidents: 03" |
+| P1 | `DsAccordion` | Expandierbare Info-Cluster | `default,hover,focus-visible,open,disabled` | `skate`, `music` | "Signal Notes", "Policy Update" |
+| P1 | `DsMediaFrame` | Bild-/Video-Frame mit Ratio-Handling | n/a | `estate/img_2`, `product/img_1`, `photography/img_4` | Hero image, article cover |
+| P1 | `DsCarouselControls` | Navigation fuer Slider/Featured-Rails | `default,hover,active,focus-visible,disabled` | `magazine-3/img_3`, `music` | Featured stories carousel |
+| P1 | `DsFooterBlock` | strukturierter Abschluss (links + legal + social) | n/a | `cloth/img_7`, `sport/img_1`, `portfolio/img_1` | About, Legal, Contact |
 
-## 3) Komponentenmatrix (v1 Proposals)
+## 5) Noch nicht bauen (Out of Scope in Foundation)
+- Komplexe Hero-Collagen mit freiem Layering.
+- Individuelle Kampagnenanimationen pro Seite.
+- Vollstaendige page-spezifische Kompositionen (`CampaignHero`, `InnovationHero`) als eigene Endkomponenten.
 
-| Komponente | Rolle im Flow | Pflicht-Anatomie (fix) | Variant Knobs | No-Go |
-|---|---|---|---|---|
-| `TopUtilityBar` | Orientierung | Logo/Brand, 2-6 Links, optional Search | Typo-Size, Divider-Stil, Color-Tone | keine zweite Hauptnavigation |
-| `HeroSplit` | Einstieg | Eyebrow, H1, Supporting Copy, Visual, Primary CTA | Bildratio, Display-Scale, Textbreite | frei schwebende Elemente ohne Rasterbezug |
-| `HeroStack` | Alternative Einstieg | Eyebrow, H1, 1-2 Supporting Blocks, Visual optional | vertikaler Abstand, Max-Textbreite | unklare H1/H2-Hierarchie |
-| `AuthorMetaRow` | Kontext | Author, Rolle, Datum, Kategorie, Reading Time | Label-Stil, Separator, Tag-Style | fehlende semantische Reihenfolge |
-| `TagCluster` | Filtern/Markieren | 3-8 Tags, 1 active state | Pill vs Texttag, Contrast Tier | mehr als 2 visuelle Prioritaeten |
-| `EditorialCard` | Content Unit | Image, Kicker, Title, Meta, Teaser, Action | Card density, Crop ratio, Accent usage | inkonsistente Titelzeilenlaengen |
-| `MediaMosaic` | Dichte Bildausspielung | 3-9 Items im festen Grid | Bildratio-Sets, gap scale | freie Collage ohne Grid |
-| `LongformBlock` | Tiefe / Argumentation | H2, 2-5 Paragraphen, optional Pull-Quote | max line width, paragraph spacing | zu breite Textzeilen |
-| `QuoteBlock` | Kontrast im Lesefluss | Quote Text, Source, optional Marker | Quote font role, marker color | dekorative Zitate ohne Inhalt |
-| `StatsRail` | Fakten/Trust | 3-6 Kennzahlen, Label, unit | Zahl-Groesse, divider style | uneinheitliche Zahlformate |
-| `CTAStrip` | Aktivierung | kurzer Claim, 1 primary action, optional secondary | accent intensity, border style, icon use | mehr als 2 CTA-Ebenen |
-| `FooterDataBlock` | Abschluss | Kontakt, Social, Legal, optional BackToTop | link density, column count | fehlende Lesbarkeit im Low-Contrast |
+## 6) Token-Abhaengigkeiten (verbindlich)
+- Farbe: Pure Black / Pure White + Radix Teal Stufen aus `DsColorScheme`.
+- Typografie-Basis: P04-MPZ01 Mapping (Display/Headline/Body/Meta/Quote + Signal-Rolle).
+- Spacing: section/block/inline als feste Leiter.
+- Border-Regel: bei UnoCSS immer `border-solid`, sobald `border*` verwendet wird.
 
-## 4) Assembly Proposals (schnell testbar)
-
-| Blueprint | Ziel | Zusammensetzung |
-|---|---|---|
-| `B1 Editorial Balanced` | Lesbarkeit + Struktur | TopUtilityBar + HeroSplit + AuthorMetaRow + EditorialCard Grid + LongformBlock + CTAStrip + FooterDataBlock |
-| `B2 Visual Dense` | Hohe Dichte kontrollieren | TopUtilityBar + HeroSplit + TagCluster + MediaMosaic + QuoteBlock + CTAStrip + FooterDataBlock |
-| `B3 Corporate Clarity` | Vertrauen + Fakten | TopUtilityBar + HeroStack + StatsRail + EditorialCard List + LongformBlock + CTAStrip + FooterDataBlock |
-
-## 5) Decision Gates fuer Reviews
-
-| Gate | Frage | Bestehen wenn |
-|---|---|---|
-| `Hierarchy Gate` | Ist der Fokus in 3 Sekunden klar? | H1, Primarbild, CTA sind sofort identifizierbar |
-| `Scan Gate` | Kann ich Content ohne Scroll-Frust scannen? | Meta und Cards sind rhythmisch und einheitlich |
-| `Readability Gate` | Bleiben Texte auf allen Tonalitaeten lesbar? | Kontrast + Zeilenlaenge innerhalb der Limits |
-| `System Gate` | Fuehlt es sich wie ein System an? | Komponenten wiederholen sich klar ueber Varianten |
-
-## 6) Direkt naechster Umsetzungsschritt
-1. `B1` als Referenzseite bauen.
-2. Mit mindestens 3 Token-Packs rendern.
-3. Review nach den 4 Gates.
-4. Erst danach Einzelkomponenten verfeinern.
-
-## 7) Finales Komponenten-Set (P04-MPZ01 + Teal)
-
-> Basis: Winner-Layout bleibt stabil, nur Signalfarbe wird finalisiert.
-> Token-Referenz: [PALETTE-RADIX-TEAL-911.md](../../system/ui/PALETTE-RADIX-TEAL-911.md)
-
-### 7.1 Build Phase A (zuerst bauen)
-| Komponente | Hauptquelle (Ordner/Bild) | Zweck |
-|---|---|---|
-| `CampaignHero` | `cloth/img_2`, `run/img_1`, `sport/img_1` | Double-Headline, Badge-Layer, Koordinaten-/Meta-Row, starker Einstieg |
-| `TopUtilityBar` | `agency/img_4`, `magazine-2/img` | Navigation, Search, Filter, Micro-Infos |
-| `MarketPulseRail` | `construct/img_1`, `construct-2/img_2` | Kennzahlen mit sauberer Scanbarkeit |
-| `TagCluster` | `music/img`, `magazine-3/img_1` | Kategorien und aktive States |
-| `CTAStrip` | `brand/img_3`, `portfolio/img_1` | Primarhandlung und Conversion-Punkt |
-
-### 7.2 Build Phase B (direkt danach)
-| Komponente | Hauptquelle (Ordner/Bild) | Zweck |
-|---|---|---|
-| `EditorialCardGrid` | `estate/img_2`, `photography/img_4` | Storykarten mit Bild + Teaser + Meta |
-| `FeatureCarousel` | `magazine-3/img_3`, `music/img` | Post-/Story-Karussell fuer Top-Inhalte |
-| `ImageGalleryMosaic` | `estate/img_2`, `fashion/img` | Dichte Bildkomposition ohne Grid-Drift |
-| `LongformBlock` | `furniture/img_1`, `studio/img` | Ruhige Texttiefe mit hoher Lesbarkeit |
-| `ProjectListRail` | `portfolio/img_1`, `product/img_1` | Lineare Listen-/Spec-Pattern |
-
-### 7.3 Build Phase C (Brand-Details)
-| Komponente | Hauptquelle (Ordner/Bild) | Zweck |
-|---|---|---|
-| `BadgeMarkerSystem` | `cloth/img_2`, `brand/img_3` | Status- und Utility-Marker |
-| `HeroSignatureFooter` | `cloth/img_7`, `run/img_1` | Dominanter Abschlussbereich mit Brand-Typo |
-| `SpecLabelRow` | `tech/img_1`, `product/img_1` | kleine technische/kontextuelle Labels |
-| `QuoteNarrowBlock` | `skate` (gesamt), `studio/img` | ruhige Kontrastzone im Flow |
-
-### 7.4 Was "final" fuer den Start bedeutet
-- Wir bauen zuerst nur die obigen Komponenten, keine neuen Muster ausserhalb der Matrix.
-- `P04-MPZ01` bleibt die Typo-/Spacing-Referenz.
-- Teal (`9/11`) wird als einzige Akzentfamilie getestet und dokumentiert.
-- `Zalando Sans Expanded` wird als `Signal`-Typo in `CampaignHero` und `MarketPulseRail` mitgebaut (nicht als Fliesstext-Headline).
+## 7) Nächster Schritt (nach dieser Matrix)
+1. `P0` Komponenten in Design-System-Page als State-Matrix darstellen.
+2. Jede P0-Komponente mit TechNews Dummy Content fuellen.
+3. Danach `P1` Komponenten ergänzen und erste Landing-Komposition aufbauen.

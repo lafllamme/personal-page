@@ -54,3 +54,13 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenz: `img_2`
+### Bildanalyse
+- `img_2` zeigt eine geordnete Image-Gallery mit ruhigem Spacing und hoher Bildprioritaet.
+- Wichtig fuer System: Gallery-Komposition funktioniert ohne visuelle Effekte, nur ueber Raster.
+
+### Abgeleitete Basis-Komponenten
+- `ImageGalleryGrid`
+- `GalleryItemCard`
+- `GalleryMetaCaption`

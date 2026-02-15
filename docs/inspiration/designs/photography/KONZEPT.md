@@ -54,3 +54,13 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenz: `img_4`
+### Bildanalyse
+- `img_4` zeigt ein sauberes Portfolio-Editorial mit grossen Bildankern und ruhigen Textspalten.
+- Wichtig fuer System: Bild und Text sind gleichberechtigte Module mit klaren Abständen.
+
+### Abgeleitete Basis-Komponenten
+- `PortfolioHeroFrame`
+- `ProjectMetaColumn`
+- `ImageStoryGrid`

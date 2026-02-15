@@ -54,3 +54,14 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenz: `img_1` (Whole Concept)
+### Bildanalyse
+- `img_1` vereint Premium-Tech-Look mit klarer Editorial-Hierarchie und Micro-Label-System.
+- Wichtig fuer System: Serif/Sans-Kontrast gezielt als Hierarchieinstrument.
+
+### Abgeleitete Basis-Komponenten
+- `InnovationHero`
+- `FeatureCardSet`
+- `NarrativeColumn`
+- `SpecLabelRow`

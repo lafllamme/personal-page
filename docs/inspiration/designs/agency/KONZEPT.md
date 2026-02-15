@@ -54,3 +54,18 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenz: `img_4`
+### Bildanalyse
+- `img_4` zeigt ein editoriales Mosaik mit klaren Kartenfenstern, horizontalem Info-Band und starkem Scan-Verhalten.
+- Layoutwirkung: grosse Hero-Story als Anker, flankiert von kleineren Story-Karten in gleichmaessigem Rhythmus.
+- Wichtig fuer System: Bildkacheln und Textkacheln haben gleichwertige Rasterlogik.
+
+### Abgeleitete Basis-Komponenten
+- `TopUtilityBar` (micro nav + search)
+- `HeroEditorialSplit` (Hauptstory links, Supportkarten rechts)
+- `StoryCard` (Kicker, Titel, Meta, Teaser)
+- `NewsTickerBar` (horizontale Laufschicht)
+
+### Demo-Content-Richtung
+- TechNews Magazine: "AI Platform", "Infra", "Policy", "Shipping" als card categories.

@@ -54,3 +54,21 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenzen: `img_2`, `img_3`, `img_4`, `img_5`, `img_7`
+### Bildanalyse
+- `img_2`: Hero-Masterpattern mit Double Headline, Badges, Koordinaten-/Metazeile, rechts oben Utility-Typo.
+- `img_3`-`img_5`: modulare Story-/Product-Zonen, dichte Navigationsrail, Marker/Badge-System.
+- `img_7`: starker Footer/Outro mit Brand-Typo als Abschlussanker.
+- Wichtig fuer System: dieses Set liefert ein nahezu komplettes Seitenmodell von Hero bis Footer.
+
+### Abgeleitete Basis-Komponenten
+- `HeroDoubleHeadline` (Display + Secondary Display)
+- `BadgeMarkerRow`
+- `CoordinateMetaRow`
+- `DenseNavRail`
+- `FeatureGrid`
+- `BrandOutroFooter`
+
+### Demo-Content-Richtung
+- TechNews: "Market Pulse" als Double-Headline-Section, Badge-Marker fuer Prioritaet/Status.

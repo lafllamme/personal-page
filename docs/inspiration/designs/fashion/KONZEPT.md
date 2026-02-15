@@ -54,3 +54,14 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenz: `img`
+### Bildanalyse
+- Das Hauptbild zeigt posterartige Komposition mit klarer linker Headline-Kante und modularen Medienfeldern.
+- Wichtig fuer System: starke Hero-Flanke + nachgelagerte Expertise-/Team-Module.
+
+### Abgeleitete Basis-Komponenten
+- `PosterHero`
+- `ExpertiseList`
+- `MediaTileRow`
+- `ContactMarker`

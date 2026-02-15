@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
-import DsColorScheme from '@/components/ui/DesignSystem/DsColorScheme.vue'
+import DsCard from '@/components/ui/DesignSystem/DsCard.vue'
+import DsDivider from '@/components/ui/DesignSystem/DsDivider.vue'
+import DsField from '@/components/ui/DesignSystem/DsField.vue'
+import DsHeadingBlock from '@/components/ui/DesignSystem/DsHeadingBlock.vue'
+import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
 import DsSectionContainer from '@/components/ui/DesignSystem/DsSectionContainer.vue'
-import DsTextLink from '@/components/ui/DesignSystem/DsTextLink.vue'
+import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
+import DsTextarea from '@/components/ui/DesignSystem/DsTextarea.vue'
+import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
 definePageMeta({
   layout: 'design-system',
@@ -11,39 +17,105 @@ definePageMeta({
 useHead({
   title: 'Design System - Basics',
 })
+
+const sampleInput = ref('')
+const sampleTextarea = ref('')
+const sampleSelect = ref('')
+
+const selectOptions = [
+  { label: 'AI', value: 'ai' },
+  { label: 'Infra', value: 'infra' },
+  { label: 'Policy', value: 'policy' },
+]
 </script>
 
 <template>
   <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
     <DsSectionContainer as="header" spacing="lg" layout="block">
       <p class="space-grotesk-regular text-[10px] tracking-[0.2em] uppercase opacity-65">
-        P04-MPZ01 · Swiss Signal Orange Clone (MP Zalando) · System Bible
+        P04-MPZ01 · Foundation Build
       </p>
       <h1 class="font-clash-regular mt-3 text-[clamp(2rem,5.8vw,4.8rem)] leading-[0.95] uppercase">
-        Editorial Basics
+        Intro
       </h1>
       <p class="font-manrope mt-4 max-w-3xl text-sm leading-relaxed opacity-78 md:text-base">
-        Pure black and pure white as base. Accent appears only as signal for interaction and hierarchy.
+        Pure black and pure white as base. Accent remains controlled via Radix Teal and is only used for interaction and hierarchy.
       </p>
-      <DsColorScheme />
     </DsSectionContainer>
 
-    <DsSectionContainer spacing="sm" layout="block">
-      <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
+    <DsSectionContainer layout="block">
+      <div class="mb-7">
         <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
-          Canonical Type Mapping
+          foundation
         </p>
-        <h2 class="font-clash-regular mt-2 text-[clamp(1.2rem,2vw,1.7rem)] leading-tight">
-          P04-MPZ01 Typography is locked for Design System foundations.
+        <h2 class="font-clash-regular mt-2 text-[clamp(1.45rem,2.6vw,2.35rem)] leading-tight">
+          Typography
         </h2>
-        <ul class="font-manrope grid mt-3 gap-1 text-sm leading-relaxed opacity-85 md:grid-cols-2">
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Display</span> → Druk Bold</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Headline</span> → Clash Display</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Body</span> → Manrope</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Meta / UI</span> → Space Grotesk</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Quote</span> → Libre Baskerville</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Market Pulse Metric</span> → Zalando Sans Expanded</li>
-        </ul>
+      </div>
+
+      <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
+        <div class="grid gap-4 md:grid-cols-2">
+          <div class="grid gap-2">
+            <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
+              display
+            </DsTypography>
+            <DsTypography as="h2" role="display" size="3xl" uppercase>
+              Signal Desk
+            </DsTypography>
+          </div>
+
+          <div class="grid gap-2">
+            <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
+              headline
+            </DsTypography>
+            <DsTypography as="h3" role="headline" size="2xl" uppercase>
+              Editorial hierarchy stays strict
+            </DsTypography>
+          </div>
+
+          <div class="grid gap-2">
+            <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
+              body
+            </DsTypography>
+            <DsTypography as="p" role="body" size="md">
+              Teams evaluate AI systems not only by quality, but by auditability, rollback speed, and operational clarity.
+            </DsTypography>
+          </div>
+
+          <div class="grid gap-2">
+            <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
+              quote + signal
+            </DsTypography>
+            <DsTypography as="blockquote" role="quote" size="lg">
+              “Consistency is not visual sameness, it is predictable decision flow.”
+            </DsTypography>
+            <DsTypography as="p" role="signal" size="sm" uppercase>
+              Market Pulse 64
+            </DsTypography>
+          </div>
+        </div>
+      </article>
+    </DsSectionContainer>
+
+    <DsSectionContainer layout="block">
+      <div class="mb-7">
+        <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
+          foundation
+        </p>
+        <h2 class="font-clash-regular mt-2 text-[clamp(1.45rem,2.6vw,2.35rem)] leading-tight">
+          Heading Block
+        </h2>
+      </div>
+
+      <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
+        <DsHeadingBlock
+          kicker="TechNews Weekly"
+          title="Policy, Platform, Product"
+          dek="One reusable heading pattern for section intros: kicker, clear title, short supporting dek, and compact metadata row."
+          :meta="['Mara Stein', 'Feb 15, 2026', '8 min read']"
+          title-as="h2"
+          title-size="2xl"
+        />
       </article>
     </DsSectionContainer>
 
@@ -68,19 +140,31 @@ useHead({
             </p>
             <div class="mt-3 flex flex-col items-start gap-2">
               <DsButton variant="primary">
-                primary
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                hover
+              </p>
               <DsButton variant="primary" preview-state="hover">
-                primary-hover
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                active
+              </p>
               <DsButton variant="primary" preview-state="active">
-                primary-active
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                focus-visible
+              </p>
               <DsButton variant="primary" preview-state="focus-visible">
-                primary-focus-visible
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                disabled
+              </p>
               <DsButton variant="primary" disabled>
-                primary-disabled
+                Click Me
               </DsButton>
             </div>
           </section>
@@ -91,19 +175,31 @@ useHead({
             </p>
             <div class="mt-3 flex flex-col items-start gap-2">
               <DsButton variant="secondary">
-                secondary
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                hover
+              </p>
               <DsButton variant="secondary" preview-state="hover">
-                secondary-hover
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                active
+              </p>
               <DsButton variant="secondary" preview-state="active">
-                secondary-active
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                focus-visible
+              </p>
               <DsButton variant="secondary" preview-state="focus-visible">
-                secondary-focus-visible
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                disabled
+              </p>
               <DsButton variant="secondary" disabled>
-                secondary-disabled
+                Click Me
               </DsButton>
             </div>
           </section>
@@ -114,19 +210,31 @@ useHead({
             </p>
             <div class="mt-3 flex flex-col items-start gap-2">
               <DsButton variant="tertiary">
-                tertiary
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                hover
+              </p>
               <DsButton variant="tertiary" preview-state="hover">
-                tertiary-hover
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                active
+              </p>
               <DsButton variant="tertiary" preview-state="active">
-                tertiary-active
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                focus-visible
+              </p>
               <DsButton variant="tertiary" preview-state="focus-visible">
-                tertiary-focus-visible
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                disabled
+              </p>
               <DsButton variant="tertiary" disabled>
-                tertiary-disabled
+                Click Me
               </DsButton>
             </div>
           </section>
@@ -137,123 +245,188 @@ useHead({
             </p>
             <div class="mt-3 flex flex-col items-start gap-2">
               <DsButton variant="quartery">
-                quartery
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                hover
+              </p>
               <DsButton variant="quartery" preview-state="hover">
-                quartery-hover
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                active
+              </p>
               <DsButton variant="quartery" preview-state="active">
-                quartery-active
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                focus-visible
+              </p>
               <DsButton variant="quartery" preview-state="focus-visible">
-                quartery-focus-visible
+                Click Me
               </DsButton>
+              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+                disabled
+              </p>
               <DsButton variant="quartery" disabled>
-                quartery-disabled
+                Click Me
               </DsButton>
             </div>
           </section>
         </div>
-      </article>
-
-      <article class="mt-6 border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
-        <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-          Component Spec
-        </p>
-        <ul class="font-manrope grid mt-3 gap-1 text-sm leading-relaxed opacity-85 md:grid-cols-2">
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Font</span> → Space Grotesk</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Weight</span> → 400 (uppercase meta cadence)</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Intention</span> → Fast CTA scan, compact editorial control</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Color</span> → Teal role matrix for primary/secondary/tertiary/quartery + full interaction states</li>
-        </ul>
       </article>
     </DsSectionContainer>
 
     <DsSectionContainer layout="block">
       <div class="mb-7">
         <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
-          components
+          foundation
         </p>
         <h2 class="font-clash-regular mt-2 text-[clamp(1.45rem,2.6vw,2.35rem)] leading-tight">
-          Link + Container
+          Form Primitives
         </h2>
       </div>
 
-      <div class="grid gap-6 lg:grid-cols-2">
-        <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
-          <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-            Text Link
-          </p>
-          <p class="font-manrope mt-3 text-sm leading-relaxed opacity-85">
-            Use links for inline editorial actions and lightweight navigation.
-          </p>
-          <div class="mt-3">
-            <DsTextLink href="#">
-              Read full story guidelines
-            </DsTextLink>
-          </div>
-        </article>
+      <DsCard variant="default">
+        <div class="grid gap-5 md:grid-cols-2">
+          <DsField
+            for-id="ds-input-default"
+            label="Input"
+            hint="Default input with tokenized focus behavior."
+          >
+            <DsInput
+              id="ds-input-default"
+              v-model="sampleInput"
+              placeholder="Type signal title"
+            />
+          </DsField>
 
-        <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
-          <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-            Container Rules
-          </p>
-          <ul class="font-manrope mt-3 text-sm leading-relaxed opacity-82 space-y-1">
-            <li>`DsSectionContainer`: one primitive for spacing + container + guide.</li>
-            <li>Default content layout is `grid`; switch via `layout` prop.</li>
-            <li>Use `contained=false` for full-bleed sections.</li>
-          </ul>
-        </article>
-      </div>
+          <DsField
+            for-id="ds-input-hover"
+            label="Input State"
+            hint="Preview hover state"
+          >
+            <DsInput
+              id="ds-input-hover"
+              preview-state="hover"
+              placeholder="Hover preview"
+            />
+          </DsField>
 
-      <article class="mt-6 border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
-        <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-          Component Spec
-        </p>
-        <ul class="font-manrope grid mt-3 gap-1 text-sm leading-relaxed opacity-85 md:grid-cols-2">
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Link Font</span> → Manrope</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Link Weight</span> → 400</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Link Intention</span> → Inline editorial navigation with low noise</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Link Color</span> → Teal accent with underline signal</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Container Font</span> → Clash (title), Space Grotesk (meta), Manrope (body)</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Container Intention</span> → Structured chapter rhythm with stable reading width</li>
-        </ul>
-      </article>
+          <DsField
+            for-id="ds-select-default"
+            label="Select"
+            hint="Category selector"
+          >
+            <DsSelect
+              id="ds-select-default"
+              v-model="sampleSelect"
+              :options="selectOptions"
+            />
+          </DsField>
+
+          <DsField
+            for-id="ds-select-focus"
+            label="Select State"
+            hint="Preview focus-visible state"
+          >
+            <DsSelect
+              id="ds-select-focus"
+              preview-state="focus-visible"
+              :options="selectOptions"
+            />
+          </DsField>
+
+          <DsField
+            for-id="ds-textarea-default"
+            label="Textarea"
+            hint="Longform notes"
+            class="md:col-span-2"
+          >
+            <DsTextarea
+              id="ds-textarea-default"
+              v-model="sampleTextarea"
+              placeholder="Write a short editorial annotation..."
+              :rows="4"
+            />
+          </DsField>
+
+          <DsField
+            for-id="ds-textarea-error"
+            label="Textarea Error"
+            error="Please provide at least 30 characters."
+            class="md:col-span-2"
+          >
+            <DsTextarea
+              id="ds-textarea-error"
+              invalid
+              placeholder="Invalid preview"
+              :rows="3"
+            />
+          </DsField>
+        </div>
+      </DsCard>
     </DsSectionContainer>
 
-    <DsSectionContainer :full-viewport="true" layout="block">
+    <DsSectionContainer layout="block">
       <div class="mb-7">
         <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
-          layout
+          foundation
         </p>
         <h2 class="font-clash-regular mt-2 text-[clamp(1.45rem,2.6vw,2.35rem)] leading-tight">
-          Viewport Section
+          Card + Divider
         </h2>
       </div>
 
-      <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16 md:p-7">
-        <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-          Full Viewport Example
-        </p>
-        <h3 class="font-clash-regular mt-2 text-[clamp(1.4rem,2.6vw,2.2rem)] leading-tight">
-          Section can intentionally fill the whole client viewport.
-        </h3>
-        <p class="font-manrope mt-3 max-w-3xl text-sm leading-relaxed opacity-82 md:text-base">
-          This helps build container-by-container editorial pages with strong chapter rhythm.
-        </p>
-      </article>
+      <div class="grid gap-4 md:grid-cols-3">
+        <DsCard variant="default">
+          <DsTypography as="p" role="meta" size="xs" uppercase tone="muted">
+            default
+          </DsTypography>
+          <DsTypography as="h3" role="headline" size="lg" class="mt-2" uppercase>
+            Story Card
+          </DsTypography>
+          <DsTypography as="p" role="body" size="sm" tone="muted" class="mt-2">
+            Baseline surface for editorial modules.
+          </DsTypography>
+        </DsCard>
 
-      <article class="mt-6 border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16 md:p-7">
-        <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-          Component Spec
-        </p>
-        <ul class="font-manrope grid mt-3 gap-1 text-sm leading-relaxed opacity-85 md:grid-cols-2">
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Font</span> → Clash section headlines + Manrope body</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Weight</span> → Headline 400, Body 400</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Intention</span> → Full-screen chapter break with clear reading entry</li>
-          <li><span class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">Color</span> → Pure black/white surfaces, accent reserved for actions</li>
-        </ul>
-      </article>
+        <DsCard variant="subtle">
+          <DsTypography as="p" role="meta" size="xs" uppercase tone="muted">
+            subtle
+          </DsTypography>
+          <DsTypography as="h3" role="headline" size="lg" class="mt-2" uppercase>
+            Utility Card
+          </DsTypography>
+          <DsTypography as="p" role="body" size="sm" tone="muted" class="mt-2">
+            Higher surface separation with minimal contrast.
+          </DsTypography>
+        </DsCard>
+
+        <DsCard variant="accent" interactive>
+          <DsTypography as="p" role="meta" size="xs" uppercase tone="muted">
+            accent + interactive
+          </DsTypography>
+          <DsTypography as="h3" role="headline" size="lg" class="mt-2" uppercase>
+            Signal Card
+          </DsTypography>
+          <DsTypography as="p" role="body" size="sm" tone="muted" class="mt-2">
+            Hover and focus-within driven by accent semantics.
+          </DsTypography>
+        </DsCard>
+      </div>
+
+      <DsCard class="mt-4">
+        <div class="grid gap-4 md:grid-cols-[1fr_auto_1fr] md:items-center">
+          <DsTypography as="p" role="body" size="sm">
+            Horizontal divider in content flow
+          </DsTypography>
+          <DsDivider tone="accent" />
+          <DsTypography as="p" role="body" size="sm" class="md:text-right">
+            Accent rule as chapter separator
+          </DsTypography>
+        </div>
+      </DsCard>
     </DsSectionContainer>
   </div>
 </template>

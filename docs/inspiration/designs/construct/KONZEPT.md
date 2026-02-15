@@ -54,3 +54,15 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenzen: `img_1`, `img_3`
+### Bildanalyse
+- `img_1` liefert Projektgrid mit harten Kanten und klaren Meta-Labels.
+- `img_3` zeigt strukturierte Content-Aufteilung (Blog/Services) mit hoher Lesbarkeit.
+- Wichtig fuer System: Architektur aus wiederholbaren Karten + klaren Section-Koepfen.
+
+### Abgeleitete Basis-Komponenten
+- `ProjectGrid`
+- `ProjectCard`
+- `SectionHeader`
+- `ServiceListRail`

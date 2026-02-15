@@ -54,3 +54,13 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenz: Studio Whole Concept
+### Bildanalyse
+- Studio-Referenz arbeitet mit grossen Headline-Feldern, ruhigen Projektinseln und warmer Materialbildsprache.
+- Wichtig fuer System: klare Kapitelblöcke mit viel Luft und präzisen Meta-Labels.
+
+### Abgeleitete Basis-Komponenten
+- `StudioIntroHero`
+- `ProjectSlotGrid`
+- `MetricMetaBadge`

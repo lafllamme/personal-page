@@ -54,3 +54,18 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenz: `img_3`
+### Bildanalyse
+- `img_3` setzt auf Kampagnen-Hero mit uebergrosser Typografie, modulare CTA-Flaechen und markante Bild-Crops.
+- Layoutwirkung: klare 2-Ebenen-Hierarchie (Brand Claim -> Action/Story).
+- Wichtig fuer System: dominante Displayflaeche bleibt im Raster fix, nur Typo-/Color-Tokens variieren.
+
+### Abgeleitete Basis-Komponenten
+- `CampaignHero`
+- `BrandClaimBlock`
+- `PrimaryCtaRow`
+- `PromoMediaTile`
+
+### Demo-Content-Richtung
+- TechNews Hero Claim + "Read Brief" / "View Signals" CTA-Paar.

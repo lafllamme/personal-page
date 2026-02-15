@@ -54,3 +54,13 @@
 - Welche 2-3 Komponenten erzeugen die meiste Wiedererkennbarkeit dieses Stils?
 - Wo koennen wir visuelle Dichte reduzieren, ohne Charakter zu verlieren?
 - Welche Typokombination aus den Favoriten ist hier am robustesten fuer Desktop + Mobile?
+
+## 11) Focus Update (2026-02-15) - Referenz: `img_1`
+### Bildanalyse
+- `img_1` liefert Event-/Countdown-Pattern mit horizontalem Zeitband und Bewegungsdynamik.
+- Wichtig fuer System: Zahl/Datum/Ort-Komponenten muessen klar standardisiert sein.
+
+### Abgeleitete Basis-Komponenten
+- `CountdownHero`
+- `EventTicker`
+- `DateLocationTokenRow`
