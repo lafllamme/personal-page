@@ -64,3 +64,9 @@
 - `MusicLandingHero`
 - `StoryHighlightCard`
 - `SectionTransitionBand`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `landing` | High-impact landing stage + chapter transitions | `DsHeroStage`, `DsSectionTransitionBand` | Layout/Pattern | P2/P1 |
+| `landing` | Alternating story highlight blocks | `DsStoryHighlightCard` | Pattern | P1 |

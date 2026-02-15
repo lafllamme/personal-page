@@ -64,3 +64,8 @@
 - `ProductHero`
 - `SpecGrid`
 - `FeatureStatement`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_1` | Product hero with big claim and object spotlight | `DsProductHero`, `DsFeatureStatement`, `DsSpecGrid` | Pattern | P1 |

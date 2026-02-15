@@ -65,3 +65,8 @@
 - `ProgramAccordion`
 - `StoryTileGrid`
 - `BigOutroCta`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `whole concept` | Near 1:1 transferable academy landing pattern | `DsAcademyHero`, `DsProgramAccordion`, `DsStoryTileGrid`, `DsBigOutroCta` | Pattern | P1 |

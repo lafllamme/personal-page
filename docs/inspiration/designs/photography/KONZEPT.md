@@ -64,3 +64,8 @@
 - `PortfolioHeroFrame`
 - `ProjectMetaColumn`
 - `ImageStoryGrid`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_4` | Balanced image + text editorial portfolio flow | `DsPortfolioFrame`, `DsProjectMetaColumn`, `DsMediaFrame` | Pattern/Foundation | P1/P0 |

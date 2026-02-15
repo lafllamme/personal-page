@@ -66,3 +66,9 @@
 - `TeamStrip`
 - `ProjectStatCard`
 - `SectionToneSwitch`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_1` | Dark hero panel with strict vertical guides | `DsStudioHeroPanel`, `DsGridGuides` | Layout/Pattern | P2 |
+| `img_2` | Team + project stat cards on light canvas | `DsTeamStrip`, `DsMarketPulseItem`, `DsCard` | Pattern/Foundation | P1/P0 |

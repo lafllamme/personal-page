@@ -69,3 +69,10 @@
 
 ### Demo-Content-Richtung
 - TechNews Hero Claim + "Read Brief" / "View Signals" CTA-Paar.
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_3` | Campaign hero with high-impact display + CTA lane | `DsCampaignHero`, `DsCtaRow` | Pattern | P1 |
+| `img_3` | Strong brand block + media split | `DsSplitStage` | Layout | P2 |
+| `img_3` | Marker badge repetition | `DsSignalBadge` | Foundation | P1 |

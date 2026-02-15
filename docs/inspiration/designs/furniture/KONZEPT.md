@@ -64,3 +64,8 @@
 - `LongformIntroBlock`
 - `WarmMediaSlot`
 - `QuoteSupportBlock`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_1` | Calm longform composition with warm visual anchor | `DsLongformBlock`, `DsQuoteBlock`, `DsMediaFrame` | Pattern/Foundation | P1/P0 |

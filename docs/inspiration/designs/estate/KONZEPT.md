@@ -64,3 +64,8 @@
 - `ImageGalleryGrid`
 - `GalleryItemCard`
 - `GalleryMetaCaption`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_2` | Image gallery composition with strict tile rhythm | `DsImageGalleryGrid`, `DsMediaFrame`, `DsGalleryCaption` | Pattern/Foundation | P1/P0 |

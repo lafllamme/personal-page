@@ -64,3 +64,8 @@
 - `StudioIntroHero`
 - `ProjectSlotGrid`
 - `MetricMetaBadge`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `whole concept` | Spacious studio narrative with project islands | `DsStudioIntroHero`, `DsProjectSlotGrid`, `DsMetricMetaBadge` | Pattern | P1 |

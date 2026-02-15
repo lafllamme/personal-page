@@ -65,3 +65,9 @@
 - `ExpertiseList`
 - `MediaTileRow`
 - `ContactMarker`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img` | Poster-like hero composition with expertise list | `DsPosterHero`, `DsExpertiseList` | Pattern | P1 |
+| `img` | Strong media tiles + short copy overlays | `DsMediaTileRow`, `DsCard` | Pattern/Foundation | P1/P0 |

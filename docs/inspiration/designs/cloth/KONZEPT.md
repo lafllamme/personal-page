@@ -72,3 +72,12 @@
 
 ### Demo-Content-Richtung
 - TechNews: "Market Pulse" als Double-Headline-Section, Badge-Marker fuer Prioritaet/Status.
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_2` | Hero concept with double headline, badges, coordinates/meta | `DsHeroDoubleHeadline`, `DsBadgeRow`, `DsCoordinateMetaRow` | Pattern | P1 |
+| `img_3` | Dense content rail with stacked modules | `DsContentRail`, `DsStoryCard` | Pattern | P1 |
+| `img_4` | Multi-panel editorial grid | `DsGrid`, `DsCard`, `DsMediaFrame` | Foundation | P0 |
+| `img_5` | Utility + nav micro-label rhythm | `DsSectionCode`, `DsTag` | Foundation | P0 |
+| `img_7` | Dominant outro/footer brand block | `DsFooterBlock`, `DsBrandOutro` | Pattern | P1 |

@@ -65,3 +65,9 @@
 - `EditorialPostCard`
 - `FeaturedCarousel`
 - `CarouselNavControls`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_1` | Post card clusters with clear metadata hierarchy | `DsEditorialPostCard`, `DsAuthorRow` | Pattern | P1 |
+| `img_3` | Featured carousel mechanics | `DsCarouselControls`, `DsFeaturedCarousel` | Pattern/Foundation | P1/P0 |

@@ -64,3 +64,9 @@
 - `ProjectListRail`
 - `ProjectRow`
 - `InlinePreview`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_1` | Linear project rail for fast selection | `DsProjectListRail`, `DsProjectRow` | Pattern | P1 |
+| `img_1` | Inline preview alongside list | `DsInlinePreview` | Pattern | P2 |

@@ -69,3 +69,10 @@
 
 ### Demo-Content-Richtung
 - TechNews Magazine: "AI Platform", "Infra", "Policy", "Shipping" als card categories.
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_4` | Editorial mosaic with dominant lead story and side cards | `DsStoryLead`, `DsStoryCard`, `DsNewsTickerBar` | Pattern | P1 |
+| `img_4` | Consistent image-to-text tile rhythm | `DsMediaFrame`, `DsCard` | Foundation | P0 |
+| `img_4` | Utility strip on top | `DsTopUtilityNav` | Layout/Pattern | P2 |

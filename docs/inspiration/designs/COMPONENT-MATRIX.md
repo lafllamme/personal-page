@@ -71,3 +71,49 @@
 1. `P0` Komponenten in Design-System-Page als State-Matrix darstellen.
 2. Jede P0-Komponente mit TechNews Dummy Content fuellen.
 3. Danach `P1` Komponenten ergänzen und erste Landing-Komposition aufbauen.
+
+## 8) Inspiration -> Component Pull Map (Top-Tier Focus)
+| Source | Ref | Pull Components | Class |
+|---|---|---|---|
+| `agency` | `img_4` | `DsStoryLead`, `DsStoryCard`, `DsNewsTickerBar` | Pattern |
+| `brand` | `img_3` | `DsCampaignHero`, `DsCtaRow`, `DsSignalBadge` | Pattern/Foundation |
+| `cloth` | `img_2` | `DsHeroDoubleHeadline`, `DsBadgeRow`, `DsCoordinateMetaRow` | Pattern |
+| `cloth` | `img_3`,`img_4`,`img_5` | `DsContentRail`, `DsTag`, `DsSectionCode`, `DsGrid`, `DsCard` | Foundation/Pattern |
+| `cloth` | `img_7` | `DsFooterBlock`, `DsBrandOutro` | Pattern |
+| `construct` | `img_1`,`img_3` | `DsProjectGrid`, `DsProjectCard`, `DsServiceList` | Pattern |
+| `construct-2` | `img_1`,`img_2` | `DsStudioHeroPanel`, `DsTeamStrip`, `DsMarketPulseItem` | Pattern |
+| `estate` | `img_2` | `DsImageGalleryGrid`, `DsMediaFrame`, `DsGalleryCaption` | Foundation/Pattern |
+| `fashion` | `img` | `DsPosterHero`, `DsExpertiseList`, `DsMediaTileRow` | Pattern |
+| `furniture` | `img_1` | `DsLongformBlock`, `DsQuoteBlock` | Pattern |
+| `magazine-2` | `img` | `DsEventList`, `DsPostCard`, `DsCategoryPill` | Pattern |
+| `magazine-3` | `img_1`,`img_3` | `DsEditorialPostCard`, `DsFeaturedCarousel`, `DsCarouselControls` | Pattern/Foundation |
+| `music` | `landing` | `DsHeroStage`, `DsSectionTransitionBand`, `DsStoryHighlightCard` | Layout/Pattern |
+| `photography` | `img_4` | `DsPortfolioFrame`, `DsProjectMetaColumn` | Pattern |
+| `portfolio` | `img_1` | `DsProjectListRail`, `DsProjectRow`, `DsInlinePreview` | Pattern |
+| `product` | `img_1` | `DsProductHero`, `DsSpecGrid`, `DsFeatureStatement` | Pattern |
+| `run` | `img_1` | `DsCountdownHero`, `DsEventTicker`, `DsDateLocationRow` | Pattern |
+| `skate` | `whole concept` | `DsAcademyHero`, `DsProgramAccordion`, `DsStoryTileGrid` | Pattern |
+| `sport` | `img_1` | `DsStreetHero`, `DsLatestStoriesGrid`, `DsProgramList` | Pattern |
+| `studio` | `whole concept` | `DsStudioIntroHero`, `DsProjectSlotGrid`, `DsMetricMetaBadge` | Pattern |
+| `tech` | `img_1` | `DsInnovationHero`, `DsFeatureCardSet`, `DsNarrativeColumn`, `DsSpecLabelRow` | Pattern |
+
+## 9) Storybook Naming Convention (verbindlich)
+- `Foundation/*`: primitives (`Typography`, `Button`, `Field`, `Input`, `Select`, `Textarea`, `Card`, `Divider`, `Tag`, `Grid`, `Stack`, `Cluster`, `MediaFrame`)
+- `Patterns/*`: reusable editorial/product blocks (`AuthorRow`, `MarketPulseItem`, `StoryCard`, `Accordion`, `CTAStrip`)
+- `Layouts/*`: macro structures (`SectionShell`, `HeroStage`, `EditorialPageScaffold`)
+- `References/*`: image-near rebuilds by source (`References/Cloth/img_2 Hero`, `References/Skate/Whole`)
+- `Docs/*`: token maps + usage rules (`Color Roles`, `Type Roles`, `A11y Rules`, `Motion Tokens`)
+
+### Story Naming Rule
+- `<Group>/<Component>/<Story>`
+- Pflichtstories pro Komponente:
+  1. `Playground`
+  2. `Variants`
+  3. `States`
+  4. `Dark Mode`
+  5. `A11y Notes`
+
+## 10) Immediate Build Queue from Sources
+1. `P0 remaining`: `DsTag`, `DsGrid`, `DsStack`, `DsCluster`, `DsMediaFrame`
+2. `P1 starter`: `DsAuthorRow`, `DsMarketPulseItem`, `DsAccordion`
+3. `First source-close references`: `Cloth/img_2`, `Agency/img_4`, `Skate/whole concept`

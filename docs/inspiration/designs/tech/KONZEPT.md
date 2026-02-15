@@ -65,3 +65,8 @@
 - `FeatureCardSet`
 - `NarrativeColumn`
 - `SpecLabelRow`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_1` | Premium-tech editorial with signal labels | `DsInnovationHero`, `DsFeatureCardSet`, `DsNarrativeColumn`, `DsSpecLabelRow` | Pattern | P1 |

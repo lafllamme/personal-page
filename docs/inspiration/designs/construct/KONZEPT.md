@@ -66,3 +66,9 @@
 - `ProjectCard`
 - `SectionHeader`
 - `ServiceListRail`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img_1` | Structured architecture project gallery | `DsProjectGrid`, `DsProjectCard` | Pattern | P1 |
+| `img_3` | Blog/services composition with clean separators | `DsSectionHeader`, `DsDivider`, `DsServiceList` | Foundation/Pattern | P0/P1 |

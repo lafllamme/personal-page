@@ -65,3 +65,9 @@
 - `PostCard`
 - `CategoryPill`
 - `SidebarModule`
+
+## 12) Component Extraction Map (Storybook Input)
+| Ref | Observed Pattern | Pull Component | Type | Priority |
+|---|---|---|---|---|
+| `img` | Complete magazine layout with list-first scan flow | `DsEventList`, `DsPostCard`, `DsCategoryPill` | Pattern | P1 |
+| `img` | Dense editorial information lanes | `DsSectionHeader`, `DsDivider`, `DsTag` | Foundation | P0 |
