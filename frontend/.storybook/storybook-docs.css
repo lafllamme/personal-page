@@ -1,0 +1,228 @@
+/* Keep Storybook docs aligned with app light/dark surface */
+:root {
+  --sb-surface-light: #f2efe6;
+  --sb-surface-dark: #000000;
+  --sb-surface-light-elevated: #fbf9f3;
+  --sb-surface-dark-elevated: #0b0b0b;
+  --sb-border-light: rgba(0, 0, 0, 0.12);
+  --sb-border-dark: rgba(255, 255, 255, 0.16);
+  --sb-text-light: #111111;
+  --sb-text-dark: #f2efe6;
+  --sb-muted-light: rgba(17, 17, 17, 0.64);
+  --sb-muted-dark: rgba(242, 239, 230, 0.72);
+}
+
+/* Docs root */
+.sbdocs,
+.sbdocs-wrapper,
+.sbdocs-preview,
+.docs-story,
+.sbdocs-content {
+  background: var(--sb-surface-light) !important;
+  color: var(--sb-text-light) !important;
+}
+
+/* Keep blocks/cards in docs from looking default-white */
+.sbdocs .docblock-argstable,
+.sbdocs .docblock-source,
+.sbdocs .docblock-code-toggle,
+.sbdocs .docblock-meta,
+.sbdocs .docblock-colorpalette,
+.sbdocs .docblock-typeset,
+.sbdocs .sb-anchor,
+.sbdocs table,
+.sbdocs .sb-bar,
+.sbdocs .docs-story > div {
+  background: var(--sb-surface-light-elevated) !important;
+  border-color: var(--sb-border-light) !important;
+}
+
+.sbdocs .docs-story,
+.sbdocs .docblock-argstable,
+.sbdocs .docblock-argstable table,
+.sbdocs .docblock-argstable thead,
+.sbdocs .docblock-argstable tbody,
+.sbdocs .docblock-argstable tr,
+.sbdocs .docblock-argstable td,
+.sbdocs .docblock-argstable th,
+.sbdocs .docblock-argstable-head,
+.sbdocs .docblock-argstable-body {
+  background: var(--sb-surface-light-elevated) !important;
+}
+
+.sbdocs p,
+.sbdocs li,
+.sbdocs td,
+.sbdocs th,
+.sbdocs span,
+.sbdocs label,
+.sbdocs h1,
+.sbdocs h2,
+.sbdocs h3,
+.sbdocs h4 {
+  color: var(--sb-text-light) !important;
+}
+
+.sbdocs .docblock-argstable-head *,
+.sbdocs .docblock-argstable-body *[data-name='description'],
+.sbdocs .docblock-argstable-body .docblock-argstable-description,
+.sbdocs .docblock-argstable-body .docblock-argstable-summary,
+.sbdocs .sbdocs-code {
+  color: var(--sb-muted-light) !important;
+}
+
+.sbdocs .docblock-argstable-head th,
+.sbdocs .docblock-argstable td,
+.sbdocs .docblock-argstable td *,
+.sbdocs .docblock-argstable th * {
+  color: var(--sb-text-light) !important;
+}
+
+.sbdocs input,
+.sbdocs select,
+.sbdocs textarea,
+.sbdocs button[aria-label],
+.sbdocs .docblock-argstable input,
+.sbdocs .docblock-argstable select {
+  background: var(--sb-surface-light) !important;
+  color: var(--sb-text-light) !important;
+  border-color: var(--sb-border-light) !important;
+}
+
+.sbdocs .sb-bar button,
+.sbdocs .sb-bar [role='button'] {
+  background: var(--sb-surface-light) !important;
+  color: var(--sb-text-light) !important;
+  border-color: var(--sb-border-light) !important;
+}
+
+html.dark .sbdocs,
+html.dark .sbdocs-wrapper,
+html.dark .sbdocs-preview,
+html.dark .docs-story,
+html.dark .sbdocs-content,
+html[data-color-mode='dark'] .sbdocs,
+body[data-color-mode='dark'] .sbdocs {
+  background: var(--sb-surface-dark) !important;
+  color: var(--sb-text-dark) !important;
+}
+
+html.dark .sbdocs .docblock-argstable,
+html.dark .sbdocs .docblock-source,
+html.dark .sbdocs .docblock-code-toggle,
+html.dark .sbdocs .docblock-meta,
+html.dark .sbdocs .docblock-colorpalette,
+html.dark .sbdocs .docblock-typeset,
+html.dark .sbdocs .sb-anchor,
+html.dark .sbdocs table,
+html.dark .sbdocs .sb-bar,
+html.dark .sbdocs .docs-story > div,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable,
+html[data-color-mode='dark'] .sbdocs .docblock-source,
+html[data-color-mode='dark'] .sbdocs .docblock-code-toggle,
+html[data-color-mode='dark'] .sbdocs .docblock-meta,
+html[data-color-mode='dark'] .sbdocs .docblock-colorpalette,
+html[data-color-mode='dark'] .sbdocs .docblock-typeset,
+html[data-color-mode='dark'] .sbdocs .sb-anchor,
+html[data-color-mode='dark'] .sbdocs table,
+html[data-color-mode='dark'] .sbdocs .sb-bar,
+html[data-color-mode='dark'] .sbdocs .docs-story > div {
+  background: var(--sb-surface-dark-elevated) !important;
+  border-color: var(--sb-border-dark) !important;
+}
+
+html.dark .sbdocs .docs-story,
+html.dark .sbdocs .docblock-argstable,
+html.dark .sbdocs .docblock-argstable table,
+html.dark .sbdocs .docblock-argstable thead,
+html.dark .sbdocs .docblock-argstable tbody,
+html.dark .sbdocs .docblock-argstable tr,
+html.dark .sbdocs .docblock-argstable td,
+html.dark .sbdocs .docblock-argstable th,
+html.dark .sbdocs .docblock-argstable-head,
+html.dark .sbdocs .docblock-argstable-body,
+html[data-color-mode='dark'] .sbdocs .docs-story,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable table,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable thead,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable tbody,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable tr,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable td,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable th,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable-head,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable-body {
+  background: var(--sb-surface-dark-elevated) !important;
+}
+
+html.dark .sbdocs p,
+html.dark .sbdocs li,
+html.dark .sbdocs td,
+html.dark .sbdocs th,
+html.dark .sbdocs span,
+html.dark .sbdocs label,
+html.dark .sbdocs h1,
+html.dark .sbdocs h2,
+html.dark .sbdocs h3,
+html.dark .sbdocs h4,
+html[data-color-mode='dark'] .sbdocs p,
+html[data-color-mode='dark'] .sbdocs li,
+html[data-color-mode='dark'] .sbdocs td,
+html[data-color-mode='dark'] .sbdocs th,
+html[data-color-mode='dark'] .sbdocs span,
+html[data-color-mode='dark'] .sbdocs label,
+html[data-color-mode='dark'] .sbdocs h1,
+html[data-color-mode='dark'] .sbdocs h2,
+html[data-color-mode='dark'] .sbdocs h3,
+html[data-color-mode='dark'] .sbdocs h4 {
+  color: var(--sb-text-dark) !important;
+}
+
+html.dark .sbdocs .docblock-argstable-head *,
+html.dark .sbdocs .docblock-argstable-body *[data-name='description'],
+html.dark .sbdocs .docblock-argstable-body .docblock-argstable-description,
+html.dark .sbdocs .docblock-argstable-body .docblock-argstable-summary,
+html.dark .sbdocs .sbdocs-code,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable-head *,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable-body *[data-name='description'],
+html[data-color-mode='dark'] .sbdocs .docblock-argstable-body .docblock-argstable-description,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable-body .docblock-argstable-summary,
+html[data-color-mode='dark'] .sbdocs .sbdocs-code {
+  color: var(--sb-muted-dark) !important;
+}
+
+html.dark .sbdocs .docblock-argstable-head th,
+html.dark .sbdocs .docblock-argstable td,
+html.dark .sbdocs .docblock-argstable td *,
+html.dark .sbdocs .docblock-argstable th *,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable-head th,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable td,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable td *,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable th * {
+  color: var(--sb-text-dark) !important;
+}
+
+html.dark .sbdocs input,
+html.dark .sbdocs select,
+html.dark .sbdocs textarea,
+html.dark .sbdocs button[aria-label],
+html.dark .sbdocs .docblock-argstable input,
+html.dark .sbdocs .docblock-argstable select,
+html[data-color-mode='dark'] .sbdocs input,
+html[data-color-mode='dark'] .sbdocs select,
+html[data-color-mode='dark'] .sbdocs textarea,
+html[data-color-mode='dark'] .sbdocs button[aria-label],
+html[data-color-mode='dark'] .sbdocs .docblock-argstable input,
+html[data-color-mode='dark'] .sbdocs .docblock-argstable select {
+  background: var(--sb-surface-dark) !important;
+  color: var(--sb-text-dark) !important;
+  border-color: var(--sb-border-dark) !important;
+}
+
+html.dark .sbdocs .sb-bar button,
+html.dark .sbdocs .sb-bar [role='button'],
+html[data-color-mode='dark'] .sbdocs .sb-bar button,
+html[data-color-mode='dark'] .sbdocs .sb-bar [role='button'] {
+  background: var(--sb-surface-dark) !important;
+  color: var(--sb-text-dark) !important;
+  border-color: var(--sb-border-dark) !important;
+}
