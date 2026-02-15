@@ -1,6 +1,7 @@
 import type { Preview } from '@storybook/vue3-vite'
 import 'virtual:uno.css'
 import './storybook-fonts.css'
+import './storybook-docs.css'
 import '../app/assets/reset/main.ts'
 
 const preview: Preview = {
@@ -25,6 +26,12 @@ const preview: Preview = {
       if (typeof document !== 'undefined') {
         document.documentElement.classList.toggle('dark', isDark)
         document.documentElement.classList.toggle('light', !isDark)
+        document.documentElement.dataset.colorMode = isDark ? 'dark' : 'light'
+        if (document.body) {
+          document.body.classList.toggle('dark', isDark)
+          document.body.classList.toggle('light', !isDark)
+          document.body.dataset.colorMode = isDark ? 'dark' : 'light'
+        }
       }
       return {
         components: { story },
@@ -35,11 +42,10 @@ const preview: Preview = {
   parameters: {
     controls: { expanded: true },
     backgrounds: {
-      default: 'canvas',
+      default: 'pureWhite',
       values: [
-        { name: 'canvas', value: '#f4f1eb' },
-        { name: 'paper', value: '#ffffff' },
-        { name: 'ink', value: '#0b0b0b' },
+        { name: 'pureWhite', value: '#f2efe6' },
+        { name: 'pureBlack', value: '#000000' },
       ],
     },
   },

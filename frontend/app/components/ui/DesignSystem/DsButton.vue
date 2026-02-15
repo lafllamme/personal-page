@@ -74,6 +74,11 @@ const normalizedPreviewState = computed(() => `is-state-${previewState.value}`)
     text-decoration-color 160ms ease,
     box-shadow 160ms ease,
     transform 120ms ease;
+  display: inline-flex;
+  width: auto;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
 }
 
 .ds-btn:focus-visible {

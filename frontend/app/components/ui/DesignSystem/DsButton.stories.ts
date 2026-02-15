@@ -1,5 +1,8 @@
-import type { Meta, StoryObj } from '@nuxtjs/storybook'
+import { h } from 'vue'
+import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import DsButton from './DsButton.vue'
+import DsButtonMatrixPreview from './DsButtonMatrixPreview.vue'
+import DsSectionContainer from './DsSectionContainer.vue'
 
 const meta = {
   title: 'Design System/Components/DsButton',
@@ -22,11 +25,19 @@ const meta = {
     disabled: { control: 'boolean' },
   },
   render: args => ({
-    components: { DsButton },
+    components: { DsButton, DsSectionContainer },
     setup() {
       return { args }
     },
-    template: '<DsButton v-bind="args">Click Me</DsButton>',
+    template: `
+      <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
+        <DsSectionContainer layout="block" :full-viewport="false" :bordered="false">
+          <div class="flex justify-center">
+            <DsButton v-bind="args">Click Me</DsButton>
+          </div>
+        </DsSectionContainer>
+      </div>
+    `,
   }),
 } satisfies Meta<typeof DsButton>
 
@@ -35,32 +46,30 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
-export const Matrix: Story = {
+export const Variants: Story = {
   render: () => ({
     components: { DsButton },
     template: `
-      <div class="space-y-4">
-        <div class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          ${['primary', 'secondary', 'tertiary', 'quartery']
-            .map(variant => `
-              <section class="border border-solid border-pureBlack/12 rounded-lg p-3 dark:border-pureWhite/12">
-                <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">${variant}</p>
-                <div class="mt-3 flex flex-col items-start gap-2">
-                  <DsButton variant="${variant}">Click Me</DsButton>
-                  <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">hover</p>
-                  <DsButton variant="${variant}" preview-state="hover">Click Me</DsButton>
-                  <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">active</p>
-                  <DsButton variant="${variant}" preview-state="active">Click Me</DsButton>
-                  <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">focus-visible</p>
-                  <DsButton variant="${variant}" preview-state="focus-visible">Click Me</DsButton>
-                  <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">disabled</p>
-                  <DsButton variant="${variant}" disabled>Click Me</DsButton>
-                </div>
-              </section>
-            `)
-            .join('')}
-        </div>
+      <div class="flex flex-wrap items-center gap-3">
+        <DsButton variant="primary">Click Me</DsButton>
+        <DsButton variant="secondary">Click Me</DsButton>
+        <DsButton variant="tertiary">Click Me</DsButton>
+        <DsButton variant="quartery">Click Me</DsButton>
       </div>
     `,
   }),
+  parameters: {
+    layout: 'centered',
+  },
+}
+
+export const Matrix: Story = {
+  render: () => ({
+    render() {
+      return h(DsButtonMatrixPreview)
+    },
+  }),
+  parameters: {
+    layout: 'fullscreen',
+  },
 }

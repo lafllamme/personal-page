@@ -74,3 +74,9 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - A-E Exploration-Rahmen als System-Definition.
 - Alte Swiss-Guide-Doppelungen mit gleichem Inhalt in mehreren Dateien.
 - Generische UI-Kit-Ansatzdateien ohne P04-MPZ01-Stilbindung.
+
+## 9) Storybook + UnoCSS Guardrail (verbindlich)
+- Keine JS-String-Generierung fuer Klassen oder Markup in Stories.
+- Keine Template-String-Loops fuer Matrix-Layouts (`.map(...)` + HTML-Strings).
+- Story-Markup fuer Vergleichsblöcke immer als echte `.vue`-Komponente ausschreiben.
+- Grund: UnoCSS kann dynamisch erzeugte Klassen nicht zuverlässig extrahieren; fehlende Klassen fuehren zu kaputtem Layout (z. B. fehlende `grid-cols`, `items-start`).

@@ -17,7 +17,16 @@ const config: StorybookConfig = {
     autodocs: 'tag',
   },
   viteFinal(config) {
-    config.plugins = [...(config.plugins ?? []), vue(), Unocss()]
+    config.plugins = [
+      ...(config.plugins ?? []),
+      vue(),
+      Unocss({
+        include: [
+          /\.vue(\?[^.]+)?$/,
+          /\.([jt]sx?|mdx?)(\?[^.]+)?$/,
+        ],
+      }),
+    ]
     config.resolve = config.resolve ?? {}
     config.resolve.alias = {
       ...(config.resolve.alias ?? {}),
