@@ -176,3 +176,5 @@ onlyBuiltDependencies:
   - utf-8-validate
   - vue-demi
   - workerd
+catalog:
+  vite: 7.3.1
