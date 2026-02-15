@@ -38,7 +38,7 @@ const wcagSemanticPairs = [
 </script>
 
 <template>
-  <article class="mt-8 border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16 md:p-6">
+  <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16 md:p-6">
     <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
       Radix Teal Colorway
     </p>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsCard from '@/components/ui/DesignSystem/DsCard.vue'
+import DsColorScheme from '@/components/ui/DesignSystem/DsColorScheme.vue'
 import DsDivider from '@/components/ui/DesignSystem/DsDivider.vue'
 import DsField from '@/components/ui/DesignSystem/DsField.vue'
 import DsHeadingBlock from '@/components/ui/DesignSystem/DsHeadingBlock.vue'
@@ -117,6 +118,19 @@ const selectOptions = [
           title-size="2xl"
         />
       </article>
+    </DsSectionContainer>
+
+    <DsSectionContainer layout="block">
+      <div class="mb-7">
+        <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
+          foundation
+        </p>
+        <h2 class="font-clash-regular mt-2 text-[clamp(1.45rem,2.6vw,2.35rem)] leading-tight">
+          Color Scheme
+        </h2>
+      </div>
+
+      <DsColorScheme />
     </DsSectionContainer>
 
     <DsSectionContainer layout="block">
