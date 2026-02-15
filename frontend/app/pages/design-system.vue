@@ -1,13 +1,16 @@
 <script setup lang="ts">
-import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
+import DsButtonMatrixPreview from '@/components/ui/DesignSystem/DsButtonMatrixPreview.vue'
 import DsCard from '@/components/ui/DesignSystem/DsCard.vue'
+import DsCluster from '@/components/ui/DesignSystem/DsCluster.vue'
 import DsColorScheme from '@/components/ui/DesignSystem/DsColorScheme.vue'
 import DsDivider from '@/components/ui/DesignSystem/DsDivider.vue'
 import DsField from '@/components/ui/DesignSystem/DsField.vue'
 import DsHeadingBlock from '@/components/ui/DesignSystem/DsHeadingBlock.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
 import DsSectionContainer from '@/components/ui/DesignSystem/DsSectionContainer.vue'
+import DsSectionHeader from '@/components/ui/DesignSystem/DsSectionHeader.vue'
 import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
+import DsStack from '@/components/ui/DesignSystem/DsStack.vue'
 import DsTextarea from '@/components/ui/DesignSystem/DsTextarea.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
@@ -134,161 +137,45 @@ const selectOptions = [
     </DsSectionContainer>
 
     <DsSectionContainer layout="block">
-      <div class="mb-7">
-        <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
-          components
-        </p>
-        <h2 class="font-clash-regular mt-2 text-[clamp(1.45rem,2.6vw,2.35rem)] leading-tight">
-          Buttons
-        </h2>
-      </div>
+      <DsSectionHeader
+        kicker="components"
+        title="Buttons"
+      />
+      <DsButtonMatrixPreview />
+    </DsSectionContainer>
 
-      <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
-        <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-          Variant State Matrix
-        </p>
-        <div class="grid mt-4 gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <section class="border border-pureBlack/12 rounded-lg border-solid p-3 dark:border-pureWhite/12">
-            <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
-              Primary
-            </p>
-            <div class="mt-3 flex flex-col items-start gap-2">
-              <DsButton variant="primary">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                hover
-              </p>
-              <DsButton variant="primary" preview-state="hover">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                active
-              </p>
-              <DsButton variant="primary" preview-state="active">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                focus-visible
-              </p>
-              <DsButton variant="primary" preview-state="focus-visible">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                disabled
-              </p>
-              <DsButton variant="primary" disabled>
-                Click Me
-              </DsButton>
-            </div>
-          </section>
-
-          <section class="border border-pureBlack/12 rounded-lg border-solid p-3 dark:border-pureWhite/12">
-            <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
-              Secondary
-            </p>
-            <div class="mt-3 flex flex-col items-start gap-2">
-              <DsButton variant="secondary">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                hover
-              </p>
-              <DsButton variant="secondary" preview-state="hover">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                active
-              </p>
-              <DsButton variant="secondary" preview-state="active">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                focus-visible
-              </p>
-              <DsButton variant="secondary" preview-state="focus-visible">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                disabled
-              </p>
-              <DsButton variant="secondary" disabled>
-                Click Me
-              </DsButton>
-            </div>
-          </section>
-
-          <section class="border border-pureBlack/12 rounded-lg border-solid p-3 dark:border-pureWhite/12">
-            <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
-              Tertiary
-            </p>
-            <div class="mt-3 flex flex-col items-start gap-2">
-              <DsButton variant="tertiary">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                hover
-              </p>
-              <DsButton variant="tertiary" preview-state="hover">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                active
-              </p>
-              <DsButton variant="tertiary" preview-state="active">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                focus-visible
-              </p>
-              <DsButton variant="tertiary" preview-state="focus-visible">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                disabled
-              </p>
-              <DsButton variant="tertiary" disabled>
-                Click Me
-              </DsButton>
-            </div>
-          </section>
-
-          <section class="border border-pureBlack/12 rounded-lg border-solid p-3 dark:border-pureWhite/12">
-            <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
-              Quartery
-            </p>
-            <div class="mt-3 flex flex-col items-start gap-2">
-              <DsButton variant="quartery">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                hover
-              </p>
-              <DsButton variant="quartery" preview-state="hover">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                active
-              </p>
-              <DsButton variant="quartery" preview-state="active">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                focus-visible
-              </p>
-              <DsButton variant="quartery" preview-state="focus-visible">
-                Click Me
-              </DsButton>
-              <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-                disabled
-              </p>
-              <DsButton variant="quartery" disabled>
-                Click Me
-              </DsButton>
-            </div>
-          </section>
+    <DsSectionContainer layout="block">
+      <DsSectionHeader
+        kicker="layout primitives"
+        title="Stack + Cluster"
+        description="Stack handles vertical rhythm. Cluster handles wrapped inline groups for tags, meta, and actions."
+      />
+      <DsCard>
+        <div class="grid gap-6 lg:grid-cols-2">
+          <DsStack gap="sm" align="start">
+            <DsTypography as="p" role="meta" size="xs" uppercase tone="muted">
+              DsStack
+            </DsTypography>
+            <DsTypography as="p" role="headline" size="md" uppercase>
+              Vertical Flow
+            </DsTypography>
+            <DsTypography as="p" role="body" size="sm" tone="muted">
+              Headlines, decks, and metadata keep a fixed rhythm.
+            </DsTypography>
+          </DsStack>
+          <DsStack gap="sm" align="start">
+            <DsTypography as="p" role="meta" size="xs" uppercase tone="muted">
+              DsCluster
+            </DsTypography>
+            <DsCluster gap="sm">
+              <span class="space-grotesk-regular border border-pureBlack/18 rounded-full border-solid px-2 py-1 text-[10px] tracking-[0.14em] uppercase dark:border-pureWhite/18">AI</span>
+              <span class="space-grotesk-regular border border-pureBlack/18 rounded-full border-solid px-2 py-1 text-[10px] tracking-[0.14em] uppercase dark:border-pureWhite/18">Policy</span>
+              <span class="space-grotesk-regular border border-pureBlack/18 rounded-full border-solid px-2 py-1 text-[10px] tracking-[0.14em] uppercase dark:border-pureWhite/18">Infra</span>
+              <span class="space-grotesk-regular border border-pureBlack/18 rounded-full border-solid px-2 py-1 text-[10px] tracking-[0.14em] uppercase dark:border-pureWhite/18">Market</span>
+            </DsCluster>
+          </DsStack>
         </div>
-      </article>
+      </DsCard>
     </DsSectionContainer>
 
     <DsSectionContainer layout="block">

@@ -1,21 +1,47 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
 
+type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'quaternary'
+type ButtonVariant = 'default' | 'accent'
+type LegacyVariant = ButtonType | 'quartery'
+
 const props = withDefaults(defineProps<{
-  variant?: 'primary' | 'secondary' | 'tertiary' | 'quartery' | 'quaternary'
+  type?: ButtonType
+  variant?: ButtonVariant | LegacyVariant
   previewState?: 'default' | 'hover' | 'active' | 'focus-visible'
   disabled?: boolean
 }>(), {
-  variant: 'primary',
+  type: 'primary',
+  variant: 'default',
   previewState: 'default',
   disabled: false,
 })
 
-const { variant, previewState, disabled } = toRefs(props)
+const { type, variant, previewState, disabled } = toRefs(props)
 
-const normalizedVariant = computed(() =>
-  variant.value === 'quaternary' ? 'quartery' : variant.value,
-)
+const isLegacyTypeVariant = computed(() => {
+  return ['primary', 'secondary', 'tertiary', 'quaternary', 'quartery'].includes(variant.value)
+})
+
+const normalizedType = computed<ButtonType>(() => {
+  if (type.value)
+    return type.value
+
+  if (variant.value === 'quartery')
+    return 'quaternary'
+
+  if (isLegacyTypeVariant.value)
+    return variant.value as ButtonType
+
+  return 'primary'
+})
+
+const normalizedVariant = computed<ButtonVariant>(() => {
+  if (isLegacyTypeVariant.value)
+    return 'accent'
+
+  return (variant.value as ButtonVariant) ?? 'default'
+})
 
 const normalizedPreviewState = computed(() => `is-state-${previewState.value}`)
 </script>
@@ -25,7 +51,7 @@ const normalizedPreviewState = computed(() => `is-state-${previewState.value}`)
     type="button"
     :disabled="disabled"
     class="space-grotesk-regular ds-btn rounded-full px-4 py-2 text-[11px] tracking-[0.16em] uppercase disabled:cursor-not-allowed"
-    :class="[`is-${normalizedVariant}`, normalizedPreviewState]"
+    :class="[`is-type-${normalizedType}`, `is-variant-${normalizedVariant}`, normalizedPreviewState]"
   >
     <slot />
   </button>
@@ -33,34 +59,30 @@ const normalizedPreviewState = computed(() => `is-state-${previewState.value}`)
 
 <style scoped>
 .ds-btn {
-  /* Light scale references from DsColorScheme */
-  --teal-1: #fafefd;
-  --teal-2: #f3fbf9;
+  --ink: #111111;
+  --paper: #ffffff;
   --teal-3: #e0f8f3;
   --teal-4: #ccf3ea;
   --teal-5: #b8eae0;
-  --teal-6: #a1ded2;
   --teal-7: #83cdc1;
   --teal-8: #53b9ab;
-  --teal-9: #12a594;
   --teal-10: #0d9b8a;
   --teal-11: #008573;
   --teal-12: #0d3d38;
-  --teal-dark-1: #0d1514;
-  --teal-dark-2: #111c1b;
   --teal-dark-3: #0d2d2a;
   --teal-dark-4: #023b37;
   --teal-dark-5: #084843;
-  --teal-dark-6: #145750;
   --teal-dark-7: #1c6961;
   --teal-dark-8: #207e73;
-  --teal-dark-9: #12a594;
   --teal-dark-10: #0eb39e;
   --teal-dark-11: #0bd8b6;
   --teal-dark-12: #adf0dd;
-  --ink: #111111;
-  --paper: #ffffff;
 
+  display: inline-flex;
+  width: auto;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
   border: 1px solid;
   border-color: color-mix(in srgb, currentColor 18%, transparent);
   text-decoration: none;
@@ -74,11 +96,6 @@ const normalizedPreviewState = computed(() => `is-state-${previewState.value}`)
     text-decoration-color 160ms ease,
     box-shadow 160ms ease,
     transform 120ms ease;
-  display: inline-flex;
-  width: auto;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
 }
 
 .ds-btn:focus-visible {
@@ -89,217 +106,404 @@ const normalizedPreviewState = computed(() => `is-state-${previewState.value}`)
   transform: translateY(1px);
 }
 
-/* Primary: black/white base with subtle accent influence */
-.ds-btn.is-primary {
+/* Structure by type (independent of color family) */
+.ds-btn.is-type-primary {
+  text-decoration: none;
+}
+
+.ds-btn.is-type-secondary {
+  text-decoration: none;
+  background: transparent;
+}
+
+.ds-btn.is-type-tertiary {
+  border-color: transparent;
+  background: transparent;
+  text-decoration: underline;
+}
+
+.ds-btn.is-type-quaternary {
+  text-decoration: none;
+}
+
+/* DEFAULT variant (pure black/white driven) */
+.ds-btn.is-variant-default.is-type-primary {
   background: var(--ink);
   border-color: var(--ink);
   color: var(--paper);
 }
 
-.dark .ds-btn.is-primary {
+.dark .ds-btn.is-variant-default.is-type-primary {
   background: var(--paper);
   border-color: var(--paper);
   color: var(--ink);
 }
 
-.ds-btn.is-primary:hover:enabled,
-.ds-btn.is-primary.is-state-hover:enabled {
-  background: color-mix(in srgb, var(--ink) 90%, var(--teal-9));
-  border-color: color-mix(in srgb, var(--ink) 90%, var(--teal-9));
+.ds-btn.is-variant-default.is-type-primary:hover:enabled,
+.ds-btn.is-variant-default.is-type-primary.is-state-hover:enabled {
+  background: color-mix(in srgb, var(--ink) 88%, var(--paper));
 }
 
-.ds-btn.is-primary:active:enabled,
-.ds-btn.is-primary.is-state-active:enabled {
-  background: color-mix(in srgb, var(--ink) 84%, var(--teal-10));
-  border-color: color-mix(in srgb, var(--ink) 84%, var(--teal-10));
+.dark .ds-btn.is-variant-default.is-type-primary:hover:enabled,
+.dark .ds-btn.is-variant-default.is-type-primary.is-state-hover:enabled {
+  background: color-mix(in srgb, var(--paper) 88%, var(--ink));
 }
 
-.dark .ds-btn.is-primary:hover:enabled,
-.dark .ds-btn.is-primary.is-state-hover:enabled {
-  background: color-mix(in srgb, var(--paper) 90%, var(--teal-dark-11));
-  border-color: color-mix(in srgb, var(--paper) 90%, var(--teal-dark-11));
+.ds-btn.is-variant-default.is-type-primary:active:enabled,
+.ds-btn.is-variant-default.is-type-primary.is-state-active:enabled {
+  background: color-mix(in srgb, var(--ink) 78%, var(--paper));
 }
 
-.dark .ds-btn.is-primary:active:enabled,
-.dark .ds-btn.is-primary.is-state-active:enabled {
-  background: color-mix(in srgb, var(--paper) 84%, var(--teal-dark-10));
-  border-color: color-mix(in srgb, var(--paper) 84%, var(--teal-dark-10));
+.dark .ds-btn.is-variant-default.is-type-primary:active:enabled,
+.dark .ds-btn.is-variant-default.is-type-primary.is-state-active:enabled {
+  background: color-mix(in srgb, var(--paper) 78%, var(--ink));
 }
 
-.ds-btn.is-primary:focus-visible,
-.ds-btn.is-primary.is-state-focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-9) 30%, transparent);
+.ds-btn.is-variant-default.is-type-primary:focus-visible,
+.ds-btn.is-variant-default.is-type-primary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 24%, transparent);
 }
 
-.dark .ds-btn.is-primary:focus-visible,
-.dark .ds-btn.is-primary.is-state-focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, #0bd8b6 30%, transparent);
+.ds-btn.is-variant-default.is-type-primary:disabled {
+  background: #2b2b2b;
+  border-color: #2b2b2b;
+  color: #8f8f8f;
 }
 
-.ds-btn.is-primary:disabled {
-  background: #232323;
-  border-color: #232323;
-  color: #949494;
+.dark .ds-btn.is-variant-default.is-type-primary:disabled {
+  background: #c3c3c3;
+  border-color: #c3c3c3;
+  color: #595959;
 }
 
-.dark .ds-btn.is-primary:disabled {
-  background: #c4c4c4;
-  border-color: #c4c4c4;
-  color: #5c5c5c;
+.ds-btn.is-variant-default.is-type-secondary {
+  border-color: var(--ink);
+  color: var(--ink);
 }
 
-/* Secondary: outlined accent */
-.ds-btn.is-secondary {
-  background: transparent;
+.dark .ds-btn.is-variant-default.is-type-secondary {
+  border-color: var(--paper);
+  color: var(--paper);
+}
+
+.ds-btn.is-variant-default.is-type-secondary:hover:enabled,
+.ds-btn.is-variant-default.is-type-secondary.is-state-hover:enabled {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+
+.dark .ds-btn.is-variant-default.is-type-secondary:hover:enabled,
+.dark .ds-btn.is-variant-default.is-type-secondary.is-state-hover:enabled {
+  background: color-mix(in srgb, var(--paper) 10%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-secondary:active:enabled,
+.ds-btn.is-variant-default.is-type-secondary.is-state-active:enabled {
+  background: color-mix(in srgb, var(--ink) 14%, transparent);
+}
+
+.dark .ds-btn.is-variant-default.is-type-secondary:active:enabled,
+.dark .ds-btn.is-variant-default.is-type-secondary.is-state-active:enabled {
+  background: color-mix(in srgb, var(--paper) 16%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-secondary:focus-visible,
+.ds-btn.is-variant-default.is-type-secondary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 22%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-secondary:disabled {
+  border-color: #8f8f8f;
+  color: #8f8f8f;
+}
+
+.dark .ds-btn.is-variant-default.is-type-secondary:disabled {
+  border-color: #666;
+  color: #666;
+}
+
+.ds-btn.is-variant-default.is-type-tertiary {
+  color: var(--ink);
+  text-decoration-color: color-mix(in srgb, var(--ink) 36%, transparent);
+}
+
+.dark .ds-btn.is-variant-default.is-type-tertiary {
+  color: var(--paper);
+  text-decoration-color: color-mix(in srgb, var(--paper) 36%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-tertiary:hover:enabled,
+.ds-btn.is-variant-default.is-type-tertiary.is-state-hover:enabled,
+.ds-btn.is-variant-default.is-type-tertiary:active:enabled,
+.ds-btn.is-variant-default.is-type-tertiary.is-state-active:enabled,
+.ds-btn.is-variant-default.is-type-tertiary:focus-visible,
+.ds-btn.is-variant-default.is-type-tertiary.is-state-focus-visible {
+  text-decoration-color: currentColor;
+}
+
+.ds-btn.is-variant-default.is-type-tertiary:focus-visible,
+.ds-btn.is-variant-default.is-type-tertiary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-tertiary:disabled {
+  color: color-mix(in srgb, currentColor 44%, transparent);
+  text-decoration-color: color-mix(in srgb, currentColor 22%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-quaternary {
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  border-color: color-mix(in srgb, var(--ink) 22%, transparent);
+  color: var(--ink);
+}
+
+.dark .ds-btn.is-variant-default.is-type-quaternary {
+  background: color-mix(in srgb, var(--paper) 8%, transparent);
+  border-color: color-mix(in srgb, var(--paper) 26%, transparent);
+  color: var(--paper);
+}
+
+.ds-btn.is-variant-default.is-type-quaternary:hover:enabled,
+.ds-btn.is-variant-default.is-type-quaternary.is-state-hover:enabled {
+  background: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+
+.dark .ds-btn.is-variant-default.is-type-quaternary:hover:enabled,
+.dark .ds-btn.is-variant-default.is-type-quaternary.is-state-hover:enabled {
+  background: color-mix(in srgb, var(--paper) 14%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-quaternary:active:enabled,
+.ds-btn.is-variant-default.is-type-quaternary.is-state-active:enabled {
+  background: color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+.dark .ds-btn.is-variant-default.is-type-quaternary:active:enabled,
+.dark .ds-btn.is-variant-default.is-type-quaternary.is-state-active:enabled {
+  background: color-mix(in srgb, var(--paper) 20%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-quaternary:focus-visible,
+.ds-btn.is-variant-default.is-type-quaternary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.ds-btn.is-variant-default.is-type-quaternary:disabled {
+  color: color-mix(in srgb, var(--ink) 42%, transparent);
+  border-color: color-mix(in srgb, var(--ink) 14%, transparent);
+  background: color-mix(in srgb, var(--ink) 4%, transparent);
+}
+
+.dark .ds-btn.is-variant-default.is-type-quaternary:disabled {
+  color: color-mix(in srgb, var(--paper) 42%, transparent);
+  border-color: color-mix(in srgb, var(--paper) 16%, transparent);
+  background: color-mix(in srgb, var(--paper) 4%, transparent);
+}
+
+/* ACCENT variant (Radix teal family) */
+.ds-btn.is-variant-accent.is-type-primary {
+  background: var(--teal-11);
+  border-color: var(--teal-11);
+  color: var(--paper);
+}
+
+.dark .ds-btn.is-variant-accent.is-type-primary {
+  background: var(--teal-dark-11);
+  border-color: var(--teal-dark-11);
+  color: #0d1514;
+}
+
+.ds-btn.is-variant-accent.is-type-primary:hover:enabled,
+.ds-btn.is-variant-accent.is-type-primary.is-state-hover:enabled {
+  background: var(--teal-10);
+  border-color: var(--teal-10);
+}
+
+.dark .ds-btn.is-variant-accent.is-type-primary:hover:enabled,
+.dark .ds-btn.is-variant-accent.is-type-primary.is-state-hover:enabled {
+  background: var(--teal-dark-10);
+  border-color: var(--teal-dark-10);
+}
+
+.ds-btn.is-variant-accent.is-type-primary:active:enabled,
+.ds-btn.is-variant-accent.is-type-primary.is-state-active:enabled {
+  background: var(--teal-12);
+  border-color: var(--teal-12);
+}
+
+.dark .ds-btn.is-variant-accent.is-type-primary:active:enabled,
+.dark .ds-btn.is-variant-accent.is-type-primary.is-state-active:enabled {
+  background: var(--teal-dark-8);
+  border-color: var(--teal-dark-8);
+}
+
+.ds-btn.is-variant-accent.is-type-primary:focus-visible,
+.ds-btn.is-variant-accent.is-type-primary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-11) 30%, transparent);
+}
+
+.dark .ds-btn.is-variant-accent.is-type-primary:focus-visible,
+.dark .ds-btn.is-variant-accent.is-type-primary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-dark-11) 30%, transparent);
+}
+
+.ds-btn.is-variant-accent.is-type-primary:disabled {
+  background: #7ea9a3;
+  border-color: #7ea9a3;
+  color: #edf7f5;
+}
+
+.dark .ds-btn.is-variant-accent.is-type-primary:disabled {
+  background: #2e5e58;
+  border-color: #2e5e58;
+  color: #9ac8bf;
+}
+
+.ds-btn.is-variant-accent.is-type-secondary {
   border-color: var(--teal-11);
   color: var(--teal-11);
 }
 
-.ds-btn.is-secondary:hover:enabled,
-.ds-btn.is-secondary.is-state-hover:enabled {
+.dark .ds-btn.is-variant-accent.is-type-secondary {
+  border-color: var(--teal-dark-11);
+  color: var(--teal-dark-11);
+}
+
+.ds-btn.is-variant-accent.is-type-secondary:hover:enabled,
+.ds-btn.is-variant-accent.is-type-secondary.is-state-hover:enabled {
   border-color: var(--teal-10);
   color: var(--teal-10);
   background: color-mix(in srgb, var(--teal-9) 14%, transparent);
 }
 
-.ds-btn.is-secondary:active:enabled,
-.ds-btn.is-secondary.is-state-active:enabled {
-  border-color: var(--teal-11);
-  color: var(--teal-11);
-  background: color-mix(in srgb, var(--teal-9) 20%, transparent);
-}
-
-.ds-btn.is-secondary:focus-visible,
-.ds-btn.is-secondary.is-state-focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-11) 30%, transparent);
-}
-
-.dark .ds-btn.is-secondary {
-  border-color: var(--teal-dark-11);
-  color: var(--teal-dark-11);
-}
-
-.dark .ds-btn.is-secondary:hover:enabled,
-.dark .ds-btn.is-secondary.is-state-hover:enabled {
+.dark .ds-btn.is-variant-accent.is-type-secondary:hover:enabled,
+.dark .ds-btn.is-variant-accent.is-type-secondary.is-state-hover:enabled {
   border-color: var(--teal-dark-10);
   color: var(--teal-dark-10);
   background: color-mix(in srgb, var(--teal-dark-11) 14%, transparent);
 }
 
-.dark .ds-btn.is-secondary:active:enabled,
-.dark .ds-btn.is-secondary.is-state-active:enabled {
-  border-color: var(--teal-dark-11);
-  color: var(--teal-dark-11);
+.ds-btn.is-variant-accent.is-type-secondary:active:enabled,
+.ds-btn.is-variant-accent.is-type-secondary.is-state-active:enabled {
+  background: color-mix(in srgb, var(--teal-9) 20%, transparent);
+}
+
+.dark .ds-btn.is-variant-accent.is-type-secondary:active:enabled,
+.dark .ds-btn.is-variant-accent.is-type-secondary.is-state-active:enabled {
   background: color-mix(in srgb, var(--teal-dark-11) 20%, transparent);
 }
 
-.dark .ds-btn.is-secondary:focus-visible,
-.dark .ds-btn.is-secondary.is-state-focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, #0bd8b6 32%, transparent);
+.ds-btn.is-variant-accent.is-type-secondary:focus-visible,
+.ds-btn.is-variant-accent.is-type-secondary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-11) 30%, transparent);
 }
 
-.ds-btn.is-secondary:disabled {
+.dark .ds-btn.is-variant-accent.is-type-secondary:focus-visible,
+.dark .ds-btn.is-variant-accent.is-type-secondary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-dark-11) 32%, transparent);
+}
+
+.ds-btn.is-variant-accent.is-type-secondary:disabled {
   border-color: #7ea9a3;
   color: #7ea9a3;
-  background: transparent;
 }
 
-.dark .ds-btn.is-secondary:disabled {
+.dark .ds-btn.is-variant-accent.is-type-secondary:disabled {
   border-color: #2e5e58;
   color: #2e5e58;
-  background: transparent;
 }
 
-/* Tertiary: neutral utility */
-.ds-btn.is-tertiary {
-  background: transparent;
-  border-color: transparent;
-  color: inherit;
-  text-decoration: underline;
-  text-decoration-color: color-mix(in srgb, currentColor 36%, transparent);
+.ds-btn.is-variant-accent.is-type-tertiary {
+  color: var(--teal-11);
+  text-decoration-color: color-mix(in srgb, var(--teal-11) 36%, transparent);
 }
 
-.ds-btn.is-tertiary:hover:enabled,
-.ds-btn.is-tertiary.is-state-hover:enabled {
-  background: transparent;
+.dark .ds-btn.is-variant-accent.is-type-tertiary {
+  color: var(--teal-dark-11);
+  text-decoration-color: color-mix(in srgb, var(--teal-dark-11) 36%, transparent);
+}
+
+.ds-btn.is-variant-accent.is-type-tertiary:hover:enabled,
+.ds-btn.is-variant-accent.is-type-tertiary.is-state-hover:enabled,
+.ds-btn.is-variant-accent.is-type-tertiary:active:enabled,
+.ds-btn.is-variant-accent.is-type-tertiary.is-state-active:enabled,
+.ds-btn.is-variant-accent.is-type-tertiary:focus-visible,
+.ds-btn.is-variant-accent.is-type-tertiary.is-state-focus-visible {
   text-decoration-color: currentColor;
 }
 
-.ds-btn.is-tertiary:active:enabled,
-.ds-btn.is-tertiary.is-state-active:enabled {
-  background: transparent;
-  text-decoration-color: currentColor;
-  color: color-mix(in srgb, currentColor 82%, var(--teal-11));
+.ds-btn.is-variant-accent.is-type-tertiary:focus-visible,
+.ds-btn.is-variant-accent.is-type-tertiary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-11) 22%, transparent);
 }
 
-.ds-btn.is-tertiary:focus-visible,
-.ds-btn.is-tertiary.is-state-focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-9) 22%, transparent);
-  text-decoration-color: currentColor;
+.dark .ds-btn.is-variant-accent.is-type-tertiary:focus-visible,
+.dark .ds-btn.is-variant-accent.is-type-tertiary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-dark-11) 22%, transparent);
 }
 
-.ds-btn.is-tertiary:disabled {
-  border-color: transparent;
-  color: color-mix(in srgb, currentColor 42%, transparent);
-  background: transparent;
-  text-decoration-color: color-mix(in srgb, currentColor 20%, transparent);
+.ds-btn.is-variant-accent.is-type-tertiary:disabled {
+  color: #7ea9a3;
+  text-decoration-color: color-mix(in srgb, #7ea9a3 40%, transparent);
 }
 
-/* Quartery: soft tag pill utility */
-.ds-btn.is-quartery {
+.dark .ds-btn.is-variant-accent.is-type-tertiary:disabled {
+  color: #2e5e58;
+  text-decoration-color: color-mix(in srgb, #2e5e58 40%, transparent);
+}
+
+.ds-btn.is-variant-accent.is-type-quaternary {
   background: var(--teal-3);
   border-color: var(--teal-7);
   color: var(--teal-12);
 }
 
-.ds-btn.is-quartery:hover:enabled,
-.ds-btn.is-quartery.is-state-hover:enabled {
-  background: var(--teal-4);
-  border-color: var(--teal-8);
-  color: var(--teal-12);
-}
-
-.ds-btn.is-quartery:active:enabled,
-.ds-btn.is-quartery.is-state-active:enabled {
-  background: var(--teal-5);
-  border-color: var(--teal-8);
-}
-
-.ds-btn.is-quartery:focus-visible,
-.ds-btn.is-quartery.is-state-focus-visible {
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-10) 28%, transparent);
-}
-
-.dark .ds-btn.is-quartery {
+.dark .ds-btn.is-variant-accent.is-type-quaternary {
   background: var(--teal-dark-3);
   border-color: var(--teal-dark-7);
   color: var(--teal-dark-12);
 }
 
-.dark .ds-btn.is-quartery:hover:enabled,
-.dark .ds-btn.is-quartery.is-state-hover:enabled {
+.ds-btn.is-variant-accent.is-type-quaternary:hover:enabled,
+.ds-btn.is-variant-accent.is-type-quaternary.is-state-hover:enabled {
+  background: var(--teal-4);
+  border-color: var(--teal-8);
+}
+
+.dark .ds-btn.is-variant-accent.is-type-quaternary:hover:enabled,
+.dark .ds-btn.is-variant-accent.is-type-quaternary.is-state-hover:enabled {
   background: var(--teal-dark-4);
   border-color: var(--teal-dark-8);
 }
 
-.dark .ds-btn.is-quartery:active:enabled,
-.dark .ds-btn.is-quartery.is-state-active:enabled {
+.ds-btn.is-variant-accent.is-type-quaternary:active:enabled,
+.ds-btn.is-variant-accent.is-type-quaternary.is-state-active:enabled {
+  background: var(--teal-5);
+  border-color: var(--teal-8);
+}
+
+.dark .ds-btn.is-variant-accent.is-type-quaternary:active:enabled,
+.dark .ds-btn.is-variant-accent.is-type-quaternary.is-state-active:enabled {
   background: var(--teal-dark-5);
   border-color: var(--teal-dark-8);
 }
 
-.dark .ds-btn.is-quartery:focus-visible,
-.dark .ds-btn.is-quartery.is-state-focus-visible {
+.ds-btn.is-variant-accent.is-type-quaternary:focus-visible,
+.ds-btn.is-variant-accent.is-type-quaternary.is-state-focus-visible {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-10) 28%, transparent);
+}
+
+.dark .ds-btn.is-variant-accent.is-type-quaternary:focus-visible,
+.dark .ds-btn.is-variant-accent.is-type-quaternary.is-state-focus-visible {
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--teal-dark-10) 28%, transparent);
 }
 
-.ds-btn.is-quartery:disabled {
+.ds-btn.is-variant-accent.is-type-quaternary:disabled {
   background: #f2f6f5;
   border-color: #dbe5e3;
   color: #90a19e;
 }
 
-.dark .ds-btn.is-quartery:disabled {
+.dark .ds-btn.is-variant-accent.is-type-quaternary:disabled {
   background: var(--teal-dark-2);
   border-color: color-mix(in srgb, var(--teal-dark-7) 48%, transparent);
   color: color-mix(in srgb, var(--teal-dark-12) 45%, transparent);

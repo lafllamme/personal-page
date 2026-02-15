@@ -1,22 +1,27 @@
-import { h } from 'vue'
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { h } from 'vue'
 import DsButton from './DsButton.vue'
 import DsButtonMatrixPreview from './DsButtonMatrixPreview.vue'
 import DsSectionContainer from './DsSectionContainer.vue'
 
 const meta = {
-  title: 'Design System/Components/DsButton',
+  title: 'Foundation/DsButton',
   component: DsButton,
   tags: ['autodocs'],
   args: {
-    variant: 'primary',
+    type: 'primary',
+    variant: 'default',
     previewState: 'default',
     disabled: false,
   },
   argTypes: {
+    type: {
+      control: 'select',
+      options: ['primary', 'secondary', 'tertiary', 'quaternary'],
+    },
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'tertiary', 'quartery', 'quaternary'],
+      options: ['default', 'accent'],
     },
     previewState: {
       control: 'select',
@@ -50,11 +55,21 @@ export const Variants: Story = {
   render: () => ({
     components: { DsButton },
     template: `
-      <div class="flex flex-wrap items-center gap-3">
-        <DsButton variant="primary">Click Me</DsButton>
-        <DsButton variant="secondary">Click Me</DsButton>
-        <DsButton variant="tertiary">Click Me</DsButton>
-        <DsButton variant="quartery">Click Me</DsButton>
+      <div class="grid gap-4">
+        <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">default</div>
+        <div class="flex flex-wrap items-center gap-3">
+          <DsButton type="primary" variant="default">Click Me</DsButton>
+          <DsButton type="secondary" variant="default">Click Me</DsButton>
+          <DsButton type="tertiary" variant="default">Click Me</DsButton>
+          <DsButton type="quaternary" variant="default">Click Me</DsButton>
+        </div>
+        <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">accent</div>
+        <div class="flex flex-wrap items-center gap-3">
+          <DsButton type="primary" variant="accent">Click Me</DsButton>
+          <DsButton type="secondary" variant="accent">Click Me</DsButton>
+          <DsButton type="tertiary" variant="accent">Click Me</DsButton>
+          <DsButton type="quaternary" variant="accent">Click Me</DsButton>
+        </div>
       </div>
     `,
   }),
@@ -63,7 +78,7 @@ export const Variants: Story = {
   },
 }
 
-export const Matrix: Story = {
+export const States: Story = {
   render: () => ({
     render() {
       return h(DsButtonMatrixPreview)
@@ -72,4 +87,35 @@ export const Matrix: Story = {
   parameters: {
     layout: 'fullscreen',
   },
+}
+
+export const DarkMode: Story = {
+  render: () => ({
+    components: { DsButton },
+    template: `
+      <div class="dark bg-pureBlack color-pureWhite p-6">
+        <div class="flex flex-wrap items-center gap-3">
+          <DsButton type="primary" variant="default">Click Me</DsButton>
+          <DsButton type="primary" variant="accent">Click Me</DsButton>
+          <DsButton type="secondary" variant="default">Click Me</DsButton>
+          <DsButton type="secondary" variant="accent">Click Me</DsButton>
+        </div>
+      </div>
+    `,
+  }),
+  parameters: {
+    layout: 'centered',
+  },
+}
+
+export const A11yNotes: Story = {
+  render: () => ({
+    template: `
+      <article class="max-w-2xl space-y-2 text-sm leading-relaxed">
+        <p><strong>Keyboard:</strong> focus-visible ring is present on all button types.</p>
+        <p><strong>Contrast:</strong> default and accent styles are mapped to pure black/white and Radix teal roles.</p>
+        <p><strong>Semantics:</strong> use button for actions, link for navigation.</p>
+      </article>
+    `,
+  }),
 }
