@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&family=Bruno+Ace+SC&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Figtree:ital,wght@0,300..900;1,300..900&family=Geist:wght@100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400..700;1,400..700&family=Major+Mono+Display&family=Manrope:wght@200..800&family=Nova+Square&family=Prata&family=Space+Grotesk:wght@300..700&family=Zalando+Sans+Expanded:ital,wght@0,200..900;1,200..900&family=Zen+Dots&display=swap');
+
+/* Match Nuxt font rendering defaults in Storybook */
+html {
+  font-synthesis: none;
+}

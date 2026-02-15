@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
+import { useClsx } from '@/composables/useClsx'
 
 const props = withDefaults(defineProps<{
   as?: 'article' | 'section' | 'div'

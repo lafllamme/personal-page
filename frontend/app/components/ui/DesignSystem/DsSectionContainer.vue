@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { toRefs } from 'vue'
+import { computed, toRefs } from 'vue'
 import DsContainer from '@/components/ui/DesignSystem/DsContainer.vue'
+import { useClsx } from '@/composables/useClsx'
 
 const props = withDefaults(defineProps<{
   as?: 'section' | 'header' | 'div'

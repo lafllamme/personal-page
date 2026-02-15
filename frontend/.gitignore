@@ -1,1 +1,3 @@
 .vercel
+storybook-static
+node_modules/.cache/storybook

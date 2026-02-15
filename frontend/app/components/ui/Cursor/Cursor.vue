@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import type { CursorProps, CursorType } from '@/components/ui/Cursor/Cursor.model'
+import type { CursorProps, CursorType } from './Cursor.model'
 import { defineAsyncComponent } from 'vue'
-import { CursorDefaultProps } from '@/components/ui/Cursor/Cursor.model'
+import { CursorDefaultProps } from './Cursor.model'
 
 // TODO: Is the fade duration necessary? It seems unclear in terms of usage.
 const props = withDefaults(defineProps<CursorProps>(), CursorDefaultProps)
