@@ -40,7 +40,7 @@
 | Informationsarchitektur | Reihenfolge der 7 Slots | keine |
 | Komponenten-Anatomie | Pflichtfelder je Komponente | Typostil, spacing-dichte, Farbe |
 | Grid | 12/8/4 + Gutter + Seitenpadding | keine |
-| Typografie | Rollenmodell (Display, Headline, Body, Meta, Quote) | konkrete Fontfamilien pro Rolle |
+| Typografie | Rollenmodell (Display, Headline, Body, Meta, Quote, Signal) | konkrete Fontfamilien pro Rolle |
 | Spacing | Tokenstruktur (`section`, `block`, `inline`) | Wertepack (`airy`, `balanced`, `dense`) |
 | Farbe | Rollen (`bg`, `surface`, `text`, `muted`, `accent`) | Hex-Werte je Pack |
 
@@ -83,3 +83,40 @@
 2. Mit mindestens 3 Token-Packs rendern.
 3. Review nach den 4 Gates.
 4. Erst danach Einzelkomponenten verfeinern.
+
+## 7) Finales Komponenten-Set (P04-MPZ01 + Teal)
+
+> Basis: Winner-Layout bleibt stabil, nur Signalfarbe wird finalisiert.
+> Token-Referenz: [PALETTE-RADIX-TEAL-911.md](../../system/ui/PALETTE-RADIX-TEAL-911.md)
+
+### 7.1 Build Phase A (zuerst bauen)
+| Komponente | Hauptquelle (Ordner/Bild) | Zweck |
+|---|---|---|
+| `CampaignHero` | `cloth/img_2`, `run/img_1`, `sport/img_1` | Double-Headline, Badge-Layer, Koordinaten-/Meta-Row, starker Einstieg |
+| `TopUtilityBar` | `agency/img_4`, `magazine-2/img` | Navigation, Search, Filter, Micro-Infos |
+| `MarketPulseRail` | `construct/img_1`, `construct-2/img_2` | Kennzahlen mit sauberer Scanbarkeit |
+| `TagCluster` | `music/img`, `magazine-3/img_1` | Kategorien und aktive States |
+| `CTAStrip` | `brand/img_3`, `portfolio/img_1` | Primarhandlung und Conversion-Punkt |
+
+### 7.2 Build Phase B (direkt danach)
+| Komponente | Hauptquelle (Ordner/Bild) | Zweck |
+|---|---|---|
+| `EditorialCardGrid` | `estate/img_2`, `photography/img_4` | Storykarten mit Bild + Teaser + Meta |
+| `FeatureCarousel` | `magazine-3/img_3`, `music/img` | Post-/Story-Karussell fuer Top-Inhalte |
+| `ImageGalleryMosaic` | `estate/img_2`, `fashion/img` | Dichte Bildkomposition ohne Grid-Drift |
+| `LongformBlock` | `furniture/img_1`, `studio/img` | Ruhige Texttiefe mit hoher Lesbarkeit |
+| `ProjectListRail` | `portfolio/img_1`, `product/img_1` | Lineare Listen-/Spec-Pattern |
+
+### 7.3 Build Phase C (Brand-Details)
+| Komponente | Hauptquelle (Ordner/Bild) | Zweck |
+|---|---|---|
+| `BadgeMarkerSystem` | `cloth/img_2`, `brand/img_3` | Status- und Utility-Marker |
+| `HeroSignatureFooter` | `cloth/img_7`, `run/img_1` | Dominanter Abschlussbereich mit Brand-Typo |
+| `SpecLabelRow` | `tech/img_1`, `product/img_1` | kleine technische/kontextuelle Labels |
+| `QuoteNarrowBlock` | `skate` (gesamt), `studio/img` | ruhige Kontrastzone im Flow |
+
+### 7.4 Was "final" fuer den Start bedeutet
+- Wir bauen zuerst nur die obigen Komponenten, keine neuen Muster ausserhalb der Matrix.
+- `P04-MPZ01` bleibt die Typo-/Spacing-Referenz.
+- Teal (`9/11`) wird als einzige Akzentfamilie getestet und dokumentiert.
+- `Zalando Sans Expanded` wird als `Signal`-Typo in `CampaignHero` und `MarketPulseRail` mitgebaut (nicht als Fliesstext-Headline).
