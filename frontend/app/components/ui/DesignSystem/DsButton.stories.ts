@@ -11,7 +11,6 @@ const meta = {
   args: {
     type: 'primary',
     variant: 'default',
-    previewState: 'default',
     disabled: false,
   },
   argTypes: {
@@ -22,10 +21,6 @@ const meta = {
     variant: {
       control: 'select',
       options: ['default', 'accent'],
-    },
-    previewState: {
-      control: 'select',
-      options: ['default', 'hover', 'active', 'focus-visible'],
     },
     disabled: { control: 'boolean' },
   },
