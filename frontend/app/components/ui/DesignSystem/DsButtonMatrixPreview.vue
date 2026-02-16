@@ -21,27 +21,9 @@ const states = [
   { key: 'disabled', label: 'disabled' },
 ] as const
 
-const quaternaryCushionVariants = [
-  {
-    key: 'q1',
-    label: 'Q1 Soft Mist',
-    className: 'hover:enabled:bg-sand-4/65 dark:hover:enabled:bg-sand-6/30 active:enabled:bg-sand-5/75 dark:active:enabled:bg-sand-7/38 focus-visible:bg-sand-4/65 dark:focus-visible:bg-sand-6/30 hover:enabled:color-$color-primary active:enabled:color-$color-primary focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-ghost-focus)]',
-  },
-  {
-    key: 'q2',
-    label: 'Q2 Balanced',
-    className: 'hover:enabled:bg-sand-5/75 dark:hover:enabled:bg-sand-7/38 active:enabled:bg-sand-6/85 dark:active:enabled:bg-sand-8/46 focus-visible:bg-sand-5 dark:focus-visible:bg-sand-7 hover:enabled:color-$color-primary active:enabled:color-$color-primary focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand5)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand7)]',
-  },
-  {
-    key: 'q3',
-    label: 'Q3 Crisp',
-    className: 'hover:enabled:bg-sand-6/72 dark:hover:enabled:bg-sand-8/34 active:enabled:bg-sand-7/80 dark:active:enabled:bg-sand-9/42 focus-visible:bg-sand-6/72 dark:focus-visible:bg-sand-8/34 hover:enabled:color-$color-primary active:enabled:color-$color-primary focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-ghost-focus)]',
-  },
-  {
-    key: 'q4',
-    label: 'Q4 Contrast Lift',
-    className: 'hover:enabled:bg-sand-7/66 dark:hover:enabled:bg-sand-9/30 active:enabled:bg-sand-8/74 dark:active:enabled:bg-sand-10/36 focus-visible:bg-sand-7/66 dark:focus-visible:bg-sand-9/30 hover:enabled:color-$color-primary active:enabled:color-$color-primary focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-ghost-focus)]',
-  },
+const compactVariantRows = [
+  { key: 'default', label: 'Default' },
+  { key: 'accent', label: 'Toxic' },
 ] as const
 
 type MatrixVariant = typeof variants[number]['key']
@@ -72,24 +54,24 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'bg-$bg-quaternary-focus [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
   },
   'accent-primary': {
-    'hover': 'bg-$bg-accent-hover border-$border-accent-hover color-$color-on-accent',
-    'active': 'bg-$bg-accent-solid-active border-$border-accent-active color-$color-on-accent',
-    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-accent-primary)]',
+    'hover': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
+    'active': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_1px_var(--ring-accent-offset-inner),0_0_0_2px_var(--ring-accent-offset-outer)]',
+    'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
   },
   'accent-secondary': {
-    'hover': 'border-$border-accent-hover color-$color-accent-hover bg-$bg-accent-outline-hover',
-    'active': 'bg-$bg-accent-outline-active',
-    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-accent-secondary)]',
+    'hover': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:inset_0_0_0_2px_var(--border-accent-hover)]',
+    'active': 'bg-$bg-accent color-$color-on-accent [box-shadow:inset_0_0_0_2px_var(--border-accent)]',
+    'focus-visible': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
   },
   'accent-tertiary': {
-    'hover': 'is-ghost-line-on',
-    'active': 'is-ghost-line-on',
-    'focus-visible': 'is-ghost-line-on [box-shadow:0_0_0_3px_var(--ring-accent-tertiary)]',
+    'hover': 'is-ghost-line-on color-$color-accent-hover',
+    'active': 'is-ghost-line-on color-$color-accent-strong',
+    'focus-visible': 'is-ghost-line-on color-$color-accent-hover [box-shadow:0_0_0_3px_var(--ring-accent-quaternary-focus)]',
   },
   'accent-quaternary': {
-    'hover': 'bg-$bg-accent-soft-hover border-$border-accent-soft-hover',
-    'active': 'bg-$bg-accent-soft-active border-$border-accent-soft-hover',
-    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-accent-quaternary)]',
+    'hover': 'bg-$bg-accent-quaternary-hover',
+    'active': 'bg-$bg-accent-quaternary-active',
+    'focus-visible': 'bg-$bg-accent-quaternary-focus [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)]',
   },
 }
 
@@ -151,47 +133,73 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
 
     <section class="mt-8 border-t border-pureBlack/10 pt-5 dark:border-pureWhite/10">
       <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-        Quaternary Cushion Variants (Subtle)
+        All Variants
       </p>
-      <div class="mt-4 border border-pureBlack/12 rounded-lg border-solid bg-pureWhite p-4 dark:border-pureWhite/12 dark:bg-pureBlack">
-        <div class="grid gap-3">
-          <div
-            v-for="item in quaternaryCushionVariants"
-            :key="item.key"
-            class="grid grid-cols-[140px_auto] items-center gap-3 border-b border-pureBlack/8 border-solid pb-2 last:border-b-0 dark:border-pureWhite/10 last:pb-0"
-          >
-            <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
-              {{ item.label }}
-            </p>
-            <div class="flex flex-wrap items-center gap-2">
-              <DsButton
-                type="primary"
-                variant="default"
-              >
+      <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
+        <table class="min-w-full border-collapse text-left text-[10px] tracking-[0.12em] uppercase">
+          <thead class="bg-pureBlack/3 dark:bg-pureWhite/5">
+            <tr>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Variant
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
                 Primary
-              </DsButton>
-              <DsButton
-                type="secondary"
-                variant="default"
-              >
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
                 Secondary
-              </DsButton>
-              <DsButton
-                type="tertiary"
-                variant="default"
-              >
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
                 Tertiary
-              </DsButton>
-              <DsButton
-                type="quaternary"
-                variant="default"
-                :class="item.className"
-              >
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
                 Quaternary
-              </DsButton>
-            </div>
-          </div>
-        </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="row in compactVariantRows"
+              :key="row.key"
+              class="border-t border-pureBlack/8 dark:border-pureWhite/10"
+            >
+              <td class="px-3 py-2 opacity-75">
+                {{ row.label }}
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="primary"
+                  :variant="row.key"
+                >
+                  Primary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="secondary"
+                  :variant="row.key"
+                >
+                  Secondary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  :variant="row.key"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  :variant="row.key"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </section>
   </article>

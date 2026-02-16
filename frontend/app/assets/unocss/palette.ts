@@ -57,6 +57,9 @@ const bgTokens: TokenSet = {
 
   'bg-accent-outline-hover': { light: 'rgba(18, 165, 148, 0.14)', dark: 'rgba(11, 216, 182, 0.14)' },
   'bg-accent-outline-active': { light: 'rgba(18, 165, 148, 0.20)', dark: 'rgba(11, 216, 182, 0.20)' },
+  'bg-accent-quaternary-hover': { light: 'rgba(18, 165, 148, 0.16)', dark: 'rgba(11, 216, 182, 0.22)' },
+  'bg-accent-quaternary-active': { light: 'rgba(18, 165, 148, 0.24)', dark: 'rgba(11, 216, 182, 0.30)' },
+  'bg-accent-quaternary-focus': { light: 'rgba(18, 165, 148, 0.16)', dark: 'rgba(11, 216, 182, 0.22)' },
 
   'bg-accent-soft': 'var(--toxic-3)',
   'bg-accent-soft-hover': 'var(--toxic-4)',
@@ -89,6 +92,9 @@ const ringTokens: TokenSet = {
   'ring-default-quaternary': { light: 'rgba(0, 0, 0, 0.20)', dark: 'rgba(242, 239, 230, 0.20)' },
   'ring-primary-offset-inner': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
   'ring-primary-offset-outer': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
+  'ring-accent-offset-inner': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
+  'ring-accent-offset-outer': { light: 'var(--toxic-11)', dark: 'var(--toxic-11)' },
+  'ring-accent-quaternary-focus': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
 
   'ring-accent-primary': { light: 'rgba(0, 133, 115, 0.30)', dark: 'rgba(11, 216, 182, 0.30)' },
   'ring-accent-secondary': { light: 'rgba(0, 133, 115, 0.30)', dark: 'rgba(11, 216, 182, 0.32)' },
@@ -103,7 +109,7 @@ const motionTokens: TokenSet = {
   'motion-underline-thickness': '0.125em',
 }
 
-const toxicScale: Scale = {
+export const toxicScale: Scale = {
   1: { light: '#fafefd', dark: '#0d1514' },
   2: { light: '#f3fbf9', dark: '#111c1b' },
   3: { light: '#e0f8f3', dark: '#0d2d2a' },
