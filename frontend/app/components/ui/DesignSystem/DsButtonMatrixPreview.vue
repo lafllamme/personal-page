@@ -21,31 +21,31 @@ const states = [
   { key: 'disabled', label: 'disabled' },
 ] as const
 
-const secondaryHoverVariants = [
+const tertiaryHoverVariants = [
   {
-    key: 's1',
-    label: 'S1 Sand Ring Fill',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] hover:enabled:bg-sand-9 hover:enabled:color-pureWhite active:enabled:bg-sand-10 active:enabled:color-pureWhite focus-visible:bg-sand-9 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand9)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand9)]',
+    key: 't1',
+    label: 'T1 Sand-10',
+    className: 'hover:enabled:color-sand-10 active:enabled:color-sand-11 focus-visible:color-sand-10 focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
   },
   {
-    key: 's2',
-    label: 'S2 Sand Ring Fill Strong',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] hover:enabled:bg-sand-10 hover:enabled:color-pureWhite active:enabled:bg-sand-11 active:enabled:color-pureWhite focus-visible:bg-sand-10 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
+    key: 't2',
+    label: 'T2 Sand-11',
+    className: 'hover:enabled:color-$color-ghost-hover active:enabled:color-$color-ghost-active focus-visible:color-$color-ghost-hover focus-visible:[box-shadow:0_0_0_3px_var(--ring-ghost-focus)]',
   },
   {
-    key: 's3',
-    label: 'S3 Base Black/White -> Sand Soft',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-primary)] hover:enabled:bg-sand-9 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] active:enabled:bg-sand-10 active:enabled:color-pureWhite active:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_3px_var(--ring-default-secondary)]',
+    key: 't3',
+    label: 'T3 Sand-9',
+    className: 'hover:enabled:color-sand-9 active:enabled:color-sand-10 focus-visible:color-sand-9 focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
   },
   {
-    key: 's4',
-    label: 'S4 Base Black/White -> Sand Mid',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-primary)] hover:enabled:bg-sand-10 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] active:enabled:bg-sand-11 active:enabled:color-pureWhite active:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] focus-visible:bg-sand-10 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
+    key: 't4',
+    label: 'T4 Sand-8',
+    className: 'hover:enabled:color-sand-8 active:enabled:color-sand-9 focus-visible:color-sand-8 focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
   },
   {
-    key: 's5',
-    label: 'S5 Base Black/White -> Sand Strong',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-primary)] hover:enabled:bg-sand-11 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] active:enabled:bg-sand-12 active:enabled:color-pureWhite active:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand12)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_3px_var(--ring-default-secondary)]',
+    key: 't5',
+    label: 'T5 Sand-12',
+    className: 'hover:enabled:color-sand-12 active:enabled:color-sand-12 focus-visible:color-sand-12 focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
   },
 ] as const
 
@@ -64,12 +64,12 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'default-secondary': {
     'hover': 'bg-sand-10 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)]',
     'active': 'bg-sand-11 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)]',
-    'focus-visible': 'bg-sand-10 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10),0_0_0_3px_var(--ring-default-secondary)]',
+    'focus-visible': 'bg-sand-10 color-pureWhite [box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
   },
   'default-tertiary': {
-    'hover': 'is-ghost-line-on',
-    'active': 'is-ghost-line-on',
-    'focus-visible': 'is-ghost-line-on [box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
+    'hover': 'is-ghost-line-on color-$color-ghost-hover',
+    'active': 'is-ghost-line-on color-$color-ghost-active',
+    'focus-visible': 'is-ghost-line-on color-$color-ghost-hover [box-shadow:0_0_0_3px_var(--ring-ghost-focus)]',
   },
   'default-quaternary': {
     'hover': 'bg-$bg-soft-hover',
@@ -156,32 +156,38 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
 
     <section class="mt-8 border-t border-pureBlack/10 pt-5 dark:border-pureWhite/10">
       <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-        Secondary Hover Variants
+        Tertiary Hover Variants
       </p>
       <div class="mt-4 border border-pureBlack/12 rounded-lg border-solid bg-pureWhite p-4 dark:border-pureWhite/12 dark:bg-pureBlack">
         <div class="grid gap-3">
           <div
-            v-for="item in secondaryHoverVariants"
+            v-for="item in tertiaryHoverVariants"
             :key="item.key"
-            class="grid grid-cols-[130px_auto] items-center gap-3 border-b border-pureBlack/8 border-solid pb-2 last:border-b-0 dark:border-pureWhite/10 last:pb-0"
+            class="grid grid-cols-[140px_auto] items-center gap-3 border-b border-pureBlack/8 border-solid pb-2 last:border-b-0 dark:border-pureWhite/10 last:pb-0"
           >
             <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
               {{ item.label }}
             </p>
-            <div class="flex items-center gap-2">
-              <button
-                type="button"
-                class="space-grotesk-regular ui-button-base v-neutral-solid"
+            <div class="flex flex-wrap items-center gap-2">
+              <DsButton
+                type="primary"
+                variant="default"
               >
                 Primary
-              </button>
-              <button
-                type="button"
-                class="space-grotesk-regular ui-button-base"
-                :class="item.className"
+              </DsButton>
+              <DsButton
+                type="secondary"
+                variant="default"
               >
                 Secondary
-              </button>
+              </DsButton>
+              <DsButton
+                type="tertiary"
+                variant="default"
+                :class="item.className"
+              >
+                Tertiary
+              </DsButton>
             </div>
           </div>
         </div>

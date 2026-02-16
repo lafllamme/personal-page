@@ -9,6 +9,7 @@ const keyframes = {
   scaleOut: '0%{opacity:1;transform:rotateX(0deg) scale(1);}100%{opacity:0;transform:rotateX(-10deg) scale(0.95);}',
   fadeIn: '0%{opacity:0;}100%{opacity:1;}',
   fadeOut: '0%{opacity:1;}100%{opacity:0;}',
+  uiGhostUnderlineSweep: '0%{transform:scaleX(1) rotate(0.001deg);transform-origin:right;}49%{transform:scaleX(0) rotate(0.001deg);transform-origin:right;}50%{transform:scaleX(0) rotate(0.001deg);transform-origin:left;}100%{transform:scaleX(1) rotate(0.001deg);transform-origin:left;}',
 }
 
 const animations = {

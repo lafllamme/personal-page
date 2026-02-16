@@ -42,6 +42,6 @@ export const CursorDefaultProps = {
   color: 'white',
   textColor: '#4CBBA5',
   textWidth: 4,
-  clickScale: 1.8,
+  clickScale: 1,
   minTextHeight: 18,
 }

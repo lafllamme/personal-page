@@ -55,6 +55,7 @@ const variantTypeClassMap: Record<ComboKey, string> = {
 const comboKey = computed<ComboKey>(() => `${normalizedVariant.value}-${normalizedType.value}`)
 
 const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
+const isGhostType = computed(() => normalizedType.value === 'tertiary')
 </script>
 
 <template>
@@ -62,24 +63,28 @@ const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
     type="button"
     :disabled="disabled"
     class="space-grotesk-regular ui-button-base"
-    :class="variantTypeClass"
+    :class="[variantTypeClass, isGhostType ? 'is-ghost-button' : '']"
   >
-    <span class="ui-button-label relative inline-flex items-center">
+    <span
+      class="ui-button-label"
+      :class="isGhostType ? 'is-ghost-label' : ''"
+    >
       <slot />
     </span>
   </button>
 </template>
 
 <style>
-.v-neutral-ghost .ui-button-label,
-.v-accent-ghost .ui-button-label {
+/*
+  TODO: Move this fully to unoCSS
+*/
+.is-ghost-label {
   position: relative;
   display: inline-flex;
   align-items: center;
 }
 
-.v-neutral-ghost .ui-button-label::before,
-.v-accent-ghost .ui-button-label::before {
+.is-ghost-label::before {
   content: '';
   position: absolute;
   left: 0;
@@ -110,16 +115,10 @@ const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
   }
 }
 
-.v-neutral-ghost:not(:disabled):hover .ui-button-label::before,
-.v-neutral-ghost:not(:disabled):active .ui-button-label::before,
-.v-neutral-ghost:focus-visible .ui-button-label::before,
-.v-accent-ghost:not(:disabled):hover .ui-button-label::before,
-.v-accent-ghost:not(:disabled):active .ui-button-label::before,
-.v-accent-ghost:focus-visible .ui-button-label::before {
-  animation: uiGhostUnderlineSweep var(--motion-underline-duration) var(--motion-underline-ease) 1;
-}
-
-.is-ghost-line-on .ui-button-label::before {
+.is-ghost-button:not(:disabled):hover .is-ghost-label::before,
+.is-ghost-button:not(:disabled):active .is-ghost-label::before,
+.is-ghost-button:focus-visible .is-ghost-label::before,
+.is-ghost-line-on .is-ghost-label::before {
   animation: uiGhostUnderlineSweep var(--motion-underline-duration) var(--motion-underline-ease) 1;
 }
 </style>
