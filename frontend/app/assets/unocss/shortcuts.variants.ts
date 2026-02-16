@@ -3,7 +3,7 @@ import type { UserShortcuts } from 'unocss'
 export const variantShortcuts: UserShortcuts = [
   [
     'v-neutral-solid',
-    'bg-$bg-solid border-$border-primary color-$color-inverse hover:enabled:bg-$bg-inverse hover:enabled:border-$border-primary hover:enabled:color-$color-primary active:enabled:bg-$bg-solid-active focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-primary)] disabled:bg-$bg-solid-disabled disabled:border-$border-primary disabled:color-$color-disabled',
+    'bg-$bg-solid border-$border-primary color-$color-inverse hover:enabled:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)] active:enabled:[box-shadow:0_0_0_1px_var(--ring-primary-offset-inner),0_0_0_2px_var(--ring-primary-offset-outer)] disabled:bg-$bg-solid-disabled disabled:border-$border-primary disabled:color-$color-disabled',
   ],
 
   [

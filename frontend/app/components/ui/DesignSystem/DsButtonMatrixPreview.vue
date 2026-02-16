@@ -21,6 +21,34 @@ const states = [
   { key: 'disabled', label: 'disabled' },
 ] as const
 
+const secondaryHoverVariants = [
+  {
+    key: 's1',
+    label: 'S1 Sand Ring Fill',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] hover:enabled:bg-sand-9 hover:enabled:color-pureWhite active:enabled:bg-sand-10 active:enabled:color-pureWhite focus-visible:bg-sand-9 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand9)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand9)]',
+  },
+  {
+    key: 's2',
+    label: 'S2 Sand Ring Fill Strong',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2.5px_var(--un-preset-radix-sand10)] hover:enabled:bg-sand-10 hover:enabled:color-pureWhite active:enabled:bg-sand-11 active:enabled:color-pureWhite focus-visible:bg-sand-10 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
+  },
+  {
+    key: 's3',
+    label: 'S3 Sand Ring Soft',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_1.5px_var(--un-preset-radix-sand8)] hover:enabled:bg-sand-8 hover:enabled:color-pureWhite active:enabled:bg-sand-9 active:enabled:color-pureWhite focus-visible:bg-sand-8 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand8)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand8)]',
+  },
+  {
+    key: 's4',
+    label: 'S4 Sand Ring Lift',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] hover:enabled:bg-sand-9 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9),0_8px_16px_rgba(0,0,0,0.14)] active:enabled:bg-sand-10 active:enabled:color-pureWhite active:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] focus-visible:bg-sand-9 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand9)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand9)]',
+  },
+  {
+    key: 's5',
+    label: 'S5 Sand Ring Tight',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] hover:enabled:bg-sand-9 hover:enabled:color-pureWhite active:enabled:bg-sand-10 active:enabled:color-pureWhite focus-visible:bg-sand-9 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_1px_var(--pure-white),0_0_0_3px_var(--un-preset-radix-sand9)] dark:focus-visible:[box-shadow:0_0_0_1px_var(--pure-black),0_0_0_3px_var(--un-preset-radix-sand9)]',
+  },
+] as const
+
 type MatrixVariant = typeof variants[number]['key']
 type MatrixType = typeof types[number]['key']
 type MatrixState = typeof states[number]['key']
@@ -29,9 +57,9 @@ type InteractiveMatrixState = Exclude<MatrixState, 'default' | 'disabled'>
 
 const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, string>> = {
   'default-primary': {
-    'hover': 'bg-$bg-inverse border-$border-primary color-$color-primary',
-    'active': 'bg-$bg-solid-active border-$border-primary color-$color-inverse',
-    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-default-primary)]',
+    'hover': '[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
+    'active': '[box-shadow:0_0_0_1px_var(--ring-primary-offset-inner),0_0_0_2px_var(--ring-primary-offset-outer)]',
+    'focus-visible': '[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
   },
   'default-secondary': {
     'hover': 'bg-$bg-overlay-hover',
@@ -125,5 +153,39 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
         </div>
       </section>
     </div>
+
+    <section class="mt-8 border-t border-pureBlack/10 pt-5 dark:border-pureWhite/10">
+      <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
+        Secondary Hover Variants
+      </p>
+      <div class="mt-4 border border-pureBlack/12 rounded-lg border-solid bg-pureWhite p-4 dark:border-pureWhite/12 dark:bg-pureBlack">
+        <div class="grid gap-3">
+          <div
+            v-for="item in secondaryHoverVariants"
+            :key="item.key"
+            class="grid grid-cols-[130px_auto] items-center gap-3 border-b border-pureBlack/8 border-solid pb-2 last:border-b-0 dark:border-pureWhite/10 last:pb-0"
+          >
+            <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+              {{ item.label }}
+            </p>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                class="space-grotesk-regular ui-button-base v-neutral-solid"
+              >
+                Primary
+              </button>
+              <button
+                type="button"
+                class="space-grotesk-regular ui-button-base"
+                :class="item.className"
+              >
+                Secondary
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </article>
 </template>

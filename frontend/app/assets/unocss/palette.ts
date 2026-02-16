@@ -80,6 +80,8 @@ const ringTokens: TokenSet = {
   'ring-default-secondary': { light: 'rgba(0, 0, 0, 0.22)', dark: 'rgba(242, 239, 230, 0.22)' },
   'ring-default-tertiary': { light: 'rgba(0, 0, 0, 0.20)', dark: 'rgba(242, 239, 230, 0.20)' },
   'ring-default-quaternary': { light: 'rgba(0, 0, 0, 0.20)', dark: 'rgba(242, 239, 230, 0.20)' },
+  'ring-primary-offset-inner': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
+  'ring-primary-offset-outer': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
 
   'ring-accent-primary': { light: 'rgba(0, 133, 115, 0.30)', dark: 'rgba(11, 216, 182, 0.30)' },
   'ring-accent-secondary': { light: 'rgba(0, 133, 115, 0.30)', dark: 'rgba(11, 216, 182, 0.32)' },
