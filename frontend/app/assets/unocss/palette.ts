@@ -57,6 +57,7 @@ const bgTokens: TokenSet = {
 
   'bg-accent-outline-hover': { light: 'rgba(18, 165, 148, 0.14)', dark: 'rgba(11, 216, 182, 0.14)' },
   'bg-accent-outline-active': { light: 'rgba(18, 165, 148, 0.20)', dark: 'rgba(11, 216, 182, 0.20)' },
+  'bg-accent-outline-fill': 'var(--toxic-7)',
   'bg-accent-quaternary-hover': { light: 'rgba(18, 165, 148, 0.16)', dark: 'rgba(11, 216, 182, 0.22)' },
   'bg-accent-quaternary-active': { light: 'rgba(18, 165, 148, 0.24)', dark: 'rgba(11, 216, 182, 0.30)' },
   'bg-accent-quaternary-focus': { light: 'rgba(18, 165, 148, 0.16)', dark: 'rgba(11, 216, 182, 0.22)' },
@@ -77,6 +78,7 @@ const borderTokens: TokenSet = {
   'border-accent': 'var(--toxic-11)',
   'border-accent-hover': 'var(--toxic-10)',
   'border-accent-active': { light: 'var(--toxic-12)', dark: 'var(--toxic-8)' },
+  'border-accent-outline-fill': 'var(--toxic-7)',
   'border-accent-disabled': { light: '#7ea9a3', dark: '#2e5e58' },
   'border-accent-soft': 'var(--toxic-7)',
   'border-accent-soft-hover': 'var(--toxic-8)',

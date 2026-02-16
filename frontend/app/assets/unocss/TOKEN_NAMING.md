@@ -44,6 +44,9 @@
 
 - No abbreviations like `btn-def-pri`.
 - Prefer semantic names over visual names.
+- UnoCSS utilities must be statically present in source code:
+  - Do not build class names dynamically at runtime.
+  - If mapping variants, map to fully written class strings.
 - Keep state suffixes explicit:
   - `hover`
   - `active`
