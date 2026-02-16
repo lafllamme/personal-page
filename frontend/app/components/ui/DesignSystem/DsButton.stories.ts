@@ -113,7 +113,7 @@ export const A11yNotes: Story = {
     template: `
       <article class="max-w-2xl space-y-2 text-sm leading-relaxed">
         <p><strong>Keyboard:</strong> focus-visible ring is present on all button types.</p>
-        <p><strong>Contrast:</strong> default and accent styles are mapped to pure black/white and Radix teal roles.</p>
+        <p><strong>Contrast:</strong> default and accent styles are mapped to pure black/white and toxic scale roles.</p>
         <p><strong>Semantics:</strong> use button for actions, link for navigation.</p>
       </article>
     `,

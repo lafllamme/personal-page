@@ -1,3 +1,5 @@
+import { themeColors } from './palette'
+
 const keyframes = {
   enterFromRight: '0%{opacity:0;transform:translateX(200px);}100%{opacity:1;transform:translateX(0);}',
   enterFromLeft: '0%{opacity:0;transform:translateX(-200px);}100%{opacity:1;transform:translateX(0);}',
@@ -21,7 +23,11 @@ const animations = {
 }
 
 export const theme = {
-  colors: {},
+  colors: {
+    pureBlack: '#000000',
+    pureWhite: '#f2efe6',
+    ...themeColors,
+  },
   keyframes,
   animation: animations,
   duration: {},

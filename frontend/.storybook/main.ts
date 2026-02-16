@@ -1,6 +1,6 @@
+import type { StorybookConfig } from '@storybook/vue3-vite'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { StorybookConfig } from '@storybook/vue3-vite'
 import vue from '@vitejs/plugin-vue'
 import Unocss from 'unocss/vite'
 
@@ -22,8 +22,8 @@ const config: StorybookConfig = {
       vue(),
       Unocss({
         include: [
-          /\.vue(\?[^.]+)?$/,
-          /\.([jt]sx?|mdx?)(\?[^.]+)?$/,
+          /\.vue(?:\?.*)?$/,
+          /\.([jt]sx?|mdx?)(?:\?.*)?$/,
         ],
       }),
     ]

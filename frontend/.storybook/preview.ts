@@ -1,8 +1,8 @@
 import type { Preview } from '@storybook/vue3-vite'
-import 'virtual:uno.css'
+import '../app/assets/reset/main.ts'
 import './storybook-fonts.css'
 import './storybook-docs.css'
-import '../app/assets/reset/main.ts'
+import 'virtual:uno.css'
 
 const preview: Preview = {
   globalTypes: {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const radixTealLight = [
+const toxicLight = [
   { step: 1, hex: '#fafefd' },
   { step: 2, hex: '#f3fbf9' },
   { step: 3, hex: '#e0f8f3' },
@@ -14,7 +14,7 @@ const radixTealLight = [
   { step: 12, hex: '#0d3d38' },
 ]
 
-const radixTealDark = [
+const toxicDark = [
   { step: 1, hex: '#0d1514' },
   { step: 2, hex: '#111c1b' },
   { step: 3, hex: '#0d2d2a' },
@@ -40,13 +40,13 @@ const wcagSemanticPairs = [
 <template>
   <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16 md:p-6">
     <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
-      Radix Teal Colorway
+      Toxic Colorway
     </p>
     <h2 class="font-clash-regular mt-2 text-[clamp(1.2rem,2.2vw,1.7rem)] leading-tight">
       Available palette tokens (1-12) for Light and Dark mode
     </h2>
     <p class="font-manrope mt-2 text-sm leading-relaxed opacity-82">
-      Generated from the Radix teal scale and mapped to WCAG-safe brand usage for our current system direction.
+      Generated from the toxic scale and mapped to WCAG-safe brand usage for our current system direction.
     </p>
 
     <div class="grid mt-5 gap-6 lg:grid-cols-2">
@@ -56,13 +56,13 @@ const wcagSemanticPairs = [
         </p>
         <ul class="grid gap-2 sm:grid-cols-2">
           <li
-            v-for="token in radixTealLight"
+            v-for="token in toxicLight"
             :key="`light-${token.step}`"
             class="border border-pureBlack/16 rounded-lg border-solid p-2 dark:border-pureWhite/16"
           >
             <div class="h-9 w-full border border-pureBlack/14 rounded-md border-solid dark:border-pureWhite/14" :style="{ backgroundColor: token.hex }" />
             <p class="space-grotesk-regular mt-2 text-[10px] tracking-[0.14em] uppercase opacity-70">
-              teal-{{ token.step }}
+              toxic-{{ token.step }}
             </p>
             <p class="font-manrope text-xs opacity-85">
               {{ token.hex }}
@@ -77,13 +77,13 @@ const wcagSemanticPairs = [
         </p>
         <ul class="grid gap-2 sm:grid-cols-2">
           <li
-            v-for="token in radixTealDark"
+            v-for="token in toxicDark"
             :key="`dark-${token.step}`"
             class="border border-pureBlack/16 rounded-lg border-solid p-2 dark:border-pureWhite/16"
           >
             <div class="h-9 w-full border border-pureBlack/14 rounded-md border-solid dark:border-pureWhite/14" :style="{ backgroundColor: token.hex }" />
             <p class="space-grotesk-regular mt-2 text-[10px] tracking-[0.14em] uppercase opacity-70">
-              teal-dark-{{ token.step }}
+              toxic-dark-{{ token.step }}
             </p>
             <p class="font-manrope text-xs opacity-85">
               {{ token.hex }}
