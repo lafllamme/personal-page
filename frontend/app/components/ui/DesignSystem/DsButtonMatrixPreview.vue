@@ -30,22 +30,22 @@ const secondaryHoverVariants = [
   {
     key: 's2',
     label: 'S2 Sand Ring Fill Strong',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2.5px_var(--un-preset-radix-sand10)] hover:enabled:bg-sand-10 hover:enabled:color-pureWhite active:enabled:bg-sand-11 active:enabled:color-pureWhite focus-visible:bg-sand-10 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] hover:enabled:bg-sand-10 hover:enabled:color-pureWhite active:enabled:bg-sand-11 active:enabled:color-pureWhite focus-visible:bg-sand-10 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
   },
   {
     key: 's3',
-    label: 'S3 Sand Ring Soft',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_1.5px_var(--un-preset-radix-sand8)] hover:enabled:bg-sand-8 hover:enabled:color-pureWhite active:enabled:bg-sand-9 active:enabled:color-pureWhite focus-visible:bg-sand-8 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand8)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand8)]',
+    label: 'S3 Base Black/White -> Sand Soft',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-primary)] hover:enabled:bg-sand-9 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] active:enabled:bg-sand-10 active:enabled:color-pureWhite active:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_3px_var(--ring-default-secondary)]',
   },
   {
     key: 's4',
-    label: 'S4 Sand Ring Lift',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] hover:enabled:bg-sand-9 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9),0_8px_16px_rgba(0,0,0,0.14)] active:enabled:bg-sand-10 active:enabled:color-pureWhite active:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] focus-visible:bg-sand-9 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand9)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand9)]',
+    label: 'S4 Base Black/White -> Sand Mid',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-primary)] hover:enabled:bg-sand-10 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] active:enabled:bg-sand-11 active:enabled:color-pureWhite active:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] focus-visible:bg-sand-10 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
   },
   {
     key: 's5',
-    label: 'S5 Sand Ring Tight',
-    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] hover:enabled:bg-sand-9 hover:enabled:color-pureWhite active:enabled:bg-sand-10 active:enabled:color-pureWhite focus-visible:bg-sand-9 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_1px_var(--pure-white),0_0_0_3px_var(--un-preset-radix-sand9)] dark:focus-visible:[box-shadow:0_0_0_1px_var(--pure-black),0_0_0_3px_var(--un-preset-radix-sand9)]',
+    label: 'S5 Base Black/White -> Sand Strong',
+    className: 'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-primary)] hover:enabled:bg-sand-11 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] active:enabled:bg-sand-12 active:enabled:color-pureWhite active:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand12)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_3px_var(--ring-default-secondary)]',
   },
 ] as const
 
@@ -57,19 +57,19 @@ type InteractiveMatrixState = Exclude<MatrixState, 'default' | 'disabled'>
 
 const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, string>> = {
   'default-primary': {
-    'hover': '[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
-    'active': '[box-shadow:0_0_0_1px_var(--ring-primary-offset-inner),0_0_0_2px_var(--ring-primary-offset-outer)]',
-    'focus-visible': '[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
+    'hover': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
+    'active': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_1px_var(--ring-primary-offset-inner),0_0_0_2px_var(--ring-primary-offset-outer)]',
+    'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
   },
   'default-secondary': {
-    'hover': 'bg-$bg-overlay-hover',
-    'active': 'bg-$bg-overlay-active',
-    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-default-secondary)]',
+    'hover': 'bg-sand-10 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)]',
+    'active': 'bg-sand-11 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)]',
+    'focus-visible': 'bg-sand-10 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10),0_0_0_3px_var(--ring-default-secondary)]',
   },
   'default-tertiary': {
-    'hover': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)]',
-    'active': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)]',
-    'focus-visible': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)] [box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
+    'hover': 'is-ghost-line-on',
+    'active': 'is-ghost-line-on',
+    'focus-visible': 'is-ghost-line-on [box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
   },
   'default-quaternary': {
     'hover': 'bg-$bg-soft-hover',
@@ -87,9 +87,9 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-accent-secondary)]',
   },
   'accent-tertiary': {
-    'hover': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)]',
-    'active': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)]',
-    'focus-visible': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)] [box-shadow:0_0_0_3px_var(--ring-accent-tertiary)]',
+    'hover': 'is-ghost-line-on',
+    'active': 'is-ghost-line-on',
+    'focus-visible': 'is-ghost-line-on [box-shadow:0_0_0_3px_var(--ring-accent-tertiary)]',
   },
   'accent-quaternary': {
     'hover': 'bg-$bg-accent-soft-hover border-$border-accent-soft-hover',

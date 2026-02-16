@@ -64,8 +64,62 @@ const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
     class="space-grotesk-regular ui-button-base"
     :class="variantTypeClass"
   >
-    <span class="relative inline-flex items-center">
+    <span class="ui-button-label relative inline-flex items-center">
       <slot />
     </span>
   </button>
 </template>
+
+<style>
+.v-neutral-ghost .ui-button-label,
+.v-accent-ghost .ui-button-label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.v-neutral-ghost .ui-button-label::before,
+.v-accent-ghost .ui-button-label::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--motion-underline-offset);
+  height: var(--motion-underline-thickness);
+  background-color: currentColor;
+  transform: scaleX(1) rotate(0.001deg);
+  transform-origin: left;
+}
+
+@keyframes uiGhostUnderlineSweep {
+  0% {
+    transform: scaleX(1) rotate(0.001deg);
+    transform-origin: right;
+  }
+  49% {
+    transform: scaleX(0) rotate(0.001deg);
+    transform-origin: right;
+  }
+  50% {
+    transform: scaleX(0) rotate(0.001deg);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1) rotate(0.001deg);
+    transform-origin: left;
+  }
+}
+
+.v-neutral-ghost:not(:disabled):hover .ui-button-label::before,
+.v-neutral-ghost:not(:disabled):active .ui-button-label::before,
+.v-neutral-ghost:focus-visible .ui-button-label::before,
+.v-accent-ghost:not(:disabled):hover .ui-button-label::before,
+.v-accent-ghost:not(:disabled):active .ui-button-label::before,
+.v-accent-ghost:focus-visible .ui-button-label::before {
+  animation: uiGhostUnderlineSweep var(--motion-underline-duration) var(--motion-underline-ease) 1;
+}
+
+.is-ghost-line-on .ui-button-label::before {
+  animation: uiGhostUnderlineSweep var(--motion-underline-duration) var(--motion-underline-ease) 1;
+}
+</style>

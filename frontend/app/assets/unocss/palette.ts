@@ -89,6 +89,13 @@ const ringTokens: TokenSet = {
   'ring-accent-quaternary': { light: 'rgba(13, 155, 138, 0.28)', dark: 'rgba(14, 179, 158, 0.28)' },
 }
 
+const motionTokens: TokenSet = {
+  'motion-underline-duration': '0.6s',
+  'motion-underline-ease': 'cubic-bezier(0.625, 0.05, 0, 1)',
+  'motion-underline-offset': '-0.01em',
+  'motion-underline-thickness': '0.0625em',
+}
+
 const toxicScale: Scale = {
   1: { light: '#fafefd', dark: '#0d1514' },
   2: { light: '#f3fbf9', dark: '#111c1b' },
@@ -157,6 +164,7 @@ export function colorTokensPreflightCss() {
   appendTokens(bgTokens)
   appendTokens(borderTokens)
   appendTokens(ringTokens)
+  appendTokens(motionTokens)
 
   const sortedEntries = Object.entries(toxicScale)
     .sort(([left], [right]) => Number(left) - Number(right))

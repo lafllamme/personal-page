@@ -3,17 +3,17 @@ import type { UserShortcuts } from 'unocss'
 export const variantShortcuts: UserShortcuts = [
   [
     'v-neutral-solid',
-    'bg-$bg-solid border-$border-primary color-$color-inverse hover:enabled:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)] active:enabled:[box-shadow:0_0_0_1px_var(--ring-primary-offset-inner),0_0_0_2px_var(--ring-primary-offset-outer)] disabled:bg-$bg-solid-disabled disabled:border-$border-primary disabled:color-$color-disabled',
+    'bg-$bg-solid border-transparent color-$color-inverse [box-shadow:inset_0_0_0_2px_var(--border-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_1px_var(--ring-primary-offset-inner),0_0_0_2px_var(--ring-primary-offset-outer)] disabled:bg-$bg-solid-disabled disabled:[box-shadow:inset_0_0_0_2px_var(--border-primary)] disabled:color-$color-disabled',
   ],
 
   [
     'v-neutral-outline',
-    'bg-transparent border-$border-primary color-$color-primary hover:enabled:bg-$bg-overlay-hover active:enabled:bg-$bg-overlay-active focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-secondary)] disabled:border-$border-disabled disabled:color-$color-outline-disabled',
+    'bg-transparent border-transparent color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-primary)] hover:enabled:bg-sand-10 hover:enabled:color-pureWhite hover:enabled:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] active:enabled:color-pureWhite focus-visible:bg-sand-10 focus-visible:color-pureWhite focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)] disabled:[box-shadow:inset_0_0_0_2px_var(--border-disabled)] disabled:color-$color-outline-disabled',
   ],
 
   [
     'v-neutral-ghost',
-    'bg-transparent border-transparent color-$color-primary focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)] disabled:color-$color-disabled-soft before:content-[\'\'] before:absolute before:bottom-[-0.0625em] before:left-0 before:w-full before:h-[0.0625em] before:bg-current before:origin-right before:[transform:scaleX(0)_rotate(0.001deg)] before:[transition:transform_0.6s_cubic-bezier(0.625,0.05,0,1)] hover:before:origin-left hover:before:[transform:scaleX(1)_rotate(0.001deg)] active:enabled:before:origin-left active:enabled:before:[transform:scaleX(1)_rotate(0.001deg)] focus-visible:before:origin-left focus-visible:before:[transform:scaleX(1)_rotate(0.001deg)]',
+    'bg-transparent border-transparent color-$color-primary focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)] disabled:color-$color-disabled-soft',
   ],
 
   [
@@ -33,7 +33,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-accent-ghost',
-    'bg-transparent border-transparent color-$color-accent focus-visible:[box-shadow:0_0_0_3px_var(--ring-accent-tertiary)] disabled:color-$color-accent-ghost-disabled before:content-[\'\'] before:absolute before:bottom-[-0.0625em] before:left-0 before:w-full before:h-[0.0625em] before:bg-current before:origin-right before:[transform:scaleX(0)_rotate(0.001deg)] before:[transition:transform_0.6s_cubic-bezier(0.625,0.05,0,1)] hover:before:origin-left hover:before:[transform:scaleX(1)_rotate(0.001deg)] active:enabled:before:origin-left active:enabled:before:[transform:scaleX(1)_rotate(0.001deg)] focus-visible:before:origin-left focus-visible:before:[transform:scaleX(1)_rotate(0.001deg)]',
+    'bg-transparent border-transparent color-$color-accent focus-visible:[box-shadow:0_0_0_3px_var(--ring-accent-tertiary)] disabled:color-$color-accent-ghost-disabled',
   ],
 
   [
