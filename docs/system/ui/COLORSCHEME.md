@@ -2,6 +2,8 @@
 
 Source: `@radix-ui/colors@3.0.0` via jsDelivr CDN.
 
+Active token architecture and naming layers: [TOKEN-LAYERS.md](./TOKEN-LAYERS.md).
+
 This file lists all Radix color scales (light, dark, alpha, dark-alpha) and overlay scales with hex values.
 
 ## Gray

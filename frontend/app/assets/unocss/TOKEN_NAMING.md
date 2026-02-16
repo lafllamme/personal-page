@@ -9,6 +9,8 @@
 
 - Global token format: `domain-role-state`
 - Component token format: `component-variant-type-role-state`
+- Variant shortcut format: `v-{intent}-{style}-{state?}`
+- Structure shortcut format: `ui-{component}-{role}`
 
 ## Domains
 
@@ -26,6 +28,9 @@
 - `border-accent-soft`
 - `ring-accent-secondary`
 - `toxic-11`
+- `v-neutral-solid`
+- `v-accent-ghost-hover`
+- `ui-button-base`
 
 ## Usage in Uno
 
@@ -43,6 +48,7 @@
   - `hover`
   - `active`
   - `disabled`
-  - `focus-visible`
+  - `focus`
 - If a token is shared across components, keep it global.
 - If a token is truly component-specific, prefix with component name.
+- Keep component structure shortcuts in dedicated files (`shortcuts.button.ts`), and shared interaction variants in `shortcuts.variants.ts`.

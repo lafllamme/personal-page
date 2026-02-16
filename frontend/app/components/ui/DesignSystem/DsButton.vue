@@ -46,56 +46,56 @@ const normalizedVariant = computed<ButtonVariant>(() => {
 })
 
 const variantTypeClassMap: Record<ComboKey, string> = {
-  'default-primary': 'button-default-primary',
-  'default-secondary': 'button-default-secondary',
-  'default-tertiary': 'button-default-tertiary',
-  'default-quaternary': 'button-default-quaternary',
-  'accent-primary': 'button-accent-primary',
-  'accent-secondary': 'button-accent-secondary',
-  'accent-tertiary': 'button-accent-tertiary',
-  'accent-quaternary': 'button-accent-quaternary',
+  'default-primary': 'v-neutral-solid',
+  'default-secondary': 'v-neutral-outline',
+  'default-tertiary': 'v-neutral-ghost',
+  'default-quaternary': 'v-neutral-soft',
+  'accent-primary': 'v-accent-solid',
+  'accent-secondary': 'v-accent-outline',
+  'accent-tertiary': 'v-accent-ghost',
+  'accent-quaternary': 'v-accent-soft',
 }
 
 const variantTypePreviewStateClassMap: Record<ComboKey, Record<InteractivePreviewState, string>> = {
   'default-primary': {
-    'hover': 'button-default-primary-is-hover',
-    'active': 'button-default-primary-is-active',
-    'focus-visible': 'button-default-primary-is-focus-visible',
+    'hover': 'v-neutral-solid-hover',
+    'active': 'v-neutral-solid-active',
+    'focus-visible': 'v-neutral-solid-focus',
   },
   'default-secondary': {
-    'hover': 'button-default-secondary-is-hover',
-    'active': 'button-default-secondary-is-active',
-    'focus-visible': 'button-default-secondary-is-focus-visible',
+    'hover': 'v-neutral-outline-hover',
+    'active': 'v-neutral-outline-active',
+    'focus-visible': 'v-neutral-outline-focus',
   },
   'default-tertiary': {
-    'hover': 'button-default-tertiary-is-hover',
-    'active': 'button-default-tertiary-is-active',
-    'focus-visible': 'button-default-tertiary-is-focus-visible',
+    'hover': 'v-neutral-ghost-hover',
+    'active': 'v-neutral-ghost-active',
+    'focus-visible': 'v-neutral-ghost-focus',
   },
   'default-quaternary': {
-    'hover': 'button-default-quaternary-is-hover',
-    'active': 'button-default-quaternary-is-active',
-    'focus-visible': 'button-default-quaternary-is-focus-visible',
+    'hover': 'v-neutral-soft-hover',
+    'active': 'v-neutral-soft-active',
+    'focus-visible': 'v-neutral-soft-focus',
   },
   'accent-primary': {
-    'hover': 'button-accent-primary-is-hover',
-    'active': 'button-accent-primary-is-active',
-    'focus-visible': 'button-accent-primary-is-focus-visible',
+    'hover': 'v-accent-solid-hover',
+    'active': 'v-accent-solid-active',
+    'focus-visible': 'v-accent-solid-focus',
   },
   'accent-secondary': {
-    'hover': 'button-accent-secondary-is-hover',
-    'active': 'button-accent-secondary-is-active',
-    'focus-visible': 'button-accent-secondary-is-focus-visible',
+    'hover': 'v-accent-outline-hover',
+    'active': 'v-accent-outline-active',
+    'focus-visible': 'v-accent-outline-focus',
   },
   'accent-tertiary': {
-    'hover': 'button-accent-tertiary-is-hover',
-    'active': 'button-accent-tertiary-is-active',
-    'focus-visible': 'button-accent-tertiary-is-focus-visible',
+    'hover': 'v-accent-ghost-hover',
+    'active': 'v-accent-ghost-active',
+    'focus-visible': 'v-accent-ghost-focus',
   },
   'accent-quaternary': {
-    'hover': 'button-accent-quaternary-is-hover',
-    'active': 'button-accent-quaternary-is-active',
-    'focus-visible': 'button-accent-quaternary-is-focus-visible',
+    'hover': 'v-accent-soft-hover',
+    'active': 'v-accent-soft-active',
+    'focus-visible': 'v-accent-soft-focus',
   },
 }
 
@@ -114,10 +114,10 @@ const previewStateClass = computed(() => {
   <button
     type="button"
     :disabled="disabled"
-    class="space-grotesk-regular button-base"
+    class="space-grotesk-regular ui-button-base"
     :class="[variantTypeClass, previewStateClass]"
   >
-    <span class="button-label">
+    <span class="relative inline-flex items-center">
       <slot />
     </span>
   </button>

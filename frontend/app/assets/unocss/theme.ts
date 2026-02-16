@@ -1,4 +1,4 @@
-import { themeColors } from './palette'
+import { PURE_BLACK, PURE_WHITE, themeColors } from './palette'
 
 const keyframes = {
   enterFromRight: '0%{opacity:0;transform:translateX(200px);}100%{opacity:1;transform:translateX(0);}',
@@ -24,8 +24,8 @@ const animations = {
 
 export const theme = {
   colors: {
-    pureBlack: '#000000',
-    pureWhite: '#f2efe6',
+    pureBlack: PURE_BLACK,
+    pureWhite: PURE_WHITE,
     ...themeColors,
   },
   keyframes,

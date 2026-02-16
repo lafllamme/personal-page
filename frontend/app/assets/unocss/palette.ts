@@ -3,25 +3,28 @@ type ModeColor = string | { light: string, dark?: string }
 type Scale = Record<number, ModeColor>
 type TokenSet = Record<string, ModeColor>
 
+export const PURE_BLACK = '#000000'
+export const PURE_WHITE = '#f2efe6'
+
 const coreTokens: TokenSet = {
-  'pure-black': '#000000',
-  'pure-white': '#f2efe6',
+  'pure-black': PURE_BLACK,
+  'pure-white': PURE_WHITE,
 }
 
 const colorTokens: TokenSet = {
-  'color-primary': { light: '#000000', dark: '#f2efe6' },
-  'color-inverse': { light: '#f2efe6', dark: '#000000' },
+  'color-primary': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
+  'color-inverse': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
   'color-on-accent': { light: '#ffffff', dark: '#0d1514' },
   'color-disabled': { light: '#888681', dark: '#6a6965' },
   'color-disabled-soft': { light: 'rgba(0, 0, 0, 0.44)', dark: 'rgba(242, 239, 230, 0.44)' },
   'color-disabled-subtle': { light: 'rgba(0, 0, 0, 0.42)', dark: 'rgba(242, 239, 230, 0.42)' },
   'color-outline-disabled': { light: 'rgba(0, 0, 0, 0.52)', dark: 'rgba(242, 239, 230, 0.52)' },
 
-  'color-accent': { light: '#008573', dark: '#0bd8b6' },
-  'color-accent-hover': { light: '#0d9b8a', dark: '#0eb39e' },
-  'color-accent-strong': { light: '#0d3d38', dark: '#adf0dd' },
-  'color-accent-soft': { light: '#83cdc1', dark: '#1c6961' },
-  'color-accent-soft-hover': { light: '#53b9ab', dark: '#207e73' },
+  'color-accent': 'var(--toxic-11)',
+  'color-accent-hover': 'var(--toxic-10)',
+  'color-accent-strong': 'var(--toxic-12)',
+  'color-accent-soft': 'var(--toxic-7)',
+  'color-accent-soft-hover': 'var(--toxic-8)',
   'color-accent-primary-disabled': { light: '#edf7f5', dark: '#9ac8bf' },
   'color-accent-secondary-disabled': { light: '#7ea9a3', dark: '#2e5e58' },
   'color-accent-tertiary-disabled': { light: '#7ea9a3', dark: '#2e5e58' },
@@ -29,7 +32,7 @@ const colorTokens: TokenSet = {
 }
 
 const backgroundTokens: TokenSet = {
-  'background-solid': { light: '#000000', dark: '#f2efe6' },
+  'background-solid': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
   'background-solid-hover': { light: '#1d1d1c', dark: '#d5d2ca' },
   'background-solid-active': { light: '#353533', dark: '#bdbab3' },
   'background-solid-disabled': { light: '#3f3e3c', dark: '#b3b1aa' },
@@ -44,25 +47,25 @@ const backgroundTokens: TokenSet = {
 
   'background-accent-secondary-hover': { light: 'rgba(18, 165, 148, 0.14)', dark: 'rgba(11, 216, 182, 0.14)' },
   'background-accent-secondary-active': { light: 'rgba(18, 165, 148, 0.20)', dark: 'rgba(11, 216, 182, 0.20)' },
-  'background-accent-primary-active': { light: '#0d3d38', dark: '#207e73' },
-  'background-accent-quaternary': { light: '#e0f8f3', dark: '#0d2d2a' },
-  'background-accent-quaternary-hover': { light: '#ccf3ea', dark: '#023b37' },
-  'background-accent-quaternary-active': { light: '#b8eae0', dark: '#084843' },
+  'background-accent-primary-active': { light: 'var(--toxic-12)', dark: 'var(--toxic-8)' },
+  'background-accent-quaternary': 'var(--toxic-3)',
+  'background-accent-quaternary-hover': 'var(--toxic-4)',
+  'background-accent-quaternary-active': 'var(--toxic-5)',
   'background-accent-quaternary-disabled': { light: '#f2f6f5', dark: '#0f1f1d' },
 }
 
 const borderTokens: TokenSet = {
-  'border-primary': { light: '#000000', dark: '#f2efe6' },
+  'border-primary': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
   'border-disabled': { light: 'rgba(0, 0, 0, 0.52)', dark: 'rgba(242, 239, 230, 0.52)' },
   'border-quaternary': { light: 'rgba(0, 0, 0, 0.22)', dark: 'rgba(242, 239, 230, 0.22)' },
   'border-quaternary-disabled': { light: 'rgba(0, 0, 0, 0.14)', dark: 'rgba(242, 239, 230, 0.14)' },
 
-  'border-accent': { light: '#008573', dark: '#0bd8b6' },
-  'border-accent-hover': { light: '#0d9b8a', dark: '#0eb39e' },
-  'border-accent-active': { light: '#0d3d38', dark: '#207e73' },
+  'border-accent': 'var(--toxic-11)',
+  'border-accent-hover': 'var(--toxic-10)',
+  'border-accent-active': { light: 'var(--toxic-12)', dark: 'var(--toxic-8)' },
   'border-accent-disabled': { light: '#7ea9a3', dark: '#2e5e58' },
-  'border-accent-soft': { light: '#83cdc1', dark: '#1c6961' },
-  'border-accent-soft-hover': { light: '#53b9ab', dark: '#207e73' },
+  'border-accent-soft': 'var(--toxic-7)',
+  'border-accent-soft-hover': 'var(--toxic-8)',
   'border-accent-soft-disabled': { light: '#dbe5e3', dark: 'rgba(28, 105, 97, 0.48)' },
 }
 
