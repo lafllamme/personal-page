@@ -26,56 +26,6 @@ const compactVariantRows = [
   { key: 'accent', label: 'Toxic' },
 ] as const
 
-const secondaryContrastRows = [
-  {
-    key: 's1',
-    label: 'S1 Toxic-3',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-3)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-3)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-3)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-3)] focus-visible:[background-color:var(--toxic-3)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-3)]',
-  },
-  {
-    key: 's2',
-    label: 'S2 Toxic-4',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-4)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-4)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-4)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-4)] focus-visible:[background-color:var(--toxic-4)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-4)]',
-  },
-  {
-    key: 's3',
-    label: 'S3 Toxic-5',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-5)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-5)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-5)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-5)] focus-visible:[background-color:var(--toxic-5)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-5)]',
-  },
-  {
-    key: 's4',
-    label: 'S4 Toxic-6',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-6)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-6)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-6)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-6)] focus-visible:[background-color:var(--toxic-6)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-6)]',
-  },
-  {
-    key: 's5',
-    label: 'S5 Toxic-7',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-7)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-7)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-7)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-7)] focus-visible:[background-color:var(--toxic-7)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-7)]',
-  },
-  {
-    key: 's6',
-    label: 'S6 Toxic-8',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-8)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-8)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-8)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-8)] focus-visible:[background-color:var(--toxic-8)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-8)]',
-  },
-  {
-    key: 's7',
-    label: 'S7 Toxic-9',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-9)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-9)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-9)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-9)] focus-visible:[background-color:var(--toxic-9)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-9)]',
-  },
-  {
-    key: 's8',
-    label: 'S8 Toxic-10',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-10)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-10)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-10)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-10)] focus-visible:[background-color:var(--toxic-10)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-10)]',
-  },
-  {
-    key: 's9',
-    label: 'S9 Toxic-11',
-    secondaryClass: '[color:var(--color-accent)] [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:[background-color:var(--toxic-11)] hover:enabled:[color:var(--color-primary)] hover:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-11)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--toxic-11)] active:enabled:[color:var(--color-inverse)] active:enabled:[box-shadow:inset_0_0_0_2px_var(--toxic-11)] focus-visible:[background-color:var(--toxic-11)] focus-visible:[color:var(--color-inverse)] focus-visible:[box-shadow:inset_0_0_0_2px_var(--toxic-11)]',
-  },
-] as const
-
-const secondaryDebugBaseClass = 'space-grotesk-regular ui-button-base bg-transparent border-transparent [box-shadow:inset_0_0_0_2px_var(--border-accent)]'
-
 type MatrixVariant = typeof variants[number]['key']
 type MatrixType = typeof types[number]['key']
 type MatrixState = typeof states[number]['key']
@@ -252,75 +202,6 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
         </table>
       </div>
 
-      <p class="space-grotesk-regular mt-6 text-[10px] tracking-[0.16em] uppercase opacity-65">
-        Secondary Contrast Concepts (Toxic)
-      </p>
-      <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
-        <table class="min-w-full border-collapse text-left text-[10px] tracking-[0.12em] uppercase">
-          <thead class="bg-pureBlack/3 dark:bg-pureWhite/5">
-            <tr>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Concept
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Primary
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Secondary
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Tertiary
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Quaternary
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="row in secondaryContrastRows"
-              :key="row.key"
-              class="border-t border-pureBlack/8 dark:border-pureWhite/10"
-            >
-              <td class="px-3 py-2 opacity-75">
-                {{ row.label }}
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="primary"
-                  variant="accent"
-                >
-                  Primary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <button
-                  type="button"
-                  :class="[secondaryDebugBaseClass, row.secondaryClass]"
-                >
-                  <span class="ui-button-label">Secondary</span>
-                </button>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="accent"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="accent"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
   </article>
 </template>
