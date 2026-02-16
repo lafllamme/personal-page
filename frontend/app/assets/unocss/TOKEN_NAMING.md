@@ -9,13 +9,13 @@
 
 - Global token format: `domain-role-state`
 - Component token format: `component-variant-type-role-state`
-- Variant shortcut format: `v-{intent}-{style}-{state?}`
+- Variant shortcut format: `v-{intent}-{style}`
 - Structure shortcut format: `ui-{component}-{role}`
 
 ## Domains
 
 - `color-*` for text/icon color
-- `background-*` for surfaces/fills
+- `bg-*` for surfaces/fills
 - `border-*` for outlines/strokes
 - `ring-*` for focus rings
 - `toxic-*` for palette scale (`1..12`)
@@ -24,19 +24,19 @@
 
 - `color-primary`
 - `color-inverse`
-- `background-solid-hover`
+- `bg-solid-hover`
 - `border-accent-soft`
 - `ring-accent-secondary`
 - `toxic-11`
 - `v-neutral-solid`
-- `v-accent-ghost-hover`
+- `v-accent-ghost`
 - `ui-button-base`
 
 ## Usage in Uno
 
 - Use `$` syntax in shortcuts/components:
-  - `text-$color-primary`
-  - `bg-$background-solid`
+  - `color-$color-primary`
+  - `bg-$bg-solid`
   - `border-$border-accent`
   - `bg-$toxic-4`
 

@@ -20,6 +20,62 @@ const states = [
   { key: 'focus-visible', label: 'focus-visible' },
   { key: 'disabled', label: 'disabled' },
 ] as const
+
+type MatrixVariant = typeof variants[number]['key']
+type MatrixType = typeof types[number]['key']
+type MatrixState = typeof states[number]['key']
+type ComboKey = `${MatrixVariant}-${MatrixType}`
+type InteractiveMatrixState = Exclude<MatrixState, 'default' | 'disabled'>
+
+const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, string>> = {
+  'default-primary': {
+    'hover': 'bg-$bg-inverse border-$border-primary color-$color-primary',
+    'active': 'bg-$bg-solid-active border-$border-primary color-$color-inverse',
+    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-default-primary)]',
+  },
+  'default-secondary': {
+    'hover': 'bg-$bg-overlay-hover',
+    'active': 'bg-$bg-overlay-active',
+    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-default-secondary)]',
+  },
+  'default-tertiary': {
+    'hover': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)]',
+    'active': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)]',
+    'focus-visible': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)] [box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
+  },
+  'default-quaternary': {
+    'hover': 'bg-$bg-soft-hover',
+    'active': 'bg-$bg-soft-active',
+    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-default-quaternary)]',
+  },
+  'accent-primary': {
+    'hover': 'bg-$bg-accent-hover border-$border-accent-hover color-$color-on-accent',
+    'active': 'bg-$bg-accent-solid-active border-$border-accent-active color-$color-on-accent',
+    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-accent-primary)]',
+  },
+  'accent-secondary': {
+    'hover': 'border-$border-accent-hover color-$color-accent-hover bg-$bg-accent-outline-hover',
+    'active': 'bg-$bg-accent-outline-active',
+    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-accent-secondary)]',
+  },
+  'accent-tertiary': {
+    'hover': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)]',
+    'active': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)]',
+    'focus-visible': 'before:origin-left before:[transform:scaleX(1)_rotate(0.001deg)] [box-shadow:0_0_0_3px_var(--ring-accent-tertiary)]',
+  },
+  'accent-quaternary': {
+    'hover': 'bg-$bg-accent-soft-hover border-$border-accent-soft-hover',
+    'active': 'bg-$bg-accent-soft-active border-$border-accent-soft-hover',
+    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-accent-quaternary)]',
+  },
+}
+
+function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: MatrixState) {
+  if (state === 'default' || state === 'disabled')
+    return ''
+
+  return forcedStateClassMap[`${variant}-${type}` as ComboKey][state]
+}
 </script>
 
 <template>
@@ -58,7 +114,7 @@ const states = [
                   class="justify-self-start"
                   :type="type.key"
                   :variant="variant.key"
-                  :preview-state="state.key === 'default' ? 'default' : state.key"
+                  :class="getForcedStateClass(variant.key, type.key, state.key)"
                   :disabled="state.key === 'disabled'"
                 >
                   Click Me

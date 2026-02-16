@@ -13,19 +13,19 @@ Status: verbindliche Naming-Konvention fuer den aktuellen UI-Build.
 - Zweck: globale UI-Rollen, komponentenunabhaengig.
 - Beispiele:
   - `color-primary`, `color-inverse`, `color-accent`
-  - `background-solid`, `background-overlay-hover`
+  - `bg-solid`, `bg-overlay-hover`
   - `border-primary`, `ring-default-primary`
 - Regel: beschreibt Bedeutung/Rolle, nicht Komponente.
 
 ## 3) Variant
 - Zweck: wiederverwendbare interaktive Muster fuer Intent + Style.
 - Prefix: `v-`
-- Schema: `v-{intent}-{style}` plus State-Suffixe.
+- Schema: `v-{intent}-{style}` fuer Runtime.
 - Beispiele:
   - `v-neutral-solid`
   - `v-accent-outline`
-  - `v-neutral-ghost-hover`
-  - `v-accent-soft-focus`
+  - `v-neutral-ghost`
+  - `v-accent-soft`
 - Regel: darf in Button, Card, Accordion, Tabs etc. verwendet werden.
 
 ## 4) Structure
