@@ -21,31 +21,26 @@ const states = [
   { key: 'disabled', label: 'disabled' },
 ] as const
 
-const tertiaryHoverVariants = [
+const quaternaryCushionVariants = [
   {
-    key: 't1',
-    label: 'T1 Sand-10',
-    className: 'hover:enabled:color-sand-10 active:enabled:color-sand-11 focus-visible:color-sand-10 focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
+    key: 'q1',
+    label: 'Q1 Soft Mist',
+    className: 'hover:enabled:bg-sand-4/65 dark:hover:enabled:bg-sand-6/30 active:enabled:bg-sand-5/75 dark:active:enabled:bg-sand-7/38 focus-visible:bg-sand-4/65 dark:focus-visible:bg-sand-6/30 hover:enabled:color-$color-primary active:enabled:color-$color-primary focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-ghost-focus)]',
   },
   {
-    key: 't2',
-    label: 'T2 Sand-11',
-    className: 'hover:enabled:color-$color-ghost-hover active:enabled:color-$color-ghost-active focus-visible:color-$color-ghost-hover focus-visible:[box-shadow:0_0_0_3px_var(--ring-ghost-focus)]',
+    key: 'q2',
+    label: 'Q2 Balanced',
+    className: 'hover:enabled:bg-sand-5/75 dark:hover:enabled:bg-sand-7/38 active:enabled:bg-sand-6/85 dark:active:enabled:bg-sand-8/46 focus-visible:bg-sand-5 dark:focus-visible:bg-sand-7 hover:enabled:color-$color-primary active:enabled:color-$color-primary focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand5)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand7)]',
   },
   {
-    key: 't3',
-    label: 'T3 Sand-9',
-    className: 'hover:enabled:color-sand-9 active:enabled:color-sand-10 focus-visible:color-sand-9 focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
+    key: 'q3',
+    label: 'Q3 Crisp',
+    className: 'hover:enabled:bg-sand-6/72 dark:hover:enabled:bg-sand-8/34 active:enabled:bg-sand-7/80 dark:active:enabled:bg-sand-9/42 focus-visible:bg-sand-6/72 dark:focus-visible:bg-sand-8/34 hover:enabled:color-$color-primary active:enabled:color-$color-primary focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-ghost-focus)]',
   },
   {
-    key: 't4',
-    label: 'T4 Sand-8',
-    className: 'hover:enabled:color-sand-8 active:enabled:color-sand-9 focus-visible:color-sand-8 focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
-  },
-  {
-    key: 't5',
-    label: 'T5 Sand-12',
-    className: 'hover:enabled:color-sand-12 active:enabled:color-sand-12 focus-visible:color-sand-12 focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-tertiary)]',
+    key: 'q4',
+    label: 'Q4 Contrast Lift',
+    className: 'hover:enabled:bg-sand-7/66 dark:hover:enabled:bg-sand-9/30 active:enabled:bg-sand-8/74 dark:active:enabled:bg-sand-10/36 focus-visible:bg-sand-7/66 dark:focus-visible:bg-sand-9/30 hover:enabled:color-$color-primary active:enabled:color-$color-primary focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-ghost-focus)]',
   },
 ] as const
 
@@ -72,9 +67,9 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'is-ghost-line-on color-$color-ghost-hover [box-shadow:0_0_0_3px_var(--ring-ghost-focus)]',
   },
   'default-quaternary': {
-    'hover': 'bg-$bg-soft-hover',
-    'active': 'bg-$bg-soft-active',
-    'focus-visible': '[box-shadow:0_0_0_3px_var(--ring-default-quaternary)]',
+    'hover': 'bg-$bg-quaternary-hover',
+    'active': 'bg-$bg-quaternary-active',
+    'focus-visible': 'bg-$bg-quaternary-focus [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
   },
   'accent-primary': {
     'hover': 'bg-$bg-accent-hover border-$border-accent-hover color-$color-on-accent',
@@ -156,12 +151,12 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
 
     <section class="mt-8 border-t border-pureBlack/10 pt-5 dark:border-pureWhite/10">
       <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">
-        Tertiary Hover Variants
+        Quaternary Cushion Variants (Subtle)
       </p>
       <div class="mt-4 border border-pureBlack/12 rounded-lg border-solid bg-pureWhite p-4 dark:border-pureWhite/12 dark:bg-pureBlack">
         <div class="grid gap-3">
           <div
-            v-for="item in tertiaryHoverVariants"
+            v-for="item in quaternaryCushionVariants"
             :key="item.key"
             class="grid grid-cols-[140px_auto] items-center gap-3 border-b border-pureBlack/8 border-solid pb-2 last:border-b-0 dark:border-pureWhite/10 last:pb-0"
           >
@@ -184,9 +179,15 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
               <DsButton
                 type="tertiary"
                 variant="default"
-                :class="item.className"
               >
                 Tertiary
+              </DsButton>
+              <DsButton
+                type="quaternary"
+                variant="default"
+                :class="item.className"
+              >
+                Quaternary
               </DsButton>
             </div>
           </div>

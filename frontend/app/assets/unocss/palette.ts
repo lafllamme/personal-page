@@ -47,6 +47,9 @@ const bgTokens: TokenSet = {
   'bg-soft-hover': { light: 'rgba(0, 0, 0, 0.12)', dark: 'rgba(242, 239, 230, 0.12)' },
   'bg-soft-active': { light: 'rgba(0, 0, 0, 0.18)', dark: 'rgba(242, 239, 230, 0.18)' },
   'bg-soft-disabled': { light: 'rgba(0, 0, 0, 0.04)', dark: 'rgba(242, 239, 230, 0.04)' },
+  'bg-quaternary-hover': { light: 'rgba(226, 225, 222, 0.75)', dark: 'rgba(73, 72, 68, 0.38)' },
+  'bg-quaternary-active': { light: 'rgba(218, 217, 214, 0.85)', dark: 'rgba(98, 96, 91, 0.46)' },
+  'bg-quaternary-focus': { light: 'var(--un-preset-radix-sand5)', dark: 'var(--un-preset-radix-sand7)' },
 
   'bg-accent': 'var(--toxic-11)',
   'bg-accent-hover': 'var(--toxic-10)',
@@ -82,6 +85,7 @@ const ringTokens: TokenSet = {
   'ring-default-secondary': { light: 'rgba(0, 0, 0, 0.22)', dark: 'rgba(242, 239, 230, 0.22)' },
   'ring-default-tertiary': { light: 'rgba(0, 0, 0, 0.20)', dark: 'rgba(242, 239, 230, 0.20)' },
   'ring-ghost-focus': 'var(--un-preset-radix-sand11)',
+  'ring-quaternary-focus': { light: 'var(--un-preset-radix-sand5)', dark: 'var(--un-preset-radix-sand7)' },
   'ring-default-quaternary': { light: 'rgba(0, 0, 0, 0.20)', dark: 'rgba(242, 239, 230, 0.20)' },
   'ring-primary-offset-inner': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
   'ring-primary-offset-outer': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
@@ -96,7 +100,7 @@ const motionTokens: TokenSet = {
   'motion-underline-duration': '0.6s',
   'motion-underline-ease': 'cubic-bezier(0.625, 0.05, 0, 1)',
   'motion-underline-offset': '-0.01em',
-  'motion-underline-thickness': '0.095em',
+  'motion-underline-thickness': '0.125em',
 }
 
 const toxicScale: Scale = {

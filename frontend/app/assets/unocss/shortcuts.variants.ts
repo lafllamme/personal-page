@@ -18,7 +18,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-neutral-soft',
-    'bg-$bg-soft border-$border-quaternary color-$color-primary hover:enabled:bg-$bg-soft-hover active:enabled:bg-$bg-soft-active focus-visible:[box-shadow:0_0_0_3px_var(--ring-default-quaternary)] disabled:bg-$bg-soft-disabled disabled:border-$border-quaternary-disabled disabled:color-$color-disabled-subtle',
+    'bg-transparent border-transparent color-$color-primary hover:enabled:bg-$bg-quaternary-hover active:enabled:bg-$bg-quaternary-active focus-visible:bg-$bg-quaternary-focus focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)] disabled:color-$color-disabled-subtle',
   ],
 
   [
