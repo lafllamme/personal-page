@@ -28,7 +28,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-accent-outline',
-    'bg-transparent border-transparent color-$color-accent [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:bg-$bg-accent-outline-fill hover:enabled:color-$color-primary hover:enabled:[box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)] active:enabled:translate-y-[1px] active:enabled:bg-$bg-accent-outline-fill active:enabled:color-$color-primary active:enabled:[box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)] focus-visible:bg-$bg-accent-outline-fill focus-visible:color-$color-primary focus-visible:[box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)] disabled:[box-shadow:inset_0_0_0_2px_var(--border-accent-disabled)] disabled:color-$color-accent-outline-disabled',
+    'bg-transparent border-transparent color-$color-accent [box-shadow:inset_0_0_0_2px_var(--border-accent)] hover:enabled:bg-$bg-accent-outline-fill hover:enabled:color-$color-primary hover:enabled:[box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)] active:enabled:translate-y-[1px] active:enabled:bg-$bg-accent-outline-fill active:enabled:color-$color-primary active:enabled:[box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)] focus-visible:bg-$bg-accent-outline-fill focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)] disabled:[box-shadow:inset_0_0_0_2px_var(--border-accent-disabled)] disabled:color-$color-accent-outline-disabled',
   ],
 
   [

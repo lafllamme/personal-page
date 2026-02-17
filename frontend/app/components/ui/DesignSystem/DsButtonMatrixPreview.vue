@@ -61,7 +61,7 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'accent-secondary': {
     'hover': 'bg-$bg-accent-outline-fill color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
     'active': 'bg-$bg-accent-outline-fill color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
-    'focus-visible': 'bg-$bg-accent-outline-fill color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
+    'focus-visible': 'bg-$bg-accent-outline-fill color-$color-primary [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)]',
   },
   'accent-tertiary': {
     'hover': 'is-ghost-line-on color-$color-accent-hover',
@@ -201,7 +201,6 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
           </tbody>
         </table>
       </div>
-
     </section>
   </article>
 </template>
