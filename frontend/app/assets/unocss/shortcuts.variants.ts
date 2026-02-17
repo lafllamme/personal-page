@@ -13,7 +13,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-neutral-ghost',
-    'bg-transparent border-transparent color-$color-primary hover:enabled:color-$color-ghost-hover active:enabled:color-$color-ghost-active focus-visible:bg-sand-11 focus-visible:color-$color-inverse focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--color-ghost-hover)] disabled:color-$color-disabled-soft',
+    'bg-transparent border-transparent color-$color-primary [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)] disabled:color-$color-disabled-soft',
   ],
 
   [
@@ -33,7 +33,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-accent-ghost',
-    'bg-transparent border-transparent color-$color-accent hover:enabled:color-$color-accent-hover active:enabled:color-$color-accent-strong focus-visible:bg-$bg-accent-outline-fill focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-accent-outline-fill)] disabled:color-$color-accent-ghost-disabled',
+    'bg-transparent border-transparent color-$color-accent [--ghost-morph-line:var(--color-accent)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-accent-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-accent-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)] disabled:color-$color-accent-ghost-disabled',
   ],
 
   [

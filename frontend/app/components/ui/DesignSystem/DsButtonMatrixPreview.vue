@@ -26,27 +26,6 @@ const compactVariantRows = [
   { key: 'accent', label: 'Toxic' },
 ] as const
 
-const tertiaryMorphRows = [
-  {
-    key: 'm1',
-    label: 'B Sand 3 -> 4',
-    defaultClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--un-preset-radix-sand3)] [--ghost-morph-fill-active:var(--un-preset-radix-sand4)] [--ghost-morph-text:var(--color-primary)] dark:[--ghost-morph-fill:var(--un-preset-radix-sand5)] dark:[--ghost-morph-fill-active:var(--un-preset-radix-sand6)]',
-    accentClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
-  },
-  {
-    key: 'm2',
-    label: 'B Sand 4 -> 5',
-    defaultClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--un-preset-radix-sand4)] [--ghost-morph-fill-active:var(--un-preset-radix-sand5)] [--ghost-morph-text:var(--color-primary)] dark:[--ghost-morph-fill:var(--un-preset-radix-sand6)] dark:[--ghost-morph-fill-active:var(--un-preset-radix-sand7)]',
-    accentClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
-  },
-  {
-    key: 'm3',
-    label: 'B Sand 5 -> 6',
-    defaultClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--un-preset-radix-sand5)] [--ghost-morph-fill-active:var(--un-preset-radix-sand6)] [--ghost-morph-text:var(--color-primary)] dark:[--ghost-morph-fill:var(--un-preset-radix-sand7)] dark:[--ghost-morph-fill-active:var(--un-preset-radix-sand8)]',
-    accentClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
-  },
-] as const
-
 type MatrixVariant = typeof variants[number]['key']
 type MatrixType = typeof types[number]['key']
 type MatrixState = typeof states[number]['key']
@@ -65,9 +44,9 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'bg-sand-10 color-pureWhite [box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
   },
   'default-tertiary': {
-    'hover': 'is-ghost-line-on color-$color-ghost-hover',
-    'active': 'is-ghost-line-on color-$color-ghost-active',
-    'focus-visible': 'is-ghost-line-on bg-sand-11 color-$color-inverse [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--color-ghost-hover)]',
+    'hover': 'is-ghost-morph-on',
+    'active': 'is-ghost-morph-on-active translate-y-[1px]',
+    'focus-visible': 'is-ghost-morph-on [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)]',
   },
   'default-quaternary': {
     'hover': 'bg-$bg-quaternary-hover',
@@ -85,9 +64,9 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'bg-$bg-accent-outline-fill color-$color-primary [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)]',
   },
   'accent-tertiary': {
-    'hover': 'is-ghost-line-on color-$color-accent-hover',
-    'active': 'is-ghost-line-on color-$color-accent-strong',
-    'focus-visible': 'is-ghost-line-on bg-$bg-accent-outline-fill color-$color-primary [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-accent-outline-fill)]',
+    'hover': 'is-ghost-morph-on',
+    'active': 'is-ghost-morph-on-active translate-y-[1px]',
+    'focus-visible': 'is-ghost-morph-on [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)]',
   },
   'accent-quaternary': {
     'hover': 'bg-$bg-accent-quaternary-hover',
@@ -216,100 +195,6 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   :variant="row.key"
                 >
                   Quaternary
-                </DsButton>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <p class="space-grotesk-regular mt-6 text-[10px] tracking-[0.16em] uppercase opacity-65">
-        Tertiary Morph Concepts
-      </p>
-      <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
-        <table class="min-w-full border-collapse text-left text-[10px] tracking-[0.12em] uppercase">
-          <thead class="bg-pureBlack/3 dark:bg-pureWhite/5">
-            <tr>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Concept
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Default Primary
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Default Secondary
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Default Tertiary
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Accent Primary
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Accent Secondary
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Accent Tertiary
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="row in tertiaryMorphRows"
-              :key="row.key"
-              class="border-t border-pureBlack/8 dark:border-pureWhite/10"
-            >
-              <td class="px-3 py-2 opacity-75">
-                {{ row.label }}
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="primary"
-                  variant="default"
-                >
-                  Primary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="secondary"
-                  variant="default"
-                >
-                  Secondary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  :class="row.defaultClass"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="primary"
-                  variant="accent"
-                >
-                  Primary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="secondary"
-                  variant="accent"
-                >
-                  Secondary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="accent"
-                  :class="row.accentClass"
-                >
-                  Tertiary
                 </DsButton>
               </td>
             </tr>

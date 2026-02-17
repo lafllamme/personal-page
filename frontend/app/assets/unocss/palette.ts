@@ -61,6 +61,10 @@ const bgTokens: TokenSet = {
   'bg-accent-soft-hover': 'var(--toxic-4)',
   'bg-accent-soft-active': 'var(--toxic-5)',
   'bg-accent-soft-disabled': { light: '#f2f6f5', dark: '#0f1f1d' },
+  'bg-ghost-morph-fill': { light: 'var(--un-preset-radix-sand5)', dark: 'var(--un-preset-radix-sand7)' },
+  'bg-ghost-morph-fill-active': { light: 'var(--un-preset-radix-sand6)', dark: 'var(--un-preset-radix-sand8)' },
+  'bg-ghost-morph-accent-fill': 'var(--toxic-7)',
+  'bg-ghost-morph-accent-fill-active': 'var(--toxic-8)',
 }
 
 const borderTokens: TokenSet = {
@@ -194,24 +198,6 @@ ${rootLines}
 }
 .dark {
 ${darkLines}
-}
-@keyframes uiGhostUnderlineSweep {
-  0% {
-    transform: scaleX(1) rotate(0.001deg);
-    transform-origin: right;
-  }
-  49% {
-    transform: scaleX(0) rotate(0.001deg);
-    transform-origin: right;
-  }
-  50% {
-    transform: scaleX(0) rotate(0.001deg);
-    transform-origin: left;
-  }
-  100% {
-    transform: scaleX(1) rotate(0.001deg);
-    transform-origin: left;
-  }
 }
 `
 }

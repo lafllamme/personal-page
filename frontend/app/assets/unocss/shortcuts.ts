@@ -9,8 +9,10 @@ const utilityShortcuts: UserShortcuts = [
   ],
 ]
 
-export const shortcuts: UserShortcuts = [
-  ...buttonShortcuts,
-  ...variantShortcuts,
-  ...utilityShortcuts,
+const mergedShortcuts = [
+  ...(buttonShortcuts as any[]),
+  ...(variantShortcuts as any[]),
+  ...(utilityShortcuts as any[]),
 ]
+
+export const shortcuts: UserShortcuts = mergedShortcuts as UserShortcuts
