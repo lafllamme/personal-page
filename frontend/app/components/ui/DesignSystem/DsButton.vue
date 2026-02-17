@@ -194,7 +194,7 @@ const isGhostType = computed(() => normalizedType.value === 'tertiary')
 }
 
 .is-ghost-button.is-ghost-morph-clip::after {
-  background-color: var(--ghost-morph-fill, currentColor);
+  background-color: var(--ghost-morph-line, currentColor);
   border-radius: 9999px;
   left: var(--ghost-morph-line-inset-x, 1rem);
   right: var(--ghost-morph-line-inset-x, 1rem);
@@ -219,6 +219,7 @@ const isGhostType = computed(() => normalizedType.value === 'tertiary')
   top: 0;
   bottom: 0;
   border-radius: inherit;
+  background-color: var(--ghost-morph-fill, currentColor);
 }
 
 .is-ghost-button.is-ghost-morph-clip:not(:disabled):active::after {

@@ -29,21 +29,21 @@ const compactVariantRows = [
 const tertiaryMorphRows = [
   {
     key: 'm1',
-    label: 'A Dual Layer',
-    defaultClass: 'is-ghost-morph is-ghost-morph-dual [--ghost-morph-fill:var(--pure-black)] [--ghost-morph-fill-active:#1d1d1c] [--ghost-morph-text:var(--color-inverse)] dark:[--ghost-morph-fill:var(--pure-white)] dark:[--ghost-morph-fill-active:#d5d2ca] dark:[--ghost-morph-text:var(--color-inverse)]',
-    accentClass: 'is-ghost-morph is-ghost-morph-dual [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
+    label: 'B Sand 3 -> 4',
+    defaultClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--un-preset-radix-sand3)] [--ghost-morph-fill-active:var(--un-preset-radix-sand4)] [--ghost-morph-text:var(--color-primary)] dark:[--ghost-morph-fill:var(--un-preset-radix-sand5)] dark:[--ghost-morph-fill-active:var(--un-preset-radix-sand6)]',
+    accentClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
   },
   {
     key: 'm2',
-    label: 'B Single Clip',
-    defaultClass: 'is-ghost-morph is-ghost-morph-clip [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--pure-black)] [--ghost-morph-fill-active:#1d1d1c] [--ghost-morph-text:var(--color-inverse)] dark:[--ghost-morph-fill:var(--pure-white)] dark:[--ghost-morph-fill-active:#d5d2ca] dark:[--ghost-morph-text:var(--color-inverse)]',
-    accentClass: 'is-ghost-morph is-ghost-morph-clip [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
+    label: 'B Sand 4 -> 5',
+    defaultClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--un-preset-radix-sand4)] [--ghost-morph-fill-active:var(--un-preset-radix-sand5)] [--ghost-morph-text:var(--color-primary)] dark:[--ghost-morph-fill:var(--un-preset-radix-sand6)] dark:[--ghost-morph-fill-active:var(--un-preset-radix-sand7)]',
+    accentClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
   },
   {
     key: 'm3',
-    label: 'C Single Scale',
-    defaultClass: 'is-ghost-morph is-ghost-morph-scale [--ghost-morph-fill:var(--pure-black)] [--ghost-morph-fill-active:#1d1d1c] [--ghost-morph-text:var(--color-inverse)] dark:[--ghost-morph-fill:var(--pure-white)] dark:[--ghost-morph-fill-active:#d5d2ca] dark:[--ghost-morph-text:var(--color-inverse)]',
-    accentClass: 'is-ghost-morph is-ghost-morph-scale [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
+    label: 'B Sand 5 -> 6',
+    defaultClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--un-preset-radix-sand5)] [--ghost-morph-fill-active:var(--un-preset-radix-sand6)] [--ghost-morph-text:var(--color-primary)] dark:[--ghost-morph-fill:var(--un-preset-radix-sand7)] dark:[--ghost-morph-fill-active:var(--un-preset-radix-sand8)]',
+    accentClass: 'is-ghost-morph is-ghost-morph-clip active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ghost-morph-fill)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--toxic-11)] [--ghost-morph-fill-active:var(--toxic-10)] [--ghost-morph-text:var(--color-primary)]',
   },
 ] as const
 
@@ -67,7 +67,7 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'default-tertiary': {
     'hover': 'is-ghost-line-on color-$color-ghost-hover',
     'active': 'is-ghost-line-on color-$color-ghost-active',
-    'focus-visible': 'is-ghost-line-on color-$color-ghost-hover [box-shadow:0_0_0_3px_var(--ring-ghost-focus)]',
+    'focus-visible': 'is-ghost-line-on bg-sand-11 color-$color-inverse [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--color-ghost-hover)]',
   },
   'default-quaternary': {
     'hover': 'bg-$bg-quaternary-hover',
@@ -87,7 +87,7 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'accent-tertiary': {
     'hover': 'is-ghost-line-on color-$color-accent-hover',
     'active': 'is-ghost-line-on color-$color-accent-strong',
-    'focus-visible': 'is-ghost-line-on color-$color-accent-hover [box-shadow:0_0_0_3px_var(--ring-accent-quaternary-focus)]',
+    'focus-visible': 'is-ghost-line-on bg-$bg-accent-outline-fill color-$color-primary [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-accent-outline-fill)]',
   },
   'accent-quaternary': {
     'hover': 'bg-$bg-accent-quaternary-hover',

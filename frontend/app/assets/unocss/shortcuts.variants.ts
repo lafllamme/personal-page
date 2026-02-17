@@ -13,7 +13,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-neutral-ghost',
-    'bg-transparent border-transparent color-$color-primary hover:enabled:color-$color-ghost-hover active:enabled:color-$color-ghost-active focus-visible:color-$color-ghost-hover focus-visible:[box-shadow:0_0_0_3px_var(--ring-ghost-focus)] disabled:color-$color-disabled-soft',
+    'bg-transparent border-transparent color-$color-primary hover:enabled:color-$color-ghost-hover active:enabled:color-$color-ghost-active focus-visible:bg-sand-11 focus-visible:color-$color-inverse focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--color-ghost-hover)] disabled:color-$color-disabled-soft',
   ],
 
   [
@@ -33,7 +33,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-accent-ghost',
-    'bg-transparent border-transparent color-$color-accent hover:enabled:color-$color-accent-hover active:enabled:color-$color-accent-strong focus-visible:color-$color-accent-hover focus-visible:[box-shadow:0_0_0_3px_var(--ring-accent-quaternary-focus)] disabled:color-$color-accent-ghost-disabled',
+    'bg-transparent border-transparent color-$color-accent hover:enabled:color-$color-accent-hover active:enabled:color-$color-accent-strong focus-visible:bg-$bg-accent-outline-fill focus-visible:color-$color-primary focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-accent-outline-fill)] disabled:color-$color-accent-ghost-disabled',
   ],
 
   [
