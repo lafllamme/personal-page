@@ -124,34 +124,3 @@ export const States: Story = {
     layout: 'fullscreen',
   },
 }
-
-export const DarkMode: Story = {
-  render: () => ({
-    components: { DsButton },
-    template: `
-      <div class="dark bg-pureBlack color-pureWhite p-6">
-        <div class="flex flex-wrap items-center gap-3">
-          <DsButton type="primary" variant="default">Click Me</DsButton>
-          <DsButton type="primary" variant="accent">Click Me</DsButton>
-          <DsButton type="secondary" variant="default">Click Me</DsButton>
-          <DsButton type="secondary" variant="accent">Click Me</DsButton>
-        </div>
-      </div>
-    `,
-  }),
-  parameters: {
-    layout: 'centered',
-  },
-}
-
-export const A11yNotes: Story = {
-  render: () => ({
-    template: `
-      <article class="max-w-2xl space-y-2 text-sm leading-relaxed">
-        <p><strong>Keyboard:</strong> focus-visible ring is present on all button types.</p>
-        <p><strong>Contrast:</strong> default and accent styles are mapped to pure black/white and toxic scale roles.</p>
-        <p><strong>Semantics:</strong> use button for actions, link for navigation.</p>
-      </article>
-    `,
-  }),
-}
