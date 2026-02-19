@@ -46,7 +46,48 @@ type Story = StoryObj<typeof meta>
 
 export const Playground: Story = {}
 
+export const DefaultPrimary: Story = {
+  name: 'Default / Primary',
+  args: { variant: 'default', type: 'primary' },
+}
+
+export const DefaultSecondary: Story = {
+  name: 'Default / Secondary',
+  args: { variant: 'default', type: 'secondary' },
+}
+
+export const DefaultTertiary: Story = {
+  name: 'Default / Tertiary',
+  args: { variant: 'default', type: 'tertiary' },
+}
+
+export const DefaultQuaternary: Story = {
+  name: 'Default / Quaternary',
+  args: { variant: 'default', type: 'quaternary' },
+}
+
+export const AccentPrimary: Story = {
+  name: 'Accent / Primary',
+  args: { variant: 'accent', type: 'primary' },
+}
+
+export const AccentSecondary: Story = {
+  name: 'Accent / Secondary',
+  args: { variant: 'accent', type: 'secondary' },
+}
+
+export const AccentTertiary: Story = {
+  name: 'Accent / Tertiary',
+  args: { variant: 'accent', type: 'tertiary' },
+}
+
+export const AccentQuaternary: Story = {
+  name: 'Accent / Quaternary',
+  args: { variant: 'accent', type: 'quaternary' },
+}
+
 export const Variants: Story = {
+  name: 'All Variants (Grid)',
   render: () => ({
     components: { DsButton },
     template: `

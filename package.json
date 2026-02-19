@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "turbo dev",
     "dev:frontend": "turbo dev --filter=@tec/frontend",
+    "dev:storybook": "turbo storybook:dev --filter=@tec/frontend",
     "dev:cms": "turbo dev --filter=@tec/cms",
     "build": "turbo build",
     "eslint": "eslint .",

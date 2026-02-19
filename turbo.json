@@ -37,6 +37,10 @@
         "NODE_ENV"
       ]
     },
+    "storybook:dev": {
+      "cache": false,
+      "persistent": true
+    },
     "start": {
       "dependsOn": ["build"]
     },
