@@ -239,13 +239,13 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
 
             <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
               <td class="px-3 py-2 opacity-75">
-                R1 Ribbon Base
+                R1 Ribbon Sand Mist
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   type="quaternary"
                   variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-sand-6 before:bg-sand-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-300 before:duration-700 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] active:enabled:after:opacity-60 hover:enabled:after:opacity-40"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-sand-6 before:bg-sand-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-760 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-38 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-38 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand6)] active:enabled:after:opacity-52"
                 >
                   Quaternary
                 </DsButton>
@@ -254,7 +254,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="quaternary"
                   variant="accent"
-                  class="before:bg-toxic-8 after:bg-toxic-7 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-300 before:duration-700 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] active:enabled:after:opacity-60 hover:enabled:after:opacity-45"
+                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-760 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-32 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-32 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-48"
                 >
                   Quaternary
                 </DsButton>
@@ -263,13 +263,13 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
 
             <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
               <td class="px-3 py-2 opacity-75">
-                R2 Ribbon Soft
+                R2 Ribbon Slate Dust
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   type="quaternary"
                   variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-32 before:w-10 before:rotate-[16deg] after:rounded-[inherit] after:bg-sand-5 before:bg-sand-6 after:opacity-0 after:transition-opacity before:transition-transform after:duration-400 before:duration-900 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[520%] active:enabled:after:opacity-42 hover:enabled:after:opacity-28"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-11 before:rotate-[17deg] after:rounded-[inherit] after:bg-slate-6 before:bg-slate-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-340 before:duration-780 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[550%] hover:enabled:after:opacity-36 focus-visible:before:translate-x-[550%] focus-visible:after:opacity-36 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-slate6)] active:enabled:after:opacity-50"
                 >
                   Quaternary
                 </DsButton>
@@ -278,7 +278,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="quaternary"
                   variant="accent"
-                  class="before:bg-toxic-7 after:bg-toxic-6 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-32 before:w-10 before:rotate-[16deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-400 before:duration-900 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[520%] active:enabled:after:opacity-45 hover:enabled:after:opacity-30"
+                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-11 before:rotate-[17deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-340 before:duration-780 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[550%] hover:enabled:after:opacity-30 focus-visible:before:translate-x-[550%] focus-visible:after:opacity-30 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-45"
                 >
                   Quaternary
                 </DsButton>
@@ -287,13 +287,13 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
 
             <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
               <td class="px-3 py-2 opacity-75">
-                R3 Ribbon Twin
+                R3 Ribbon Sage Veil
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   type="quaternary"
                   variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:h-36 after:w-8 before:h-36 before:w-10 after:rotate-[20deg] before:rotate-[20deg] after:bg-sand-9 before:bg-sand-7 after:transition-transform before:transition-transform after:duration-1000 before:duration-700 after:content-[''] before:content-[''] after:-left-14 after:-top-9 before:-left-10 before:-top-9 after:-translate-x-full before:-translate-x-full active:enabled:bg-sand-8/55 hover:enabled:after:translate-x-[760%] hover:enabled:before:translate-x-[640%]"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-sage-6 before:bg-sage-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-360 before:duration-800 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-35 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-35 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sage6)] active:enabled:after:opacity-49"
                 >
                   Quaternary
                 </DsButton>
@@ -302,7 +302,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="quaternary"
                   variant="accent"
-                  class="before:bg-toxic-7 after:bg-toxic-9 active:enabled:bg-toxic-8/55 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:h-36 after:w-8 before:h-36 before:w-10 after:rotate-[20deg] before:rotate-[20deg] after:transition-transform before:transition-transform after:duration-1000 before:duration-700 after:content-[''] before:content-[''] after:-left-14 after:-top-9 before:-left-10 before:-top-9 after:-translate-x-full before:-translate-x-full hover:enabled:after:translate-x-[760%] hover:enabled:before:translate-x-[640%]"
+                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-360 before:duration-800 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-32 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-32 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-47"
                 >
                   Quaternary
                 </DsButton>
@@ -311,13 +311,13 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
 
             <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
               <td class="px-3 py-2 opacity-75">
-                R4 Ribbon Reverse
+                R4 Ribbon Olive Hush
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   type="quaternary"
                   variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-32 before:w-12 before:translate-x-full after:rounded-[inherit] after:bg-sand-6 before:bg-sand-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-300 before:duration-700 after:content-[''] before:content-[''] before:-right-8 before:-top-8 before:-rotate-[18deg] active:enabled:after:opacity-58 hover:enabled:after:opacity-40 hover:enabled:before:-translate-x-[560%]"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-olive-6 before:bg-olive-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-740 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-35 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-35 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-olive6)] active:enabled:after:opacity-48"
                 >
                   Quaternary
                 </DsButton>
@@ -326,7 +326,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="quaternary"
                   variant="accent"
-                  class="before:bg-toxic-8 after:bg-toxic-7 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-32 before:w-12 before:translate-x-full after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-300 before:duration-700 after:content-[''] before:content-[''] before:-right-8 before:-top-8 before:-rotate-[18deg] active:enabled:after:opacity-60 hover:enabled:after:opacity-45 hover:enabled:before:-translate-x-[560%]"
+                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-740 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-34 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-34 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-49"
                 >
                   Quaternary
                 </DsButton>
@@ -335,13 +335,13 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
 
             <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
               <td class="px-3 py-2 opacity-75">
-                R5 Ribbon High Contrast
+                R5 Ribbon Mauve Fog
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   type="quaternary"
                   variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-36 before:w-14 before:rotate-[18deg] after:rounded-[inherit] after:bg-sand-7 before:bg-sand-9 after:opacity-0 after:transition-opacity before:transition-transform after:duration-200 before:duration-500 after:content-[''] before:content-[''] before:-left-9 before:-top-9 before:-translate-x-full active:enabled:bg-sand-10 active:enabled:color-pureWhite hover:enabled:before:translate-x-[540%] dark:active:enabled:bg-sand-8 active:enabled:after:opacity-72 hover:enabled:after:opacity-55"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-mauve-6 before:bg-mauve-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-360 before:duration-840 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-37 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-37 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-mauve6)] active:enabled:after:opacity-51"
                 >
                   Quaternary
                 </DsButton>
@@ -350,7 +350,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="quaternary"
                   variant="accent"
-                  class="before:bg-toxic-9 after:bg-toxic-7 active:enabled:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-36 before:w-14 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-200 before:duration-500 after:content-[''] before:content-[''] before:-left-9 before:-top-9 before:-translate-x-full active:enabled:color-pureWhite hover:enabled:before:translate-x-[540%] active:enabled:after:opacity-75 hover:enabled:after:opacity-58"
+                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-360 before:duration-840 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-36 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-36 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-52"
                 >
                   Quaternary
                 </DsButton>
