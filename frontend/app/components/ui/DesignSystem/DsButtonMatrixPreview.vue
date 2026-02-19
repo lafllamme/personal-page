@@ -46,12 +46,12 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'default-tertiary': {
     'hover': 'is-ghost-morph-on',
     'active': 'is-ghost-morph-on-active translate-y-[1px]',
-    'focus-visible': 'bg-$bg-ghost-morph-fill [color:var(--ghost-morph-text)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)]',
+    'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)]',
   },
   'default-quaternary': {
-    'hover': 'bg-$bg-quaternary-hover',
-    'active': 'bg-$bg-quaternary-active',
-    'focus-visible': 'bg-$bg-quaternary-focus [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
+    'hover': 'before:translate-x-[560%] after:opacity-38',
+    'active': 'before:translate-x-[560%] after:opacity-52',
+    'focus-visible': 'before:translate-x-[560%] after:opacity-100 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
   },
   'accent-primary': {
     'hover': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
@@ -66,12 +66,12 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'accent-tertiary': {
     'hover': 'is-ghost-morph-on',
     'active': 'is-ghost-morph-on-active translate-y-[1px]',
-    'focus-visible': 'bg-$bg-ghost-morph-accent-fill [color:var(--ghost-morph-text)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)]',
+    'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)]',
   },
   'accent-quaternary': {
-    'hover': 'bg-$bg-accent-quaternary-hover',
-    'active': 'bg-$bg-accent-quaternary-active',
-    'focus-visible': 'bg-$bg-accent-quaternary-focus [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)]',
+    'hover': 'before:translate-x-[560%] after:opacity-32',
+    'active': 'before:translate-x-[560%] after:opacity-48',
+    'focus-visible': 'before:translate-x-[560%] after:opacity-100 [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)]',
   },
 }
 
@@ -252,17 +252,17 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
       </div>
 
       <p class="space-grotesk-regular mt-6 text-[10px] tracking-[0.16em] uppercase opacity-65">
-        Tertiary Focus Proposals
+        All Focus States
       </p>
       <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
         <table class="min-w-full border-collapse text-left text-[10px] tracking-[0.12em] uppercase">
           <thead class="bg-pureBlack/3 dark:bg-pureWhite/5">
             <tr>
               <th class="px-3 py-2 font-medium opacity-75">
-                Concept
+                Variant
               </th>
               <th class="px-3 py-2 font-medium opacity-75">
-                Default
+                Type
               </th>
               <th class="px-3 py-2 font-medium opacity-75">
                 Focus Visible
@@ -270,282 +270,36 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
             </tr>
           </thead>
           <tbody>
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                T1 Baseline (Current)
-              </td>
-              <td class="px-3 py-2">
-                <DsButton type="tertiary" variant="default">
-                  Tertiary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  :class="getForcedStateClass('default', 'tertiary', 'focus-visible')"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                T2 Sand 7
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  class="[--ghost-morph-fill:var(--un-preset-radix-sand7)] [--ghost-morph-fill-active:var(--un-preset-radix-sand8)]"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  class="[--ghost-morph-fill:var(--un-preset-radix-sand7)] [--ghost-morph-fill-active:var(--un-preset-radix-sand8)] bg-sand-7 [color:var(--color-primary)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand7)]"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                T3 Sand 8
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  class="[--ghost-morph-fill:var(--un-preset-radix-sand8)] [--ghost-morph-fill-active:var(--un-preset-radix-sand9)]"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  class="[--ghost-morph-fill:var(--un-preset-radix-sand8)] [--ghost-morph-fill-active:var(--un-preset-radix-sand9)] bg-sand-8 [color:var(--color-primary)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand8)]"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                T4 Sand 9
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  class="[--ghost-morph-fill:var(--un-preset-radix-sand9)] [--ghost-morph-fill-active:var(--un-preset-radix-sand10)]"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  class="[--ghost-morph-fill:var(--un-preset-radix-sand9)] [--ghost-morph-fill-active:var(--un-preset-radix-sand10)] bg-sand-9 [color:var(--color-primary)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand9)]"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                T5 Sand 10
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  class="[--ghost-morph-fill:var(--un-preset-radix-sand10)] [--ghost-morph-fill-active:var(--un-preset-radix-sand11)]"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="tertiary"
-                  variant="default"
-                  class="[--ghost-morph-fill:var(--un-preset-radix-sand10)] [--ghost-morph-fill-active:var(--un-preset-radix-sand11)] bg-sand-10 [color:var(--color-primary)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand10)]"
-                >
-                  Tertiary
-                </DsButton>
-              </td>
-            </tr>
+            <template
+              v-for="row in compactVariantRows"
+              :key="`all-focus-${row.key}`"
+            >
+              <tr
+                v-for="type in types"
+                :key="`all-focus-${row.key}-${type.key}`"
+                class="border-t border-pureBlack/8 dark:border-pureWhite/10"
+              >
+                <td class="px-3 py-2 opacity-75">
+                  {{ row.label }}
+                </td>
+                <td class="px-3 py-2 opacity-75">
+                  {{ type.label }}
+                </td>
+                <td class="px-3 py-2">
+                  <DsButton
+                    :type="type.key"
+                    :variant="row.key"
+                    :class="getForcedStateClass(row.key, type.key, 'focus-visible')"
+                  >
+                    {{ type.label }}
+                  </DsButton>
+                </td>
+              </tr>
+            </template>
           </tbody>
         </table>
       </div>
 
-      <p class="space-grotesk-regular mt-6 text-[10px] tracking-[0.16em] uppercase opacity-65">
-        Quaternary Concepts
-      </p>
-      <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
-        <table class="min-w-full border-collapse text-left text-[10px] tracking-[0.12em] uppercase">
-          <thead class="bg-pureBlack/3 dark:bg-pureWhite/5">
-            <tr>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Concept
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Default
-              </th>
-              <th class="px-3 py-2 font-medium opacity-75">
-                Accent
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                As-Is (Current)
-              </td>
-              <td class="px-3 py-2">
-                <DsButton type="quaternary" variant="default">
-                  Quaternary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton type="quaternary" variant="accent">
-                  Quaternary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                R1 Ribbon Sand Mist
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-sand-6 before:bg-sand-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-760 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-38 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-38 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand6)] active:enabled:after:opacity-52"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="accent"
-                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-760 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-32 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-32 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-48"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                R2 Ribbon Slate Dust
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-11 before:rotate-[17deg] after:rounded-[inherit] after:bg-slate-6 before:bg-slate-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-340 before:duration-780 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[550%] hover:enabled:after:opacity-36 focus-visible:before:translate-x-[550%] focus-visible:after:opacity-36 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-slate6)] active:enabled:after:opacity-50"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="accent"
-                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-11 before:rotate-[17deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-340 before:duration-780 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[550%] hover:enabled:after:opacity-30 focus-visible:before:translate-x-[550%] focus-visible:after:opacity-30 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-45"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                R3 Ribbon Sage Veil
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-sage-6 before:bg-sage-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-360 before:duration-800 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-35 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-35 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sage6)] active:enabled:after:opacity-49"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="accent"
-                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-360 before:duration-800 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-32 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-32 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-47"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                R4 Ribbon Olive Hush
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-olive-6 before:bg-olive-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-740 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-35 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-35 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-olive6)] active:enabled:after:opacity-48"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="accent"
-                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-740 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-34 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-34 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-49"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-            </tr>
-
-            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
-              <td class="px-3 py-2 opacity-75">
-                R5 Ribbon Mauve Fog
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="default"
-                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-mauve-6 before:bg-mauve-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-360 before:duration-840 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-37 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-37 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-mauve6)] active:enabled:after:opacity-51"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-              <td class="px-3 py-2">
-                <DsButton
-                  type="quaternary"
-                  variant="accent"
-                  class="before:bg-toxic-10 after:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-360 before:duration-840 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-36 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-36 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--toxic-9)] active:enabled:after:opacity-52"
-                >
-                  Quaternary
-                </DsButton>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
   </article>
 </template>

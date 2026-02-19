@@ -13,12 +13,12 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-neutral-ghost',
-    'bg-transparent border-transparent color-$color-primary [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:bg-$bg-ghost-morph-fill focus-visible:[color:var(--ghost-morph-text)] focus-visible:before:opacity-0 focus-visible:after:opacity-0 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)] disabled:color-$color-disabled-soft',
+    'bg-transparent border-transparent color-$color-primary [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:[color:var(--ghost-morph-text)] focus-visible:before:opacity-0 focus-visible:after:left-0 focus-visible:after:right-0 focus-visible:after:top-0 focus-visible:after:bottom-0 focus-visible:after:[border-radius:inherit] focus-visible:after:bg-[var(--ghost-morph-fill)] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)] disabled:color-$color-disabled-soft',
   ],
 
   [
     'v-neutral-soft',
-    'bg-transparent border-transparent color-$color-primary hover:enabled:bg-$bg-quaternary-hover active:enabled:bg-$bg-quaternary-active focus-visible:bg-$bg-quaternary-focus focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)] disabled:color-$color-disabled-subtle',
+    'bg-transparent border-transparent color-$color-primary [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-$bg-quaternary-ribbon-fill before:bg-$bg-quaternary-ribbon-sweep after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-760 after:content-[\'\'] before:content-[\'\'] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-38 active:enabled:after:opacity-52 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-100 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)] disabled:color-$color-disabled-subtle',
   ],
 
   [
@@ -33,11 +33,11 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-accent-ghost',
-    'bg-transparent border-transparent color-$color-accent [--ghost-morph-line:var(--color-accent)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-accent-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-accent-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:bg-$bg-ghost-morph-accent-fill focus-visible:[color:var(--ghost-morph-text)] focus-visible:before:opacity-0 focus-visible:after:opacity-0 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)] disabled:color-$color-accent-ghost-disabled',
+    'bg-transparent border-transparent color-$color-accent [--ghost-morph-line:var(--color-accent)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-accent-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-accent-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:[color:var(--ghost-morph-text)] focus-visible:before:opacity-0 focus-visible:after:left-0 focus-visible:after:right-0 focus-visible:after:top-0 focus-visible:after:bottom-0 focus-visible:after:[border-radius:inherit] focus-visible:after:bg-[var(--ghost-morph-fill)] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)] disabled:color-$color-accent-ghost-disabled',
   ],
 
   [
     'v-accent-soft',
-    'bg-transparent border-transparent color-$color-accent hover:enabled:bg-$bg-accent-quaternary-hover active:enabled:bg-$bg-accent-quaternary-active focus-visible:bg-$bg-accent-quaternary-focus focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)] disabled:color-$color-accent-soft-disabled',
+    'bg-transparent border-transparent color-$color-accent [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-$bg-quaternary-ribbon-accent-fill before:bg-$bg-quaternary-ribbon-accent-sweep after:opacity-0 after:transition-opacity before:transition-transform after:duration-320 before:duration-760 after:content-[\'\'] before:content-[\'\'] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] hover:enabled:after:opacity-32 active:enabled:after:opacity-48 focus-visible:before:translate-x-[560%] focus-visible:after:opacity-100 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)] disabled:color-$color-accent-soft-disabled',
   ],
 ]
