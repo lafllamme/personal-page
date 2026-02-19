@@ -201,6 +201,164 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
           </tbody>
         </table>
       </div>
+
+      <p class="space-grotesk-regular mt-6 text-[10px] tracking-[0.16em] uppercase opacity-65">
+        Quaternary Concepts
+      </p>
+      <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
+        <table class="min-w-full border-collapse text-left text-[10px] tracking-[0.12em] uppercase">
+          <thead class="bg-pureBlack/3 dark:bg-pureWhite/5">
+            <tr>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Concept
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Default
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Accent
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                As-Is (Current)
+              </td>
+              <td class="px-3 py-2">
+                <DsButton type="quaternary" variant="default">
+                  Quaternary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton type="quaternary" variant="accent">
+                  Quaternary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                R1 Ribbon Base
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="default"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:bg-sand-6 before:bg-sand-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-300 before:duration-700 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] active:enabled:after:opacity-60 hover:enabled:after:opacity-40"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="accent"
+                  class="before:bg-toxic-8 after:bg-toxic-7 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 after:z-0 before:z-0 before:h-32 before:w-12 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-300 before:duration-700 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[560%] active:enabled:after:opacity-60 hover:enabled:after:opacity-45"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                R2 Ribbon Soft
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="default"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-32 before:w-10 before:rotate-[16deg] after:rounded-[inherit] after:bg-sand-5 before:bg-sand-6 after:opacity-0 after:transition-opacity before:transition-transform after:duration-400 before:duration-900 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[520%] active:enabled:after:opacity-42 hover:enabled:after:opacity-28"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="accent"
+                  class="before:bg-toxic-7 after:bg-toxic-6 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-32 before:w-10 before:rotate-[16deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-400 before:duration-900 after:content-[''] before:content-[''] before:-left-8 before:-top-8 before:-translate-x-full hover:enabled:before:translate-x-[520%] active:enabled:after:opacity-45 hover:enabled:after:opacity-30"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                R3 Ribbon Twin
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="default"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:h-36 after:w-8 before:h-36 before:w-10 after:rotate-[20deg] before:rotate-[20deg] after:bg-sand-9 before:bg-sand-7 after:transition-transform before:transition-transform after:duration-1000 before:duration-700 after:content-[''] before:content-[''] after:-left-14 after:-top-9 before:-left-10 before:-top-9 after:-translate-x-full before:-translate-x-full active:enabled:bg-sand-8/55 hover:enabled:after:translate-x-[760%] hover:enabled:before:translate-x-[640%]"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="accent"
+                  class="before:bg-toxic-7 after:bg-toxic-9 active:enabled:bg-toxic-8/55 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:h-36 after:w-8 before:h-36 before:w-10 after:rotate-[20deg] before:rotate-[20deg] after:transition-transform before:transition-transform after:duration-1000 before:duration-700 after:content-[''] before:content-[''] after:-left-14 after:-top-9 before:-left-10 before:-top-9 after:-translate-x-full before:-translate-x-full hover:enabled:after:translate-x-[760%] hover:enabled:before:translate-x-[640%]"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                R4 Ribbon Reverse
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="default"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-32 before:w-12 before:translate-x-full after:rounded-[inherit] after:bg-sand-6 before:bg-sand-7 after:opacity-0 after:transition-opacity before:transition-transform after:duration-300 before:duration-700 after:content-[''] before:content-[''] before:-right-8 before:-top-8 before:-rotate-[18deg] active:enabled:after:opacity-58 hover:enabled:after:opacity-40 hover:enabled:before:-translate-x-[560%]"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="accent"
+                  class="before:bg-toxic-8 after:bg-toxic-7 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-32 before:w-12 before:translate-x-full after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-300 before:duration-700 after:content-[''] before:content-[''] before:-right-8 before:-top-8 before:-rotate-[18deg] active:enabled:after:opacity-60 hover:enabled:after:opacity-45 hover:enabled:before:-translate-x-[560%]"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                R5 Ribbon High Contrast
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="default"
+                  class="[isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-36 before:w-14 before:rotate-[18deg] after:rounded-[inherit] after:bg-sand-7 before:bg-sand-9 after:opacity-0 after:transition-opacity before:transition-transform after:duration-200 before:duration-500 after:content-[''] before:content-[''] before:-left-9 before:-top-9 before:-translate-x-full active:enabled:bg-sand-10 active:enabled:color-pureWhite hover:enabled:before:translate-x-[540%] dark:active:enabled:bg-sand-8 active:enabled:after:opacity-72 hover:enabled:after:opacity-55"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="quaternary"
+                  variant="accent"
+                  class="before:bg-toxic-9 after:bg-toxic-7 active:enabled:bg-toxic-9 [isolation:isolate] relative overflow-hidden after:absolute before:absolute after:inset-0 before:h-36 before:w-14 before:rotate-[18deg] after:rounded-[inherit] after:opacity-0 after:transition-opacity before:transition-transform after:duration-200 before:duration-500 after:content-[''] before:content-[''] before:-left-9 before:-top-9 before:-translate-x-full active:enabled:color-pureWhite hover:enabled:before:translate-x-[540%] active:enabled:after:opacity-75 hover:enabled:after:opacity-58"
+                >
+                  Quaternary
+                </DsButton>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </section>
   </article>
 </template>

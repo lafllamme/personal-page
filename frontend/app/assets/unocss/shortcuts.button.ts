@@ -7,7 +7,7 @@ export const buttonShortcuts: UserShortcuts = [
   ],
   [
     'ui-button-label',
-    'relative inline-flex items-center',
+    'relative z-1 inline-flex items-center',
   ],
   [
     'ui-ghost-button',
