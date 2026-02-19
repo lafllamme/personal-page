@@ -252,6 +252,144 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
       </div>
 
       <p class="space-grotesk-regular mt-6 text-[10px] tracking-[0.16em] uppercase opacity-65">
+        Tertiary Focus Proposals
+      </p>
+      <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
+        <table class="min-w-full border-collapse text-left text-[10px] tracking-[0.12em] uppercase">
+          <thead class="bg-pureBlack/3 dark:bg-pureWhite/5">
+            <tr>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Concept
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Default
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Focus Visible
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                T1 Baseline (Current)
+              </td>
+              <td class="px-3 py-2">
+                <DsButton type="tertiary" variant="default">
+                  Tertiary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  :class="getForcedStateClass('default', 'tertiary', 'focus-visible')"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                T2 Sand 7
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  class="[--ghost-morph-fill:var(--un-preset-radix-sand7)] [--ghost-morph-fill-active:var(--un-preset-radix-sand8)]"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  class="[--ghost-morph-fill:var(--un-preset-radix-sand7)] [--ghost-morph-fill-active:var(--un-preset-radix-sand8)] bg-sand-7 [color:var(--color-primary)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand7)]"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                T3 Sand 8
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  class="[--ghost-morph-fill:var(--un-preset-radix-sand8)] [--ghost-morph-fill-active:var(--un-preset-radix-sand9)]"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  class="[--ghost-morph-fill:var(--un-preset-radix-sand8)] [--ghost-morph-fill-active:var(--un-preset-radix-sand9)] bg-sand-8 [color:var(--color-primary)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand8)]"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                T4 Sand 9
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  class="[--ghost-morph-fill:var(--un-preset-radix-sand9)] [--ghost-morph-fill-active:var(--un-preset-radix-sand10)]"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  class="[--ghost-morph-fill:var(--un-preset-radix-sand9)] [--ghost-morph-fill-active:var(--un-preset-radix-sand10)] bg-sand-9 [color:var(--color-primary)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand9)]"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+            </tr>
+
+            <tr class="border-t border-pureBlack/8 dark:border-pureWhite/10">
+              <td class="px-3 py-2 opacity-75">
+                T5 Sand 10
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  class="[--ghost-morph-fill:var(--un-preset-radix-sand10)] [--ghost-morph-fill-active:var(--un-preset-radix-sand11)]"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  type="tertiary"
+                  variant="default"
+                  class="[--ghost-morph-fill:var(--un-preset-radix-sand10)] [--ghost-morph-fill-active:var(--un-preset-radix-sand11)] bg-sand-10 [color:var(--color-primary)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand10)]"
+                >
+                  Tertiary
+                </DsButton>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="space-grotesk-regular mt-6 text-[10px] tracking-[0.16em] uppercase opacity-65">
         Quaternary Concepts
       </p>
       <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
