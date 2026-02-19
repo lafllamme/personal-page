@@ -46,7 +46,7 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'default-tertiary': {
     'hover': 'is-ghost-morph-on',
     'active': 'is-ghost-morph-on-active translate-y-[1px]',
-    'focus-visible': 'is-ghost-morph-on [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)]',
+    'focus-visible': 'bg-$bg-ghost-morph-fill [color:var(--ghost-morph-text)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)]',
   },
   'default-quaternary': {
     'hover': 'bg-$bg-quaternary-hover',
@@ -66,7 +66,7 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'accent-tertiary': {
     'hover': 'is-ghost-morph-on',
     'active': 'is-ghost-morph-on-active translate-y-[1px]',
-    'focus-visible': 'is-ghost-morph-on [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)]',
+    'focus-visible': 'bg-$bg-ghost-morph-accent-fill [color:var(--ghost-morph-text)] before:opacity-0 after:opacity-0 [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)]',
   },
   'accent-quaternary': {
     'hover': 'bg-$bg-accent-quaternary-hover',
@@ -195,6 +195,55 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   :variant="row.key"
                 >
                   Quaternary
+                </DsButton>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="space-grotesk-regular mt-6 text-[10px] tracking-[0.16em] uppercase opacity-65">
+        Default Focus Check
+      </p>
+      <div class="mt-3 overflow-auto border border-pureBlack/12 rounded-lg border-solid dark:border-pureWhite/12">
+        <table class="min-w-full border-collapse text-left text-[10px] tracking-[0.12em] uppercase">
+          <thead class="bg-pureBlack/3 dark:bg-pureWhite/5">
+            <tr>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Type
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Default
+              </th>
+              <th class="px-3 py-2 font-medium opacity-75">
+                Focus Visible
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="type in types"
+              :key="`default-focus-${type.key}`"
+              class="border-t border-pureBlack/8 dark:border-pureWhite/10"
+            >
+              <td class="px-3 py-2 opacity-75">
+                {{ type.label }}
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  :type="type.key"
+                  variant="default"
+                >
+                  {{ type.label }}
+                </DsButton>
+              </td>
+              <td class="px-3 py-2">
+                <DsButton
+                  :type="type.key"
+                  variant="default"
+                  :class="getForcedStateClass('default', type.key, 'focus-visible')"
+                >
+                  {{ type.label }}
                 </DsButton>
               </td>
             </tr>

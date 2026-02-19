@@ -13,7 +13,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-neutral-ghost',
-    'bg-transparent border-transparent color-$color-primary [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)] disabled:color-$color-disabled-soft',
+    'bg-transparent border-transparent color-$color-primary [--ghost-morph-line:var(--color-primary)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:bg-$bg-ghost-morph-fill focus-visible:[color:var(--ghost-morph-text)] focus-visible:before:opacity-0 focus-visible:after:opacity-0 focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)] disabled:color-$color-disabled-soft',
   ],
 
   [
@@ -33,7 +33,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-accent-ghost',
-    'bg-transparent border-transparent color-$color-accent [--ghost-morph-line:var(--color-accent)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-accent-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-accent-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)] disabled:color-$color-accent-ghost-disabled',
+    'bg-transparent border-transparent color-$color-accent [--ghost-morph-line:var(--color-accent)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-accent-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-accent-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:bg-$bg-ghost-morph-accent-fill focus-visible:[color:var(--ghost-morph-text)] focus-visible:before:opacity-0 focus-visible:after:opacity-0 focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)] disabled:color-$color-accent-ghost-disabled',
   ],
 
   [
