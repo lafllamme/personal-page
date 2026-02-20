@@ -39,9 +39,9 @@ Nuxt modules
 - `@nuxt/fonts`
 
 Lenis reference
-- See `docs/LENIS-REFERENCE.md` for approved options and presets.
+- See [`docs/general/LENIS-REFERENCE.md`](file:///Users/flame/Developer/Projects/personal-page/docs/general/LENIS-REFERENCE.md) for approved options and presets.
 
-Runtime config (see `frontend/nuxt.config.ts`)
+Runtime config (see [`frontend/nuxt.config.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/nuxt.config.ts))
 - Public CMS URLs: `NUXT_PAYLOAD_PUBLIC_SERVER_URL` (builds `payloadApiUrl` and `payloadUrl`).
 - Frontend site URL: `FRONTEND_URL`.
 - API keys: `NUXT_FINNHUB_API_KEY`, `NUXT_BUTTONDOWN_API_KEY`.
@@ -65,7 +65,7 @@ Core stack
 - Rspack bundler enabled via `next-rspack`.
 - Payload integration via `@payloadcms/next/withPayload`.
 
-Payload configuration (see `cms/src/payload.config.ts`)
+Payload configuration (see [`cms/src/payload.config.ts`](file:///Users/flame/Developer/Projects/personal-page/cms/src/payload.config.ts))
 - DB: Postgres (`@payloadcms/db-postgres`).
 - Storage: Vercel Blob (`@payloadcms/storage-vercel-blob`).
 - Editor: Lexical (`@payloadcms/richtext-lexical`).
@@ -90,7 +90,7 @@ Usage
 
 ## Styling system
 
-Location: `frontend/uno.config.ts`, `frontend/app/assets/unocss/*`
+Location: [`frontend/uno.config.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/uno.config.ts), [`frontend/app/assets/unocss/`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/)
 
 - UnoCSS with multiple presets: `presetUno`, `presetMini`, `presetWind`, `presetAttributify`, `presetIcons`, `presetTypography`, `animatedUno`, `presetWebFonts`, `presetRadix`, `presetAnimations`.
 - Custom theme extension with CSS variable-based colors and utility shortcuts.

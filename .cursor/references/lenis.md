@@ -2,7 +2,7 @@
 
 ## Current Usage In This Repo
 
-- Global wrapper: `frontend/app/app.vue` uses `<VueLenis root :options="lenisOptions" />`
+- Global wrapper: [`frontend/app/app.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/app.vue) uses `<VueLenis root :options="lenisOptions" />`
 - Current options in app shell:
   - `autoRaf: true`
   - `smoothWheel: true`

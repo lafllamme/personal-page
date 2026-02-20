@@ -4,10 +4,10 @@ This project uses Lenis via Nuxt module `lenis/nuxt` and component `<VueLenis />
 
 ## Where Lenis Is Wired
 
-- Nuxt module registration: `frontend/nuxt.config.ts`
-- App-level wrapper: `frontend/app/app.vue`
-- Lenis setup and GSAP bridge: `frontend/app/composables/useLenisOsmo.ts`
-- Scroll listeners based on Lenis state: `frontend/app/composables/useHeaderVisibility.ts`
+- Nuxt module registration: [`frontend/nuxt.config.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/nuxt.config.ts)
+- App-level wrapper: [`frontend/app/app.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/app.vue)
+- Lenis setup and GSAP bridge: [`frontend/app/composables/useLenisOsmo.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/composables/useLenisOsmo.ts)
+- Scroll listeners based on Lenis state: [`frontend/app/composables/useHeaderVisibility.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/composables/useHeaderVisibility.ts)
 
 ## Important Clarification
 
@@ -16,7 +16,7 @@ The active integration is the official `lenis` package (`lenis/vue`, `lenis/nuxt
 
 ## Current Project Preset (Osmo-Style)
 
-Configured in `frontend/app/app.vue`:
+Configured in [`frontend/app/app.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/app.vue):
 
 ```ts
 const { lenisOptions } = useLenisOsmo()
@@ -36,9 +36,9 @@ GSAP integration used in composable:
 
 When touching Lenis in this project:
 
-- Keep `frontend/app/app.vue` minimal (wrapper + composition only).
+- Keep [`frontend/app/app.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/app.vue) minimal (wrapper + composition only).
 - Put Lenis runtime logic (watchers, ticker loop, ScrollTrigger bridge) into a dedicated composable.
-- Default location: `frontend/app/composables/useLenisOsmo.ts`.
+- Default location: [`frontend/app/composables/useLenisOsmo.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/composables/useLenisOsmo.ts).
 - If using Vue best-practice workflows, do not place animation orchestration directly in `app.vue`.
 
 ## Lenis Options We Can Use

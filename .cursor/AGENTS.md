@@ -6,7 +6,7 @@ Instructions for code agents (Cursor Agent, Codex) working in this repository.
 
 Project truth lives in `docs/`. Treat `.cursor/` content as agent runtime guidance only.
 
-Note: Some generic skills may mention Nuxt 3 or older defaults. In this repo, treat those as Nuxt 4 equivalents unless `docs/ARCHITECTURE.md` says otherwise.
+Note: Some generic skills may mention Nuxt 3 or older defaults. In this repo, treat those as Nuxt 4 equivalents unless [`docs/general/ARCHITECTURE.md`](file:///Users/flame/Developer/Projects/personal-page/docs/general/ARCHITECTURE.md) says otherwise.
 
 ## Reference docs and source of truth
 
@@ -17,15 +17,15 @@ Rules
 * If a requested change conflicts with a reference doc, mention it very briefly and ask one targeted question
 
 When to use which doc
-* Product, UX, UI, animation, tone, content decisions → `docs/PRODUCT.md`
-* Design tokens, colors, typography, spacing, visual effects, component patterns → `docs/DESIGNSYSTEM.md`
-* Architecture, tooling, monorepo layout, bundlers, deploy topology → `docs/ARCHITECTURE.md`
+* Product, UX, UI, animation, tone, content decisions → [`docs/general/PRODUCT.md`](file:///Users/flame/Developer/Projects/personal-page/docs/general/PRODUCT.md)
+* Design tokens, colors, typography, spacing, visual effects, component patterns → [`docs/system/swiss/DESIGNSYSTEM.md`](file:///Users/flame/Developer/Projects/personal-page/docs/system/swiss/DESIGNSYSTEM.md)
+* Architecture, tooling, monorepo layout, bundlers, deploy topology → [`docs/general/ARCHITECTURE.md`](file:///Users/flame/Developer/Projects/personal-page/docs/general/ARCHITECTURE.md)
 * Lenis smooth-scroll integration and animation-loop guidance → `.cursor/references/lenis.md`
 
 
 ## Repository context
 
-See `docs/ARCHITECTURE.md` for the canonical monorepo architecture, tooling, and deployment notes.
+See [`docs/general/ARCHITECTURE.md`](file:///Users/flame/Developer/Projects/personal-page/docs/general/ARCHITECTURE.md) for the canonical monorepo architecture, tooling, and deployment notes.
 Keep app boundaries intact and share code via `shared/`.
 
 ## Nuxt 4 and Vue 3 ecosystem emphasis

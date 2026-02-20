@@ -1,4 +1,4 @@
-# Component Spec Standard (P04-MPZ01)
+# Component Contract (P04-MPZ01)
 
 Status: aktiv fuer alle neuen Design-System-Komponenten
 

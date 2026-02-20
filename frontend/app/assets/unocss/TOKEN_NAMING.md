@@ -1,57 +1,21 @@
-# Uno Token Naming
+# Uno Token Naming (Runtime Note)
 
-## Goal
+Status: Runtime-Notiz fuer UnoCSS.  
+Verbindlicher Contract liegt in:
+- [`docs/system/ui/TOKEN-LAYERS.md`](file:///Users/flame/Developer/Projects/personal-page/docs/system/ui/TOKEN-LAYERS.md)
 
-- Keep token names readable, predictable, and reusable.
-- Use semantic domains first, component-specific tokens only when needed.
+## Kurzregeln fuer Implementierung
 
-## Naming Format
+- In UnoCSS nur statische Klassen verwenden.
+- Keine dynamisch gebauten Klassenstrings.
+- Varianten auf voll ausgeschriebene Klassen mappen.
+- Struktur-Shortcuts in `shortcuts.button.ts`.
+- Interaktions-Varianten in `shortcuts.variants.ts`.
 
-- Global token format: `domain-role-state`
-- Component token format: `component-variant-type-role-state`
-- Variant shortcut format: `v-{intent}-{style}`
-- Structure shortcut format: `ui-{component}-{role}`
+## Syntax-Hinweis
 
-## Domains
-
-- `color-*` for text/icon color
-- `bg-*` for surfaces/fills
-- `border-*` for outlines/strokes
-- `ring-*` for focus rings
-- `toxic-*` for palette scale (`1..12`)
-
-## Examples
-
-- `color-primary`
-- `color-inverse`
-- `bg-solid-hover`
-- `border-accent-soft`
-- `ring-accent-secondary`
-- `toxic-11`
-- `v-neutral-solid`
-- `v-accent-ghost`
-- `ui-button-base`
-
-## Usage in Uno
-
-- Use `$` syntax in shortcuts/components:
+- Tokenverwendung in Uno-Shortcuts:
   - `color-$color-primary`
   - `bg-$bg-solid`
   - `border-$border-accent`
   - `bg-$toxic-4`
-
-## Rules
-
-- No abbreviations like `btn-def-pri`.
-- Prefer semantic names over visual names.
-- UnoCSS utilities must be statically present in source code:
-  - Do not build class names dynamically at runtime.
-  - If mapping variants, map to fully written class strings.
-- Keep state suffixes explicit:
-  - `hover`
-  - `active`
-  - `disabled`
-  - `focus`
-- If a token is shared across components, keep it global.
-- If a token is truly component-specific, prefix with component name.
-- Keep component structure shortcuts in dedicated files (`shortcuts.button.ts`), and shared interaction variants in `shortcuts.variants.ts`.

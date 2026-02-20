@@ -1,41 +1,30 @@
 # Documentation Hub
 
-Zweck: Schneller Einstieg in die aktive Design-System-Doku.
+Zweck: Ein Einstiegspunkt, der sofort zeigt, welche Datei entscheidet und welche Datei nur Referenz ist.
 
-## 1) Start Here (operativ)
-- Design-System Truth: [DESIGNSYSTEM.md](./system/swiss/DESIGNSYSTEM.md)
-- Swiss Prinzipien (allgemein): [SWISS-STYLE-GUIDELINES.md](./system/swiss/SWISS-STYLE-GUIDELINES.md)
-- Component Spec Standard: [COMPONENT-SPEC-STANDARD.md](./system/swiss/COMPONENT-SPEC-STANDARD.md)
+## File Roles
+- `SOURCE OF TRUTH`: verbindliche Entscheidungen
+- `REFERENCE`: Nachweis/Herkunft/Katalog
+- `ARCHIVE`: Snapshots, keine aktive Regelquelle
 
-## 2) Farben
-- Aktive Projektpalette (Winner-Flow): [PALETTE-RADIX-TEAL-911.md](./system/ui/PALETTE-RADIX-TEAL-911.md)
-- Globale Farb-Bibliothek: [COLORSCHEME.md](./system/ui/COLORSCHEME.md)
+## Start Here (2 Minuten)
+1. Designentscheidungen: [DESIGNSYSTEM.md](./system/swiss/DESIGNSYSTEM.md) (`SOURCE OF TRUTH`)
+2. Typografie/Fundament: [FOUNDATION-BASELINE.md](./system/swiss/FOUNDATION-BASELINE.md) (`SOURCE OF TRUTH`)
+3. Komponentenvertrag: [COMPONENT-CONTRACT.md](./system/swiss/COMPONENT-CONTRACT.md) (`SOURCE OF TRUTH`)
+4. Token-Schichten: [TOKEN-LAYERS.md](./system/ui/TOKEN-LAYERS.md) (`SOURCE OF TRUTH`)
+5. Cleanup-/Strukturstatus: [DOC-ARCHITECTURE-ROADMAP.md](./system/swiss/DOC-ARCHITECTURE-ROADMAP.md) (`REFERENCE`)
 
-## 3) Inspiration und Build-Bridge
-- Inspiration Merge (High-Level): [INSPIRATION.md](./inspiration/designs/INSPIRATION.md)
-- Komponenten-Blueprint / Matrix: [COMPONENT-MATRIX.md](./inspiration/designs/COMPONENT-MATRIX.md)
-- Token Herkunft (aktiver Flow): [TOKEN-REFERENZEN.md](./inspiration/designs/TOKEN-REFERENZEN.md)
-- Aktive Variant Packs: [VARIANT-TOKEN-PACKS.md](./inspiration/designs/VARIANT-TOKEN-PACKS.md)
+## Active References
+- Farbentscheidung (Teal 9/11): [ACCENT-COLOR-RADIX-TEAL-911.md](./reference/ACCENT-COLOR-RADIX-TEAL-911.md)
+- Radix-Katalog: [COLORSCHEME.md](./reference/COLORSCHEME.md)
+- Varianten-Herkunft: [VARIANT-TOKEN-PACKS.md](./reference/VARIANT-TOKEN-PACKS.md)
+- Inspiration-Bridge: [INSPIRATION.md](./inspiration/designs/INSPIRATION.md)
+- Komponentenmatrix: [COMPONENT-MATRIX.md](./inspiration/designs/COMPONENT-MATRIX.md)
+- Token-Herkunft: [TOKEN-REFERENZEN.md](./inspiration/designs/TOKEN-REFERENZEN.md)
 
-## 4) Deep Research (pro Inspirationsordner)
-- Detailkonzepte liegen unter:
-  - [inspiration/designs/*/KONZEPT.md](./inspiration/designs/)
+## Archive / Research
+- Inspirationsordner: [docs/inspiration/designs/](./inspiration/designs/)
+- Token-Snapshots: [tokens/candidates](./inspiration/designs/tokens/candidates/) und [tokens/evaluations](./inspiration/designs/tokens/evaluations/)
 
-## 5) Historie / Archiv
-- Candidate Snapshots:
-  - [tokens/candidates](./inspiration/designs/tokens/candidates/)
-- Evaluation Snapshots:
-  - [tokens/evaluations](./inspiration/designs/tokens/evaluations/)
-
-## 6) Empfohlene Lesereihenfolge (neue Session)
-1. [DESIGNSYSTEM.md](./system/swiss/DESIGNSYSTEM.md)
-2. [SWISS-STYLE-GUIDELINES.md](./system/swiss/SWISS-STYLE-GUIDELINES.md)
-3. [COMPONENT-MATRIX.md](./inspiration/designs/COMPONENT-MATRIX.md)
-4. [TOKEN-REFERENZEN.md](./inspiration/designs/TOKEN-REFERENZEN.md)
-5. [PALETTE-RADIX-TEAL-911.md](./system/ui/PALETTE-RADIX-TEAL-911.md)
-
-## 7) Entscheidungsregel
-- Build-relevante Entscheidungen werden nur in
-  [DESIGNSYSTEM.md](./system/swiss/DESIGNSYSTEM.md)
-  finalisiert.
-- Alle anderen Dateien sind Input, Guideline oder Herkunftsnachweis.
+## Hard Rule
+- Build-relevante Designentscheidungen werden nur in [DESIGNSYSTEM.md](./system/swiss/DESIGNSYSTEM.md) finalisiert.

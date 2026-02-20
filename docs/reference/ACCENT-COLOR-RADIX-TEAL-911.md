@@ -1,7 +1,7 @@
-# P04-MPZ01 Teal Palette (Radix 9/11)
+# Accent Color Reference (Radix Teal 9/11, P04-MPZ01)
 
 Stand: 2026-02-14
-Status: Finaler Exploration-Input fuer Komponentenbau
+Status: REFERENCE (Herkunft und Entscheidungsnachweis, nicht Source of Truth)
 
 ## 1) Ziel
 - Basis bleibt Swiss: Schwarz/Weiss/Beige als Hauptflaechen.

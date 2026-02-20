@@ -196,8 +196,8 @@ The monorepo is configured for seamless Vercel deployment with local API benefit
 
 ### Adding New Collections to Payload
 
-1. Create collection in `shared/payload/collections/`
-2. Add to `shared/payload/config.ts`
+1. Create collection in [`shared/payload/collections/`](file:///Users/flame/Developer/Projects/personal-page/shared/payload/collections/)
+2. Add to [`shared/payload/config.ts`](file:///Users/flame/Developer/Projects/personal-page/shared/payload/config.ts)
 3. Generate types: `turbo payload:generate-types`
 4. Use in frontend with `usePayloadAPI()` composable
 

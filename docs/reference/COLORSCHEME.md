@@ -1,8 +1,9 @@
 # Radix Colors Palette (Hex)
 
 Source: `@radix-ui/colors@3.0.0` via jsDelivr CDN.
+Status: REFERENCE (Katalog, keine Regelquelle)
 
-Active token architecture and naming layers: [TOKEN-LAYERS.md](./TOKEN-LAYERS.md).
+Active token architecture and naming layers: [TOKEN-LAYERS.md](../system/ui/TOKEN-LAYERS.md).
 
 This file lists all Radix color scales (light, dark, alpha, dark-alpha) and overlay scales with hex values.
 

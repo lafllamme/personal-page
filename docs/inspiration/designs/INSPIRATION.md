@@ -89,4 +89,4 @@
 - Wir koennen direkt loslegen; kein Blocker vor Komponentenbau.
 - Vor dem eigentlichen Bauen werden nur zwei Dinge fixiert:
   1. Winner-Stand: `P04-MPZ01` als Baseline.
-  2. Accent-System: `Radix Teal 9/11` gemaess [PALETTE-RADIX-TEAL-911.md](../../system/ui/PALETTE-RADIX-TEAL-911.md).
+  2. Accent-System: `Radix Teal 9/11` gemaess [ACCENT-COLOR-RADIX-TEAL-911.md](../../reference/ACCENT-COLOR-RADIX-TEAL-911.md).
