@@ -25,10 +25,10 @@ const {
 } = toRefs(props)
 
 const spacingClasses = {
-  sm: 'py-8 md:py-10',
-  md: 'py-10 md:py-14',
-  lg: 'py-12 md:py-16',
-  xl: 'py-16 md:py-20',
+  sm: 'ui-l-shell-sm',
+  md: 'ui-l-shell-md',
+  lg: 'ui-l-shell-lg',
+  xl: 'ui-l-shell-xl',
 } as const
 
 const rootClass = computed(() => useClsx(
