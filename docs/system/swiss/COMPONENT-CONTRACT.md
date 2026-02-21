@@ -29,7 +29,12 @@ Status: aktiv fuer alle neuen Design-System-Komponenten
 - Weight: <weights>
 - Intention: <fuehrung / zweck>
 - Color: <base + accent-regel>
+- Type-Scale: <foundation token(s), z. B. meta-sm / text-md / headline-lg>
 ```
+
+## Type-Scale Pflichtregel
+- Neue Komponenten duerfen keine ad-hoc Typografiewerte einfuehren, solange ein passender Token aus der Foundation-Scale existiert.
+- Referenz: [FOUNDATION-BASELINE.md](./FOUNDATION-BASELINE.md) Abschnitt `Typografie-Scale (Foundation)`.
 
 ## Vue Umsetzung (Best Practice)
 - In Templates nach Moeglichkeit kein `props.*` verwenden.

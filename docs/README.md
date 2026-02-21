@@ -13,6 +13,7 @@ Zweck: Ein Einstiegspunkt, der sofort zeigt, welche Datei entscheidet und welche
 3. Komponentenvertrag: [COMPONENT-CONTRACT.md](./system/swiss/COMPONENT-CONTRACT.md) (`SOURCE OF TRUTH`)
 4. Token-Schichten: [TOKEN-LAYERS.md](./system/ui/TOKEN-LAYERS.md) (`SOURCE OF TRUTH`)
 5. Cleanup-/Strukturstatus: [DOC-ARCHITECTURE-ROADMAP.md](./system/swiss/DOC-ARCHITECTURE-ROADMAP.md) (`REFERENCE`)
+6. Typografie-Scaling-Plan: [TYPOGRAPHY-SCALING-PLAN.md](./system/swiss/TYPOGRAPHY-SCALING-PLAN.md) (`PROPOSAL`)
 
 ## Active References
 - Farbentscheidung (Teal 9/11): [ACCENT-COLOR-RADIX-TEAL-911.md](./reference/ACCENT-COLOR-RADIX-TEAL-911.md)
