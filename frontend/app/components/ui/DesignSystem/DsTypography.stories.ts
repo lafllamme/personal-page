@@ -18,7 +18,7 @@ const meta = {
   argTypes: {
     as: { control: 'select', options: ['p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote'] },
     role: { control: 'select', options: ['display', 'headline', 'body', 'meta', 'quote', 'signal'] },
-    size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl'] },
+    size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] },
     tone: { control: 'select', options: ['default', 'muted'] },
     uppercase: { control: 'boolean' },
   },
