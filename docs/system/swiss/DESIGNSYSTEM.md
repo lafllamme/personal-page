@@ -22,9 +22,16 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 ## 3) Layout- und Rhythmusregeln
 - Section-basiertes System, pro Abschnitt klare Rolle.
 - `Section` kann `min-height: 100dvh` nutzen, aber nicht global erzwingen.
-- `PageContainer` steuert max-width + responsive paddings.
+- Primärsystem: `DsSectionShell` (Y-Rhythmus) + `DsSectionBody` (max/gutter/mode).
+- `PageContainer` bleibt als Transition-Layer fuer Legacy-/Default-Layout bestehen.
 - Grid ist pro Section explizit entscheidbar (kein Zwangsgrid).
 - Vertikaler Rhythmus bleibt im 8pt-System.
+
+### 3.1 Aktuelle Container-Nutzung (Ist-Stand)
+- `layouts/default.vue`: nutzt `PageContainer` (Transition-Layer).
+- `layouts/design-system.vue`: nutzt `DsContainer` als neutrale Huelle.
+- `pages/design-system-debug.vue`: nutzt bereits direkt `DsSectionShell` + `DsSectionBody`.
+- `pages/design-system.vue`: nutzt aktuell noch `DsSectionContainer` (Legacy-Wrapper), intern aber auf `DsSectionShell` + `DsSectionBody`.
 
 ## 4) Komponentenstart (verbindliche Reihenfolge)
 1. `Button` (`primary`, `secondary`, `tertiary`, `link` + states)
@@ -47,6 +54,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Swiss Style Guidelines (allgemein): [SWISS-STYLE-GUIDELINES.md](./SWISS-STYLE-GUIDELINES.md)
 - Accent Color Referenz: [ACCENT-COLOR-RADIX-TEAL-911.md](../../reference/ACCENT-COLOR-RADIX-TEAL-911.md)
 - Foundation Baseline: [FOUNDATION-BASELINE.md](./FOUNDATION-BASELINE.md)
+- Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
 - Component Contract: [COMPONENT-CONTRACT.md](./COMPONENT-CONTRACT.md)
 - Typography Source Map: [TYPOGRAPHY-SOURCE-MAP.md](./TYPOGRAPHY-SOURCE-MAP.md)
 - Komponentenmatrix: [COMPONENT-MATRIX.md](../../inspiration/designs/COMPONENT-MATRIX.md)

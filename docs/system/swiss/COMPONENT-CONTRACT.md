@@ -29,7 +29,7 @@ Status: aktiv fuer alle neuen Design-System-Komponenten
 - Weight: <weights>
 - Intention: <fuehrung / zweck>
 - Color: <base + accent-regel>
-- Type-Scale: <foundation token(s), z. B. meta-sm / text-md / headline-lg>
+- Type-Scale: <foundation token(s), z. B. type-meta-sm-* / type-body-md-* / type-headline-lg-*>
 ```
 
 ## Type-Scale Pflichtregel

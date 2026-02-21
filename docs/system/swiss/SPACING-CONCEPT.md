@@ -30,10 +30,10 @@ Warum: Das deckt UI-Details, Cards, Sections und Hero-Abstände sauber ab.
 ### B) Section Vertical Rhythm (Shell)
 Abstände oben/unten pro Section-Level.
 
-- `section-shell-y-sm`
-- `section-shell-y-md`
-- `section-shell-y-lg`
-- `section-shell-y-xl`
+- `layout-shell-y-sm-base` + `layout-shell-y-sm-md`
+- `layout-shell-y-md-base` + `layout-shell-y-md-md`
+- `layout-shell-y-lg-base` + `layout-shell-y-lg-md`
+- `layout-shell-y-xl-base` + `layout-shell-y-xl-md`
 
 Warum: Gleiche Section-Typen sehen über die ganze Seite gleich aus.
 
@@ -41,16 +41,21 @@ Warum: Gleiche Section-Typen sehen über die ganze Seite gleich aus.
 Seitliche Einrückung und Breitenbegrenzung.
 
 Gutter:
-- `section-body-gutter-none`
-- `section-body-gutter-sm`
-- `section-body-gutter-md`
-- `section-body-gutter-lg`
+- `layout-body-gutter-0`
+- `layout-body-gutter-sm-base` + `layout-body-gutter-sm-sm`
+- `layout-body-gutter-md-base` + `layout-body-gutter-md-md`
+- `layout-body-gutter-lg-base` + `layout-body-gutter-lg-sm` + `layout-body-gutter-lg-md`
+
+Aktive Progression:
+- `sm`: 16px -> 20px
+- `md`: 16px -> 32px
+- `lg`: 20px -> 24px -> 48px
 
 Max-Width:
-- `section-body-max-5xl`
-- `section-body-max-6xl`
-- `section-body-max-7xl`
-- `section-body-max-full`
+- `layout-body-max-5xl`
+- `layout-body-max-6xl`
+- `layout-body-max-7xl`
+- `layout-body-max-full`
 
 Warum: Wir trennen sauber zwischen "wie breit darf Inhalt werden" und "wie viel Seitenabstand hat Inhalt".
 
@@ -89,7 +94,10 @@ Wir trennen bewusst API-Sprache und technische Shortcut-Sprache:
 - Body mode:
   - `ui-l-mode-contained`
   - `ui-l-mode-fluid`
-  - `ui-l-mode-bleed`
+  - `ui-l-mode-bleed-0`
+  - `ui-l-mode-bleed-sm`
+  - `ui-l-mode-bleed-md`
+  - `ui-l-mode-bleed-lg`
 
 ## 4) Regeln, damit es nicht kippt
 
@@ -97,10 +105,10 @@ Wir trennen bewusst API-Sprache und technische Shortcut-Sprache:
 2. Shell/Body dürfen nur auf Spacing-Tokens mappen.
 3. Komponenten-Innenabstände (z. B. Card, Button) dürfen eigene Tokens haben, aber keine harten Magic Numbers.
 4. Debug-Page bleibt als visuelle QA für Spacing.
+5. Uno-Schreibweise: `$token` ist Standard. `var(--token)` nur bei Ausnahmen (z. B. `calc(...)` oder nicht eindeutig parsbare Utility-Fälle).
 
 ## 5) Nächster Schritt
 
-1. Tokens in `palette.ts` ergänzen (`space-12/14/16/20`, `section-shell-*`, `section-body-*`).
-2. UNO-Shortcuts für Shell/Body anlegen.
-3. `DsSectionShell` und `DsSectionBody` auf Token-Mapping umstellen.
-4. Debug-Page prüfen und ggf. 1–2 Werte feinjustieren.
+1. `PageContainer` als Transition-Layer markieren (nicht als neue Source of Truth ausbauen).
+2. `design-system.vue` mittelfristig von `DsSectionContainer` auf direkte `DsSectionShell` + `DsSectionBody` Komposition migrieren.
+3. Debug-Page weiter als visuelle QA nutzen und nur Tokens feinjustieren, keine Hardcoded-Werte.

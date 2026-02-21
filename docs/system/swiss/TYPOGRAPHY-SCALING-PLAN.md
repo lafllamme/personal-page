@@ -1,115 +1,127 @@
-# Typography Scaling Plan (Container + Clamp)
+# Typography Scaling Plan
 
-Stand: 2026-02-20  
-Status: PROPOSAL (zur Abnahme, danach in Runtime umsetzen)
+Stand: 2026-02-21  
+Status: READY FOR TOKENIZATION (nach finalem Review)
 
 ## Ziel
-- Responsives, kontrolliertes Typografie-Scaling ohne globalen `body`-Override.
-- Konsistente Hierarchie zwischen `display`, `headline`, `body`, `meta`, `signal`.
-- Stabiler UI-Look fuer Controls (Buttons/Inputs), auch bei Viewportwechsel.
+- Voll fluide Typografie (`xs` bis `4xl`) ohne globales `body`-Scaling.
+- Konsistente Rollenlogik fuer Design System Komponenten.
+- Single Source fuer Naming, Mapping und UnoCSS-Syntax.
 
-## Kernentscheidung
-- **Kein globales `body { font-size: ... }` Scaling**.
-- Scaling in 2 Ebenen:
-  1. **Layout-Container-Tokens** fuer Breite/Rhythmus
-  2. **Role-basierte Typo-Tokens** (nur Display/Headline fluid per `clamp`)
+## Schreibregel (UnoCSS)
+- In Klassen/Shortcuts immer `$token` nutzen.
+- `var(--token)` nur in Token-Definitionen (`palette.ts`) oder Spezialfaellen (`calc()`).
 
-## Container-System
+---
 
-Ein Basissystem mit 3 Nutzungsmodi:
-- `container` (default)
-- `container-narrow` (textlastig)
-- `container-wide` (hero/media)
+## 1) Aktueller Runtime-Stand (DsTypography)
 
-Alle basieren auf demselben Root-Containerwert:
+Datei:
+- [/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsTypography.vue](/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsTypography.vue)
 
-```css
-:root {
-  --size-container-ideal: 1440;
-  --size-container-min: 320px;
-  --size-container-max: 1920px;
-  --size-container: clamp(var(--size-container-min), 100vw, var(--size-container-max));
-}
+### 1.1 Size Scale (fluid, global)
 
-.container {
-  max-width: var(--size-container);
-}
-
-.container-narrow {
-  max-width: calc(var(--size-container) * 0.8);
-}
-
-.container-wide {
-  max-width: calc(var(--size-container) * 1.1);
-}
-```
-
-## Typo-Scaling-Regel
-
-### Fluid (mit `clamp`)
-- `display-*`
-- `headline-lg`, `headline-md`
-
-### Stabil / Near-Stable
-- `body-*`
-- `meta-*`
-- `signal-*`
-- `button-*` / Controls
-
-## Beispielwerte (Startpunkt)
-
-```css
-:root {
-  --type-display-xl: clamp(2.4rem, 6.2vw, 5rem);
-  --type-display-lg: clamp(1.8rem, 4.2vw, 3.2rem);
-
-  --type-headline-lg: clamp(1.4rem, 2.4vw, 2rem);
-  --type-headline-md: clamp(1.15rem, 1.2vw, 1.35rem);
-
-  --type-body-md: 0.875rem;
-  --type-body-sm: 0.75rem;
-
-  --type-meta-sm: 11px;
-  --type-meta-xs: 10px;
-}
-```
-
-## Mapping auf Rollen
-
-| Rolle | Token | Verhalten |
+| Size | Wert | Leading |
 |---|---|---|
-| Display XL | `--type-display-xl` | fluid |
-| Display LG | `--type-display-lg` | fluid |
-| Headline LG | `--type-headline-lg` | fluid |
-| Headline MD | `--type-headline-md` | fluid (moderat) |
-| Body MD | `--type-body-md` | stabil |
-| Body SM | `--type-body-sm` | stabil |
-| Meta SM | `--type-meta-sm` | stabil |
-| Meta XS | `--type-meta-xs` | stabil |
+| `xs` | `clamp(0.75rem,0.68rem+0.22vw,0.875rem)` | `1.35` |
+| `sm` | `clamp(0.875rem,0.8rem+0.3vw,1rem)` | `1.45` |
+| `md` | `clamp(1rem,0.92rem+0.38vw,1.125rem)` | `1.55` |
+| `lg` | `clamp(1.125rem,1rem+0.52vw,1.375rem)` | `1.35` |
+| `xl` | `clamp(1.375rem,1.12rem+1.1vw,2rem)` | `1.12` |
+| `2xl` | `clamp(1.75rem,1.35rem+1.9vw,3rem)` | `1.02` |
+| `3xl` | `clamp(2.25rem,1.65rem+3vw,4.75rem)` | `0.95` |
+| `4xl` | `clamp(2.6rem,1.85rem+4.1vw,6.2rem)` | `0.92` |
 
-## Button-Size-Mapping (nach Foundation)
+### 1.2 Display Family Split (Druk)
 
-| Button Size | Textrolle | Tracking |
-|---|---|---|
-| `sm` | `meta-xs` | `0.14em` |
-| `md` | `meta-sm` | `0.16em` |
-| `lg` | `meta-sm` | `0.18em` |
+| Display Size | Family |
+|---|---|
+| `xs`, `sm` | `font-druk-text-bold` (`DrukTextBoldTrial`) |
+| `md`, `lg`, `xl`, `2xl`, `3xl`, `4xl` | `font-druk-bold` (`DrukBoldTrial`) |
 
-## Umsetzungsschritte
-1. Container-Tokens in UnoCSS/Theme verankern.
-2. Typo-Tokens fuer fluid/stabil finalisieren.
-3. `DsTypography` auf Token-Namen mappen (Storybook Matrix als Referenz).
-4. Danach Buttons/Inputs auf finale Type-Scale mappen.
-5. Viewport-Review in Storybook (`mobile/tablet/desktop/wide`).
+### 1.3 Display Tracking Curve (kuratiert)
 
-## Abnahmekriterien
-- Display/Headline wachsen sichtbar, aber kontrolliert.
-- Body/Meta bleiben lesbar und stabil.
-- Buttons behalten konstante visuelle Balance ueber Viewports.
-- Kein globaler Stilbruch durch `body`-Scaling.
+Designregel:
+- Sweetspot bei `md` (`0.05em`)
+- Große Stufen werden nicht weiter gespreizt
+
+| Size | Tracking (mobile / md) |
+|---|---|
+| `xs` | `0.042em / 0.044em` |
+| `sm` | `0.046em / 0.048em` |
+| `md` | `0.05em / 0.052em` |
+| `lg` | `0.049em / 0.051em` |
+| `xl` | `0.048em / 0.05em` |
+| `2xl` | `0.046em / 0.048em` |
+| `3xl` | `0.044em / 0.046em` |
+| `4xl` | `0.042em / 0.044em` |
+
+---
+
+## 2) Naming (final fuer Token Layer)
+
+### 2.1 Foundation Tokens
+
+- Size:
+  - `type-size-xs`, `type-size-sm`, `type-size-md`, `type-size-lg`
+  - `type-size-xl`, `type-size-2xl`, `type-size-3xl`, `type-size-4xl`
+- Leading:
+  - `type-leading-xs`, `type-leading-sm`, `type-leading-md`, `type-leading-lg`
+  - `type-leading-xl`, `type-leading-2xl`, `type-leading-3xl`, `type-leading-4xl`
+- Display tracking:
+  - `type-track-display-xs` ... `type-track-display-4xl`
+  - optional breakpoint tokens: `type-track-display-xs-md` ... `type-track-display-4xl-md`
+- Families:
+  - `type-family-display-hero` -> `font-druk-bold`
+  - `type-family-display-compact` -> `font-druk-text-bold`
+  - `type-family-headline` -> `font-clash-regular`
+  - `type-family-body` -> `font-manrope`
+  - `type-family-meta` -> `space-grotesk-regular`
+  - `type-family-quote` -> `font-baskerville`
+  - `type-family-signal` -> `zalando-sans-expanded`
+
+### 2.2 Semantic Shortcuts (ui-type)
+
+- `ui-type-display-xs` ... `ui-type-display-4xl`
+- `ui-type-headline-xs` ... `ui-type-headline-4xl`
+- `ui-type-body-xs` ... `ui-type-body-4xl`
+- `ui-type-meta-xs` ... `ui-type-meta-4xl`
+- `ui-type-quote-xs` ... `ui-type-quote-4xl`
+- `ui-type-signal-xs` ... `ui-type-signal-4xl`
+
+---
+
+## 3) Geplante Umsetzung (nach Freigabe)
+
+1. `palette.ts`
+- `typographyTokens` als Foundation Tokens ergänzen.
+
+2. `shortcuts.typography.ts`
+- alle `ui-type-*` anlegen.
+- Display-Family-Split + Display-Tracking im Shortcut lösen.
+
+3. `shortcuts.ts`
+- `shortcuts.typography.ts` registrieren.
+
+4. `DsTypography.vue`
+- harte Klassen entfernen.
+- Mapping auf `ui-type-${role}-${size}` umstellen.
+
+5. QA
+- `design-system-debug.vue`
+- `DsTypography.stories.ts`
+
+---
+
+## 4) Abnahmekriterien
+
+- Gleiche Werte in Runtime und Tokens (kein Drift).
+- Display-Family-Split bleibt aktiv.
+- Display-Tracking bleibt kuratiert (kein High-Size-Aufspreizen).
+- Alle Typo-Varianten (`xs` bis `4xl`) in Debug und Storybook sichtbar.
 
 ## Referenzen
-- [FOUNDATION-BASELINE.md](./FOUNDATION-BASELINE.md)
-- [COMPONENT-CONTRACT.md](./COMPONENT-CONTRACT.md)
-- [DESIGNSYSTEM.md](./DESIGNSYSTEM.md)
-- [DOC-ARCHITECTURE-ROADMAP.md](./DOC-ARCHITECTURE-ROADMAP.md)
+- [/Users/flame/Developer/Projects/personal-page/docs/system/swiss/FOUNDATION-BASELINE.md](/Users/flame/Developer/Projects/personal-page/docs/system/swiss/FOUNDATION-BASELINE.md)
+- [/Users/flame/Developer/Projects/personal-page/docs/system/swiss/COMPONENT-CONTRACT.md](/Users/flame/Developer/Projects/personal-page/docs/system/swiss/COMPONENT-CONTRACT.md)
+- [/Users/flame/Developer/Projects/personal-page/docs/system/swiss/DESIGNSYSTEM.md](/Users/flame/Developer/Projects/personal-page/docs/system/swiss/DESIGNSYSTEM.md)
+- [/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsTypography.vue](/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsTypography.vue)
