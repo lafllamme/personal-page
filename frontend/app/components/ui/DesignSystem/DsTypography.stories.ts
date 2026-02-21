@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
+import { h } from 'vue'
 import DsSectionContainer from './DsSectionContainer.vue'
 import DsTypography from './DsTypography.vue'
+import DsTypographyFoundationPreview from './DsTypographyFoundationPreview.vue'
 
 const meta = {
   title: 'Design System/Components/DsTypography',
@@ -94,6 +96,18 @@ export const DesignSystemSection: Story = {
         </DsSectionContainer>
       </div>
     `,
+  }),
+  parameters: {
+    layout: 'fullscreen',
+  },
+}
+
+export const FoundationMatrix: Story = {
+  name: 'Foundation Matrix',
+  render: () => ({
+    render() {
+      return h(DsTypographyFoundationPreview)
+    },
   }),
   parameters: {
     layout: 'fullscreen',

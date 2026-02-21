@@ -9,7 +9,6 @@ const meta = {
     as: 'section',
     spacing: 'lg',
     fullViewport: true,
-    centerContent: false,
     bordered: true,
     contained: true,
     max: '7xl',
@@ -21,7 +20,6 @@ const meta = {
     as: { control: 'select', options: ['section', 'header', 'div'] },
     spacing: { control: 'select', options: ['sm', 'md', 'lg', 'xl'] },
     fullViewport: { control: 'boolean' },
-    centerContent: { control: 'boolean' },
     bordered: { control: 'boolean' },
     contained: { control: 'boolean' },
     max: { control: 'select', options: ['7xl', 'full'] },
@@ -62,7 +60,6 @@ export const Playground: Story = {
 export const FullViewportStage: Story = {
   args: {
     fullViewport: true,
-    centerContent: true,
     bordered: true,
   },
   render: args => ({
@@ -73,7 +70,7 @@ export const FullViewportStage: Story = {
     template: `
       <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
         <DsSectionContainer v-bind="args">
-          <h2 class="font-clash-regular text-[clamp(1.8rem,4.2vw,3.2rem)] leading-[1.02] uppercase">Centered Stage</h2>
+          <h2 class="font-clash-regular text-[clamp(1.8rem,4.2vw,3.2rem)] leading-[1.02] uppercase">Full Viewport Stage</h2>
           <p class="font-manrope max-w-xl text-sm md:text-base opacity-80">
             Full viewport mode is useful for intro and stage sections.
           </p>

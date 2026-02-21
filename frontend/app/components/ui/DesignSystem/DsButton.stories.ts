@@ -3,6 +3,7 @@ import { h } from 'vue'
 import DsButton from './DsButton.vue'
 import DsButtonMatrixPreview from './DsButtonMatrixPreview.vue'
 import DsSectionContainer from './DsSectionContainer.vue'
+import DsSpacingSizingPreview from './DsSpacingSizingPreview.vue'
 
 const meta = {
   title: 'Foundation/DsButton',
@@ -11,6 +12,7 @@ const meta = {
   args: {
     type: 'primary',
     variant: 'default',
+    size: 'md',
     disabled: false,
   },
   argTypes: {
@@ -21,6 +23,10 @@ const meta = {
     variant: {
       control: 'select',
       options: ['default', 'accent'],
+    },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
     },
     disabled: { control: 'boolean' },
   },
@@ -118,6 +124,18 @@ export const States: Story = {
   render: () => ({
     render() {
       return h(DsButtonMatrixPreview)
+    },
+  }),
+  parameters: {
+    layout: 'fullscreen',
+  },
+}
+
+export const SizingAndSpacing: Story = {
+  name: 'Sizing + Spacing',
+  render: () => ({
+    render() {
+      return h(DsSpacingSizingPreview)
     },
   }),
   parameters: {
