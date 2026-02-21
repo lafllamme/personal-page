@@ -140,9 +140,9 @@ const layoutTokens: TokenSet = {
   'layout-body-gutter-sm-base': '1rem',
   'layout-body-gutter-sm-sm': '1.25rem',
   'layout-body-gutter-md-base': '1rem',
-  'layout-body-gutter-md-md': '3rem',
+  'layout-body-gutter-md-md': '2rem',
   'layout-body-gutter-lg-base': '1.25rem',
-  'layout-body-gutter-lg-sm': '2rem',
+  'layout-body-gutter-lg-sm': '1.5rem',
   'layout-body-gutter-lg-md': '3rem',
 }
 
@@ -164,6 +164,58 @@ const sizingTokens: TokenSet = {
   'focus-ring-inner-width': '2px',
   'focus-ring-outer-width': '4px',
   'focus-ring-active-width': '1px',
+}
+
+const typographyTokens: TokenSet = {
+  // Fluid size scale
+  'type-size-xs': 'clamp(0.75rem,0.68rem+0.22vw,0.875rem)',
+  'type-size-sm': 'clamp(0.875rem,0.8rem+0.3vw,1rem)',
+  'type-size-md': 'clamp(1rem,0.92rem+0.38vw,1.125rem)',
+  'type-size-lg': 'clamp(1.125rem,1rem+0.52vw,1.375rem)',
+  'type-size-xl': 'clamp(1.375rem,1.12rem+1.1vw,2rem)',
+  'type-size-2xl': 'clamp(1.75rem,1.35rem+1.9vw,3rem)',
+  'type-size-3xl': 'clamp(2.25rem,1.65rem+3vw,4.75rem)',
+  'type-size-4xl': 'clamp(2.6rem,1.85rem+4.1vw,6.2rem)',
+
+  // Leading scale
+  'type-leading-xs': '1.35',
+  'type-leading-sm': '1.45',
+  'type-leading-md': '1.55',
+  'type-leading-lg': '1.35',
+  'type-leading-xl': '1.12',
+  'type-leading-2xl': '1.02',
+  'type-leading-3xl': '0.95',
+  'type-leading-4xl': '0.92',
+
+  // Display tracking curve
+  'type-track-display-xs': '0.042em',
+  'type-track-display-sm': '0.046em',
+  'type-track-display-md': '0.05em',
+  'type-track-display-lg': '0.049em',
+  'type-track-display-xl': '0.048em',
+  'type-track-display-2xl': '0.046em',
+  'type-track-display-3xl': '0.044em',
+  'type-track-display-4xl': '0.042em',
+  'type-track-display-xs-md': '0.044em',
+  'type-track-display-sm-md': '0.048em',
+  'type-track-display-md-md': '0.052em',
+  'type-track-display-lg-md': '0.051em',
+  'type-track-display-xl-md': '0.05em',
+  'type-track-display-2xl-md': '0.048em',
+  'type-track-display-3xl-md': '0.046em',
+  'type-track-display-4xl-md': '0.044em',
+
+  // Role tracking
+  'type-track-meta': '0.16em',
+
+  // Family tokens
+  'type-family-display-hero': '\'DrukBoldTrial\', sans-serif',
+  'type-family-display-compact': '\'DrukTextBoldTrial\', sans-serif',
+  'type-family-headline': '\'ClashDisplay-Regular\', sans-serif',
+  'type-family-body': '\'Manrope\', sans-serif',
+  'type-family-meta': '\'Space Grotesk\', sans-serif',
+  'type-family-quote': '\'Libre Baskerville\', serif',
+  'type-family-signal': '\'Zalando Sans Expanded\', sans-serif',
 }
 
 export const toxicScale: Scale = {
@@ -238,6 +290,7 @@ export function colorTokensPreflightCss() {
   appendTokens(spacingTokens)
   appendTokens(layoutTokens)
   appendTokens(sizingTokens)
+  appendTokens(typographyTokens)
 
   const sortedEntries = Object.entries(toxicScale)
     .sort(([left], [right]) => Number(left) - Number(right))
