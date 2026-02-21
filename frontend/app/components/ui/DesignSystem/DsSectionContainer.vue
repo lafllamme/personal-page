@@ -1,74 +1,53 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
-import DsContainer from '@/components/ui/DesignSystem/DsContainer.vue'
+import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
+import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
 import { useClsx } from '@/composables/useClsx'
 
 const props = withDefaults(defineProps<{
   as?: 'section' | 'header' | 'div'
   spacing?: 'sm' | 'md' | 'lg' | 'xl'
   fullViewport?: boolean
-  centerContent?: boolean
   bordered?: boolean
+  mode?: 'contained' | 'fluid' | 'bleed'
+  /** @deprecated use mode */
   contained?: boolean
-  max?: '7xl' | 'full'
-  gutter?: 'none' | 'md' | 'lg'
+  max?: '5xl' | '6xl' | '7xl' | 'full'
+  gutter?: 'none' | 'sm' | 'md' | 'lg'
+  /** @deprecated use mode */
+  bleed?: boolean
   layout?: 'grid' | 'flex' | 'block'
   gap?: 'none' | 'sm' | 'md' | 'lg'
+  debug?: boolean
 }>(), {
   as: 'section',
   spacing: 'lg',
-  fullViewport: true,
-  centerContent: false,
+  fullViewport: false,
   bordered: true,
-  contained: true,
+  mode: undefined,
+  contained: undefined,
   max: '7xl',
   gutter: 'md',
+  bleed: undefined,
   layout: 'grid',
   gap: 'md',
+  debug: false,
 })
 
 const {
   as,
   spacing,
   fullViewport,
-  centerContent,
   bordered,
+  mode,
   contained,
   max,
   gutter,
+  bleed,
   layout,
   gap,
+  debug,
 } = toRefs(props)
-
-const spacingClasses = {
-  sm: {
-    flow: 'my-8 md:my-10',
-    stage: 'py-8 md:py-10',
-  },
-  md: {
-    flow: 'my-10 md:my-14',
-    stage: 'py-10 md:py-14',
-  },
-  lg: {
-    flow: 'my-12 md:my-16',
-    stage: 'py-12 md:py-16',
-  },
-  xl: {
-    flow: 'my-16 md:my-20',
-    stage: 'py-16 md:py-20',
-  },
-} as const
-
-const maxClasses = {
-  '7xl': 'max-w-7xl',
-  'full': 'max-w-full',
-} as const
-
-const gutterClasses = {
-  none: '',
-  md: 'px-4 md:px-12',
-  lg: 'px-5 sm:px-8 md:px-12',
-} as const
 
 const gapClasses = {
   none: '',
@@ -77,52 +56,48 @@ const gapClasses = {
   lg: 'gap-8 md:gap-10',
 } as const
 
-const spacingClass = computed(() => {
-  const mode = fullViewport.value ? 'stage' : 'flow'
-  return spacingClasses[spacing.value][mode]
-})
-const maxClass = computed(() => maxClasses[max.value])
-const gutterClass = computed(() => gutterClasses[gutter.value])
-const gapClass = computed(() => gapClasses[gap.value])
-
-const rootClass = computed(() => useClsx(
-  'w-full flow-root',
-  bordered.value && 'border-b border-pureBlack/14 border-solid dark:border-pureWhite/14',
-  fullViewport.value && 'min-h-[100dvh] grid',
-  fullViewport.value && (centerContent.value ? 'content-center' : 'content-start'),
-))
-
-const laneClass = computed(() => spacingClass.value)
-
-const containerClass = computed(() => useClsx(
-  contained.value && 'mx-auto',
-  contained.value && maxClass.value,
-  contained.value && gutterClass.value,
-))
-
 const contentClass = computed(() => {
-  if (layout.value === 'flex')
-    return useClsx('flex flex-col', gapClass.value)
-  if (layout.value === 'block')
-    return useClsx('block', gapClass.value && 'space-y-6 md:space-y-7')
-  return useClsx('grid', gapClass.value)
+  const base = layout.value === 'flex'
+    ? useClsx('flex flex-col', gapClasses[gap.value])
+    : layout.value === 'block'
+      ? useClsx('block', gap.value !== 'none' && 'space-y-6 md:space-y-7')
+      : useClsx('grid', gapClasses[gap.value])
+
+  return useClsx(
+    base,
+    debug.value && 'bg-[#10b981]/8 dark:bg-[#10b981]/12 outline outline-1 outline-[#10b981]/80 dark:outline-[#34d399]/80',
+  )
+})
+
+const resolvedMode = computed<'contained' | 'fluid' | 'bleed'>(() => {
+  if (mode.value)
+    return mode.value
+  if (bleed.value === true)
+    return 'bleed'
+  if (contained.value === false)
+    return 'fluid'
+  return 'contained'
 })
 </script>
 
 <template>
-  <component
-    :is="as"
-    :class="rootClass"
+  <!-- Legacy wrapper. Prefer composing DsSectionShell + DsSectionBody directly. -->
+  <DsSectionShell
+    :as="as"
+    :spacing="spacing"
+    :screen="fullViewport"
+    :bordered="bordered"
+    :debug="debug"
   >
-    <div :class="laneClass">
-      <DsContainer
-        as="div"
-        :class="containerClass"
-      >
-        <div :class="contentClass">
-          <slot />
-        </div>
-      </DsContainer>
-    </div>
-  </component>
+    <DsSectionBody
+      :mode="resolvedMode"
+      :max="max"
+      :gutter="gutter"
+      :debug="debug"
+    >
+      <div :class="contentClass">
+        <slot />
+      </div>
+    </DsSectionBody>
+  </DsSectionShell>
 </template>

@@ -3,20 +3,23 @@ import { computed, toRefs } from 'vue'
 
 type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'quaternary'
 type ButtonVariant = 'default' | 'accent'
+type ButtonSize = 'sm' | 'md' | 'lg'
 type LegacyVariant = ButtonType | 'quartery'
 type ComboKey = `${ButtonVariant}-${ButtonType}`
 
 const props = withDefaults(defineProps<{
   type?: ButtonType
   variant?: ButtonVariant | LegacyVariant
+  size?: ButtonSize
   disabled?: boolean
 }>(), {
   type: 'primary',
   variant: 'default',
+  size: 'md',
   disabled: false,
 })
 
-const { type, variant, disabled } = toRefs(props)
+const { type, variant, size, disabled } = toRefs(props)
 const LEGACY_VARIANT_TYPES: LegacyVariant[] = ['primary', 'secondary', 'tertiary', 'quaternary', 'quartery']
 
 const isLegacyTypeVariant = computed(() => LEGACY_VARIANT_TYPES.includes(variant.value as LegacyVariant))
@@ -57,6 +60,12 @@ const comboKey = computed<ComboKey>(() => `${normalizedVariant.value}-${normaliz
 const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
 const isGhostType = computed(() => normalizedType.value === 'tertiary')
 const ghostButtonClass = 'is-ghost-button is-ghost-morph is-ghost-morph-clip ui-ghost-button ui-ghost-morph-clip'
+const sizeClassMap: Record<ButtonSize, string> = {
+  sm: 'ui-button-sm',
+  md: 'ui-button-md',
+  lg: 'ui-button-lg',
+}
+const sizeClass = computed(() => sizeClassMap[size.value])
 </script>
 
 <template>
@@ -64,7 +73,7 @@ const ghostButtonClass = 'is-ghost-button is-ghost-morph is-ghost-morph-clip ui-
     type="button"
     :disabled="disabled"
     class="space-grotesk-regular ui-button-base"
-    :class="[variantTypeClass, isGhostType ? ghostButtonClass : '']"
+    :class="[sizeClass, variantTypeClass, isGhostType ? ghostButtonClass : '']"
   >
     <span
       class="ui-button-label"
