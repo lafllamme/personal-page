@@ -3,7 +3,19 @@ import type { UserShortcuts } from 'unocss'
 export const buttonShortcuts: UserShortcuts = [
   [
     'ui-button-base',
-    'group relative inline-flex w-auto items-center justify-center whitespace-nowrap rounded-full px-4 py-2 text-[11px] tracking-[0.16em] uppercase border border-solid border-transparent [text-decoration:none] transition-[background-color,color,border-color,box-shadow,transform] duration-[160ms] ease-out disabled:cursor-not-allowed focus-visible:outline-none',
+    'group relative inline-flex w-auto items-center justify-center whitespace-nowrap [border-radius:var(--radius-pill)] px-4 py-2 text-[11px] tracking-[0.16em] uppercase [border-width:var(--control-border-width)] border-solid border-transparent [text-decoration:none] transition-[background-color,color,border-color,box-shadow,transform] duration-[160ms] ease-out disabled:cursor-not-allowed focus-visible:outline-none',
+  ],
+  [
+    'ui-button-sm',
+    'px-3 py-1.5 text-[10px] tracking-[0.14em]',
+  ],
+  [
+    'ui-button-md',
+    'px-4 py-2 text-[11px] tracking-[0.16em]',
+  ],
+  [
+    'ui-button-lg',
+    'px-5 py-2.5 text-[12px] tracking-[0.18em]',
   ],
   [
     'ui-button-label',

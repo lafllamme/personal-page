@@ -103,6 +103,69 @@ const motionTokens: TokenSet = {
   'motion-underline-thickness': '0.125em',
 }
 
+const spacingTokens: TokenSet = {
+  'space-1': '0.25rem',
+  'space-2': '0.5rem',
+  'space-3': '0.75rem',
+  'space-4': '1rem',
+  'space-5': '1.25rem',
+  'space-6': '1.5rem',
+  'space-8': '2rem',
+  'space-10': '2.5rem',
+  'space-12': '3rem',
+  'space-14': '3.5rem',
+  'space-16': '4rem',
+  'space-20': '5rem',
+}
+
+const layoutTokens: TokenSet = {
+  // Section shell rhythm
+  'layout-shell-y-sm-base': 'var(--space-8)',
+  'layout-shell-y-sm-md': 'var(--space-10)',
+  'layout-shell-y-md-base': 'var(--space-10)',
+  'layout-shell-y-md-md': 'var(--space-14)',
+  'layout-shell-y-lg-base': 'var(--space-12)',
+  'layout-shell-y-lg-md': 'var(--space-16)',
+  'layout-shell-y-xl-base': 'var(--space-16)',
+  'layout-shell-y-xl-md': 'var(--space-20)',
+
+  // Section body max widths
+  'layout-body-max-5xl': '64rem',
+  'layout-body-max-6xl': '72rem',
+  'layout-body-max-7xl': '80rem',
+  'layout-body-max-full': '100%',
+
+  // Section body horizontal gutter
+  'layout-body-gutter-0': '0',
+  'layout-body-gutter-sm-base': '1rem',
+  'layout-body-gutter-sm-sm': '1.25rem',
+  'layout-body-gutter-md-base': '1rem',
+  'layout-body-gutter-md-md': '3rem',
+  'layout-body-gutter-lg-base': '1.25rem',
+  'layout-body-gutter-lg-sm': '2rem',
+  'layout-body-gutter-lg-md': '3rem',
+}
+
+const sizingTokens: TokenSet = {
+  'button-px-sm': '0.75rem',
+  'button-px-md': '1rem',
+  'button-px-lg': '1.25rem',
+  'button-py-sm': '0.375rem',
+  'button-py-md': '0.5rem',
+  'button-py-lg': '0.625rem',
+  'button-font-size-sm': '10px',
+  'button-font-size-md': '11px',
+  'button-font-size-lg': '12px',
+  'button-tracking-sm': '0.14em',
+  'button-tracking-md': '0.16em',
+  'button-tracking-lg': '0.18em',
+  'radius-pill': '9999px',
+  'control-border-width': '1px',
+  'focus-ring-inner-width': '2px',
+  'focus-ring-outer-width': '4px',
+  'focus-ring-active-width': '1px',
+}
+
 export const toxicScale: Scale = {
   1: { light: '#fafefd', dark: '#0d1514' },
   2: { light: '#f3fbf9', dark: '#111c1b' },
@@ -172,6 +235,9 @@ export function colorTokensPreflightCss() {
   appendTokens(borderTokens)
   appendTokens(ringTokens)
   appendTokens(motionTokens)
+  appendTokens(spacingTokens)
+  appendTokens(layoutTokens)
+  appendTokens(sizingTokens)
 
   const sortedEntries = Object.entries(toxicScale)
     .sort(([left], [right]) => Number(left) - Number(right))
