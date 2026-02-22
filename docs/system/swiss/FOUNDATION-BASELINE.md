@@ -23,22 +23,50 @@ Status: SOURCE OF TRUTH (lesbarer Baseline-Contract)
 ## Typografie-Scale (Foundation)
 
 Diese Scale ist die gemeinsame Referenz fuer Komponenten (inkl. Buttons, Inputs, Labels).
-Hinweis: Werte sind mit `TYPOGRAPHY-SCALING-PLAN.md` harmonisiert (Option 2).
+Hinweis: Werte sind mit `TYPOGRAPHY-SCALING-PLAN.md` harmonisiert und im Runtime-Pfad live.
 
-| Token | Zielrolle | Size | Line-height | Tracking | Notiz |
-|---|---|---|---|---|---|
-| `type-display-xl-*` | Display | `clamp(2.4rem,6.2vw,5rem)` | `0.95` | `normal` | Hero / Key visual |
-| `type-display-lg-*` | Display | `clamp(1.8rem,4.2vw,3.2rem)` | `1.02` | `normal` | Section hero |
-| `type-headline-lg-*` | Headline | `clamp(1.4rem,2.4vw,2rem)` | `1.12` | `normal` | Primaere Headline |
-| `type-headline-md-*` | Headline | `clamp(1.1rem,1.4vw,1.35rem)` | `1.25` | `normal` | Sekundaere Headline |
-| `type-headline-sm-*` | Headline | `1rem` | `1.35` | `normal` | Kleine Headline |
-| `type-body-lg-*` | Body | `1rem` | `1.55` | `normal` | Leseorientiert |
-| `type-body-md-*` | Body | `0.875rem` | `1.55` | `normal` | Standard body |
-| `type-body-sm-*` | Body | `0.75rem` | `1.45` | `normal` | Dense content |
-| `type-meta-sm-*` | Meta/UI | `11px` | `1.35` | `0.16em` | Labels / UI meta |
-| `type-meta-xs-*` | Meta/UI | `10px` | `1.35` | `0.14em` | Micro labels |
-| `type-signal-sm-*` | Signal | `0.75rem` | `1.35` | `0.16em` | IDs / pulse |
-| `type-quote-md-*` | Quote | `1.15rem` | `1.35` | `normal` | Editorial contrast |
+| Size Token | Font-size | Leading Token |
+|---|---|---|
+| `type-size-xs` | `clamp(0.75rem, calc(0.68rem + 0.22vw), 0.875rem)` | `type-leading-xs` (`1.35`) |
+| `type-size-sm` | `clamp(0.875rem, calc(0.8rem + 0.3vw), 1rem)` | `type-leading-sm` (`1.45`) |
+| `type-size-md` | `clamp(1rem, calc(0.92rem + 0.38vw), 1.125rem)` | `type-leading-md` (`1.55`) |
+| `type-size-lg` | `clamp(1.125rem, calc(1rem + 0.52vw), 1.375rem)` | `type-leading-lg` (`1.35`) |
+| `type-size-xl` | `clamp(1.375rem, calc(1.12rem + 1.1vw), 2rem)` | `type-leading-xl` (`1.12`) |
+| `type-size-2xl` | `clamp(1.75rem, calc(1.35rem + 1.9vw), 3rem)` | `type-leading-2xl` (`1.02`) |
+| `type-size-3xl` | `clamp(2.25rem, calc(1.65rem + 3vw), 4.75rem)` | `type-leading-3xl` (`0.95`) |
+| `type-size-4xl` | `clamp(2.6rem, calc(1.85rem + 4.1vw), 6.2rem)` | `type-leading-4xl` (`0.92`) |
+
+### Rollen-Mapping (Runtime)
+- Display: `type-display-*` + Druk split (`font-display-compact` fuer `xs/sm`, `font-display-hero` ab `md`) + kuratiertes Display-Tracking
+- Headline: `type-headline-*` + `font-headline`
+- Body: `type-body-*` + `font-body`
+- Meta: `type-meta-*` + `font-meta` + `type-track-meta`
+- Quote: `type-quote-*` + `font-quote`
+- Signal: `type-signal-*` + `font-signal`
+
+### Weight / Italic Defaults (DsTypography)
+- Weight Defaults:
+  - Display: `medium` (`font-medium`)
+  - Headline / Quote: `regular` (`font-normal`)
+  - Body: `light` (`font-light`)
+  - Meta: `medium` (`font-medium`)
+  - Signal: `semibold` (`font-semibold`)
+- Italic Default:
+  - Quote: `italic = true`
+  - Alle anderen Rollen: `italic = false`
+- Override per Komponente:
+  - `weight="auto|thin|extralight|light|regular|medium|semibold|bold|extrabold|black|100..900"`
+  - `:italic="true|false"`
+
+### Gewichtungs-Support pro Rolle (Runtime Guardrail)
+- Display: `500|700|800|900`
+- Headline: `200|300|400|500|700`
+- Body: `200|300|400|500|600|700|800`
+- Meta: `300|400|500|600|700`
+- Quote: `400|700`
+- Signal: `200|300|400|500|600|700|800|900`
+
+Hinweis: Nicht unterstuetzte Weight-Overrides werden auf den naechsten verfuegbaren Schnitt der Rolle gemappt.
 
 ### Control-Mapping (verbindlich)
 - Button `sm` -> `type-meta-xs-*`

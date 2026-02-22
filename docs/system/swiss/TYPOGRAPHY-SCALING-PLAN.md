@@ -1,7 +1,7 @@
 # Typography Scaling Plan
 
 Stand: 2026-02-21  
-Status: READY FOR TOKENIZATION (nach finalem Review)
+Status: IMPLEMENTED (Runtime + Tokens live)
 
 ## Ziel
 - Voll fluide Typografie (`xs` bis `4xl`) ohne globales `body`-Scaling.
@@ -14,10 +14,13 @@ Status: READY FOR TOKENIZATION (nach finalem Review)
 
 ---
 
-## 1) Aktueller Runtime-Stand (DsTypography)
+## 1) Aktueller Runtime-Stand
 
-Datei:
+Dateien:
 - [/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsTypography.vue](/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsTypography.vue)
+- [/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.typography.ts](/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.typography.ts)
+- [/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/palette.ts](/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/palette.ts)
+- [/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/theme.ts](/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/theme.ts)
 
 ### 1.1 Size Scale (fluid, global)
 
@@ -56,6 +59,32 @@ Designregel:
 | `3xl` | `0.044em / 0.046em` |
 | `4xl` | `0.042em / 0.044em` |
 
+### 1.4 Weight + Italic Defaults (DsTypography)
+
+- Role-Default Weight:
+  - `display` -> `medium`
+  - `headline`, `quote` -> `regular`
+  - `meta` -> `medium`
+  - `signal` -> `semibold`
+  - `body` -> `light`
+- Italic Default:
+  - `quote` -> `true`
+  - alle anderen Rollen -> `false`
+- Runtime Overrides:
+  - `weight="auto|thin|extralight|light|regular|medium|semibold|bold|extrabold|black|100..900"`
+  - `:italic="true|false"`
+
+- Role Weight Support (guarded):
+  - `display` -> `500|700|800|900`
+  - `headline` -> `200|300|400|500|700`
+  - `body` -> `200|300|400|500|600|700|800`
+  - `meta` -> `300|400|500|600|700`
+  - `quote` -> `400|700`
+  - `signal` -> `200|300|400|500|600|700|800|900`
+
+Hinweis:
+- Nicht verfuegbare Weights fallen nicht hart auf den Rollen-Default zurueck, sondern auf den naechsten verfuegbaren Schnitt der Rolle (z. B. `display: 600 -> 500`).
+
 ---
 
 ## 2) Naming (final fuer Token Layer)
@@ -71,41 +100,42 @@ Designregel:
 - Display tracking:
   - `type-track-display-xs` ... `type-track-display-4xl`
   - optional breakpoint tokens: `type-track-display-xs-md` ... `type-track-display-4xl-md`
-- Families:
-  - `type-family-display-hero` -> `font-druk-bold`
-  - `type-family-display-compact` -> `font-druk-text-bold`
-  - `type-family-headline` -> `font-clash-regular`
-  - `type-family-body` -> `font-manrope`
-  - `type-family-meta` -> `space-grotesk-regular`
-  - `type-family-quote` -> `font-baskerville`
-  - `type-family-signal` -> `zalando-sans-expanded`
+- Families (Uno Theme):
+  - `font-display-hero` -> `DrukBoldTrial`
+  - `font-display-compact` -> `DrukTextBoldTrial`
+  - `font-headline` -> `ClashDisplay-Regular`
+  - `font-body` -> `Manrope`
+  - `font-meta` -> `Space Grotesk`
+  - `font-quote` -> `Libre Baskerville`
+  - `font-signal` -> `Zalando Sans Expanded`
 
-### 2.2 Semantic Shortcuts (ui-type)
+### 2.2 Semantic Shortcuts (Runtime)
 
-- `ui-type-display-xs` ... `ui-type-display-4xl`
-- `ui-type-headline-xs` ... `ui-type-headline-4xl`
-- `ui-type-body-xs` ... `ui-type-body-4xl`
-- `ui-type-meta-xs` ... `ui-type-meta-4xl`
-- `ui-type-quote-xs` ... `ui-type-quote-4xl`
-- `ui-type-signal-xs` ... `ui-type-signal-4xl`
+- `type-display-xs` ... `type-display-4xl`
+- `type-headline-xs` ... `type-headline-4xl`
+- `type-body-xs` ... `type-body-4xl`
+- `type-meta-xs` ... `type-meta-4xl`
+- `type-quote-xs` ... `type-quote-4xl`
+- `type-signal-xs` ... `type-signal-4xl`
 
 ---
 
-## 3) Geplante Umsetzung (nach Freigabe)
+## 3) Umsetzung (abgeschlossen)
 
 1. `palette.ts`
-- `typographyTokens` als Foundation Tokens ergänzen.
+- `typographyTokens` als Foundation Tokens aktiv.
+- `fontFamily` Mapping für Uno Theme aktiv (`typographyTheme.fontFamily`).
 
 2. `shortcuts.typography.ts`
-- alle `ui-type-*` anlegen.
-- Display-Family-Split + Display-Tracking im Shortcut lösen.
+- `type-*` Rollen aktiv.
+- Display-Family-Split + Display-Tracking im Shortcut aktiv.
 
 3. `shortcuts.ts`
-- `shortcuts.typography.ts` registrieren.
+- `shortcuts.typography.ts` registriert.
 
 4. `DsTypography.vue`
-- harte Klassen entfernen.
-- Mapping auf `ui-type-${role}-${size}` umstellen.
+- harte Klassen entfernt.
+- Mapping auf `type-${role}-${size}` aktiv.
 
 5. QA
 - `design-system-debug.vue`
@@ -119,6 +149,7 @@ Designregel:
 - Display-Family-Split bleibt aktiv.
 - Display-Tracking bleibt kuratiert (kein High-Size-Aufspreizen).
 - Alle Typo-Varianten (`xs` bis `4xl`) in Debug und Storybook sichtbar.
+- Keine Legacy-Namensreste (`ui-type-*`) im Runtime-Pfad.
 
 ## Referenzen
 - [/Users/flame/Developer/Projects/personal-page/docs/system/swiss/FOUNDATION-BASELINE.md](/Users/flame/Developer/Projects/personal-page/docs/system/swiss/FOUNDATION-BASELINE.md)
