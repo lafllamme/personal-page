@@ -72,7 +72,7 @@ const sizeClass = computed(() => sizeClassMap[size.value])
   <button
     type="button"
     :disabled="disabled"
-    class="space-grotesk-regular ui-button-base"
+    class="group space-grotesk-regular ui-button-base"
     :class="[sizeClass, variantTypeClass, isGhostType ? ghostButtonClass : '']"
   >
     <span

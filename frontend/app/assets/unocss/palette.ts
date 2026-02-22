@@ -168,14 +168,14 @@ const sizingTokens: TokenSet = {
 
 const typographyTokens: TokenSet = {
   // Fluid size scale
-  'type-size-xs': 'clamp(0.75rem,0.68rem+0.22vw,0.875rem)',
-  'type-size-sm': 'clamp(0.875rem,0.8rem+0.3vw,1rem)',
-  'type-size-md': 'clamp(1rem,0.92rem+0.38vw,1.125rem)',
-  'type-size-lg': 'clamp(1.125rem,1rem+0.52vw,1.375rem)',
-  'type-size-xl': 'clamp(1.375rem,1.12rem+1.1vw,2rem)',
-  'type-size-2xl': 'clamp(1.75rem,1.35rem+1.9vw,3rem)',
-  'type-size-3xl': 'clamp(2.25rem,1.65rem+3vw,4.75rem)',
-  'type-size-4xl': 'clamp(2.6rem,1.85rem+4.1vw,6.2rem)',
+  'type-size-xs': 'clamp(0.75rem, calc(0.68rem + 0.22vw), 0.875rem)',
+  'type-size-sm': 'clamp(0.875rem, calc(0.8rem + 0.3vw), 1rem)',
+  'type-size-md': 'clamp(1rem, calc(0.92rem + 0.38vw), 1.125rem)',
+  'type-size-lg': 'clamp(1.125rem, calc(1rem + 0.52vw), 1.375rem)',
+  'type-size-xl': 'clamp(1.375rem, calc(1.12rem + 1.1vw), 2rem)',
+  'type-size-2xl': 'clamp(1.75rem, calc(1.35rem + 1.9vw), 3rem)',
+  'type-size-3xl': 'clamp(2.25rem, calc(1.65rem + 3vw), 4.75rem)',
+  'type-size-4xl': 'clamp(2.6rem, calc(1.85rem + 4.1vw), 6.2rem)',
 
   // Leading scale
   'type-leading-xs': '1.35',
