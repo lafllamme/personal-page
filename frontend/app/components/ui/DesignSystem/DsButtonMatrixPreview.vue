@@ -1,6 +1,22 @@
 <script setup lang="ts">
 import DsButton from './DsButton.vue'
 
+type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonTracking = 'default' | 'relaxed'
+type ButtonWeight = 'default' | 'strong'
+
+const props = withDefaults(defineProps<{
+  size?: ButtonSize
+  tracking?: ButtonTracking
+  weight?: ButtonWeight
+  disabled?: boolean
+}>(), {
+  size: 'md',
+  tracking: 'relaxed',
+  weight: 'default',
+  disabled: false,
+})
+
 const variants = [
   { key: 'default', label: 'Variant Default' },
   { key: 'accent', label: 'Variant Accent' },
@@ -39,9 +55,9 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
   },
   'default-secondary': {
-    'hover': 'bg-sand-10 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)]',
-    'active': 'bg-sand-11 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)]',
-    'focus-visible': 'bg-sand-10 color-pureWhite [box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
+    'hover': 'before:scale-[var(--motion-secondary-radial-scale-hover)] color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)]',
+    'active': 'before:scale-[var(--motion-secondary-radial-scale-active)] before:bg-sand-11 dark:before:bg-sand-9 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] dark:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)]',
+    'focus-visible': 'before:scale-[var(--motion-secondary-radial-scale-hover)] color-pureWhite [box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
   },
   'default-tertiary': {
     'hover': 'is-ghost-morph-on',
@@ -59,9 +75,9 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
   },
   'accent-secondary': {
-    'hover': 'bg-$bg-accent-outline-fill color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
-    'active': 'bg-$bg-accent-outline-fill color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
-    'focus-visible': 'bg-$bg-accent-outline-fill color-$color-primary [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)]',
+    'hover': 'before:scale-[var(--motion-secondary-radial-scale-hover)] color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
+    'active': 'before:scale-[var(--motion-secondary-radial-scale-active)] color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
+    'focus-visible': 'before:scale-[var(--motion-secondary-radial-scale-hover)] color-$color-primary [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)]',
   },
   'accent-tertiary': {
     'hover': 'is-ghost-morph-on',
@@ -119,8 +135,11 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   class="justify-self-start"
                   :type="type.key"
                   :variant="variant.key"
+                  :size="props.size"
+                  :tracking="props.tracking"
+                  :weight="props.weight"
                   :class="getForcedStateClass(variant.key, type.key, state.key)"
-                  :disabled="state.key === 'disabled'"
+                  :disabled="props.disabled || state.key === 'disabled'"
                 >
                   Click Me
                 </DsButton>
@@ -169,6 +188,10 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="primary"
                   :variant="row.key"
+                  :size="props.size"
+                  :tracking="props.tracking"
+                  :weight="props.weight"
+                  :disabled="props.disabled"
                 >
                   Primary
                 </DsButton>
@@ -177,6 +200,10 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="secondary"
                   :variant="row.key"
+                  :size="props.size"
+                  :tracking="props.tracking"
+                  :weight="props.weight"
+                  :disabled="props.disabled"
                 >
                   Secondary
                 </DsButton>
@@ -185,6 +212,10 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="tertiary"
                   :variant="row.key"
+                  :size="props.size"
+                  :tracking="props.tracking"
+                  :weight="props.weight"
+                  :disabled="props.disabled"
                 >
                   Tertiary
                 </DsButton>
@@ -193,6 +224,10 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="quaternary"
                   :variant="row.key"
+                  :size="props.size"
+                  :tracking="props.tracking"
+                  :weight="props.weight"
+                  :disabled="props.disabled"
                 >
                   Quaternary
                 </DsButton>
@@ -233,6 +268,10 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   :type="type.key"
                   variant="default"
+                  :size="props.size"
+                  :tracking="props.tracking"
+                  :weight="props.weight"
+                  :disabled="props.disabled"
                 >
                   {{ type.label }}
                 </DsButton>
@@ -241,6 +280,10 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   :type="type.key"
                   variant="default"
+                  :size="props.size"
+                  :tracking="props.tracking"
+                  :weight="props.weight"
+                  :disabled="props.disabled"
                   :class="getForcedStateClass('default', type.key, 'focus-visible')"
                 >
                   {{ type.label }}
@@ -289,6 +332,10 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   <DsButton
                     :type="type.key"
                     :variant="row.key"
+                    :size="props.size"
+                    :tracking="props.tracking"
+                    :weight="props.weight"
+                    :disabled="props.disabled"
                     :class="getForcedStateClass(row.key, type.key, 'focus-visible')"
                   >
                     {{ type.label }}

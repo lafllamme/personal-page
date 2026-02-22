@@ -104,23 +104,26 @@ export const AccentQuaternary: Story = {
 
 export const Variants: Story = {
   name: 'All Variants (Grid)',
-  render: () => ({
+  render: args => ({
     components: { DsButton },
+    setup() {
+      return { args }
+    },
     template: `
       <div class="grid gap-4">
         <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">default</div>
         <div class="flex flex-wrap items-center gap-3">
-          <DsButton type="primary" variant="default">Click Me</DsButton>
-          <DsButton type="secondary" variant="default">Click Me</DsButton>
-          <DsButton type="tertiary" variant="default">Click Me</DsButton>
-          <DsButton type="quaternary" variant="default">Click Me</DsButton>
+          <DsButton type="primary" variant="default" :size="args.size" :tracking="args.tracking" :weight="args.weight" :disabled="args.disabled">Click Me</DsButton>
+          <DsButton type="secondary" variant="default" :size="args.size" :tracking="args.tracking" :weight="args.weight" :disabled="args.disabled">Click Me</DsButton>
+          <DsButton type="tertiary" variant="default" :size="args.size" :tracking="args.tracking" :weight="args.weight" :disabled="args.disabled">Click Me</DsButton>
+          <DsButton type="quaternary" variant="default" :size="args.size" :tracking="args.tracking" :weight="args.weight" :disabled="args.disabled">Click Me</DsButton>
         </div>
         <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">accent</div>
         <div class="flex flex-wrap items-center gap-3">
-          <DsButton type="primary" variant="accent">Click Me</DsButton>
-          <DsButton type="secondary" variant="accent">Click Me</DsButton>
-          <DsButton type="tertiary" variant="accent">Click Me</DsButton>
-          <DsButton type="quaternary" variant="accent">Click Me</DsButton>
+          <DsButton type="primary" variant="accent" :size="args.size" :tracking="args.tracking" :weight="args.weight" :disabled="args.disabled">Click Me</DsButton>
+          <DsButton type="secondary" variant="accent" :size="args.size" :tracking="args.tracking" :weight="args.weight" :disabled="args.disabled">Click Me</DsButton>
+          <DsButton type="tertiary" variant="accent" :size="args.size" :tracking="args.tracking" :weight="args.weight" :disabled="args.disabled">Click Me</DsButton>
+          <DsButton type="quaternary" variant="accent" :size="args.size" :tracking="args.tracking" :weight="args.weight" :disabled="args.disabled">Click Me</DsButton>
         </div>
       </div>
     `,
@@ -131,9 +134,18 @@ export const Variants: Story = {
 }
 
 export const States: Story = {
-  render: () => ({
+  render: args => ({
+    components: { DsButtonMatrixPreview },
+    setup() {
+      return { args }
+    },
     render() {
-      return h(DsButtonMatrixPreview)
+      return h(DsButtonMatrixPreview, {
+        size: args.size,
+        tracking: args.tracking,
+        weight: args.weight,
+        disabled: args.disabled,
+      })
     },
   }),
   parameters: {
@@ -143,9 +155,18 @@ export const States: Story = {
 
 export const SizingAndSpacing: Story = {
   name: 'Sizing + Spacing',
-  render: () => ({
+  render: args => ({
+    components: { DsSpacingSizingPreview },
+    setup() {
+      return { args }
+    },
     render() {
-      return h(DsSpacingSizingPreview)
+      return h(DsSpacingSizingPreview, {
+        size: args.size,
+        tracking: args.tracking,
+        weight: args.weight,
+        disabled: args.disabled,
+      })
     },
   }),
   parameters: {

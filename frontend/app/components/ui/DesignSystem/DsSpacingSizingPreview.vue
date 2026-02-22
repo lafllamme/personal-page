@@ -1,6 +1,22 @@
 <script setup lang="ts">
 import DsButton from './DsButton.vue'
 import DsCluster from './DsCluster.vue'
+
+type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonTracking = 'default' | 'relaxed'
+type ButtonWeight = 'default' | 'strong'
+
+const props = withDefaults(defineProps<{
+  size?: ButtonSize
+  tracking?: ButtonTracking
+  weight?: ButtonWeight
+  disabled?: boolean
+}>(), {
+  size: 'md',
+  tracking: 'relaxed',
+  weight: 'default',
+  disabled: false,
+})
 </script>
 
 <template>
@@ -20,23 +36,32 @@ import DsCluster from './DsCluster.vue'
         <DsButton
           variant="default"
           type="primary"
-          size="sm"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
-          Small
+          Primary
         </DsButton>
         <DsButton
           variant="default"
           type="primary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
-          Medium
+          Primary
         </DsButton>
         <DsButton
           variant="default"
           type="primary"
-          size="lg"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
-          Large
+          Primary
         </DsButton>
       </DsCluster>
     </section>
@@ -52,28 +77,40 @@ import DsCluster from './DsCluster.vue'
         <DsButton
           variant="default"
           type="primary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
           Primary
         </DsButton>
         <DsButton
           variant="default"
           type="secondary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
           Secondary
         </DsButton>
         <DsButton
           variant="default"
           type="tertiary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
           Tertiary
         </DsButton>
         <DsButton
           variant="default"
           type="quaternary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
           Quaternary
         </DsButton>
@@ -91,28 +128,40 @@ import DsCluster from './DsCluster.vue'
         <DsButton
           variant="accent"
           type="primary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
           Primary
         </DsButton>
         <DsButton
           variant="accent"
           type="secondary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
           Secondary
         </DsButton>
         <DsButton
           variant="accent"
           type="tertiary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
           Tertiary
         </DsButton>
         <DsButton
           variant="accent"
           type="quaternary"
-          size="md"
+          :size="props.size"
+          :tracking="props.tracking"
+          :weight="props.weight"
+          :disabled="props.disabled"
         >
           Quaternary
         </DsButton>
