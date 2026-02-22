@@ -172,6 +172,7 @@ Tracking-Status (aktuell):
 - Display: kuratierte Tracking-Kurve (`type-track-display-*` + `*-md`)
 - Headline: kein separates Tracking-Token (nur Family + Size/Leading)
 - Meta: size-basierte, negative Tracking-Kurve (`type-track-meta-*`, `xs=-0.012em` bis `4xl=-0.025em`)
+- Meta optional relaxed: `tracking="relaxed"` in `DsTypography` mapped auf `type-track-meta-*-relaxed` (`xs=0.06em` bis `4xl=0.12em`, aktuell nur wirksam fuer `role="meta"`)
 
 Weight-Status (aktuell):
 - Ohne `weight`-Prop greift der Rollen-Default aus `DsTypography`.

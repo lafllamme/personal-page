@@ -101,6 +101,17 @@ const motionTokens: TokenSet = {
   'motion-underline-ease': 'cubic-bezier(0.625, 0.05, 0, 1)',
   'motion-underline-offset': '-0.01em',
   'motion-underline-thickness': '0.125em',
+  'motion-secondary-radial-duration': '0.6s',
+  'motion-secondary-radial-ease': 'cubic-bezier(0.625, 0.05, 0, 1)',
+  'motion-secondary-radial-size-sm': '2.5rem',
+  'motion-secondary-radial-size-md': '3rem',
+  'motion-secondary-radial-size-lg': '3.5rem',
+  'motion-secondary-radial-scale-hover-sm': '4.8',
+  'motion-secondary-radial-scale-hover-md': '5',
+  'motion-secondary-radial-scale-hover-lg': '5.2',
+  'motion-secondary-radial-scale-active-sm': '5.2',
+  'motion-secondary-radial-scale-active-md': '5.4',
+  'motion-secondary-radial-scale-active-lg': '5.6',
 }
 
 const spacingTokens: TokenSet = {

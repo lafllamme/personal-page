@@ -84,6 +84,17 @@ Hinweis Runtime:
   - Weight-Mapping: `default -> medium`, `strong -> semibold`
   - Tracking-Mapping: `tracking="default|relaxed"` auf `type-track-meta-*` bzw. `type-track-meta-*-relaxed` (aktuell nur wirksam fuer `role="meta"`)
 
+### Secondary Motion Tokens (radial fill)
+- `motion-secondary-radial-duration`
+- `motion-secondary-radial-ease`
+- `motion-secondary-radial-size-sm|md|lg`
+- `motion-secondary-radial-scale-hover-sm|md|lg`
+- `motion-secondary-radial-scale-active-sm|md|lg`
+
+Hinweis:
+- Diese Tokens steuern den Secondary-Outline Hover/Active/Fokus-Fill (Default + Accent).
+- Size-spezifische Werte werden ueber `ui-button-sm|md|lg` gesetzt.
+
 ## Farb-Baseline
 - Basisflaechen: `pureBlack` / `pureWhite`
 - Accent-System: `Radix Teal 9/11`

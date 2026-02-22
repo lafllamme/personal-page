@@ -72,6 +72,23 @@ Designregel:
 | `3xl` | `-0.024em` |
 | `4xl` | `-0.025em` |
 
+### 1.4b Meta Tracking Relaxed (size-basiert, airier)
+
+Hinweis:
+- Diese Kurve ist nur fuer `role="meta"` gedacht.
+- Runtime-Schalter erfolgt ueber `tracking="relaxed"` in `DsTypography`.
+
+| Size | Tracking Relaxed |
+|---|---|
+| `xs` | `0.06em` |
+| `sm` | `0.068em` |
+| `md` | `0.076em` |
+| `lg` | `0.084em` |
+| `xl` | `0.092em` |
+| `2xl` | `0.1em` |
+| `3xl` | `0.11em` |
+| `4xl` | `0.12em` |
+
 ### 1.5 Weight + Italic Defaults (DsTypography)
 
 - Role-Default Weight:
@@ -120,6 +137,11 @@ Beispiel (Vue):
 <!-- 3) Numeric Override ist ebenfalls erlaubt -->
 <DsTypography as="p" role="meta" size="sm" weight="700" uppercase>
   Meta Label Strong
+</DsTypography>
+
+<!-- 4) Optional relaxtertes Tracking fuer Meta -->
+<DsTypography as="p" role="meta" size="sm" tracking="relaxed" uppercase>
+  Meta Label Airier
 </DsTypography>
 ```
 
