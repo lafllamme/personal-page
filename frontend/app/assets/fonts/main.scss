@@ -71,8 +71,48 @@
 }
 @font-face {
   font-family: 'ClashDisplay-Regular';
+  src: url('Headline/ClashDisplay-Extralight.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ClashDisplay-Regular';
+  src: url('Headline/ClashDisplay-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ClashDisplay-Regular';
   src: url('Headline/ClashDisplay-Regular.otf') format('opentype');
-  font-weight: normal;
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ClashDisplay-Regular';
+  src: url('Headline/ClashDisplay-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ClashDisplay-Regular';
+  src: url('Headline/ClashDisplay-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukBoldTrial';
+  src: url('Headline/Druk-Medium-Trial.otf') format('opentype');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
@@ -80,7 +120,31 @@
 @font-face {
   font-family: 'DrukBoldTrial';
   src: url('Headline/Druk-Bold-Trial.otf') format('opentype');
-  font-weight: normal;
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukBoldTrial';
+  src: url('Headline/Druk-Heavy-Trial.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukBoldTrial';
+  src: url('Headline/Druk-Super-Trial.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukTextBoldTrial';
+  src: url('Headline/DrukText-Medium-Trial.otf') format('opentype');
+  font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
@@ -88,8 +152,88 @@
 @font-face {
   font-family: 'DrukTextBoldTrial';
   src: url('Headline/DrukText-Bold-Trial.otf') format('opentype');
-  font-weight: normal;
+  font-weight: 700;
   font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukTextBoldTrial';
+  src: url('Headline/DrukText-Heavy-Trial.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukTextBoldTrial';
+  src: url('Headline/DrukText-Super-Trial.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukBoldTrial';
+  src: url('Headline/Druk-MediumItalic-Trial.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukBoldTrial';
+  src: url('Headline/Druk-BoldItalic-Trial.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukBoldTrial';
+  src: url('Headline/Druk-HeavyItalic-Trial.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukBoldTrial';
+  src: url('Headline/Druk-SuperItalic-Trial.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukTextBoldTrial';
+  src: url('Headline/DrukText-MediumItalic-Trial.otf') format('opentype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukTextBoldTrial';
+  src: url('Headline/DrukText-BoldItalic-Trial.otf') format('opentype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukTextBoldTrial';
+  src: url('Headline/DrukText-HeavyItalic-Trial.otf') format('opentype');
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'DrukTextBoldTrial';
+  src: url('Headline/DrukText-SuperItalic-Trial.otf') format('opentype');
+  font-weight: 900;
+  font-style: italic;
   font-display: swap;
 }
 
