@@ -173,6 +173,11 @@ Tracking-Status (aktuell):
 - Headline: kein separates Tracking-Token (nur Family + Size/Leading)
 - Meta: size-basierte, negative Tracking-Kurve (`type-track-meta-*`, `xs=-0.012em` bis `4xl=-0.025em`)
 
+Weight-Status (aktuell):
+- Ohne `weight`-Prop greift der Rollen-Default aus `DsTypography`.
+- `weight`-Overrides (`named` oder `100..900`) nur gezielt pro Use-Case setzen.
+- Nicht verfuegbare Gewichte mappen auf den naechsten verfuegbaren Rollenschnitt.
+
 Aktive Naming-Regel:
 - Runtime verwendet `type-*` (z. B. `type-display-xl`, `type-body-md`).
 - `ui-type-*` ist nicht mehr Teil des aktiven Design-System-Pfads.

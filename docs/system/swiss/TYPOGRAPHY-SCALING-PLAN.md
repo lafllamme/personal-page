@@ -98,6 +98,31 @@ Designregel:
 Hinweis:
 - Nicht verfuegbare Weights fallen nicht hart auf den Rollen-Default zurueck, sondern auf den naechsten verfuegbaren Schnitt der Rolle (z. B. `display: 600 -> 500`).
 
+### 1.6 Runtime-Verwendung (Default vs. Override)
+
+Designregel:
+- Wenn `weight` nicht gesetzt ist, greift immer der Rollen-Default.
+- Overrides nur fuer konkrete UI-Cases setzen (z. B. Hero-Headline, KPI, Badge), nicht pauschal.
+
+Beispiel (Vue):
+
+```vue
+<!-- 1) Default-Verhalten: Headline nutzt automatisch den Rollen-Default (regular / 400) -->
+<DsTypography as="h2" role="headline" size="lg">
+  Default Headline
+</DsTypography>
+
+<!-- 2) Gezielter Override: gleicher Token, aber bewusster Weight-Boost -->
+<DsTypography as="h2" role="headline" size="lg" weight="semibold">
+  Emphasized Headline
+</DsTypography>
+
+<!-- 3) Numeric Override ist ebenfalls erlaubt -->
+<DsTypography as="p" role="meta" size="sm" weight="700" uppercase>
+  Meta Label Strong
+</DsTypography>
+```
+
 ---
 
 ## 2) Naming (final fuer Token Layer)

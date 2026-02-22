@@ -67,6 +67,9 @@ Hinweis: Werte sind mit `TYPOGRAPHY-SCALING-PLAN.md` harmonisiert und im Runtime
 
 Hinweis: Nicht unterstuetzte Weight-Overrides werden auf den naechsten verfuegbaren Schnitt der Rolle gemappt.
 
+Praktische Runtime-Regel (Default vs. Override) inkl. Vue-Beispiel:
+- [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md) -> Abschnitt `1.6 Runtime-Verwendung (Default vs. Override)`
+
 ### Control-Mapping (verbindlich)
 - Button `sm` -> `type-meta-xs-*`
 - Button `md` -> `type-meta-sm-*`
