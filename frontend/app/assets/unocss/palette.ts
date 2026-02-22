@@ -153,12 +153,6 @@ const sizingTokens: TokenSet = {
   'button-py-sm': '0.375rem',
   'button-py-md': '0.5rem',
   'button-py-lg': '0.625rem',
-  'button-font-size-sm': '10px',
-  'button-font-size-md': '11px',
-  'button-font-size-lg': '12px',
-  'button-tracking-sm': '0.14em',
-  'button-tracking-md': '0.16em',
-  'button-tracking-lg': '0.18em',
   'radius-pill': '9999px',
   'control-border-width': '1px',
   'focus-ring-inner-width': '2px',
@@ -224,6 +218,15 @@ const typographyTokens: TokenSet = {
   'type-track-meta-2xl': '-0.022em',
   'type-track-meta-3xl': '-0.024em',
   'type-track-meta-4xl': '-0.025em',
+  // Meta relaxed tracking curve (airier labels, up to ~0.12em)
+  'type-track-meta-xs-relaxed': '0.06em',
+  'type-track-meta-sm-relaxed': '0.068em',
+  'type-track-meta-md-relaxed': '0.076em',
+  'type-track-meta-lg-relaxed': '0.084em',
+  'type-track-meta-xl-relaxed': '0.092em',
+  'type-track-meta-2xl-relaxed': '0.1em',
+  'type-track-meta-3xl-relaxed': '0.11em',
+  'type-track-meta-4xl-relaxed': '0.12em',
 }
 
 export const toxicScale: Scale = {

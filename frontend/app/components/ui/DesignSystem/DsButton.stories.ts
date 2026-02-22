@@ -13,6 +13,7 @@ const meta = {
     type: 'primary',
     variant: 'default',
     size: 'md',
+    tracking: 'relaxed',
     disabled: false,
   },
   argTypes: {
@@ -27,6 +28,10 @@ const meta = {
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg'],
+    },
+    tracking: {
+      control: 'select',
+      options: ['default', 'relaxed'],
     },
     disabled: { control: 'boolean' },
   },

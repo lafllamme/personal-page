@@ -4,22 +4,26 @@ import { computed, toRefs } from 'vue'
 type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'quaternary'
 type ButtonVariant = 'default' | 'accent'
 type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonTracking = 'default' | 'relaxed'
 type LegacyVariant = ButtonType | 'quartery'
 type ComboKey = `${ButtonVariant}-${ButtonType}`
+type SizeTrackingKey = `${ButtonSize}-${ButtonTracking}`
 
 const props = withDefaults(defineProps<{
   type?: ButtonType
   variant?: ButtonVariant | LegacyVariant
   size?: ButtonSize
+  tracking?: ButtonTracking
   disabled?: boolean
 }>(), {
   type: 'primary',
   variant: 'default',
   size: 'md',
+  tracking: 'relaxed',
   disabled: false,
 })
 
-const { type, variant, size, disabled } = toRefs(props)
+const { type, variant, size, tracking, disabled } = toRefs(props)
 const LEGACY_VARIANT_TYPES: LegacyVariant[] = ['primary', 'secondary', 'tertiary', 'quaternary', 'quartery']
 
 const isLegacyTypeVariant = computed(() => LEGACY_VARIANT_TYPES.includes(variant.value as LegacyVariant))
@@ -66,6 +70,16 @@ const sizeClassMap: Record<ButtonSize, string> = {
   lg: 'ui-button-lg',
 }
 const sizeClass = computed(() => sizeClassMap[size.value])
+const trackingClassMap: Record<SizeTrackingKey, string> = {
+  'sm-default': 'ui-button-track-sm',
+  'md-default': 'ui-button-track-md',
+  'lg-default': 'ui-button-track-lg',
+  'sm-relaxed': 'ui-button-track-sm-relaxed',
+  'md-relaxed': 'ui-button-track-md-relaxed',
+  'lg-relaxed': 'ui-button-track-lg-relaxed',
+}
+const sizeTrackingKey = computed<SizeTrackingKey>(() => `${size.value}-${tracking.value}`)
+const trackingClass = computed(() => trackingClassMap[sizeTrackingKey.value])
 </script>
 
 <template>
@@ -73,7 +87,7 @@ const sizeClass = computed(() => sizeClassMap[size.value])
     type="button"
     :disabled="disabled"
     class="group space-grotesk-regular ui-button-base"
-    :class="[sizeClass, variantTypeClass, isGhostType ? ghostButtonClass : '']"
+    :class="[sizeClass, trackingClass, variantTypeClass, isGhostType ? ghostButtonClass : '']"
   >
     <span
       class="ui-button-label"

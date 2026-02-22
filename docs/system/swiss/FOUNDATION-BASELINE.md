@@ -71,11 +71,18 @@ Praktische Runtime-Regel (Default vs. Override) inkl. Vue-Beispiel:
 - [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md) -> Abschnitt `1.6 Runtime-Verwendung (Default vs. Override)`
 
 ### Control-Mapping (verbindlich)
-- Button `sm` -> `type-meta-xs-*`
-- Button `md` -> `type-meta-sm-*`
-- Button `lg` -> `type-meta-sm-*` (mit erhoehtem Tracking auf `0.18em`)
+- Button `sm` -> `type-meta-xs` + `type-track-meta-xs`
+- Button `md` -> `type-meta-sm` + `type-track-meta-sm`
+- Button `lg` -> `type-meta-md` + `type-track-meta-md`
+- Optional (airier labels): `type-track-meta-*-relaxed`
 - Input/Select Placeholder -> `type-body-md-*`
 - Helper / Hint Text -> `type-body-sm-*`
+
+Hinweis Runtime:
+- Vorbereitete Button-Typografie-Shortcuts:
+  - `ui-button-type-sm|md|lg`
+  - `ui-button-track-sm|md|lg`
+  - `ui-button-track-sm-relaxed|md-relaxed|lg-relaxed`
 
 ## Farb-Baseline
 - Basisflaechen: `pureBlack` / `pureWhite`

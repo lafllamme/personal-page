@@ -2,20 +2,56 @@ import type { UserShortcuts } from 'unocss'
 
 export const buttonShortcuts: UserShortcuts = [
   [
+    'ui-button-type-sm',
+    'type-meta-xs leading-$type-leading-xs',
+  ],
+  [
+    'ui-button-type-md',
+    'type-meta-sm leading-$type-leading-sm',
+  ],
+  [
+    'ui-button-type-lg',
+    'type-meta-md leading-$type-leading-md',
+  ],
+  [
+    'ui-button-track-sm',
+    'tracking-$type-track-meta-xs',
+  ],
+  [
+    'ui-button-track-md',
+    'tracking-$type-track-meta-sm',
+  ],
+  [
+    'ui-button-track-lg',
+    'tracking-$type-track-meta-md',
+  ],
+  [
+    'ui-button-track-sm-relaxed',
+    'tracking-$type-track-meta-xs-relaxed',
+  ],
+  [
+    'ui-button-track-md-relaxed',
+    'tracking-$type-track-meta-sm-relaxed',
+  ],
+  [
+    'ui-button-track-lg-relaxed',
+    'tracking-$type-track-meta-md-relaxed',
+  ],
+  [
     'ui-button-base',
-    'relative inline-flex w-auto items-center justify-center whitespace-nowrap [border-radius:var(--radius-pill)] px-4 py-2 text-[11px] tracking-[0.16em] uppercase [border-width:var(--control-border-width)] border-solid border-transparent [text-decoration:none] transition-[background-color,color,border-color,box-shadow,transform] duration-[160ms] ease-out disabled:cursor-not-allowed focus-visible:outline-none',
+    'relative inline-flex w-auto items-center justify-center whitespace-nowrap [border-radius:var(--radius-pill)] px-4 py-2 uppercase [border-width:var(--control-border-width)] border-solid border-transparent [text-decoration:none] transition-[background-color,color,border-color,box-shadow,transform] duration-[160ms] ease-out disabled:cursor-not-allowed focus-visible:outline-none',
   ],
   [
     'ui-button-sm',
-    'px-3 py-1.5 text-[10px] tracking-[0.14em]',
+    'px-3 py-1.5 ui-button-type-sm',
   ],
   [
     'ui-button-md',
-    'px-4 py-2 text-[11px] tracking-[0.16em]',
+    'px-4 py-2 ui-button-type-md',
   ],
   [
     'ui-button-lg',
-    'px-5 py-2.5 text-[12px] tracking-[0.18em]',
+    'px-5 py-2.5 ui-button-type-lg',
   ],
   [
     'ui-button-label',
