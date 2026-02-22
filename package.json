@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "turbo dev",
     "dev:frontend": "turbo dev --filter=@tec/frontend",
+    "dev:frontend:uno-watch": "node scripts/watch-uno-restart.mjs",
     "dev:storybook": "turbo storybook:dev --filter=@tec/frontend",
     "dev:cms": "turbo dev --filter=@tec/cms",
     "build": "turbo build",
