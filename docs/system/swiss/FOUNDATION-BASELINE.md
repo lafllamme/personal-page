@@ -79,10 +79,10 @@ Praktische Runtime-Regel (Default vs. Override) inkl. Vue-Beispiel:
 - Helper / Hint Text -> `type-body-sm-*`
 
 Hinweis Runtime:
-- Vorbereitete Button-Typografie-Shortcuts:
-  - `ui-button-type-sm|md|lg`
-  - `ui-button-track-sm|md|lg`
-  - `ui-button-track-sm-relaxed|md-relaxed|lg-relaxed`
+- Button nutzt `DsTypography` (`role="meta"`), mit:
+  - Size-Mapping: `sm -> xs`, `md -> sm`, `lg -> md`
+  - Weight-Mapping: `default -> medium`, `strong -> semibold`
+  - Tracking-Mapping: `tracking="default|relaxed"` auf `type-track-meta-*` bzw. `type-track-meta-*-relaxed` (aktuell nur wirksam fuer `role="meta"`)
 
 ## Farb-Baseline
 - Basisflaechen: `pureBlack` / `pureWhite`

@@ -1,29 +1,32 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
+import DsTypography from './DsTypography.vue'
 
 type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'quaternary'
 type ButtonVariant = 'default' | 'accent'
 type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonTracking = 'default' | 'relaxed'
+type ButtonWeight = 'default' | 'strong'
 type LegacyVariant = ButtonType | 'quartery'
 type ComboKey = `${ButtonVariant}-${ButtonType}`
-type SizeTrackingKey = `${ButtonSize}-${ButtonTracking}`
 
 const props = withDefaults(defineProps<{
   type?: ButtonType
   variant?: ButtonVariant | LegacyVariant
   size?: ButtonSize
   tracking?: ButtonTracking
+  weight?: ButtonWeight
   disabled?: boolean
 }>(), {
   type: 'primary',
   variant: 'default',
   size: 'md',
   tracking: 'relaxed',
+  weight: 'default',
   disabled: false,
 })
 
-const { type, variant, size, tracking, disabled } = toRefs(props)
+const { type, variant, size, tracking, weight, disabled } = toRefs(props)
 const LEGACY_VARIANT_TYPES: LegacyVariant[] = ['primary', 'secondary', 'tertiary', 'quaternary', 'quartery']
 
 const isLegacyTypeVariant = computed(() => LEGACY_VARIANT_TYPES.includes(variant.value as LegacyVariant))
@@ -70,30 +73,39 @@ const sizeClassMap: Record<ButtonSize, string> = {
   lg: 'ui-button-lg',
 }
 const sizeClass = computed(() => sizeClassMap[size.value])
-const trackingClassMap: Record<SizeTrackingKey, string> = {
-  'sm-default': 'ui-button-track-sm',
-  'md-default': 'ui-button-track-md',
-  'lg-default': 'ui-button-track-lg',
-  'sm-relaxed': 'ui-button-track-sm-relaxed',
-  'md-relaxed': 'ui-button-track-md-relaxed',
-  'lg-relaxed': 'ui-button-track-lg-relaxed',
+
+const typographySizeMap: Record<ButtonSize, 'xs' | 'sm' | 'md'> = {
+  sm: 'xs',
+  md: 'sm',
+  lg: 'md',
 }
-const sizeTrackingKey = computed<SizeTrackingKey>(() => `${size.value}-${tracking.value}`)
-const trackingClass = computed(() => trackingClassMap[sizeTrackingKey.value])
+const typographySize = computed(() => typographySizeMap[size.value])
+
+const typographyWeightMap: Record<ButtonWeight, 'medium' | 'semibold'> = {
+  default: 'medium',
+  strong: 'semibold',
+}
+const typographyWeight = computed(() => typographyWeightMap[weight.value])
 </script>
 
 <template>
   <button
     type="button"
     :disabled="disabled"
-    class="group space-grotesk-regular ui-button-base"
-    :class="[sizeClass, trackingClass, variantTypeClass, isGhostType ? ghostButtonClass : '']"
+    class="group ui-button-base"
+    :class="[sizeClass, variantTypeClass, isGhostType ? ghostButtonClass : '']"
   >
-    <span
+    <DsTypography
+      as="span"
+      role="meta"
+      :size="typographySize"
+      :tracking="tracking"
+      :weight="typographyWeight"
+      :uppercase="true"
       class="ui-button-label"
-      :class="isGhostType ? 'is-ghost-label ui-ghost-label' : ''"
+      :class="[isGhostType ? 'is-ghost-label ui-ghost-label' : '']"
     >
       <slot />
-    </span>
+    </DsTypography>
   </button>
 </template>

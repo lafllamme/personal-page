@@ -73,6 +73,7 @@ const meta = {
     as: 'p',
     role: 'body',
     size: 'md',
+    tracking: 'default',
     tone: 'default',
     weight: 'auto',
     uppercase: false,
@@ -81,6 +82,7 @@ const meta = {
     as: { control: 'select', options: ['p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote'] },
     role: { control: 'select', options: ['display', 'headline', 'body', 'meta', 'quote', 'signal'] },
     size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] },
+    tracking: { control: 'select', options: ['default', 'relaxed'] },
     tone: { control: 'select', options: ['default', 'muted'] },
     weight: {
       control: 'select',

@@ -6,6 +6,7 @@ const props = withDefaults(defineProps<{
   as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
   role?: 'display' | 'headline' | 'body' | 'meta' | 'quote' | 'signal'
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+  tracking?: 'default' | 'relaxed'
   tone?: 'default' | 'muted'
   weight?: 'auto' | 'thin' | 'extralight' | 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'
   italic?: boolean
@@ -14,12 +15,13 @@ const props = withDefaults(defineProps<{
   as: 'p',
   role: 'body',
   size: 'md',
+  tracking: 'default',
   tone: 'default',
   weight: 'auto',
   uppercase: false,
 })
 
-const { as, role, size, tone, weight, italic, uppercase } = toRefs(props)
+const { as, role, size, tracking, tone, weight, italic, uppercase } = toRefs(props)
 
 const typeClass = {
   display: {
@@ -87,6 +89,17 @@ const typeClass = {
 const toneClass = {
   default: '',
   muted: 'opacity-70',
+} as const
+
+const relaxedMetaTrackClassBySize = {
+  'xs': 'tracking-$type-track-meta-xs-relaxed',
+  'sm': 'tracking-$type-track-meta-sm-relaxed',
+  'md': 'tracking-$type-track-meta-md-relaxed',
+  'lg': 'tracking-$type-track-meta-lg-relaxed',
+  'xl': 'tracking-$type-track-meta-xl-relaxed',
+  '2xl': 'tracking-$type-track-meta-2xl-relaxed',
+  '3xl': 'tracking-$type-track-meta-3xl-relaxed',
+  '4xl': 'tracking-$type-track-meta-4xl-relaxed',
 } as const
 
 const roleDefaultWeight = {
@@ -164,8 +177,19 @@ const resolvedItalic = computed(() => {
   return role.value === 'quote'
 })
 
+const resolvedTrackingClass = computed(() => {
+  if (role.value !== 'meta')
+    return ''
+
+  if (tracking.value !== 'relaxed')
+    return ''
+
+  return relaxedMetaTrackClassBySize[size.value]
+})
+
 const rootClass = computed(() => useClsx(
   typeClass[role.value][size.value],
+  resolvedTrackingClass.value,
   weightClassByValue[resolvedWeight.value],
   resolvedItalic.value && 'italic',
   toneClass[tone.value],

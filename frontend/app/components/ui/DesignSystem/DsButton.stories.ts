@@ -14,6 +14,7 @@ const meta = {
     variant: 'default',
     size: 'md',
     tracking: 'relaxed',
+    weight: 'default',
     disabled: false,
   },
   argTypes: {
@@ -32,6 +33,10 @@ const meta = {
     tracking: {
       control: 'select',
       options: ['default', 'relaxed'],
+    },
+    weight: {
+      control: 'select',
+      options: ['default', 'strong'],
     },
     disabled: { control: 'boolean' },
   },
