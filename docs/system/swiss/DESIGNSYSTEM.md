@@ -1,6 +1,6 @@
 # DESIGNSYSTEM (P04-MPZ01 + RedXT)
 
-Stand: 2026-02-14  
+Stand: 2026-02-22  
 Status: Single Source of Truth fuer den naechsten Komponentenbau
 Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben und zu verfeinern.
 
@@ -167,6 +167,11 @@ Aktiver P04-MPZ01 Typo-Kern:
 - Tokenwerte (Size/Leading/Tracking): [`frontend/app/assets/unocss/palette.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/palette.ts)
 - Semantische Klassen: [`frontend/app/assets/unocss/shortcuts.typography.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.typography.ts)
 - Komponenten-Mapping: [`frontend/app/components/ui/DesignSystem/DsTypography.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsTypography.vue)
+
+Tracking-Status (aktuell):
+- Display: kuratierte Tracking-Kurve (`type-track-display-*` + `*-md`)
+- Headline: kein separates Tracking-Token (nur Family + Size/Leading)
+- Meta: size-basierte, negative Tracking-Kurve (`type-track-meta-*`, `xs=-0.012em` bis `4xl=-0.025em`)
 
 Aktive Naming-Regel:
 - Runtime verwendet `type-*` (z. B. `type-display-xl`, `type-body-md`).

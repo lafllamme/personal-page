@@ -215,8 +215,15 @@ const typographyTokens: TokenSet = {
   'type-track-display-3xl-md': '0.046em',
   'type-track-display-4xl-md': '0.044em',
 
-  // Role tracking
-  'type-track-meta': '0.16em',
+  // Meta tracking curve (negative, tighter for Space Grotesk)
+  'type-track-meta-xs': '-0.012em',
+  'type-track-meta-sm': '-0.013em',
+  'type-track-meta-md': '-0.015em',
+  'type-track-meta-lg': '-0.018em',
+  'type-track-meta-xl': '-0.02em',
+  'type-track-meta-2xl': '-0.022em',
+  'type-track-meta-3xl': '-0.024em',
+  'type-track-meta-4xl': '-0.025em',
 }
 
 export const toxicScale: Scale = {

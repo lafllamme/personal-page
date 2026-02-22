@@ -1,6 +1,6 @@
 # Typography Scaling Plan
 
-Stand: 2026-02-21  
+Stand: 2026-02-22  
 Status: IMPLEMENTED (Runtime + Tokens live)
 
 ## Ziel
@@ -59,7 +59,20 @@ Designregel:
 | `3xl` | `0.044em / 0.046em` |
 | `4xl` | `0.042em / 0.044em` |
 
-### 1.4 Weight + Italic Defaults (DsTypography)
+### 1.4 Meta Tracking Curve (size-basiert, negativ/tighter)
+
+| Size | Tracking |
+|---|---|
+| `xs` | `-0.012em` |
+| `sm` | `-0.013em` |
+| `md` | `-0.015em` |
+| `lg` | `-0.018em` |
+| `xl` | `-0.02em` |
+| `2xl` | `-0.022em` |
+| `3xl` | `-0.024em` |
+| `4xl` | `-0.025em` |
+
+### 1.5 Weight + Italic Defaults (DsTypography)
 
 - Role-Default Weight:
   - `display` -> `medium`
@@ -100,6 +113,8 @@ Hinweis:
 - Display tracking:
   - `type-track-display-xs` ... `type-track-display-4xl`
   - optional breakpoint tokens: `type-track-display-xs-md` ... `type-track-display-4xl-md`
+- Meta tracking:
+  - `type-track-meta-xs` ... `type-track-meta-4xl`
 - Families (Uno Theme):
   - `font-display-hero` -> `DrukBoldTrial`
   - `font-display-compact` -> `DrukTextBoldTrial`

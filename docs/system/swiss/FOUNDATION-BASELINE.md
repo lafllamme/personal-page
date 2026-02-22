@@ -17,7 +17,6 @@ Status: SOURCE OF TRUTH (lesbarer Baseline-Contract)
 | Body | Manrope | Fliesstext, leselastige Inhalte |
 | Meta/UI | Space Grotesk | Labels, UI-Meta, Utility-Infos |
 | Quote | Libre Baskerville | Editoriale Zitat-/Kontrastmomente |
-| Metric | Zalando Sans Expanded | Kennzahlen, Market Pulse |
 | Signal | Zalando Sans Expanded | kurze IDs, Stamps, numerische Marker |
 
 ## Typografie-Scale (Foundation)
@@ -40,7 +39,7 @@ Hinweis: Werte sind mit `TYPOGRAPHY-SCALING-PLAN.md` harmonisiert und im Runtime
 - Display: `type-display-*` + Druk split (`font-display-compact` fuer `xs/sm`, `font-display-hero` ab `md`) + kuratiertes Display-Tracking
 - Headline: `type-headline-*` + `font-headline`
 - Body: `type-body-*` + `font-body`
-- Meta: `type-meta-*` + `font-meta` + `type-track-meta`
+- Meta: `type-meta-*` + `font-meta` + `type-track-meta-*` (size-basierte negative Tracking-Kurve)
 - Quote: `type-quote-*` + `font-quote`
 - Signal: `type-signal-*` + `font-signal`
 
