@@ -161,3 +161,13 @@ Aktiver P04-MPZ01 Typo-Kern:
 - Meta/UI: `Space Grotesk`
 - Quote: `Libre Baskerville`
 - Metric/Signal: `Zalando Sans Expanded`
+
+### 12.1 Aktueller Runtime-Pfad (Implementierung)
+- Theme-Families: [`frontend/app/assets/unocss/theme.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/theme.ts)
+- Tokenwerte (Size/Leading/Tracking): [`frontend/app/assets/unocss/palette.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/palette.ts)
+- Semantische Klassen: [`frontend/app/assets/unocss/shortcuts.typography.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.typography.ts)
+- Komponenten-Mapping: [`frontend/app/components/ui/DesignSystem/DsTypography.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsTypography.vue)
+
+Aktive Naming-Regel:
+- Runtime verwendet `type-*` (z. B. `type-display-xl`, `type-body-md`).
+- `ui-type-*` ist nicht mehr Teil des aktiven Design-System-Pfads.
