@@ -27,6 +27,7 @@ export function fontUtilitiesPreflightCss() {
 .font-typogama-asing{font-family:'TypogamaAsing',sans-serif;}
 .font-prata{font-family:'Prata',serif;font-weight:400;font-style:normal;}
 .font-manrope{font-family:'Manrope',sans-serif;font-weight:400;font-style:normal;}
+.font-space-grotesk{font-family:'Space Grotesk',sans-serif;font-weight:400;font-style:normal;}
 .geist-regular{font-family:'Geist',sans-serif;font-optical-sizing:auto;font-weight:400;font-style:normal;}
 .geist-thin{font-family:'Geist',sans-serif;font-optical-sizing:auto;font-style:normal;}
 .space-grotesk-regular{font-family:'Space Grotesk',sans-serif;font-optical-sizing:auto;font-weight:500;font-style:normal;}

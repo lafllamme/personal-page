@@ -30,6 +30,7 @@ export const theme = {
     ...themeColors,
   },
   fontSize: typographyTheme.fontSize,
+  fontFamily: typographyTheme.fontFamily,
   keyframes,
   animation: animations,
   duration: {},

@@ -166,15 +166,15 @@ const sizingTokens: TokenSet = {
   'focus-ring-active-width': '1px',
 }
 
-const typeFamilyTokens: TokenSet = {
-  'type-family-display-hero': '\'DrukBoldTrial\', sans-serif',
-  'type-family-display-compact': '\'DrukTextBoldTrial\', sans-serif',
-  'type-family-headline': '\'ClashDisplay-Regular\', sans-serif',
-  'type-family-body': '\'Manrope\', sans-serif',
-  'type-family-meta': '\'Space Grotesk\', sans-serif',
-  'type-family-quote': '\'Libre Baskerville\', serif',
-  'type-family-signal': '\'Zalando Sans Expanded\', sans-serif',
-}
+const typographyFontFamilyTheme = {
+  'display-hero': '\'DrukBoldTrial\', sans-serif',
+  'display-compact': '\'DrukTextBoldTrial\', sans-serif',
+  'headline': '\'ClashDisplay-Regular\', sans-serif',
+  'body': '\'Manrope\', sans-serif',
+  'meta': '\'Space Grotesk\', sans-serif',
+  'quote': '\'Libre Baskerville\', serif',
+  'signal': '\'Zalando Sans Expanded\', sans-serif',
+} as const
 
 const typographyTokens: TokenSet = {
   // Fluid size scale
@@ -278,6 +278,7 @@ export const themeColors = {
 
 export const typographyTheme = {
   fontSize: createPrefixedTokenVarMap(typographyTokens, 'type-size-'),
+  fontFamily: typographyFontFamilyTheme,
 }
 
 export function colorTokensPreflightCss() {
@@ -303,7 +304,6 @@ export function colorTokensPreflightCss() {
   appendTokens(spacingTokens)
   appendTokens(layoutTokens)
   appendTokens(sizingTokens)
-  appendTokens(typeFamilyTokens)
   appendTokens(typographyTokens)
 
   const sortedEntries = Object.entries(toxicScale)
