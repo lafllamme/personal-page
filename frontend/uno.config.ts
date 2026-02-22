@@ -1,9 +1,10 @@
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
-import { extendTheme, presets, shortcuts, theme } from './app/assets/unocss/index'
+import { extendTheme, presets, rules, shortcuts, theme } from './app/assets/unocss/index'
 import { colorTokensPreflightCss } from './app/assets/unocss/palette'
 
 export default defineConfig({
   shortcuts,
+  rules,
   theme,
   extendTheme,
   presets,
