@@ -1,4 +1,4 @@
-import { PURE_BLACK, PURE_WHITE, themeColors } from './palette'
+import { PURE_BLACK, PURE_WHITE, themeColors, typographyTheme } from './palette'
 
 const keyframes = {
   enterFromRight: '0%{opacity:0;transform:translateX(200px);}100%{opacity:1;transform:translateX(0);}',
@@ -29,25 +29,7 @@ export const theme = {
     pureWhite: PURE_WHITE,
     ...themeColors,
   },
-  fontSize: {
-    'type-size-xs': 'var(--type-size-xs)',
-    'type-size-sm': 'var(--type-size-sm)',
-    'type-size-md': 'var(--type-size-md)',
-    'type-size-lg': 'var(--type-size-lg)',
-    'type-size-xl': 'var(--type-size-xl)',
-    'type-size-2xl': 'var(--type-size-2xl)',
-    'type-size-3xl': 'var(--type-size-3xl)',
-    'type-size-4xl': 'var(--type-size-4xl)',
-  },
-  fontFamily: {
-    'type-family-display-hero': 'var(--type-family-display-hero)',
-    'type-family-display-compact': 'var(--type-family-display-compact)',
-    'type-family-headline': 'var(--type-family-headline)',
-    'type-family-body': 'var(--type-family-body)',
-    'type-family-meta': 'var(--type-family-meta)',
-    'type-family-quote': 'var(--type-family-quote)',
-    'type-family-signal': 'var(--type-family-signal)',
-  },
+  fontSize: typographyTheme.fontSize,
   keyframes,
   animation: animations,
   duration: {},

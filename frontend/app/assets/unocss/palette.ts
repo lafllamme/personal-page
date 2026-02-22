@@ -166,6 +166,16 @@ const sizingTokens: TokenSet = {
   'focus-ring-active-width': '1px',
 }
 
+const typeFamilyTokens: TokenSet = {
+  'type-family-display-hero': '\'DrukBoldTrial\', sans-serif',
+  'type-family-display-compact': '\'DrukTextBoldTrial\', sans-serif',
+  'type-family-headline': '\'ClashDisplay-Regular\', sans-serif',
+  'type-family-body': '\'Manrope\', sans-serif',
+  'type-family-meta': '\'Space Grotesk\', sans-serif',
+  'type-family-quote': '\'Libre Baskerville\', serif',
+  'type-family-signal': '\'Zalando Sans Expanded\', sans-serif',
+}
+
 const typographyTokens: TokenSet = {
   // Fluid size scale
   'type-size-xs': 'clamp(0.75rem, calc(0.68rem + 0.22vw), 0.875rem)',
@@ -207,15 +217,6 @@ const typographyTokens: TokenSet = {
 
   // Role tracking
   'type-track-meta': '0.16em',
-
-  // Family tokens
-  'type-family-display-hero': '\'DrukBoldTrial\', sans-serif',
-  'type-family-display-compact': '\'DrukTextBoldTrial\', sans-serif',
-  'type-family-headline': '\'ClashDisplay-Regular\', sans-serif',
-  'type-family-body': '\'Manrope\', sans-serif',
-  'type-family-meta': '\'Space Grotesk\', sans-serif',
-  'type-family-quote': '\'Libre Baskerville\', serif',
-  'type-family-signal': '\'Zalando Sans Expanded\', sans-serif',
 }
 
 export const toxicScale: Scale = {
@@ -259,12 +260,24 @@ function createTokenVarMap(tokens: TokenSet) {
   return Object.fromEntries(Object.keys(tokens).map(token => [token, `var(--${token})`]))
 }
 
+function createPrefixedTokenVarMap(tokens: TokenSet, prefix: string) {
+  return Object.fromEntries(
+    Object.keys(tokens)
+      .filter(token => token.startsWith(prefix))
+      .map(token => [token, `var(--${token})`]),
+  )
+}
+
 export const themeColors = {
   color: createTokenVarMap(colorTokens),
   bg: createTokenVarMap(bgTokens),
   border: createTokenVarMap(borderTokens),
   ring: createTokenVarMap(ringTokens),
   toxic: createScaleVarMap('toxic', toxicScale),
+}
+
+export const typographyTheme = {
+  fontSize: createPrefixedTokenVarMap(typographyTokens, 'type-size-'),
 }
 
 export function colorTokensPreflightCss() {
@@ -290,6 +303,7 @@ export function colorTokensPreflightCss() {
   appendTokens(spacingTokens)
   appendTokens(layoutTokens)
   appendTokens(sizingTokens)
+  appendTokens(typeFamilyTokens)
   appendTokens(typographyTokens)
 
   const sortedEntries = Object.entries(toxicScale)
