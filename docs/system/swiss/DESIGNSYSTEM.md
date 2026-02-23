@@ -54,6 +54,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Swiss Style Guidelines (allgemein): [SWISS-STYLE-GUIDELINES.md](./SWISS-STYLE-GUIDELINES.md)
 - Accent Color Referenz: [ACCENT-COLOR-RADIX-TEAL-911.md](../../reference/ACCENT-COLOR-RADIX-TEAL-911.md)
 - Foundation Baseline: [FOUNDATION-BASELINE.md](./FOUNDATION-BASELINE.md)
+- Motion Baseline: [MOTION.md](./MOTION.md)
 - Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
 - Component Contract: [COMPONENT-CONTRACT.md](./COMPONENT-CONTRACT.md)
 - Typography Source Map: [TYPOGRAPHY-SOURCE-MAP.md](./TYPOGRAPHY-SOURCE-MAP.md)
@@ -125,6 +126,12 @@ Der Button wird ueber zwei Dimensionen aufgebaut:
 - Struktur-Shell: [`frontend/app/assets/unocss/shortcuts.button.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.button.ts)
 - Tokenwerte: [`frontend/app/assets/unocss/palette.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/palette.ts)
 - Komponenten-Mapping: [`frontend/app/components/ui/DesignSystem/DsButton.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsButton.vue)
+
+### 10.4 Secondary Interaktionsregel (final)
+- `secondary` (`default` + `accent`) nutzt Vertical-Sweep-Fill:
+  - `before` startet unten (`translate-y-full`)
+  - hover/active/focus fahren den Fill nach oben (`translate-y-0`) ueber `motion-secondary-sweep-*` Tokens
+- Kein Container-Scale auf Hover/Active (Button-Groesse bleibt stabil).
 
 ## 11) P04-MPZ01 Origin References (nicht verlieren)
 
