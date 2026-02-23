@@ -50,14 +50,14 @@ type InteractiveMatrixState = Exclude<MatrixState, 'default' | 'disabled'>
 
 const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, string>> = {
   'default-primary': {
-    'hover': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
-    'active': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_1px_var(--ring-primary-offset-inner),0_0_0_2px_var(--ring-primary-offset-outer)]',
+    'hover': 'bg-$bg-inverse before:translate-x-0 color-$color-primary',
+    'active': 'translate-y-[1px] bg-$bg-solid-active before:translate-x-[-120%] color-$color-inverse',
     'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
   },
   'default-secondary': {
-    'hover': 'before:scale-[var(--motion-secondary-radial-scale-hover)] color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)]',
-    'active': 'before:scale-[var(--motion-secondary-radial-scale-active)] before:bg-sand-11 dark:before:bg-sand-9 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] dark:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)]',
-    'focus-visible': 'before:scale-[var(--motion-secondary-radial-scale-hover)] color-pureWhite [box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
+    'hover': 'before:translate-y-0 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)]',
+    'active': 'translate-y-[1px] before:translate-y-0 before:bg-sand-11 dark:before:bg-sand-9 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] dark:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)]',
+    'focus-visible': 'before:translate-y-0 color-pureWhite [box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
   },
   'default-tertiary': {
     'hover': 'is-ghost-morph-on',
@@ -65,19 +65,19 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)]',
   },
   'default-quaternary': {
-    'hover': 'before:translate-x-[560%] after:opacity-38',
-    'active': 'before:translate-x-[560%] after:opacity-52',
-    'focus-visible': 'before:translate-x-[560%] after:opacity-100 [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
+    'hover': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-neutral-hover-opacity)]',
+    'active': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-neutral-active-opacity)]',
+    'focus-visible': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-focus-opacity)] [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
   },
   'accent-primary': {
-    'hover': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
-    'active': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_1px_var(--ring-accent-offset-inner),0_0_0_2px_var(--ring-accent-offset-outer)]',
+    'hover': 'bg-$bg-accent-soft before:translate-x-0 color-$color-primary',
+    'active': 'translate-y-[1px] [background-color:var(--color-accent-hover)] before:translate-x-[-120%] color-$color-on-accent',
     'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
   },
   'accent-secondary': {
-    'hover': 'before:scale-[var(--motion-secondary-radial-scale-hover)] color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
-    'active': 'before:scale-[var(--motion-secondary-radial-scale-active)] color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
-    'focus-visible': 'before:scale-[var(--motion-secondary-radial-scale-hover)] color-$color-primary [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)]',
+    'hover': 'before:translate-y-0 color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
+    'active': 'translate-y-[1px] before:translate-y-0 color-$color-primary [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
+    'focus-visible': 'before:translate-y-0 color-$color-primary [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)]',
   },
   'accent-tertiary': {
     'hover': 'is-ghost-morph-on',
@@ -85,9 +85,9 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)]',
   },
   'accent-quaternary': {
-    'hover': 'before:translate-x-[560%] after:opacity-32',
-    'active': 'before:translate-x-[560%] after:opacity-48',
-    'focus-visible': 'before:translate-x-[560%] after:opacity-100 [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)]',
+    'hover': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-accent-hover-opacity)]',
+    'active': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-accent-active-opacity)]',
+    'focus-visible': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-focus-opacity)] [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)]',
   },
 }
 

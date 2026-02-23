@@ -3,19 +3,19 @@ import type { UserShortcuts } from 'unocss'
 export const buttonShortcuts: UserShortcuts = [
   [
     'ui-button-base',
-    'relative inline-flex w-auto items-center justify-center whitespace-nowrap [border-radius:var(--radius-pill)] px-4 py-2 [border-width:var(--control-border-width)] border-solid border-transparent [text-decoration:none] [--motion-secondary-radial-size:var(--motion-secondary-radial-size-md)] [--motion-secondary-radial-scale-hover:var(--motion-secondary-radial-scale-hover-md)] [--motion-secondary-radial-scale-active:var(--motion-secondary-radial-scale-active-md)] transition-[background-color,color,border-color,box-shadow,transform] duration-[160ms] ease-out disabled:cursor-not-allowed focus-visible:outline-none',
+    'relative inline-flex w-auto items-center justify-center whitespace-nowrap [border-radius:var(--radius-pill)] px-4 py-2 [border-width:var(--control-border-width)] border-solid border-transparent [text-decoration:none] transition-[background-color,color,border-color,box-shadow,transform] duration-[160ms] ease-out disabled:cursor-not-allowed focus-visible:outline-none',
   ],
   [
     'ui-button-sm',
-    'px-3 py-1.5 [--motion-secondary-radial-size:var(--motion-secondary-radial-size-sm)] [--motion-secondary-radial-scale-hover:var(--motion-secondary-radial-scale-hover-sm)] [--motion-secondary-radial-scale-active:var(--motion-secondary-radial-scale-active-sm)]',
+    'px-3 py-1.5',
   ],
   [
     'ui-button-md',
-    'px-4 py-2 [--motion-secondary-radial-size:var(--motion-secondary-radial-size-md)] [--motion-secondary-radial-scale-hover:var(--motion-secondary-radial-scale-hover-md)] [--motion-secondary-radial-scale-active:var(--motion-secondary-radial-scale-active-md)]',
+    'px-4 py-2',
   ],
   [
     'ui-button-lg',
-    'px-5 py-2.5 [--motion-secondary-radial-size:var(--motion-secondary-radial-size-lg)] [--motion-secondary-radial-scale-hover:var(--motion-secondary-radial-scale-hover-lg)] [--motion-secondary-radial-scale-active:var(--motion-secondary-radial-scale-active-lg)]',
+    'px-5 py-2.5',
   ],
   [
     'ui-button-label',
