@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, toRefs } from 'vue'
+import { computed, ref, toRefs, useSlots, type VNode, type VNodeArrayChildren } from 'vue'
+import DsDecryptedText from './DsDecryptedText.vue'
 import DsTypography from './DsTypography.vue'
 
 type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'quaternary'
@@ -7,6 +8,8 @@ type ButtonVariant = 'default' | 'accent'
 type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonTracking = 'default' | 'relaxed'
 type ButtonWeight = 'default' | 'strong'
+type DecryptAnimateOn = 'view' | 'hover' | 'both'
+type DecryptRevealDirection = 'start' | 'end' | 'center'
 type LegacyVariant = ButtonType | 'quartery'
 type ComboKey = `${ButtonVariant}-${ButtonType}`
 
@@ -16,6 +19,12 @@ const props = withDefaults(defineProps<{
   size?: ButtonSize
   tracking?: ButtonTracking
   weight?: ButtonWeight
+  decryptAnimateOn?: DecryptAnimateOn
+  decryptRevealDirection?: DecryptRevealDirection
+  decryptSpeed?: number
+  decryptMaxIterations?: number
+  decryptSequential?: boolean
+  decryptUseOriginalCharsOnly?: boolean
   disabled?: boolean
 }>(), {
   type: 'primary',
@@ -23,10 +32,31 @@ const props = withDefaults(defineProps<{
   size: 'md',
   tracking: 'relaxed',
   weight: 'default',
+  decryptAnimateOn: 'both',
+  decryptRevealDirection: 'start',
+  decryptSpeed: 45,
+  decryptMaxIterations: 10,
+  decryptSequential: true,
+  decryptUseOriginalCharsOnly: false,
   disabled: false,
 })
 
-const { type, variant, size, tracking, weight, disabled } = toRefs(props)
+const {
+  type,
+  variant,
+  size,
+  tracking,
+  weight,
+  decryptAnimateOn,
+  decryptRevealDirection,
+  decryptSpeed,
+  decryptMaxIterations,
+  decryptSequential,
+  decryptUseOriginalCharsOnly,
+  disabled,
+} = toRefs(props)
+
+const slots = useSlots()
 const LEGACY_VARIANT_TYPES: LegacyVariant[] = ['primary', 'secondary', 'tertiary', 'quaternary', 'quartery']
 
 const isLegacyTypeVariant = computed(() => LEGACY_VARIANT_TYPES.includes(variant.value as LegacyVariant))
@@ -66,7 +96,9 @@ const comboKey = computed<ComboKey>(() => `${normalizedVariant.value}-${normaliz
 
 const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
 const isGhostType = computed(() => normalizedType.value === 'tertiary')
+const isPrimaryType = computed(() => normalizedType.value === 'primary')
 const ghostButtonClass = 'is-ghost-button is-ghost-morph is-ghost-morph-clip ui-ghost-button ui-ghost-morph-clip'
+
 const sizeClassMap: Record<ButtonSize, string> = {
   sm: 'ui-button-sm',
   md: 'ui-button-md',
@@ -86,6 +118,46 @@ const typographyWeightMap: Record<ButtonWeight, 'medium' | 'semibold'> = {
   strong: 'semibold',
 }
 const typographyWeight = computed(() => typographyWeightMap[weight.value])
+
+function extractText(children: VNodeArrayChildren | unknown): string {
+  if (typeof children === 'string')
+    return children
+
+  if (Array.isArray(children)) {
+    return children.map((child) => {
+      if (typeof child === 'string')
+        return child
+
+      if (child && typeof child === 'object' && 'children' in child)
+        return extractText((child as VNode).children)
+
+      return ''
+    }).join('')
+  }
+
+  return ''
+}
+
+const slotText = computed(() => {
+  const nodes = slots.default?.() ?? []
+  return extractText(nodes).trim()
+})
+
+const hoverDecryptTick = ref(0)
+
+function triggerPrimaryDecrypt() {
+  if (!isPrimaryType.value || disabled.value)
+    return
+
+  if (decryptAnimateOn.value === 'hover' || decryptAnimateOn.value === 'both')
+    hoverDecryptTick.value += 1
+}
+
+const resolvedDecryptAnimateOn = computed<'view' | 'manual'>(() => {
+  return decryptAnimateOn.value === 'hover' ? 'manual' : 'view'
+})
+
+const decryptTriggerKey = computed(() => `${normalizedVariant.value}-${normalizedType.value}-${slotText.value}-${hoverDecryptTick.value}`)
 </script>
 
 <template>
@@ -94,6 +166,8 @@ const typographyWeight = computed(() => typographyWeightMap[weight.value])
     :disabled="disabled"
     class="group ui-button-base"
     :class="[sizeClass, variantTypeClass, isGhostType ? ghostButtonClass : '']"
+    @pointerenter="triggerPrimaryDecrypt"
+    @focus="triggerPrimaryDecrypt"
   >
     <DsTypography
       as="span"
@@ -105,7 +179,21 @@ const typographyWeight = computed(() => typographyWeightMap[weight.value])
       class="ui-button-label"
       :class="[isGhostType ? 'is-ghost-label ui-ghost-label' : '']"
     >
-      <slot />
+      <template v-if="isPrimaryType && slotText">
+        <DsDecryptedText
+          :text="slotText"
+          :speed="decryptSpeed"
+          :max-iterations="decryptMaxIterations"
+          :sequential="decryptSequential"
+          :reveal-direction="decryptRevealDirection"
+          :use-original-chars-only="decryptUseOriginalCharsOnly"
+          :animate-on="resolvedDecryptAnimateOn"
+          :trigger-key="decryptTriggerKey"
+        />
+      </template>
+      <template v-else>
+        <slot />
+      </template>
     </DsTypography>
   </button>
 </template>

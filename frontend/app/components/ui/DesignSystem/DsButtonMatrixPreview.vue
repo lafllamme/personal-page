@@ -50,8 +50,8 @@ type InteractiveMatrixState = Exclude<MatrixState, 'default' | 'disabled'>
 
 const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, string>> = {
   'default-primary': {
-    'hover': 'bg-$bg-inverse before:translate-x-0 color-$color-primary',
-    'active': 'translate-y-[1px] bg-$bg-solid-active before:translate-x-[-120%] color-$color-inverse',
+    'hover': 'bg-$bg-inverse color-$color-primary',
+    'active': 'translate-y-[1px] bg-$bg-solid-active color-$color-inverse',
     'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
   },
   'default-secondary': {
@@ -70,8 +70,8 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-focus-opacity)] [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
   },
   'accent-primary': {
-    'hover': 'bg-$bg-accent-soft before:translate-x-0 color-$color-primary',
-    'active': 'translate-y-[1px] [background-color:var(--color-accent-hover)] before:translate-x-[-120%] color-$color-on-accent',
+    'hover': '[background-color:var(--color-accent-hover)] color-$color-on-accent',
+    'active': 'translate-y-[1px] [background-color:var(--color-accent-soft)] color-$color-on-accent',
     'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
   },
   'accent-secondary': {

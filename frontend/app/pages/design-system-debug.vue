@@ -306,64 +306,6 @@ function tokenLabel(role: string, size: string) {
             </div>
           </div>
 
-          <div class="mt-3 bg-[#ef4444]/6 outline-2 outline-[#ef4444]/80 outline dark:bg-[#ef4444]/10 dark:outline-[#f87171]/90">
-            <div class="space-y-4 p-4">
-              <DsTypography
-                as="p"
-                role="meta"
-                size="xs"
-                uppercase
-              >
-                Secondary Vertical Sweep Demo (Variant 2)
-              </DsTypography>
-
-              <div class="flex flex-wrap items-center gap-3">
-                <DsButton
-                  type="secondary"
-                  variant="default"
-                  size="md"
-                >
-                  Secondary Current
-                </DsButton>
-
-                <button
-                  type="button"
-                  class="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-solid border-transparent bg-transparent px-4 py-2 [box-shadow:inset_0_0_0_2px_var(--border-primary)] [transition-property:color,box-shadow] [transition-duration:var(--motion-secondary-sweep-duration)] [transition-timing-function:var(--motion-secondary-sweep-ease)] hover:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)] active:translate-y-[1px] active:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] dark:active:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)] focus-visible:outline-none focus-visible:[box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:focus-visible:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]"
-                >
-                  <span class="relative z-10 text-$color-primary transition-colors duration-300 ease-out group-hover:color-pureWhite group-focus-visible:color-pureWhite group-active:color-pureWhite">
-                    <DsTypography
-                      as="span"
-                      role="meta"
-                      size="sm"
-                      tracking="relaxed"
-                      uppercase
-                    >
-                      Secondary Sweep
-                    </DsTypography>
-                  </span>
-                  <span class="absolute inset-0 z-0 bg-sand-10 translate-y-full transform [transition-duration:var(--motion-secondary-sweep-duration)] [transition-timing-function:var(--motion-secondary-sweep-ease)] transition-transform group-hover:translate-y-0 group-focus-visible:translate-y-0 group-active:translate-y-0 group-active:bg-sand-11 dark:group-active:bg-sand-9" />
-                </button>
-
-                <button
-                  type="button"
-                  class="group relative inline-flex items-center justify-center overflow-hidden rounded-full border border-solid border-transparent bg-transparent px-4 py-2 [box-shadow:inset_0_0_0_2px_var(--border-accent)] [transition-property:color,box-shadow] [transition-duration:var(--motion-secondary-sweep-duration)] [transition-timing-function:var(--motion-secondary-sweep-ease)] hover:[box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)] active:translate-y-[1px] active:[box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)] focus-visible:outline-none focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)]"
-                >
-                  <span class="relative z-10 text-$color-accent transition-colors duration-300 ease-out group-hover:color-$color-primary group-focus-visible:color-$color-primary group-active:color-$color-primary">
-                    <DsTypography
-                      as="span"
-                      role="meta"
-                      size="sm"
-                      tracking="relaxed"
-                      uppercase
-                    >
-                      Secondary Sweep Accent
-                    </DsTypography>
-                  </span>
-                  <span class="absolute inset-0 z-0 bg-$bg-accent-outline-fill translate-y-full transform [transition-duration:var(--motion-secondary-sweep-duration)] [transition-timing-function:var(--motion-secondary-sweep-ease)] transition-transform group-hover:translate-y-0 group-focus-visible:translate-y-0 group-active:translate-y-0" />
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </DsSectionBody>
     </DsSectionShell>
