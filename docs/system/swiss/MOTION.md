@@ -26,6 +26,18 @@ Einsatz:
 Einsatz:
 - `tertiary` (`default`, `accent`) fuer Underline/Morph-Interaktion
 
+### Primary Decrypted Text
+- Trigger: `view` + `hover` (Default in `DsButton`)
+- Default Timing:
+  - `speed`: `45ms`
+  - `maxIterations`: `10`
+  - `sequential`: `true`
+  - `revealDirection`: `start`
+
+Einsatz:
+- `primary` (`default`, `accent`) Label-Reveal via `DsDecryptedText`
+- Hover wird auf Button-Ebene getriggert (nicht nur Text-Span)
+
 ## Richtlinien
 - Hover und Focus-Visible sollen sich in der Richtung konsistent anfuehlen.
 - Active bleibt ein kurzer Press-State (kein zweiter komplexer Motion-Track).

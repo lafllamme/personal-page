@@ -83,6 +83,10 @@ Hinweis Runtime:
   - Size-Mapping: `sm -> xs`, `md -> sm`, `lg -> md`
   - Weight-Mapping: `default -> medium`, `strong -> semibold`
   - Tracking-Mapping: `tracking="default|relaxed"` auf `type-track-meta-*` bzw. `type-track-meta-*-relaxed` (aktuell nur wirksam fuer `role="meta"`)
+- Primary Label Motion:
+  - `DsDecryptedText` aktiv fuer `type="primary"` (default + accent)
+  - Default Controls: `decryptAnimateOn="both"`, `decryptSpeed=45`, `decryptSequential=true`, `decryptMaxIterations=10`, `decryptRevealDirection="start"`
+  - Hover-Trigger liegt auf Button-Ebene (nicht nur Text-Node)
 
 ### Secondary Motion Tokens (vertical sweep)
 - `motion-secondary-sweep-duration`

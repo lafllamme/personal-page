@@ -133,6 +133,19 @@ Der Button wird ueber zwei Dimensionen aufgebaut:
   - hover/active/focus fahren den Fill nach oben (`translate-y-0`) ueber `motion-secondary-sweep-*` Tokens
 - Kein Container-Scale auf Hover/Active (Button-Groesse bleibt stabil).
 
+### 10.5 Primary Text-Animation (final)
+- `primary` (`default` + `accent`) nutzt `DsDecryptedText` fuer Label-Reveal.
+- Triggerverhalten:
+  - Default: `view` + `hover` (`decryptAnimateOn="both"`).
+  - Hover-Trigger ist am Button gebunden (nicht nur auf Text-Span).
+- Standardwerte:
+  - `decryptSpeed=45`
+  - `decryptSequential=true`
+  - `decryptMaxIterations=10`
+  - `decryptRevealDirection='start'`
+- Fokus auf stabile Geometrie:
+  - Label-Breite bleibt stabil (kein Width-Jump waehrend Scramble).
+
 ## 11) P04-MPZ01 Origin References (nicht verlieren)
 
 Die originalen Referenzen fuer den heutigen Build-Stand:
