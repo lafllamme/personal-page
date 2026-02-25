@@ -139,7 +139,7 @@ Der Button wird ueber zwei Dimensionen aufgebaut:
   - Default: `view` + `hover` (`decryptAnimateOn="both"`).
   - Hover-Trigger ist am Button gebunden (nicht nur auf Text-Span).
 - Standardwerte:
-  - `decryptSpeed=45`
+  - `decryptSpeed=50`
   - `decryptSequential=true`
   - `decryptMaxIterations=10`
   - `decryptRevealDirection='start'`

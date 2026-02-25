@@ -14,6 +14,7 @@ type LegacyVariant = ButtonType | 'quartery'
 type ComboKey = `${ButtonVariant}-${ButtonType}`
 
 const props = withDefaults(defineProps<{
+  text?: string
   type?: ButtonType
   variant?: ButtonVariant | LegacyVariant
   size?: ButtonSize
@@ -27,6 +28,7 @@ const props = withDefaults(defineProps<{
   decryptUseOriginalCharsOnly?: boolean
   disabled?: boolean
 }>(), {
+  text: '',
   type: 'primary',
   variant: 'default',
   size: 'md',
@@ -34,7 +36,7 @@ const props = withDefaults(defineProps<{
   weight: 'default',
   decryptAnimateOn: 'both',
   decryptRevealDirection: 'start',
-  decryptSpeed: 45,
+  decryptSpeed: 50,
   decryptMaxIterations: 10,
   decryptSequential: true,
   decryptUseOriginalCharsOnly: false,
@@ -42,6 +44,7 @@ const props = withDefaults(defineProps<{
 })
 
 const {
+  text,
   type,
   variant,
   size,
@@ -143,6 +146,8 @@ const slotText = computed(() => {
   return extractText(nodes).trim()
 })
 
+const labelText = computed(() => (text.value?.trim() || slotText.value))
+
 const hoverDecryptTick = ref(0)
 
 function triggerPrimaryDecrypt() {
@@ -157,7 +162,7 @@ const resolvedDecryptAnimateOn = computed<'view' | 'manual'>(() => {
   return decryptAnimateOn.value === 'hover' ? 'manual' : 'view'
 })
 
-const decryptTriggerKey = computed(() => `${normalizedVariant.value}-${normalizedType.value}-${slotText.value}-${hoverDecryptTick.value}`)
+const decryptTriggerKey = computed(() => `${normalizedVariant.value}-${normalizedType.value}-${labelText.value}-${hoverDecryptTick.value}`)
 </script>
 
 <template>
@@ -179,9 +184,9 @@ const decryptTriggerKey = computed(() => `${normalizedVariant.value}-${normalize
       class="ui-button-label"
       :class="[isGhostType ? 'is-ghost-label ui-ghost-label' : '']"
     >
-      <template v-if="isPrimaryType && slotText">
+      <template v-if="isPrimaryType && labelText">
         <DsDecryptedText
-          :text="slotText"
+          :text="labelText"
           :speed="decryptSpeed"
           :max-iterations="decryptMaxIterations"
           :sequential="decryptSequential"
@@ -192,7 +197,10 @@ const decryptTriggerKey = computed(() => `${normalizedVariant.value}-${normalize
         />
       </template>
       <template v-else>
-        <slot />
+        <template v-if="labelText">
+          {{ labelText }}
+        </template>
+        <slot v-else />
       </template>
     </DsTypography>
   </button>

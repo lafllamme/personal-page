@@ -29,7 +29,7 @@ Einsatz:
 ### Primary Decrypted Text
 - Trigger: `view` + `hover` (Default in `DsButton`)
 - Default Timing:
-  - `speed`: `45ms`
+  - `speed`: `50ms`
   - `maxIterations`: `10`
   - `sequential`: `true`
   - `revealDirection`: `start`

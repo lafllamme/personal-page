@@ -10,6 +10,7 @@ const meta = {
   component: DsButton,
   tags: ['autodocs'],
   args: {
+    text: 'Click Me',
     type: 'primary',
     variant: 'default',
     size: 'md',
@@ -17,13 +18,14 @@ const meta = {
     weight: 'default',
     decryptAnimateOn: 'both',
     decryptRevealDirection: 'start',
-    decryptSpeed: 45,
+    decryptSpeed: 50,
     decryptMaxIterations: 10,
     decryptSequential: true,
     decryptUseOriginalCharsOnly: false,
     disabled: false,
   },
   argTypes: {
+    text: { control: 'text' },
     type: {
       control: 'select',
       options: ['primary', 'secondary', 'tertiary', 'quaternary'],
@@ -71,7 +73,7 @@ const meta = {
       <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
         <DsSectionContainer layout="block" :full-viewport="false" :bordered="false">
           <div class="flex justify-center">
-            <DsButton v-bind="args">Click Me</DsButton>
+            <DsButton v-bind="args" />
           </div>
         </DsSectionContainer>
       </div>
@@ -135,17 +137,17 @@ export const Variants: Story = {
       <div class="grid gap-4">
         <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">default</div>
         <div class="flex flex-wrap items-center gap-3">
-          <DsButton type="primary" variant="default" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled">Click Me</DsButton>
-          <DsButton type="secondary" variant="default" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled">Click Me</DsButton>
-          <DsButton type="tertiary" variant="default" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled">Click Me</DsButton>
-          <DsButton type="quaternary" variant="default" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled">Click Me</DsButton>
+          <DsButton type="primary" variant="default" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
+          <DsButton type="secondary" variant="default" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
+          <DsButton type="tertiary" variant="default" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
+          <DsButton type="quaternary" variant="default" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
         </div>
         <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">accent</div>
         <div class="flex flex-wrap items-center gap-3">
-          <DsButton type="primary" variant="accent" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled">Click Me</DsButton>
-          <DsButton type="secondary" variant="accent" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled">Click Me</DsButton>
-          <DsButton type="tertiary" variant="accent" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled">Click Me</DsButton>
-          <DsButton type="quaternary" variant="accent" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled">Click Me</DsButton>
+          <DsButton type="primary" variant="accent" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
+          <DsButton type="secondary" variant="accent" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
+          <DsButton type="tertiary" variant="accent" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
+          <DsButton type="quaternary" variant="accent" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
         </div>
       </div>
     `,
