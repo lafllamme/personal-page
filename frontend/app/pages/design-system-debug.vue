@@ -2,6 +2,7 @@
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
+import DsTextLink from '@/components/ui/DesignSystem/DsTextLink.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
 definePageMeta({
@@ -358,6 +359,62 @@ function tokenLabel(role: string, size: string) {
               >
                 Quaternary
               </DsButton>
+            </div>
+          </div>
+        </div>
+      </DsSectionBody>
+    </DsSectionShell>
+
+    <DsSectionShell
+      spacing="sm"
+      :debug="true"
+    >
+      <DsSectionBody
+        max="7xl"
+        gutter="md"
+        :debug="true"
+      >
+        <div class="bg-[#10b981]/8 outline-1 outline-[#10b981]/80 outline space-y-6 dark:bg-[#10b981]/12 dark:outline-[#34d399]/80 md:space-y-7">
+          <DsTypography
+            as="p"
+            role="meta"
+            size="xs"
+            uppercase
+          >
+            Link Concepts (Debug)
+          </DsTypography>
+
+          <DsTypography
+            as="p"
+            role="body"
+            size="sm"
+            tone="muted"
+          >
+            Zwei Link-Arten: Default mit immer sichtbarer Underline, plus Hover-Underline für Footer/Nav-Kontext.
+          </DsTypography>
+
+          <div class="mt-3 bg-[#ef4444]/6 outline-2 outline-[#ef4444]/80 outline p-4 dark:bg-[#ef4444]/10 dark:outline-[#f87171]/90">
+            <div class="grid gap-6 md:grid-cols-2">
+              <div class="space-y-2">
+                <DsTypography as="p" role="meta" size="xs" uppercase>
+                  Default · Always Underline
+                </DsTypography>
+                <DsTextLink
+                  href="#"
+                  text="Read article"
+                />
+              </div>
+
+              <div class="space-y-2">
+                <DsTypography as="p" role="meta" size="xs" uppercase>
+                  Variant · Hover Underline (L1 Sweep)
+                </DsTypography>
+                <DsTextLink
+                  href="#"
+                  text="Read article"
+                  underline="hover"
+                />
+              </div>
             </div>
           </div>
         </div>

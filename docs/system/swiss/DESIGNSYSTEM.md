@@ -55,6 +55,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Accent Color Referenz: [ACCENT-COLOR-RADIX-TEAL-911.md](../../reference/ACCENT-COLOR-RADIX-TEAL-911.md)
 - Foundation Baseline: [FOUNDATION-BASELINE.md](./FOUNDATION-BASELINE.md)
 - Motion Baseline: [MOTION.md](./MOTION.md)
+- Link Contract: [DS-LINK.md](./DS-LINK.md)
 - Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
 - Component Contract: [COMPONENT-CONTRACT.md](./COMPONENT-CONTRACT.md)
 - Typography Source Map: [TYPOGRAPHY-SOURCE-MAP.md](./TYPOGRAPHY-SOURCE-MAP.md)

@@ -98,6 +98,12 @@ Hinweis:
 - Kein Container-Scale fuer Secondary (stabile Button-Geometrie).
 - Detail-Referenz: [MOTION.md](./MOTION.md)
 
+### Link Modes (DsTextLink)
+- Default: `underline="always"` (Content-first, direkte Link-Erkennbarkeit)
+- Alternative: `underline="hover"` (Footer/Nav)
+- L1 Sweep ist tokenisiert ueber `ui-link-underline-hover`.
+- Detail-Referenz: [DS-LINK.md](./DS-LINK.md)
+
 ## Farb-Baseline
 - Basisflaechen: `pureBlack` / `pureWhite`
 - Accent-System: `Radix Teal 9/11`

@@ -1,37 +1,40 @@
 <script setup lang="ts">
+import { computed } from 'vue'
+import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
+
 const props = withDefaults(defineProps<{
+  text?: string
   href?: string
+  underline?: 'always' | 'hover'
 }>(), {
+  text: '',
   href: '#',
+  underline: 'always',
+})
+
+const underlineClass = computed(() => {
+  return props.underline === 'hover'
+    ? 'ui-link-underline-hover'
+    : 'ui-link-underline-always'
 })
 </script>
 
 <template>
   <a
     :href="props.href"
-    class="font-manrope ds-link text-sm leading-relaxed"
+    class="ui-link-base"
+    :class="underlineClass"
   >
-    <slot />
+    <DsTypography
+      as="span"
+      role="meta"
+      size="sm"
+      tracking="relaxed"
+    >
+      <template v-if="props.text">
+        {{ props.text }}
+      </template>
+      <slot v-else />
+    </DsTypography>
   </a>
 </template>
-
-<style scoped>
-.ds-link {
-  color: #12a594;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  transition: color 160ms ease;
-}
-
-.dark .ds-link {
-  color: #0bd8b6;
-}
-
-.ds-link:hover {
-  color: color-mix(in srgb, #12a594 75%, #000);
-}
-
-.dark .ds-link:hover {
-  color: color-mix(in srgb, #0bd8b6 75%, #fff);
-}
-</style>
