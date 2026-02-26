@@ -7,19 +7,47 @@ export const buttonShortcuts: UserShortcuts = [
   ],
   [
     'ui-button-sm',
-    'px-3 py-1.5',
+    'px-3 py-1.5 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-sm)]',
   ],
   [
     'ui-button-md',
-    'px-4 py-2',
+    'px-4 py-2 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-md)]',
   ],
   [
     'ui-button-lg',
-    'px-5 py-2.5',
+    'px-5 py-2.5 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-lg)]',
   ],
   [
     'ui-button-label',
     'relative z-1 inline-flex items-center',
+  ],
+  [
+    'ui-primary-rotate-wrap',
+    'relative inline-grid place-items-center',
+  ],
+  [
+    'ui-primary-rotate-label',
+    'relative inline-flex items-center justify-start [grid-area:1/1] [transform-origin:50%_var(--motion-primary-rotate-origin-y)] [will-change:transform] whitespace-nowrap',
+  ],
+  [
+    'ui-primary-rotate-label-l1',
+    '[transform:rotate(0deg)]',
+  ],
+  [
+    'ui-primary-rotate-label-l2',
+    'absolute [transform:rotate(calc(var(--motion-primary-rotate-angle)*-1))]',
+  ],
+  [
+    'ui-primary-rotate-typo',
+    '[line-height:1] [letter-spacing:var(--motion-primary-rotate-letter-spacing)]',
+  ],
+  [
+    'ui-primary-rotate-neutral-fix',
+    'hover:enabled:bg-$bg-solid hover:enabled:color-$color-inverse',
+  ],
+  [
+    'ui-primary-rotate-accent-fix',
+    'hover:enabled:bg-$bg-accent hover:enabled:color-$color-on-accent',
   ],
   [
     'ui-ghost-button',

@@ -135,17 +135,18 @@ Der Button wird ueber zwei Dimensionen aufgebaut:
 - Kein Container-Scale auf Hover/Active (Button-Groesse bleibt stabil).
 
 ### 10.5 Primary Text-Animation (final)
-- `primary` (`default` + `accent`) nutzt `DsDecryptedText` fuer Label-Reveal.
+- `primary` (`default` + `accent`) nutzt standardmaessig `animation="rotate"` (staggered rotate labels).
+- Optional steht `animation="decrypt"` fuer den Scramble-Effekt zur Verfuegung.
 - Triggerverhalten:
-  - Default: `view` + `hover` (`decryptAnimateOn="both"`).
-  - Hover-Trigger ist am Button gebunden (nicht nur auf Text-Span).
+  - `rotate`: Trigger auf Hover/Fokus am Button.
+  - `decrypt`: Trigger ueber `decrypt.animateOn` (`view|hover|both`).
 - Standardwerte:
-  - `decryptSpeed=50`
-  - `decryptSequential=true`
-  - `decryptMaxIterations=10`
-  - `decryptRevealDirection='start'`
+  - `animation='rotate'`
+  - (`decrypt` optional als Objekt: `{ speed: 50, sequential: true, maxIterations: 10, revealDirection: 'start', animateOn: 'both', useOriginalCharsOnly: false }`)
 - Fokus auf stabile Geometrie:
   - Label-Breite bleibt stabil (kein Width-Jump waehrend Scramble).
+  - Button-Box bleibt fuer alle Varianten/Sizes konsistent (keine Primary-only Height/Padding-Overrides).
+  - Primary Rotate nutzt 2 Label-Layer + y-origin Token-Tuning (Osmo-nahe), aber ohne DS-Layout-Drift.
 
 ## 11) P04-MPZ01 Origin References (nicht verlieren)
 

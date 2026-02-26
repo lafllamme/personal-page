@@ -16,12 +16,15 @@ const meta = {
     size: 'md',
     tracking: 'relaxed',
     weight: 'default',
-    decryptAnimateOn: 'both',
-    decryptRevealDirection: 'start',
-    decryptSpeed: 50,
-    decryptMaxIterations: 10,
-    decryptSequential: true,
-    decryptUseOriginalCharsOnly: false,
+    animation: 'rotate',
+    decrypt: {
+      animateOn: 'both',
+      revealDirection: 'start',
+      speed: 50,
+      maxIterations: 10,
+      sequential: true,
+      useOriginalCharsOnly: false,
+    },
     disabled: false,
   },
   argTypes: {
@@ -46,22 +49,11 @@ const meta = {
       control: 'select',
       options: ['default', 'strong'],
     },
-    decryptAnimateOn: {
+    animation: {
       control: 'select',
-      options: ['view', 'hover', 'both'],
+      options: ['rotate', 'decrypt', 'none'],
     },
-    decryptRevealDirection: {
-      control: 'select',
-      options: ['start', 'end', 'center'],
-    },
-    decryptSpeed: {
-      control: { type: 'number', min: 16, max: 300, step: 1 },
-    },
-    decryptMaxIterations: {
-      control: { type: 'number', min: 1, max: 40, step: 1 },
-    },
-    decryptSequential: { control: 'boolean' },
-    decryptUseOriginalCharsOnly: { control: 'boolean' },
+    decrypt: { control: 'object' },
     disabled: { control: 'boolean' },
   },
   render: args => ({
@@ -137,17 +129,17 @@ export const Variants: Story = {
       <div class="grid gap-4">
         <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">default</div>
         <div class="flex flex-wrap items-center gap-3">
-          <DsButton type="primary" variant="default" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
-          <DsButton type="secondary" variant="default" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
-          <DsButton type="tertiary" variant="default" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
-          <DsButton type="quaternary" variant="default" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
+          <DsButton v-bind="args" type="primary" variant="default" />
+          <DsButton v-bind="args" type="secondary" variant="default" />
+          <DsButton v-bind="args" type="tertiary" variant="default" />
+          <DsButton v-bind="args" type="quaternary" variant="default" />
         </div>
         <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">accent</div>
         <div class="flex flex-wrap items-center gap-3">
-          <DsButton type="primary" variant="accent" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
-          <DsButton type="secondary" variant="accent" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
-          <DsButton type="tertiary" variant="accent" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
-          <DsButton type="quaternary" variant="accent" :text="args.text" :size="args.size" :tracking="args.tracking" :weight="args.weight" :decrypt-animate-on="args.decryptAnimateOn" :decrypt-reveal-direction="args.decryptRevealDirection" :decrypt-speed="args.decryptSpeed" :decrypt-max-iterations="args.decryptMaxIterations" :decrypt-sequential="args.decryptSequential" :decrypt-use-original-chars-only="args.decryptUseOriginalCharsOnly" :disabled="args.disabled" />
+          <DsButton v-bind="args" type="primary" variant="accent" />
+          <DsButton v-bind="args" type="secondary" variant="accent" />
+          <DsButton v-bind="args" type="tertiary" variant="accent" />
+          <DsButton v-bind="args" type="quaternary" variant="accent" />
         </div>
       </div>
     `,

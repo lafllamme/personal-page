@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { computed, ref, toRefs, useSlots, type VNode, type VNodeArrayChildren } from 'vue'
+import type { VNode, VNodeArrayChildren } from 'vue'
+import { gsap } from 'gsap'
+import { computed, onBeforeUnmount, ref, toRefs, useSlots } from 'vue'
 import DsDecryptedText from './DsDecryptedText.vue'
 import DsTypography from './DsTypography.vue'
 
@@ -8,8 +10,18 @@ type ButtonVariant = 'default' | 'accent'
 type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonTracking = 'default' | 'relaxed'
 type ButtonWeight = 'default' | 'strong'
+type PrimaryAnimation = 'rotate' | 'decrypt' | 'none'
 type DecryptAnimateOn = 'view' | 'hover' | 'both'
 type DecryptRevealDirection = 'start' | 'end' | 'center'
+
+interface DecryptConfig {
+  animateOn: DecryptAnimateOn
+  revealDirection: DecryptRevealDirection
+  speed: number
+  maxIterations: number
+  sequential: boolean
+  useOriginalCharsOnly: boolean
+}
 type LegacyVariant = ButtonType | 'quartery'
 type ComboKey = `${ButtonVariant}-${ButtonType}`
 
@@ -20,12 +32,8 @@ const props = withDefaults(defineProps<{
   size?: ButtonSize
   tracking?: ButtonTracking
   weight?: ButtonWeight
-  decryptAnimateOn?: DecryptAnimateOn
-  decryptRevealDirection?: DecryptRevealDirection
-  decryptSpeed?: number
-  decryptMaxIterations?: number
-  decryptSequential?: boolean
-  decryptUseOriginalCharsOnly?: boolean
+  animation?: PrimaryAnimation
+  decrypt?: Partial<DecryptConfig>
   disabled?: boolean
 }>(), {
   text: '',
@@ -34,14 +42,26 @@ const props = withDefaults(defineProps<{
   size: 'md',
   tracking: 'relaxed',
   weight: 'default',
-  decryptAnimateOn: 'both',
-  decryptRevealDirection: 'start',
-  decryptSpeed: 50,
-  decryptMaxIterations: 10,
-  decryptSequential: true,
-  decryptUseOriginalCharsOnly: false,
+  animation: 'rotate',
+  decrypt: () => ({
+    animateOn: 'both',
+    revealDirection: 'start',
+    speed: 50,
+    maxIterations: 10,
+    sequential: true,
+    useOriginalCharsOnly: false,
+  }),
   disabled: false,
 })
+
+const DEFAULT_DECRYPT_CONFIG: DecryptConfig = {
+  animateOn: 'both',
+  revealDirection: 'start',
+  speed: 50,
+  maxIterations: 10,
+  sequential: true,
+  useOriginalCharsOnly: false,
+}
 
 const {
   text,
@@ -50,12 +70,8 @@ const {
   size,
   tracking,
   weight,
-  decryptAnimateOn,
-  decryptRevealDirection,
-  decryptSpeed,
-  decryptMaxIterations,
-  decryptSequential,
-  decryptUseOriginalCharsOnly,
+  animation,
+  decrypt,
   disabled,
 } = toRefs(props)
 
@@ -101,6 +117,20 @@ const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
 const isGhostType = computed(() => normalizedType.value === 'tertiary')
 const isPrimaryType = computed(() => normalizedType.value === 'primary')
 const ghostButtonClass = 'is-ghost-button is-ghost-morph is-ghost-morph-clip ui-ghost-button ui-ghost-morph-clip'
+const primaryRotateButtonClass = computed(() => (isPrimaryRotateAnimation.value ? 'overflow-hidden' : ''))
+const primaryRotateTypographyClass = computed(() => (isPrimaryRotateAnimation.value ? 'ui-primary-rotate-typo' : ''))
+const primaryRotateVariantFixClass = computed(() => {
+  if (!isPrimaryRotateAnimation.value || normalizedType.value !== 'primary')
+    return ''
+
+  if (normalizedVariant.value === 'default')
+    return 'ui-primary-rotate-neutral-fix'
+
+  if (normalizedVariant.value === 'accent')
+    return 'ui-primary-rotate-accent-fix'
+
+  return ''
+})
 
 const sizeClassMap: Record<ButtonSize, string> = {
   sm: 'ui-button-sm',
@@ -147,32 +177,84 @@ const slotText = computed(() => {
 })
 
 const labelText = computed(() => (text.value?.trim() || slotText.value))
+const buttonRef = ref<HTMLButtonElement | null>(null)
 
 const hoverDecryptTick = ref(0)
+const primaryRotateTween = ref<gsap.core.Tween | null>(null)
+const resolvedDecrypt = computed<DecryptConfig>(() => ({
+  ...DEFAULT_DECRYPT_CONFIG,
+  ...(decrypt.value ?? {}),
+}))
 
-function triggerPrimaryDecrypt() {
+const isPrimaryRotateAnimation = computed(() => isPrimaryType.value && animation.value === 'rotate')
+const isPrimaryDecryptAnimation = computed(() => isPrimaryType.value && animation.value === 'decrypt')
+
+function getCssVarNumber(name: string, fallback: number): number {
+  const value = buttonRef.value ? getComputedStyle(buttonRef.value).getPropertyValue(name).trim() : ''
+  const parsed = Number.parseFloat(value)
+  return Number.isFinite(parsed) ? parsed : fallback
+}
+
+function triggerPrimaryAnimation() {
   if (!isPrimaryType.value || disabled.value)
     return
 
-  if (decryptAnimateOn.value === 'hover' || decryptAnimateOn.value === 'both')
+  if (isPrimaryDecryptAnimation.value && (resolvedDecrypt.value.animateOn === 'hover' || resolvedDecrypt.value.animateOn === 'both'))
     hoverDecryptTick.value += 1
+
+  if (!isPrimaryRotateAnimation.value || !buttonRef.value)
+    return
+
+  const labels = buttonRef.value.querySelectorAll<HTMLElement>('.ui-primary-rotate-label')
+  if (!labels.length)
+    return
+
+  if (primaryRotateTween.value) {
+    primaryRotateTween.value.kill()
+    primaryRotateTween.value = null
+    gsap.set(labels, { clearProps: 'rotation' })
+  }
+
+  const angle = getCssVarNumber('--motion-primary-rotate-angle', 20)
+  const duration = getCssVarNumber('--motion-primary-rotate-duration', 0.5)
+  const stagger = getCssVarNumber('--motion-primary-rotate-stagger', 0.075)
+
+  primaryRotateTween.value = gsap.to(labels, {
+    rotation: `+=${angle}`,
+    duration,
+    ease: 'expo.out',
+    stagger,
+    overwrite: 'auto',
+    onComplete: () => {
+      gsap.set(labels, { clearProps: 'rotation' })
+      primaryRotateTween.value = null
+    },
+  })
 }
 
 const resolvedDecryptAnimateOn = computed<'view' | 'manual'>(() => {
-  return decryptAnimateOn.value === 'hover' ? 'manual' : 'view'
+  return resolvedDecrypt.value.animateOn === 'hover' ? 'manual' : 'view'
 })
 
 const decryptTriggerKey = computed(() => `${normalizedVariant.value}-${normalizedType.value}-${labelText.value}-${hoverDecryptTick.value}`)
+
+onBeforeUnmount(() => {
+  if (primaryRotateTween.value) {
+    primaryRotateTween.value.kill()
+    primaryRotateTween.value = null
+  }
+})
 </script>
 
 <template>
   <button
+    ref="buttonRef"
     type="button"
     :disabled="disabled"
     class="group ui-button-base"
-    :class="[sizeClass, variantTypeClass, isGhostType ? ghostButtonClass : '']"
-    @pointerenter="triggerPrimaryDecrypt"
-    @focus="triggerPrimaryDecrypt"
+    :class="[sizeClass, variantTypeClass, isGhostType ? ghostButtonClass : '', primaryRotateButtonClass, primaryRotateVariantFixClass]"
+    @pointerenter="triggerPrimaryAnimation"
+    @focusin="triggerPrimaryAnimation"
   >
     <DsTypography
       as="span"
@@ -182,19 +264,28 @@ const decryptTriggerKey = computed(() => `${normalizedVariant.value}-${normalize
       :weight="typographyWeight"
       :uppercase="true"
       class="ui-button-label"
-      :class="[isGhostType ? 'is-ghost-label ui-ghost-label' : '']"
+      :class="[isGhostType ? 'is-ghost-label ui-ghost-label' : '', primaryRotateTypographyClass]"
     >
-      <template v-if="isPrimaryType && labelText">
+      <template v-if="isPrimaryDecryptAnimation && labelText">
         <DsDecryptedText
           :text="labelText"
-          :speed="decryptSpeed"
-          :max-iterations="decryptMaxIterations"
-          :sequential="decryptSequential"
-          :reveal-direction="decryptRevealDirection"
-          :use-original-chars-only="decryptUseOriginalCharsOnly"
+          :speed="resolvedDecrypt.speed"
+          :max-iterations="resolvedDecrypt.maxIterations"
+          :sequential="resolvedDecrypt.sequential"
+          :reveal-direction="resolvedDecrypt.revealDirection"
+          :use-original-chars-only="resolvedDecrypt.useOriginalCharsOnly"
           :animate-on="resolvedDecryptAnimateOn"
           :trigger-key="decryptTriggerKey"
         />
+      </template>
+      <template v-else-if="isPrimaryRotateAnimation && labelText">
+        <span class="ui-primary-rotate-wrap">
+          <span class="ui-primary-rotate-label ui-primary-rotate-label-l1">{{ labelText }}</span>
+          <span
+            class="ui-primary-rotate-label ui-primary-rotate-label-l2"
+            aria-hidden="true"
+          >{{ labelText }}</span>
+        </span>
       </template>
       <template v-else>
         <template v-if="labelText">

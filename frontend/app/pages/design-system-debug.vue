@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { gsap } from 'gsap'
+import { onBeforeUnmount, onMounted } from 'vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
@@ -27,6 +29,61 @@ const typoRoleMatrix = [
 function tokenLabel(role: string, size: string) {
   return `text-$type-${role}-${size}`
 }
+
+const disposeOrbitHandlers: Array<() => void> = []
+
+onMounted(() => {
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.osmo-rot-btn')
+
+  buttons.forEach((button) => {
+    let tween: gsap.core.Tween | null = null
+
+    const runOrbit = () => {
+      const labels = button.querySelectorAll<HTMLElement>('.osmo-rot-label')
+      if (!labels.length)
+        return
+
+      if (tween) {
+        tween.kill()
+        tween = null
+        gsap.set(labels, { clearProps: 'rotation' })
+      }
+
+      const r = Number.parseFloat(getComputedStyle(button).getPropertyValue('--r')) || 20
+
+      tween = gsap.to(labels, {
+        rotation: `+=${r}`,
+        duration: 0.5,
+        ease: 'expo.out',
+        stagger: 0.075,
+        overwrite: 'auto',
+        onComplete: () => {
+          gsap.set(labels, { clearProps: 'rotation' })
+          tween = null
+        },
+      })
+    }
+
+    button.addEventListener('pointerenter', runOrbit)
+    button.addEventListener('focusin', runOrbit)
+
+    disposeOrbitHandlers.push(() => {
+      button.removeEventListener('pointerenter', runOrbit)
+      button.removeEventListener('focusin', runOrbit)
+      if (tween) {
+        tween.kill()
+        tween = null
+      }
+      const labels = button.querySelectorAll<HTMLElement>('.osmo-rot-label')
+      gsap.set(labels, { clearProps: 'rotation' })
+    })
+  })
+})
+
+onBeforeUnmount(() => {
+  disposeOrbitHandlers.forEach(fn => fn())
+  disposeOrbitHandlers.length = 0
+})
 </script>
 
 <template>
@@ -281,7 +338,7 @@ function tokenLabel(role: string, size: string) {
                 variant="default"
                 size="md"
               >
-                Primary
+                CLICK MEEEEE
               </DsButton>
               <DsButton
                 type="secondary"
@@ -306,7 +363,6 @@ function tokenLabel(role: string, size: string) {
               </DsButton>
             </div>
           </div>
-
         </div>
       </DsSectionBody>
     </DsSectionShell>
@@ -393,7 +449,7 @@ function tokenLabel(role: string, size: string) {
             Zwei Link-Arten: Default mit immer sichtbarer Underline, plus Hover-Underline für Footer/Nav-Kontext.
           </DsTypography>
 
-          <div class="mt-3 bg-[#ef4444]/6 outline-2 outline-[#ef4444]/80 outline p-4 dark:bg-[#ef4444]/10 dark:outline-[#f87171]/90">
+          <div class="mt-3 bg-[#ef4444]/6 p-4 outline-2 outline-[#ef4444]/80 outline dark:bg-[#ef4444]/10 dark:outline-[#f87171]/90">
             <div class="grid gap-6 md:grid-cols-2">
               <div class="space-y-2">
                 <DsTypography as="p" role="meta" size="xs" uppercase>
@@ -420,5 +476,104 @@ function tokenLabel(role: string, size: string) {
         </div>
       </DsSectionBody>
     </DsSectionShell>
+
+    <DsSectionShell
+      spacing="sm"
+      :debug="true"
+    >
+      <DsSectionBody
+        max="7xl"
+        gutter="md"
+        :debug="true"
+      >
+        <div class="bg-[#10b981]/8 outline-1 outline-[#10b981]/80 outline space-y-6 dark:bg-[#10b981]/12 dark:outline-[#34d399]/80 md:space-y-7">
+          <DsTypography
+            as="p"
+            role="meta"
+            size="xs"
+            uppercase
+          >
+            Primary Study (Osmo Header Hover)
+          </DsTypography>
+
+          <DsTypography
+            as="p"
+            role="body"
+            size="sm"
+            tone="muted"
+          >
+            Text rotiert in einem radialen Orbit innerhalb des Buttons. Study-only, noch nicht tokenisiert.
+          </DsTypography>
+
+          <div class="mt-3 bg-[#ef4444]/6 p-4 outline-2 outline-[#ef4444]/80 outline dark:bg-[#ef4444]/10 dark:outline-[#f87171]/90">
+            <div class="flex flex-wrap items-center gap-4">
+              <button class="osmo-rot-btn" type="button">
+                <span class="osmo-rot-label-wrap">
+                  <span class="osmo-rot-label">READ</span>
+                  <span class="osmo-rot-label" aria-hidden="true">READ</span>
+                  <span class="osmo-rot-label" aria-hidden="true">READ</span>
+                </span>
+              </button>
+
+              <button class="osmo-rot-btn osmo-rot-btn-solid" type="button">
+                <span class="osmo-rot-label-wrap">
+                  <span class="osmo-rot-label">Join</span>
+                  <span class="osmo-rot-label" aria-hidden="true">Join</span>
+                  <span class="osmo-rot-label" aria-hidden="true">Join</span>
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </DsSectionBody>
+    </DsSectionShell>
   </div>
 </template>
+
+<style scoped>
+.osmo-rot-btn {
+  --r: 20deg;
+  --y: 1180%;
+  position: relative;
+  border-radius: 9999px;
+  border: 1px solid currentColor;
+  color: var(--color-primary);
+  background: transparent;
+  padding: 0.52rem 1rem;
+  line-height: 1;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.osmo-rot-btn-solid {
+  background: var(--color-primary);
+  color: var(--color-inverse);
+}
+
+.osmo-rot-label-wrap {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+}
+
+.osmo-rot-label {
+  grid-area: 1 / 1;
+  transform-origin: 50% var(--y);
+  will-change: transform;
+  white-space: nowrap;
+}
+
+.osmo-rot-label:nth-of-type(1) {
+  transform: rotate(0deg);
+}
+
+.osmo-rot-label:nth-of-type(2) {
+  position: absolute;
+  transform: rotate(calc(var(--r) * -1));
+}
+
+.osmo-rot-label:nth-of-type(3) {
+  position: absolute;
+  transform: rotate(calc(var(--r) * -2));
+}
+</style>
