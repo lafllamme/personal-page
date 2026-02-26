@@ -262,6 +262,131 @@ function tokenLabel(role: string, size: string) {
       :debug="true"
     >
       <DsSectionBody
+        max="7xl"
+        gutter="md"
+        :debug="true"
+      >
+        <div class="bg-[#10b981]/8 outline-1 outline-[#10b981]/80 outline space-y-6 dark:bg-[#10b981]/12 dark:outline-[#34d399]/80 md:space-y-7">
+          <DsTypography
+            as="p"
+            role="meta"
+            size="xs"
+            uppercase
+          >
+            Primary Sand Exploration (Default + Hover)
+          </DsTypography>
+
+          <DsTypography
+            as="p"
+            role="body"
+            size="sm"
+            tone="muted"
+          >
+            Ziel: Primary bleibt klar unterscheidbar zu Secondary, mit Sand-Basis in beiden Modes.
+          </DsTypography>
+
+          <div class="mt-3 bg-[#ef4444]/6 p-4 outline-2 outline-[#ef4444]/80 outline dark:bg-[#ef4444]/10 dark:outline-[#f87171]/90">
+            <div class="grid gap-4">
+              <div class="space-y-2">
+                <DsTypography as="p" role="meta" size="xs" uppercase>
+                  P1 · Hover Sand (L: sand-12, D: sand-2)
+                </DsTypography>
+                <div class="flex flex-wrap items-center gap-3">
+                  <DsButton
+                    text="Primary P1"
+                    type="primary"
+                    variant="default"
+                    size="md"
+                    animation="none"
+                    class="hover:!bg-sand-3"
+                  />
+                  <DsButton text="Secondary" type="secondary" variant="default" size="md" />
+                  <DsButton text="Tertiary" type="tertiary" variant="default" size="md" />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <DsTypography as="p" role="meta" size="xs" uppercase>
+                  P2 · Hover Sand (L: sand-11, D: sand-3)
+                </DsTypography>
+                <div class="flex flex-wrap items-center gap-3">
+                  <DsButton
+                    text="Primary P2"
+                    type="primary"
+                    variant="default"
+                    size="md"
+                    animation="none"
+                    class="hover:!bg-sand-11 hover:!color-pureWhite dark:hover:!bg-sand-3 dark:hover:!color-pureBlack"
+                  />
+                  <DsButton text="Secondary" type="secondary" variant="default" size="md" />
+                  <DsButton text="Tertiary" type="tertiary" variant="default" size="md" />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <DsTypography as="p" role="meta" size="xs" uppercase>
+                  P3 · Hover Sand (L: sand-10, D: sand-4)
+                </DsTypography>
+                <div class="flex flex-wrap items-center gap-3">
+                  <DsButton
+                    text="Primary P3"
+                    type="primary"
+                    variant="default"
+                    size="md"
+                    animation="none"
+                    class="hover:!bg-sand-10 hover:!color-pureWhite dark:hover:!bg-sand-4 dark:hover:!color-pureBlack"
+                  />
+                  <DsButton text="Secondary" type="secondary" variant="default" size="md" />
+                  <DsButton text="Tertiary" type="tertiary" variant="default" size="md" />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <DsTypography as="p" role="meta" size="xs" uppercase>
+                  P4 · Hover Sand (L: sand-9, D: sand-5)
+                </DsTypography>
+                <div class="flex flex-wrap items-center gap-3">
+                  <DsButton
+                    text="Primary P4"
+                    type="primary"
+                    variant="default"
+                    size="md"
+                    animation="none"
+                    class="hover:!bg-sand-9 hover:!color-pureWhite dark:hover:!bg-sand-5 dark:hover:!color-pureBlack"
+                  />
+                  <DsButton text="Secondary" type="secondary" variant="default" size="md" />
+                  <DsButton text="Tertiary" type="tertiary" variant="default" size="md" />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <DsTypography as="p" role="meta" size="xs" uppercase>
+                  P5 · Hover Sand (L: sand-8, D: sand-6)
+                </DsTypography>
+                <div class="flex flex-wrap items-center gap-3">
+                  <DsButton
+                    text="Primary P5"
+                    type="primary"
+                    variant="default"
+                    size="md"
+                    animation="none"
+                    class="hover:!bg-sand-8 hover:!color-pureWhite dark:hover:!bg-sand-6 dark:hover:!color-pureBlack"
+                  />
+                  <DsButton text="Secondary" type="secondary" variant="default" size="md" />
+                  <DsButton text="Tertiary" type="tertiary" variant="default" size="md" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </DsSectionBody>
+    </DsSectionShell>
+
+    <DsSectionShell
+      spacing="sm"
+      :debug="true"
+    >
+      <DsSectionBody
         mode="fluid"
         :debug="true"
       >
@@ -419,6 +544,5 @@ function tokenLabel(role: string, size: string) {
         </div>
       </DsSectionBody>
     </DsSectionShell>
-
   </div>
 </template>

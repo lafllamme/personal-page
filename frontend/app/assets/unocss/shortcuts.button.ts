@@ -43,7 +43,7 @@ export const buttonShortcuts: UserShortcuts = [
   ],
   [
     'ui-primary-rotate-neutral-fix',
-    'hover:enabled:bg-$bg-solid hover:enabled:color-$color-inverse',
+    'hover:enabled:bg-$bg-solid-hover hover:enabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--un-preset-radix-sand11)]',
   ],
   [
     'ui-primary-rotate-accent-fix',

@@ -75,9 +75,9 @@ type InteractiveMatrixState = Exclude<MatrixState, 'default' | 'disabled'>
 
 const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, string>> = {
   'default-primary': {
-    'hover': 'bg-$bg-inverse color-$color-primary',
+    'hover': 'bg-$bg-solid-hover [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)]',
     'active': 'translate-y-[1px] bg-$bg-solid-active color-$color-inverse',
-    'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-primary),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
+    'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand11)]',
   },
   'default-secondary': {
     'hover': 'before:translate-y-0 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)]',

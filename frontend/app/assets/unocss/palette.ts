@@ -33,7 +33,7 @@ const colorTokens: TokenSet = {
 const bgTokens: TokenSet = {
   'bg-solid': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
   'bg-inverse': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
-  'bg-solid-hover': { light: '#1d1d1c', dark: '#d5d2ca' },
+  'bg-solid-hover': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand11)' },
   'bg-solid-active': { light: '#353533', dark: '#bdbab3' },
   'bg-solid-disabled': { light: '#3f3e3c', dark: '#b3b1aa' },
 

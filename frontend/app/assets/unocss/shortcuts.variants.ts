@@ -3,7 +3,7 @@ import type { UserShortcuts } from 'unocss'
 export const variantShortcuts: UserShortcuts = [
   [
     'v-neutral-solid',
-    'bg-$bg-solid border-transparent color-$color-inverse [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-primary)] hover:enabled:bg-$bg-inverse hover:enabled:color-$color-primary focus-visible:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-primary),0_0_0_var(--focus-ring-inner-width)_var(--ring-primary-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--ring-primary-offset-outer)] active:enabled:translate-y-[1px] active:enabled:bg-$bg-solid-active disabled:bg-$bg-solid-disabled disabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-primary)] disabled:color-$color-disabled',
+    'bg-$bg-solid border-transparent color-$color-inverse [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-primary)] hover:enabled:bg-$bg-solid-hover hover:enabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--un-preset-radix-sand11)] focus-visible:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--un-preset-radix-sand11),0_0_0_var(--focus-ring-inner-width)_var(--ring-primary-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--un-preset-radix-sand11)] active:enabled:translate-y-[1px] active:enabled:bg-$bg-solid-active disabled:bg-$bg-solid-disabled disabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-primary)] disabled:color-$color-disabled',
   ],
 
   [
