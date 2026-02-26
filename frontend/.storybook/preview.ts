@@ -40,6 +40,13 @@ const preview: Preview = {
     },
   ],
   parameters: {
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        locales: 'en-US',
+        includeNames: true,
+      },
+    },
     controls: { expanded: true },
     backgrounds: {
       default: 'pureWhite',

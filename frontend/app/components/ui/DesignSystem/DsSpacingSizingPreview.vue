@@ -7,16 +7,20 @@ type ButtonTracking = 'default' | 'relaxed'
 type ButtonWeight = 'default' | 'strong'
 
 const props = withDefaults(defineProps<{
-  size?: ButtonSize
   tracking?: ButtonTracking
   weight?: ButtonWeight
   disabled?: boolean
 }>(), {
-  size: 'md',
   tracking: 'relaxed',
   weight: 'default',
   disabled: false,
 })
+
+const sizeScale: Array<{ key: ButtonSize, label: string }> = [
+  { key: 'sm', label: 'SM' },
+  { key: 'md', label: 'MD' },
+  { key: 'lg', label: 'LG' },
+]
 </script>
 
 <template>
@@ -27,48 +31,35 @@ const props = withDefaults(defineProps<{
 
     <section class="mt-4 border border-pureBlack/10 rounded-lg border-solid p-4 dark:border-pureWhite/10">
       <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
-        Default Variant / Size Scale
+        Primary Scale (SM / MD / LG)
       </p>
-      <DsCluster
-        class="mt-3"
-        gap="md"
-      >
-        <DsButton
-          variant="default"
-          type="primary"
-          :size="props.size"
-          :tracking="props.tracking"
-          :weight="props.weight"
-          :disabled="props.disabled"
+      <div class="grid mt-3 gap-3 md:grid-cols-3">
+        <div
+          v-for="item in sizeScale"
+          :key="`size-scale-${item.key}`"
+          class="border border-pureBlack/10 rounded-md border-solid p-3 dark:border-pureWhite/10"
         >
-          Primary
-        </DsButton>
-        <DsButton
-          variant="default"
-          type="primary"
-          :size="props.size"
-          :tracking="props.tracking"
-          :weight="props.weight"
-          :disabled="props.disabled"
-        >
-          Primary
-        </DsButton>
-        <DsButton
-          variant="default"
-          type="primary"
-          :size="props.size"
-          :tracking="props.tracking"
-          :weight="props.weight"
-          :disabled="props.disabled"
-        >
-          Primary
-        </DsButton>
-      </DsCluster>
+          <p class="space-grotesk-regular text-[10px] tracking-[0.14em] uppercase opacity-60">
+            {{ item.label }}
+          </p>
+          <DsButton
+            class="mt-2"
+            variant="default"
+            type="primary"
+            :size="item.key"
+            :tracking="props.tracking"
+            :weight="props.weight"
+            :disabled="props.disabled"
+          >
+            Primary
+          </DsButton>
+        </div>
+      </div>
     </section>
 
     <section class="mt-4 border border-pureBlack/10 rounded-lg border-solid p-4 dark:border-pureWhite/10">
       <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
-        Variant Consistency (md)
+        Variant Consistency (MD)
       </p>
       <DsCluster
         class="mt-3"
@@ -77,7 +68,7 @@ const props = withDefaults(defineProps<{
         <DsButton
           variant="default"
           type="primary"
-          :size="props.size"
+          size="md"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -87,7 +78,7 @@ const props = withDefaults(defineProps<{
         <DsButton
           variant="default"
           type="secondary"
-          :size="props.size"
+          size="md"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -97,7 +88,7 @@ const props = withDefaults(defineProps<{
         <DsButton
           variant="default"
           type="tertiary"
-          :size="props.size"
+          size="md"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -107,7 +98,7 @@ const props = withDefaults(defineProps<{
         <DsButton
           variant="default"
           type="quaternary"
-          :size="props.size"
+          size="md"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -119,7 +110,7 @@ const props = withDefaults(defineProps<{
 
     <section class="mt-4 border border-pureBlack/10 rounded-lg border-solid p-4 dark:border-pureWhite/10">
       <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
-        Accent Variant (md)
+        Accent Variant (MD)
       </p>
       <DsCluster
         class="mt-3"
@@ -128,7 +119,7 @@ const props = withDefaults(defineProps<{
         <DsButton
           variant="accent"
           type="primary"
-          :size="props.size"
+          size="md"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -138,7 +129,7 @@ const props = withDefaults(defineProps<{
         <DsButton
           variant="accent"
           type="secondary"
-          :size="props.size"
+          size="md"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -148,7 +139,7 @@ const props = withDefaults(defineProps<{
         <DsButton
           variant="accent"
           type="tertiary"
-          :size="props.size"
+          size="md"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -158,7 +149,7 @@ const props = withDefaults(defineProps<{
         <DsButton
           variant="accent"
           type="quaternary"
-          :size="props.size"
+          size="md"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"

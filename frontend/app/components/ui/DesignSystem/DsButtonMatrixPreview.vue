@@ -4,16 +4,41 @@ import DsButton from './DsButton.vue'
 type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonTracking = 'default' | 'relaxed'
 type ButtonWeight = 'default' | 'strong'
+type PrimaryAnimation = 'rotate' | 'decrypt' | 'none'
+type DecryptAnimateOn = 'view' | 'hover' | 'both'
+type DecryptRevealDirection = 'start' | 'end' | 'center'
+
+interface DecryptConfig {
+  animateOn: DecryptAnimateOn
+  revealDirection: DecryptRevealDirection
+  speed: number
+  maxIterations: number
+  sequential: boolean
+  useOriginalCharsOnly: boolean
+}
 
 const props = withDefaults(defineProps<{
+  text?: string
   size?: ButtonSize
   tracking?: ButtonTracking
   weight?: ButtonWeight
+  animation?: PrimaryAnimation
+  decrypt?: Partial<DecryptConfig>
   disabled?: boolean
 }>(), {
+  text: 'Click Me',
   size: 'md',
   tracking: 'relaxed',
   weight: 'default',
+  animation: 'rotate',
+  decrypt: () => ({
+    animateOn: 'both',
+    revealDirection: 'start',
+    speed: 50,
+    maxIterations: 10,
+    sequential: true,
+    useOriginalCharsOnly: false,
+  }),
   disabled: false,
 })
 
@@ -135,14 +160,15 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   class="justify-self-start"
                   :type="type.key"
                   :variant="variant.key"
+                  :text="props.text"
                   :size="props.size"
                   :tracking="props.tracking"
                   :weight="props.weight"
+                  :animation="props.animation"
+                  :decrypt="props.decrypt"
                   :class="getForcedStateClass(variant.key, type.key, state.key)"
                   :disabled="props.disabled || state.key === 'disabled'"
-                >
-                  Click Me
-                </DsButton>
+                />
               </div>
             </div>
           </section>
@@ -188,49 +214,53 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   type="primary"
                   :variant="row.key"
+                  :text="props.text"
                   :size="props.size"
                   :tracking="props.tracking"
                   :weight="props.weight"
+                  :animation="props.animation"
+                  :decrypt="props.decrypt"
                   :disabled="props.disabled"
-                >
-                  Primary
-                </DsButton>
+                />
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   type="secondary"
                   :variant="row.key"
+                  :text="props.text"
                   :size="props.size"
                   :tracking="props.tracking"
                   :weight="props.weight"
+                  :animation="props.animation"
+                  :decrypt="props.decrypt"
                   :disabled="props.disabled"
-                >
-                  Secondary
-                </DsButton>
+                />
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   type="tertiary"
                   :variant="row.key"
+                  :text="props.text"
                   :size="props.size"
                   :tracking="props.tracking"
                   :weight="props.weight"
+                  :animation="props.animation"
+                  :decrypt="props.decrypt"
                   :disabled="props.disabled"
-                >
-                  Tertiary
-                </DsButton>
+                />
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   type="quaternary"
                   :variant="row.key"
+                  :text="props.text"
                   :size="props.size"
                   :tracking="props.tracking"
                   :weight="props.weight"
+                  :animation="props.animation"
+                  :decrypt="props.decrypt"
                   :disabled="props.disabled"
-                >
-                  Quaternary
-                </DsButton>
+                />
               </td>
             </tr>
           </tbody>
@@ -268,26 +298,28 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                 <DsButton
                   :type="type.key"
                   variant="default"
+                  :text="props.text"
                   :size="props.size"
                   :tracking="props.tracking"
                   :weight="props.weight"
+                  :animation="props.animation"
+                  :decrypt="props.decrypt"
                   :disabled="props.disabled"
-                >
-                  {{ type.label }}
-                </DsButton>
+                />
               </td>
               <td class="px-3 py-2">
                 <DsButton
                   :type="type.key"
                   variant="default"
+                  :text="props.text"
                   :size="props.size"
                   :tracking="props.tracking"
                   :weight="props.weight"
+                  :animation="props.animation"
+                  :decrypt="props.decrypt"
                   :disabled="props.disabled"
                   :class="getForcedStateClass('default', type.key, 'focus-visible')"
-                >
-                  {{ type.label }}
-                </DsButton>
+                />
               </td>
             </tr>
           </tbody>
@@ -332,14 +364,15 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   <DsButton
                     :type="type.key"
                     :variant="row.key"
+                    :text="props.text"
                     :size="props.size"
                     :tracking="props.tracking"
                     :weight="props.weight"
+                    :animation="props.animation"
+                    :decrypt="props.decrypt"
                     :disabled="props.disabled"
                     :class="getForcedStateClass(row.key, type.key, 'focus-visible')"
-                  >
-                    {{ type.label }}
-                  </DsButton>
+                  />
                 </td>
               </tr>
             </template>
