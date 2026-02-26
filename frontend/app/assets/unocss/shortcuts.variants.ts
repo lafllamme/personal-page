@@ -23,7 +23,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-accent-solid',
-    'bg-$bg-accent border-transparent color-$color-on-accent [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent)] hover:enabled:[background-color:var(--color-accent-hover)] focus-visible:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent),0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--ring-accent-offset-outer)] active:enabled:translate-y-[1px] active:enabled:[background-color:var(--color-accent-soft)] disabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent-disabled)] disabled:bg-$border-accent-disabled disabled:color-$color-accent-solid-disabled',
+    'bg-$bg-accent border-transparent color-$color-on-accent [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent)] hover:enabled:bg-$bg-accent-hover hover:enabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-hover)] focus-visible:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent),0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--ring-accent-offset-outer)] active:enabled:translate-y-[1px] active:enabled:bg-$bg-accent-active active:enabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-active)] disabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent-disabled)] disabled:bg-$border-accent-disabled disabled:color-$color-accent-solid-disabled',
   ],
 
   [
@@ -33,7 +33,7 @@ export const variantShortcuts: UserShortcuts = [
 
   [
     'v-accent-ghost',
-    'bg-transparent border-transparent color-$color-accent [--ghost-morph-line:var(--color-accent)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-accent-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-accent-fill-active)] [--ghost-morph-text:var(--color-primary)] active:enabled:translate-y-[1px] focus-visible:[color:var(--ghost-morph-text)] focus-visible:before:opacity-0 focus-visible:after:left-0 focus-visible:after:right-0 focus-visible:after:top-0 focus-visible:after:bottom-0 focus-visible:after:[border-radius:inherit] focus-visible:after:bg-[var(--ghost-morph-fill)] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)] disabled:color-$color-accent-ghost-disabled',
+    'bg-transparent border-transparent color-$color-accent [--ghost-morph-line:var(--color-accent)] [--ghost-morph-line-inset-y:0.36rem] [--ghost-morph-line-inset-x:0.95rem] [--ghost-morph-fill:var(--bg-ghost-morph-accent-fill)] [--ghost-morph-fill-active:var(--bg-ghost-morph-accent-fill-active)] [--ghost-morph-text:var(--color-accent-strong)] hover:enabled:[color:var(--ghost-morph-text)] active:enabled:translate-y-[1px] active:enabled:[color:var(--ghost-morph-text)] focus-visible:[color:var(--ghost-morph-text)] focus-visible:before:opacity-0 focus-visible:after:left-0 focus-visible:after:right-0 focus-visible:after:top-0 focus-visible:after:bottom-0 focus-visible:after:[border-radius:inherit] focus-visible:after:bg-[var(--ghost-morph-fill)] focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)] disabled:color-$color-accent-ghost-disabled',
   ],
 
   [

@@ -14,12 +14,12 @@ const coreTokens: TokenSet = {
 const colorTokens: TokenSet = {
   'color-primary': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
   'color-inverse': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
-  'color-on-accent': { light: '#ffffff', dark: '#0d1514' },
+  'color-on-accent': { light: 'var(--pure-black)', dark: '#0d1514' },
   'color-disabled': { light: '#888681', dark: '#6a6965' },
   'color-disabled-soft': { light: 'rgba(0, 0, 0, 0.44)', dark: 'rgba(242, 239, 230, 0.44)' },
   'color-disabled-subtle': { light: 'rgba(0, 0, 0, 0.42)', dark: 'rgba(242, 239, 230, 0.42)' },
   'color-outline-disabled': { light: 'rgba(0, 0, 0, 0.52)', dark: 'rgba(242, 239, 230, 0.52)' },
-  'color-accent': 'var(--toxic-11)',
+  'color-accent': { light: 'var(--toxic-12)', dark: 'var(--toxic-11)' },
   'color-accent-hover': 'var(--toxic-10)',
   'color-accent-strong': 'var(--toxic-12)',
   'color-accent-soft': 'var(--toxic-7)',
@@ -46,11 +46,13 @@ const bgTokens: TokenSet = {
   'bg-soft-disabled': { light: 'rgba(0, 0, 0, 0.04)', dark: 'rgba(242, 239, 230, 0.04)' },
   'bg-quaternary-ribbon-fill': { light: 'var(--un-preset-radix-sand7)', dark: 'var(--un-preset-radix-sand6)' },
   'bg-quaternary-ribbon-sweep': { light: 'var(--un-preset-radix-sand8)', dark: 'var(--un-preset-radix-sand7)' },
-  'bg-quaternary-ribbon-accent-fill': 'var(--toxic-9)',
-  'bg-quaternary-ribbon-accent-sweep': 'var(--toxic-10)',
+  'bg-quaternary-ribbon-accent-fill': { light: 'var(--toxic-3)', dark: 'var(--toxic-6)' },
+  'bg-quaternary-ribbon-accent-sweep': { light: 'var(--toxic-4)', dark: 'var(--toxic-7)' },
   'bg-quaternary-focus': 'var(--bg-quaternary-ribbon-fill)',
 
   'bg-accent': 'var(--toxic-11)',
+  'bg-accent-hover': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
+  'bg-accent-active': { light: 'var(--toxic-9)', dark: 'var(--toxic-9)' },
   'bg-accent-outline-fill': 'var(--toxic-7)',
   'bg-accent-soft': 'var(--toxic-3)',
   'bg-accent-soft-hover': 'var(--toxic-4)',
@@ -58,8 +60,8 @@ const bgTokens: TokenSet = {
   'bg-accent-soft-disabled': { light: '#f2f6f5', dark: '#0f1f1d' },
   'bg-ghost-morph-fill': { light: 'var(--un-preset-radix-sand8)', dark: 'var(--un-preset-radix-sand8)' },
   'bg-ghost-morph-fill-active': { light: 'var(--un-preset-radix-sand9)', dark: 'var(--un-preset-radix-sand9)' },
-  'bg-ghost-morph-accent-fill': 'var(--toxic-7)',
-  'bg-ghost-morph-accent-fill-active': 'var(--toxic-8)',
+  'bg-ghost-morph-accent-fill': { light: 'var(--toxic-5)', dark: 'var(--toxic-5)' },
+  'bg-ghost-morph-accent-fill-active': { light: 'var(--toxic-6)', dark: 'var(--toxic-6)' },
 }
 
 const borderTokens: TokenSet = {
@@ -70,6 +72,8 @@ const borderTokens: TokenSet = {
   'border-quaternary-disabled': { light: 'rgba(0, 0, 0, 0.14)', dark: 'rgba(242, 239, 230, 0.14)' },
 
   'border-accent': 'var(--toxic-11)',
+  'border-accent-hover': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
+  'border-accent-active': { light: 'var(--toxic-9)', dark: 'var(--toxic-9)' },
   'border-accent-outline-fill': 'var(--toxic-7)',
   'border-accent-disabled': { light: '#7ea9a3', dark: '#2e5e58' },
   'border-accent-soft': 'var(--toxic-7)',
@@ -87,7 +91,7 @@ const ringTokens: TokenSet = {
   'ring-primary-offset-inner': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
   'ring-primary-offset-outer': { light: 'var(--pure-black)', dark: 'var(--pure-white)' },
   'ring-accent-offset-inner': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
-  'ring-accent-offset-outer': { light: 'var(--toxic-11)', dark: 'var(--toxic-11)' },
+  'ring-accent-offset-outer': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
   'ring-accent-quaternary-focus': { light: 'var(--toxic-9)', dark: 'var(--toxic-9)' },
 
   'ring-accent-primary': { light: 'rgba(0, 133, 115, 0.30)', dark: 'rgba(11, 216, 182, 0.30)' },

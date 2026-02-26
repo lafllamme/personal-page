@@ -95,8 +95,8 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-focus-opacity)] [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
   },
   'accent-primary': {
-    'hover': '[background-color:var(--color-accent-hover)] color-$color-on-accent',
-    'active': 'translate-y-[1px] [background-color:var(--color-accent-soft)] color-$color-on-accent',
+    'hover': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:inset_0_0_0_2px_var(--bg-accent-hover)]',
+    'active': 'translate-y-[1px] bg-$bg-accent-active color-$color-on-accent [box-shadow:inset_0_0_0_2px_var(--bg-accent-active)]',
     'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
   },
   'accent-secondary': {
@@ -110,9 +110,9 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)]',
   },
   'accent-quaternary': {
-    'hover': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-accent-hover-opacity)]',
-    'active': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-accent-active-opacity)]',
-    'focus-visible': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-focus-opacity)] [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)]',
+    'hover': 'before:translate-x-[560%] after:opacity-32',
+    'active': 'before:translate-x-[560%] after:opacity-48',
+    'focus-visible': 'before:translate-x-[560%] after:opacity-100 [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)]',
   },
 }
 
