@@ -10,7 +10,7 @@ const mediaImages = [
 ] as const
 
 const meta = {
-  title: 'Foundation/DsMediaFrame',
+  title: 'Design System/Components/DsMediaFrame',
   component: DsMediaFrame,
   tags: ['autodocs'],
   args: {

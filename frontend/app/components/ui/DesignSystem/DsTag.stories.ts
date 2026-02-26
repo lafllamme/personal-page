@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import DsTag from './DsTag.vue'
 
 const meta = {
-  title: 'Foundation/DsTag',
+  title: 'Design System/Components/DsTag',
   component: DsTag,
   tags: ['autodocs'],
   args: {

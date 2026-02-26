@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import DsGrid from './DsGrid.vue'
 
 const meta = {
-  title: 'Foundation/DsGrid',
+  title: 'Design System/Layout/DsGrid',
   component: DsGrid,
   tags: ['autodocs'],
   args: {

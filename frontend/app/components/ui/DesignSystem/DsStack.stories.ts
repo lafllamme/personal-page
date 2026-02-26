@@ -3,7 +3,7 @@ import DsButton from './DsButton.vue'
 import DsStack from './DsStack.vue'
 
 const meta: Meta<typeof DsStack> = {
-  title: 'Foundation/DsStack',
+  title: 'Design System/Layout/DsStack',
   component: DsStack,
   tags: ['autodocs'],
   argTypes: {

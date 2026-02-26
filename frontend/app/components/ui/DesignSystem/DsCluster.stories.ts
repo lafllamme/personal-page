@@ -3,7 +3,7 @@ import DsButton from './DsButton.vue'
 import DsCluster from './DsCluster.vue'
 
 const meta: Meta<typeof DsCluster> = {
-  title: 'Foundation/DsCluster',
+  title: 'Design System/Layout/DsCluster',
   component: DsCluster,
   tags: ['autodocs'],
   argTypes: {

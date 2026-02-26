@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import DsSectionHeader from './DsSectionHeader.vue'
 
 const meta: Meta<typeof DsSectionHeader> = {
-  title: 'Foundation/DsSectionHeader',
+  title: 'Design System/Components/DsSectionHeader',
   component: DsSectionHeader,
   tags: ['autodocs'],
   args: {

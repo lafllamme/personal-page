@@ -6,7 +6,7 @@ import DsSectionContainer from './DsSectionContainer.vue'
 import DsSpacingSizingPreview from './DsSpacingSizingPreview.vue'
 
 const meta = {
-  title: 'Foundation/DsButton',
+  title: 'Design System/Components/DsButton',
   component: DsButton,
   tags: ['autodocs'],
   args: {
@@ -157,9 +157,12 @@ export const States: Story = {
     },
     render() {
       return h(DsButtonMatrixPreview, {
+        text: args.text,
         size: args.size,
         tracking: args.tracking,
         weight: args.weight,
+        animation: args.animation,
+        decrypt: args.decrypt,
         disabled: args.disabled,
       })
     },
@@ -170,7 +173,7 @@ export const States: Story = {
 }
 
 export const SizingAndSpacing: Story = {
-  name: 'Sizing + Spacing',
+  name: 'Sizing + Spacing (SM / MD / LG)',
   render: args => ({
     components: { DsSpacingSizingPreview },
     setup() {
@@ -178,7 +181,6 @@ export const SizingAndSpacing: Story = {
     },
     render() {
       return h(DsSpacingSizingPreview, {
-        size: args.size,
         tracking: args.tracking,
         weight: args.weight,
         disabled: args.disabled,
