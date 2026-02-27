@@ -29,6 +29,9 @@ const colorTokens: TokenSet = {
   'color-accent-outline-disabled': { light: '#7ea9a3', dark: '#2e5e58' },
   'color-accent-ghost-disabled': { light: '#7ea9a3', dark: '#2e5e58' },
   'color-accent-soft-disabled': { light: '#90a19e', dark: 'rgba(173, 240, 221, 0.45)' },
+  'color-link-hover': { light: 'var(--un-preset-radix-sand10)', dark: 'var(--un-preset-radix-sand10)' },
+  'color-link-accent': { light: 'var(--toxic-11)', dark: 'var(--toxic-11)' },
+  'color-link-accent-hover': { light: 'var(--toxic-12)', dark: 'var(--toxic-9)' },
 }
 
 const bgTokens: TokenSet = {
@@ -109,7 +112,6 @@ const motionTokens: TokenSet = {
   'motion-underline-thickness': '0.125em',
   'motion-link-underline-offset': '-0.0625em',
   'motion-link-underline-thickness': '0.0625em',
-  'motion-link-underline-swap-delay': '0.3s',
   'motion-primary-sweep-duration': '0.4s',
   'motion-primary-sweep-ease': 'cubic-bezier(0.3, 1, 0.8, 1)',
   'motion-primary-rotate-duration': '0.5s',

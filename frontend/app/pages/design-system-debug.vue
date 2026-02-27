@@ -2,7 +2,7 @@
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
-import DsTextLink from '@/components/ui/DesignSystem/DsTextLink.vue'
+import DsLink from '@/components/ui/DesignSystem/DsLink.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
 definePageMeta({
@@ -523,7 +523,7 @@ function tokenLabel(role: string, size: string) {
                 <DsTypography as="p" role="meta" size="xs" uppercase>
                   Default · Always Underline
                 </DsTypography>
-                <DsTextLink
+                <DsLink
                   href="#"
                   text="Read article"
                 />
@@ -533,7 +533,7 @@ function tokenLabel(role: string, size: string) {
                 <DsTypography as="p" role="meta" size="xs" uppercase>
                   Variant · Hover Underline (L1 Sweep)
                 </DsTypography>
-                <DsTextLink
+                <DsLink
                   href="#"
                   text="Read article"
                   underline="hover"

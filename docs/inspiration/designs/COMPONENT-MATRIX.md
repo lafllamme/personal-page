@@ -39,7 +39,7 @@
 | P0 | `DsGrid` | Rastersteuerung fuer asymmetrische/gleichmaessige Layouts | n/a | `construct-2/img_1`, `estate/img_2` | Storygrid, Market-Pulse-Rail |
 | P0 | `DsHeadingBlock` | Kicker + Title + Dek + Meta | n/a | `cloth/img_2`, `brand/img_3`, `run/img_1` | "TechNews Weekly", Datum, Autor |
 | P0 | `DsButton` | Primary/Secondary/Tertiary/Quartery CTA | `default,hover,active,focus-visible,disabled` | `brand/img_3`, `music`, `sport/img_1` | "Read Brief", "View Signals" |
-| P0 | `DsTextLink` | Inline Aktion im Fliesstext | `default,hover,focus-visible,visited,disabled` | `magazine-2/img`, `portfolio/img_1` | "Read full report" |
+| P0 | `DsLink` | Inline Aktion im Fliesstext | `default,hover,focus-visible,visited,disabled` | `magazine-2/img`, `portfolio/img_1` | "Read full report" |
 | P0 | `DsInput` | Eingabe-Feldsystem | `default,hover,focus-visible,error,disabled` | `magazine-2/img`, `agency/img_4` | Search, Newsletter, Filter |
 | P0 | `DsTag` | Kategorisierung/Filterchips | `default,hover,active,focus-visible,disabled` | `cloth/img_3`, `magazine-3/img_1` | AI, Infra, Policy, Security |
 | P0 | `DsCard` | Universelle Kartenflaeche fuer Story/Media/Meta | `default,hover,focus-within,disabled` | `agency/img_4`, `estate/img_2`, `photography/img_4` | Storykarten mit Bild+Teaser |
