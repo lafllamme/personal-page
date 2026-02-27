@@ -148,6 +148,16 @@ Der Button wird ueber zwei Dimensionen aufgebaut:
   - Button-Box bleibt fuer alle Varianten/Sizes konsistent (keine Primary-only Height/Padding-Overrides).
   - Primary Rotate nutzt 2 Label-Layer + y-origin Token-Tuning (Osmo-nahe), aber ohne DS-Layout-Drift.
 
+### 10.6 Focus Ring Konsistenz (verbindlich)
+- `focus-visible` folgt immer derselben visuellen Systematik pro Variante:
+  - Focus-Hintergrund entspricht dem jeweiligen Hover-Hintergrund (bzw. Hover-Fill bei Morph/Sweep Varianten).
+  - Der aeussere Focus-Ring nutzt denselben Farbkontext wie der Focus-Fill (kein Farb-Mismatch).
+- Ringbreiten werden zentral ueber Tokens gesetzt:
+  - `--focus-ring-inner-width`
+  - `--focus-ring-outer-width`
+- Keine harten `2px`/`4px` Werte fuer Focus-Ringe in Variant-Shortcuts.
+- Matrix/Story States muessen dieselbe Focus-Logik wie Runtime-Shortcuts spiegeln.
+
 ## 11) P04-MPZ01 Origin References (nicht verlieren)
 
 Die originalen Referenzen fuer den heutigen Build-Stand:

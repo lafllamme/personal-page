@@ -75,44 +75,44 @@ type InteractiveMatrixState = Exclude<MatrixState, 'default' | 'disabled'>
 
 const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, string>> = {
   'default-primary': {
-    'hover': 'bg-$bg-solid-hover [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)]',
+    'hover': 'bg-$bg-solid-hover [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--un-preset-radix-sand11)]',
     'active': 'translate-y-[1px] bg-$bg-solid-active color-$color-inverse',
-    'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11),0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--un-preset-radix-sand11)]',
+    'focus-visible': 'bg-$bg-solid-hover [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-primary-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-solid-hover)]',
   },
   'default-secondary': {
-    'hover': 'before:translate-y-0 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand10)]',
-    'active': 'translate-y-[1px] before:translate-y-0 before:bg-sand-11 dark:before:bg-sand-9 color-pureWhite [box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand11)] dark:[box-shadow:inset_0_0_0_2px_var(--un-preset-radix-sand9)]',
-    'focus-visible': 'before:translate-y-0 color-pureWhite [box-shadow:0_0_0_2px_var(--pure-white),0_0_0_4px_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_2px_var(--pure-black),0_0_0_4px_var(--un-preset-radix-sand10)]',
+    'hover': 'before:translate-y-0 color-pureWhite [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--un-preset-radix-sand10)]',
+    'active': 'translate-y-[1px] before:translate-y-0 before:bg-sand-11 dark:before:bg-sand-9 color-pureWhite [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--un-preset-radix-sand11)] dark:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--un-preset-radix-sand9)]',
+    'focus-visible': 'before:translate-y-0 color-pureWhite [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--pure-white),0_0_0_var(--focus-ring-outer-width)_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--pure-black),0_0_0_var(--focus-ring-outer-width)_var(--un-preset-radix-sand10)]',
   },
   'default-tertiary': {
     'hover': 'is-ghost-morph-on',
     'active': 'is-ghost-morph-on-active translate-y-[1px]',
-    'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--bg-ghost-morph-fill)]',
+    'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-primary-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-ghost-morph-fill)]',
   },
   'default-quaternary': {
     'hover': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-neutral-hover-opacity)]',
     'active': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-neutral-active-opacity)]',
-    'focus-visible': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-focus-opacity)] [box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-quaternary-focus)]',
+    'focus-visible': 'before:translate-x-[var(--motion-quaternary-ribbon-strip-travel)] after:[opacity:var(--motion-quaternary-focus-opacity)] [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-primary-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--ring-quaternary-focus)]',
   },
   'accent-primary': {
-    'hover': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:inset_0_0_0_2px_var(--bg-accent-hover)]',
-    'active': 'translate-y-[1px] bg-$bg-accent-active color-$color-on-accent [box-shadow:inset_0_0_0_2px_var(--bg-accent-active)]',
-    'focus-visible': '[box-shadow:inset_0_0_0_2px_var(--border-accent),0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-offset-outer)]',
+    'hover': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-hover)]',
+    'active': 'translate-y-[1px] bg-$bg-accent-active color-$color-on-accent [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-active)]',
+    'focus-visible': 'bg-$bg-accent-hover [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-accent-hover)]',
   },
   'accent-secondary': {
-    'hover': 'before:translate-y-0 color-$color-accent-ui [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
-    'active': 'translate-y-[1px] before:translate-y-0 color-$color-accent-ui [box-shadow:inset_0_0_0_2px_var(--border-accent-outline-fill)]',
-    'focus-visible': 'before:translate-y-0 color-$color-accent-ui [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--border-accent-outline-fill)]',
+    'hover': 'before:translate-y-0 color-$color-accent-strong [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent-outline-fill)]',
+    'active': 'translate-y-[1px] before:translate-y-0 color-$color-accent-strong [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent-outline-fill)]',
+    'focus-visible': 'before:translate-y-0 color-$color-accent-strong [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--border-accent-outline-fill)]',
   },
   'accent-tertiary': {
     'hover': 'is-ghost-morph-on',
     'active': 'is-ghost-morph-on-active translate-y-[1px]',
-    'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--bg-ghost-morph-accent-fill)]',
+    'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-ghost-morph-accent-fill)]',
   },
   'accent-quaternary': {
-    'hover': 'before:translate-x-[560%] after:opacity-32 color-$color-accent-ui',
-    'active': 'before:translate-x-[560%] after:opacity-48 color-$color-accent-ui',
-    'focus-visible': 'before:translate-x-[560%] after:opacity-100 color-$color-accent-ui [box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--ring-accent-quaternary-focus)]',
+    'hover': 'before:translate-x-[560%] after:opacity-32 color-$color-accent',
+    'active': 'before:translate-x-[560%] after:opacity-48 color-$color-accent',
+    'focus-visible': 'before:translate-x-[560%] after:opacity-100 color-$color-accent [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-quaternary-ribbon-accent-fill)]',
   },
 }
 

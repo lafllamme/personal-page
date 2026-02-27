@@ -47,8 +47,8 @@ const bgTokens: TokenSet = {
   'bg-soft-disabled': { light: 'rgba(0, 0, 0, 0.04)', dark: 'rgba(242, 239, 230, 0.04)' },
   'bg-quaternary-ribbon-fill': { light: 'var(--un-preset-radix-sand7)', dark: 'var(--un-preset-radix-sand6)' },
   'bg-quaternary-ribbon-sweep': { light: 'var(--un-preset-radix-sand8)', dark: 'var(--un-preset-radix-sand7)' },
-  'bg-quaternary-ribbon-accent-fill': { light: 'var(--toxic-7)', dark: 'var(--toxic-6)' },
-  'bg-quaternary-ribbon-accent-sweep': { light: 'var(--toxic-7)', dark: 'var(--toxic-7)' },
+  'bg-quaternary-ribbon-accent-fill': { light: 'var(--toxic-6)', dark: 'var(--toxic-6)' },
+  'bg-quaternary-ribbon-accent-sweep': { light: 'var(--toxic-8)', dark: 'var(--toxic-7)' },
   'bg-quaternary-focus': 'var(--bg-quaternary-ribbon-fill)',
 
   'bg-accent': { light: 'var(--toxic-11)', dark: 'var(--toxic-11)' },
