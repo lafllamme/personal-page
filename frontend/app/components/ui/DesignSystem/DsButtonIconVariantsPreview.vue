@@ -1,0 +1,250 @@
+<script setup lang="ts">
+import DsButton from './DsButton.vue'
+import DsTypography from './DsTypography.vue'
+
+defineProps<{
+  mode: 'text' | 'icon-only'
+  text: string
+  icon: string
+  size: 'sm' | 'md' | 'lg'
+  tracking: 'default' | 'relaxed'
+  weight: 'default' | 'strong'
+  animation: 'rotate' | 'decrypt' | 'none'
+  disabled: boolean
+  ariaLabel: string
+}>()
+</script>
+
+<template>
+  <div class="bg-pureWhite p-8 color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
+    <div class="grid gap-4">
+      <DsTypography as="span" role="meta" size="xs" tone="muted" uppercase>
+        Default
+      </DsTypography>
+      <div class="flex flex-wrap items-center gap-3">
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="primary"
+          variant="default"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="primary"
+          variant="default"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="secondary"
+          variant="default"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="secondary"
+          variant="default"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="tertiary"
+          variant="default"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="tertiary"
+          variant="default"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="quaternary"
+          variant="default"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="quaternary"
+          variant="default"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+      </div>
+
+      <DsTypography as="span" role="meta" size="xs" tone="muted" uppercase>
+        Accent
+      </DsTypography>
+      <div class="flex flex-wrap items-center gap-3">
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="primary"
+          variant="accent"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="primary"
+          variant="accent"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="secondary"
+          variant="accent"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="secondary"
+          variant="accent"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="tertiary"
+          variant="accent"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="tertiary"
+          variant="accent"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="quaternary"
+          variant="accent"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="quaternary"
+          variant="accent"
+          :size="size"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+      </div>
+    </div>
+  </div>
+</template>

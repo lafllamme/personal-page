@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
+import DsLink from '@/components/ui/DesignSystem/DsLink.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
-import DsLink from '@/components/ui/DesignSystem/DsLink.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
 definePageMeta({
@@ -251,6 +251,43 @@ function tokenLabel(role: string, size: string) {
               >
                 Large
               </DsButton>
+            </div>
+          </div>
+
+          <div class="mt-3 bg-[#ef4444]/6 p-4 outline-2 outline-[#ef4444]/80 outline space-y-4 dark:bg-[#ef4444]/10 dark:outline-[#f87171]/90">
+            <DsTypography
+              as="p"
+              role="meta"
+              size="xs"
+              uppercase
+            >
+              Active Depth Study
+            </DsTypography>
+
+            <DsTypography
+              as="p"
+              role="body"
+              size="sm"
+              tone="muted"
+            >
+              Das globale Active-Verhalten nutzt jetzt ein tokenisiertes Scale-Down. Passe nur noch den Wert von motion-active-press-scale an, wenn sich der Druck anders anfuehlen soll.
+            </DsTypography>
+
+            <div class="flex flex-wrap items-center gap-4">
+              <DsButton
+                text="Press Me"
+                type="primary"
+                variant="default"
+                size="md"
+                animation="none"
+              />
+              <DsButton
+                text="Accent Press"
+                type="primary"
+                variant="accent"
+                size="md"
+                animation="none"
+              />
             </div>
           </div>
         </div>

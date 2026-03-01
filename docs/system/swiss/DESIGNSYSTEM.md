@@ -160,6 +160,27 @@ Der Button wird ueber zwei Dimensionen aufgebaut:
 - Keine harten `2px`/`4px` Werte fuer Focus-Ringe in Variant-Shortcuts.
 - Matrix/Story States muessen dieselbe Focus-Logik wie Runtime-Shortcuts spiegeln.
 
+### 10.7 Button + Icon (aktiver Stand)
+- `DsButton` unterstuetzt optional:
+  - `icon?: string`
+  - `iconPosition?: 'left' | 'right'`
+  - `iconOnly?: boolean`
+- Regel:
+  - Textbutton mit Icon bleibt derselbe Kontrolltyp und wird nicht als eigene Wrapper-Komponente gebaut.
+  - Das Icon rendert mit `currentColor` und folgt damit automatisch allen Text-/State-Farben.
+  - `iconOnly` bleibt vorerst Teil von `DsButton` fuer Exploration; wenn daraus ein eigener Kontrolltyp mit abweichender Geometrie wird, wird spaeter ein eigener `DsIconButton` daraus.
+
+### 10.8 Button Active Press Motion
+- Alle Button-Varianten verwenden im `active` denselben Press-Effekt:
+  - kein `translateY`-Push mehr
+  - stattdessen ein tokenisiertes Scale-Down ueber `motion-active-press-scale`
+- Der visuelle Druck kommt aus der Kombination von:
+  - `active`-Scale
+  - bereits definierter dunklerem / dichteren `active`-Fill je Variante
+- Regel:
+  - Wenn sich der Press-Effekt zu stark oder zu schwach anfuehlt, nur den Tokenwert aendern
+  - nicht pro Variante wieder eigene `active`-Transforms einfuehren
+
 ## 11) P04-MPZ01 Origin References (nicht verlieren)
 
 Die originalen Referenzen fuer den heutigen Build-Stand:
