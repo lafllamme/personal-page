@@ -9,6 +9,7 @@ const meta = {
   tags: ['autodocs'],
   args: {
     text: 'Read article',
+    to: '',
     href: '#',
     variant: 'default',
     size: 'md',
@@ -16,6 +17,7 @@ const meta = {
   },
   argTypes: {
     text: { control: 'text' },
+    to: { control: 'text' },
     href: { control: 'text' },
     variant: {
       control: 'select',
@@ -74,6 +76,16 @@ export const AccentHoverUnderline: Story = {
   },
 }
 
+export const InternalNavigation: Story = {
+  name: 'Variant / Internal (NuxtLink)',
+  args: {
+    to: '/articles',
+    href: '#',
+    variant: 'default',
+    underline: 'always',
+  },
+}
+
 export const SizingScale: Story = {
   name: 'Sizing / Scale',
   render: (args, context) => ({
@@ -93,6 +105,7 @@ export const SizingScale: Story = {
       <DsLinkStorySingle
         v-else
         :text="args.text"
+        :to="args.to"
         :href="args.href"
         :variant="args.variant"
         :size="args.size"

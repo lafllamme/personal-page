@@ -4,12 +4,14 @@ import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
 const props = withDefaults(defineProps<{
   text?: string
+  to?: string
   href?: string
   variant?: 'default' | 'accent'
   size?: 'sm' | 'md' | 'lg'
   underline?: 'always' | 'hover'
 }>(), {
   text: '',
+  to: '',
   href: '#',
   variant: 'default',
   size: 'md',
@@ -47,11 +49,24 @@ const typoSize = computed(() => {
 
   return 'sm'
 })
+
+const linkTag = computed(() => {
+  return props.to
+    ? 'NuxtLink'
+    : 'a'
+})
+
+const linkProps = computed(() => {
+  return props.to
+    ? { to: props.to }
+    : { href: props.href }
+})
 </script>
 
 <template>
-  <a
-    :href="props.href"
+  <component
+    :is="linkTag"
+    v-bind="linkProps"
     class="ui-link-base"
     :class="[sizeClass, variantClass, underlineClass]"
   >
@@ -67,5 +82,5 @@ const typoSize = computed(() => {
       </template>
       <slot v-else />
     </DsTypography>
-  </a>
+  </component>
 </template>

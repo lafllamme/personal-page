@@ -3,6 +3,7 @@ import DsLink from './DsLink.vue'
 
 defineProps<{
   text: string
+  to?: string
   href: string
   variant: 'default' | 'accent'
   size: 'sm' | 'md' | 'lg'
@@ -15,6 +16,7 @@ defineProps<{
     <div class="flex min-h-24 items-center justify-center">
       <DsLink
         :text="text"
+        :to="to"
         :href="href"
         :variant="variant"
         :size="size"
