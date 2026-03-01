@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { h } from 'vue'
 import DsButton from './DsButton.vue'
+import DsButtonIconVariantsPreview from './DsButtonIconVariantsPreview.vue'
 import DsButtonMatrixPreview from './DsButtonMatrixPreview.vue'
 import DsSectionContainer from './DsSectionContainer.vue'
 import DsSpacingSizingPreview from './DsSpacingSizingPreview.vue'
@@ -16,6 +17,10 @@ const meta = {
     size: 'md',
     tracking: 'relaxed',
     weight: 'default',
+    icon: '',
+    iconPosition: 'left',
+    iconOnly: false,
+    ariaLabel: '',
     animation: 'rotate',
     decrypt: {
       animateOn: 'both',
@@ -49,6 +54,13 @@ const meta = {
       control: 'select',
       options: ['default', 'strong'],
     },
+    icon: { control: 'text' },
+    iconPosition: {
+      control: 'select',
+      options: ['left', 'right'],
+    },
+    iconOnly: { control: 'boolean' },
+    ariaLabel: { control: 'text' },
     animation: {
       control: 'select',
       options: ['rotate', 'decrypt', 'none'],
@@ -116,6 +128,96 @@ export const AccentTertiary: Story = {
 export const AccentQuaternary: Story = {
   name: 'Accent / Quaternary',
   args: { variant: 'accent', type: 'quaternary' },
+}
+
+export const LeadingIcon: Story = {
+  name: 'Content / Leading Icon',
+  args: {
+    text: 'Read More',
+    icon: 'iconoir:sparks',
+    iconPosition: 'left',
+    iconOnly: false,
+  },
+}
+
+export const TrailingIcon: Story = {
+  name: 'Content / Trailing Icon',
+  args: {
+    text: 'Read More',
+    icon: 'iconoir:sparks',
+    iconPosition: 'right',
+    iconOnly: false,
+  },
+}
+
+export const IconOnly: Story = {
+  name: 'Content / Icon Only',
+  args: {
+    text: 'Open Link',
+    icon: 'iconoir:plus',
+    iconPosition: 'left',
+    iconOnly: true,
+    ariaLabel: 'Open link',
+    animation: 'none',
+  },
+}
+
+export const VariantTextWithTrailingIcon: Story = {
+  name: 'Content / All Variants + Trailing Icon',
+  args: {
+    text: 'Read More',
+    icon: 'iconoir:sparks',
+    iconOnly: false,
+  },
+  render: args => ({
+    components: { DsButtonIconVariantsPreview },
+    render() {
+      return h(DsButtonIconVariantsPreview, {
+        mode: 'text',
+        text: args.text ?? 'Read More',
+        icon: args.icon || 'iconoir:sparks',
+        size: (args.size ?? 'md') as 'sm' | 'md' | 'lg',
+        tracking: (args.tracking ?? 'relaxed') as 'default' | 'relaxed',
+        weight: (args.weight ?? 'default') as 'default' | 'strong',
+        animation: (args.animation ?? 'rotate') as 'rotate' | 'decrypt' | 'none',
+        disabled: Boolean(args.disabled),
+        ariaLabel: args.ariaLabel || 'Open action',
+      })
+    },
+  }),
+  parameters: {
+    layout: 'centered',
+  },
+}
+
+export const VariantIconOnly: Story = {
+  name: 'Content / All Variants + Icon Only',
+  args: {
+    text: 'Open',
+    icon: 'iconoir:plus',
+    iconOnly: true,
+    ariaLabel: 'Open action',
+    animation: 'none',
+  },
+  render: args => ({
+    components: { DsButtonIconVariantsPreview },
+    render() {
+      return h(DsButtonIconVariantsPreview, {
+        mode: 'icon-only',
+        text: args.text ?? 'Open',
+        icon: args.icon || 'iconoir:plus',
+        size: (args.size ?? 'md') as 'sm' | 'md' | 'lg',
+        tracking: (args.tracking ?? 'relaxed') as 'default' | 'relaxed',
+        weight: (args.weight ?? 'default') as 'default' | 'strong',
+        animation: 'none',
+        disabled: Boolean(args.disabled),
+        ariaLabel: args.ariaLabel || 'Open action',
+      })
+    },
+  }),
+  parameters: {
+    layout: 'centered',
+  },
 }
 
 export const Variants: Story = {

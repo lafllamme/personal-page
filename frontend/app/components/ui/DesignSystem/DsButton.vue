@@ -32,6 +32,10 @@ const props = withDefaults(defineProps<{
   size?: ButtonSize
   tracking?: ButtonTracking
   weight?: ButtonWeight
+  icon?: string
+  iconPosition?: 'left' | 'right'
+  iconOnly?: boolean
+  ariaLabel?: string
   animation?: PrimaryAnimation
   decrypt?: Partial<DecryptConfig>
   disabled?: boolean
@@ -42,6 +46,10 @@ const props = withDefaults(defineProps<{
   size: 'md',
   tracking: 'relaxed',
   weight: 'default',
+  icon: '',
+  iconPosition: 'left',
+  iconOnly: false,
+  ariaLabel: '',
   animation: 'rotate',
   decrypt: () => ({
     animateOn: 'both',
@@ -70,6 +78,10 @@ const {
   size,
   tracking,
   weight,
+  icon,
+  iconPosition,
+  iconOnly,
+  ariaLabel,
   animation,
   decrypt,
   disabled,
@@ -117,20 +129,6 @@ const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
 const isGhostType = computed(() => normalizedType.value === 'tertiary')
 const isPrimaryType = computed(() => normalizedType.value === 'primary')
 const ghostButtonClass = 'is-ghost-button is-ghost-morph is-ghost-morph-clip ui-ghost-button ui-ghost-morph-clip'
-const primaryRotateButtonClass = computed(() => (isPrimaryRotateAnimation.value ? 'overflow-hidden' : ''))
-const primaryRotateTypographyClass = computed(() => (isPrimaryRotateAnimation.value ? 'ui-primary-rotate-typo' : ''))
-const primaryRotateVariantFixClass = computed(() => {
-  if (!isPrimaryRotateAnimation.value || normalizedType.value !== 'primary')
-    return ''
-
-  if (normalizedVariant.value === 'default')
-    return 'ui-primary-rotate-neutral-fix'
-
-  if (normalizedVariant.value === 'accent')
-    return 'ui-primary-rotate-accent-fix'
-
-  return ''
-})
 
 const sizeClassMap: Record<ButtonSize, string> = {
   sm: 'ui-button-sm',
@@ -138,6 +136,13 @@ const sizeClassMap: Record<ButtonSize, string> = {
   lg: 'ui-button-lg',
 }
 const sizeClass = computed(() => sizeClassMap[size.value])
+
+const iconOnlySizeClassMap: Record<ButtonSize, string> = {
+  sm: 'ui-button-icon-only-sm',
+  md: 'ui-button-icon-only-md',
+  lg: 'ui-button-icon-only-lg',
+}
+const iconOnlySizeClass = computed(() => iconOnlySizeClassMap[size.value])
 
 const typographySizeMap: Record<ButtonSize, 'xs' | 'sm' | 'md'> = {
   sm: 'xs',
@@ -151,6 +156,13 @@ const typographyWeightMap: Record<ButtonWeight, 'medium' | 'semibold'> = {
   strong: 'semibold',
 }
 const typographyWeight = computed(() => typographyWeightMap[weight.value])
+
+const buttonIconSizeClassMap: Record<ButtonSize, string> = {
+  sm: 'ui-button-icon-sm',
+  md: 'ui-button-icon-md',
+  lg: 'ui-button-icon-lg',
+}
+const buttonIconSizeClass = computed(() => buttonIconSizeClassMap[size.value])
 
 function extractText(children: VNodeArrayChildren | unknown): string {
   if (typeof children === 'string')
@@ -177,6 +189,15 @@ const slotText = computed(() => {
 })
 
 const labelText = computed(() => (text.value?.trim() || slotText.value))
+const hasIcon = computed(() => Boolean(icon.value?.trim()))
+const shouldShowLabel = computed(() => !iconOnly.value && Boolean(labelText.value))
+const shouldShowSlot = computed(() => !iconOnly.value && !labelText.value)
+const buttonAriaLabel = computed(() => {
+  if (!iconOnly.value)
+    return undefined
+
+  return ariaLabel.value?.trim() || labelText.value || undefined
+})
 const buttonRef = ref<HTMLButtonElement | null>(null)
 
 const hoverDecryptTick = ref(0)
@@ -188,6 +209,20 @@ const resolvedDecrypt = computed<DecryptConfig>(() => ({
 
 const isPrimaryRotateAnimation = computed(() => isPrimaryType.value && animation.value === 'rotate')
 const isPrimaryDecryptAnimation = computed(() => isPrimaryType.value && animation.value === 'decrypt')
+const primaryRotateButtonClass = computed(() => (isPrimaryRotateAnimation.value ? 'overflow-hidden' : ''))
+const primaryRotateTypographyClass = computed(() => (isPrimaryRotateAnimation.value ? 'ui-primary-rotate-typo' : ''))
+const primaryRotateVariantFixClass = computed(() => {
+  if (!isPrimaryRotateAnimation.value || normalizedType.value !== 'primary')
+    return ''
+
+  if (normalizedVariant.value === 'default')
+    return 'ui-primary-rotate-neutral-fix'
+
+  if (normalizedVariant.value === 'accent')
+    return 'ui-primary-rotate-accent-fix'
+
+  return ''
+})
 
 function getCssVarNumber(name: string, fallback: number): number {
   const value = buttonRef.value ? getComputedStyle(buttonRef.value).getPropertyValue(name).trim() : ''
@@ -196,7 +231,7 @@ function getCssVarNumber(name: string, fallback: number): number {
 }
 
 function triggerPrimaryAnimation() {
-  if (!isPrimaryType.value || disabled.value)
+  if (!isPrimaryType.value || disabled.value || iconOnly.value)
     return
 
   if (isPrimaryDecryptAnimation.value && (resolvedDecrypt.value.animateOn === 'hover' || resolvedDecrypt.value.animateOn === 'both'))
@@ -251,12 +286,21 @@ onBeforeUnmount(() => {
     ref="buttonRef"
     type="button"
     :disabled="disabled"
+    :aria-label="buttonAriaLabel"
     class="group ui-button-base"
-    :class="[sizeClass, variantTypeClass, isGhostType ? ghostButtonClass : '', primaryRotateButtonClass, primaryRotateVariantFixClass]"
+    :class="[sizeClass, iconOnly ? iconOnlySizeClass : '', hasIcon && !iconOnly ? 'gap-2' : '', variantTypeClass, isGhostType ? ghostButtonClass : '', primaryRotateButtonClass, primaryRotateVariantFixClass]"
     @pointerenter="triggerPrimaryAnimation"
     @focusin="triggerPrimaryAnimation"
   >
+    <Icon
+      v-if="hasIcon && iconPosition === 'left'"
+      :name="icon"
+      aria-hidden="true"
+      class="ui-button-icon-base"
+      :class="buttonIconSizeClass"
+    />
     <DsTypography
+      v-if="shouldShowLabel"
       as="span"
       role="meta"
       :size="typographySize"
@@ -288,11 +332,16 @@ onBeforeUnmount(() => {
         </span>
       </template>
       <template v-else>
-        <template v-if="labelText">
-          {{ labelText }}
-        </template>
-        <slot v-else />
+        {{ labelText }}
       </template>
     </DsTypography>
+    <slot v-else-if="shouldShowSlot" />
+    <Icon
+      v-if="hasIcon && iconPosition === 'right'"
+      :name="icon"
+      aria-hidden="true"
+      class="ui-button-icon-base"
+      :class="buttonIconSizeClass"
+    />
   </button>
 </template>
