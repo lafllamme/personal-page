@@ -135,8 +135,11 @@ const motionTokens: TokenSet = {
 }
 
 const spacingTokens: TokenSet = {
+  'space-0_5': '0.125rem',
   'space-1': '0.25rem',
+  'space-1_5': '0.375rem',
   'space-2': '0.5rem',
+  'space-2_5': '0.625rem',
   'space-3': '0.75rem',
   'space-4': '1rem',
   'space-5': '1.25rem',
@@ -179,12 +182,12 @@ const layoutTokens: TokenSet = {
 }
 
 const sizingTokens: TokenSet = {
-  'button-px-sm': '0.75rem',
-  'button-px-md': '1rem',
-  'button-px-lg': '1.25rem',
-  'button-py-sm': '0.375rem',
-  'button-py-md': '0.5rem',
-  'button-py-lg': '0.625rem',
+  'button-px-sm': 'var(--space-3)',
+  'button-px-md': 'var(--space-4)',
+  'button-px-lg': 'var(--space-5)',
+  'button-py-sm': 'var(--space-1_5)',
+  'button-py-md': 'var(--space-2)',
+  'button-py-lg': 'var(--space-2_5)',
   'radius-pill': '9999px',
   'control-border-width': '1px',
   'focus-ring-inner-width': '2px',

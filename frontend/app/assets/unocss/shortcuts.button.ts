@@ -3,19 +3,19 @@ import type { UserShortcuts } from 'unocss'
 export const buttonShortcuts: UserShortcuts = [
   [
     'ui-button-base',
-    'relative inline-flex w-auto items-center justify-center whitespace-nowrap [border-radius:var(--radius-pill)] px-4 py-2 [border-width:var(--control-border-width)] border-solid border-transparent [text-decoration:none] transition-[background-color,color,border-color,box-shadow,transform] duration-[160ms] ease-out disabled:cursor-not-allowed focus-visible:outline-none',
+    'relative inline-flex w-auto items-center justify-center whitespace-nowrap [border-radius:var(--radius-pill)] [border-width:var(--control-border-width)] border-solid border-transparent [text-decoration:none] transition-[background-color,color,border-color,box-shadow,transform] duration-[160ms] ease-out disabled:cursor-not-allowed focus-visible:outline-none',
   ],
   [
     'ui-button-sm',
-    'px-3 py-1.5 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-sm)]',
+    'px-$space-3 py-$space-1_5 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-sm)]',
   ],
   [
     'ui-button-md',
-    'px-4 py-2 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-md)]',
+    'px-$space-4 py-$space-2 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-md)]',
   ],
   [
     'ui-button-lg',
-    'px-5 py-2.5 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-lg)]',
+    'px-$space-5 py-$space-2_5 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-lg)]',
   ],
   [
     'ui-button-label',
