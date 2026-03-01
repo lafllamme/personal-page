@@ -103,6 +103,10 @@ Hinweis:
 ### Link Modes (DsLink)
 - Default: `underline="always"` (Content-first, direkte Link-Erkennbarkeit)
 - Alternative: `underline="hover"` (Footer/Nav)
+- Size-System:
+  - `sm` = `meta/xs`
+  - `md` = `meta/sm`
+  - `lg` = `meta/md`
 - L1 Sweep ist tokenisiert ueber `ui-link-underline-hover`.
 - Detail-Referenz: [DS-LINK.md](./DS-LINK.md)
 

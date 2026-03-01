@@ -17,11 +17,21 @@ Status: aktiv
   - `href?: string` (Default `#`)
   - `text?: string`
   - `variant?: 'default' | 'accent'` (Default `default`)
+  - `size?: 'sm' | 'md' | 'lg'` (Default `md`)
   - `underline?: 'always' | 'hover'` (Default `always`)
+
+## Size System
+- `sm` = `meta / xs` fuer Footer, Utility-Links, kompakte Nav
+- `md` = `meta / sm` als Default-Variante
+- `lg` = `meta / md` fuer prominentere CTA-Links und Section-Links
+- Underline-Geometrie skaliert pro Groesse mit, damit `sm` nicht zu schwer und `lg` nicht zu filigran wirkt
 
 ## UnoCSS Tokenisierung
 - Link-Shortcuts:
   - `ui-link-base`
+  - `ui-link-sm`
+  - `ui-link-md`
+  - `ui-link-lg`
   - `ui-link-variant-default`
   - `ui-link-variant-accent`
   - `ui-link-underline-hover` (L1 Sweep)

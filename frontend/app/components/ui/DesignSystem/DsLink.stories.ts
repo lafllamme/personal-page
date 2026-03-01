@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import DsSectionContainer from './DsSectionContainer.vue'
 import DsLink from './DsLink.vue'
+import DsLinkStorySingle from './DsLinkStorySingle.vue'
+import DsLinkStorySizing from './DsLinkStorySizing.vue'
 
 const meta = {
   title: 'Design System/Components/DsLink',
@@ -10,6 +11,7 @@ const meta = {
     text: 'Read article',
     href: '#',
     variant: 'default',
+    size: 'md',
     underline: 'always',
   },
   argTypes: {
@@ -19,25 +21,21 @@ const meta = {
       control: 'select',
       options: ['default', 'accent'],
     },
+    size: {
+      control: 'select',
+      options: ['sm', 'md', 'lg'],
+    },
     underline: {
       control: 'select',
       options: ['always', 'hover'],
     },
   },
   render: args => ({
-    components: { DsLink, DsSectionContainer },
+    components: { DsLinkStorySingle },
     setup() {
       return { args }
     },
-    template: `
-      <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
-        <DsSectionContainer layout="block">
-          <div class="flex items-center justify-center py-8">
-            <DsLink v-bind="args" />
-          </div>
-        </DsSectionContainer>
-      </div>
-    `,
+    template: '<DsLinkStorySingle v-bind="args" />',
   }),
 } satisfies Meta<typeof DsLink>
 
@@ -74,4 +72,32 @@ export const AccentHoverUnderline: Story = {
     variant: 'accent',
     underline: 'hover',
   },
+}
+
+export const SizingScale: Story = {
+  name: 'Sizing / Scale',
+  render: (args, context) => ({
+    components: { DsLinkStorySingle, DsLinkStorySizing },
+    setup() {
+      const showScale = context.viewMode !== 'docs'
+      return { args, showScale }
+    },
+    template: `
+      <DsLinkStorySizing
+        v-if="showScale"
+        :text="args.text"
+        :href="args.href"
+        :variant="args.variant"
+        :underline="args.underline"
+      />
+      <DsLinkStorySingle
+        v-else
+        :text="args.text"
+        :href="args.href"
+        :variant="args.variant"
+        :size="args.size"
+        :underline="args.underline"
+      />
+    `,
+  }),
 }
