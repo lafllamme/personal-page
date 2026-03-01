@@ -15,10 +15,15 @@ Status: aktiv
 - Runtime-Komponente: [`frontend/app/components/ui/DesignSystem/DsLink.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsLink.vue)
 - Props:
   - `href?: string` (Default `#`)
+  - `to?: string` (Default leer, aktiviert interne Nuxt-Navigation)
   - `text?: string`
   - `variant?: 'default' | 'accent'` (Default `default`)
   - `size?: 'sm' | 'md' | 'lg'` (Default `md`)
   - `underline?: 'always' | 'hover'` (Default `always`)
+- Render-Regel:
+  - `to` gesetzt -> `NuxtLink`
+  - sonst -> `<a>`
+- Storybook-Referenz: [STUBBING.md](./STUBBING.md)
 
 ## Size System
 - `sm` = `meta / xs` fuer Footer, Utility-Links, kompakte Nav

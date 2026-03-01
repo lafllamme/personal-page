@@ -27,16 +27,22 @@ Warum:
 
 ## Storybook Stubs
 - `NuxtLink`
-  - global in `frontend/.storybook/preview.ts` registrieren
+  - Implementierung in `frontend/.storybook/stubbing.ts`
+  - globale Registrierung in `frontend/.storybook/preview.ts`
   - rendert im Storybook als normales `<a>`
   - uebernimmt `to`, `href`, `target`, `rel`
 
 - `NuxtIcon` / `Icon`
-  - global in `frontend/.storybook/preview.ts` registrieren
+  - Implementierung in `frontend/.storybook/stubbing.ts`
+  - globale Registrierung in `frontend/.storybook/preview.ts`
   - soll im Storybook nicht nur ein Platzhalter sein, sondern echte Icons rendern
   - empfohlener Ansatz:
     - Stub rendert intern ueber `@iconify/vue`
     - `name` wird direkt an die Iconify-Komponente durchgereicht
+
+Strukturregel:
+- `preview.ts` bleibt schlank und orchestriert nur
+- konkrete Stub-Implementierungen liegen gesammelt in `stubbing.ts`
 
 Hinweis:
 - im aktuellen App-Code wird ueber `@nuxt/icon` vor allem `Icon` verwendet
