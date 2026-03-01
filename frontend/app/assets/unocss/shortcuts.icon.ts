@@ -34,8 +34,16 @@ export const iconShortcuts: UserShortcuts = [
     'color-$color-primary',
   ],
   [
+    'ui-icon-v-inherit',
+    'color-current',
+  ],
+  [
     'ui-icon-v-default-bg',
     'color-$color-primary bg-$bg-soft',
+  ],
+  [
+    'ui-icon-v-inherit-bg',
+    'color-current',
   ],
   [
     'ui-icon-v-sand',

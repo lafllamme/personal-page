@@ -13,6 +13,7 @@ Status: aktiv
   - `name: string`
   - `size?: 'sm' | 'md' | 'lg'`
 - `variant?: 'default' | 'sand' | 'accent' | 'accent-soft' | 'accent-strong'`
+- `variant?: 'default' | 'inherit' | 'sand' | 'accent' | 'accent-soft' | 'accent-strong'`
   - `background?: boolean`
 - Kein eigener Layout-Wrapper
 - Keine komplexen States
@@ -41,6 +42,9 @@ Designregel:
 - `size` aendert nur die Icon-Groesse und optional die minimale Hintergrundflaeche, nicht das umgebende Layout.
 
 ### `variant`
+- `inherit`
+  - uebernimmt `currentColor` vom Parent
+  - fuer Links, Buttons und andere komponierte Controls, bei denen das Icon exakt der umgebenden State-Farbe folgen muss
 - `default`
   - neutrales Black/White-System
 - `accent`

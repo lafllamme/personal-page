@@ -32,6 +32,8 @@ const colorTokens: TokenSet = {
   'color-link-hover': { light: 'var(--un-preset-radix-sand10)', dark: 'var(--un-preset-radix-sand10)' },
   'color-link-accent': { light: 'var(--toxic-11)', dark: 'var(--toxic-11)' },
   'color-link-accent-hover': { light: 'var(--toxic-12)', dark: 'var(--toxic-9)' },
+  'color-link-arrow-default-idle': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand11)' },
+  'color-link-arrow-accent-idle': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
 }
 
 const bgTokens: TokenSet = {
@@ -112,6 +114,11 @@ const motionTokens: TokenSet = {
   'motion-underline-thickness': '0.125em',
   'motion-link-underline-offset': '-0.0625em',
   'motion-link-underline-thickness': '0.0625em',
+  'motion-link-stagger-line-duration': '0.35s',
+  'motion-link-stagger-line-ease': 'cubic-bezier(0.76, 0, 0.24, 1)',
+  'motion-link-stagger-arrow-duration': '0.4s',
+  'motion-link-stagger-arrow-ease': 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+  'motion-link-stagger-arrow-delay': '0.2s',
   'motion-primary-sweep-duration': '0.4s',
   'motion-primary-sweep-ease': 'cubic-bezier(0.3, 1, 0.8, 1)',
   'motion-primary-rotate-duration': '0.5s',

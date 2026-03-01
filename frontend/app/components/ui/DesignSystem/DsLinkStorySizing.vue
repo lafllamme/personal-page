@@ -7,6 +7,7 @@ defineProps<{
   href: string
   variant: 'default' | 'accent'
   underline: 'always' | 'hover'
+  external?: boolean
 }>()
 </script>
 
@@ -38,6 +39,7 @@ defineProps<{
             :variant="variant"
             size="sm"
             :underline="underline"
+            :external="external"
           />
         </div>
         <div class="h-12 w-80 flex items-end">
@@ -47,6 +49,7 @@ defineProps<{
             :variant="variant"
             size="md"
             :underline="underline"
+            :external="external"
           />
         </div>
         <div class="h-12 w-80 flex items-end">
@@ -56,6 +59,7 @@ defineProps<{
             :variant="variant"
             size="lg"
             :underline="underline"
+            :external="external"
           />
         </div>
       </div>

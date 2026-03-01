@@ -8,12 +8,13 @@ defineProps<{
   variant: 'default' | 'accent'
   size: 'sm' | 'md' | 'lg'
   underline: 'always' | 'hover'
+  external?: boolean
 }>()
 </script>
 
 <template>
-  <div class="bg-pureWhite color-pureBlack p-8 dark:bg-pureBlack dark:color-pureWhite">
-    <div class="flex min-h-24 items-center justify-center">
+  <div class="bg-pureWhite p-8 color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
+    <div class="min-h-24 flex items-center justify-center">
       <DsLink
         :text="text"
         :to="to"
@@ -21,6 +22,7 @@ defineProps<{
         :variant="variant"
         :size="size"
         :underline="underline"
+        :external="external"
       />
     </div>
   </div>

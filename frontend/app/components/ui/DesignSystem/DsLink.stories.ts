@@ -14,6 +14,7 @@ const meta = {
     variant: 'default',
     size: 'md',
     underline: 'always',
+    external: false,
   },
   argTypes: {
     text: { control: 'text' },
@@ -31,6 +32,7 @@ const meta = {
       control: 'select',
       options: ['always', 'hover'],
     },
+    external: { control: 'boolean' },
   },
   render: args => ({
     components: { DsLinkStorySingle },
@@ -86,6 +88,24 @@ export const InternalNavigation: Story = {
   },
 }
 
+export const DefaultExternal: Story = {
+  name: 'Variant / Default External',
+  args: {
+    variant: 'default',
+    underline: 'always',
+    external: true,
+  },
+}
+
+export const AccentExternal: Story = {
+  name: 'Variant / Accent External',
+  args: {
+    variant: 'accent',
+    underline: 'always',
+    external: true,
+  },
+}
+
 export const SizingScale: Story = {
   name: 'Sizing / Scale',
   render: (args, context) => ({
@@ -101,6 +121,7 @@ export const SizingScale: Story = {
         :href="args.href"
         :variant="args.variant"
         :underline="args.underline"
+        :external="args.external"
       />
       <DsLinkStorySingle
         v-else
@@ -110,6 +131,7 @@ export const SizingScale: Story = {
         :variant="args.variant"
         :size="args.size"
         :underline="args.underline"
+        :external="args.external"
       />
     `,
   }),

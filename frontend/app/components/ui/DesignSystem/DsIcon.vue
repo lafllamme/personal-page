@@ -5,7 +5,7 @@ import { useClsx } from '@/composables/useClsx'
 const props = withDefaults(defineProps<{
   name: string
   size?: 'sm' | 'md' | 'lg'
-  variant?: 'default' | 'sand' | 'accent' | 'accent-soft' | 'accent-strong'
+  variant?: 'default' | 'inherit' | 'sand' | 'accent' | 'accent-soft' | 'accent-strong'
   background?: boolean
 }>(), {
   size: 'md',
@@ -31,6 +31,10 @@ const toneClass = {
   'default': {
     plain: 'ui-icon-v-default',
     surface: 'ui-icon-v-default-bg',
+  },
+  'inherit': {
+    plain: 'ui-icon-v-inherit',
+    surface: 'ui-icon-v-inherit-bg',
   },
   'sand': {
     plain: 'ui-icon-v-sand',
