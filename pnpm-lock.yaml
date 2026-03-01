@@ -217,6 +217,9 @@ catalogs:
     '@iconify-json/uil':
       specifier: ^1.2.3
       version: 1.2.3
+    '@iconify/vue':
+      specifier: ^5.0.0
+      version: 5.0.0
     '@nuxt/devtools-kit':
       specifier: 3.1.1
       version: 3.1.1
@@ -684,6 +687,9 @@ importers:
       '@iconify-json/uil':
         specifier: catalog:frontend
         version: 1.2.3
+      '@iconify/vue':
+        specifier: catalog:frontend
+        version: 5.0.0(vue@3.5.27(typescript@5.9.3))
       '@inspira-ui/plugins':
         specifier: catalog:build
         version: 0.0.1
@@ -11568,6 +11574,9 @@ packages:
   vue-component-type-helpers@3.2.4:
     resolution: {integrity: sha512-05lR16HeZDcDpB23ku5b5f1fBOoHqFnMiKRr2CiEvbG5Ux4Yi0McmQBOET0dR0nxDXosxyVqv67q6CzS3AK8rw==}
 
+  vue-component-type-helpers@3.2.5:
+    resolution: {integrity: sha512-tkvNr+bU8+xD/onAThIe7CHFvOJ/BO6XCOrxMzeytJq40nTfpGDJuVjyCM8ccGZKfAbGk2YfuZyDMXM56qheZQ==}
+
   vue-demi@0.14.10:
     resolution: {integrity: sha512-nMZBOwuzabUO0nLgIcc6rycZEebF6eeUfaiQx9+WSk8e29IbLvPU9feI6tqW4kTo3hvoYAJkMh8n8D0fuISphg==}
     engines: {node: '>=12'}
@@ -16437,7 +16446,7 @@ snapshots:
       storybook: 10.2.8(@testing-library/dom@10.4.0)(bufferutil@4.1.0)(prettier@3.8.1)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(utf-8-validate@6.0.6)
       type-fest: 2.19.0
       vue: 3.5.27(typescript@5.9.3)
-      vue-component-type-helpers: 3.2.4
+      vue-component-type-helpers: 3.2.5
 
   '@stylistic/eslint-plugin@5.7.1(eslint@9.39.2(jiti@2.6.1))':
     dependencies:
@@ -24830,6 +24839,8 @@ snapshots:
   vue-component-type-helpers@2.2.12: {}
 
   vue-component-type-helpers@3.2.4: {}
+
+  vue-component-type-helpers@3.2.5: {}
 
   vue-demi@0.14.10(vue@3.5.27(typescript@5.9.3)):
     dependencies:

@@ -1,8 +1,12 @@
 import type { Preview } from '@storybook/vue3-vite'
+import { setup } from '@storybook/vue3-vite'
+import { registerStorybookStubs } from './stubbing'
 import '../app/assets/reset/main.ts'
 import './storybook-fonts.css'
 import './storybook-docs.css'
 import 'virtual:uno.css'
+
+setup(registerStorybookStubs)
 
 const preview: Preview = {
   globalTypes: {

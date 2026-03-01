@@ -71,6 +71,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "catalog:dev",
+    "@iconify/vue": "catalog:frontend",
     "@storybook/addon-docs": "catalog:dev",
     "@storybook/vue3-vite": "catalog:dev",
     "storybook": "catalog:dev",
