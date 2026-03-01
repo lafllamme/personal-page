@@ -22,6 +22,34 @@ export const buttonShortcuts: UserShortcuts = [
     'relative z-1 inline-flex items-center',
   ],
   [
+    'ui-button-icon-base',
+    'relative z-1 block shrink-0 color-current',
+  ],
+  [
+    'ui-button-icon-sm',
+    'size-5',
+  ],
+  [
+    'ui-button-icon-md',
+    'size-5',
+  ],
+  [
+    'ui-button-icon-lg',
+    'size-6',
+  ],
+  [
+    'ui-button-icon-only-sm',
+    'size-9 p-0',
+  ],
+  [
+    'ui-button-icon-only-md',
+    'size-10 p-0',
+  ],
+  [
+    'ui-button-icon-only-lg',
+    'size-11 p-0',
+  ],
+  [
     'ui-primary-rotate-wrap',
     'relative inline-grid place-items-center',
   ],

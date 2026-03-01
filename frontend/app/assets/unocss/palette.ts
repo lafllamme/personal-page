@@ -122,6 +122,7 @@ const motionTokens: TokenSet = {
   'motion-primary-rotate-origin-y-md': '2080%',
   'motion-primary-rotate-origin-y-lg': '1800%',
   'motion-primary-rotate-letter-spacing': '-0.02em',
+  'motion-active-press-scale': '0.925',
   'motion-secondary-sweep-duration': '0.32s',
   'motion-secondary-sweep-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
 }
