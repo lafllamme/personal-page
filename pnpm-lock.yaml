@@ -205,6 +205,9 @@ catalogs:
     '@dimforge/rapier3d-compat':
       specifier: ^0.19.3
       version: 0.19.3
+    '@iconify-json/iconoir':
+      specifier: ^1.2.9
+      version: 1.2.10
     '@iconify-json/lucide':
       specifier: ^1.2.87
       version: 1.2.87
@@ -539,6 +542,9 @@ importers:
       '@dimforge/rapier3d-compat':
         specifier: catalog:frontend
         version: 0.19.3
+      '@iconify-json/iconoir':
+        specifier: catalog:frontend
+        version: 1.2.10
       '@iconify-json/radix-icons':
         specifier: catalog:frontend
         version: 1.2.6
@@ -2402,6 +2408,9 @@ packages:
   '@humanwhocodes/retry@0.4.3':
     resolution: {integrity: sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==}
     engines: {node: '>=18.18'}
+
+  '@iconify-json/iconoir@1.2.10':
+    resolution: {integrity: sha512-NnbdB9S5G++6wE5aEZhzpFR0HRcaZFSbJJIHOGF2axaNVKnSUs4NBW2z0uhZnM00iUkiK848Sp81EZPg52DL+w==}
 
   '@iconify-json/lucide@1.2.87':
     resolution: {integrity: sha512-wxYIAp0f8Uw0rJa6BMWMaRbiHk3yV4XczA38GKXFlqyZtTdmHM1QOF4NZw5xpMlRDzbh2MnB7wjteLeFnn/ciQ==}
@@ -13697,6 +13706,10 @@ snapshots:
   '@humanwhocodes/retry@0.3.1': {}
 
   '@humanwhocodes/retry@0.4.3': {}
+
+  '@iconify-json/iconoir@1.2.10':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/lucide@1.2.87':
     dependencies:

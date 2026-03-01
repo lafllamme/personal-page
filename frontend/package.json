@@ -22,6 +22,7 @@
     "docker:start": "nuxt start --port 3000 --hostname 0.0.0.0"
   },
   "dependencies": {
+    "@iconify-json/iconoir": "catalog:frontend",
     "@dimforge/rapier3d-compat": "catalog:frontend",
     "@iconify-json/radix-icons": "catalog:frontend",
     "@nuxt/icon": "catalog:frontend",

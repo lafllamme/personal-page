@@ -33,9 +33,9 @@ const ratioClass = computed(() => {
         v-if="src"
         :src="src"
         :alt="alt"
-        class="h-full w-full object-cover"
+        class="size-full object-cover"
       >
-      <div v-else class="h-full w-full flex items-center justify-center bg-pureBlack/6 text-xs opacity-70 dark:bg-pureWhite/8">
+      <div v-else class="size-full flex items-center justify-center bg-pureBlack/6 text-xs opacity-70 dark:bg-pureWhite/8">
         media placeholder
       </div>
     </div>

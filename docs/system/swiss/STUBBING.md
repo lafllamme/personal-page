@@ -60,6 +60,7 @@ Warum:
 ## Icon Guardrails
 - Echte Storybook-Icons funktionieren nur, wenn die verwendete Collection installiert ist
 - fuer den aktuellen Stand sind u. a. bereits vorhanden:
+  - `@iconify-json/iconoir`
   - `@iconify-json/lucide`
   - `@iconify-json/ri`
   - `@iconify-json/uil`
@@ -71,8 +72,9 @@ Warum:
 
 ## Aktuelle Packs im Projekt
 - direkt installiert / verlässlich fuer den ersten DS-Stand:
-  - `radix-icons`
+  - `iconoir`
   - `lucide`
+  - `radix-icons`
   - `ri`
   - `uil`
 
@@ -86,25 +88,22 @@ Regel:
 - andere Packs bleiben Bestands-Code, werden aber nicht als DS-Standard betrachtet
 
 ## Icon-Pack Proposal (DS)
-- Primaerer DS-Standard: `radix-icons`
-  - am saubersten fuer ein reduziertes, systemisches UI
-  - ruhig, technisch, gut passend zum aktuellen Swiss-/Editorial-Kontext
+- Primaerer DS-Standard: `iconoir`
+  - eleganter
+  - feiner
+  - editorial-naeher
 
 - Sekundaerer Utility-Standard: `lucide`
-  - gut fuer Richtungs-, Action- und External-Link-Icons
-  - feiner als viele generische Packs, aber breiter einsetzbar als `radix-icons`
+  - stark fuer Richtungs-, Action- und External-Link-Icons
 
-- Breiter Content-Fallback: `ri`
-  - sehr gute Abdeckung
-  - sinnvoll fuer bestehende Produktflaechen, wo bereits viel davon verwendet wird
-
-- Nicht als Default empfehlen:
-  - `uil` als DS-Lead (wirkt weicher und generischer)
-  - `tabler`, `mdi`, `svg-spinners` als erster Standard, solange sie nicht bewusst vereinheitlicht sind
+- Legacy / Bestands-Fallback:
+  - `radix-icons`
+  - `ri`
+  - `uil`
 
 Pragmatische Empfehlung:
-- DS-Komponenten zuerst auf `radix-icons` + `lucide` ausrichten
-- `ri` als Bestands- und Content-Fallback beibehalten
+- Neue DS-Komponenten zuerst auf `iconoir` + `lucide` ausrichten
+- Legacy-Packs im Bestand zunaechst stehen lassen, aber nicht als neue Lead-Quelle erweitern
 
 - Wenn ein Icon-Name auf eine nicht installierte Collection zeigt:
   - Storybook kann das Icon nicht rendern

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import DsLink from './DsLink.vue'
+import DsTypography from './DsTypography.vue'
 
 defineProps<{
   text: string
@@ -10,21 +11,27 @@ defineProps<{
 </script>
 
 <template>
-  <div class="bg-pureWhite color-pureBlack p-8 dark:bg-pureBlack dark:color-pureWhite">
+  <div class="bg-pureWhite p-8 color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
     <div class="py-4">
-      <div class="mb-5 flex items-start justify-start gap-24">
+      <div class="mb-5 flex items-start gap-24">
         <div class="w-80">
-          <span class="block font-$font-meta text-$type-meta-xs leading-none color-$color-primary opacity-70">SM</span>
+          <DsTypography as="span" role="meta" size="xs" tone="muted">
+            SM
+          </DsTypography>
         </div>
         <div class="w-80">
-          <span class="block font-$font-meta text-$type-meta-xs leading-none color-$color-primary opacity-70">MD</span>
+          <DsTypography as="span" role="meta" size="xs" tone="muted">
+            MD
+          </DsTypography>
         </div>
         <div class="w-80">
-          <span class="block font-$font-meta text-$type-meta-xs leading-none color-$color-primary opacity-70">LG</span>
+          <DsTypography as="span" role="meta" size="xs" tone="muted">
+            LG
+          </DsTypography>
         </div>
       </div>
-      <div class="flex items-end justify-start gap-24">
-        <div class="flex h-12 w-80 items-end">
+      <div class="flex items-end gap-24">
+        <div class="h-12 w-80 flex items-end">
           <DsLink
             :text="text"
             :href="href"
@@ -33,7 +40,7 @@ defineProps<{
             :underline="underline"
           />
         </div>
-        <div class="flex h-12 w-80 items-end">
+        <div class="h-12 w-80 flex items-end">
           <DsLink
             :text="text"
             :href="href"
@@ -42,7 +49,7 @@ defineProps<{
             :underline="underline"
           />
         </div>
-        <div class="flex h-12 w-80 items-end">
+        <div class="h-12 w-80 flex items-end">
           <DsLink
             :text="text"
             :href="href"
