@@ -52,6 +52,8 @@ Status: aktiv
   - `ui-link-underline-hover` (L1 Sweep)
   - `ui-link-underline-always` (always visible, hover runs line out; re-enters on mouseout)
 - Datei: [`frontend/app/assets/unocss/shortcuts.link.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.link.ts)
+- Die Klassen fuer `external` setzen nur Geometrie und Variablen.
+- Die eigentliche Selector-Choreografie bleibt lokal in [`frontend/app/components/ui/DesignSystem/DsLink.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsLink.vue), nutzt dort aber ausschliesslich die in Uno gesetzten Variablen.
 
 ## Motion Tokens
 - `motion-underline-duration`
@@ -65,6 +67,12 @@ Status: aktiv
 - `motion-link-stagger-arrow-delay`
 - Datei: [`frontend/app/assets/unocss/palette.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/palette.ts)
 
+## Inline Spacing Token
+- `space-inline-tight`
+  - aktueller Einsatz: Gap zwischen Linktext und External-Arrow
+  - bewusst in `em`, damit der Abstand mit der Typografie mitskaliert
+  - im Uno-Theme exponiert, damit `gap-$space-inline-tight` lesbar nutzbar ist
+
 ## Color Token
 - `color-link-hover`:
   - light: `sand-10`
@@ -76,8 +84,8 @@ Status: aktiv
   - light: `toxic-12`
   - dark: `toxic-9`
 - `color-link-arrow-default-idle`:
-  - light: `sand-11`
-  - dark: `sand-11`
+  - light: `sand-12`
+  - dark: `pure-white`
 - `color-link-arrow-accent-idle`:
   - light: `toxic-10`
   - dark: `toxic-10`
@@ -90,8 +98,10 @@ Status: aktiv
 ## External Link
 - `external=true` bleibt Teil von `DsLink`, keine separate Komponente.
 - Der Arrow rendert ueber [`DsIcon.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsIcon.vue) mit `variant="inherit"`.
+- Der External-Arrow nutzt aktuell `DsIcon size="sm"`.
 - Der Text traegt die Underline separat, damit das Stagger-Verhalten sauber getrennt laeuft.
 - Der Root-Link wechselt bei `external` nicht global die Hover-Farbe; Text und Arrow werden getrennt orchestriert.
+- Die verschachtelten Hover-Selektoren liegen im Vue-SFC, damit die Choreografie robust bleibt; deren Werte kommen aber aus Uno-Variablen.
 - `underline="always"`:
   - der Text-Underline zieht sich auf Hover/Fokus zuerst zurueck
   - danach startet der Arrow diagonal nach oben rechts

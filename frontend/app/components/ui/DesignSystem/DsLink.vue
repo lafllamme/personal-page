@@ -71,10 +71,7 @@ const externalArrowToneClass = computed(() => {
     : 'ui-link-external-arrow-default'
 })
 
-const externalArrowIconSize = computed(() => {
-  if (props.size === 'lg')
-    return 'md'
-
+const externalArrowIconSize = computed<'sm'>(() => {
   return 'sm'
 })
 
@@ -113,7 +110,11 @@ const linkProps = computed(() => {
           <slot v-else />
         </DsTypography>
       </span>
-      <span class="ds-link-external__arrow ui-link-external-arrow" :class="externalArrowToneClass" aria-hidden="true">
+      <span
+        class="ds-link-external__arrow ui-link-external-arrow"
+        :class="externalArrowToneClass"
+        aria-hidden="true"
+      >
         <DsIcon
           name="iconoir:arrow-up-right"
           :size="externalArrowIconSize"
@@ -147,33 +148,19 @@ const linkProps = computed(() => {
   height: var(--link-underline-thickness);
   border-radius: 9999px;
   background: currentColor;
-}
-
-.ds-link-external__text--hover::after {
-  transform: scaleX(0);
-  transform-origin: right center;
-  transition: transform var(--motion-underline-duration) var(--motion-underline-ease);
-}
-
-.ds-link-external:hover .ds-link-external__text--hover::after,
-.ds-link-external:focus-visible .ds-link-external__text--hover::after {
-  transform: scaleX(1);
-  transform-origin: left center;
-}
-
-.ds-link-external__text--always::after {
-  transform: scaleX(1);
-  transform-origin: right center;
-  opacity: 1;
+  transform: scaleX(var(--link-external-line-scale));
+  transform-origin: var(--link-external-line-origin);
+  opacity: var(--link-external-line-opacity);
   transition:
-    transform var(--motion-link-stagger-line-duration) var(--motion-link-stagger-line-ease),
-    opacity var(--motion-link-stagger-line-duration) ease;
+    transform var(--link-external-line-duration) var(--link-external-line-ease),
+    opacity var(--link-external-line-duration) ease;
 }
 
-.ds-link-external:hover .ds-link-external__text--always::after,
-.ds-link-external:focus-visible .ds-link-external__text--always::after {
-  transform: scaleX(0);
-  opacity: 0;
+.ds-link-external:hover .ds-link-external__text::after,
+.ds-link-external:focus-visible .ds-link-external__text::after {
+  transform: scaleX(var(--link-external-line-hover-scale));
+  transform-origin: var(--link-external-line-hover-origin);
+  opacity: var(--link-external-line-hover-opacity);
 }
 
 .ds-link-external__arrow {
@@ -191,6 +178,6 @@ const linkProps = computed(() => {
 .ds-link-external:focus-visible .ds-link-external__arrow {
   color: var(--link-external-arrow-active);
   opacity: 1;
-  transform: translate(4px, -4px);
+  transform: translate(var(--link-external-arrow-shift-x), var(--link-external-arrow-shift-y));
 }
 </style>

@@ -4,7 +4,7 @@ import { useClsx } from '@/composables/useClsx'
 
 const props = withDefaults(defineProps<{
   name: string
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'xs' | 'sm' | 'md' | 'lg'
   variant?: 'default' | 'inherit' | 'sand' | 'accent' | 'accent-soft' | 'accent-strong'
   background?: boolean
 }>(), {
@@ -16,12 +16,14 @@ const props = withDefaults(defineProps<{
 const { size, variant, background } = toRefs(props)
 
 const glyphSizeClass = {
+  xs: 'ui-icon-glyph-xs',
   sm: 'ui-icon-glyph-sm',
   md: 'ui-icon-glyph-md',
   lg: 'ui-icon-glyph-lg',
 } as const
 
 const frameSizeClass = {
+  xs: 'ui-icon-frame-xs',
   sm: 'ui-icon-frame-sm',
   md: 'ui-icon-frame-md',
   lg: 'ui-icon-frame-lg',

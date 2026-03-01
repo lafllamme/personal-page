@@ -3,7 +3,7 @@ import type { UserShortcuts } from 'unocss'
 export const linkShortcuts: UserShortcuts = [
   [
     'ui-link-base',
-    'group relative inline-flex w-fit items-center [--link-underline-offset:var(--motion-link-underline-offset)] [--link-underline-thickness:var(--motion-link-underline-thickness)] [text-decoration:none] [transition:color_var(--motion-underline-duration)_var(--motion-underline-ease)] focus-visible:outline-none',
+    'relative inline-flex w-fit items-center [--link-underline-offset:var(--motion-link-underline-offset)] [--link-underline-thickness:var(--motion-link-underline-thickness)] [text-decoration:none] [transition:color_var(--motion-underline-duration)_var(--motion-underline-ease)] focus-visible:outline-none',
   ],
   [
     'ui-link-sm',
@@ -19,7 +19,7 @@ export const linkShortcuts: UserShortcuts = [
   ],
   [
     'ui-link-external',
-    'items-center gap-[0.25em]',
+    'items-center gap-$space-inline-tight',
   ],
   [
     'ui-link-external-text',
@@ -27,15 +27,15 @@ export const linkShortcuts: UserShortcuts = [
   ],
   [
     'ui-link-external-text-underline-hover',
-    '',
+    '[--link-external-line-scale:0] [--link-external-line-hover-scale:1] [--link-external-line-opacity:1] [--link-external-line-hover-opacity:1] [--link-external-line-origin:right_center] [--link-external-line-hover-origin:left_center] [--link-external-line-duration:var(--motion-underline-duration)] [--link-external-line-ease:var(--motion-underline-ease)]',
   ],
   [
     'ui-link-external-text-underline-always',
-    '',
+    '[--link-external-line-scale:1] [--link-external-line-hover-scale:0] [--link-external-line-opacity:1] [--link-external-line-hover-opacity:0] [--link-external-line-origin:right_center] [--link-external-line-hover-origin:right_center] [--link-external-line-duration:var(--motion-link-stagger-line-duration)] [--link-external-line-ease:var(--motion-link-stagger-line-ease)]',
   ],
   [
     'ui-link-external-arrow',
-    'inline-flex shrink-0 self-center leading-none',
+    'inline-flex shrink-0 self-center leading-none [--link-external-arrow-shift-x:4px] [--link-external-arrow-shift-y:-4px]',
   ],
   [
     'ui-link-external-arrow-default',

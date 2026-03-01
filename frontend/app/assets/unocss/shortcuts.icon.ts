@@ -6,6 +6,10 @@ export const iconShortcuts: UserShortcuts = [
     'inline-flex shrink-0 items-center justify-center align-middle rounded-full transition-colors duration-160 ease-out',
   ],
   [
+    'ui-icon-glyph-xs',
+    'block shrink-0 size-3',
+  ],
+  [
     'ui-icon-glyph-sm',
     'block shrink-0 size-4',
   ],
@@ -16,6 +20,10 @@ export const iconShortcuts: UserShortcuts = [
   [
     'ui-icon-glyph-lg',
     'block shrink-0 size-6',
+  ],
+  [
+    'ui-icon-frame-xs',
+    'size-7',
   ],
   [
     'ui-icon-frame-sm',

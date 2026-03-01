@@ -11,7 +11,7 @@ Status: aktiv
 ## Scope
 - `DsIcon` bleibt bewusst klein:
   - `name: string`
-  - `size?: 'sm' | 'md' | 'lg'`
+  - `size?: 'xs' | 'sm' | 'md' | 'lg'`
 - `variant?: 'default' | 'sand' | 'accent' | 'accent-soft' | 'accent-strong'`
 - `variant?: 'default' | 'inherit' | 'sand' | 'accent' | 'accent-soft' | 'accent-strong'`
   - `background?: boolean`
@@ -31,6 +31,8 @@ Regel:
   - `radix-icons:external-link`
 
 ### `size`
+- `xs`
+  - fuer sehr kleine Inline-Kontexte wie Link-Arrow, wenn `sm` optisch noch zu gross ist
 - `sm`
   - fuer Inline-/Meta-Kontexte, kleine Utility-Aktionen
 - `md`

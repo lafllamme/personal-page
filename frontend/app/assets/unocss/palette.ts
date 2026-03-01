@@ -32,7 +32,7 @@ const colorTokens: TokenSet = {
   'color-link-hover': { light: 'var(--un-preset-radix-sand10)', dark: 'var(--un-preset-radix-sand10)' },
   'color-link-accent': { light: 'var(--toxic-11)', dark: 'var(--toxic-11)' },
   'color-link-accent-hover': { light: 'var(--toxic-12)', dark: 'var(--toxic-9)' },
-  'color-link-arrow-default-idle': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand11)' },
+  'color-link-arrow-default-idle': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--pure-white)' },
   'color-link-arrow-accent-idle': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
 }
 
@@ -147,6 +147,7 @@ const spacingTokens: TokenSet = {
   'space-14': '3.5rem',
   'space-16': '4rem',
   'space-20': '5rem',
+  'space-inline-tight': '0.18em',
 }
 
 const layoutTokens: TokenSet = {
@@ -316,6 +317,8 @@ export const themeColors = {
   ring: createTokenVarMap(ringTokens),
   toxic: createScaleVarMap('toxic', toxicScale),
 }
+
+export const spacingTheme = createTokenVarMap(spacingTokens)
 
 export const typographyTheme = {
   fontSize: createPrefixedTokenVarMap(typographyTokens, 'type-size-'),
