@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, resolveComponent } from 'vue'
 import DsIcon from '@/components/ui/DesignSystem/DsIcon.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
@@ -76,9 +76,7 @@ const externalArrowIconSize = computed<'sm'>(() => {
 })
 
 const linkTag = computed(() => {
-  return props.to
-    ? 'NuxtLink'
-    : 'a'
+  return props.to ? resolveComponent('NuxtLink') : 'a'
 })
 
 const linkProps = computed(() => {

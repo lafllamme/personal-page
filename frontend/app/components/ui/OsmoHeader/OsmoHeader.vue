@@ -57,6 +57,12 @@ const topicTickerRows = [
   { id: 'row-3', duration: 32, reverse: false, tone: 'subtle' },
 ] as const
 
+function closeMenuDeferred() {
+  requestAnimationFrame(() => {
+    closeMenu()
+  })
+}
+
 function goToDesignSystem() {
   closeMenu()
   void navigateTo('/design-system')
@@ -397,7 +403,7 @@ onBeforeUnmount(() => {
                                             to="/design-system"
                                             size="sm"
                                             underline="hover"
-                                            @click="closeMenu"
+                                            @click="closeMenuDeferred"
                                           >
                                             {{ label }}
                                           </DsLink>
@@ -1824,21 +1830,3 @@ html.dark .osmo-nav .osmo-nav-banner__avatar {
   }
 }
 </style>
-.osmo-mobile-button.is--electric .osmo-mobile-button__bg {
-  background-color: rgba(11, 216, 182, 0.9);
-  border: 1px solid rgba(11, 216, 182, 0.3);
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.2),
-    0 4px 12px rgba(11, 216, 182, 0.3);
-}
-
-.osmo-mobile-button.is--electric:hover .osmo-mobile-button__bg {
-  background-color: rgba(138, 230, 80, 0.95);
-  border-color: rgba(138, 230, 80, 0.4);
-  box-shadow:
-    inset 0 1px 0 0 rgba(255, 255, 255, 0.3),
-    0 6px 16px rgba(138, 230, 80, 0.4);
-}
-.osmo-mobile-button.is--electric {
-  color: #1e1e1e;
-}
