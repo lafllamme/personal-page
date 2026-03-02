@@ -3,6 +3,7 @@ import { useEventListener, useScroll, useTimeoutFn } from '@vueuse/core'
 import { AnimatePresence, Motion } from 'motion-v'
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
+import DsLink from '@/components/ui/DesignSystem/DsLink.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import LogoMark from './LogoMark.vue'
@@ -373,28 +374,34 @@ onBeforeUnmount(() => {
                                     :key="row.id"
                                     class="osmo-topic-ticker__row"
                                   >
-                                    <div
-                                      class="osmo-topic-ticker__track"
-                                      :class="[
-                                        row.reverse ? 'is--reverse' : '',
-                                        row.tone === 'muted' ? 'is--muted' : '',
-                                      ]"
-                                      :style="{ animationDuration: `${row.duration}s` }"
-                                    >
+                                    <div class="osmo-topic-ticker__viewport">
                                       <div
-                                        v-for="segment in 2"
-                                        :key="`${row.id}-segment-${segment}`"
-                                        class="osmo-topic-ticker__segment"
+                                        class="osmo-topic-ticker__track"
+                                        :class="[
+                                          row.reverse ? 'is--reverse' : '',
+                                          row.tone === 'soft' ? 'is--soft' : '',
+                                          row.tone === 'muted' ? 'is--muted' : '',
+                                          row.tone === 'subtle' ? 'is--subtle' : '',
+                                        ]"
+                                        :style="{ animationDuration: `${row.duration}s` }"
                                       >
-                                        <button
-                                          v-for="label in featuredTopicButtons"
-                                          :key="`${row.id}-segment-${segment}-${label}`"
-                                          type="button"
-                                          class="osmo-topic-ticker__item"
-                                          @click="goToDesignSystem"
+                                        <div
+                                          v-for="segment in 2"
+                                          :key="`${row.id}-segment-${segment}`"
+                                          class="osmo-topic-ticker__segment"
                                         >
-                                          {{ label }}
-                                        </button>
+                                          <DsLink
+                                            v-for="label in featuredTopicButtons"
+                                            :key="`${row.id}-segment-${segment}-${label}`"
+                                            class="osmo-topic-link"
+                                            to="/design-system"
+                                            size="sm"
+                                            underline="hover"
+                                            @click="closeMenu"
+                                          >
+                                            {{ label }}
+                                          </DsLink>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
@@ -1364,7 +1371,7 @@ html.dark .osmo-nav .osmo-nav-banner {
 
 .osmo-topic-ticker {
   width: 100%;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .osmo-topic-ticker__rows {
@@ -1378,7 +1385,13 @@ html.dark .osmo-nav .osmo-nav-banner {
   position: relative;
   width: calc(100% + 3rem);
   margin-inline: -1.5rem;
+  overflow: visible;
+}
+
+.osmo-topic-ticker__viewport {
+  width: 100%;
   overflow: hidden;
+  padding-bottom: 0.2em;
 }
 
 .osmo-topic-ticker__track {
@@ -1401,65 +1414,32 @@ html.dark .osmo-nav .osmo-nav-banner {
   animation-direction: reverse;
 }
 
-.osmo-topic-ticker__track.is--soft .osmo-topic-ticker__item {
+.osmo-topic-ticker__track.is--soft :deep(.osmo-topic-link) {
   color: var(--osmo-topic-tone-soft);
-  opacity: 1;
 }
 
-.osmo-topic-ticker__track.is--muted .osmo-topic-ticker__item {
+.osmo-topic-ticker__track.is--muted :deep(.osmo-topic-link) {
   color: var(--osmo-topic-tone-muted);
-  opacity: 1;
 }
 
-.osmo-topic-ticker__track.is--subtle .osmo-topic-ticker__item {
+.osmo-topic-ticker__track.is--subtle :deep(.osmo-topic-link) {
   color: var(--osmo-topic-tone-subtle);
-  opacity: 1;
 }
 
-.osmo-topic-ticker__item {
-  position: relative;
+.osmo-topic-ticker :deep(.osmo-topic-link) {
   display: inline-flex;
   align-items: center;
-  border: none;
-  background: transparent;
-  padding: 0 0 0.2em;
-  cursor: pointer;
+  padding-bottom: 0.2em;
+  --link-underline-offset: 0;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1;
-  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-primary);
-  opacity: 0.68;
-  transition:
-    color 140ms ease,
-    text-shadow 180ms ease;
+  transition: text-shadow 180ms ease;
 }
 
-.osmo-topic-ticker__item::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 140ms ease;
-}
-
-.osmo-topic-ticker__item:hover,
-.osmo-topic-ticker__item:focus-visible {
+.osmo-topic-ticker :deep(.osmo-topic-link:hover),
+.osmo-topic-ticker :deep(.osmo-topic-link:focus-visible) {
   color: var(--color-accent-hover);
   text-shadow: 0 0 10px rgba(11, 216, 182, 0.24);
-  outline: none;
-}
-
-.osmo-topic-ticker__item:hover::after,
-.osmo-topic-ticker__item:focus-visible::after {
-  transform: scaleX(1);
 }
 
 .osmo-nav-banner__title {
