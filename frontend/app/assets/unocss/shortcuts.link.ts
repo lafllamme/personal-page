@@ -67,11 +67,11 @@ export const linkShortcuts: UserShortcuts = [
   ],
   [
     'ui-link-variant-mixed',
-    'color-$color-primary hover:color-$color-link-accent-hover focus-visible:color-$color-link-accent-hover focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--color-link-accent-hover)]',
+    'color-[var(--link-color-idle,var(--color-primary))] hover:color-$color-link-accent-hover focus-visible:color-$color-link-accent-hover focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--color-link-accent-hover)]',
   ],
   [
     'ui-link-variant-mixed-external',
-    'color-$color-primary hover:color-$color-link-accent-hover focus-visible:color-$color-link-accent-hover focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--color-link-accent-hover)]',
+    'color-[var(--link-color-idle,var(--color-primary))] hover:color-$color-link-accent-hover focus-visible:color-$color-link-accent-hover focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--color-link-accent-hover)]',
   ],
   [
     'ui-link-underline-hover',

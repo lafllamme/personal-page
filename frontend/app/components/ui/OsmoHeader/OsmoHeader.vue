@@ -401,6 +401,7 @@ onBeforeUnmount(() => {
                                             class="osmo-topic-link"
                                             to="/design-system"
                                             size="sm"
+                                            variant="mixed"
                                             underline="hover"
                                             @click="closeMenuDeferred"
                                           >
@@ -1422,15 +1423,15 @@ html.dark .osmo-nav .osmo-nav-banner {
 }
 
 .osmo-topic-ticker__track.is--soft :deep(.osmo-topic-link) {
-  color: var(--osmo-topic-tone-soft);
+  --link-color-idle: var(--osmo-topic-tone-soft);
 }
 
 .osmo-topic-ticker__track.is--muted :deep(.osmo-topic-link) {
-  color: var(--osmo-topic-tone-muted);
+  --link-color-idle: var(--osmo-topic-tone-muted);
 }
 
 .osmo-topic-ticker__track.is--subtle :deep(.osmo-topic-link) {
-  color: var(--osmo-topic-tone-subtle);
+  --link-color-idle: var(--osmo-topic-tone-subtle);
 }
 
 .osmo-topic-ticker :deep(.osmo-topic-link) {
@@ -1445,7 +1446,6 @@ html.dark .osmo-nav .osmo-nav-banner {
 
 .osmo-topic-ticker :deep(.osmo-topic-link:hover),
 .osmo-topic-ticker :deep(.osmo-topic-link:focus-visible) {
-  color: var(--color-accent-hover);
   text-shadow: 0 0 10px rgba(11, 216, 182, 0.24);
 }
 
