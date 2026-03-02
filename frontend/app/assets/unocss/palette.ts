@@ -215,16 +215,18 @@ const typographyFontFamilyTheme = {
 
 const typographyTokens: TokenSet = {
   // Fluid size scale
+  'type-size-2xs': 'clamp(0.625rem, calc(0.6rem + 0.08vw), 0.6875rem)',
   'type-size-xs': 'clamp(0.75rem, calc(0.68rem + 0.22vw), 0.875rem)',
   'type-size-sm': 'clamp(0.875rem, calc(0.8rem + 0.3vw), 1rem)',
   'type-size-md': 'clamp(1rem, calc(0.92rem + 0.38vw), 1.125rem)',
-  'type-size-lg': 'clamp(1.125rem, calc(1rem + 0.52vw), 1.375rem)',
+  'type-size-lg': 'clamp(1.1875rem, calc(1.04rem + 0.6vw), 1.5rem)',
   'type-size-xl': 'clamp(1.375rem, calc(1.12rem + 1.1vw), 2rem)',
   'type-size-2xl': 'clamp(1.75rem, calc(1.35rem + 1.9vw), 3rem)',
   'type-size-3xl': 'clamp(2.25rem, calc(1.65rem + 3vw), 4.75rem)',
   'type-size-4xl': 'clamp(2.6rem, calc(1.85rem + 4.1vw), 6.2rem)',
 
   // Leading scale
+  'type-leading-2xs': '1.35',
   'type-leading-xs': '1.35',
   'type-leading-sm': '1.45',
   'type-leading-md': '1.55',
@@ -235,6 +237,7 @@ const typographyTokens: TokenSet = {
   'type-leading-4xl': '0.92',
 
   // Display tracking curve
+  'type-track-display-2xs': '0.04em',
   'type-track-display-xs': '0.042em',
   'type-track-display-sm': '0.046em',
   'type-track-display-md': '0.05em',
@@ -243,6 +246,7 @@ const typographyTokens: TokenSet = {
   'type-track-display-2xl': '0.046em',
   'type-track-display-3xl': '0.044em',
   'type-track-display-4xl': '0.042em',
+  'type-track-display-2xs-md': '0.042em',
   'type-track-display-xs-md': '0.044em',
   'type-track-display-sm-md': '0.048em',
   'type-track-display-md-md': '0.052em',
@@ -253,6 +257,7 @@ const typographyTokens: TokenSet = {
   'type-track-display-4xl-md': '0.044em',
 
   // Meta tracking curve (negative, tighter for Space Grotesk)
+  'type-track-meta-2xs': '-0.011em',
   'type-track-meta-xs': '-0.012em',
   'type-track-meta-sm': '-0.013em',
   'type-track-meta-md': '-0.015em',
@@ -262,6 +267,7 @@ const typographyTokens: TokenSet = {
   'type-track-meta-3xl': '-0.024em',
   'type-track-meta-4xl': '-0.025em',
   // Meta relaxed tracking curve (airier labels, up to ~0.12em)
+  'type-track-meta-2xs-relaxed': '0.052em',
   'type-track-meta-xs-relaxed': '0.06em',
   'type-track-meta-sm-relaxed': '0.068em',
   'type-track-meta-md-relaxed': '0.076em',

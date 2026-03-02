@@ -158,10 +158,10 @@ Beispiel (Vue):
   - `type-leading-xs`, `type-leading-sm`, `type-leading-md`, `type-leading-lg`
   - `type-leading-xl`, `type-leading-2xl`, `type-leading-3xl`, `type-leading-4xl`
 - Display tracking:
-  - `type-track-display-xs` ... `type-track-display-4xl`
-  - optional breakpoint tokens: `type-track-display-xs-md` ... `type-track-display-4xl-md`
+  - `type-track-display-2xs` ... `type-track-display-4xl`
+  - optional breakpoint tokens: `type-track-display-2xs-md` ... `type-track-display-4xl-md`
 - Meta tracking:
-  - `type-track-meta-xs` ... `type-track-meta-4xl`
+  - `type-track-meta-2xs` ... `type-track-meta-4xl`
 - Families (Uno Theme):
   - `font-display-hero` -> `DrukBoldTrial`
   - `font-display-compact` -> `DrukTextBoldTrial`
@@ -173,12 +173,12 @@ Beispiel (Vue):
 
 ### 2.2 Semantic Shortcuts (Runtime)
 
-- `type-display-xs` ... `type-display-4xl`
-- `type-headline-xs` ... `type-headline-4xl`
-- `type-body-xs` ... `type-body-4xl`
-- `type-meta-xs` ... `type-meta-4xl`
-- `type-quote-xs` ... `type-quote-4xl`
-- `type-signal-xs` ... `type-signal-4xl`
+- `type-display-2xs` ... `type-display-4xl`
+- `type-headline-2xs` ... `type-headline-4xl`
+- `type-body-2xs` ... `type-body-4xl`
+- `type-meta-2xs` ... `type-meta-4xl`
+- `type-quote-2xs` ... `type-quote-4xl`
+- `type-signal-2xs` ... `type-signal-4xl`
 
 ---
 

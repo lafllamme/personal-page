@@ -1,6 +1,7 @@
 import type { UserShortcuts } from 'unocss'
 
 export const typographyShortcuts: UserShortcuts = [
+  ['type-size-2xs', 'text-type-size-2xs leading-$type-leading-2xs'],
   ['type-size-xs', 'text-type-size-xs leading-$type-leading-xs'],
   ['type-size-sm', 'text-type-size-sm leading-$type-leading-sm'],
   ['type-size-md', 'text-type-size-md leading-$type-leading-md'],
@@ -10,6 +11,7 @@ export const typographyShortcuts: UserShortcuts = [
   ['type-size-3xl', 'text-type-size-3xl leading-$type-leading-3xl'],
   ['type-size-4xl', 'text-type-size-4xl leading-$type-leading-4xl'],
 
+  ['type-display-2xs', 'font-display-compact font-synthesis-none type-size-2xs tracking-$type-track-display-2xs md:tracking-$type-track-display-2xs-md'],
   ['type-display-xs', 'font-display-compact font-synthesis-none type-size-xs tracking-$type-track-display-xs md:tracking-$type-track-display-xs-md'],
   ['type-display-sm', 'font-display-compact font-synthesis-none type-size-sm tracking-$type-track-display-sm md:tracking-$type-track-display-sm-md'],
   ['type-display-md', 'font-display-hero font-synthesis-none type-size-md tracking-$type-track-display-md md:tracking-$type-track-display-md-md'],
@@ -19,6 +21,7 @@ export const typographyShortcuts: UserShortcuts = [
   ['type-display-3xl', 'font-display-hero font-synthesis-none type-size-3xl tracking-$type-track-display-3xl md:tracking-$type-track-display-3xl-md'],
   ['type-display-4xl', 'font-display-hero font-synthesis-none type-size-4xl tracking-$type-track-display-4xl md:tracking-$type-track-display-4xl-md'],
 
+  ['type-headline-2xs', 'font-headline type-size-2xs'],
   ['type-headline-xs', 'font-headline type-size-xs'],
   ['type-headline-sm', 'font-headline type-size-sm'],
   ['type-headline-md', 'font-headline type-size-md'],
@@ -28,6 +31,7 @@ export const typographyShortcuts: UserShortcuts = [
   ['type-headline-3xl', 'font-headline type-size-3xl'],
   ['type-headline-4xl', 'font-headline type-size-4xl'],
 
+  ['type-body-2xs', 'font-body type-size-2xs'],
   ['type-body-xs', 'font-body type-size-xs'],
   ['type-body-sm', 'font-body type-size-sm'],
   ['type-body-md', 'font-body type-size-md'],
@@ -37,6 +41,7 @@ export const typographyShortcuts: UserShortcuts = [
   ['type-body-3xl', 'font-body type-size-3xl'],
   ['type-body-4xl', 'font-body type-size-4xl'],
 
+  ['type-meta-2xs', 'font-meta type-size-2xs tracking-$type-track-meta-2xs'],
   ['type-meta-xs', 'font-meta type-size-xs tracking-$type-track-meta-xs'],
   ['type-meta-sm', 'font-meta type-size-sm tracking-$type-track-meta-sm'],
   ['type-meta-md', 'font-meta type-size-md tracking-$type-track-meta-md'],
@@ -46,6 +51,7 @@ export const typographyShortcuts: UserShortcuts = [
   ['type-meta-3xl', 'font-meta type-size-3xl tracking-$type-track-meta-3xl'],
   ['type-meta-4xl', 'font-meta type-size-4xl tracking-$type-track-meta-4xl'],
 
+  ['type-quote-2xs', 'font-quote type-size-2xs'],
   ['type-quote-xs', 'font-quote type-size-xs'],
   ['type-quote-sm', 'font-quote type-size-sm'],
   ['type-quote-md', 'font-quote type-size-md'],
@@ -55,6 +61,7 @@ export const typographyShortcuts: UserShortcuts = [
   ['type-quote-3xl', 'font-quote type-size-3xl'],
   ['type-quote-4xl', 'font-quote type-size-4xl'],
 
+  ['type-signal-2xs', 'font-signal type-size-2xs'],
   ['type-signal-xs', 'font-signal type-size-xs'],
   ['type-signal-sm', 'font-signal type-size-sm'],
   ['type-signal-md', 'font-signal type-size-md'],

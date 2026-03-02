@@ -241,7 +241,16 @@ onBeforeUnmount(() => {
                       )"
                     >
                       <div class="osmo-nav-bar__tag-row">
-                        <span class="space-grotesk-regular osmo-eyebrow color-pureBlack dark:color-pureWhite">Newsroom</span>
+                        <DsTypography
+                          as="span"
+                          role="meta"
+                          size="2xs"
+                          weight="light"
+                          uppercase
+                          class="osmo-eyebrow color-pureBlack dark:color-pureWhite"
+                        >
+                          Newsroom
+                        </DsTypography>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
                         <li
@@ -254,7 +263,14 @@ onBeforeUnmount(() => {
                             class="osmo-nav-bar__big-a osmo-animate-chars color-pureBlack dark:color-pureWhite"
                             @click="closeMenu"
                           >
-                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
+                            <DsTypography
+                              as="span"
+                              role="headline"
+                              size="lg"
+                              weight="regular"
+                              class="osmo-nav-bar__big-span osmo-animate-chars__text"
+                              data-button-animate-chars
+                            >
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-${item.name}-${charIndex}`"
@@ -264,7 +280,7 @@ onBeforeUnmount(() => {
                                   char === ' ' ? { whiteSpace: 'pre' } : {},
                                 ]"
                               >{{ char }}</span>
-                            </span>
+                            </DsTypography>
                             <span
                               v-if="item.badge"
                               class="osmo-nav-bar__a-tag"
@@ -281,11 +297,11 @@ onBeforeUnmount(() => {
                         <li
                           v-for="item in easings"
                           :key="item.name"
-                          class="font-clash-regular osmo-nav-bar__small-li"
+                          class="osmo-nav-bar__small-li font-clash-regular"
                         >
                           <span class="osmo-nav-bar__small-a color-pureBlack dark:color-pureWhite">
                             <span class="osmo-nav-bar__small-span">{{ item.name }}</span>
-                            <span v-if="item.badge" class="space-grotesk-regular osmo-nav-bar__a-tag is--small">
+                            <span v-if="item.badge" class="osmo-nav-bar__a-tag space-grotesk-regular is--small">
                               <span class="osmo-tag is--muted">{{ item.badge }}</span>
                             </span>
                           </span>
@@ -296,7 +312,16 @@ onBeforeUnmount(() => {
                     <!-- Column 2: Explore -->
                     <div class="osmo-nav-bar__bottom-col">
                       <div class="osmo-nav-bar__tag-row is--membership">
-                        <span class="osmo-eyebrow space-grotesk-regular color-pureBlack dark:color-pureWhite">Explore</span>
+                        <DsTypography
+                          as="span"
+                          role="meta"
+                          size="2xs"
+                          weight="light"
+                          uppercase
+                          class="osmo-eyebrow color-pureBlack dark:color-pureWhite"
+                        >
+                          Explore
+                        </DsTypography>
                       </div>
                       <ul class="osmo-nav-bar__ul-big">
                         <li
@@ -309,7 +334,14 @@ onBeforeUnmount(() => {
                             class="osmo-nav-bar__big-a osmo-animate-chars color-pureBlack dark:color-pureWhite"
                             @click="closeMenu"
                           >
-                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
+                            <DsTypography
+                              as="span"
+                              role="headline"
+                              size="lg"
+                              weight="regular"
+                              class="osmo-nav-bar__big-span osmo-animate-chars__text"
+                              data-button-animate-chars
+                            >
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-explore-${item.name}-${charIndex}`"
@@ -319,7 +351,7 @@ onBeforeUnmount(() => {
                                   char === ' ' ? { whiteSpace: 'pre' } : {},
                                 ]"
                               >{{ char }}</span>
-                            </span>
+                            </DsTypography>
                             <!-- Count badge (like "145" for Collection) -->
                             <span v-if="item.count" class="osmo-nav-bar__big-span-number">{{ item.count }}</span>
                           </NuxtLink>
@@ -1035,9 +1067,7 @@ html.dark .osmo-nav .osmo-nav-bar__bottom-col.is--products {
 }
 
 .osmo-eyebrow {
-  font-size: 0.6875rem;
-  font-weight: 400;
-  text-transform: uppercase;
+  line-height: 1;
   letter-spacing: 0;
 }
 
@@ -1061,8 +1091,6 @@ html.dark .osmo-nav .osmo-nav-bar__bottom-col.is--products {
 }
 
 .osmo-nav-bar__big-span {
-  font-size: 1.5em;
-  font-weight: 400;
   line-height: 1;
 }
 

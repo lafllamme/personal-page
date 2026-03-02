@@ -5,7 +5,7 @@ import { useClsx } from '@/composables/useClsx'
 const props = withDefaults(defineProps<{
   as?: 'p' | 'span' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'blockquote'
   role?: 'display' | 'headline' | 'body' | 'meta' | 'quote' | 'signal'
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
+  size?: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl'
   tracking?: 'default' | 'relaxed'
   tone?: 'default' | 'muted'
   weight?: 'auto' | 'thin' | 'extralight' | 'light' | 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold' | 'black' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900'
@@ -25,6 +25,7 @@ const { as, role, size, tracking, tone, weight, italic, uppercase } = toRefs(pro
 
 const typeClass = {
   display: {
+    '2xs': 'type-display-2xs',
     'xs': 'type-display-xs',
     'sm': 'type-display-sm',
     'md': 'type-display-md',
@@ -35,6 +36,7 @@ const typeClass = {
     '4xl': 'type-display-4xl',
   },
   headline: {
+    '2xs': 'type-headline-2xs',
     'xs': 'type-headline-xs',
     'sm': 'type-headline-sm',
     'md': 'type-headline-md',
@@ -45,6 +47,7 @@ const typeClass = {
     '4xl': 'type-headline-4xl',
   },
   body: {
+    '2xs': 'type-body-2xs',
     'xs': 'type-body-xs',
     'sm': 'type-body-sm',
     'md': 'type-body-md',
@@ -55,6 +58,7 @@ const typeClass = {
     '4xl': 'type-body-4xl',
   },
   meta: {
+    '2xs': 'type-meta-2xs',
     'xs': 'type-meta-xs',
     'sm': 'type-meta-sm',
     'md': 'type-meta-md',
@@ -65,6 +69,7 @@ const typeClass = {
     '4xl': 'type-meta-4xl',
   },
   quote: {
+    '2xs': 'type-quote-2xs',
     'xs': 'type-quote-xs',
     'sm': 'type-quote-sm',
     'md': 'type-quote-md',
@@ -75,6 +80,7 @@ const typeClass = {
     '4xl': 'type-quote-4xl',
   },
   signal: {
+    '2xs': 'type-signal-2xs',
     'xs': 'type-signal-xs',
     'sm': 'type-signal-sm',
     'md': 'type-signal-md',
@@ -92,6 +98,7 @@ const toneClass = {
 } as const
 
 const relaxedMetaTrackClassBySize = {
+  '2xs': 'tracking-$type-track-meta-2xs-relaxed',
   'xs': 'tracking-$type-track-meta-xs-relaxed',
   'sm': 'tracking-$type-track-meta-sm-relaxed',
   'md': 'tracking-$type-track-meta-md-relaxed',

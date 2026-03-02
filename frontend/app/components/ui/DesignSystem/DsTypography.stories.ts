@@ -4,7 +4,7 @@ import DsSectionContainer from './DsSectionContainer.vue'
 import DsTypography from './DsTypography.vue'
 import DsTypographyFoundationPreview from './DsTypographyFoundationPreview.vue'
 
-const TYPO_SIZES = ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const
+const TYPO_SIZES = ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] as const
 
 const SAMPLE_TEXT = {
   display: 'Swiss Editorial Signal',
@@ -81,7 +81,7 @@ const meta = {
   argTypes: {
     as: { control: 'select', options: ['p', 'span', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'blockquote'] },
     role: { control: 'select', options: ['display', 'headline', 'body', 'meta', 'quote', 'signal'] },
-    size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] },
+    size: { control: 'select', options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl', '3xl', '4xl'] },
     tracking: { control: 'select', options: ['default', 'relaxed'] },
     tone: { control: 'select', options: ['default', 'muted'] },
     weight: {
