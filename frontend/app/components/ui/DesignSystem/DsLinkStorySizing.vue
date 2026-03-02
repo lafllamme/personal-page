@@ -5,7 +5,7 @@ import DsTypography from './DsTypography.vue'
 defineProps<{
   text: string
   href: string
-  variant: 'default' | 'accent'
+  variant: 'default' | 'accent' | 'mixed'
   underline: 'always' | 'hover'
   external?: boolean
 }>()

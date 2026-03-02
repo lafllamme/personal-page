@@ -10,6 +10,7 @@ Status: aktiv
 - Varianten analog zu Buttons:
   - `variant="default"` (neutral)
   - `variant="accent"` (toxic colorway)
+  - `variant="mixed"` (neutral idle, accent on interaction)
 
 ## Komponente
 - Runtime-Komponente: [`frontend/app/components/ui/DesignSystem/DsLink.vue`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsLink.vue)
@@ -17,7 +18,7 @@ Status: aktiv
   - `href?: string` (Default `#`)
   - `to?: string` (Default leer, aktiviert interne Nuxt-Navigation)
   - `text?: string`
-  - `variant?: 'default' | 'accent'` (Default `default`)
+  - `variant?: 'default' | 'accent' | 'mixed'` (Default `default`)
   - `size?: 'sm' | 'md' | 'lg'` (Default `md`)
   - `underline?: 'always' | 'hover'` (Default `always`)
   - `external?: boolean` (Default `false`, zeigt rechts ein External-Icon)
@@ -45,10 +46,13 @@ Status: aktiv
   - `ui-link-external-arrow`
   - `ui-link-external-arrow-default`
   - `ui-link-external-arrow-accent`
+  - `ui-link-external-arrow-mixed`
   - `ui-link-variant-default`
   - `ui-link-variant-default-external`
   - `ui-link-variant-accent`
   - `ui-link-variant-accent-external`
+  - `ui-link-variant-mixed`
+  - `ui-link-variant-mixed-external`
   - `ui-link-underline-hover` (L1 Sweep)
   - `ui-link-underline-always` (always visible, hover runs line out; re-enters on mouseout)
 - Datei: [`frontend/app/assets/unocss/shortcuts.link.ts`](file:///Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.link.ts)

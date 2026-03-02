@@ -99,7 +99,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 ## 10) Button Contract (aktiver Stand)
 
 Der Button wird ueber drei Dimensionen aufgebaut:
-- `variant`: `default` | `accent`
+- `variant`: `default` | `accent` | `mixed`
 - `type`: `primary` | `secondary` | `tertiary` | `quaternary`
 - `shape`: `pill` | `rounded`
 
@@ -115,6 +115,10 @@ Der Button wird ueber drei Dimensionen aufgebaut:
 | `accent` | `secondary` | `v-accent-outline` |
 | `accent` | `tertiary` | `v-accent-ghost` |
 | `accent` | `quaternary` | `v-accent-soft` |
+| `mixed` | `primary` | `v-mixed-solid` |
+| `mixed` | `secondary` | `v-mixed-outline` |
+| `mixed` | `tertiary` | `v-mixed-ghost` |
+| `mixed` | `quaternary` | `v-mixed-soft` |
 
 ### 10.2 Verbindliche States
 

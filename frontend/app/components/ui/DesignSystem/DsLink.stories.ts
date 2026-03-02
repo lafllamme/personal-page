@@ -22,7 +22,7 @@ const meta = {
     href: { control: 'text' },
     variant: {
       control: 'select',
-      options: ['default', 'accent'],
+      options: ['default', 'accent', 'mixed'],
     },
     size: {
       control: 'select',
@@ -101,6 +101,31 @@ export const AccentExternal: Story = {
   name: 'Variant / Accent External',
   args: {
     variant: 'accent',
+    underline: 'always',
+    external: true,
+  },
+}
+
+export const Mixed: Story = {
+  name: 'Variant / Mixed',
+  args: {
+    variant: 'mixed',
+    underline: 'always',
+  },
+}
+
+export const MixedHoverUnderline: Story = {
+  name: 'Variant / Mixed Hover Underline',
+  args: {
+    variant: 'mixed',
+    underline: 'hover',
+  },
+}
+
+export const MixedExternal: Story = {
+  name: 'Variant / Mixed External',
+  args: {
+    variant: 'mixed',
     underline: 'always',
     external: true,
   },

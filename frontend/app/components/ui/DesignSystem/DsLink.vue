@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<{
   text?: string
   to?: string
   href?: string
-  variant?: 'default' | 'accent'
+  variant?: 'default' | 'accent' | 'mixed'
   size?: 'sm' | 'md' | 'lg'
   underline?: 'always' | 'hover'
   external?: boolean
@@ -29,10 +29,16 @@ const underlineClass = computed(() => {
 
 const variantClass = computed(() => {
   if (props.external) {
+    if (props.variant === 'mixed')
+      return 'ui-link-variant-mixed-external'
+
     return props.variant === 'accent'
       ? 'ui-link-variant-accent-external'
       : 'ui-link-variant-default-external'
   }
+
+  if (props.variant === 'mixed')
+    return 'ui-link-variant-mixed'
 
   return props.variant === 'accent'
     ? 'ui-link-variant-accent'
@@ -66,6 +72,9 @@ const externalTextClass = computed(() => {
 })
 
 const externalArrowToneClass = computed(() => {
+  if (props.variant === 'mixed')
+    return 'ui-link-external-arrow-mixed'
+
   return props.variant === 'accent'
     ? 'ui-link-external-arrow-accent'
     : 'ui-link-external-arrow-default'

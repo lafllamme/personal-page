@@ -86,6 +86,10 @@ export const buttonShortcuts: UserShortcuts = [
     'hover:enabled:bg-$bg-accent-hover hover:enabled:color-$color-on-accent hover:enabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-hover)] active:enabled:bg-$bg-accent-active active:enabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-active)]',
   ],
   [
+    'ui-primary-rotate-mixed-fix',
+    'hover:enabled:bg-$bg-accent-hover hover:enabled:color-$color-on-accent hover:enabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-hover)] active:enabled:bg-$bg-accent-active active:enabled:[box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-active)]',
+  ],
+  [
     'ui-ghost-button',
     'relative overflow-hidden isolate',
   ],

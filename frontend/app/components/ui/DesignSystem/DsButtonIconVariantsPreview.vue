@@ -262,6 +262,128 @@ defineProps<{
           animation="none"
         />
       </div>
+
+      <DsTypography as="span" role="meta" size="xs" tone="muted" uppercase>
+        Mixed
+      </DsTypography>
+      <div class="flex flex-wrap items-center gap-3">
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="primary"
+          variant="mixed"
+          :size="size"
+          :shape="shape"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="primary"
+          variant="mixed"
+          :size="size"
+          :shape="shape"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="secondary"
+          variant="mixed"
+          :size="size"
+          :shape="shape"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="secondary"
+          variant="mixed"
+          :size="size"
+          :shape="shape"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="tertiary"
+          variant="mixed"
+          :size="size"
+          :shape="shape"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="tertiary"
+          variant="mixed"
+          :size="size"
+          :shape="shape"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+        <DsButton
+          v-if="mode === 'text'"
+          :text="text"
+          type="quaternary"
+          variant="mixed"
+          :size="size"
+          :shape="shape"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :animation="animation"
+          icon-position="right"
+          :icon="icon"
+        />
+        <DsButton
+          v-else
+          :text="text"
+          type="quaternary"
+          variant="mixed"
+          :size="size"
+          :shape="shape"
+          :tracking="tracking"
+          :weight="weight"
+          :disabled="disabled"
+          :icon="icon"
+          :icon-only="true"
+          :aria-label="ariaLabel"
+          animation="none"
+        />
+      </div>
     </div>
   </div>
 </template>

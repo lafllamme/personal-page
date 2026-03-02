@@ -5,7 +5,7 @@ defineProps<{
   text: string
   to?: string
   href: string
-  variant: 'default' | 'accent'
+  variant: 'default' | 'accent' | 'mixed'
   size: 'sm' | 'md' | 'lg'
   underline: 'always' | 'hover'
   external?: boolean

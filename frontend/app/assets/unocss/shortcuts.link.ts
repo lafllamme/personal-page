@@ -46,6 +46,10 @@ export const linkShortcuts: UserShortcuts = [
     '[--link-external-arrow-idle:var(--color-link-arrow-accent-idle)] [--link-external-arrow-active:var(--color-link-accent)]',
   ],
   [
+    'ui-link-external-arrow-mixed',
+    '[--link-external-arrow-idle:var(--color-link-arrow-default-idle)] [--link-external-arrow-active:var(--color-link-accent)]',
+  ],
+  [
     'ui-link-variant-default',
     'color-$color-primary hover:color-$color-link-hover focus-visible:color-$color-link-hover focus-visible:[box-shadow:0_0_0_2px_var(--ring-primary-offset-inner),0_0_0_4px_var(--ring-primary-offset-outer)]',
   ],
@@ -60,6 +64,14 @@ export const linkShortcuts: UserShortcuts = [
   [
     'ui-link-variant-accent-external',
     'color-$color-link-accent focus-visible:color-$color-link-accent focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--color-link-accent-hover)]',
+  ],
+  [
+    'ui-link-variant-mixed',
+    'color-$color-primary hover:color-$color-link-accent-hover focus-visible:color-$color-link-accent-hover focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--color-link-accent-hover)]',
+  ],
+  [
+    'ui-link-variant-mixed-external',
+    'color-$color-primary hover:color-$color-link-accent-hover focus-visible:color-$color-link-accent-hover focus-visible:[box-shadow:0_0_0_2px_var(--ring-accent-offset-inner),0_0_0_4px_var(--color-link-accent-hover)]',
   ],
   [
     'ui-link-underline-hover',

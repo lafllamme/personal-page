@@ -47,6 +47,7 @@ const props = withDefaults(defineProps<{
 const variants = [
   { key: 'default', label: 'Variant Default' },
   { key: 'accent', label: 'Variant Accent' },
+  { key: 'mixed', label: 'Variant Mixed' },
 ] as const
 
 const types = [
@@ -67,6 +68,7 @@ const states = [
 const compactVariantRows = [
   { key: 'default', label: 'Default' },
   { key: 'accent', label: 'Toxic' },
+  { key: 'mixed', label: 'Mixed' },
 ] as const
 
 type MatrixVariant = typeof variants[number]['key']
@@ -112,6 +114,26 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-ghost-morph-accent-fill)]',
   },
   'accent-quaternary': {
+    'hover': 'before:translate-x-[560%] after:opacity-32 color-$color-accent',
+    'active': 'scale-[var(--motion-active-press-scale)] before:translate-x-[560%] after:opacity-48 color-$color-accent',
+    'focus-visible': 'before:translate-x-[560%] after:opacity-100 color-$color-accent [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-quaternary-ribbon-accent-fill)]',
+  },
+  'mixed-primary': {
+    'hover': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-hover)]',
+    'active': 'scale-[var(--motion-active-press-scale)] bg-$bg-accent-active color-$color-on-accent [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-active)]',
+    'focus-visible': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-accent-hover)]',
+  },
+  'mixed-secondary': {
+    'hover': 'before:translate-y-0 color-$color-accent-strong [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent-outline-fill)]',
+    'active': 'scale-[var(--motion-active-press-scale)] before:translate-y-0 color-$color-accent-strong [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent-outline-fill)]',
+    'focus-visible': 'before:translate-y-0 color-$color-accent-strong [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--border-accent-outline-fill)]',
+  },
+  'mixed-tertiary': {
+    'hover': 'is-ghost-morph-on',
+    'active': 'is-ghost-morph-on-active scale-[var(--motion-active-press-scale)]',
+    'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-ghost-morph-accent-fill)]',
+  },
+  'mixed-quaternary': {
     'hover': 'before:translate-x-[560%] after:opacity-32 color-$color-accent',
     'active': 'scale-[var(--motion-active-press-scale)] before:translate-x-[560%] after:opacity-48 color-$color-accent',
     'focus-visible': 'before:translate-x-[560%] after:opacity-100 color-$color-accent [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-quaternary-ribbon-accent-fill)]',

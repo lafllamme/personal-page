@@ -41,7 +41,7 @@ const meta = {
     },
     variant: {
       control: 'select',
-      options: ['default', 'accent'],
+      options: ['default', 'accent', 'mixed'],
     },
     size: {
       control: 'select',
@@ -133,6 +133,26 @@ export const AccentTertiary: Story = {
 export const AccentQuaternary: Story = {
   name: 'Accent / Quaternary',
   args: { variant: 'accent', type: 'quaternary' },
+}
+
+export const MixedPrimary: Story = {
+  name: 'Mixed / Primary',
+  args: { variant: 'mixed', type: 'primary' },
+}
+
+export const MixedSecondary: Story = {
+  name: 'Mixed / Secondary',
+  args: { variant: 'mixed', type: 'secondary' },
+}
+
+export const MixedTertiary: Story = {
+  name: 'Mixed / Tertiary',
+  args: { variant: 'mixed', type: 'tertiary' },
+}
+
+export const MixedQuaternary: Story = {
+  name: 'Mixed / Quaternary',
+  args: { variant: 'mixed', type: 'quaternary' },
 }
 
 export const LeadingIcon: Story = {
@@ -249,6 +269,13 @@ export const Variants: Story = {
           <DsButton v-bind="args" type="secondary" variant="accent" />
           <DsButton v-bind="args" type="tertiary" variant="accent" />
           <DsButton v-bind="args" type="quaternary" variant="accent" />
+        </div>
+        <div class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">mixed</div>
+        <div class="flex flex-wrap items-center gap-3">
+          <DsButton v-bind="args" type="primary" variant="mixed" />
+          <DsButton v-bind="args" type="secondary" variant="mixed" />
+          <DsButton v-bind="args" type="tertiary" variant="mixed" />
+          <DsButton v-bind="args" type="quaternary" variant="mixed" />
         </div>
       </div>
     `,

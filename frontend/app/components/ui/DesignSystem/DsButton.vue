@@ -6,7 +6,7 @@ import DsDecryptedText from './DsDecryptedText.vue'
 import DsTypography from './DsTypography.vue'
 
 type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'quaternary'
-type ButtonVariant = 'default' | 'accent'
+type ButtonVariant = 'default' | 'accent' | 'mixed'
 type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonShape = 'pill' | 'rounded'
 type ButtonTracking = 'default' | 'relaxed'
@@ -125,6 +125,10 @@ const variantTypeClassMap: Record<ComboKey, string> = {
   'accent-secondary': 'v-accent-outline',
   'accent-tertiary': 'v-accent-ghost',
   'accent-quaternary': 'v-accent-soft',
+  'mixed-primary': 'v-mixed-solid',
+  'mixed-secondary': 'v-mixed-outline',
+  'mixed-tertiary': 'v-mixed-ghost',
+  'mixed-quaternary': 'v-mixed-soft',
 }
 
 const comboKey = computed<ComboKey>(() => `${normalizedVariant.value}-${normalizedType.value}`)
@@ -230,6 +234,9 @@ const primaryRotateVariantFixClass = computed(() => {
 
   if (normalizedVariant.value === 'accent')
     return 'ui-primary-rotate-accent-fix'
+
+  if (normalizedVariant.value === 'mixed')
+    return 'ui-primary-rotate-mixed-fix'
 
   return ''
 })
