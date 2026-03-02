@@ -2,9 +2,11 @@
 import { useEventListener, useScroll, useTimeoutFn } from '@vueuse/core'
 import { AnimatePresence, Motion } from 'motion-v'
 import ColorMode from '@/components/ui/ColorMode/ColorMode.vue'
+import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
+import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 import LanguageSwitcher from '@/components/ui/Navigation/LanguageSwitcher/LanguageSwitcher.vue'
 import LogoMark from './LogoMark.vue'
-import { avatars, easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
+import { easings, explore, marqueeMessage, ourProducts, socialLinks } from './OsmoHeader.model'
 import OsmoMenuIcon from './OsmoMenuIcon.vue'
 
 const isScrolled = ref(false)
@@ -37,18 +39,27 @@ function handleKeydown(e: KeyboardEvent) {
 
 const marqueeHidden = computed(() => isScrolled.value || isMenuOpen.value || isHeaderHidden.value)
 
-const avatarPositions = computed(() => {
-  const total = Math.max(1, avatars.length - 1)
-  const radius = 180
-  return avatars.map((avatar, index) => {
-    const angle = Math.PI + (index / total) * Math.PI
-    return {
-      ...avatar,
-      x: Math.cos(angle) * radius,
-      y: Math.sin(angle) * radius,
-    }
-  })
-})
+const featuredTopicButtons = [
+  'Politics',
+  'Health',
+  'AI',
+  'World',
+  'Climate',
+  'Ideas',
+  'Entertainment',
+  'Science',
+] as const
+
+const topicTickerRows = [
+  { id: 'row-1', duration: 22, reverse: false, tone: 'soft' },
+  { id: 'row-2', duration: 26, reverse: true, tone: 'muted' },
+  { id: 'row-3', duration: 32, reverse: false, tone: 'subtle' },
+] as const
+
+function goToDesignSystem() {
+  closeMenu()
+  void navigateTo('/design-system')
+}
 
 const charStagger = 0.01
 function getLabelChars(label: string) {
@@ -149,7 +160,7 @@ onBeforeUnmount(() => {
                   @click="toggleMenu"
                 >
                   <OsmoMenuIcon :is-open="isMenuOpen" />
-                  <span class="font-manrope osmo-nav-menu__label font-500 tracking-tight">Menu</span>
+                  <span class="osmo-nav-menu__label font-manrope font-500 tracking-tight">Menu</span>
                 </button>
               </div>
 
@@ -175,7 +186,7 @@ onBeforeUnmount(() => {
                       :exit="{ opacity: 0, y: 10 }"
                       :transition="{ duration: 0.3 }"
                     >
-                      <span class="font-cabinet osmo-nav-logo__wordmark color-pureBlack tracking-tight dark:color-pureWhite">TECNEWS</span>
+                      <span class="osmo-nav-logo__wordmark font-cabinet color-pureBlack tracking-tight dark:color-pureWhite">TECNEWS</span>
                     </Motion>
                   </AnimatePresence>
                 </NuxtLink>
@@ -236,7 +247,7 @@ onBeforeUnmount(() => {
                             class="osmo-nav-bar__big-a osmo-animate-chars color-pureBlack dark:color-pureWhite"
                             @click="closeMenu"
                           >
-                            <span class="font-clash-regular osmo-nav-bar__big-span osmo-animate-chars__text" data-button-animate-chars>
+                            <span class="osmo-nav-bar__big-span osmo-animate-chars__text font-clash-regular" data-button-animate-chars>
                               <span
                                 v-for="(char, charIndex) in getLabelChars(item.name)"
                                 :key="`label-${item.name}-${charIndex}`"
@@ -329,7 +340,7 @@ onBeforeUnmount(() => {
                       </div>
                     </div>
 
-                    <!-- Column 3: Featured -->
+                    <!-- Column 3: Topic Buttons -->
                     <div
                       :class="useClsx(
                         'osmo-nav-bar__bottom-col is--ad hidden xl:flex ring-pureBlack/20 dark:ring-pureWhite/20',
@@ -340,34 +351,66 @@ onBeforeUnmount(() => {
                         <div class="osmo-nav-banner__content">
                           <div class="osmo-nav-banner__tags">
                             <span class="osmo-tag space-grotesk-regular is--muted">Featured</span>
-                            <span class="osmo-tag space-grotesk-regular is--purple">Milestone</span>
+                            <span class="osmo-tag space-grotesk-regular is--purple">Topics</span>
                           </div>
-                          <div class="osmo-nav-banner__center-content">
-                            <div class="osmo-nav-banner__title">
-                              <h2 class="font-clash-regular osmo-h-m color-pureBlack font-500 dark:color-pureWhite">
-                                We hit 1700
-                                <br>
-                                Members!
-                              </h2>
+                          <div class="osmo-nav-banner__body">
+                            <div class="osmo-nav-banner__center-content">
+                              <div class="osmo-nav-banner__headline">
+                                <DsTypography
+                                  as="h3"
+                                  role="headline"
+                                  size="xl"
+                                  weight="500"
+                                  class="color-pureBlack dark:color-pureWhite"
+                                >
+                                  Track What Matters
+                                </DsTypography>
+                              </div>
+                              <div class="osmo-topic-ticker">
+                                <div class="osmo-topic-ticker__rows">
+                                  <div
+                                    v-for="row in topicTickerRows"
+                                    :key="row.id"
+                                    class="osmo-topic-ticker__row"
+                                  >
+                                    <div
+                                      class="osmo-topic-ticker__track"
+                                      :class="[
+                                        row.reverse ? 'is--reverse' : '',
+                                        row.tone === 'muted' ? 'is--muted' : '',
+                                      ]"
+                                      :style="{ animationDuration: `${row.duration}s` }"
+                                    >
+                                      <div
+                                        v-for="segment in 2"
+                                        :key="`${row.id}-segment-${segment}`"
+                                        class="osmo-topic-ticker__segment"
+                                      >
+                                        <button
+                                          v-for="label in featuredTopicButtons"
+                                          :key="`${row.id}-segment-${segment}-${label}`"
+                                          type="button"
+                                          class="osmo-topic-ticker__item"
+                                          @click="goToDesignSystem"
+                                        >
+                                          {{ label }}
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <div class="osmo-nav-banner__btn pb-4">
-                              <button class="font-manrope osmo-button is--light">
-                                <span>Join them</span>
-                              </button>
-                            </div>
-                          </div>
-                          <div class="osmo-nav-banner__avatars">
-                            <div
-                              v-for="avatar in avatarPositions"
-                              :key="avatar.src"
-                              class="osmo-nav-banner__avatar"
-                              :style="{ transform: `translate3d(${avatar.x}px, ${avatar.y}px, 0)` }"
-                            >
-                              <NuxtImg
-                                :src="avatar.src"
-                                :alt="avatar.alt"
-                                class="osmo-nav-banner__avatar-img"
-                                loading="lazy"
+                            <div class="osmo-nav-banner__footer">
+                              <DsButton
+                                type="quaternary"
+                                variant="default"
+                                shape="pill"
+                                size="sm"
+                                text="Browse all"
+                                icon="iconoir:arrow-right"
+                                icon-position="right"
+                                @click="goToDesignSystem"
                               />
                             </div>
                           </div>
@@ -518,6 +561,18 @@ onBeforeUnmount(() => {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+}
+
+html:not(.dark) .osmo-nav {
+  --osmo-topic-tone-soft: rgba(0, 0, 0, 0.62);
+  --osmo-topic-tone-muted: rgba(0, 0, 0, 0.36);
+  --osmo-topic-tone-subtle: rgba(0, 0, 0, 0.5);
+}
+
+html.dark .osmo-nav {
+  --osmo-topic-tone-soft: rgba(255, 255, 255, 0.62);
+  --osmo-topic-tone-muted: rgba(255, 255, 255, 0.38);
+  --osmo-topic-tone-subtle: rgba(255, 255, 255, 0.5);
 }
 
 /* ========================= Nav Bar Wrapper ========================= */
@@ -1264,6 +1319,13 @@ html.dark .osmo-nav .osmo-nav-banner {
   padding: 2.5em;
 }
 
+.osmo-nav-banner__body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+}
+
 .osmo-nav-banner__tags {
   display: flex;
   justify-content: center;
@@ -1272,10 +1334,132 @@ html.dark .osmo-nav .osmo-nav-banner {
 
 .osmo-nav-banner__center-content {
   display: flex;
-  flex-direction: column;
   flex: 1;
-  justify-content: center;
+  min-height: 0;
+  flex-direction: column;
+  justify-content: flex-start;
   align-items: center;
+  gap: var(--space-8);
+  padding-top: clamp(var(--space-16), 11vh, calc(var(--space-20) + var(--space-3)));
+}
+
+.osmo-nav-banner__headline {
+  text-align: center;
+}
+
+.osmo-nav-banner__headline :deep(h3) {
+  margin: 0;
+}
+
+.osmo-nav-banner__footer {
+  display: flex;
+  justify-content: center;
+  padding-top: 1.5em;
+}
+
+.osmo-nav-banner__footer :deep(.ui-button-icon-base) {
+  width: 0.85em;
+  height: 0.85em;
+}
+
+.osmo-topic-ticker {
+  width: 100%;
+  overflow: hidden;
+}
+
+.osmo-topic-ticker__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875em;
+  width: 100%;
+}
+
+.osmo-topic-ticker__row {
+  position: relative;
+  width: calc(100% + 3rem);
+  margin-inline: -1.5rem;
+  overflow: hidden;
+}
+
+.osmo-topic-ticker__track {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  white-space: nowrap;
+  animation: osmo-topic-ticker-scroll linear infinite;
+}
+
+.osmo-topic-ticker__segment {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  flex: 0 0 auto;
+  padding-right: 1.5em;
+}
+
+.osmo-topic-ticker__track.is--reverse {
+  animation-direction: reverse;
+}
+
+.osmo-topic-ticker__track.is--soft .osmo-topic-ticker__item {
+  color: var(--osmo-topic-tone-soft);
+  opacity: 1;
+}
+
+.osmo-topic-ticker__track.is--muted .osmo-topic-ticker__item {
+  color: var(--osmo-topic-tone-muted);
+  opacity: 1;
+}
+
+.osmo-topic-ticker__track.is--subtle .osmo-topic-ticker__item {
+  color: var(--osmo-topic-tone-subtle);
+  opacity: 1;
+}
+
+.osmo-topic-ticker__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border: none;
+  background: transparent;
+  padding: 0 0 0.2em;
+  cursor: pointer;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  opacity: 0.68;
+  transition:
+    color 140ms ease,
+    text-shadow 180ms ease;
+}
+
+.osmo-topic-ticker__item::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 140ms ease;
+}
+
+.osmo-topic-ticker__item:hover,
+.osmo-topic-ticker__item:focus-visible {
+  color: var(--color-accent-hover);
+  text-shadow: 0 0 10px rgba(11, 216, 182, 0.24);
+  outline: none;
+}
+
+.osmo-topic-ticker__item:hover::after,
+.osmo-topic-ticker__item:focus-visible::after {
+  transform: scaleX(1);
 }
 
 .osmo-nav-banner__title {
@@ -1352,6 +1536,15 @@ html.dark .osmo-nav .osmo-nav-banner__avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+@keyframes osmo-topic-ticker-scroll {
+  from {
+    transform: translateX(0%);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 /* ========================= Marquee Container ========================= */
