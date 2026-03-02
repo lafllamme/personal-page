@@ -15,6 +15,7 @@ const meta = {
     type: 'primary',
     variant: 'default',
     size: 'md',
+    shape: 'pill',
     tracking: 'relaxed',
     weight: 'default',
     icon: '',
@@ -45,6 +46,10 @@ const meta = {
     size: {
       control: 'select',
       options: ['sm', 'md', 'lg'],
+    },
+    shape: {
+      control: 'select',
+      options: ['pill', 'rounded'],
     },
     tracking: {
       control: 'select',
@@ -177,6 +182,7 @@ export const VariantTextWithTrailingIcon: Story = {
         text: args.text ?? 'Read More',
         icon: args.icon || 'iconoir:sparks',
         size: (args.size ?? 'md') as 'sm' | 'md' | 'lg',
+        shape: (args.shape ?? 'pill') as 'pill' | 'rounded',
         tracking: (args.tracking ?? 'relaxed') as 'default' | 'relaxed',
         weight: (args.weight ?? 'default') as 'default' | 'strong',
         animation: (args.animation ?? 'rotate') as 'rotate' | 'decrypt' | 'none',
@@ -207,6 +213,7 @@ export const VariantIconOnly: Story = {
         text: args.text ?? 'Open',
         icon: args.icon || 'iconoir:plus',
         size: (args.size ?? 'md') as 'sm' | 'md' | 'lg',
+        shape: (args.shape ?? 'pill') as 'pill' | 'rounded',
         tracking: (args.tracking ?? 'relaxed') as 'default' | 'relaxed',
         weight: (args.weight ?? 'default') as 'default' | 'strong',
         animation: 'none',
@@ -261,6 +268,7 @@ export const States: Story = {
       return h(DsButtonMatrixPreview, {
         text: args.text,
         size: args.size,
+        shape: args.shape,
         tracking: args.tracking,
         weight: args.weight,
         animation: args.animation,
@@ -283,6 +291,7 @@ export const SizingAndSpacing: Story = {
     },
     render() {
       return h(DsSpacingSizingPreview, {
+        shape: args.shape,
         tracking: args.tracking,
         weight: args.weight,
         disabled: args.disabled,
@@ -292,4 +301,13 @@ export const SizingAndSpacing: Story = {
   parameters: {
     layout: 'fullscreen',
   },
+}
+
+export const RoundedVariants: Story = {
+  name: 'Shape / Rounded (All Variants)',
+  args: {
+    shape: 'rounded',
+  },
+  render: Variants.render,
+  parameters: Variants.parameters,
 }

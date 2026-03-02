@@ -8,6 +8,7 @@ import DsTypography from './DsTypography.vue'
 type ButtonType = 'primary' | 'secondary' | 'tertiary' | 'quaternary'
 type ButtonVariant = 'default' | 'accent'
 type ButtonSize = 'sm' | 'md' | 'lg'
+type ButtonShape = 'pill' | 'rounded'
 type ButtonTracking = 'default' | 'relaxed'
 type ButtonWeight = 'default' | 'strong'
 type PrimaryAnimation = 'rotate' | 'decrypt' | 'none'
@@ -30,6 +31,7 @@ const props = withDefaults(defineProps<{
   type?: ButtonType
   variant?: ButtonVariant | LegacyVariant
   size?: ButtonSize
+  shape?: ButtonShape
   tracking?: ButtonTracking
   weight?: ButtonWeight
   icon?: string
@@ -44,6 +46,7 @@ const props = withDefaults(defineProps<{
   type: 'primary',
   variant: 'default',
   size: 'md',
+  shape: 'pill',
   tracking: 'relaxed',
   weight: 'default',
   icon: '',
@@ -76,6 +79,7 @@ const {
   type,
   variant,
   size,
+  shape,
   tracking,
   weight,
   icon,
@@ -136,6 +140,12 @@ const sizeClassMap: Record<ButtonSize, string> = {
   lg: 'ui-button-lg',
 }
 const sizeClass = computed(() => sizeClassMap[size.value])
+
+const shapeClassMap: Record<ButtonShape, string> = {
+  pill: 'ui-button-shape-pill',
+  rounded: 'ui-button-shape-rounded',
+}
+const shapeClass = computed(() => shapeClassMap[shape.value])
 
 const iconOnlySizeClassMap: Record<ButtonSize, string> = {
   sm: 'ui-button-icon-only-sm',
@@ -288,7 +298,7 @@ onBeforeUnmount(() => {
     :disabled="disabled"
     :aria-label="buttonAriaLabel"
     class="group ui-button-base"
-    :class="[sizeClass, iconOnly ? iconOnlySizeClass : '', hasIcon && !iconOnly ? 'gap-2' : '', variantTypeClass, isGhostType ? ghostButtonClass : '', primaryRotateButtonClass, primaryRotateVariantFixClass]"
+    :class="[sizeClass, shapeClass, iconOnly ? iconOnlySizeClass : '', hasIcon && !iconOnly ? 'gap-2' : '', variantTypeClass, isGhostType ? ghostButtonClass : '', primaryRotateButtonClass, primaryRotateVariantFixClass]"
     @pointerenter="triggerPrimaryAnimation"
     @focusin="triggerPrimaryAnimation"
   >

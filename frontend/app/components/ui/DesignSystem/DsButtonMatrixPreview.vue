@@ -20,6 +20,7 @@ interface DecryptConfig {
 const props = withDefaults(defineProps<{
   text?: string
   size?: ButtonSize
+  shape?: 'pill' | 'rounded'
   tracking?: ButtonTracking
   weight?: ButtonWeight
   animation?: PrimaryAnimation
@@ -28,6 +29,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   text: 'Click Me',
   size: 'md',
+  shape: 'pill',
   tracking: 'relaxed',
   weight: 'default',
   animation: 'rotate',
@@ -162,6 +164,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   :variant="variant.key"
                   :text="props.text"
                   :size="props.size"
+                  :shape="props.shape"
                   :tracking="props.tracking"
                   :weight="props.weight"
                   :animation="props.animation"
@@ -216,6 +219,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   :variant="row.key"
                   :text="props.text"
                   :size="props.size"
+                  :shape="props.shape"
                   :tracking="props.tracking"
                   :weight="props.weight"
                   :animation="props.animation"
@@ -229,6 +233,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   :variant="row.key"
                   :text="props.text"
                   :size="props.size"
+                  :shape="props.shape"
                   :tracking="props.tracking"
                   :weight="props.weight"
                   :animation="props.animation"
@@ -242,6 +247,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   :variant="row.key"
                   :text="props.text"
                   :size="props.size"
+                  :shape="props.shape"
                   :tracking="props.tracking"
                   :weight="props.weight"
                   :animation="props.animation"
@@ -255,6 +261,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   :variant="row.key"
                   :text="props.text"
                   :size="props.size"
+                  :shape="props.shape"
                   :tracking="props.tracking"
                   :weight="props.weight"
                   :animation="props.animation"
@@ -300,6 +307,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   variant="default"
                   :text="props.text"
                   :size="props.size"
+                  :shape="props.shape"
                   :tracking="props.tracking"
                   :weight="props.weight"
                   :animation="props.animation"
@@ -313,6 +321,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                   variant="default"
                   :text="props.text"
                   :size="props.size"
+                  :shape="props.shape"
                   :tracking="props.tracking"
                   :weight="props.weight"
                   :animation="props.animation"
@@ -366,6 +375,7 @@ function getForcedStateClass(variant: MatrixVariant, type: MatrixType, state: Ma
                     :variant="row.key"
                     :text="props.text"
                     :size="props.size"
+                    :shape="props.shape"
                     :tracking="props.tracking"
                     :weight="props.weight"
                     :animation="props.animation"

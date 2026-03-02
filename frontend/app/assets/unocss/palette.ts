@@ -188,6 +188,14 @@ const sizingTokens: TokenSet = {
   'button-py-sm': 'var(--space-1_5)',
   'button-py-md': 'var(--space-2)',
   'button-py-lg': 'var(--space-2_5)',
+  'radius-xs': '0.125rem',
+  'radius-sm': '0.25rem',
+  'radius-md': '0.375rem',
+  'radius-lg': '0.5rem',
+  'radius-xl': '0.75rem',
+  'radius-2xl': '1rem',
+  'radius-3xl': '1.5rem',
+  'radius-4xl': '2rem',
   'radius-pill': '9999px',
   'control-border-width': '1px',
   'focus-ring-inner-width': '2px',
@@ -322,6 +330,8 @@ export const themeColors = {
 }
 
 export const spacingTheme = createTokenVarMap(spacingTokens)
+
+export const radiusTheme = createPrefixedTokenVarMap(sizingTokens, 'radius-')
 
 export const typographyTheme = {
   fontSize: createPrefixedTokenVarMap(typographyTokens, 'type-size-'),

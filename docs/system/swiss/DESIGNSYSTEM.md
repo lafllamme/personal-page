@@ -57,6 +57,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Motion Baseline: [MOTION.md](./MOTION.md)
 - Link Contract: [DS-LINK.md](./DS-LINK.md)
 - Icon Contract: [DS-ICON.md](./DS-ICON.md)
+- Next Components Roadmap: [NEXT-COMPONENTS-ROADMAP.md](./NEXT-COMPONENTS-ROADMAP.md)
 - Storybook / Nuxt Stubbing: [STUBBING.md](./STUBBING.md)
 - Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
 - Component Contract: [COMPONENT-CONTRACT.md](./COMPONENT-CONTRACT.md)
@@ -97,9 +98,10 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 
 ## 10) Button Contract (aktiver Stand)
 
-Der Button wird ueber zwei Dimensionen aufgebaut:
+Der Button wird ueber drei Dimensionen aufgebaut:
 - `variant`: `default` | `accent`
 - `type`: `primary` | `secondary` | `tertiary` | `quaternary`
+- `shape`: `pill` | `rounded`
 
 ### 10.1 Variant x Type Mapping
 
@@ -169,6 +171,11 @@ Der Button wird ueber zwei Dimensionen aufgebaut:
   - Textbutton mit Icon bleibt derselbe Kontrolltyp und wird nicht als eigene Wrapper-Komponente gebaut.
   - Das Icon rendert mit `currentColor` und folgt damit automatisch allen Text-/State-Farben.
   - `iconOnly` bleibt vorerst Teil von `DsButton` fuer Exploration; wenn daraus ein eigener Kontrolltyp mit abweichender Geometrie wird, wird spaeter ein eigener `DsIconButton` daraus.
+
+### 10.7.1 Button Shape (aktiver Stand)
+- `shape='pill'` bleibt der Default.
+- `shape='rounded'` nutzt `radius-xs` (`0.125rem` / `2px`) fuer eine bewusst eckigere Variante.
+- `shape` aendert nur den Radius, nicht Padding, Hoehe, Motion oder Variant-State-Logik.
 
 ### 10.8 Button Active Press Motion
 - Alle Button-Varianten verwenden im `active` denselben Press-Effekt:

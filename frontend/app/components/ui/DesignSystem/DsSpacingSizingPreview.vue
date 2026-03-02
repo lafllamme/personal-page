@@ -7,10 +7,12 @@ type ButtonTracking = 'default' | 'relaxed'
 type ButtonWeight = 'default' | 'strong'
 
 const props = withDefaults(defineProps<{
+  shape?: 'pill' | 'rounded'
   tracking?: ButtonTracking
   weight?: ButtonWeight
   disabled?: boolean
 }>(), {
+  shape: 'pill',
   tracking: 'relaxed',
   weight: 'default',
   disabled: false,
@@ -47,6 +49,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
             variant="default"
             type="primary"
             :size="item.key"
+            :shape="props.shape"
             :tracking="props.tracking"
             :weight="props.weight"
             :disabled="props.disabled"
@@ -69,6 +72,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
           variant="default"
           type="primary"
           size="md"
+          :shape="props.shape"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -79,6 +83,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
           variant="default"
           type="secondary"
           size="md"
+          :shape="props.shape"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -89,6 +94,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
           variant="default"
           type="tertiary"
           size="md"
+          :shape="props.shape"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -99,6 +105,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
           variant="default"
           type="quaternary"
           size="md"
+          :shape="props.shape"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -120,6 +127,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
           variant="accent"
           type="primary"
           size="md"
+          :shape="props.shape"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -130,6 +138,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
           variant="accent"
           type="secondary"
           size="md"
+          :shape="props.shape"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -140,6 +149,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
           variant="accent"
           type="tertiary"
           size="md"
+          :shape="props.shape"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
@@ -150,6 +160,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
           variant="accent"
           type="quaternary"
           size="md"
+          :shape="props.shape"
           :tracking="props.tracking"
           :weight="props.weight"
           :disabled="props.disabled"
