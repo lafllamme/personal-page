@@ -354,7 +354,6 @@ onBeforeUnmount(() => {
                       )"
                     >
                       <div class="osmo-nav-banner">
-                        <div class="osmo-nav-banner__before" />
                         <div class="osmo-nav-banner__content">
                           <div class="osmo-nav-banner__tags">
                             <span class="osmo-tag space-grotesk-regular is--muted">Featured</span>
@@ -1024,6 +1023,7 @@ html.dark .osmo-nav .osmo-nav-bar__bottom-col.is--products {
 }
 
 .osmo-nav-bar__bottom-col.is--ad {
+  min-width: 0;
   padding: 0;
 }
 
@@ -1297,9 +1297,12 @@ html:not(.dark) .osmo-nav .osmo-line.is--nav-transparent {
 .osmo-nav-banner {
   position: relative;
   display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
+  min-height: 100%;
   border-radius: 1em;
   overflow: hidden;
   backdrop-filter: blur(20px);
@@ -1319,16 +1322,14 @@ html.dark .osmo-nav .osmo-nav-banner {
     0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
-.osmo-nav-banner__before {
-  padding-top: 110%;
-}
-
 .osmo-nav-banner__content {
-  position: absolute;
+  position: relative;
   display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   padding: 2.5em;
 }
 
