@@ -83,6 +83,13 @@ Hinweis Runtime:
   - Size-Mapping: `sm -> xs`, `md -> sm`, `lg -> md`
   - Weight-Mapping: `default -> medium`, `strong -> semibold`
   - Tracking-Mapping: `tracking="default|relaxed"` auf `type-track-meta-*` bzw. `type-track-meta-*-relaxed` (aktuell nur wirksam fuer `role="meta"`)
+  - Default: `tracking='default'` (die dichtere Button-Basis)
+  - Zusatz im Button-Label: `line-height: 1` + `letter-spacing: -0.02em`
+  - Groessenleiter:
+    - `sm = 2rem` Hoehe / `0.75rem` Inline-Padding
+    - `md = 2.25rem` Hoehe / `0.875rem` Inline-Padding
+    - `lg = 2.625rem` Hoehe / `1.1875rem` Inline-Padding
+    - `lg` ist die Osmo-nahe Referenzgroesse
 - Primary Label Motion:
   - Default: `animation="rotate"` fuer `type="primary"` (default + accent)
   - Optional: `animation="decrypt"` mit `DsDecryptedText`

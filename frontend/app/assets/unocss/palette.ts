@@ -182,12 +182,15 @@ const layoutTokens: TokenSet = {
 }
 
 const sizingTokens: TokenSet = {
-  'button-px-sm': 'var(--space-3)',
-  'button-px-md': 'var(--space-4)',
-  'button-px-lg': 'var(--space-5)',
-  'button-py-sm': 'var(--space-1_5)',
-  'button-py-md': 'var(--space-2)',
-  'button-py-lg': 'var(--space-2_5)',
+  'button-height-sm': '2rem',
+  'button-height-md': '2.25rem',
+  'button-height-lg': '2.625rem',
+  'button-px-sm': '0.75rem',
+  'button-px-md': '0.875rem',
+  'button-px-lg': '1.1875rem',
+  'button-pb-sm': '0.0625rem',
+  'button-pb-md': '0.0625rem',
+  'button-pb-lg': '0.0625rem',
   'radius-xs': '0.125rem',
   'radius-sm': '0.25rem',
   'radius-md': '0.375rem',

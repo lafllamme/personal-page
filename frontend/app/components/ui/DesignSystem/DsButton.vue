@@ -47,7 +47,7 @@ const props = withDefaults(defineProps<{
   variant: 'default',
   size: 'md',
   shape: 'pill',
-  tracking: 'relaxed',
+  tracking: 'default',
   weight: 'default',
   icon: '',
   iconPosition: 'left',

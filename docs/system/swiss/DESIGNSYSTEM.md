@@ -181,6 +181,33 @@ Der Button wird ueber drei Dimensionen aufgebaut:
 - `shape='rounded'` nutzt `radius-xs` (`0.125rem` / `2px`) fuer eine bewusst eckigere Variante.
 - `shape` aendert nur den Radius, nicht Padding, Hoehe, Motion oder Variant-State-Logik.
 
+### 10.7.2 Button Size Ladder (aktiver Stand)
+- Die Osmo-nahe Referenzgroesse liegt im Designsystem jetzt auf `lg`, nicht auf `md`.
+- Bedeutet:
+  - `lg` = Referenz fuer den dichten Osmo-Default-Footprint
+  - `md` = sichtbar kompaktere Standardstufe darunter
+  - `sm` = Utility-/Tight-Stufe darunter
+- Geometrie-Tokens:
+  - `button-height-sm = 2rem`
+  - `button-height-md = 2.25rem`
+  - `button-height-lg = 2.625rem`
+  - `button-px-sm = 0.75rem`
+  - `button-px-md = 0.875rem`
+  - `button-px-lg = 1.1875rem`
+  - `button-pb-sm|md|lg = 0.0625rem`
+- Regel:
+  - `pill` und `rounded` teilen dieselbe Groessenleiter
+  - nur der Radius trennt die Shape-Wirkung
+
+### 10.7.3 Button Label Density (aktiver Stand)
+- Der Default-Button nutzt jetzt eine dichtere Label-Wirkung als zuvor:
+  - `tracking='default'` ist der aktive Default
+  - `line-height: 1`
+  - Basis-Letter-Spacing im Button-Label: `-0.02em`
+- Ziel:
+  - Osmo-naehere Default-Dichte
+  - keine luftige Standardwirkung mehr im Control
+
 ### 10.8 Button Active Press Motion
 - Alle Button-Varianten verwenden im `active` denselben Press-Effekt:
   - kein `translateY`-Push mehr

@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
 }>(), {
   shape: 'pill',
-  tracking: 'relaxed',
+  tracking: 'default',
   weight: 'default',
   disabled: false,
 })

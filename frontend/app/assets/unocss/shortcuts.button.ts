@@ -15,19 +15,19 @@ export const buttonShortcuts: UserShortcuts = [
   ],
   [
     'ui-button-sm',
-    'px-$space-3 py-$space-1_5 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-sm)]',
+    'h-$button-height-sm px-$button-px-sm pt-0 pb-$button-pb-sm [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-sm)]',
   ],
   [
     'ui-button-md',
-    'px-$space-4 py-$space-2 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-md)]',
+    'h-$button-height-md px-$button-px-md pt-0 pb-$button-pb-md [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-md)]',
   ],
   [
     'ui-button-lg',
-    'px-$space-5 py-$space-2_5 [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-lg)]',
+    'h-$button-height-lg px-$button-px-lg pt-0 pb-$button-pb-lg [--motion-primary-rotate-origin-y:var(--motion-primary-rotate-origin-y-lg)]',
   ],
   [
     'ui-button-label',
-    'relative z-1 inline-flex items-center',
+    'relative z-1 inline-flex items-center leading-none [letter-spacing:-0.02em]',
   ],
   [
     'ui-button-icon-base',
@@ -47,15 +47,15 @@ export const buttonShortcuts: UserShortcuts = [
   ],
   [
     'ui-button-icon-only-sm',
-    'size-9 p-0',
+    '[inline-size:var(--button-height-sm)] [block-size:var(--button-height-sm)] p-0',
   ],
   [
     'ui-button-icon-only-md',
-    'size-10 p-0',
+    '[inline-size:var(--button-height-md)] [block-size:var(--button-height-md)] p-0',
   ],
   [
     'ui-button-icon-only-lg',
-    'size-11 p-0',
+    '[inline-size:var(--button-height-lg)] [block-size:var(--button-height-lg)] p-0',
   ],
   [
     'ui-primary-rotate-wrap',

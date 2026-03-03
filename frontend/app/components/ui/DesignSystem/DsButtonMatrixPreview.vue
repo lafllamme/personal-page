@@ -30,7 +30,7 @@ const props = withDefaults(defineProps<{
   text: 'Click Me',
   size: 'md',
   shape: 'pill',
-  tracking: 'relaxed',
+  tracking: 'default',
   weight: 'default',
   animation: 'rotate',
   decrypt: () => ({
@@ -101,7 +101,7 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
   'accent-primary': {
     'hover': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-hover)]',
     'active': 'scale-[var(--motion-active-press-scale)] bg-$bg-accent-active color-$color-on-accent [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--bg-accent-active)]',
-    'focus-visible': 'bg-$bg-accent-hover [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-accent-hover)]',
+    'focus-visible': 'bg-$bg-accent-hover color-$color-on-accent [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-accent-hover)]',
   },
   'accent-secondary': {
     'hover': 'before:translate-y-0 color-$color-accent-strong [box-shadow:inset_0_0_0_var(--focus-ring-inner-width)_var(--border-accent-outline-fill)]',
