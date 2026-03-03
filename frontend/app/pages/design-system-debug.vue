@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
+import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
@@ -26,6 +28,21 @@ const typoRoleMatrix = [
 function tokenLabel(role: string, size: string) {
   return `text-$type-${role}-${size}`
 }
+
+const contactName = ref('')
+const contactEmail = ref('')
+const contactCompany = ref('')
+const contactSubject = ref('')
+const formSubject = ref('Bitte waehlen')
+const formFirstName = ref('dasdadsasd')
+const formLastName = ref('Dogan Tekel')
+const formEmail = ref('asdasdasd')
+const formPhone = ref('')
+const inputDefaultValue = ref('')
+const inputFloatValue = ref('')
+const inputUnderlineValue = ref('')
+const inputBorderDrawValue = ref('')
+const inputPillValue = ref('')
 </script>
 
 <template>
@@ -67,13 +84,245 @@ function tokenLabel(role: string, size: string) {
 
     <DsSectionShell
       spacing="sm"
-      :debug="true"
+      :debug="false"
     >
       <DsSectionBody
         max="7xl"
         gutter="md"
-        :debug="true"
+        :debug="false"
       >
+        <div class="mb-8 p-4 space-y-6 md:p-5">
+          <DsTypography
+            as="p"
+            role="meta"
+            size="xs"
+            uppercase
+          >
+            Input Forge
+          </DsTypography>
+
+          <div class="grid gap-5 lg:grid-cols-2">
+            <div class="space-y-5">
+              <DsInput
+                id="debug-contact-name"
+                v-model="contactName"
+                label="Full Name"
+                placeholder="Ada Lovelace"
+                hint="Use the same body voice you would expect in a real form."
+              />
+
+              <DsInput
+                id="debug-contact-email"
+                v-model="contactEmail"
+                type="email"
+                label="Work Email"
+                placeholder="ada@analytical.engine"
+                preview-state="focus-visible"
+                hint="Focus-visible preview uses the accent ring."
+              />
+            </div>
+
+            <div class="space-y-5">
+              <DsInput
+                id="debug-contact-company"
+                v-model="contactCompany"
+                label="Company"
+                placeholder="Analytical Engines Ltd."
+                preview-state="hover"
+                hint="Hover preview should stay subtle and neutral."
+              />
+
+              <DsInput
+                id="debug-contact-subject"
+                v-model="contactSubject"
+                label="Subject"
+                placeholder="Tell us what you need"
+                error="Please add a clearer subject line."
+                required
+              />
+            </div>
+          </div>
+
+          <div class="input-form-study space-y-6">
+            <DsTypography
+              as="p"
+              role="body"
+              size="sm"
+              tone="muted"
+            >
+              Bitte fuelle alle mit * gekennzeichneten Felder aus.
+            </DsTypography>
+
+            <DsInput
+              id="debug-form-subject"
+              v-model="formSubject"
+              variant="floating"
+              label="Betreff"
+              fill-text="Bitte waehlen"
+              required
+            />
+
+            <div class="grid gap-5 lg:grid-cols-2">
+              <DsInput
+                id="debug-form-first-name"
+                v-model="formFirstName"
+                variant="floating"
+                label="Vorname"
+                fill-text="Vorname"
+                required
+              />
+
+              <DsInput
+                id="debug-form-last-name"
+                v-model="formLastName"
+                variant="floating"
+                label="Nachname"
+                fill-text="Nachname"
+                required
+                preview-state="focus-visible"
+              />
+            </div>
+
+            <div class="grid gap-5 lg:grid-cols-2">
+              <DsInput
+                id="debug-form-email"
+                v-model="formEmail"
+                type="email"
+                variant="floating"
+                label="E-Mail"
+                fill-text="E-Mail"
+                error="E-Mail Adresse ist ungueltig."
+                required
+              />
+
+              <DsInput
+                id="debug-form-phone"
+                v-model="formPhone"
+                type="tel"
+                variant="floating"
+                label="Telefonnr."
+                fill-text="Telefonnr."
+              />
+            </div>
+          </div>
+
+          <div class="pt-3 space-y-6">
+            <div class="space-y-2">
+              <DsTypography
+                as="p"
+                role="meta"
+                size="xs"
+                uppercase
+              >
+                Input Variants Study
+              </DsTypography>
+              <DsTypography
+                as="p"
+                role="body"
+                size="sm"
+                tone="muted"
+              >
+                Debug-only exploration for interaction direction. These are not final DS variants yet.
+              </DsTypography>
+            </div>
+
+            <div class="grid gap-5 lg:grid-cols-2 xl:grid-cols-3">
+              <div class="input-study-card">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Default Minimal
+                </DsTypography>
+                <label class="input-study-field">
+                  <span class="input-study-label">Full Name</span>
+                  <input
+                    v-model="inputDefaultValue"
+                    class="input-study-control"
+                    type="text"
+                    placeholder="Ada Lovelace"
+                  >
+                </label>
+                <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                  Single focus border with a restrained shell.
+                </DsTypography>
+              </div>
+
+              <div class="input-study-card">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Floating Label
+                </DsTypography>
+                <DsInput
+                  id="debug-study-floating"
+                  v-model="inputFloatValue"
+                  variant="floating"
+                  label="Full Name"
+                  fill-text="Ada Lovelace"
+                />
+                <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                  Default shell. Placeholder becomes label.
+                </DsTypography>
+              </div>
+
+              <div class="input-study-card">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Underline
+                </DsTypography>
+                <label class="input-study-field input-study-field--underline">
+                  <span class="input-study-label">Subject</span>
+                  <span class="input-study-underline-wrap">
+                    <input
+                      v-model="inputUnderlineValue"
+                      class="input-study-control input-study-control--underline"
+                      type="text"
+                      placeholder="Tell us what you need"
+                    >
+                  </span>
+                </label>
+                <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                  Editorial line treatment with a stronger active draw.
+                </DsTypography>
+              </div>
+
+              <div class="input-study-card">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Border Draw
+                </DsTypography>
+                <label class="input-study-field input-study-field--draw">
+                  <span class="input-study-draw-wrap">
+                    <input
+                      v-model="inputBorderDrawValue"
+                      class="input-study-control input-study-control--draw"
+                      type="text"
+                      placeholder=" "
+                    >
+                    <span class="input-study-draw-label">@handle</span>
+                    <span class="input-study-draw-outline" />
+                  </span>
+                </label>
+                <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                  Rounded reveal border with the same floating-label logic.
+                </DsTypography>
+              </div>
+
+              <div class="input-study-card">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Pill Search
+                </DsTypography>
+                <label class="input-study-field">
+                  <span class="input-study-label">Search</span>
+                  <input
+                    v-model="inputPillValue"
+                    class="input-study-control input-study-control--pill"
+                    type="search"
+                    placeholder="Search articles"
+                  >
+                </label>
+                <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                  Rounded search-style field for filters, search, or quick query entry.
+                </DsTypography>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="bg-[#10b981]/8 outline-1 outline-[#10b981]/80 outline space-y-6 dark:bg-[#10b981]/12 dark:outline-[#34d399]/80 md:space-y-7">
           <DsTypography
             as="p"
@@ -364,3 +613,230 @@ function tokenLabel(role: string, size: string) {
     </DsSectionShell>
   </div>
 </template>
+
+<style scoped>
+.input-form-study {
+  padding-top: var(--space-2);
+}
+
+.input-study-card {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3_5);
+  border: 1px solid color-mix(in srgb, var(--border-primary) 12%, transparent);
+  border-radius: var(--radius-xl);
+  background: color-mix(in srgb, var(--bg-soft-primary) 18%, transparent);
+}
+
+.input-study-field {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.input-study-label {
+  font: inherit;
+}
+
+.input-study-label {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: var(--type-size-2xs);
+  line-height: var(--type-leading-2xs);
+  letter-spacing: var(--type-track-meta-2xs);
+  font-weight: 400;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--color-primary) 70%, transparent);
+}
+
+.input-study-control {
+  width: 100%;
+  min-height: var(--size-control-md);
+  padding-inline: var(--space-3_5);
+  padding-block: calc(var(--space-2) - 1px);
+  border: 1px solid var(--un-preset-radix-sand11);
+  border-radius: var(--radius-lg);
+  background: transparent;
+  color: var(--color-primary);
+  font-family: 'Manrope', sans-serif;
+  font-size: var(--type-size-md);
+  line-height: var(--type-leading-md);
+  font-weight: 300;
+  outline: none;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    box-shadow 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.input-study-control::placeholder {
+  color: color-mix(in srgb, var(--color-primary) 46%, transparent);
+  font-size: var(--type-size-sm);
+  line-height: var(--type-leading-sm);
+  opacity: 1;
+}
+
+.input-study-control:hover {
+  border-color: var(--border-accent-hover);
+  box-shadow: 0 0 0 1px var(--border-accent-hover);
+}
+
+.input-study-control:focus-visible {
+  border-color: var(--border-accent);
+  box-shadow: 0 0 0 var(--focus-ring-inner-width) var(--border-accent);
+}
+
+.input-study-control--error {
+  border-color: #df3478;
+  background: color-mix(in srgb, #df3478 4%, transparent);
+}
+
+.dark .input-study-control--error {
+  border-color: #ee518a;
+  background: color-mix(in srgb, #ee518a 6%, transparent);
+}
+
+.input-study-field--underline {
+  gap: var(--space-1);
+}
+
+.input-study-underline-wrap {
+  position: relative;
+  display: block;
+}
+
+.input-study-underline-wrap::after,
+.input-study-underline-wrap::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+}
+
+.input-study-underline-wrap::after {
+  background: color-mix(in srgb, var(--border-primary) 20%, transparent);
+}
+
+.input-study-underline-wrap::before {
+  background: var(--color-accent-hover);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.input-study-control--underline {
+  border: none;
+  border-radius: 0;
+  padding-inline: 0;
+  padding-block: calc(var(--space-2) - 1px);
+  box-shadow: none;
+}
+
+.input-study-control--underline:hover,
+.input-study-control--underline:focus-visible {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.input-study-underline-wrap:focus-within::before {
+  transform: scaleX(1);
+}
+
+.input-study-field--draw {
+  gap: var(--space-1);
+}
+
+.input-study-draw-wrap {
+  position: relative;
+  display: block;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease;
+}
+
+.input-study-draw-wrap:hover {
+  border-color: color-mix(in srgb, var(--color-accent-hover) 28%, var(--border-primary));
+  background: color-mix(in srgb, var(--bg-soft-primary) 12%, transparent);
+}
+
+.input-study-draw-label {
+  position: absolute;
+  left: var(--space-3_5);
+  top: calc(var(--size-control-md) / 2);
+  transform: translateY(-50%);
+  transform-origin: left center;
+  pointer-events: none;
+  font-family: 'Manrope', sans-serif;
+  font-size: var(--type-size-md);
+  line-height: var(--type-leading-md);
+  font-weight: 300;
+  color: color-mix(in srgb, var(--color-primary) 46%, transparent);
+  transition:
+    transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    top 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 160ms ease,
+    font-size 160ms ease;
+}
+
+.input-study-control--draw {
+  background: transparent;
+  border-color: color-mix(in srgb, var(--border-primary) 14%, transparent);
+  border-radius: 0;
+}
+
+.input-study-control--draw:hover,
+.input-study-control--draw:focus-visible {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.input-study-draw-outline {
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--color-accent-hover);
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.975);
+  pointer-events: none;
+  transition:
+    opacity 220ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.input-study-draw-wrap:focus-within {
+  border-color: color-mix(in srgb, var(--color-accent-hover) 18%, transparent);
+  background: color-mix(in srgb, var(--bg-soft-primary) 18%, transparent);
+}
+
+.input-study-draw-wrap:hover .input-study-draw-outline,
+.input-study-draw-wrap:focus-within .input-study-draw-outline {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.input-study-control--draw:focus-visible + .input-study-draw-label,
+.input-study-control--draw:not(:placeholder-shown) + .input-study-draw-label {
+  top: calc(var(--space-2) - 1px);
+  transform: translateY(0) scale(0.82);
+  font-size: var(--type-size-2xs);
+  color: var(--color-accent-ui);
+  font-weight: 300;
+}
+
+.dark .input-study-control--draw:focus-visible + .input-study-draw-label,
+.dark .input-study-control--draw:not(:placeholder-shown) + .input-study-draw-label {
+  color: var(--color-accent-ui);
+}
+
+.input-study-control--pill {
+  border-radius: 9999px;
+  padding-inline: calc(var(--space-4) + var(--space-0_25));
+}
+</style>

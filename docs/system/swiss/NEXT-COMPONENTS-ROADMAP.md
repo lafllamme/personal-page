@@ -91,3 +91,6 @@ Als naechste echte Komponente bauen wir:
 Begruendung:
 - Diese drei teilen sich denselben Field-Rahmen.
 - Wenn der Field-Contract sauber sitzt, werden Checkbox / Radio / Switch deutlich einfacher.
+
+Aktiver Plan fuer den ersten Schritt:
+- [DS-INPUT.md](./DS-INPUT.md)
