@@ -165,6 +165,20 @@ const typographySizeMap: Record<ButtonSize, 'xs' | 'sm' | 'md'> = {
 }
 const typographySize = computed(() => typographySizeMap[size.value])
 
+const typographyTrackingVarMap: Record<ButtonSize, string> = {
+  sm: '--button-label-track-sm',
+  md: '--button-label-track-md',
+  lg: '--button-label-track-lg',
+}
+const typographyTrackingStyle = computed(() => {
+  if (tracking.value !== 'default')
+    return undefined
+
+  return {
+    letterSpacing: `var(${typographyTrackingVarMap[size.value]})`,
+  }
+})
+
 const typographyWeightMap: Record<ButtonWeight, 'medium' | 'semibold'> = {
   default: 'medium',
   strong: 'semibold',
@@ -324,6 +338,7 @@ onBeforeUnmount(() => {
       :tracking="tracking"
       :weight="typographyWeight"
       :uppercase="true"
+      :style="typographyTrackingStyle"
       class="ui-button-label"
       :class="[isGhostType ? 'is-ghost-label ui-ghost-label' : '', primaryRotateTypographyClass]"
     >

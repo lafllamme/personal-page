@@ -187,14 +187,22 @@ Der Button wird ueber drei Dimensionen aufgebaut:
   - `lg` = Referenz fuer den dichten Osmo-Default-Footprint
   - `md` = sichtbar kompaktere Standardstufe darunter
   - `sm` = Utility-/Tight-Stufe darunter
-- Geometrie-Tokens:
-  - `button-height-sm = 2rem`
-  - `button-height-md = 2.25rem`
-  - `button-height-lg = 2.625rem`
-  - `button-px-sm = 0.75rem`
-  - `button-px-md = 0.875rem`
-  - `button-px-lg = 1.1875rem`
-  - `button-pb-sm|md|lg = 0.0625rem`
+- Foundation zuerst, Button danach:
+  - Primitive Control-Scale:
+    - `size-control-sm = 2rem`
+    - `size-control-md = 2.25rem`
+    - `size-control-lg = 2.625rem`
+  - Primitive Spacing-Scale:
+    - `space-0_25 = 0.0625rem`
+    - `space-3 = 0.75rem`
+    - `space-3_5 = 0.875rem`
+    - `space-4_75 = 1.1875rem`
+  - Button-Aliase:
+    - `button-height-sm|md|lg -> size-control-sm|md|lg`
+    - `button-px-sm -> space-3`
+    - `button-px-md -> space-3_5`
+    - `button-px-lg -> space-4_75`
+    - `button-pb-sm|md|lg -> space-0_25`
 - Regel:
   - `pill` und `rounded` teilen dieselbe Groessenleiter
   - nur der Radius trennt die Shape-Wirkung
@@ -204,6 +212,15 @@ Der Button wird ueber drei Dimensionen aufgebaut:
   - `tracking='default'` ist der aktive Default
   - `line-height: 1`
   - Basis-Letter-Spacing im Button-Label: `-0.02em`
+  - finale Control-Kalibrierung ueber:
+    - `button-label-track-sm = -0.01em`
+    - `button-label-track-md = -0.01em`
+    - `button-label-track-lg = -0.01em`
+  - `DsButton` bleibt dabei auf `DsTypography role='meta'`
+  - Groessen-Mapping bleibt:
+    - `sm -> meta/xs`
+    - `md -> meta/sm`
+    - `lg -> meta/md`
 - Ziel:
   - Osmo-naehere Default-Dichte
   - keine luftige Standardwirkung mehr im Control
