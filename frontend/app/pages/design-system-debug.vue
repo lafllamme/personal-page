@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
@@ -33,16 +33,51 @@ const contactName = ref('')
 const contactEmail = ref('')
 const contactCompany = ref('')
 const contactSubject = ref('')
-const formSubject = ref('Bitte waehlen')
-const formFirstName = ref('dasdadsasd')
-const formLastName = ref('Dogan Tekel')
-const formEmail = ref('asdasdasd')
+const formSubject = ref('')
+const formFirstName = ref('')
+const formLastName = ref('')
+const formEmail = ref('')
 const formPhone = ref('')
+const formEmailTouched = ref(false)
 const inputDefaultValue = ref('')
 const inputFloatValue = ref('')
 const inputUnderlineValue = ref('')
 const inputBorderDrawValue = ref('')
 const inputPillValue = ref('')
+
+function isValidEmail(value: string): boolean {
+  const trimmed = value.trim()
+  const atIndex = trimmed.indexOf('@')
+  if (atIndex <= 0 || atIndex !== trimmed.lastIndexOf('@'))
+    return false
+
+  const local = trimmed.slice(0, atIndex)
+  const domain = trimmed.slice(atIndex + 1)
+  if (!local || !domain)
+    return false
+
+  if (domain.startsWith('.') || domain.endsWith('.') || !domain.includes('.'))
+    return false
+
+  if (trimmed.includes(' '))
+    return false
+
+  return true
+}
+
+const formEmailError = computed(() => {
+  if (!formEmailTouched.value)
+    return ''
+
+  const value = formEmail.value.trim()
+  if (!value)
+    return 'Bitte gib eine E-Mail Adresse ein.'
+
+  if (!isValidEmail(value))
+    return 'E-Mail Adresse ist ungueltig.'
+
+  return ''
+})
 </script>
 
 <template>
@@ -137,7 +172,6 @@ const inputPillValue = ref('')
                 v-model="contactSubject"
                 label="Subject"
                 placeholder="Tell us what you need"
-                error="Please add a clearer subject line."
                 required
               />
             </div>
@@ -191,8 +225,9 @@ const inputPillValue = ref('')
                 variant="floating"
                 label="E-Mail"
                 fill-text="E-Mail"
-                error="E-Mail Adresse ist ungueltig."
+                :error="formEmailError"
                 required
+                @blur="formEmailTouched = true"
               />
 
               <DsInput

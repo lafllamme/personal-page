@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, toRefs, useAttrs } from 'vue'
+import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
 defineOptions({
@@ -214,19 +215,28 @@ function onMouseLeave(): void {
       >
     </div>
 
-    <DsTypography
+    <div
       v-if="error"
       :id="errorId || undefined"
-      as="p"
-      role="meta"
-      size="2xs"
-      class="color-$color-error-text"
+      class="ds-input-error-row color-$color-error-text"
     >
-      {{ error }}
-    </DsTypography>
+      <DsIcon
+        name="iconoir:warning-triangle"
+        size="sm"
+        variant="inherit"
+        class="ds-input-error-icon"
+      />
+      <DsTypography
+        as="p"
+        role="meta"
+        size="2xs"
+      >
+        {{ error }}
+      </DsTypography>
+    </div>
 
     <DsTypography
-      v-else-if="hint"
+      v-if="!error && hint"
       :id="hintId || undefined"
       as="p"
       role="meta"
@@ -264,7 +274,6 @@ function onMouseLeave(): void {
 
 .ds-input-shell.is-hover:not(.is-disabled):not(.is-invalid) {
   border-color: var(--border-accent-hover);
-  background: color-mix(in srgb, var(--bg-accent-soft) 14%, transparent);
   box-shadow: 0 0 0 1px var(--border-accent-hover);
 }
 
@@ -275,7 +284,7 @@ function onMouseLeave(): void {
 
 .ds-input-shell.is-invalid {
   border-color: var(--border-error);
-  background: var(--bg-input-error-soft);
+  background: var(--bg-input-error-soft, color-mix(in srgb, var(--border-error) 12%, transparent));
   box-shadow: none;
 }
 
@@ -363,5 +372,15 @@ function onMouseLeave(): void {
   font-weight: 400;
   text-transform: uppercase;
   color: var(--color-input-floating-label);
+}
+
+.ds-input-error-row {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1_5);
+}
+
+.ds-input-error-icon {
+  flex-shrink: 0;
 }
 </style>

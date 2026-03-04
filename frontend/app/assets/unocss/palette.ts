@@ -36,7 +36,7 @@ const colorTokens: TokenSet = {
   'color-link-arrow-accent-idle': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
   'color-input-placeholder': { light: 'rgba(0, 0, 0, 0.46)', dark: 'rgba(242, 239, 230, 0.46)' },
   'color-input-floating-label': { light: 'var(--color-accent-ui)', dark: 'var(--color-accent)' },
-  'color-error-text': { light: '#cb1d63', dark: '#ff92ad' },
+  'color-error-text': { light: 'var(--un-preset-radix-crimson11)', dark: 'var(--un-preset-radix-crimson11)' },
 }
 
 const bgTokens: TokenSet = {
@@ -71,7 +71,7 @@ const bgTokens: TokenSet = {
   'bg-ghost-morph-fill-active': { light: 'var(--un-preset-radix-sand9)', dark: 'var(--un-preset-radix-sand9)' },
   'bg-ghost-morph-accent-fill': { light: 'var(--toxic-6)', dark: 'var(--toxic-5)' },
   'bg-ghost-morph-accent-fill-active': { light: 'var(--toxic-7)', dark: 'var(--toxic-6)' },
-  'bg-input-error-soft': { light: 'rgba(223, 52, 120, 0.04)', dark: 'rgba(238, 81, 138, 0.06)' },
+  'bg-input-error-soft': { light: 'rgba(223, 52, 120, 0.025)', dark: 'var(--un-preset-radix-crimson-a3)' },
 }
 
 const borderTokens: TokenSet = {
@@ -91,7 +91,7 @@ const borderTokens: TokenSet = {
   'border-accent-soft-hover': 'var(--toxic-8)',
   'border-accent-soft-disabled': { light: '#dbe5e3', dark: 'rgba(28, 105, 97, 0.48)' },
   'border-input-idle': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand11)' },
-  'border-error': { light: '#df3478', dark: '#ee518a' },
+  'border-error': { light: 'var(--un-preset-radix-crimson10)', dark: 'var(--un-preset-radix-crimson10)' },
 }
 
 const ringTokens: TokenSet = {
