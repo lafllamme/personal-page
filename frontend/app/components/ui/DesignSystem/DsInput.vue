@@ -122,6 +122,9 @@ const floatingLabelClass = computed(() => [
   'ui-input-floating-label-base',
   isFloatingActive.value && 'ui-input-floating-label-active',
 ])
+const floatingLabelRole = computed<'body' | 'meta'>(() => (isFloatingActive.value ? 'meta' : 'body'))
+const floatingLabelSize = computed<'sm' | '2xs'>(() => (isFloatingActive.value ? '2xs' : 'sm'))
+const floatingLabelWeight = computed<'light' | 'regular'>(() => (isFloatingActive.value ? 'regular' : 'light'))
 const errorAnimationKey = computed(() => `ds-input-error-${errorShakeKey.value}`)
 
 function onInput(event: Event): void {
@@ -193,12 +196,17 @@ watch(error, (next, prev) => {
           @blur="isFocused = false"
           @input="onInput"
         >
-        <span
+        <DsTypography
           v-if="floatingLabelText"
+          as="span"
+          :role="floatingLabelRole"
+          :size="floatingLabelSize"
+          :weight="floatingLabelWeight"
+          :uppercase="isFloatingActive"
           :class="floatingLabelClass"
         >
           {{ floatingLabelText }}
-        </span>
+        </DsTypography>
       </div>
     </label>
 

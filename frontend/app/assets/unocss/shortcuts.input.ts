@@ -31,11 +31,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-control-base',
-    'w-full border-none bg-transparent p-0 outline-none color-$color-primary [font-family:\'Manrope\',sans-serif] [font-size:var(--type-size-md)] [line-height:var(--type-leading-md)] [font-weight:300]',
+    'w-full border-none bg-transparent outline-none color-$color-primary type-body-sm font-light',
   ],
   [
     'ui-input-control-default',
-    '[padding-block:0.4375rem]',
+    '[padding-top:0.4375rem] [padding-bottom:0.4375rem]',
   ],
   [
     'ui-input-control-floating',
@@ -55,11 +55,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-floating-label-base',
-    'pointer-events-none absolute left-$space-3_5 top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [font-family:\'Manrope\',sans-serif] [font-size:var(--type-size-sm)] [line-height:var(--type-leading-sm)] [font-weight:300] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
+    'pointer-events-none absolute left-$space-3_5 top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
   ],
   [
     'ui-input-floating-label-active',
-    '!left-[calc(var(--space-3_5)+1px)] !top-[calc(var(--space-1)+1px)] ![transform:translateY(0)_scale(0.82)] ![font-family:\'Space Grotesk\',sans-serif] ![font-size:var(--type-size-2xs)] ![line-height:var(--type-leading-2xs)] !tracking-$type-track-meta-2xs !font-normal !uppercase ![color:var(--color-input-floating-label)]',
+    '!left-[calc(var(--space-3_5)+1px)] !top-[calc(var(--space-1)+1px)] ![transform:translateY(0)_scale(0.82)] ![color:var(--color-input-floating-label)]',
   ],
   [
     'ui-input-error-row',
