@@ -138,6 +138,10 @@ const motionTokens: TokenSet = {
   'motion-active-press-scale': '0.925',
   'motion-secondary-sweep-duration': '0.32s',
   'motion-secondary-sweep-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+  'motion-input-floating-duration': '160ms',
+  'motion-input-floating-ease': 'ease',
+  'motion-input-error-shake-duration': '450ms',
+  'motion-input-error-shake-ease': 'cubic-bezier(0.36, 0.07, 0.19, 0.97)',
 }
 
 const spacingTokens: TokenSet = {

@@ -357,16 +357,16 @@ watch(error, (next, prev) => {
   font-weight: 300;
   color: var(--color-input-placeholder);
   transition:
-    transform 160ms ease,
-    top 160ms ease,
-    left 160ms ease,
-    color 160ms ease,
-    font-size 160ms ease,
-    line-height 160ms ease,
-    letter-spacing 160ms ease,
-    text-transform 160ms ease,
-    font-family 160ms ease,
-    font-weight 160ms ease;
+    transform var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    top var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    left var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    color var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    font-size var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    line-height var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    letter-spacing var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    text-transform var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    font-family var(--motion-input-floating-duration) var(--motion-input-floating-ease),
+    font-weight var(--motion-input-floating-duration) var(--motion-input-floating-ease);
 }
 
 .ds-input-floating-label.is-active {
@@ -386,7 +386,7 @@ watch(error, (next, prev) => {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1_5);
-  animation: ds-input-error-shake-in 450ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation: ds-input-error-shake-in var(--motion-input-error-shake-duration) var(--motion-input-error-shake-ease) both;
 }
 
 .ds-input-error-icon {
