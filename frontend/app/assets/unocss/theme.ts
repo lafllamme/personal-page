@@ -10,6 +10,7 @@ const keyframes = {
   fadeIn: '0%{opacity:0;}100%{opacity:1;}',
   fadeOut: '0%{opacity:1;}100%{opacity:0;}',
   uiGhostUnderlineSweep: '0%{transform:scaleX(1) rotate(0.001deg);transform-origin:right;}49%{transform:scaleX(0) rotate(0.001deg);transform-origin:right;}50%{transform:scaleX(0) rotate(0.001deg);transform-origin:left;}100%{transform:scaleX(1) rotate(0.001deg);transform-origin:left;}',
+  dsInputErrorShakeIn: '0%{opacity:0;transform:translateX(-6px);}20%{opacity:1;transform:translateX(4px);}40%{transform:translateX(-3px);}60%{transform:translateX(2px);}80%{transform:translateX(-1px);}100%{opacity:1;transform:translateX(0);}',
 }
 
 const animations = {
@@ -21,6 +22,7 @@ const animations = {
   enterFromRight: 'enterFromRight 250ms ease',
   exitToLeft: 'exitToLeft 250ms ease',
   exitToRight: 'exitToRight 250ms ease',
+  dsInputErrorShakeIn: 'dsInputErrorShakeIn var(--motion-input-error-shake-duration) var(--motion-input-error-shake-ease) both',
 }
 
 export const theme = {
