@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, toRefs, useAttrs } from 'vue'
+import { computed, ref, toRefs, useAttrs, watch } from 'vue'
 import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
@@ -57,6 +57,7 @@ const {
 const attrs = useAttrs()
 const isFocused = ref(false)
 const isHovered = ref(false)
+const errorShakeKey = ref(0)
 
 const inputId = computed(() => {
   const rawId = attrs.id
@@ -120,6 +121,7 @@ const floatingLabelClass = computed(() => [
   'ds-input-floating-label',
   isFloatingActive.value && 'is-active',
 ])
+const errorAnimationKey = computed(() => `ds-input-error-${errorShakeKey.value}`)
 
 function onInput(event: Event): void {
   const target = event.target as HTMLInputElement
@@ -133,6 +135,11 @@ function onMouseEnter(): void {
 function onMouseLeave(): void {
   isHovered.value = false
 }
+
+watch(error, (next, prev) => {
+  if (next && next !== prev)
+    errorShakeKey.value += 1
+})
 </script>
 
 <template>
@@ -218,6 +225,7 @@ function onMouseLeave(): void {
     <div
       v-if="error"
       :id="errorId || undefined"
+      :key="errorAnimationKey"
       class="ds-input-error-row color-$color-error-text"
     >
       <DsIcon
@@ -236,7 +244,7 @@ function onMouseLeave(): void {
     </div>
 
     <DsTypography
-      v-if="!error && hint"
+      v-if="!error && Boolean(hint)"
       :id="hintId || undefined"
       as="p"
       role="meta"
@@ -378,9 +386,34 @@ function onMouseLeave(): void {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1_5);
+  animation: ds-input-error-shake-in 450ms cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
 }
 
 .ds-input-error-icon {
   flex-shrink: 0;
+}
+
+@keyframes ds-input-error-shake-in {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+  40% {
+    transform: translateX(-3px);
+  }
+  60% {
+    transform: translateX(2px);
+  }
+  80% {
+    transform: translateX(-1px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 </style>

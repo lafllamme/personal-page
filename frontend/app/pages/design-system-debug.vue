@@ -38,6 +38,7 @@ const formFirstName = ref('')
 const formLastName = ref('')
 const formEmail = ref('')
 const formPhone = ref('')
+const formFirstNameTouched = ref(false)
 const formEmailTouched = ref(false)
 const inputDefaultValue = ref('')
 const inputFloatValue = ref('')
@@ -75,6 +76,16 @@ const formEmailError = computed(() => {
 
   if (!isValidEmail(value))
     return 'E-Mail Adresse ist ungueltig.'
+
+  return ''
+})
+
+const formFirstNameError = computed(() => {
+  if (!formFirstNameTouched.value)
+    return ''
+
+  if (!formFirstName.value.trim())
+    return 'Vorname ist erforderlich.'
 
   return ''
 })
@@ -177,7 +188,7 @@ const formEmailError = computed(() => {
             </div>
           </div>
 
-          <div class="input-form-study space-y-6">
+          <div class="input-form-study space-y-4">
             <DsTypography
               as="p"
               role="body"
@@ -203,7 +214,9 @@ const formEmailError = computed(() => {
                 variant="floating"
                 label="Vorname"
                 fill-text="Vorname"
+                :error="formFirstNameError"
                 required
+                @blur="formFirstNameTouched = true"
               />
 
               <DsInput

@@ -258,6 +258,84 @@ Empfehlung Start:
 - erster Input orientiert sich grob an der mittleren Control-Groesse
 - also in Richtung `size-control-md`
 
+## Migration nach UnoCSS / Tokens (inkrementell, 3 Phasen)
+
+Ziel:
+- den aktuellen `DsInput`-Stand ohne visuelle Regression in das UnoCSS-/Token-System ueberfuehren
+- Floating-Label-/FillText-Verhalten stabil halten
+- bei Problemen nur kleine, lokal rueckrollbare Schritte haben
+
+### Phase 1: Tokenisierung ohne Verhaltensaenderung
+Scope:
+- nur Variablenquellen bereinigen (Farben, Radius, Spacing, Typografie, Ring)
+- bestehende Struktur in `DsInput.vue` bleibt gleich (inkl. Floating-Logik, Error-Animation, key-Retrigger)
+- keine neue API, keine neuen States
+
+Technik:
+- alle harten Werte in den lokalen Styles durch bestehende Tokens ersetzen
+- fehlende Werte nur in `palette.ts` ergaenzen (keine ad-hoc Werte in Komponenten)
+- `DS-INPUT.md` + Referenzen kurz anpassen, welche Tokens `DsInput` v1 nutzt
+
+Verifikation (Gate):
+- Light/Dark visuell 1:1 zum Ist-Stand
+- States: default, hover, focus-visible, invalid, disabled, hint/error
+- Floating: placeholder -> label, fillText-Verhalten unveraendert
+- `pnpm --dir frontend exec eslint ...` gruen
+
+Commit:
+- ein separater Commit nur fuer Tokenisierung/Refactor, ohne Feature-Aenderung
+
+### Phase 2: Style-Extraktion in Uno-Shortcuts (strukturierter Umbau)
+Scope:
+- shell/control/feedback als klare Shortcut-Gruppen in `shortcuts.input.ts`
+- lokale `<style scoped>`-Regeln in `DsInput.vue` schrittweise reduzieren
+- komplexe Teile (Floating-Label-Positionierung, Keyframe fuer Error) duerfen temporaer lokal bleiben
+
+Technik:
+- zuerst statische Klassen migrieren (shell, borders, spacing, typo)
+- danach state-Klassen migrieren (hover/focus/invalid/disabled)
+- zuletzt Feedback-Zeile und Error-Icon-Layout
+
+Wichtig:
+- pro Subschritt nur einen Block migrieren und sofort gegen Debug-Seite pruefen
+- kein Big-Bang-Patch
+
+Verifikation (Gate):
+- keine Verschiebung von Label/Text-Baselines
+- kein ungewollter Layout-Shift ausser bewusstem Error-Insert
+- Error-Animation triggert weiterhin bei jedem erneuten Error (key-Retrigger intakt)
+
+Commit:
+- 1-2 kleine Commits (z. B. `shell/control`, danach `states/feedback`)
+
+### Phase 3: API/Docs-Finalisierung + optionale Erweiterungen
+Scope:
+- API sauber dokumentieren (v1 final): `label`, `fillText`, `hint`, `error`, `invalid`, `previewState`
+- Story/Debug-Paritaet dokumentieren (welche Szenen als Referenz dienen)
+- optionale v1.1-Erweiterungen vorbereiten (noch nicht erzwingen):
+  - `readonly`
+  - `autocomplete` / `inputmode` / `name`
+  - spaeter `success` State
+
+Technik:
+- `DS-INPUT.md` finalisieren (Contract + State-Matrix)
+- offene Erweiterungen als „Phase 1.1“ markieren statt jetzt einzubauen
+
+Verifikation (Gate):
+- Storybook + Debug zeigen denselben visuellen Contract
+- keine ungenutzten lokalen Styles in `DsInput.vue`, ausser bewusst verbleibende Spezialfaelle
+- Lint/Typecheck gruen
+
+Commit:
+- abschliessender „docs + cleanup“-Commit
+
+## Reihenfolge-Empfehlung fuer den Start
+1. **Jetzt Phase 1** (sicherster Schritt, geringes Risiko)
+2. Danach **Phase 2** in kleinen PR/Commit-Happen
+3. **Phase 3** erst wenn visuelle Paritaet bestaetigt ist
+
+So vermeidet ihr den frueheren Totalbruch bei Floating/Placeholder-Animationen und koennt jederzeit kontrolliert stoppen oder einen einzelnen Schritt zuruecknehmen.
+
 Die eigentliche Groessenstaffel (`sm/md/lg`) kommt danach, wenn der Field-Contract sitzt.
 
 ## Phase-1 API
