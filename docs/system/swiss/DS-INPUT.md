@@ -336,6 +336,18 @@ Commit:
 
 So vermeidet ihr den frueheren Totalbruch bei Floating/Placeholder-Animationen und koennt jederzeit kontrolliert stoppen oder einen einzelnen Schritt zuruecknehmen.
 
+## Phase-1 Checkpoint (aktueller Stand)
+
+Done:
+- `DsInput` States sind tokenbasiert (idle / hover / focus / invalid / disabled).
+- Error-Feedback ist integriert (Icon + Message), inkl. erneut triggerbarer Shake-Animation via `key`.
+- Floating-Label/FIllText-Verhalten ist wieder stabil.
+- Motion fuer Shell/Floating/Error ist ueber Input-spezifische Motion-Tokens konsolidiert.
+
+Open fuer Abschluss Phase 1:
+- Kurzer visueller Paritaets-Check gegen Debug (Light/Dark + alle States) als finaler Abnahmepunkt.
+- Danach Phase-1 Commit mit Scope: **nur Refactor/Tokenisierung, keine API-Erweiterung**.
+
 Die eigentliche Groessenstaffel (`sm/md/lg`) kommt danach, wenn der Field-Contract sitzt.
 
 ## Phase-1 API

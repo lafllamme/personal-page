@@ -3,7 +3,7 @@ import type { UserShortcuts } from 'unocss'
 export const inputShortcuts: UserShortcuts = [
   [
     'ui-input-shell-base',
-    'relative w-full border border-solid [border-width:var(--control-border-width)] rounded-$radius-lg bg-transparent px-$space-3_5 transition-[border-color,background-color,box-shadow,color] duration-[160ms] ease-out',
+    'relative w-full border border-solid [border-width:var(--control-border-width)] rounded-$radius-lg bg-transparent px-$space-3_5 transition-[border-color,background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
   ],
   [
     'ui-input-shell-default',

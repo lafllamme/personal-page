@@ -266,10 +266,10 @@ watch(error, (next, prev) => {
   background: transparent;
   padding-inline: var(--space-3_5);
   transition:
-    border-color 160ms ease,
-    background-color 160ms ease,
-    box-shadow 160ms ease,
-    color 160ms ease;
+    border-color var(--motion-input-shell-duration) var(--motion-input-shell-ease),
+    background-color var(--motion-input-shell-duration) var(--motion-input-shell-ease),
+    box-shadow var(--motion-input-shell-duration) var(--motion-input-shell-ease),
+    color var(--motion-input-shell-duration) var(--motion-input-shell-ease);
 }
 
 .ds-input-shell--default {
