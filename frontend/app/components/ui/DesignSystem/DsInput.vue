@@ -140,8 +140,11 @@ function onMouseLeave(): void {
   isHovered.value = false
 }
 
-watch(error, (next, prev) => {
-  if (next && next !== prev)
+watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) => {
+  if (!nextHasError)
+    return
+
+  if (!prevHasError || nextError !== prevError)
     errorShakeKey.value += 1
 })
 </script>
@@ -232,7 +235,7 @@ watch(error, (next, prev) => {
     </div>
 
     <div
-      v-if="error"
+      v-if="hasError && Boolean(error)"
       :id="errorId || undefined"
       :key="errorAnimationKey"
       class="ui-input-error-row color-$color-error-text"

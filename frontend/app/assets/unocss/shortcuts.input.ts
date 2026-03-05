@@ -59,11 +59,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-floating-label-active',
-    '!left-[calc(var(--space-3_5)+1px)] !top-[calc(var(--space-1)+1px)] ![transform:translateY(0)_scale(0.82)] ![color:var(--color-input-floating-label)]',
+    '!left-$space-3_5 !top-$space-1 ![transform:translateY(0)_scale(0.82)] ![color:var(--color-input-floating-label)]',
   ],
   [
     'ui-input-error-row',
-    'inline-flex items-center gap-$space-1_5 animate-dsInputErrorShakeIn',
+    'inline-flex items-center gap-$space-1_5 animate-shake-in [animation-fill-mode:both]',
   ],
   [
     'ui-input-error-icon',
