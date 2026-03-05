@@ -1,7 +1,55 @@
 # DS Input
 
-Stand: 2026-03-03  
-Status: Konzept + erster Debug-Prototyp aktiv
+Stand: 2026-03-05  
+Status: v1 aktiv, `DsInput` auf UnoCSS-Shortcuts migriert (kein lokaler Style-Block mehr)
+
+## Aktueller Ist-Stand (v1)
+- Komponente: `/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsInput.vue`
+- Styling: `/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.input.ts`
+- Motion-Keyframes: `/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/theme.ts`
+- Tokens: `/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/palette.ts`
+
+Der Floating-Input-Flow ist produktiv stabil:
+- `default` + `floating` Varianten
+- `fillText` bei Focus ohne Value
+- Floating-Label-Shift bei Focus/Value
+- `hover`, `focus-visible`, `invalid`, `disabled`
+- Error-Row mit Warning-Icon + Shake-In
+
+## Migrationsergebnis (3-Phasen-Plan)
+- Phase 1: Tokenisierung ohne Verhaltensaenderung -> erledigt
+- Phase 2: Extraktion in Uno-Shortcuts -> erledigt
+- Phase 3: API-/Docs-Finalisierung v1 -> aktiv
+
+## Wichtige UnoCSS-Notiz (Regression Guard)
+Bei Arbitrary Values mit `calc(...)` und Token-Namen mit `_` kann die Ausgabe invalid werden.
+
+Beispielproblem:
+- `calc(var(--space-4_75)-1px)` in Utility-Strings kann je nach Verarbeitung kippen
+- Folge: `padding-top` faellt auf `0px` zurueck, Floating/FillText kollidiert
+
+Stabile Loesung fuer v1:
+- kritische Vertical Metrics im Input explizit gesetzt:
+  - `padding-top: 1.125rem`
+  - `padding-bottom: 0.4375rem`
+- Floating-Active-Regeln mit klaren Overrides (`!`) abgesichert
+
+## Tokenisierungsgrad (v1)
+Bereits tokenisiert:
+- Farben (`border-*`, `bg-*`, `color-*`)
+- Radius (`radius-lg`)
+- Basis-Spacing (`space-*`)
+- Control Heights (`size-control-*`)
+- Motion-Durations/Easing (`motion-input-*`)
+- Focus/Accent/Error-System
+
+Bewusst noch literal (v1, fuer Geometrie-Stabilitaet):
+- `0.4375rem` (Input-Y default/floating bottom)
+- `1.125rem` (Input floating top)
+- `1px` Offsets in Floating-Active (`left/top`) und Hover-Ring-Breite
+- `scale(0.82)` fuer Floating-Label
+
+Diese Werte sind aktuell keine "Vergessenen Hardcodes", sondern Stabilitaetsanker.
 
 ## Ziel
 - Einen ersten belastbaren `DsInput`-Contract definieren, der auf euren bestehenden Foundations aufsetzt.

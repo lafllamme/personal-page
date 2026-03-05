@@ -31,26 +31,42 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-control-base',
-    'w-full border-none bg-transparent p-0 outline-none type-body-md color-$color-primary',
+    'w-full border-none bg-transparent p-0 outline-none color-$color-primary [font-family:\'Manrope\',sans-serif] [font-size:var(--type-size-md)] [line-height:var(--type-leading-md)] [font-weight:300]',
   ],
   [
     'ui-input-control-default',
-    '[padding-block:calc(var(--space-2)-1px)]',
+    '[padding-block:0.4375rem]',
   ],
   [
     'ui-input-control-floating',
-    '[padding-top:calc(var(--space-4_75)-1px)] [padding-bottom:calc(var(--space-2)-1px)]',
+    '[padding-top:1.125rem] [padding-bottom:0.4375rem]',
   ],
   [
     'ui-input-control-placeholder',
     'placeholder:[color:var(--color-input-placeholder)] placeholder:opacity-100',
   ],
   [
+    'ui-input-control-floating-placeholder-hidden',
+    'placeholder:opacity-0',
+  ],
+  [
+    'ui-input-control-floating-placeholder-visible',
+    'placeholder:opacity-100',
+  ],
+  [
     'ui-input-floating-label-base',
-    'pointer-events-none absolute left-$space-3_5 top-1/2 -translate-y-1/2 type-body-sm [font-weight:300] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] duration-[160ms] ease-out',
+    'pointer-events-none absolute left-$space-3_5 top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [font-family:\'Manrope\',sans-serif] [font-size:var(--type-size-sm)] [line-height:var(--type-leading-sm)] [font-weight:300] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
   ],
   [
     'ui-input-floating-label-active',
-    'left-[calc(var(--space-3_5)+1px)] top-[calc(var(--space-1)+1px)] translate-y-0 scale-[0.82] type-meta-2xs uppercase [font-weight:400] [color:var(--color-input-floating-label)]',
+    '!left-[calc(var(--space-3_5)+1px)] !top-[calc(var(--space-1)+1px)] ![transform:translateY(0)_scale(0.82)] ![font-family:\'Space Grotesk\',sans-serif] ![font-size:var(--type-size-2xs)] ![line-height:var(--type-leading-2xs)] !tracking-$type-track-meta-2xs !font-normal !uppercase ![color:var(--color-input-floating-label)]',
+  ],
+  [
+    'ui-input-error-row',
+    'inline-flex items-center gap-$space-1_5 animate-dsInputErrorShakeIn',
+  ],
+  [
+    'ui-input-error-icon',
+    'shrink-0',
   ],
 ]
