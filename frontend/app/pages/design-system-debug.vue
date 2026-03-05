@@ -202,8 +202,8 @@ const formFirstNameError = computed(() => {
               id="debug-form-subject"
               v-model="formSubject"
               variant="floating"
-              label="Betreff"
-              fill-text="Bitte waehlen"
+              label="Subject"
+              fill-text="Choose a subject"
               required
             />
 
@@ -212,8 +212,8 @@ const formFirstNameError = computed(() => {
                 id="debug-form-first-name"
                 v-model="formFirstName"
                 variant="floating"
-                label="Vorname"
-                fill-text="Vorname"
+                label="First name"
+                fill-text="Given"
                 :error="formFirstNameError"
                 required
                 @blur="formFirstNameTouched = true"
@@ -223,8 +223,8 @@ const formFirstNameError = computed(() => {
                 id="debug-form-last-name"
                 v-model="formLastName"
                 variant="floating"
-                label="Nachname"
-                fill-text="Nachname"
+                label="Last name"
+                fill-text="Family"
                 required
                 preview-state="focus-visible"
               />
@@ -236,8 +236,8 @@ const formFirstNameError = computed(() => {
                 v-model="formEmail"
                 type="email"
                 variant="floating"
-                label="E-Mail"
-                fill-text="E-Mail"
+                label="Email"
+                fill-text="name@domain.com"
                 :error="formEmailError"
                 required
                 @blur="formEmailTouched = true"
@@ -248,8 +248,8 @@ const formFirstNameError = computed(() => {
                 v-model="formPhone"
                 type="tel"
                 variant="floating"
-                label="Telefonnr."
-                fill-text="Telefonnr."
+                label="Phone"
+                fill-text="+49 000 000000"
               />
             </div>
           </div>

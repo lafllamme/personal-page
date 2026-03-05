@@ -106,8 +106,14 @@ const shellClass = computed(() => [
   isFloating.value ? 'ui-input-shell-floating' : 'ui-input-shell-default',
   disabled.value && 'ui-input-shell-disabled',
   hasError.value && 'ui-input-shell-invalid',
-  (previewState.value === 'hover' || isHovered.value) && !disabled.value && !hasError.value && 'ui-input-shell-hover',
   (previewState.value === 'focus-visible' || isFocused.value) && !disabled.value && !hasError.value && 'ui-input-shell-focus',
+  (
+    !isFocused.value
+    && previewState.value !== 'focus-visible'
+    && (previewState.value === 'hover' || isHovered.value)
+    && !disabled.value
+    && !hasError.value
+  ) && 'ui-input-shell-hover',
 ])
 
 const controlClass = computed(() => [

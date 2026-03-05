@@ -224,7 +224,7 @@ const sizingTokens: TokenSet = {
   'control-border-width': '1px',
   'focus-ring-inner-width': '2px',
   'focus-ring-outer-width': '4px',
-  'focus-ring-active-width': '1px',
+  'focus-ring-active-width': '1.5px',
 }
 
 const typographyFontFamilyTheme = {
