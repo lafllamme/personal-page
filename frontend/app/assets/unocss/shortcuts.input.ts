@@ -51,7 +51,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-textarea-control-base',
-    'w-full min-h-[calc(var(--size-control-xl)*3.35)] h-[calc(var(--size-control-xl)*3.35)] focus:h-[calc(var(--size-control-xl)*4)] resize-none border-none bg-transparent outline-none color-$color-primary type-body-md font-light [padding-left:var(--space-3_5)] [padding-right:var(--space-3_5)] [padding-top:var(--space-6)] [padding-bottom:var(--space-8)] leading-$type-leading-body-md transition-[color,height] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] disabled:cursor-not-allowed disabled:color-$color-disabled disabled:placeholder:[color:var(--color-disabled-subtle)] disabled:placeholder:opacity-100',
+    'w-full min-h-[var(--size-textarea-height-default)] h-[var(--size-textarea-height-default)] focus:h-[var(--size-textarea-height-focus)] resize-none border-none bg-transparent outline-none color-$color-primary type-body-md font-light [padding-left:var(--space-3_5)] [padding-right:var(--space-3_5)] [padding-top:var(--space-6)] [padding-bottom:var(--space-8)] leading-$type-leading-body-md transition-[color,height] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] disabled:cursor-not-allowed disabled:color-$color-disabled disabled:placeholder:[color:var(--color-disabled-subtle)] disabled:placeholder:opacity-100',
   ],
   [
     'ui-textarea-control-resizing',

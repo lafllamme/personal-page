@@ -231,6 +231,8 @@ const sizingTokens: TokenSet = {
   'focus-ring-active-width': '1.5px',
   'input-control-padding-y': 'calc(var(--space-2) - 1px)',
   'input-control-padding-top-floating': 'calc(var(--space-4_75) - 1px)',
+  'size-textarea-height-default': 'calc(var(--size-control-xl) * 3.35)',
+  'size-textarea-height-focus': 'calc(var(--size-control-xl) * 4)',
 }
 
 const typographyFontFamilyTheme = {

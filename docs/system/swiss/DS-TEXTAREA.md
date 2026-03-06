@@ -46,6 +46,8 @@ Status: aktiv
 
 ### Sizing / Control
 - `--size-control-xl`
+- `--size-textarea-height-default`
+- `--size-textarea-height-focus`
 - `--control-border-width`
 - `--focus-ring-inner-width`
 - `--space-3_5`
@@ -90,9 +92,7 @@ Status: aktiv
 
 ## VueUse-Einsatz (verbindlich fuer Runtime-Glue)
 - `useEventListener` fuer globale Pointer-Events (`pointermove`, `pointerup`, `pointercancel`)
-- `tryOnScopeDispose` fuer sicheren Cleanup (`cursor-resizing-active` Klassenreset)
 - Regel: DOM-Listener in DS-Komponenten bevorzugt via VueUse, kein manuelles `addEventListener/removeEventListener` Paar.
 
-## Noch bewusst "nicht voll semantisch"
-- Hoehenfaktor im Textarea (`3.35` / `4`) ist bewusst als Übergangswert im Shortcut belassen, bis finaler Control-Height-Slot fuer Textarea in Tokens festgezogen wird.
-
+## Notizen
+- Readonly-State ist im Contract enthalten (paritaet zu `DsInput`) und kann bei Bedarf produktseitig genutzt oder ignoriert werden.
