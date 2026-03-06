@@ -235,6 +235,9 @@ catalogs:
     '@nuxtjs/color-mode':
       specifier: ^4.0.0
       version: 4.0.0
+    '@nuxtjs/device':
+      specifier: ^4.0.0
+      version: 4.0.0
     '@nuxtjs/i18n':
       specifier: ^10.2.1
       version: 10.2.1
@@ -557,6 +560,9 @@ importers:
       '@nuxtjs/color-mode':
         specifier: catalog:frontend
         version: 4.0.0(magicast@0.5.1)
+      '@nuxtjs/device':
+        specifier: catalog:frontend
+        version: 4.0.0
       '@nuxtjs/i18n':
         specifier: catalog:frontend
         version: 10.2.1(@netlify/blobs@9.1.2)(@vercel/blob@2.0.1)(@vue/compiler-dom@3.5.27)(db0@0.3.4(drizzle-orm@0.44.7(@types/pg@8.10.2)(pg@8.16.3)))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.57.0)(vue@3.5.27(typescript@5.9.3))
@@ -3159,6 +3165,9 @@ packages:
 
   '@nuxtjs/color-mode@4.0.0':
     resolution: {integrity: sha512-xyaVR/TPLdMuRa2VOgH6b75jvmFEsn9QKL6ISldaAw38ooFJfWY1ts2F3ye43wcT/goCbcuvPuskF2f8yUZhlw==}
+
+  '@nuxtjs/device@4.0.0':
+    resolution: {integrity: sha512-Tkbvde/GInmigbS/n3X3X+qXJWi6hsYrViKpZrakaBBYY3NbGYJb0c8aVxd3vI636HBbOhu0I39rv7MSjP7w8Q==}
 
   '@nuxtjs/i18n@10.2.1':
     resolution: {integrity: sha512-/CHAIpYbFgobxeMsnKcD8xBUHxBpqipRMjaI3ol9MVZKscJM+IetYdNL9lGNFdEtlxzkV8COxnoa60rE4sPjuQ==}
@@ -15005,6 +15014,10 @@ snapshots:
       semver: 7.7.3
     transitivePeerDependencies:
       - magicast
+
+  '@nuxtjs/device@4.0.0':
+    dependencies:
+      defu: 6.1.4
 
   '@nuxtjs/i18n@10.2.1(@netlify/blobs@9.1.2)(@vercel/blob@2.0.1)(@vue/compiler-dom@3.5.27)(db0@0.3.4(drizzle-orm@0.44.7(@types/pg@8.10.2)(pg@8.16.3)))(eslint@9.39.2(jiti@2.6.1))(ioredis@5.9.2)(magicast@0.5.1)(rollup@4.57.0)(vue@3.5.27(typescript@5.9.3))':
     dependencies:

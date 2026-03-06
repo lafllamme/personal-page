@@ -210,6 +210,7 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'lenis/nuxt',
     '@nuxtjs/color-mode',
+    '@nuxtjs/device',
     '@nuxtjs/i18n',
     '@tresjs/nuxt',
     '@nuxtjs/sitemap',

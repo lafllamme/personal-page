@@ -9,6 +9,7 @@ const { meta } = appConfig as { meta: HeadMeta }
 const { lenisOptions } = useLenisOsmo()
 
 const { isTransitionActive } = useTransition()
+const { viewportContent } = useViewportMeta(meta.viewport)
 
 // If we are in development mode, we set the consola log level to 5
 if (import.meta.dev) {
@@ -37,7 +38,7 @@ useHead(() => {
       ...(i18nMeta ?? []),
       {
         name: 'viewport',
-        content: meta.viewport,
+        content: viewportContent.value,
       },
     ],
   }
