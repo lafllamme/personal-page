@@ -51,14 +51,12 @@ Status: aktiv
 - `ui-input-shell-base`
 - `ui-input-shell-default`
 - `ui-input-shell-floating`
-- `ui-input-shell-hover`
-- `ui-input-shell-focus`
+- `ui-input-shell-interactive`
 - `ui-input-shell-invalid`
 - `ui-input-shell-readonly`
 - `ui-input-shell-disabled`
 - `ui-input-control-base`
 - `ui-input-control-readonly`
-- `ui-input-control-readonly-hover`
 - `ui-input-control-default`
 - `ui-input-control-floating`
 - `ui-input-control-placeholder`
@@ -67,7 +65,6 @@ Status: aktiv
 - `ui-input-floating-label-base`
 - `ui-input-floating-label-active`
 - `ui-input-floating-label-readonly`
-- `ui-input-floating-label-readonly-hover`
 - `ui-input-error-row`
 - `ui-input-error-icon`
 

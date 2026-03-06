@@ -1,97 +1,314 @@
 <script setup lang="ts">
-import { computed, toRefs } from 'vue'
+import { computed, onBeforeUnmount, ref, toRefs, useAttrs, watch } from 'vue'
+import DsIcon from './DsIcon.vue'
+import DsTypography from './DsTypography.vue'
+
+defineOptions({
+  inheritAttrs: false,
+})
 
 const props = withDefaults(defineProps<{
   modelValue?: string
+  variant?: 'floating'
+  label?: string
+  hint?: string
+  error?: string
+  required?: boolean
   placeholder?: string
-  rows?: number
+  fillText?: string
   disabled?: boolean
+  readonly?: boolean
   invalid?: boolean
-  previewState?: 'default' | 'hover' | 'focus-visible'
+  rows?: number
+  maxLength?: number
 }>(), {
   modelValue: '',
+  variant: 'floating',
+  label: '',
+  hint: '',
+  error: '',
+  required: false,
   placeholder: '',
-  rows: 4,
+  fillText: '',
   disabled: false,
+  readonly: false,
   invalid: false,
-  previewState: 'default',
+  rows: 5,
+  maxLength: 2000,
 })
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string): void
 }>()
 
-const { modelValue, placeholder, rows, disabled, invalid, previewState } = toRefs(props)
-const normalizedPreviewState = computed(() => `is-state-${previewState.value}`)
+const {
+  modelValue,
+  label,
+  hint,
+  error,
+  required,
+  placeholder,
+  fillText,
+  disabled,
+  readonly,
+  invalid,
+  rows,
+  maxLength,
+} = toRefs(props)
+
+const attrs = useAttrs()
+const isFocused = ref(false)
+const isResizing = ref(false)
+const errorShakeKey = ref(0)
+const textareaEl = ref<HTMLTextAreaElement | null>(null)
+const textareaHeight = ref<number | null>(null)
+let removeResizeListeners: (() => void) | null = null
+
+const textareaId = computed(() => {
+  const rawId = attrs.id
+  return typeof rawId === 'string' ? rawId : ''
+})
+
+const hasError = computed(() => Boolean(error.value) || invalid.value)
+const hasValue = computed(() => String(modelValue.value || '').length > 0)
+const isFloatingActive = computed(() => isFocused.value || hasValue.value)
+const showFloatingFillText = computed(() => (
+  !hasValue.value
+  && isFocused.value
+  && !readonly.value
+))
+
+const floatingLabelText = computed(() => {
+  if (!label.value)
+    return ''
+
+  return required.value ? `${label.value} *` : label.value
+})
+
+const resolvedFillText = computed(() => fillText.value || placeholder.value || '')
+const resolvedPlaceholder = computed(() => (
+  showFloatingFillText.value ? resolvedFillText.value : ''
+))
+
+const hintId = computed(() => (textareaId.value && hint.value && !hasError.value ? `${textareaId.value}-hint` : ''))
+const errorId = computed(() => (textareaId.value && hasError.value && error.value ? `${textareaId.value}-error` : ''))
+const describedBy = computed(() => {
+  if (errorId.value)
+    return errorId.value
+  if (hintId.value)
+    return hintId.value
+  return undefined
+})
+
+const charCount = computed(() => String(modelValue.value || '').length)
+const maxLengthValue = computed(() => Math.max(1, maxLength.value || 2000))
+const counterText = computed(() => `${charCount.value}/${maxLengthValue.value}`)
+const counterTone = computed(() => {
+  if (disabled.value)
+    return 'muted'
+  if (hasError.value)
+    return 'default'
+  return 'muted'
+})
+
+const shellClass = computed(() => [
+  'ui-input-shell-base',
+  'ui-textarea-shell-floating',
+  !disabled.value && !readonly.value && !hasError.value && 'ui-input-shell-interactive',
+  disabled.value && 'ui-input-shell-disabled',
+  hasError.value && 'ui-input-shell-invalid',
+  readonly.value && !disabled.value && !hasError.value && 'ui-input-shell-readonly',
+])
+
+const controlClass = computed(() => [
+  'ui-textarea-control-base',
+  'ui-input-control-placeholder',
+  readonly.value && 'ui-input-control-readonly',
+  !showFloatingFillText.value && 'ui-input-control-floating-placeholder-hidden',
+  showFloatingFillText.value && 'ui-input-control-floating-placeholder-visible',
+])
+
+const floatingLabelClass = computed(() => [
+  'ui-textarea-floating-label-base',
+  isFloatingActive.value && 'ui-input-floating-label-active',
+  readonly.value && 'ui-input-floating-label-readonly',
+  disabled.value && 'ui-input-floating-label-disabled',
+])
+
+const floatingLabelRole = computed<'body' | 'meta'>(() => (isFloatingActive.value ? 'meta' : 'body'))
+const floatingLabelSize = computed<'sm' | '2xs'>(() => (isFloatingActive.value ? '2xs' : 'sm'))
+const floatingLabelWeight = computed<'light' | 'regular'>(() => (isFloatingActive.value ? 'regular' : 'light'))
+
+const errorAnimationKey = computed(() => `ds-textarea-error-${errorShakeKey.value}`)
+
+const textareaAttrs = computed(() => attrs)
+const textareaInlineStyle = computed(() => {
+  if (!textareaHeight.value)
+    return undefined
+
+  return { height: `${textareaHeight.value}px` }
+})
 
 function onInput(event: Event): void {
   const target = event.target as HTMLTextAreaElement
   emit('update:modelValue', target.value)
 }
+
+function startResize(event: PointerEvent): void {
+  if (disabled.value)
+    return
+
+  isResizing.value = true
+  document.body.classList.add('cursor-resizing-active')
+
+  const textarea = textareaEl.value
+  if (!textarea)
+    return
+
+  const startY = event.clientY
+  const startHeight = textarea.getBoundingClientRect().height
+  const minHeight = Number.parseFloat(getComputedStyle(textarea).minHeight) || startHeight
+
+  const onMove = (moveEvent: PointerEvent) => {
+    const nextHeight = Math.max(minHeight, startHeight + (moveEvent.clientY - startY))
+    textareaHeight.value = nextHeight
+  }
+
+  const onUp = () => {
+    window.removeEventListener('pointermove', onMove)
+    window.removeEventListener('pointerup', onUp)
+    removeResizeListeners = null
+    isResizing.value = false
+    document.body.classList.remove('cursor-resizing-active')
+  }
+
+  window.addEventListener('pointermove', onMove)
+  window.addEventListener('pointerup', onUp)
+  removeResizeListeners = onUp
+}
+
+watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) => {
+  if (!nextHasError)
+    return
+
+  if (!prevHasError || nextError !== prevError)
+    errorShakeKey.value += 1
+})
+
+onBeforeUnmount(() => {
+  if (removeResizeListeners)
+    removeResizeListeners()
+  document.body.classList.remove('cursor-resizing-active')
+})
 </script>
 
 <template>
-  <textarea
-    :value="modelValue"
-    :placeholder="placeholder"
-    :rows="rows"
-    :disabled="disabled"
-    :aria-invalid="invalid ? 'true' : 'false'"
-    class="ds-textarea w-full border rounded-lg border-solid bg-transparent px-3 py-2 text-sm outline-none"
-    :class="[invalid && 'is-invalid', normalizedPreviewState]"
-    @input="onInput"
-  />
+  <div class="grid gap-$space-2">
+    <label
+      :for="textareaId || undefined"
+      class="block"
+    >
+      <div :class="shellClass">
+        <textarea
+          ref="textareaEl"
+          v-bind="textareaAttrs"
+          :value="modelValue"
+          :rows="rows"
+          :maxlength="maxLengthValue"
+          :placeholder="resolvedPlaceholder"
+          :disabled="disabled"
+          :readonly="readonly"
+          :aria-invalid="hasError ? 'true' : 'false'"
+          :aria-readonly="readonly"
+          :aria-describedby="describedBy"
+          :class="controlClass"
+          :style="textareaInlineStyle"
+          @focus="isFocused = true"
+          @blur="isFocused = false"
+          @input="onInput"
+        />
+        <div class="ui-textarea-meta-row">
+          <slot
+            name="counter"
+            :count="charCount"
+            :max="maxLengthValue"
+            :remaining="maxLengthValue - charCount"
+          >
+            <DsTypography
+              as="p"
+              role="meta"
+              size="2xs"
+              :tone="counterTone"
+              class="opacity-70"
+            >
+              {{ counterText }}
+            </DsTypography>
+          </slot>
+          <button
+            type="button"
+            class="drag-cursor ui-textarea-resize-handle"
+            :class="[
+              isResizing && 'color-$color-accent-ui',
+            ]"
+            :disabled="disabled"
+            :aria-hidden="disabled ? 'true' : 'false'"
+            tabindex="-1"
+            @pointerdown.prevent="startResize"
+          >
+            <DsIcon
+              name="iconoir:arrow-separate-vertical"
+              size="sm"
+              variant="inherit"
+            />
+          </button>
+        </div>
+        <DsTypography
+          v-if="floatingLabelText"
+          as="span"
+          :role="floatingLabelRole"
+          :size="floatingLabelSize"
+          :weight="floatingLabelWeight"
+          :uppercase="isFloatingActive"
+          :class="floatingLabelClass"
+        >
+          {{ floatingLabelText }}
+        </DsTypography>
+      </div>
+    </label>
+
+    <div class="min-h-[1rem]">
+      <div
+        v-if="hasError && Boolean(error)"
+        :id="errorId || undefined"
+        :key="errorAnimationKey"
+        class="ui-input-error-row color-$color-error-text"
+      >
+        <DsIcon
+          name="iconoir:warning-triangle"
+          size="sm"
+          variant="inherit"
+          class="ui-input-error-icon"
+        />
+        <DsTypography
+          as="p"
+          role="meta"
+          size="2xs"
+        >
+          {{ error }}
+        </DsTypography>
+      </div>
+
+      <DsTypography
+        v-else-if="Boolean(hint)"
+        :id="hintId || undefined"
+        as="p"
+        role="meta"
+        size="2xs"
+        :tone="disabled ? 'muted' : 'default'"
+        class="opacity-70"
+      >
+        {{ hint }}
+      </DsTypography>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-.ds-textarea {
-  resize: vertical;
-  min-height: 6rem;
-  border-color: color-mix(in srgb, currentColor 22%, transparent);
-  transition:
-    border-color 160ms ease,
-    background-color 160ms ease,
-    box-shadow 160ms ease;
-}
-
-.ds-textarea::placeholder {
-  color: color-mix(in srgb, currentColor 45%, transparent);
-}
-
-.ds-textarea:hover:enabled,
-.ds-textarea.is-state-hover:enabled {
-  border-color: color-mix(in srgb, #12a594 45%, currentColor);
-  background: color-mix(in srgb, #12a594 6%, transparent);
-}
-
-.ds-textarea:focus-visible,
-.ds-textarea.is-state-focus-visible {
-  border-color: #12a594;
-  box-shadow: 0 0 0 3px color-mix(in srgb, #12a594 26%, transparent);
-}
-
-.dark .ds-textarea:hover:enabled,
-.dark .ds-textarea.is-state-hover:enabled {
-  border-color: color-mix(in srgb, #0bd8b6 45%, currentColor);
-  background: color-mix(in srgb, #0bd8b6 8%, transparent);
-}
-
-.dark .ds-textarea:focus-visible,
-.dark .ds-textarea.is-state-focus-visible {
-  border-color: #0bd8b6;
-  box-shadow: 0 0 0 3px color-mix(in srgb, #0bd8b6 28%, transparent);
-}
-
-.ds-textarea.is-invalid {
-  border-color: #b42318;
-}
-
-.dark .ds-textarea.is-invalid {
-  border-color: #ff8a80;
-}
-
-.ds-textarea:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
-}
-</style>

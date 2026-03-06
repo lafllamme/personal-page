@@ -4,6 +4,7 @@ import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
+import DsTextarea from '@/components/ui/DesignSystem/DsTextarea.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
 definePageMeta({
@@ -47,6 +48,8 @@ const inputFloatValue = ref('')
 const inputUnderlineValue = ref('')
 const inputBorderDrawValue = ref('')
 const inputPillValue = ref('')
+const articleSummary = ref('')
+const articleSummaryTouched = ref(false)
 
 function isValidEmail(value: string): boolean {
   const trimmed = value.trim()
@@ -88,6 +91,16 @@ const formFirstNameError = computed(() => {
 
   if (!formFirstName.value.trim())
     return 'Vorname ist erforderlich.'
+
+  return ''
+})
+
+const articleSummaryError = computed(() => {
+  if (!articleSummaryTouched.value)
+    return ''
+
+  if (articleSummary.value.trim().length < 30)
+    return 'Please write at least 30 characters.'
 
   return ''
 })
@@ -280,6 +293,49 @@ const formFirstNameError = computed(() => {
                 />
               </div>
             </div>
+          </div>
+
+          <div class="pt-3 space-y-4">
+            <div class="space-y-2">
+              <DsTypography
+                as="p"
+                role="meta"
+                size="xs"
+                uppercase
+              >
+                Textarea Prototype A
+              </DsTypography>
+              <DsTypography
+                as="p"
+                role="body"
+                size="sm"
+                tone="muted"
+              >
+                Same font contract as input: meta label + body content. Large editorial surface with counter.
+              </DsTypography>
+            </div>
+
+            <DsTextarea
+              id="debug-textarea-prototype-a"
+              v-model="articleSummary"
+              label="Article summary"
+              fill-text="Write a concise summary for publication."
+              hint="Keep it punchy and readable for the front page."
+              :max-length="2000"
+              required
+              @blur="articleSummaryTouched = true"
+            />
+
+            <DsTextarea
+              id="debug-textarea-prototype-a-error"
+              v-model="articleSummary"
+              label="Article summary (validated)"
+              fill-text="At least 30 characters."
+              :error="articleSummaryError"
+              :max-length="2000"
+              required
+              @blur="articleSummaryTouched = true"
+            />
           </div>
 
           <div class="pt-3 space-y-6">

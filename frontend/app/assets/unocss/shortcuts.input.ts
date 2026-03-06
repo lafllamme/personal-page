@@ -14,6 +14,10 @@ export const inputShortcuts: UserShortcuts = [
     'min-h-[calc(var(--size-control-lg)+var(--space-2))] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)]',
   ],
   [
+    'ui-textarea-shell-floating',
+    'overflow-hidden [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)] [transition-property:background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
+  ],
+  [
     'ui-input-shell-interactive',
     '[&:hover:not(:focus-within)]:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent-hover)] focus-within:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
   ],
@@ -46,6 +50,18 @@ export const inputShortcuts: UserShortcuts = [
     '[padding-top:var(--input-control-padding-top-floating)] [padding-bottom:var(--input-control-padding-y)]',
   ],
   [
+    'ui-textarea-control-base',
+    'w-full h-[calc(var(--size-control-xl)*3.35)] focus:h-[calc(var(--size-control-xl)*4)] resize-none border-none bg-transparent outline-none color-$color-primary type-body-md font-light [padding-left:var(--space-3_5)] [padding-right:var(--space-3_5)] [padding-top:var(--space-6)] [padding-bottom:var(--space-8)] leading-$type-leading-body-md transition-[color,height] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] disabled:cursor-not-allowed disabled:color-$color-disabled disabled:placeholder:[color:var(--color-disabled-subtle)] disabled:placeholder:opacity-100',
+  ],
+  [
+    'ui-textarea-meta-row',
+    'absolute right-$space-2_5 bottom-$space-2 z-2 inline-flex items-center gap-$space-1_5 color-$color-input-meta-subtle',
+  ],
+  [
+    'ui-textarea-resize-handle',
+    'inline-flex items-center justify-center rounded-$radius-sm p-$space-0_5 color-$color-input-meta-subtle transition-colors [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] hover:color-$color-accent-ui disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:color-$color-input-meta-subtle cursor-ns-resize',
+  ],
+  [
     'ui-input-control-placeholder',
     'placeholder:[color:var(--color-input-placeholder)] placeholder:opacity-100',
   ],
@@ -60,6 +76,10 @@ export const inputShortcuts: UserShortcuts = [
   [
     'ui-input-floating-label-base',
     'pointer-events-none absolute left-$space-3_5 top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
+  ],
+  [
+    'ui-textarea-floating-label-base',
+    'pointer-events-none absolute left-$space-3_5 top-$space-5 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
   ],
   [
     'ui-input-floating-label-active',
