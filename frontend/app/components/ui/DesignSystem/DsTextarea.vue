@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, toRefs, useAttrs, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, ref, toRefs, useAttrs, watch } from 'vue'
 import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
@@ -9,7 +10,6 @@ defineOptions({
 
 const props = withDefaults(defineProps<{
   modelValue?: string
-  variant?: 'floating'
   label?: string
   hint?: string
   error?: string
@@ -23,7 +23,6 @@ const props = withDefaults(defineProps<{
   maxLength?: number
 }>(), {
   modelValue: '',
-  variant: 'floating',
   label: '',
   hint: '',
   error: '',
@@ -61,8 +60,12 @@ const isFocused = ref(false)
 const isResizing = ref(false)
 const errorShakeKey = ref(0)
 const textareaEl = ref<HTMLTextAreaElement | null>(null)
+const resizeHandleEl = ref<HTMLElement | null>(null)
 const textareaHeight = ref<number | null>(null)
-let removeResizeListeners: (() => void) | null = null
+const resizeStartY = ref(0)
+const resizeStartHeight = ref(0)
+const resizeMinHeight = ref(0)
+const activePointerId = ref<number | null>(null)
 
 const textareaId = computed(() => {
   const rawId = attrs.id
@@ -124,6 +127,7 @@ const controlClass = computed(() => [
   'ui-textarea-control-base',
   'ui-input-control-placeholder',
   readonly.value && 'ui-input-control-readonly',
+  isResizing.value && 'ui-textarea-control-resizing',
   !showFloatingFillText.value && 'ui-input-control-floating-placeholder-hidden',
   showFloatingFillText.value && 'ui-input-control-floating-placeholder-visible',
 ])
@@ -158,33 +162,32 @@ function startResize(event: PointerEvent): void {
   if (disabled.value)
     return
 
-  isResizing.value = true
-  document.body.classList.add('cursor-resizing-active')
-
   const textarea = textareaEl.value
   if (!textarea)
     return
 
-  const startY = event.clientY
-  const startHeight = textarea.getBoundingClientRect().height
-  const minHeight = Number.parseFloat(getComputedStyle(textarea).minHeight) || startHeight
+  resizeStartY.value = event.clientY
+  resizeStartHeight.value = textarea.getBoundingClientRect().height
+  resizeMinHeight.value = Number.parseFloat(getComputedStyle(textarea).minHeight) || resizeStartHeight.value
+  activePointerId.value = event.pointerId
+  isResizing.value = true
 
-  const onMove = (moveEvent: PointerEvent) => {
-    const nextHeight = Math.max(minHeight, startHeight + (moveEvent.clientY - startY))
-    textareaHeight.value = nextHeight
-  }
+  const handle = resizeHandleEl.value
+  if (handle && handle.setPointerCapture)
+    handle.setPointerCapture(event.pointerId)
+}
 
-  const onUp = () => {
-    window.removeEventListener('pointermove', onMove)
-    window.removeEventListener('pointerup', onUp)
-    removeResizeListeners = null
-    isResizing.value = false
-    document.body.classList.remove('cursor-resizing-active')
-  }
+function stopResize(): void {
+  if (!isResizing.value)
+    return
 
-  window.addEventListener('pointermove', onMove)
-  window.addEventListener('pointerup', onUp)
-  removeResizeListeners = onUp
+  const pointerId = activePointerId.value
+  const handle = resizeHandleEl.value
+  if (pointerId !== null && handle && handle.hasPointerCapture?.(pointerId))
+    handle.releasePointerCapture(pointerId)
+
+  activePointerId.value = null
+  isResizing.value = false
 }
 
 watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) => {
@@ -195,11 +198,19 @@ watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) 
     errorShakeKey.value += 1
 })
 
-onBeforeUnmount(() => {
-  if (removeResizeListeners)
-    removeResizeListeners()
-  document.body.classList.remove('cursor-resizing-active')
+useEventListener(window, 'pointermove', (event: PointerEvent) => {
+  if (!isResizing.value)
+    return
+
+  const nextHeight = Math.max(
+    resizeMinHeight.value,
+    resizeStartHeight.value + (event.clientY - resizeStartY.value),
+  )
+  textareaHeight.value = nextHeight
 })
+
+useEventListener(window, 'pointerup', stopResize)
+useEventListener(window, 'pointercancel', stopResize)
 </script>
 
 <template>
@@ -245,6 +256,7 @@ onBeforeUnmount(() => {
             </DsTypography>
           </slot>
           <button
+            ref="resizeHandleEl"
             type="button"
             class="drag-cursor ui-textarea-resize-handle"
             :class="[

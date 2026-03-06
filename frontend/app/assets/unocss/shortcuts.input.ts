@@ -54,6 +54,10 @@ export const inputShortcuts: UserShortcuts = [
     'w-full h-[calc(var(--size-control-xl)*3.35)] focus:h-[calc(var(--size-control-xl)*4)] resize-none border-none bg-transparent outline-none color-$color-primary type-body-md font-light [padding-left:var(--space-3_5)] [padding-right:var(--space-3_5)] [padding-top:var(--space-6)] [padding-bottom:var(--space-8)] leading-$type-leading-body-md transition-[color,height] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] disabled:cursor-not-allowed disabled:color-$color-disabled disabled:placeholder:[color:var(--color-disabled-subtle)] disabled:placeholder:opacity-100',
   ],
   [
+    'ui-textarea-control-resizing',
+    '[transition-property:color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
+  ],
+  [
     'ui-textarea-meta-row',
     'absolute right-$space-2_5 bottom-$space-2 z-2 inline-flex items-center gap-$space-1_5 color-$color-input-meta-subtle',
   ],

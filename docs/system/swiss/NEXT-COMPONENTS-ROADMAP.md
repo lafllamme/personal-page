@@ -29,6 +29,8 @@ Status: aktiv (Build-Priorisierung)
 - `DsButton`
 - `DsLink`
 - `DsIcon`
+- `DsInput`
+- `DsTextarea`
 
 ### Runtime / Tooling
 - UnoCSS Token-Layer aktiv
@@ -46,9 +48,9 @@ Der sinnvollste naechste Block sind Form-Primitives.
 Grund: Sie nutzen direkt eure bestehenden Foundations (Typografie, Spacing, Focus, States) und decken viele echte UI-Flaechen ab.
 
 ### Phase 1: Form Core
-1. `DsInput`
-2. `DsTextarea`
-3. `DsSelect`
+1. `DsInput` (done)
+2. `DsTextarea` (done)
+3. `DsSelect` (next)
 
 Ziel:
 - gemeinsamer Field-Contract
@@ -94,3 +96,4 @@ Begruendung:
 
 Aktiver Plan fuer den ersten Schritt:
 - [DS-INPUT.md](./DS-INPUT.md)
+- [DS-TEXTAREA.md](./DS-TEXTAREA.md)

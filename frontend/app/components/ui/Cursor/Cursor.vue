@@ -105,11 +105,6 @@ function calculateTextBarHeight(
 function checkElementType(e: MouseEvent) {
   const target = e.target as HTMLElement
 
-  if (document.body.classList.contains('cursor-resizing-active')) {
-    cursorType.value = 'drag'
-    return
-  }
-
   // 1. Check force types first
   const forceTypeClass = forceType.value?.find(cls =>
     target.classList.contains(cls) || !!target.closest(`.${cls}`),
