@@ -258,7 +258,7 @@ useEventListener(window, 'pointercancel', stopResize)
           <button
             ref="resizeHandleEl"
             type="button"
-            class="drag-cursor ui-textarea-resize-handle"
+            class="drag-cursor ui-textarea-resize-handle hidden md:inline-flex"
             :class="[
               isResizing && 'color-$color-accent-ui',
             ]"
