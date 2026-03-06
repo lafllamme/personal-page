@@ -56,7 +56,6 @@ const {
 
 const attrs = useAttrs()
 const isFocused = ref(false)
-const isHovered = ref(false)
 const errorShakeKey = ref(0)
 
 const inputId = computed(() => {
@@ -105,17 +104,10 @@ const inputAttrs = computed(() => attrs)
 const shellClass = computed(() => [
   'ui-input-shell-base',
   isFloating.value ? 'ui-input-shell-floating' : 'ui-input-shell-default',
+  !disabled.value && !readonly.value && !hasError.value && 'ui-input-shell-interactive',
   disabled.value && 'ui-input-shell-disabled',
   hasError.value && 'ui-input-shell-invalid',
   readonly.value && !disabled.value && !hasError.value && 'ui-input-shell-readonly',
-  isFocused.value && !disabled.value && !readonly.value && !hasError.value && 'ui-input-shell-focus',
-  (
-    !isFocused.value
-    && isHovered.value
-    && !disabled.value
-    && !readonly.value
-    && !hasError.value
-  ) && 'ui-input-shell-hover',
 ])
 
 const controlClass = computed(() => [
@@ -123,7 +115,6 @@ const controlClass = computed(() => [
   'ui-input-control-placeholder',
   isFloating.value ? 'ui-input-control-floating' : 'ui-input-control-default',
   readonly.value && 'ui-input-control-readonly',
-  readonly.value && isHovered.value && !isFocused.value && 'ui-input-control-readonly-hover',
   isFloating.value && !showFloatingFillText.value && 'ui-input-control-floating-placeholder-hidden',
   isFloating.value && showFloatingFillText.value && 'ui-input-control-floating-placeholder-visible',
 ])
@@ -132,7 +123,6 @@ const floatingLabelClass = computed(() => [
   'ui-input-floating-label-base',
   isFloatingActive.value && 'ui-input-floating-label-active',
   readonly.value && 'ui-input-floating-label-readonly',
-  readonly.value && isHovered.value && !isFocused.value && 'ui-input-floating-label-readonly-hover',
   disabled.value && 'ui-input-floating-label-disabled',
 ])
 const floatingLabelRole = computed<'body' | 'meta'>(() => (isFloatingActive.value ? 'meta' : 'body'))
@@ -143,14 +133,6 @@ const errorAnimationKey = computed(() => `ds-input-error-${errorShakeKey.value}`
 function onInput(event: Event): void {
   const target = event.target as HTMLInputElement
   emit('update:modelValue', target.value)
-}
-
-function onMouseEnter(): void {
-  isHovered.value = true
-}
-
-function onMouseLeave(): void {
-  isHovered.value = false
 }
 
 watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) => {
@@ -208,8 +190,6 @@ watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) 
           :aria-readonly="readonly"
           :aria-describedby="describedBy"
           :class="controlClass"
-          @mouseenter="onMouseEnter"
-          @mouseleave="onMouseLeave"
           @focus="isFocused = true"
           @blur="isFocused = false"
           @input="onInput"
@@ -243,8 +223,6 @@ watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) 
         :aria-readonly="readonly"
         :aria-describedby="describedBy"
         :class="controlClass"
-        @mouseenter="onMouseEnter"
-        @mouseleave="onMouseLeave"
         @focus="isFocused = true"
         @blur="isFocused = false"
         @input="onInput"

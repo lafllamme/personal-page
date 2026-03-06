@@ -14,6 +14,7 @@ Status: aktiv
 - Props: `label`, `placeholder`, `fillText`, `hint`, `error`, `invalid`, `required`, `disabled`, `readonly`
 - States: `default`, `hover`, `focus-visible`, `invalid`, `readonly`, `readonly-hover`, `disabled`
 - Error: Icon + Shake-In
+- Styling-Engine: CSS/Pseudoklassen (`hover`, `focus-within`, `read-only`) via Uno shortcuts
 - Storybook: `/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsInput.stories.ts`
   - States werden interaktiv/visuell in Storybook gezeigt (ohne `previewState`-Prop im Component-API)
 
@@ -73,6 +74,14 @@ Status: aktiv
 ## State-Prioritaet (komponente)
 - `disabled` > `invalid` > `readonly` > `focus` > `hover` > `default`
 - `readonly` blockiert Focus/Hover-Akzentzustand und verwendet eigene Sand-Tokens
+
+## JS vs CSS Verantwortung
+- In CSS/Uno:
+  - Shell Hover/Focus (`hover`, `focus-within`)
+  - Readonly Idle/Hover (Ring, Value, Placeholder, Floating-Label)
+- In JS:
+  - Floating Fill-Text Verhalten (`fillText` nur bei Focus + leerem Wert)
+  - Error Shake Trigger (bei neuem/veraendertem Fehlertext)
 
 ## WCAG (Readonly Text vs Field Surface)
 - Light idle: `4.61:1` (AA pass)

@@ -3,7 +3,7 @@ import type { UserShortcuts } from 'unocss'
 export const inputShortcuts: UserShortcuts = [
   [
     'ui-input-shell-base',
-    'relative w-full border border-solid border-transparent [border-width:var(--control-border-width)] rounded-$radius-lg bg-transparent px-$space-3_5 transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
+    'group relative w-full border border-solid border-transparent [border-width:var(--control-border-width)] rounded-$radius-lg bg-transparent px-$space-3_5 transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
   ],
   [
     'ui-input-shell-default',
@@ -14,12 +14,8 @@ export const inputShortcuts: UserShortcuts = [
     'min-h-[calc(var(--size-control-lg)+var(--space-2))] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)]',
   ],
   [
-    'ui-input-shell-hover',
-    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent-hover)]',
-  ],
-  [
-    'ui-input-shell-focus',
-    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+    'ui-input-shell-interactive',
+    '[&:hover:not(:focus-within)]:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent-hover)] focus-within:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
   ],
   [
     'ui-input-shell-invalid',
@@ -27,7 +23,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-shell-readonly',
-    'cursor-text bg-$bg-soft [box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-idle-text)] hover:bg-$bg-soft-hover hover:[box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-hover-text)]',
+    'cursor-text bg-$bg-soft [box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-idle-text)] hover:bg-$bg-soft-hover hover:[box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-hover-text)] focus-within:[box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-idle-text)]',
   ],
   [
     'ui-input-shell-disabled',
@@ -39,11 +35,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-control-readonly',
-    'read-only:cursor-text read-only:[color:var(--color-readonly-idle-text)] read-only:placeholder:[color:var(--color-readonly-idle-text)] read-only:placeholder:opacity-100',
-  ],
-  [
-    'ui-input-control-readonly-hover',
-    '[color:var(--color-readonly-hover-text)] [&::placeholder]:[color:var(--color-readonly-hover-text)]',
+    'read-only:cursor-text read-only:[color:var(--color-readonly-idle-text)] read-only:hover:[color:var(--color-readonly-hover-text)] read-only:placeholder:[color:var(--color-readonly-idle-text)] read-only:hover:placeholder:[color:var(--color-readonly-hover-text)] read-only:placeholder:opacity-100',
   ],
   [
     'ui-input-control-default',
@@ -75,11 +67,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-floating-label-readonly',
-    '![color:var(--color-readonly-idle-text)]',
-  ],
-  [
-    'ui-input-floating-label-readonly-hover',
-    '![color:var(--color-readonly-hover-text)]',
+    '![color:var(--color-readonly-idle-text)] group-hover:![color:var(--color-readonly-hover-text)]',
   ],
   [
     'ui-input-floating-label-disabled',
