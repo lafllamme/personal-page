@@ -168,7 +168,7 @@ function startResize(event: PointerEvent): void {
 
   resizeStartY.value = event.clientY
   resizeStartHeight.value = textarea.getBoundingClientRect().height
-  resizeMinHeight.value = Number.parseFloat(getComputedStyle(textarea).minHeight) || resizeStartHeight.value
+  resizeMinHeight.value = Number.parseFloat(getComputedStyle(textarea).minHeight) || 0
   activePointerId.value = event.pointerId
   isResizing.value = true
 
