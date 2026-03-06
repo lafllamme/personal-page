@@ -36,6 +36,8 @@ const colorTokens: TokenSet = {
   'color-link-arrow-accent-idle': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
   'color-input-placeholder': { light: 'rgba(0, 0, 0, 0.46)', dark: 'rgba(242, 239, 230, 0.46)' },
   'color-input-floating-label': { light: 'var(--color-accent-ui)', dark: 'var(--color-accent)' },
+  'color-readonly-idle-text': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand10)' },
+  'color-readonly-hover-text': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand11)' },
   'color-error-text': { light: 'var(--un-preset-radix-crimson11)', dark: 'var(--un-preset-radix-crimson11)' },
 }
 
@@ -225,6 +227,8 @@ const sizingTokens: TokenSet = {
   'focus-ring-inner-width': '2px',
   'focus-ring-outer-width': '4px',
   'focus-ring-active-width': '1.5px',
+  'input-control-padding-y': 'calc(var(--space-2) - 1px)',
+  'input-control-padding-top-floating': 'calc(var(--space-4_75) - 1px)',
 }
 
 const typographyFontFamilyTheme = {

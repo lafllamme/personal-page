@@ -18,8 +18,8 @@ const props = withDefaults(defineProps<{
   placeholder?: string
   fillText?: string
   disabled?: boolean
+  readonly?: boolean
   invalid?: boolean
-  previewState?: 'default' | 'hover' | 'focus-visible'
 }>(), {
   modelValue: '',
   type: 'text',
@@ -31,8 +31,8 @@ const props = withDefaults(defineProps<{
   placeholder: '',
   fillText: '',
   disabled: false,
+  readonly: false,
   invalid: false,
-  previewState: 'default',
 })
 
 const emit = defineEmits<{
@@ -50,8 +50,8 @@ const {
   placeholder,
   fillText,
   disabled,
+  readonly,
   invalid,
-  previewState,
 } = toRefs(props)
 
 const attrs = useAttrs()
@@ -68,12 +68,13 @@ const hasValue = computed(() => String(modelValue.value || '').length > 0)
 const isFloating = computed(() => variant.value === 'floating')
 const isFloatingActive = computed(() => (
   isFloating.value
-  && (isFocused.value || hasValue.value || previewState.value === 'focus-visible')
+  && (isFocused.value || hasValue.value)
 ))
 const showFloatingFillText = computed(() => (
   isFloating.value
   && !hasValue.value
-  && (isFocused.value || previewState.value === 'focus-visible')
+  && isFocused.value
+  && !readonly.value
 ))
 const floatingLabelText = computed(() => {
   if (!label.value)
@@ -106,12 +107,13 @@ const shellClass = computed(() => [
   isFloating.value ? 'ui-input-shell-floating' : 'ui-input-shell-default',
   disabled.value && 'ui-input-shell-disabled',
   hasError.value && 'ui-input-shell-invalid',
-  (previewState.value === 'focus-visible' || isFocused.value) && !disabled.value && !hasError.value && 'ui-input-shell-focus',
+  readonly.value && !disabled.value && !hasError.value && 'ui-input-shell-readonly',
+  isFocused.value && !disabled.value && !readonly.value && !hasError.value && 'ui-input-shell-focus',
   (
     !isFocused.value
-    && previewState.value !== 'focus-visible'
-    && (previewState.value === 'hover' || isHovered.value)
+    && isHovered.value
     && !disabled.value
+    && !readonly.value
     && !hasError.value
   ) && 'ui-input-shell-hover',
 ])
@@ -120,6 +122,8 @@ const controlClass = computed(() => [
   'ui-input-control-base',
   'ui-input-control-placeholder',
   isFloating.value ? 'ui-input-control-floating' : 'ui-input-control-default',
+  readonly.value && 'ui-input-control-readonly',
+  readonly.value && isHovered.value && !isFocused.value && 'ui-input-control-readonly-hover',
   isFloating.value && !showFloatingFillText.value && 'ui-input-control-floating-placeholder-hidden',
   isFloating.value && showFloatingFillText.value && 'ui-input-control-floating-placeholder-visible',
 ])
@@ -127,6 +131,9 @@ const controlClass = computed(() => [
 const floatingLabelClass = computed(() => [
   'ui-input-floating-label-base',
   isFloatingActive.value && 'ui-input-floating-label-active',
+  readonly.value && 'ui-input-floating-label-readonly',
+  readonly.value && isHovered.value && !isFocused.value && 'ui-input-floating-label-readonly-hover',
+  disabled.value && 'ui-input-floating-label-disabled',
 ])
 const floatingLabelRole = computed<'body' | 'meta'>(() => (isFloatingActive.value ? 'meta' : 'body'))
 const floatingLabelSize = computed<'sm' | '2xs'>(() => (isFloatingActive.value ? '2xs' : 'sm'))
@@ -196,7 +203,9 @@ watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) 
           :type="type"
           :placeholder="resolvedPlaceholder"
           :disabled="disabled"
+          :readonly="readonly"
           :aria-invalid="hasError ? 'true' : 'false'"
+          :aria-readonly="readonly"
           :aria-describedby="describedBy"
           :class="controlClass"
           @mouseenter="onMouseEnter"
@@ -229,7 +238,9 @@ watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) 
         :type="type"
         :placeholder="resolvedPlaceholder"
         :disabled="disabled"
+        :readonly="readonly"
         :aria-invalid="hasError ? 'true' : 'false'"
+        :aria-readonly="readonly"
         :aria-describedby="describedBy"
         :class="controlClass"
         @mouseenter="onMouseEnter"

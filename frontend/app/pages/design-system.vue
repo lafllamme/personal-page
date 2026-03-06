@@ -209,7 +209,6 @@ const selectOptions = [
           >
             <DsInput
               id="ds-input-hover"
-              preview-state="hover"
               placeholder="Hover preview"
             />
           </DsField>

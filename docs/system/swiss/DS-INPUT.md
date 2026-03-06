@@ -1,6 +1,6 @@
 # DS Input
 
-Stand: 2026-03-05  
+Stand: 2026-03-06  
 Status: aktiv
 
 ## Ist-Zustand
@@ -11,15 +11,19 @@ Status: aktiv
 
 ### Contract
 - Varianten: `default`, `floating`
-- Props: `label`, `placeholder`, `fillText`, `hint`, `error`, `invalid`, `required`, `disabled`, `previewState`
-- States: `default`, `hover`, `focus-visible`, `invalid`, `disabled`
+- Props: `label`, `placeholder`, `fillText`, `hint`, `error`, `invalid`, `required`, `disabled`, `readonly`
+- States: `default`, `hover`, `focus-visible`, `invalid`, `readonly`, `readonly-hover`, `disabled`
 - Error: Icon + Shake-In
+- Storybook: `/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsInput.stories.ts`
+  - States werden interaktiv/visuell in Storybook gezeigt (ohne `previewState`-Prop im Component-API)
 
 ## Input-relevante Tokens/Variablen
 
 ### Color/BG/Border
 - `--color-input-placeholder`
 - `--color-input-floating-label`
+- `--color-readonly-idle-text`
+- `--color-readonly-hover-text`
 - `--bg-input-error-soft`
 - `--border-input-idle`
 - `--border-error`
@@ -33,7 +37,14 @@ Status: aktiv
 - `--motion-input-error-shake-ease`
 
 ### Keyframe
-- `dsInputErrorShakeIn`
+- `shake-in`
+
+### Sizing / Control
+- `--control-border-width`
+- `--focus-ring-inner-width`
+- `--focus-ring-active-width`
+- `--input-control-padding-y`
+- `--input-control-padding-top-floating`
 
 ### Input-Shortcuts
 - `ui-input-shell-base`
@@ -42,8 +53,11 @@ Status: aktiv
 - `ui-input-shell-hover`
 - `ui-input-shell-focus`
 - `ui-input-shell-invalid`
+- `ui-input-shell-readonly`
 - `ui-input-shell-disabled`
 - `ui-input-control-base`
+- `ui-input-control-readonly`
+- `ui-input-control-readonly-hover`
 - `ui-input-control-default`
 - `ui-input-control-floating`
 - `ui-input-control-placeholder`
@@ -51,11 +65,21 @@ Status: aktiv
 - `ui-input-control-floating-placeholder-visible`
 - `ui-input-floating-label-base`
 - `ui-input-floating-label-active`
+- `ui-input-floating-label-readonly`
+- `ui-input-floating-label-readonly-hover`
 - `ui-input-error-row`
 - `ui-input-error-icon`
 
+## State-Prioritaet (komponente)
+- `disabled` > `invalid` > `readonly` > `focus` > `hover` > `default`
+- `readonly` blockiert Focus/Hover-Akzentzustand und verwendet eigene Sand-Tokens
+
+## WCAG (Readonly Text vs Field Surface)
+- Light idle: `4.61:1` (AA pass)
+- Light hover: `10.79:1` (AA pass)
+- Dark idle: `4.54:1` (AA pass)
+- Dark hover: `8.05:1` (AA pass)
+
 ## Bewusst literal (Stabilitaet)
-- `padding-top: 1.125rem`
-- `padding-bottom: 0.4375rem`
 - `1px` Offsets (floating top/left)
 - `scale(0.82)` (floating label)

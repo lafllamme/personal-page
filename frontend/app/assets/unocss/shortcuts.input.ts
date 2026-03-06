@@ -26,20 +26,32 @@ export const inputShortcuts: UserShortcuts = [
     '[box-shadow:0_0_0_var(--control-border-width)_var(--border-error)] bg-$bg-input-error-soft',
   ],
   [
+    'ui-input-shell-readonly',
+    'cursor-text bg-$bg-soft [box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-idle-text)] hover:bg-$bg-soft-hover hover:[box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-hover-text)]',
+  ],
+  [
     'ui-input-shell-disabled',
     'cursor-not-allowed color-$color-disabled bg-$bg-soft-disabled [box-shadow:0_0_0_var(--control-border-width)_var(--border-disabled)]',
   ],
   [
     'ui-input-control-base',
-    'w-full border-none bg-transparent outline-none color-$color-primary type-body-sm font-light',
+    'w-full border-none bg-transparent outline-none color-$color-primary type-body-sm font-light transition-[color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] disabled:cursor-not-allowed disabled:color-$color-disabled disabled:placeholder:[color:var(--color-disabled-subtle)] disabled:placeholder:opacity-100',
+  ],
+  [
+    'ui-input-control-readonly',
+    'read-only:cursor-text read-only:[color:var(--color-readonly-idle-text)] read-only:placeholder:[color:var(--color-readonly-idle-text)] read-only:placeholder:opacity-100',
+  ],
+  [
+    'ui-input-control-readonly-hover',
+    '[color:var(--color-readonly-hover-text)] [&::placeholder]:[color:var(--color-readonly-hover-text)]',
   ],
   [
     'ui-input-control-default',
-    '[padding-top:0.4375rem] [padding-bottom:0.4375rem]',
+    '[padding-top:var(--input-control-padding-y)] [padding-bottom:var(--input-control-padding-y)]',
   ],
   [
     'ui-input-control-floating',
-    '[padding-top:1.125rem] [padding-bottom:0.4375rem]',
+    '[padding-top:var(--input-control-padding-top-floating)] [padding-bottom:var(--input-control-padding-y)]',
   ],
   [
     'ui-input-control-placeholder',
@@ -60,6 +72,18 @@ export const inputShortcuts: UserShortcuts = [
   [
     'ui-input-floating-label-active',
     '!left-$space-3_5 !top-$space-1 ![transform:translateY(0)_scale(0.82)] ![color:var(--color-input-floating-label)]',
+  ],
+  [
+    'ui-input-floating-label-readonly',
+    '![color:var(--color-readonly-idle-text)]',
+  ],
+  [
+    'ui-input-floating-label-readonly-hover',
+    '![color:var(--color-readonly-hover-text)]',
+  ],
+  [
+    'ui-input-floating-label-disabled',
+    '![color:var(--color-disabled)]',
   ],
   [
     'ui-input-error-row',

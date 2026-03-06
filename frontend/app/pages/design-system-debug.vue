@@ -38,6 +38,8 @@ const formFirstName = ref('')
 const formLastName = ref('')
 const formEmail = ref('')
 const formPhone = ref('')
+const formReadonlyHandle = ref('published')
+const formReadonlyEmail = ref('editorial@tecnews.com')
 const formFirstNameTouched = ref(false)
 const formEmailTouched = ref(false)
 const inputDefaultValue = ref('')
@@ -163,7 +165,6 @@ const formFirstNameError = computed(() => {
                 type="email"
                 label="Work Email"
                 placeholder="ada@analytical.engine"
-                preview-state="focus-visible"
                 hint="Focus-visible preview uses the accent ring."
               />
             </div>
@@ -174,7 +175,6 @@ const formFirstNameError = computed(() => {
                 v-model="contactCompany"
                 label="Company"
                 placeholder="Analytical Engines Ltd."
-                preview-state="hover"
                 hint="Hover preview should stay subtle and neutral."
               />
 
@@ -226,7 +226,6 @@ const formFirstNameError = computed(() => {
                 label="Last name"
                 fill-text="Family"
                 required
-                preview-state="focus-visible"
               />
             </div>
 
@@ -251,6 +250,35 @@ const formFirstNameError = computed(() => {
                 label="Phone"
                 fill-text="+49 000 000000"
               />
+            </div>
+
+            <div class="pt-2 space-y-2">
+              <DsTypography
+                as="p"
+                role="meta"
+                size="2xs"
+                uppercase
+                tone="muted"
+              >
+                Read-only Preview
+              </DsTypography>
+              <div class="grid gap-5 lg:grid-cols-2">
+                <DsInput
+                  id="debug-form-readonly-handle"
+                  v-model="formReadonlyHandle"
+                  variant="floating"
+                  label="Status"
+                  readonly
+                />
+                <DsInput
+                  id="debug-form-readonly-email"
+                  v-model="formReadonlyEmail"
+                  variant="floating"
+                  type="email"
+                  label="Owner email"
+                  readonly
+                />
+              </div>
             </div>
           </div>
 
