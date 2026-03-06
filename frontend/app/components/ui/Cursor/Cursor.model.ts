@@ -10,9 +10,10 @@ export interface CursorProps {
   textWidth?: number
   clickScale?: number
   minTextHeight?: number
+  maxTextHeight?: number
 }
 
-export type CursorType = 'default' | 'click' | 'text'
+export type CursorType = 'default' | 'click' | 'text' | 'drag'
 // Notice we do not annotate CursorDefaultProps as CursorProps
 export const CursorDefaultProps = {
   clickableElements: () => ['a', 'button', 'input[type="submit"]', 'input[type="button"]'],
@@ -37,11 +38,12 @@ export const CursorDefaultProps = {
   ],
   clickableClasses: () => ['cursor-animate-click', 'is-clickable'],
   textClasses: () => ['cursor-animate-text', 'is-text'],
-  forceType: () => ['default-cursor', 'click-cursor', 'text-cursor'],
+  forceType: () => ['default-cursor', 'click-cursor', 'text-cursor', 'drag-cursor'],
   size: 24,
   color: 'white',
   textColor: '#4CBBA5',
   textWidth: 4,
   clickScale: 1,
   minTextHeight: 18,
+  maxTextHeight: 32,
 }

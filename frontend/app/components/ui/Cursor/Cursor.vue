@@ -25,6 +25,7 @@ const {
   textWidth,
   clickScale,
   minTextHeight,
+  maxTextHeight,
   forceType,
 } = toRefs(props)
 
@@ -73,6 +74,7 @@ function setTextCursor(el: HTMLElement | null) {
     el,
     fontSize,
     minTextHeight.value,
+    maxTextHeight.value,
     size.value,
   )
 }
@@ -81,24 +83,32 @@ function calculateTextBarHeight(
   el: HTMLElement | null,
   fontSize: number,
   minHeight: number,
+  maxHeight: number,
   baseSize: number,
 ) {
+  const normalizedMaxHeight = Math.max(maxHeight, minHeight)
+
   if (!el)
-    return Math.max(baseSize * 1.2, minHeight)
+    return Math.min(Math.max(baseSize * 1.2, minHeight), normalizedMaxHeight)
   if (['input', 'textarea'].includes(el.tagName.toLowerCase())) {
-    return Math.max(el.clientHeight * 1.2, minHeight)
+    return Math.min(Math.max(el.clientHeight * 1.2, minHeight), normalizedMaxHeight)
   }
   if (fontSize < 16) {
-    return Math.max(fontSize * 2.1, minHeight)
+    return Math.min(Math.max(fontSize * 2.1, minHeight), normalizedMaxHeight)
   }
   if (fontSize < 24) {
-    return Math.max(fontSize * 1.75, minHeight)
+    return Math.min(Math.max(fontSize * 1.75, minHeight), normalizedMaxHeight)
   }
-  return Math.max(fontSize * 1.2, minHeight)
+  return Math.min(Math.max(fontSize * 1.2, minHeight), normalizedMaxHeight)
 }
 
 function checkElementType(e: MouseEvent) {
   const target = e.target as HTMLElement
+
+  if (document.body.classList.contains('cursor-resizing-active')) {
+    cursorType.value = 'drag'
+    return
+  }
 
   // 1. Check force types first
   const forceTypeClass = forceType.value?.find(cls =>
@@ -117,6 +127,9 @@ function checkElementType(e: MouseEvent) {
         ? target
         : (target.closest(`.${forceTypeClass}`) as HTMLElement | null)
       setTextCursor(textEl)
+    }
+    else if (forceTypeClass.includes('drag')) {
+      cursorType.value = 'drag'
     }
     else {
       cursorType.value = 'default'
@@ -167,6 +180,8 @@ function initListeners() {
   const throttledTypeCheck = useThrottleFn(checkElementType, 32)
   useEventListener('mousemove', throttledPosition, { passive: true })
   useEventListener('mousemove', throttledTypeCheck, { passive: true })
+  useEventListener('pointermove', throttledPosition, { passive: true })
+  useEventListener('pointermove', throttledTypeCheck, { passive: true })
 }
 
 // ========== FADE/SPINNING TEXT HELPERS ==========
@@ -231,8 +246,8 @@ onMounted(() => {
       v-show="hasPointer"
       ref="cursorRef"
       :style="{
-        width: delayedCursorType === 'text' ? `${textWidth}px` : `${size}px`,
-        height: delayedCursorType === 'text' ? `${textHeight}px` : `${size}px`,
+        width: delayedCursorType === 'text' ? `${textWidth}px` : delayedCursorType === 'drag' ? `${size * 1.05}px` : `${size}px`,
+        height: delayedCursorType === 'text' ? `${textHeight}px` : delayedCursorType === 'drag' ? `${size * 1.05}px` : `${size}px`,
         borderRadius: delayedCursorType === 'text' ? '1px' : '50%',
         backgroundColor: delayedCursorType === 'text' ? textColor : color,
         mixBlendMode: delayedCursorType === 'text' ? 'normal' : 'difference',
