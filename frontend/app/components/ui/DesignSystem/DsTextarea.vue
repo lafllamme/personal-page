@@ -288,7 +288,7 @@ useEventListener(window, 'pointercancel', stopResize)
       </div>
     </label>
 
-    <div class="min-h-[1rem]">
+    <div class="min-h-$space-4">
       <div
         v-if="hasError && Boolean(error)"
         :id="errorId || undefined"
