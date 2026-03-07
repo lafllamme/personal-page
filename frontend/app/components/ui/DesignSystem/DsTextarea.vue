@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useEventListener } from '@vueuse/core'
-import { computed, ref, toRefs, useAttrs, watch } from 'vue'
+import { computed, ref, toRefs, useAttrs, useTemplateRef, watch } from 'vue'
 import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
@@ -59,7 +59,7 @@ const attrs = useAttrs()
 const isFocused = ref(false)
 const isResizing = ref(false)
 const errorShakeKey = ref(0)
-const textareaEl = ref<HTMLTextAreaElement | null>(null)
+const textareaEl = useTemplateRef('textareaEl')
 const resizeHandleEl = ref<HTMLElement | null>(null)
 const textareaHeight = ref<number | null>(null)
 const resizeStartY = ref(0)
@@ -177,6 +177,11 @@ function startResize(event: PointerEvent): void {
     handle.setPointerCapture(event.pointerId)
 }
 
+function onResizeHandlePointerDown(event: PointerEvent): void {
+  event.preventDefault()
+  startResize(event)
+}
+
 function stopResize(): void {
   if (!isResizing.value)
     return
@@ -265,7 +270,7 @@ useEventListener(window, 'pointercancel', stopResize)
             :disabled="disabled"
             :aria-hidden="disabled ? 'true' : 'false'"
             tabindex="-1"
-            @pointerdown.prevent="startResize"
+            @pointerdown="onResizeHandlePointerDown"
           >
             <DsIcon
               name="iconoir:arrow-separate-vertical"
