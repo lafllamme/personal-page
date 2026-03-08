@@ -34,6 +34,114 @@ export const inputShortcuts: UserShortcuts = [
     'cursor-not-allowed color-$color-disabled bg-$bg-soft-disabled [box-shadow:0_0_0_var(--control-border-width)_var(--border-disabled)]',
   ],
   [
+    'ui-select-root',
+    'relative w-full min-h-[calc(var(--size-control-lg)+var(--space-2))]',
+  ],
+  [
+    'ui-select-shell-base',
+    'relative w-full text-left outline-none rounded-$radius-lg px-$space-3_5 [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)] transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
+  ],
+  [
+    'ui-select-shell-interactive',
+    'hover:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+  ],
+  [
+    'ui-select-shell-open',
+    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+  ],
+  [
+    'ui-select-shell-preview-hover',
+    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent-hover)]',
+  ],
+  [
+    'ui-select-shell-preview-focus-visible',
+    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+  ],
+  [
+    'ui-select-shell-invalid',
+    '[box-shadow:0_0_0_var(--control-border-width)_var(--border-error)] bg-$bg-input-error-soft',
+  ],
+  [
+    'ui-select-shell-disabled',
+    'cursor-not-allowed color-$color-disabled bg-$bg-soft-disabled [box-shadow:0_0_0_var(--control-border-width)_var(--border-disabled)]',
+  ],
+  [
+    'ui-select-trigger-content',
+    'flex w-full min-h-[calc(var(--size-control-lg)+var(--space-2))] items-center justify-between',
+  ],
+  [
+    'ui-select-value-wrap',
+    'relative flex min-w-0 flex-1 flex-col justify-center [padding-top:var(--input-control-padding-top-floating)] [padding-bottom:var(--input-control-padding-y)]',
+  ],
+  [
+    'ui-select-value-wrap-no-label',
+    '[padding-top:var(--input-control-padding-y)]',
+  ],
+  [
+    'ui-select-value-text',
+    'truncate type-body-md font-light color-$color-primary',
+  ],
+  [
+    'ui-select-value-placeholder',
+    '[color:var(--color-input-placeholder)]',
+  ],
+  [
+    'ui-select-chevron',
+    'shrink-0 color-$color-input-placeholder transition-transform [transition-duration:var(--motion-select-chevron-duration)] [transition-timing-function:var(--motion-select-chevron-ease)]',
+  ],
+  [
+    'ui-select-chevron-open',
+    '[transform:rotate(180deg)]',
+  ],
+  [
+    'ui-select-overlay-base',
+    'absolute left-0 top-0 z-40 w-full overflow-hidden rounded-$radius-lg bg-$bg-inverse [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle),0_0_0_var(--color-select-shadow)] transition-[clip-path,opacity,box-shadow] [transition-duration:var(--motion-select-overlay-duration)] [transition-timing-function:var(--motion-select-overlay-ease)]',
+  ],
+  [
+    'ui-select-overlay-open',
+    'opacity-100 pointer-events-auto [clip-path:inset(0%_0%_0%_0%_round_var(--radius-lg))] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle),0_16px_48px_var(--color-select-shadow)]',
+  ],
+  [
+    'ui-select-overlay-closed',
+    'opacity-0 pointer-events-none [clip-path:inset(0%_0%_100%_0%_round_var(--radius-lg))] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle),0_0_0_var(--color-select-shadow)]',
+  ],
+  [
+    'ui-select-divider',
+    'mx-$space-3 h-px bg-$border-quaternary',
+  ],
+  [
+    'ui-select-option-list',
+    'p-$space-1_5',
+  ],
+  [
+    'ui-select-option-base',
+    'flex w-full items-center justify-between rounded-$radius-md px-$space-3 py-$space-2 text-left type-body-sm font-light color-$color-primary transition-[background-color,color,opacity,transform] [transition-duration:var(--motion-select-option-duration)] [transition-timing-function:var(--motion-select-option-ease)]',
+  ],
+  [
+    'ui-select-value-hidden',
+    'max-h-0 opacity-0 overflow-hidden pointer-events-none',
+  ],
+  [
+    'ui-select-option-visible',
+    'opacity-100 [transform:translateY(0)]',
+  ],
+  [
+    'ui-select-option-hidden',
+    'opacity-0 [transform:translateY(6px)]',
+  ],
+  [
+    'ui-select-option-hoverable',
+    'hover:bg-$bg-soft',
+  ],
+  [
+    'ui-select-option-active',
+    'bg-$bg-soft-hover',
+  ],
+  [
+    'ui-select-option-selected',
+    'bg-$bg-soft',
+  ],
+  [
     'ui-input-control-base',
     'w-full border-none bg-transparent outline-none color-$color-primary type-body-sm font-light transition-[color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] disabled:cursor-not-allowed disabled:color-$color-disabled disabled:placeholder:[color:var(--color-disabled-subtle)] disabled:placeholder:opacity-100',
   ],

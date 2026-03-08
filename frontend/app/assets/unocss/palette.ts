@@ -40,6 +40,7 @@ const colorTokens: TokenSet = {
   'color-readonly-idle-text': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand10)' },
   'color-readonly-hover-text': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand11)' },
   'color-error-text': { light: 'var(--un-preset-radix-crimson11)', dark: 'var(--un-preset-radix-crimson11)' },
+  'color-select-shadow': { light: 'rgba(0, 0, 0, 0.16)', dark: 'rgba(0, 0, 0, 0.45)' },
 }
 
 const bgTokens: TokenSet = {
@@ -147,6 +148,13 @@ const motionTokens: TokenSet = {
   'motion-input-shell-ease': 'ease',
   'motion-input-error-shake-duration': '450ms',
   'motion-input-error-shake-ease': 'cubic-bezier(0.36, 0.07, 0.19, 0.97)',
+  'motion-select-overlay-duration': '320ms',
+  'motion-select-overlay-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+  'motion-select-option-duration': '240ms',
+  'motion-select-option-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+  'motion-select-option-stagger-step': '28ms',
+  'motion-select-chevron-duration': '260ms',
+  'motion-select-chevron-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
 }
 
 const spacingTokens: TokenSet = {

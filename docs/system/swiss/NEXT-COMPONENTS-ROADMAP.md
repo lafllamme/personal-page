@@ -31,6 +31,7 @@ Status: aktiv (Build-Priorisierung)
 - `DsIcon`
 - `DsInput`
 - `DsTextarea`
+- `DsSelect`
 
 ### Runtime / Tooling
 - UnoCSS Token-Layer aktiv
@@ -50,7 +51,7 @@ Grund: Sie nutzen direkt eure bestehenden Foundations (Typografie, Spacing, Focu
 ### Phase 1: Form Core
 1. `DsInput` (done)
 2. `DsTextarea` (done)
-3. `DsSelect` (next)
+3. `DsSelect` (done)
 
 Ziel:
 - gemeinsamer Field-Contract
@@ -86,14 +87,16 @@ Ziel:
 
 ## Nächste konkrete Umsetzung
 Als naechste echte Komponente bauen wir:
-1. `DsInput`
-2. dann `DsTextarea`
-3. dann `DsSelect`
+1. `DsCheckbox`
+2. dann `DsRadio`
+3. dann `DsSwitch`
 
 Begruendung:
-- Diese drei teilen sich denselben Field-Rahmen.
-- Wenn der Field-Contract sauber sitzt, werden Checkbox / Radio / Switch deutlich einfacher.
+- `DsInput` und `DsTextarea` sind bereits umgesetzt und stabil.
+- `DsSelect` ist jetzt umgesetzt und schliesst den Field-Contract fuer Form Core.
+- Danach ist die Selection-Familie (`Checkbox`, `Radio`, `Switch`) als konsistenter Block dran.
 
 Aktiver Plan fuer den ersten Schritt:
 - [DS-INPUT.md](./DS-INPUT.md)
 - [DS-TEXTAREA.md](./DS-TEXTAREA.md)
+- [DS-SELECT.md](./DS-SELECT.md)

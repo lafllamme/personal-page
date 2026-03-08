@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
+import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
 import DsTextarea from '@/components/ui/DesignSystem/DsTextarea.vue'
@@ -50,6 +51,20 @@ const inputBorderDrawValue = ref('')
 const inputPillValue = ref('')
 const articleSummary = ref('')
 const articleSummaryTouched = ref(false)
+const selectTopic = ref('')
+const selectSelected = ref('product')
+const selectInvalid = ref('')
+
+const selectTopicTouched = ref(false)
+const selectInvalidTouched = ref(false)
+
+const selectOptions = [
+  { label: 'Editorial feedback', value: 'editorial' },
+  { label: 'Product question', value: 'product' },
+  { label: 'Partnership request', value: 'partnership' },
+  { label: 'Press inquiry', value: 'press' },
+  { label: 'Community support', value: 'community' },
+]
 
 function isValidEmail(value: string): boolean {
   const trimmed = value.trim()
@@ -101,6 +116,16 @@ const articleSummaryError = computed(() => {
 
   if (articleSummary.value.trim().length < 30)
     return 'Please write at least 30 characters.'
+
+  return ''
+})
+
+const selectInvalidError = computed(() => {
+  if (!selectInvalidTouched.value)
+    return ''
+
+  if (!selectInvalid.value)
+    return 'Please choose a topic.'
 
   return ''
 })
@@ -336,6 +361,70 @@ const articleSummaryError = computed(() => {
               required
               @blur="articleSummaryTouched = true"
             />
+          </div>
+
+          <div class="pt-3 space-y-4">
+            <div class="space-y-2">
+              <DsTypography
+                as="p"
+                role="meta"
+                size="xs"
+                uppercase
+              >
+                Select Prototype A
+              </DsTypography>
+              <DsTypography
+                as="p"
+                role="body"
+                size="sm"
+                tone="muted"
+              >
+                Custom listbox with clip-curtain reveal and floating label parity to input/textarea.
+              </DsTypography>
+            </div>
+
+            <div class="grid gap-5 lg:grid-cols-2">
+              <DsSelect
+                id="debug-select-default"
+                v-model="selectTopic"
+                label="Topic"
+                fill-text="Choose a topic"
+                :options="selectOptions"
+                hint="Default interactive state. Open to inspect overlay transition."
+                required
+                @blur="selectTopicTouched = true"
+              />
+
+              <DsSelect
+                id="debug-select-selected"
+                v-model="selectSelected"
+                label="Category"
+                fill-text="Pick one category"
+                :options="selectOptions"
+                hint="Selected state preview."
+              />
+
+              <DsSelect
+                id="debug-select-invalid"
+                v-model="selectInvalid"
+                label="Request"
+                fill-text="Select request type"
+                :options="selectOptions"
+                :error="selectInvalidError"
+                required
+                @blur="selectInvalidTouched = true"
+              />
+
+              <DsSelect
+                id="debug-select-disabled"
+                model-value=""
+                label="Audience"
+                fill-text="Choose audience"
+                :options="selectOptions"
+                hint="Disabled state preview."
+                disabled
+              />
+            </div>
           </div>
 
           <div class="pt-3 space-y-6">

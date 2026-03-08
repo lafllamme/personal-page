@@ -59,6 +59,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Icon Contract: [DS-ICON.md](./DS-ICON.md)
 - Input Contract (Konzept): [DS-INPUT.md](./DS-INPUT.md)
 - Textarea Contract (Konzept): [DS-TEXTAREA.md](./DS-TEXTAREA.md)
+- Select Contract (Konzept): [DS-SELECT.md](./DS-SELECT.md)
 - Next Components Roadmap: [NEXT-COMPONENTS-ROADMAP.md](./NEXT-COMPONENTS-ROADMAP.md)
 - Storybook / Nuxt Stubbing: [STUBBING.md](./STUBBING.md)
 - Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
