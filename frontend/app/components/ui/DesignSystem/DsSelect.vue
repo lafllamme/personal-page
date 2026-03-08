@@ -8,14 +8,6 @@ defineOptions({
   inheritAttrs: false,
 })
 
-type SelectOption = {
-  label: string
-  value: string
-  disabled?: boolean
-}
-
-const HEADER_HEIGHT = 56
-
 const props = withDefaults(defineProps<{
   modelValue?: string
   options?: SelectOption[]
@@ -47,6 +39,14 @@ const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void
   (e: 'focus', event: FocusEvent): void
 }>()
+
+interface SelectOption {
+  label: string
+  value: string
+  disabled?: boolean
+}
+
+const HEADER_HEIGHT = 56
 
 const {
   modelValue,
@@ -348,7 +348,7 @@ useEventListener(window, 'resize', () => {
           class="ds-select-header"
           :disabled="disabled"
           :aria-expanded="isOpen ? 'true' : 'false'"
-          :aria-haspopup="'listbox'"
+          aria-haspopup="listbox"
           :aria-controls="listboxId"
           :aria-activedescendant="activeDescendant"
           :aria-invalid="hasError ? 'true' : 'false'"
@@ -508,7 +508,6 @@ useEventListener(window, 'resize', () => {
   overflow: hidden;
   background: var(--ds-select-surface);
   box-shadow: 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring);
-  filter: drop-shadow(0 18px 40px var(--ds-select-shadow));
   transition:
     max-height 340ms cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 180ms ease;
@@ -522,9 +521,7 @@ useEventListener(window, 'resize', () => {
 .ds-select.is-focused:not(.is-disabled):not(.is-invalid) .ds-select-panel,
 .ds-select.is-open:not(.is-disabled):not(.is-invalid) .ds-select-panel,
 .ds-select.is-preview-focus:not(.is-disabled):not(.is-invalid) .ds-select-panel {
-  box-shadow:
-    0 0 0 var(--focus-ring-inner-width, 2px) var(--ds-select-ring-focus),
-    0 16px 48px var(--ds-select-shadow);
+  box-shadow: 0 0 0 var(--focus-ring-inner-width, 2px) var(--ds-select-ring-focus);
 }
 
 .ds-select.is-invalid .ds-select-panel {
@@ -533,7 +530,8 @@ useEventListener(window, 'resize', () => {
 
 .ds-select.is-disabled .ds-select-panel {
   opacity: 0.65;
-  box-shadow: 0 0 0 var(--ds-select-ring-w) var(--border-disabled, color-mix(in oklch, var(--foreground) 20%, transparent));
+  box-shadow: 0 0 0 var(--ds-select-ring-w)
+    var(--border-disabled, color-mix(in oklch, var(--foreground) 20%, transparent));
 }
 
 .ds-select-header {
@@ -705,11 +703,26 @@ useEventListener(window, 'resize', () => {
 }
 
 @keyframes dsSelectShakeIn {
-  0% { opacity: 0; transform: translateX(-6px); }
-  20% { opacity: 1; transform: translateX(4px); }
-  40% { transform: translateX(-3px); }
-  60% { transform: translateX(2px); }
-  80% { transform: translateX(-1px); }
-  100% { opacity: 1; transform: translateX(0); }
+  0% {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  20% {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+  40% {
+    transform: translateX(-3px);
+  }
+  60% {
+    transform: translateX(2px);
+  }
+  80% {
+    transform: translateX(-1px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 </style>
