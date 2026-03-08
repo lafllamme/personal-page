@@ -287,7 +287,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-select-current-error-row',
-    'flex items-center gap-$space-2_5 [color:var(--color-error-text,#ff6fa9)] [animation:dsSelectShakeIn_320ms_ease-out]',
+    'flex items-center gap-$space-2_5 [color:var(--color-error-text,#ff6fa9)] animate-shake-in [animation-fill-mode:both]',
   ],
   [
     'ui-select-current-hint',

@@ -76,6 +76,7 @@ const bodyEl = ref<HTMLElement | null>(null)
 const isOpen = ref(false)
 const isClosing = ref(false)
 const isFocused = ref(false)
+const hasBlurRequiredError = ref(false)
 const highlightedIndex = ref(-1)
 const highlightMode = ref<'idle' | 'pointer' | 'keyboard'>('idle')
 const panelHeight = ref(HEADER_HEIGHT)
@@ -87,7 +88,7 @@ const selectId = computed(() => {
   return typeof rawId === 'string' ? rawId : ''
 })
 
-const hasError = computed(() => Boolean(error.value) || invalid.value)
+const hasError = computed(() => Boolean(error.value) || invalid.value || hasBlurRequiredError.value)
 const optionList = computed(() => {
   const list = options.value || []
   return [...list].sort((left, right) =>
@@ -115,6 +116,15 @@ const floatingLabelSize = computed<'sm' | '2xs'>(() => (floatingActive.value ? '
 const floatingLabelWeight = computed<'light' | 'regular'>(() => (floatingActive.value ? 'regular' : 'light'))
 const resolvedFillText = computed(() => fillText.value || 'Please choose an option')
 const resolvedEmptyText = computed(() => emptyText.value || 'No entries available')
+const resolvedErrorText = computed(() => {
+  if (error.value)
+    return error.value
+
+  if (hasBlurRequiredError.value && required.value && !hasValue.value)
+    return 'Please choose an option.'
+
+  return ''
+})
 
 const valueText = computed(() => {
   if (selectedOption.value)
@@ -127,7 +137,7 @@ const valueText = computed(() => {
 })
 
 const hintId = computed(() => (selectId.value && hint.value && !hasError.value ? `${selectId.value}-hint` : ''))
-const errorId = computed(() => (selectId.value && hasError.value && error.value ? `${selectId.value}-error` : ''))
+const errorId = computed(() => (selectId.value && hasError.value && resolvedErrorText.value ? `${selectId.value}-error` : ''))
 const describedBy = computed(() => {
   if (errorId.value)
     return errorId.value
@@ -279,6 +289,7 @@ function selectAt(index: number): void {
     return
 
   emit('update:modelValue', option.value)
+  hasBlurRequiredError.value = false
   closeSelect(true)
 }
 
@@ -299,6 +310,8 @@ function onTriggerFocus(event: FocusEvent): void {
 
 function onTriggerBlur(event: FocusEvent): void {
   isFocused.value = false
+  const missingRequiredValue = required.value && !hasValue.value
+  hasBlurRequiredError.value = missingRequiredValue
   emit('blur', event)
 }
 
@@ -381,12 +394,17 @@ function onOptionMouseEnter(index: number): void {
   highlightedIndex.value = index
 }
 
-watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) => {
+watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, prevError]) => {
   if (!nextHasError)
     return
 
   if (!prevHasError || nextError !== prevError)
     errorShakeKey.value += 1
+})
+
+watch(hasValue, (nextHasValue) => {
+  if (nextHasValue)
+    hasBlurRequiredError.value = false
 })
 
 watch([optionList, modelValue], () => {
@@ -547,7 +565,7 @@ onBeforeUnmount(() => {
     </div>
 
     <div
-      v-if="hasError && Boolean(error)"
+      v-if="hasError && Boolean(resolvedErrorText)"
       :id="errorId || undefined"
       :key="errorAnimationKey"
       class="ui-select-current-error-row"
@@ -562,7 +580,7 @@ onBeforeUnmount(() => {
         role="meta"
         size="2xs"
       >
-        {{ error }}
+        {{ resolvedErrorText }}
       </DsTypography>
     </div>
 
@@ -578,29 +596,3 @@ onBeforeUnmount(() => {
     </DsTypography>
   </div>
 </template>
-
-<style scoped>
-@keyframes dsSelectShakeIn {
-  0% {
-    opacity: 0;
-    transform: translateX(-6px);
-  }
-  20% {
-    opacity: 1;
-    transform: translateX(4px);
-  }
-  40% {
-    transform: translateX(-3px);
-  }
-  60% {
-    transform: translateX(2px);
-  }
-  80% {
-    transform: translateX(-1px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-</style>
