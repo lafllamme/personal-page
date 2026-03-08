@@ -10,6 +10,7 @@ const meta = {
     modelValue: '',
     type: 'text',
     variant: 'floating',
+    shape: 'rounded',
     label: 'Email',
     placeholder: 'Email',
     fillText: 'name@domain.com',
@@ -24,6 +25,7 @@ const meta = {
     modelValue: { control: 'text' },
     type: { control: 'select', options: ['text', 'email', 'password', 'search', 'url', 'tel'] },
     variant: { control: 'select', options: ['default', 'floating'] },
+    shape: { control: 'select', options: ['rounded', 'pill'] },
     label: { control: 'text' },
     placeholder: { control: 'text' },
     fillText: { control: 'text' },
@@ -159,5 +161,25 @@ export const ErrorState: Story = {
     fillText: 'name@domain.com',
     error: 'Please enter a valid email address.',
     required: true,
+  },
+}
+
+export const ShapeRounded: Story = {
+  name: 'Shape / Rounded (default)',
+  args: {
+    shape: 'rounded',
+    variant: 'floating',
+    label: 'Subject',
+    modelValue: 'Editorial feedback',
+  },
+}
+
+export const ShapePill: Story = {
+  name: 'Shape / Pill',
+  args: {
+    shape: 'pill',
+    variant: 'floating',
+    label: 'Subject',
+    modelValue: 'Editorial feedback',
   },
 }

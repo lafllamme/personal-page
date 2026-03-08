@@ -8,6 +8,7 @@ const meta = {
   tags: ['autodocs'],
   args: {
     modelValue: '',
+    shape: 'rounded',
     label: 'Article summary',
     placeholder: 'Article summary',
     fillText: 'Write a concise summary for publication.',
@@ -22,6 +23,7 @@ const meta = {
   },
   argTypes: {
     modelValue: { control: 'text' },
+    shape: { control: 'select', options: ['rounded', 'pill'] },
     label: { control: 'text' },
     placeholder: { control: 'text' },
     fillText: { control: 'text' },
@@ -150,5 +152,23 @@ export const ErrorState: Story = {
     fillText: 'name@domain.com',
     error: 'Please write at least 30 characters.',
     required: true,
+  },
+}
+
+export const ShapeRounded: Story = {
+  name: 'Shape / Rounded (default)',
+  args: {
+    shape: 'rounded',
+    label: 'Summary',
+    modelValue: 'A short editorial summary.',
+  },
+}
+
+export const ShapePill: Story = {
+  name: 'Shape / Pill',
+  args: {
+    shape: 'pill',
+    label: 'Summary',
+    modelValue: 'A short editorial summary.',
   },
 }

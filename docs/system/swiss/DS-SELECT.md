@@ -1,10 +1,11 @@
 # ds-select
 
-Stand: 2026-03-08  
+Stand: 2026-03-09  
 Status: aktiv
 
 ## Komponente
 - Runtime: `/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsSelect.vue`
+- Storybook: `/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsSelect.stories.ts`
 - Uno-Shortcuts: `/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.input.ts`
 - Tokens: `/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/palette.ts`
 - Theme/Keyframes: `/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/theme.ts`
@@ -152,6 +153,19 @@ Status: aktiv
   - Ring-States, Divider, Overlay-Transitions, Option-Stagger, Hover/Selected, Error-row animation
 - JS:
   - Open/Close, Keyboard, Outside click, Focus-Restore, FillText/Floating-Logik, Required-on-blur error state
+
+## Storybook-Abdeckung (Ist-Stand)
+- `Playground`
+- `State / Default`
+- `State / Hover`
+- `State / Focus visible`
+- `State / Selected value`
+- `State / Open interaction`
+- `State / Error`
+- `State / Disabled`
+- `State / Empty options`
+- `Shape / Rounded (default)`
+- `Shape / Pill`
 
 ## Offene Punkte
 - In `shortcuts.input.ts` existiert noch ein alter ungenutzter Select-Block `ui-select-*` (ohne `-current-`).

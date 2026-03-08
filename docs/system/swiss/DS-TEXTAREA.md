@@ -45,8 +45,8 @@ Status: aktiv
 - `shake-in`
 
 ### Sizing / Control
-- `--radius-form-pill` (Default: `1rem` / 16px)
-- `--radius-form-rounded` (`0.5rem` / 8px)
+- `--radius-form-rounded` (`0.5rem` / 8px, Component-Default)
+- `--radius-form-pill` (`1rem` / 16px, Option)
 - `--size-control-xl`
 - `--size-textarea-height-default`
 - `--size-textarea-height-focus`

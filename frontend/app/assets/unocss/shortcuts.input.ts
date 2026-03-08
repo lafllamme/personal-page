@@ -155,15 +155,15 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-select-current-vars',
-    '[--ds-select-trigger-h:calc(var(--size-control-lg)+var(--space-2))] [--ds-select-radius:var(--radius-form-rounded)] [--ds-select-ring-w:1px] [--ds-select-ring:var(--border-input-idle,color-mix(in_oklch,var(--foreground)_28%,transparent))] [--ds-select-ring-hover:var(--border-accent-hover,color-mix(in_oklch,var(--foreground)_42%,transparent))] [--ds-select-ring-focus:var(--border-accent,color-mix(in_oklch,var(--foreground)_56%,transparent))] [--ds-select-surface:var(--bg-inverse,var(--pure-white))] [--ds-select-text:hsl(var(--foreground))] [--ds-select-muted:var(--color-input-placeholder,hsl(var(--muted-foreground)))] [--ds-select-label:var(--color-input-floating-label,hsl(var(--muted-foreground)))] [--ds-select-shadow:var(--color-select-shadow,color-mix(in_oklch,var(--foreground)_18%,transparent))] [--ds-select-indicator:var(--color-select-indicator,var(--toxic-11))] [--ds-select-indicator-column:1rem] [--ds-select-option-inline-pad:0.875rem] [--ds-select-list-inset-x:calc(var(--form-control-inset-x,var(--space-5))-var(--ds-select-option-inline-pad))] [--ds-select-divider-inset-x:var(--form-control-inset-x,var(--space-5))] [--ds-select-motion-ease:cubic-bezier(0.22,1,0.36,1)]',
+    '[--ds-select-trigger-h:calc(var(--size-control-lg)+var(--space-2))] [--ds-select-ring-w:1px] [--ds-select-ring:var(--border-input-idle,color-mix(in_oklch,var(--foreground)_28%,transparent))] [--ds-select-ring-hover:var(--border-accent-hover,color-mix(in_oklch,var(--foreground)_42%,transparent))] [--ds-select-ring-focus:var(--border-accent,color-mix(in_oklch,var(--foreground)_56%,transparent))] [--ds-select-surface:var(--bg-inverse,var(--pure-white))] [--ds-select-text:hsl(var(--foreground))] [--ds-select-muted:var(--color-input-placeholder,hsl(var(--muted-foreground)))] [--ds-select-label:var(--color-input-floating-label,hsl(var(--muted-foreground)))] [--ds-select-shadow:var(--color-select-shadow,color-mix(in_oklch,var(--foreground)_18%,transparent))] [--ds-select-indicator:var(--color-select-indicator,var(--toxic-11))] [--ds-select-indicator-column:1rem] [--ds-select-option-inline-pad:0.875rem] [--ds-select-list-inset-x:calc(var(--form-control-inset-x,var(--space-5))-var(--ds-select-option-inline-pad))] [--ds-select-divider-inset-x:var(--form-control-inset-x,var(--space-5))] [--ds-select-motion-ease:cubic-bezier(0.22,1,0.36,1)]',
   ],
   [
     'ui-select-current-shape-rounded',
-    '[--ds-select-radius:var(--radius-form-rounded)]',
+    '![--ds-select-radius:var(--radius-form-rounded)]',
   ],
   [
     'ui-select-current-shape-pill',
-    '[--ds-select-radius:var(--radius-form-pill)]',
+    '![--ds-select-radius:var(--radius-form-pill)]',
   ],
   [
     'ui-select-current-root-layer',
@@ -187,11 +187,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-select-current-header-divider',
-    "[&::after]:content-[''] [&::after]:absolute [&::after]:left-[var(--ds-select-divider-inset-x)] [&::after]:right-[var(--ds-select-divider-inset-x)] [&::after]:bottom-0 [&::after]:h-px [&::after]:bg-$border-quaternary [&::after]:opacity-0 [&::after]:[transform:scaleX(0)] [&::after]:[transform-origin:center] [&::after]:[transition:opacity_280ms_ease,transform_420ms_var(--ds-select-motion-ease)]",
+    '[&::after]:content-[\'\'] [&::after]:absolute [&::after]:left-[var(--ds-select-divider-inset-x)] [&::after]:right-[var(--ds-select-divider-inset-x)] [&::after]:bottom-0 [&::after]:h-px [&::after]:bg-$border-quaternary [&::after]:opacity-0 [&::after]:[transform:scaleX(0)] [&::after]:[transform-origin:center] [&::after]:[transition:opacity_280ms_ease,transform_420ms_var(--ds-select-motion-ease)]',
   ],
   [
     'ui-select-current-header-divider-open',
-    "[&::after]:opacity-100 [&::after]:[transform:scaleX(1)] [&::after]:[transition-delay:120ms]",
+    '[&::after]:opacity-100 [&::after]:[transform:scaleX(1)] [&::after]:[transition-delay:120ms]',
   ],
   [
     'ui-select-current-header-motion',
