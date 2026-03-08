@@ -496,6 +496,7 @@ useEventListener(window, 'resize', () => {
   --ds-select-option-inline-pad: 0.875rem;
   --ds-select-list-inset-x: calc(var(--form-control-inset-x, var(--space-5)) - var(--ds-select-option-inline-pad));
   --ds-select-divider-inset-x: var(--form-control-inset-x, var(--space-5));
+  --ds-select-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   width: 100%;
   isolation: isolate;
@@ -520,7 +521,7 @@ useEventListener(window, 'resize', () => {
   background: var(--ds-select-surface);
   box-shadow: 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring);
   transition:
-    max-height 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    max-height 360ms var(--ds-select-motion-ease),
     box-shadow 180ms ease;
 }
 
@@ -615,11 +616,12 @@ useEventListener(window, 'resize', () => {
 
 .ds-select-chevron {
   color: var(--ds-select-text);
-  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(10%);
+  transition: transform 300ms var(--ds-select-motion-ease);
 }
 
 .ds-select-chevron.is-open {
-  transform: rotate(180deg);
+  transform: translateY(10%) rotate(180deg);
 }
 
 .ds-select-body {
@@ -628,8 +630,8 @@ useEventListener(window, 'resize', () => {
   transform: translateY(-6px);
   pointer-events: none;
   transition:
-    opacity 170ms ease,
-    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 220ms ease,
+    transform 320ms var(--ds-select-motion-ease),
     background-color 180ms ease;
 }
 
@@ -645,6 +647,18 @@ useEventListener(window, 'resize', () => {
   margin-top: 0.125rem;
   margin-bottom: 0.125rem;
   background: var(--un-preset-radix-sand8);
+  transform: scaleX(0);
+  transform-origin: center;
+  opacity: 0.72;
+  transition:
+    transform 260ms var(--ds-select-motion-ease),
+    opacity 220ms ease;
+}
+
+.ds-select-body.is-open .ds-select-divider {
+  transform: scaleX(1);
+  opacity: 1;
+  transition-delay: 90ms;
 }
 
 .ds-select-list {
@@ -682,9 +696,9 @@ useEventListener(window, 'resize', () => {
   opacity: 1;
   transform: translateY(0);
   transition:
-    opacity 210ms ease,
-    transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
-  transition-delay: calc(var(--stagger-index) * 28ms + 45ms);
+    opacity 240ms ease,
+    transform 320ms var(--ds-select-motion-ease);
+  transition-delay: calc(var(--stagger-index) * 34ms + 130ms);
 }
 
 .ds-select-option:hover,
