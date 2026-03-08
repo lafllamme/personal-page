@@ -402,7 +402,13 @@ useEventListener(window, 'resize', () => {
           />
         </button>
 
-        <div ref="bodyEl" class="ds-select-body" :class="{ 'is-open': isOpen }">
+        <div
+          ref="bodyEl"
+          class="ds-select-body"
+          :class="{ 'is-open': isOpen }"
+          :aria-hidden="isOpen ? 'false' : 'true'"
+          :inert="!isOpen"
+        >
           <ul
             :id="listboxId"
             class="ds-select-list"
@@ -425,6 +431,7 @@ useEventListener(window, 'resize', () => {
                 ]"
                 :style="{ '--stagger-index': String(index) }"
                 :disabled="option.disabled"
+                :tabindex="isOpen ? 0 : -1"
                 @mouseenter="onOptionMouseEnter(index)"
                 @click="selectAt(index)"
               >
@@ -560,7 +567,13 @@ useEventListener(window, 'resize', () => {
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
+  outline: none;
   transition: transform 300ms var(--ds-select-motion-ease);
+}
+
+.ds-select-header:focus,
+.ds-select-header:focus-visible {
+  outline: none;
 }
 
 .ds-select.is-disabled .ds-select-header {
