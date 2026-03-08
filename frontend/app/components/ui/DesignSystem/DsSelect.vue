@@ -479,9 +479,7 @@ useEventListener(window, 'resize', () => {
   --ds-select-ring: var(--border-input-idle, color-mix(in oklch, var(--foreground) 28%, transparent));
   --ds-select-ring-hover: var(--border-accent-hover, color-mix(in oklch, var(--foreground) 42%, transparent));
   --ds-select-ring-focus: var(--border-accent, color-mix(in oklch, var(--foreground) 56%, transparent));
-  --ds-select-bg: var(--bg-soft, hsl(var(--background)));
-  --ds-select-overlay-bg: var(--un-preset-radix-sand3, #ece9e1);
-  --ds-select-bg-hover: var(--bg-soft-hover, color-mix(in oklch, var(--background) 85%, var(--foreground) 15%));
+  --ds-select-surface: var(--bg-inverse, var(--pure-white));
   --ds-select-text: hsl(var(--foreground));
   --ds-select-muted: var(--color-input-placeholder, hsl(var(--muted-foreground)));
   --ds-select-label: var(--color-input-floating-label, hsl(var(--muted-foreground)));
@@ -508,41 +506,41 @@ useEventListener(window, 'resize', () => {
   width: 100%;
   border-radius: var(--ds-select-radius);
   overflow: hidden;
-  background: var(--ds-select-overlay-bg);
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring);
+  background: var(--ds-select-surface);
+  box-shadow: 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring);
   filter: drop-shadow(0 18px 40px var(--ds-select-shadow));
   transition:
     max-height 340ms cubic-bezier(0.22, 1, 0.36, 1),
-    box-shadow 180ms ease,
-    background-color 180ms ease;
+    box-shadow 180ms ease;
 }
 
 .ds-select:not(.is-disabled):not(.is-invalid):not(.is-open) .ds-select-panel:hover,
 .ds-select.is-preview-hover:not(.is-disabled):not(.is-invalid):not(.is-open) .ds-select-panel {
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring-hover);
-  background: var(--ds-select-bg-hover);
+  box-shadow: 0 0 0 var(--focus-ring-inner-width, 2px) var(--ds-select-ring-hover);
 }
 
 .ds-select.is-focused:not(.is-disabled):not(.is-invalid) .ds-select-panel,
 .ds-select.is-open:not(.is-disabled):not(.is-invalid) .ds-select-panel,
 .ds-select.is-preview-focus:not(.is-disabled):not(.is-invalid) .ds-select-panel {
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring-focus);
+  box-shadow:
+    0 0 0 var(--focus-ring-inner-width, 2px) var(--ds-select-ring-focus),
+    0 16px 48px var(--ds-select-shadow);
 }
 
 .ds-select.is-invalid .ds-select-panel {
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--border-error, #ff4d94);
+  box-shadow: 0 0 0 var(--ds-select-ring-w) var(--border-error, #ff4d94);
 }
 
 .ds-select.is-disabled .ds-select-panel {
   opacity: 0.65;
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--border-disabled, color-mix(in oklch, var(--foreground) 20%, transparent));
+  box-shadow: 0 0 0 var(--ds-select-ring-w) var(--border-disabled, color-mix(in oklch, var(--foreground) 20%, transparent));
 }
 
 .ds-select-header {
   width: 100%;
   height: var(--ds-select-trigger-h);
   border: 0;
-  background: transparent;
+  background: var(--ds-select-surface);
   color: var(--ds-select-text);
   padding: 0 1.5rem;
   margin: 0;
@@ -612,10 +610,14 @@ useEventListener(window, 'resize', () => {
 }
 
 .ds-select-body {
+  background: var(--ds-select-surface);
   opacity: 0;
   transform: translateY(-6px);
   pointer-events: none;
-  transition: opacity 170ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 170ms ease,
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 180ms ease;
 }
 
 .ds-select-body.is-open {
@@ -636,6 +638,7 @@ useEventListener(window, 'resize', () => {
   padding: 0.5rem;
   display: grid;
   gap: 0.25rem;
+  background: var(--ds-select-surface);
 }
 
 .ds-select-option {
