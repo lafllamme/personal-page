@@ -157,22 +157,6 @@ const activeDescendant = computed(() => {
   return `${listboxId.value}-option-${index}`
 })
 
-const rootClass = computed(() => [
-  'ds-select',
-  isOpen.value && 'is-open',
-  isClosing.value && 'is-closing',
-  isFocused.value && 'is-focused',
-  hasError.value && 'is-invalid',
-  disabled.value && 'is-disabled',
-  previewState.value === 'hover' && 'is-preview-hover',
-  previewState.value === 'focus-visible' && 'is-preview-focus',
-])
-
-const panelClass = computed(() => [
-  'ds-select-panel',
-  isOpen.value ? 'is-expanded' : 'is-collapsed',
-])
-
 const rootLayerClass = computed(() => (isOpen.value || isClosing.value) ? 'ui-select-current-root-layer' : '')
 
 const panelVisualClass = computed(() => {
@@ -433,20 +417,20 @@ onBeforeUnmount(() => {
     <div
       ref="rootEl"
       class="ui-select-current-vars ui-select-current-root"
-      :class="[rootClass, rootLayerClass, shapeClass]"
+      :class="[rootLayerClass, shapeClass]"
     >
-      <div class="ds-select-slot ui-select-current-slot" aria-hidden="true" />
+      <div class="ui-select-current-slot" aria-hidden="true" />
 
       <div
         class="ui-select-current-panel ui-select-current-panel-motion"
-        :class="[panelClass, panelVisualClass, panelHoverableClass]"
+        :class="[panelVisualClass, panelHoverableClass]"
         :style="{ maxHeight: `${panelHeight}px` }"
       >
         <button
           ref="triggerEl"
           v-bind="attrs"
           type="button"
-          class="ds-select-header ui-select-current-header ui-select-current-header-divider ui-select-current-header-motion ui-select-current-header-disabled"
+          class="ui-select-current-header ui-select-current-header-divider ui-select-current-header-motion ui-select-current-header-disabled"
           :class="[isOpen && 'ui-select-current-header-divider-open']"
           :disabled="disabled"
           :aria-expanded="isOpen ? 'true' : 'false'"
@@ -461,9 +445,8 @@ onBeforeUnmount(() => {
           @blur="onTriggerBlur"
         >
           <span
-            class="ds-select-content ui-select-current-content"
+            class="ui-select-current-content"
             :class="[
-              Boolean(floatingLabelText) && 'has-label',
               Boolean(floatingLabelText) && 'ui-select-current-content-labeled',
             ]"
           >
@@ -513,7 +496,7 @@ onBeforeUnmount(() => {
         >
           <ul
             :id="listboxId"
-            class="ds-select-list ui-select-current-list"
+            class="ui-select-current-list"
             role="listbox"
             :aria-activedescendant="activeDescendant"
           >
