@@ -691,7 +691,6 @@ onBeforeUnmount(() => {
   overflow: hidden;
   text-overflow: ellipsis;
   color: var(--ds-select-text);
-  line-height: 1.2;
 }
 
 .ds-select-value.is-placeholder {
