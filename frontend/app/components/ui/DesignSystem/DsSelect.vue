@@ -416,7 +416,7 @@ onBeforeUnmount(() => {
             <DsTypography
               as="span"
               role="body"
-              size="sm"
+              size="md"
               weight="light"
               class="ds-select-value"
               :class="{ 'is-placeholder': !hasValue, 'is-empty': !valueText }"
@@ -467,7 +467,7 @@ onBeforeUnmount(() => {
                 @mouseenter="onOptionMouseEnter(index)"
                 @click="selectAt(index)"
               >
-                <DsTypography as="span" role="body" size="sm">
+                <DsTypography as="span" role="body" size="md">
                   {{ option.label }}
                 </DsTypography>
 
@@ -483,7 +483,7 @@ onBeforeUnmount(() => {
               class="ds-select-empty"
               role="presentation"
             >
-              <DsTypography as="span" role="body" size="sm" tone="muted">
+              <DsTypography as="span" role="body" size="md" tone="muted">
                 {{ resolvedEmptyText }}
               </DsTypography>
             </li>

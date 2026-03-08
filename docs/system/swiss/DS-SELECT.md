@@ -16,7 +16,7 @@ Status: aktiv
 - Scope v1: `single-select`, kein Search, kein Multi-select
 - Interaktion: Open nur per expliziter Aktion (`click`, `Enter`, `ArrowDown`)
 - Overlay-Prinzip: Replace-Flow (Overlay liegt bei Open exakt ueber dem Trigger und klappt von dort nach unten aus)
-- Styling-Engine: Uno shortcuts + CSS/Pseudoklassen, kein lokaler `<style>`-Block
+- Styling-Engine: Uno shortcuts + component-scoped CSS (hybrid). Zielbild bleibt weitere Migration in Tokens/Shortcuts.
 - Debug-Integration: `/Users/flame/Developer/Projects/personal-page/frontend/app/pages/design-system-debug.vue`
 
 ## Select-relevante Tokens/Variablen
