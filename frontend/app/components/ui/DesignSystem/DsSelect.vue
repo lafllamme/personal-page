@@ -506,6 +506,7 @@ useEventListener(window, 'resize', () => {
   --ds-select-ring-hover: var(--border-accent-hover, color-mix(in oklch, var(--foreground) 42%, transparent));
   --ds-select-ring-focus: var(--border-accent, color-mix(in oklch, var(--foreground) 56%, transparent));
   --ds-select-bg: var(--bg-soft, hsl(var(--background)));
+  --ds-select-overlay-bg: var(--un-preset-radix-sand3, #ece9e1);
   --ds-select-bg-hover: var(--bg-soft-hover, color-mix(in oklch, var(--background) 85%, var(--foreground) 15%));
   --ds-select-text: hsl(var(--foreground));
   --ds-select-muted: var(--color-input-placeholder, hsl(var(--muted-foreground)));
@@ -649,7 +650,7 @@ useEventListener(window, 'resize', () => {
   position: relative;
   width: 100%;
   border-radius: var(--ds-select-radius);
-  background: var(--ds-select-bg);
+  background: var(--ds-select-overlay-bg);
   box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring-focus);
   filter: drop-shadow(0 18px 40px var(--ds-select-shadow));
   overflow: hidden;
