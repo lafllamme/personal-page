@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onClickOutside, useEventListener } from '@vueuse/core'
-import { computed, nextTick, ref, toRefs, useAttrs, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, ref, toRefs, useAttrs, watch } from 'vue'
 import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
@@ -68,10 +68,12 @@ const triggerEl = ref<HTMLElement | null>(null)
 const bodyEl = ref<HTMLElement | null>(null)
 
 const isOpen = ref(false)
+const isClosing = ref(false)
 const isFocused = ref(false)
 const highlightedIndex = ref(-1)
 const panelHeight = ref(HEADER_HEIGHT)
 const errorShakeKey = ref(0)
+const closeZIndexTimer = ref<ReturnType<typeof setTimeout> | null>(null)
 
 const selectId = computed(() => {
   const rawId = attrs.id
@@ -139,6 +141,7 @@ const activeDescendant = computed(() => {
 const rootClass = computed(() => [
   'ds-select',
   isOpen.value && 'is-open',
+  isClosing.value && 'is-closing',
   isFocused.value && 'is-focused',
   hasError.value && 'is-invalid',
   disabled.value && 'is-disabled',
@@ -188,10 +191,20 @@ function measureOpenHeight(): void {
   panelHeight.value = HEADER_HEIGHT + body.scrollHeight
 }
 
+function clearCloseZIndexTimer(): void {
+  if (!closeZIndexTimer.value)
+    return
+
+  clearTimeout(closeZIndexTimer.value)
+  closeZIndexTimer.value = null
+}
+
 async function openSelect(): Promise<void> {
   if (disabled.value || isOpen.value)
     return
 
+  clearCloseZIndexTimer()
+  isClosing.value = false
   isOpen.value = true
   highlightedIndex.value = getInitialIndexForOpen()
   await nextTick()
@@ -203,8 +216,14 @@ function closeSelect(restoreFocus = false): void {
     return
 
   isOpen.value = false
+  isClosing.value = true
   highlightedIndex.value = -1
   panelHeight.value = HEADER_HEIGHT
+  clearCloseZIndexTimer()
+  closeZIndexTimer.value = setTimeout(() => {
+    isClosing.value = false
+    closeZIndexTimer.value = null
+  }, 420)
 
   if (restoreFocus)
     nextTick(() => triggerEl.value?.focus())
@@ -335,6 +354,10 @@ useEventListener(window, 'resize', () => {
     return
 
   measureOpenHeight()
+})
+
+onBeforeUnmount(() => {
+  clearCloseZIndexTimer()
 })
 </script>
 
@@ -510,6 +533,10 @@ useEventListener(window, 'resize', () => {
 }
 
 .ds-select.is-open {
+  z-index: 80;
+}
+
+.ds-select.is-closing {
   z-index: 80;
 }
 
