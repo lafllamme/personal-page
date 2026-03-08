@@ -578,14 +578,14 @@ useEventListener(window, 'resize', () => {
   transform: scaleX(0);
   transform-origin: center;
   transition:
-    opacity 210ms ease,
-    transform 300ms var(--ds-select-motion-ease);
+    opacity 280ms ease,
+    transform 420ms var(--ds-select-motion-ease);
 }
 
 .ds-select.is-open .ds-select-header::after {
   opacity: 1;
   transform: scaleX(1);
-  transition-delay: 80ms;
+  transition-delay: 120ms;
 }
 
 .ds-select-content {
