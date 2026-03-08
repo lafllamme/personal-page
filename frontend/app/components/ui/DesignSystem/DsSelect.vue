@@ -429,12 +429,10 @@ useEventListener(window, 'resize', () => {
                   {{ option.label }}
                 </DsTypography>
 
-                <DsIcon
-                  name="iconoir:check"
-                  size="xs"
-                  variant="inherit"
-                  class="ds-select-check"
+                <span
+                  class="ds-select-indicator"
                   :class="{ 'is-visible': modelValue === option.value }"
+                  aria-hidden="true"
                 />
               </button>
             </li>
@@ -678,11 +676,19 @@ useEventListener(window, 'resize', () => {
 
 .ds-select-option:hover,
 .ds-select-option.is-highlighted {
-  background: color-mix(in oklch, var(--foreground) 7%, transparent);
+  background: color-mix(in oklch, var(--color-accent-ui, hsl(var(--foreground))) 10%, transparent);
+  color: var(--color-accent-ui, hsl(var(--foreground)));
 }
 
 .ds-select-option.is-selected {
-  background: color-mix(in oklch, var(--foreground) 10%, transparent);
+  background: color-mix(in oklch, var(--color-accent-ui, hsl(var(--foreground))) 18%, transparent);
+  color: var(--ds-select-text);
+}
+
+.ds-select-option.is-selected:hover,
+.ds-select-option.is-selected.is-highlighted {
+  background: color-mix(in oklch, var(--color-accent-ui, hsl(var(--foreground))) 24%, transparent);
+  color: var(--ds-select-text);
 }
 
 .ds-select-option:disabled {
@@ -690,13 +696,19 @@ useEventListener(window, 'resize', () => {
   cursor: not-allowed;
 }
 
-.ds-select-check {
+.ds-select-indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 9999px;
+  background: currentColor;
   opacity: 0;
-  transition: opacity 120ms ease;
+  transform: scale(0.7);
+  transition: opacity 120ms ease, transform 160ms ease;
 }
 
-.ds-select-check.is-visible {
+.ds-select-indicator.is-visible {
   opacity: 1;
+  transform: scale(1);
 }
 
 .ds-select-error-row {
