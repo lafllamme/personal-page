@@ -701,9 +701,9 @@ useEventListener(window, 'resize', () => {
   opacity: 1;
   transform: translateY(0);
   transition:
-    opacity 240ms ease,
-    transform 320ms var(--ds-select-motion-ease);
-  transition-delay: calc(var(--stagger-index) * 34ms + 130ms);
+    opacity 210ms ease,
+    transform 280ms var(--ds-select-motion-ease);
+  transition-delay: calc(var(--stagger-index) * 28ms + 45ms);
 }
 
 .ds-select-option:hover,
