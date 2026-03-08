@@ -154,6 +154,18 @@ export const inputShortcuts: UserShortcuts = [
     'relative w-full isolate z-0',
   ],
   [
+    'ui-select-current-vars',
+    '[--ds-select-trigger-h:calc(var(--size-control-lg)+var(--space-2))] [--ds-select-radius:var(--radius-form-rounded)] [--ds-select-ring-w:1px] [--ds-select-ring:var(--border-input-idle,color-mix(in_oklch,var(--foreground)_28%,transparent))] [--ds-select-ring-hover:var(--border-accent-hover,color-mix(in_oklch,var(--foreground)_42%,transparent))] [--ds-select-ring-focus:var(--border-accent,color-mix(in_oklch,var(--foreground)_56%,transparent))] [--ds-select-surface:var(--bg-inverse,var(--pure-white))] [--ds-select-text:hsl(var(--foreground))] [--ds-select-muted:var(--color-input-placeholder,hsl(var(--muted-foreground)))] [--ds-select-label:var(--color-input-floating-label,hsl(var(--muted-foreground)))] [--ds-select-shadow:var(--color-select-shadow,color-mix(in_oklch,var(--foreground)_18%,transparent))] [--ds-select-indicator:var(--color-select-indicator,var(--toxic-11))] [--ds-select-indicator-column:1rem] [--ds-select-option-inline-pad:0.875rem] [--ds-select-list-inset-x:calc(var(--form-control-inset-x,var(--space-5))-var(--ds-select-option-inline-pad))] [--ds-select-divider-inset-x:var(--form-control-inset-x,var(--space-5))] [--ds-select-motion-ease:cubic-bezier(0.22,1,0.36,1)]',
+  ],
+  [
+    'ui-select-current-shape-rounded',
+    '[--ds-select-radius:var(--radius-form-rounded)]',
+  ],
+  [
+    'ui-select-current-shape-pill',
+    '[--ds-select-radius:var(--radius-form-pill)]',
+  ],
+  [
     'ui-select-current-root-layer',
     'z-80',
   ],
@@ -174,8 +186,52 @@ export const inputShortcuts: UserShortcuts = [
     'relative w-full [height:var(--ds-select-trigger-h)] border-0 [background:var(--ds-select-surface)] [color:var(--ds-select-text)] [padding-inline:var(--form-control-inset-x)] m-0 text-left grid [grid-template-columns:1fr_var(--ds-select-indicator-column)] items-center gap-$space-3 cursor-pointer outline-none',
   ],
   [
+    'ui-select-current-header-divider',
+    "[&::after]:content-[''] [&::after]:absolute [&::after]:left-[var(--ds-select-divider-inset-x)] [&::after]:right-[var(--ds-select-divider-inset-x)] [&::after]:bottom-0 [&::after]:h-px [&::after]:bg-$border-quaternary [&::after]:opacity-0 [&::after]:[transform:scaleX(0)] [&::after]:[transform-origin:center] [&::after]:[transition:opacity_280ms_ease,transform_420ms_var(--ds-select-motion-ease)]",
+  ],
+  [
+    'ui-select-current-header-divider-open',
+    "[&::after]:opacity-100 [&::after]:[transform:scaleX(1)] [&::after]:[transition-delay:120ms]",
+  ],
+  [
+    'ui-select-current-header-motion',
+    '[transition:transform_300ms_var(--ds-select-motion-ease)]',
+  ],
+  [
+    'ui-select-current-header-disabled',
+    'disabled:cursor-not-allowed',
+  ],
+  [
     'ui-select-current-content',
     'min-w-0 relative grid',
+  ],
+  [
+    'ui-select-current-label',
+    'absolute left-0 top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--ds-select-muted)] pointer-events-none [transition-property:transform,top,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
+  ],
+  [
+    'ui-select-current-label-floating',
+    'top-$space-1 [transform:translateY(0)_scale(0.82)] [color:var(--ds-select-label)]',
+  ],
+  [
+    'ui-select-current-value',
+    'min-w-0 whitespace-nowrap overflow-hidden text-ellipsis [color:var(--ds-select-text)]',
+  ],
+  [
+    'ui-select-current-value-placeholder',
+    '[color:var(--ds-select-muted)]',
+  ],
+  [
+    'ui-select-current-value-empty',
+    'opacity-0',
+  ],
+  [
+    'ui-select-current-chevron',
+    '[color:var(--ds-select-text)] justify-self-center translate-y-[1px] transition-transform [transition-duration:300ms] [transition-timing-function:var(--ds-select-motion-ease)]',
+  ],
+  [
+    'ui-select-current-chevron-open',
+    'translate-y-[3px] rotate-180',
   ],
   [
     'ui-select-current-content-labeled',
@@ -228,6 +284,14 @@ export const inputShortcuts: UserShortcuts = [
   [
     'ui-select-current-indicator-dot-visible',
     'opacity-100',
+  ],
+  [
+    'ui-select-current-error-row',
+    'flex items-center gap-$space-2_5 [color:var(--color-error-text,#ff6fa9)] [animation:dsSelectShakeIn_320ms_ease-out]',
+  ],
+  [
+    'ui-select-current-hint',
+    'opacity-70',
   ],
   [
     'ui-select-current-panel-idle',

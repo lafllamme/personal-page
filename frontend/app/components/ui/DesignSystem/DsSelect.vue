@@ -149,7 +149,6 @@ const activeDescendant = computed(() => {
 
 const rootClass = computed(() => [
   'ds-select',
-  shape.value === 'rounded' ? 'shape-rounded' : 'shape-pill',
   isOpen.value && 'is-open',
   isClosing.value && 'is-closing',
   isFocused.value && 'is-focused',
@@ -189,6 +188,12 @@ const panelHoverableClass = computed(() => (
   && previewState.value === 'default'
     ? 'ui-select-current-panel-hoverable'
     : ''
+))
+
+const shapeClass = computed(() => (
+  shape.value === 'pill'
+    ? 'ui-select-current-shape-pill'
+    : 'ui-select-current-shape-rounded'
 ))
 
 const errorAnimationKey = computed(() => `ds-select-error-${errorShakeKey.value}`)
@@ -409,7 +414,8 @@ onBeforeUnmount(() => {
   <div class="grid gap-2">
     <div
       ref="rootEl"
-      class="ui-select-current-root" :class="[rootClass, rootLayerClass]"
+      class="ui-select-current-vars ui-select-current-root"
+      :class="[rootClass, rootLayerClass, shapeClass]"
     >
       <div class="ds-select-slot ui-select-current-slot" aria-hidden="true" />
 
@@ -422,7 +428,8 @@ onBeforeUnmount(() => {
           ref="triggerEl"
           v-bind="attrs"
           type="button"
-          class="ds-select-header ui-select-current-header"
+          class="ds-select-header ui-select-current-header ui-select-current-header-divider ui-select-current-header-motion ui-select-current-header-disabled"
+          :class="[isOpen && 'ui-select-current-header-divider-open']"
           :disabled="disabled"
           :aria-expanded="isOpen ? 'true' : 'false'"
           aria-haspopup="listbox"
@@ -449,8 +456,8 @@ onBeforeUnmount(() => {
               :size="floatingLabelSize"
               :weight="floatingLabelWeight"
               :uppercase="floatingActive"
-              class="ds-select-label"
-              :class="{ 'is-floating': floatingActive }"
+              class="ui-select-current-label"
+              :class="{ 'ui-select-current-label-floating': floatingActive }"
             >
               {{ floatingLabelText }}
             </DsTypography>
@@ -460,20 +467,23 @@ onBeforeUnmount(() => {
               role="body"
               size="md"
               weight="light"
-              class="ds-select-value"
-              :class="{ 'is-placeholder': !hasValue, 'is-empty': !valueText }"
+              class="ui-select-current-value"
+              :class="{ 'ui-select-current-value-placeholder': !hasValue, 'ui-select-current-value-empty': !valueText }"
             >
               {{ valueText || '\u00A0' }}
             </DsTypography>
           </span>
 
-          <DsIcon
-            name="iconoir:nav-arrow-down"
-            size="sm"
-            variant="inherit"
-            class="ds-select-chevron"
-            :class="{ 'is-open': isOpen }"
-          />
+          <span
+            class="ui-select-current-chevron"
+            :class="{ 'ui-select-current-chevron-open': isOpen }"
+          >
+            <DsIcon
+              name="iconoir:nav-arrow-down"
+              size="sm"
+              variant="inherit"
+            />
+          </span>
         </button>
 
         <div
@@ -540,7 +550,7 @@ onBeforeUnmount(() => {
       v-if="hasError && Boolean(error)"
       :id="errorId || undefined"
       :key="errorAnimationKey"
-      class="ds-select-error-row"
+      class="ui-select-current-error-row"
     >
       <DsIcon
         name="iconoir:warning-triangle"
@@ -562,7 +572,7 @@ onBeforeUnmount(() => {
       as="p"
       role="meta"
       size="2xs"
-      class="ds-select-hint"
+      class="ui-select-current-hint"
     >
       {{ hint }}
     </DsTypography>
@@ -570,130 +580,6 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-.ds-select {
-  --ds-select-trigger-h: calc(var(--size-control-lg) + var(--space-2));
-  --ds-select-radius: var(--radius-form-pill);
-  --ds-select-ring-w: 1px;
-  --ds-select-ring: var(--border-input-idle, color-mix(in oklch, var(--foreground) 28%, transparent));
-  --ds-select-ring-hover: var(--border-accent-hover, color-mix(in oklch, var(--foreground) 42%, transparent));
-  --ds-select-ring-focus: var(--border-accent, color-mix(in oklch, var(--foreground) 56%, transparent));
-  --ds-select-surface: var(--bg-inverse, var(--pure-white));
-  --ds-select-text: hsl(var(--foreground));
-  --ds-select-muted: var(--color-input-placeholder, hsl(var(--muted-foreground)));
-  --ds-select-label: var(--color-input-floating-label, hsl(var(--muted-foreground)));
-  --ds-select-shadow: var(--color-select-shadow, color-mix(in oklch, var(--foreground) 18%, transparent));
-  --ds-select-indicator: var(--color-select-indicator, var(--toxic-11));
-  --ds-select-indicator-column: 1rem;
-  --ds-select-option-inline-pad: 0.875rem;
-  --ds-select-list-inset-x: calc(var(--form-control-inset-x, var(--space-5)) - var(--ds-select-option-inline-pad));
-  --ds-select-divider-inset-x: var(--form-control-inset-x, var(--space-5));
-  --ds-select-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.ds-select.shape-rounded {
-  --ds-select-radius: var(--radius-form-rounded);
-}
-
-.ds-select.shape-pill {
-  --ds-select-radius: var(--radius-form-pill);
-}
-
-.ds-select-header {
-  transition: transform 300ms var(--ds-select-motion-ease);
-}
-
-.ds-select-header:focus,
-.ds-select-header:focus-visible {
-  outline: none;
-}
-
-.ds-select.is-disabled .ds-select-header {
-  cursor: not-allowed;
-}
-
-.ds-select-header::after {
-  content: '';
-  position: absolute;
-  left: var(--ds-select-divider-inset-x);
-  right: var(--ds-select-divider-inset-x);
-  bottom: 0;
-  height: 1px;
-  background: var(--un-preset-radix-sand8);
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: center;
-  transition:
-    opacity 280ms ease,
-    transform 420ms var(--ds-select-motion-ease);
-}
-
-.ds-select.is-open .ds-select-header::after {
-  opacity: 1;
-  transform: scaleX(1);
-  transition-delay: 120ms;
-}
-
-.ds-select-label {
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  transform-origin: left center;
-  color: var(--ds-select-muted);
-  transition-property:
-    transform, top, color, font-size, line-height, letter-spacing, text-transform, font-family, font-weight;
-  transition-duration: var(--motion-input-floating-duration);
-  transition-timing-function: var(--motion-input-floating-ease);
-  pointer-events: none;
-}
-
-.ds-select-label.is-floating {
-  top: var(--space-1, 0.25rem);
-  transform: translateY(0) scale(0.82);
-  color: var(--ds-select-label);
-}
-
-.ds-select-value {
-  min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  color: var(--ds-select-text);
-}
-
-.ds-select-value.is-placeholder {
-  color: var(--ds-select-muted);
-}
-
-.ds-select-value.is-empty {
-  opacity: 0;
-}
-
-.ds-select-chevron {
-  --ds-select-chevron-offset-closed: 1px;
-  --ds-select-chevron-offset-open: 3px;
-  color: var(--ds-select-text);
-  justify-self: center;
-  transform: translateY(var(--ds-select-chevron-offset-closed));
-  transition: transform 300ms var(--ds-select-motion-ease);
-}
-
-.ds-select-chevron.is-open {
-  transform: translateY(var(--ds-select-chevron-offset-open)) rotate(180deg);
-}
-
-.ds-select-error-row {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  color: var(--color-error-text, #ff6fa9);
-  animation: dsSelectShakeIn 320ms ease-out;
-}
-
-.ds-select-hint {
-  opacity: 0.7;
-}
-
 @keyframes dsSelectShakeIn {
   0% {
     opacity: 0;
