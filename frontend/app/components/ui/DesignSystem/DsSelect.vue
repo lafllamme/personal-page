@@ -430,7 +430,7 @@ useEventListener(window, 'resize', () => {
                 </DsTypography>
 
                 <span
-                  class="ds-select-indicator"
+                  class="ds-select-indicator-dot"
                   :class="{ 'is-visible': modelValue === option.value }"
                   aria-hidden="true"
                 />
@@ -487,7 +487,10 @@ useEventListener(window, 'resize', () => {
   --ds-select-muted: var(--color-input-placeholder, hsl(var(--muted-foreground)));
   --ds-select-label: var(--color-input-floating-label, hsl(var(--muted-foreground)));
   --ds-select-shadow: var(--color-select-shadow, color-mix(in oklch, var(--foreground) 18%, transparent));
-
+  --ds-select-indicator: var(
+    --color-select-indicator,
+    var(--toxic-11)
+  );
   position: relative;
   width: 100%;
   isolation: isolate;
@@ -662,6 +665,9 @@ useEventListener(window, 'resize', () => {
   cursor: pointer;
   opacity: 0;
   transform: translateY(6px);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
 .ds-select-body.is-open .ds-select-option {
@@ -669,8 +675,7 @@ useEventListener(window, 'resize', () => {
   transform: translateY(0);
   transition:
     opacity 210ms ease,
-    transform 280ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 120ms ease;
+    transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
   transition-delay: calc(var(--stagger-index) * 28ms + 45ms);
 }
 
@@ -696,19 +701,17 @@ useEventListener(window, 'resize', () => {
   cursor: not-allowed;
 }
 
-.ds-select-indicator {
+.ds-select-indicator-dot {
   width: 0.5rem;
   height: 0.5rem;
   border-radius: 9999px;
-  background: currentColor;
+  background: var(--ds-select-indicator);
   opacity: 0;
-  transform: scale(0.7);
-  transition: opacity 120ms ease, transform 160ms ease;
+  transition: opacity 140ms ease;
 }
 
-.ds-select-indicator.is-visible {
+.ds-select-indicator-dot.is-visible {
   opacity: 1;
-  transform: scale(1);
 }
 
 .ds-select-error-row {
@@ -746,4 +749,5 @@ useEventListener(window, 'resize', () => {
     transform: translateX(0);
   }
 }
+
 </style>
