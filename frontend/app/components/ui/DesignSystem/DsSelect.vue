@@ -95,6 +95,9 @@ const floatingLabelText = computed(() => {
 
   return required.value ? `${floatingLabelBaseText.value} *` : floatingLabelBaseText.value
 })
+const floatingLabelRole = computed<'body' | 'meta'>(() => (floatingActive.value ? 'meta' : 'body'))
+const floatingLabelSize = computed<'sm' | '2xs'>(() => (floatingActive.value ? '2xs' : 'sm'))
+const floatingLabelWeight = computed<'light' | 'regular'>(() => (floatingActive.value ? 'regular' : 'light'))
 
 const valueText = computed(() => {
   if (selectedOption.value)
@@ -359,10 +362,10 @@ useEventListener(window, 'resize', () => {
             <DsTypography
               v-if="floatingLabelText"
               as="span"
-              role="body"
-              size="sm"
-              weight="light"
-              :uppercase="false"
+              :role="floatingLabelRole"
+              :size="floatingLabelSize"
+              :weight="floatingLabelWeight"
+              :uppercase="floatingActive"
               class="ds-select-label"
               :class="{ 'is-floating': floatingActive }"
             >
@@ -373,6 +376,7 @@ useEventListener(window, 'resize', () => {
               as="span"
               role="body"
               size="sm"
+              weight="light"
               class="ds-select-value"
               :class="{ 'is-placeholder': !hasValue, 'is-empty': !hasValue }"
             >
@@ -578,11 +582,7 @@ useEventListener(window, 'resize', () => {
 
 .ds-select-label.is-floating {
   top: var(--space-1, 0.25rem);
-  transform: translateY(0) scale(0.82);
-  transform-origin: left top;
-  text-transform: uppercase;
-  letter-spacing: var(--type-track-meta-2xs, 0.08em);
-  font-weight: 400;
+  transform: translateY(0);
   color: var(--ds-select-label);
 }
 
