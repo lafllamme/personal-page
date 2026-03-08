@@ -150,6 +150,34 @@ export const inputShortcuts: UserShortcuts = [
     'bg-$bg-soft',
   ],
   [
+    'ui-select-current-root',
+    'relative w-full isolate z-0',
+  ],
+  [
+    'ui-select-current-slot',
+    'h-[var(--ds-select-trigger-h)]',
+  ],
+  [
+    'ui-select-current-panel',
+    'absolute inset-[0_auto_auto_0] z-1 w-full overflow-hidden [border-radius:var(--ds-select-radius)] [background:var(--ds-select-surface)]',
+  ],
+  [
+    'ui-select-current-header',
+    'relative w-full [height:var(--ds-select-trigger-h)] border-0 [background:var(--ds-select-surface)] [color:var(--ds-select-text)] [padding-inline:var(--form-control-inset-x)] m-0 text-left grid [grid-template-columns:1fr_var(--ds-select-indicator-column)] items-center gap-$space-3 cursor-pointer outline-none',
+  ],
+  [
+    'ui-select-current-content',
+    'min-w-0 relative grid',
+  ],
+  [
+    'ui-select-current-content-labeled',
+    '[padding-top:var(--input-control-padding-top-floating)] [padding-bottom:var(--input-control-padding-y)]',
+  ],
+  [
+    'ui-select-current-list',
+    'list-none m-0 pt-$space-2_5 pb-$space-2 [padding-inline:var(--ds-select-list-inset-x)] grid gap-$space-1 [background:var(--ds-select-surface)]',
+  ],
+  [
     'ui-input-control-base',
     'w-full border-none bg-transparent outline-none color-$color-primary type-body-sm font-light transition-[color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] disabled:cursor-not-allowed disabled:color-$color-disabled disabled:placeholder:[color:var(--color-disabled-subtle)] disabled:placeholder:opacity-100',
   ],

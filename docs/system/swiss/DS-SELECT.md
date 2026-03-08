@@ -83,6 +83,42 @@ Status: aktiv
 - `ui-select-option-active`
 - `ui-select-option-selected`
 
+## Uno Migration Phase 1 (Inventory)
+
+### Bereits sauber tokenisiert
+- Shape/Radius: `--radius-form-pill`, `--radius-form-rounded`
+- Form Insets/Floating Geometry: `--form-control-inset-x`, `--input-control-padding-y`, `--input-control-padding-top-floating`
+- Select Motion Tokens vorhanden: `--motion-select-overlay-*`, `--motion-select-option-*`, `--motion-select-chevron-*`
+- Floating Motion Parity: `--motion-input-floating-duration`, `--motion-input-floating-ease`
+- Core Colors: `--color-input-placeholder`, `--color-input-floating-label`, `--color-select-shadow`, Border-Tokens
+
+### Noch harte Werte in `DsSelect.vue` (Migration-Kandidaten)
+- Layout/Geometry:
+  - `z-index: 80`
+  - `gap: 0.75rem`
+  - `min-height: 2.75rem`
+  - `border-radius: 0.625rem` (Options/Empty)
+  - `padding-top: 0.375rem`, `padding-bottom: 0.5rem`
+  - `padding: 0.625rem ...`
+  - `translateY(-6px)` / `translateY(6px)`
+  - Chevron offsets `1px` / `3px`
+- Motion:
+  - `max-height 360ms`, `box-shadow 180ms`
+  - divider `opacity 280ms`, `transform 420ms`, `delay 120ms`
+  - body `opacity 220ms`, `transform 320ms`, `background-color 180ms`
+  - option `background/color 160ms`, `opacity 210ms`, `transform 280ms`, stagger base `45ms`
+  - dot `opacity 140ms`
+- Color fallbacks:
+  - divider `var(--un-preset-radix-sand8)`
+  - invalid fallback `#ff4d94`
+  - error-text fallback `#ff6fa9`
+
+### Mapping-Ziel fuer die naechsten Phasen
+- Phase 2: Shell/Layout-Zahlen in neue `size/select-*` + `space/select-*` Tokens
+- Phase 3: State-Ring/Opacity/Layering in `state/select-*` Tokens
+- Phase 4: Motion-Hardcodes an bestehende `motion-select-*` Tokens angleichen, fehlende Motion-Tokens ergaenzen
+- Phase 5: Option/Divider/Dot komplett ueber Uno-Shortcuts + Tokens
+
 ## State-Prioritaet (komponente)
 - `disabled` > `invalid` > `open/focus` > `hover` > `default`
 

@@ -77,6 +77,7 @@ const isOpen = ref(false)
 const isClosing = ref(false)
 const isFocused = ref(false)
 const highlightedIndex = ref(-1)
+const highlightMode = ref<'idle' | 'pointer' | 'keyboard'>('idle')
 const panelHeight = ref(HEADER_HEIGHT)
 const errorShakeKey = ref(0)
 const closeZIndexTimer = ref<ReturnType<typeof setTimeout> | null>(null)
@@ -215,6 +216,7 @@ async function openSelect(): Promise<void> {
   clearCloseZIndexTimer()
   isClosing.value = false
   isOpen.value = true
+  highlightMode.value = 'idle'
   highlightedIndex.value = getInitialIndexForOpen()
   await nextTick()
   measureOpenHeight()
@@ -226,6 +228,7 @@ function closeSelect(restoreFocus = false): void {
 
   isOpen.value = false
   isClosing.value = true
+  highlightMode.value = 'idle'
   highlightedIndex.value = -1
   panelHeight.value = HEADER_HEIGHT
   clearCloseZIndexTimer()
@@ -278,6 +281,7 @@ function onTriggerKeydown(event: KeyboardEvent): void {
         void openSelect()
       }
       else if (highlightedIndex.value >= 0) {
+        highlightMode.value = 'keyboard'
         highlightedIndex.value = findNextEnabledIndex(highlightedIndex.value, 1)
       }
       break
@@ -288,6 +292,7 @@ function onTriggerKeydown(event: KeyboardEvent): void {
         void openSelect()
       }
       else if (highlightedIndex.value >= 0) {
+        highlightMode.value = 'keyboard'
         highlightedIndex.value = findNextEnabledIndex(highlightedIndex.value, -1)
       }
       break
@@ -296,6 +301,7 @@ function onTriggerKeydown(event: KeyboardEvent): void {
       if (!isOpen.value)
         return
       event.preventDefault()
+      highlightMode.value = 'keyboard'
       highlightedIndex.value = findFirstEnabledIndex()
       break
 
@@ -303,6 +309,7 @@ function onTriggerKeydown(event: KeyboardEvent): void {
       if (!isOpen.value)
         return
       event.preventDefault()
+      highlightMode.value = 'keyboard'
       for (let index = optionList.value.length - 1; index >= 0; index -= 1) {
         if (!optionList.value[index]?.disabled) {
           highlightedIndex.value = index
@@ -338,6 +345,7 @@ function onTriggerKeydown(event: KeyboardEvent): void {
 }
 
 function onOptionMouseEnter(index: number): void {
+  highlightMode.value = 'pointer'
   highlightedIndex.value = index
 }
 
@@ -374,19 +382,19 @@ onBeforeUnmount(() => {
   <div class="grid gap-2">
     <div
       ref="rootEl"
-      :class="rootClass"
+      class="ui-select-current-root" :class="[rootClass]"
     >
-      <div class="ds-select-slot" aria-hidden="true" />
+      <div class="ds-select-slot ui-select-current-slot" aria-hidden="true" />
 
       <div
-        :class="panelClass"
+        class="ui-select-current-panel" :class="[panelClass]"
         :style="{ maxHeight: `${panelHeight}px` }"
       >
         <button
           ref="triggerEl"
           v-bind="attrs"
           type="button"
-          class="ds-select-header"
+          class="ds-select-header ui-select-current-header"
           :disabled="disabled"
           :aria-expanded="isOpen ? 'true' : 'false'"
           aria-haspopup="listbox"
@@ -399,7 +407,13 @@ onBeforeUnmount(() => {
           @focus="onTriggerFocus"
           @blur="onTriggerBlur"
         >
-          <span class="ds-select-content" :class="{ 'has-label': Boolean(floatingLabelText) }">
+          <span
+            class="ds-select-content ui-select-current-content"
+            :class="[
+              Boolean(floatingLabelText) && 'has-label',
+              Boolean(floatingLabelText) && 'ui-select-current-content-labeled',
+            ]"
+          >
             <DsTypography
               v-if="floatingLabelText"
               as="span"
@@ -443,7 +457,7 @@ onBeforeUnmount(() => {
         >
           <ul
             :id="listboxId"
-            class="ds-select-list"
+            class="ds-select-list ui-select-current-list"
             role="listbox"
             :aria-activedescendant="activeDescendant"
           >
@@ -459,7 +473,7 @@ onBeforeUnmount(() => {
                 class="ds-select-option"
                 :class="[
                   modelValue === option.value && 'is-selected',
-                  highlightedIndex === index && 'is-highlighted',
+                  highlightedIndex === index && highlightMode !== 'idle' && 'is-highlighted',
                 ]"
                 :style="{ '--stagger-index': String(index) }"
                 :disabled="option.disabled"
@@ -544,10 +558,6 @@ onBeforeUnmount(() => {
   --ds-select-list-inset-x: calc(var(--form-control-inset-x, var(--space-5)) - var(--ds-select-option-inline-pad));
   --ds-select-divider-inset-x: var(--form-control-inset-x, var(--space-5));
   --ds-select-motion-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  position: relative;
-  width: 100%;
-  isolation: isolate;
-  z-index: 0;
 }
 
 .ds-select.shape-rounded {
@@ -566,18 +576,7 @@ onBeforeUnmount(() => {
   z-index: 80;
 }
 
-.ds-select-slot {
-  height: var(--ds-select-trigger-h);
-}
-
 .ds-select-panel {
-  position: absolute;
-  inset: 0 auto auto 0;
-  z-index: 1;
-  width: 100%;
-  border-radius: var(--ds-select-radius);
-  overflow: hidden;
-  background: var(--ds-select-surface);
   box-shadow: 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring);
   transition:
     max-height 360ms var(--ds-select-motion-ease),
@@ -606,21 +605,6 @@ onBeforeUnmount(() => {
 }
 
 .ds-select-header {
-  position: relative;
-  width: 100%;
-  height: var(--ds-select-trigger-h);
-  border: 0;
-  background: var(--ds-select-surface);
-  color: var(--ds-select-text);
-  padding: 0 var(--form-control-inset-x, var(--space-5));
-  margin: 0;
-  text-align: left;
-  display: grid;
-  grid-template-columns: 1fr var(--ds-select-indicator-column);
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  outline: none;
   transition: transform 300ms var(--ds-select-motion-ease);
 }
 
@@ -655,17 +639,6 @@ onBeforeUnmount(() => {
   transition-delay: 120ms;
 }
 
-.ds-select-content {
-  min-width: 0;
-  position: relative;
-  display: grid;
-}
-
-.ds-select-content.has-label {
-  padding-top: var(--input-control-padding-top-floating, calc(var(--space-4_75) - 1px));
-  padding-bottom: var(--input-control-padding-y, calc(var(--space-2) - 1px));
-}
-
 .ds-select-label {
   position: absolute;
   left: 0;
@@ -673,7 +646,8 @@ onBeforeUnmount(() => {
   transform: translateY(-50%);
   transform-origin: left center;
   color: var(--ds-select-muted);
-  transition-property: transform, top, color, font-size, line-height, letter-spacing, text-transform, font-family, font-weight;
+  transition-property:
+    transform, top, color, font-size, line-height, letter-spacing, text-transform, font-family, font-weight;
   transition-duration: var(--motion-input-floating-duration);
   transition-timing-function: var(--motion-input-floating-ease);
   pointer-events: none;
@@ -729,17 +703,6 @@ onBeforeUnmount(() => {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
-}
-
-.ds-select-list {
-  list-style: none;
-  margin: 0;
-  padding-top: 0.375rem;
-  padding-bottom: 0.5rem;
-  padding-inline: var(--ds-select-list-inset-x);
-  display: grid;
-  gap: 0.25rem;
-  background: var(--ds-select-surface);
 }
 
 .ds-select-option {
