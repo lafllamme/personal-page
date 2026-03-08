@@ -17,6 +17,7 @@ const props = withDefaults(defineProps<{
   required?: boolean
   placeholder?: string
   fillText?: string
+  emptyText?: string
   disabled?: boolean
   invalid?: boolean
   previewState?: 'default' | 'hover' | 'focus-visible'
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<{
   required: false,
   placeholder: '',
   fillText: 'Please choose an option',
+  emptyText: 'No entries available',
   disabled: false,
   invalid: false,
   previewState: 'default',
@@ -57,6 +59,7 @@ const {
   required,
   placeholder,
   fillText,
+  emptyText,
   disabled,
   invalid,
   previewState,
@@ -93,6 +96,7 @@ const selectedOption = computed(() => {
   return index >= 0 ? optionList.value[index] : null
 })
 const hasValue = computed(() => Boolean(selectedOption.value))
+const hasOptions = computed(() => optionList.value.length > 0)
 const floatingActive = computed(() => isOpen.value || hasValue.value)
 
 const floatingLabelBaseText = computed(() => label.value || placeholder.value || '')
@@ -106,6 +110,7 @@ const floatingLabelRole = computed<'body' | 'meta'>(() => (floatingActive.value 
 const floatingLabelSize = computed<'sm' | '2xs'>(() => (floatingActive.value ? '2xs' : 'sm'))
 const floatingLabelWeight = computed<'light' | 'regular'>(() => (floatingActive.value ? 'regular' : 'light'))
 const resolvedFillText = computed(() => fillText.value || 'Please choose an option')
+const resolvedEmptyText = computed(() => emptyText.value || 'No entries available')
 
 const valueText = computed(() => {
   if (selectedOption.value)
@@ -469,6 +474,15 @@ onBeforeUnmount(() => {
                 />
               </button>
             </li>
+            <li
+              v-if="!hasOptions"
+              class="ds-select-empty"
+              role="presentation"
+            >
+              <DsTypography as="span" role="body" size="sm" tone="muted">
+                {{ resolvedEmptyText }}
+              </DsTypography>
+            </li>
           </ul>
         </div>
       </div>
@@ -768,6 +782,15 @@ onBeforeUnmount(() => {
 .ds-select-option:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.ds-select-empty {
+  min-height: 2.75rem;
+  border-radius: 0.625rem;
+  display: flex;
+  align-items: center;
+  padding: 0.625rem var(--ds-select-option-inline-pad);
+  opacity: 0.8;
 }
 
 .ds-select-indicator-dot {

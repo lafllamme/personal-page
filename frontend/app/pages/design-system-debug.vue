@@ -57,6 +57,7 @@ const selectInvalid = ref('')
 
 const selectTopicTouched = ref(false)
 const selectInvalidTouched = ref(false)
+const selectEmpty = ref('')
 
 const selectOptions = [
   { label: 'Editorial feedback', value: 'editorial' },
@@ -65,6 +66,7 @@ const selectOptions = [
   { label: 'Press inquiry', value: 'press' },
   { label: 'Community support', value: 'community' },
 ]
+const selectEmptyOptions: { label: string, value: string }[] = []
 
 function isValidEmail(value: string): boolean {
   const trimmed = value.trim()
@@ -423,6 +425,16 @@ const selectInvalidError = computed(() => {
                 :options="selectOptions"
                 hint="Disabled state preview."
                 disabled
+              />
+
+              <DsSelect
+                id="debug-select-empty"
+                v-model="selectEmpty"
+                placeholder="Channel"
+                fill-text="Choose a channel"
+                empty-text="No entries available"
+                :options="selectEmptyOptions"
+                hint="Empty state preview."
               />
             </div>
           </div>
