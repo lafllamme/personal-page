@@ -403,8 +403,6 @@ useEventListener(window, 'resize', () => {
         </button>
 
         <div ref="bodyEl" class="ds-select-body" :class="{ 'is-open': isOpen }">
-          <div class="ds-select-divider" />
-
           <ul
             :id="listboxId"
             class="ds-select-list"
@@ -547,6 +545,7 @@ useEventListener(window, 'resize', () => {
 }
 
 .ds-select-header {
+  position: relative;
   width: 100%;
   height: var(--ds-select-trigger-h);
   border: 0;
@@ -560,10 +559,33 @@ useEventListener(window, 'resize', () => {
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
+  transition: transform 300ms var(--ds-select-motion-ease);
 }
 
 .ds-select.is-disabled .ds-select-header {
   cursor: not-allowed;
+}
+
+.ds-select-header::after {
+  content: '';
+  position: absolute;
+  left: var(--ds-select-divider-inset-x);
+  right: var(--ds-select-divider-inset-x);
+  bottom: 0;
+  height: 1px;
+  background: var(--un-preset-radix-sand8);
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition:
+    opacity 210ms ease,
+    transform 300ms var(--ds-select-motion-ease);
+}
+
+.ds-select.is-open .ds-select-header::after {
+  opacity: 1;
+  transform: scaleX(1);
+  transition-delay: 80ms;
 }
 
 .ds-select-content {
@@ -615,13 +637,15 @@ useEventListener(window, 'resize', () => {
 }
 
 .ds-select-chevron {
+  --ds-select-chevron-offset-closed: 1px;
+  --ds-select-chevron-offset-open: 3px;
   color: var(--ds-select-text);
-  transform: translateY(10%);
+  transform: translateY(var(--ds-select-chevron-offset-closed));
   transition: transform 300ms var(--ds-select-motion-ease);
 }
 
 .ds-select-chevron.is-open {
-  transform: translateY(10%) rotate(180deg);
+  transform: translateY(var(--ds-select-chevron-offset-open)) rotate(180deg);
 }
 
 .ds-select-body {
@@ -641,30 +665,11 @@ useEventListener(window, 'resize', () => {
   pointer-events: auto;
 }
 
-.ds-select-divider {
-  height: 1px;
-  margin-inline: var(--ds-select-divider-inset-x);
-  margin-top: 0.125rem;
-  margin-bottom: 0.125rem;
-  background: var(--un-preset-radix-sand8);
-  transform: scaleX(0);
-  transform-origin: center;
-  opacity: 0.72;
-  transition:
-    transform 260ms var(--ds-select-motion-ease),
-    opacity 220ms ease;
-}
-
-.ds-select-body.is-open .ds-select-divider {
-  transform: scaleX(1);
-  opacity: 1;
-  transition-delay: 90ms;
-}
-
 .ds-select-list {
   list-style: none;
   margin: 0;
-  padding-block: 0.5rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.5rem;
   padding-inline: var(--ds-select-list-inset-x);
   display: grid;
   gap: 0.25rem;
