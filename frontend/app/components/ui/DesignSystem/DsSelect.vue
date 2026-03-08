@@ -490,6 +490,11 @@ useEventListener(window, 'resize', () => {
   position: relative;
   width: 100%;
   isolation: isolate;
+  z-index: 0;
+}
+
+.ds-select.is-open {
+  z-index: 80;
 }
 
 .ds-select-slot {
@@ -499,6 +504,7 @@ useEventListener(window, 'resize', () => {
 .ds-select-panel {
   position: absolute;
   inset: 0 auto auto 0;
+  z-index: 1;
   width: 100%;
   border-radius: var(--ds-select-radius);
   overflow: hidden;
