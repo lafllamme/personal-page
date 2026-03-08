@@ -14,6 +14,8 @@ type SelectOption = {
   disabled?: boolean
 }
 
+const HEADER_HEIGHT = 56
+
 const props = withDefaults(defineProps<{
   modelValue?: string
   options?: SelectOption[]
@@ -61,12 +63,14 @@ const {
 } = toRefs(props)
 
 const attrs = useAttrs()
-const triggerEl = ref<HTMLElement | null>(null)
 const rootEl = ref<HTMLElement | null>(null)
+const triggerEl = ref<HTMLElement | null>(null)
+const bodyEl = ref<HTMLElement | null>(null)
 
 const isOpen = ref(false)
 const isFocused = ref(false)
 const highlightedIndex = ref(-1)
+const panelHeight = ref(HEADER_HEIGHT)
 const errorShakeKey = ref(0)
 
 const selectId = computed(() => {
@@ -133,14 +137,9 @@ const rootClass = computed(() => [
   previewState.value === 'focus-visible' && 'is-preview-focus',
 ])
 
-const triggerClass = computed(() => [
-  'ds-select-trigger',
-  !disabled.value && !hasError.value && 'is-interactive',
-])
-
-const overlayClass = computed(() => [
-  'ds-select-overlay',
-  isOpen.value ? 'is-visible' : 'is-hidden',
+const panelClass = computed(() => [
+  'ds-select-panel',
+  isOpen.value ? 'is-expanded' : 'is-collapsed',
 ])
 
 const errorAnimationKey = computed(() => `ds-select-error-${errorShakeKey.value}`)
@@ -170,6 +169,16 @@ function getInitialIndexForOpen(): number {
   return findFirstEnabledIndex()
 }
 
+function measureOpenHeight(): void {
+  const body = bodyEl.value
+  if (!body) {
+    panelHeight.value = HEADER_HEIGHT
+    return
+  }
+
+  panelHeight.value = HEADER_HEIGHT + body.scrollHeight
+}
+
 async function openSelect(): Promise<void> {
   if (disabled.value || isOpen.value)
     return
@@ -177,6 +186,7 @@ async function openSelect(): Promise<void> {
   isOpen.value = true
   highlightedIndex.value = getInitialIndexForOpen()
   await nextTick()
+  measureOpenHeight()
 }
 
 function closeSelect(restoreFocus = false): void {
@@ -185,6 +195,7 @@ function closeSelect(restoreFocus = false): void {
 
   isOpen.value = false
   highlightedIndex.value = -1
+  panelHeight.value = HEADER_HEIGHT
 
   if (restoreFocus)
     nextTick(() => triggerEl.value?.focus())
@@ -302,22 +313,19 @@ watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) 
 })
 
 watch([optionList, modelValue], () => {
-  if (isOpen.value)
-    void nextTick()
-}, { deep: true })
-
-watch(isOpen, async (open) => {
-  if (!open)
+  if (!isOpen.value)
     return
 
-  await nextTick()
-})
+  nextTick(() => measureOpenHeight())
+}, { deep: true })
 
 onClickOutside(rootEl, () => closeSelect(false))
 
 useEventListener(window, 'resize', () => {
-  if (isOpen.value)
-    void nextTick()
+  if (!isOpen.value)
+    return
+
+  measureOpenHeight()
 })
 </script>
 
@@ -327,98 +335,64 @@ useEventListener(window, 'resize', () => {
       ref="rootEl"
       :class="rootClass"
     >
-      <button
-        ref="triggerEl"
-        v-bind="attrs"
-        type="button"
-        :class="triggerClass"
-        :disabled="disabled"
-        :aria-expanded="isOpen ? 'true' : 'false'"
-        :aria-haspopup="'listbox'"
-        :aria-controls="listboxId"
-        :aria-activedescendant="activeDescendant"
-        :aria-invalid="hasError ? 'true' : 'false'"
-        :aria-describedby="describedBy"
-        @click="onTriggerClick"
-        @keydown="onTriggerKeydown"
-        @focus="onTriggerFocus"
-        @blur="onTriggerBlur"
+      <div class="ds-select-slot" aria-hidden="true" />
+
+      <div
+        :class="panelClass"
+        :style="{ maxHeight: `${panelHeight}px` }"
       >
-        <span class="ds-select-content" :class="{ 'has-label': Boolean(label) }">
-          <DsTypography
-            v-if="floatingLabelText"
-            as="span"
-            role="meta"
-            size="2xs"
-            weight="regular"
-            uppercase
-            class="ds-select-label"
-            :class="{ 'is-floating': floatingActive }"
-          >
-            {{ floatingLabelText }}
-          </DsTypography>
+        <button
+          ref="triggerEl"
+          v-bind="attrs"
+          type="button"
+          class="ds-select-header"
+          :disabled="disabled"
+          :aria-expanded="isOpen ? 'true' : 'false'"
+          :aria-haspopup="'listbox'"
+          :aria-controls="listboxId"
+          :aria-activedescendant="activeDescendant"
+          :aria-invalid="hasError ? 'true' : 'false'"
+          :aria-describedby="describedBy"
+          @click="onTriggerClick"
+          @keydown="onTriggerKeydown"
+          @focus="onTriggerFocus"
+          @blur="onTriggerBlur"
+        >
+          <span class="ds-select-content" :class="{ 'has-label': Boolean(label) }">
+            <DsTypography
+              v-if="floatingLabelText"
+              as="span"
+              role="meta"
+              size="2xs"
+              weight="regular"
+              uppercase
+              class="ds-select-label"
+              :class="{ 'is-floating': floatingActive }"
+            >
+              {{ floatingLabelText }}
+            </DsTypography>
 
-          <DsTypography
-            as="span"
-            role="body"
-            size="sm"
-            class="ds-select-value"
-            :class="{ 'is-placeholder': !hasValue }"
-          >
-            {{ valueText || '\u00A0' }}
-          </DsTypography>
-        </span>
-
-        <DsIcon
-          name="iconoir:nav-arrow-down"
-          size="sm"
-          variant="inherit"
-          class="ds-select-chevron"
-          :class="{ 'is-open': isOpen }"
-        />
-      </button>
-
-      <div :class="overlayClass" aria-hidden="true">
-        <div class="ds-select-overlay-panel">
-          <button
-            type="button"
-            class="ds-select-overlay-header"
-            :disabled="disabled"
-            @click="closeSelect(true)"
-            @keydown="onTriggerKeydown"
-          >
-            <span class="ds-select-content" :class="{ 'has-label': Boolean(label) }">
-              <DsTypography
-                v-if="floatingLabelText"
-                as="span"
-                role="meta"
-                size="2xs"
-                weight="regular"
-                uppercase
-                class="ds-select-label is-floating"
-              >
-                {{ floatingLabelText }}
-              </DsTypography>
-
-              <DsTypography
-                as="span"
-                role="body"
-                size="sm"
-                class="ds-select-value"
-                :class="{ 'is-placeholder': !hasValue }"
-              >
-                {{ valueText || '\u00A0' }}
-              </DsTypography>
-            </span>
-
-            <DsIcon
-              name="iconoir:nav-arrow-down"
+            <DsTypography
+              as="span"
+              role="body"
               size="sm"
-              variant="inherit"
-              class="ds-select-chevron is-open"
-            />
-          </button>
+              class="ds-select-value"
+              :class="{ 'is-placeholder': !hasValue }"
+            >
+              {{ valueText || '\u00A0' }}
+            </DsTypography>
+          </span>
 
+          <DsIcon
+            name="iconoir:nav-arrow-down"
+            size="sm"
+            variant="inherit"
+            class="ds-select-chevron"
+            :class="{ 'is-open': isOpen }"
+          />
+        </button>
+
+        <div ref="bodyEl" class="ds-select-body" :class="{ 'is-open': isOpen }">
           <div class="ds-select-divider" />
 
           <ul
@@ -515,35 +489,50 @@ useEventListener(window, 'resize', () => {
 
   position: relative;
   width: 100%;
+  isolation: isolate;
+}
+
+.ds-select-slot {
   height: var(--ds-select-trigger-h);
-  overflow: visible;
 }
 
-.ds-select.is-open .ds-select-trigger {
-  opacity: 0;
-  pointer-events: none;
-}
-
-.ds-select-trigger {
+.ds-select-panel {
   position: absolute;
   inset: 0 auto auto 0;
   width: 100%;
-  height: var(--ds-select-trigger-h);
-  border: 0;
-  background: transparent;
-  color: var(--ds-select-text);
-  padding: 0;
-  margin: 0;
-  text-align: left;
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  gap: 0.75rem;
   border-radius: var(--ds-select-radius);
+  overflow: hidden;
+  background: var(--ds-select-overlay-bg);
+  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring);
+  filter: drop-shadow(0 18px 40px var(--ds-select-shadow));
+  transition:
+    max-height 340ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 180ms ease,
+    background-color 180ms ease;
 }
 
-.ds-select-overlay-header {
-  position: relative;
+.ds-select:not(.is-disabled):not(.is-invalid):not(.is-open) .ds-select-panel:hover,
+.ds-select.is-preview-hover:not(.is-disabled):not(.is-invalid):not(.is-open) .ds-select-panel {
+  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring-hover);
+  background: var(--ds-select-bg-hover);
+}
+
+.ds-select.is-focused:not(.is-disabled):not(.is-invalid) .ds-select-panel,
+.ds-select.is-open:not(.is-disabled):not(.is-invalid) .ds-select-panel,
+.ds-select.is-preview-focus:not(.is-disabled):not(.is-invalid) .ds-select-panel {
+  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring-focus);
+}
+
+.ds-select.is-invalid .ds-select-panel {
+  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--border-error, #ff4d94);
+}
+
+.ds-select.is-disabled .ds-select-panel {
+  opacity: 0.65;
+  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--border-disabled, color-mix(in oklch, var(--foreground) 20%, transparent));
+}
+
+.ds-select-header {
   width: 100%;
   height: var(--ds-select-trigger-h);
   border: 0;
@@ -556,36 +545,11 @@ useEventListener(window, 'resize', () => {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 0.75rem;
-}
-
-.ds-select-trigger {
   cursor: pointer;
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring);
-  background: var(--ds-select-bg);
-  padding-inline: 1.5rem;
-  transition: box-shadow 180ms ease, background-color 180ms ease;
 }
 
-.ds-select:not(.is-disabled):not(.is-invalid) .ds-select-trigger.is-interactive:hover,
-.ds-select.is-preview-hover:not(.is-disabled):not(.is-invalid) .ds-select-trigger {
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring-hover);
-  background: var(--ds-select-bg-hover);
-}
-
-.ds-select.is-focused:not(.is-disabled):not(.is-invalid) .ds-select-trigger,
-.ds-select.is-open:not(.is-disabled):not(.is-invalid) .ds-select-trigger,
-.ds-select.is-preview-focus:not(.is-disabled):not(.is-invalid) .ds-select-trigger {
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring-focus);
-}
-
-.ds-select.is-invalid .ds-select-trigger {
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--border-error, #ff4d94);
-}
-
-.ds-select.is-disabled .ds-select-trigger {
+.ds-select.is-disabled .ds-select-header {
   cursor: not-allowed;
-  opacity: 0.65;
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--border-disabled, color-mix(in oklch, var(--foreground) 20%, transparent));
 }
 
 .ds-select-content {
@@ -606,7 +570,10 @@ useEventListener(window, 'resize', () => {
   transform: translateY(-50%);
   transform-origin: left center;
   color: var(--ds-select-muted);
-  transition: top 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1), color 180ms ease;
+  transition:
+    top 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 180ms ease;
   pointer-events: none;
 }
 
@@ -638,47 +605,17 @@ useEventListener(window, 'resize', () => {
   transform: rotate(180deg);
 }
 
-.ds-select-overlay {
-  position: absolute;
-  z-index: 20;
-  inset: 0 auto auto 0;
-  width: 100%;
-  pointer-events: none;
-}
-
-.ds-select-overlay-panel {
-  position: relative;
-  width: 100%;
-  border-radius: var(--ds-select-radius);
-  background: var(--ds-select-overlay-bg);
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring-focus);
-  filter: drop-shadow(0 18px 40px var(--ds-select-shadow));
-  overflow: hidden;
-  min-height: var(--ds-select-trigger-h);
-}
-
-.ds-select.is-invalid .ds-select-overlay-panel {
-  box-shadow: inset 0 0 0 var(--ds-select-ring-w) var(--border-error, #ff4d94);
-}
-
-.ds-select-overlay.is-hidden .ds-select-overlay-panel {
-  clip-path: inset(0% 0% 100% 0% round var(--ds-select-radius));
+.ds-select-body {
   opacity: 0;
-  transition: clip-path 320ms cubic-bezier(0.22, 1, 0.36, 1), opacity 180ms ease;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 170ms ease, transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.ds-select-overlay.is-visible {
-  pointer-events: auto;
-}
-
-.ds-select-overlay.is-visible .ds-select-overlay-panel {
-  clip-path: inset(0% 0% 0% 0% round var(--ds-select-radius));
+.ds-select-body.is-open {
   opacity: 1;
-  transition: clip-path 340ms cubic-bezier(0.22, 1, 0.36, 1), opacity 160ms ease;
-}
-
-.ds-select-overlay-header {
-  cursor: pointer;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .ds-select-divider {
@@ -713,7 +650,7 @@ useEventListener(window, 'resize', () => {
   transform: translateY(6px);
 }
 
-.ds-select-overlay.is-visible .ds-select-option {
+.ds-select-body.is-open .ds-select-option {
   opacity: 1;
   transform: translateY(0);
   transition:
