@@ -154,12 +154,20 @@ export const inputShortcuts: UserShortcuts = [
     'relative w-full isolate z-0',
   ],
   [
+    'ui-select-current-root-layer',
+    'z-80',
+  ],
+  [
     'ui-select-current-slot',
     'h-[var(--ds-select-trigger-h)]',
   ],
   [
     'ui-select-current-panel',
     'absolute inset-[0_auto_auto_0] z-1 w-full overflow-hidden [border-radius:var(--ds-select-radius)] [background:var(--ds-select-surface)]',
+  ],
+  [
+    'ui-select-current-panel-motion',
+    '[transition:max-height_360ms_var(--ds-select-motion-ease),box-shadow_180ms_ease]',
   ],
   [
     'ui-select-current-header',
@@ -176,6 +184,30 @@ export const inputShortcuts: UserShortcuts = [
   [
     'ui-select-current-list',
     'list-none m-0 pt-$space-2_5 pb-$space-2 [padding-inline:var(--ds-select-list-inset-x)] grid gap-$space-1 [background:var(--ds-select-surface)]',
+  ],
+  [
+    'ui-select-current-panel-idle',
+    '[box-shadow:0_0_0_var(--ds-select-ring-w)_var(--ds-select-ring)]',
+  ],
+  [
+    'ui-select-current-panel-hoverable',
+    'hover:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ds-select-ring-hover)]',
+  ],
+  [
+    'ui-select-current-panel-hover',
+    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ds-select-ring-hover)]',
+  ],
+  [
+    'ui-select-current-panel-focus',
+    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ds-select-ring-focus)]',
+  ],
+  [
+    'ui-select-current-panel-invalid',
+    '[box-shadow:0_0_0_var(--ds-select-ring-w)_var(--border-error)]',
+  ],
+  [
+    'ui-select-current-panel-disabled',
+    '[opacity:0.65] [box-shadow:0_0_0_var(--ds-select-ring-w)_var(--border-disabled)]',
   ],
   [
     'ui-input-control-base',

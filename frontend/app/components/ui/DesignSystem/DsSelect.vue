@@ -164,6 +164,33 @@ const panelClass = computed(() => [
   isOpen.value ? 'is-expanded' : 'is-collapsed',
 ])
 
+const rootLayerClass = computed(() => (isOpen.value || isClosing.value) ? 'ui-select-current-root-layer' : '')
+
+const panelVisualClass = computed(() => {
+  if (disabled.value)
+    return 'ui-select-current-panel-disabled'
+
+  if (hasError.value)
+    return 'ui-select-current-panel-invalid'
+
+  if (isOpen.value || isFocused.value || previewState.value === 'focus-visible')
+    return 'ui-select-current-panel-focus'
+
+  if (previewState.value === 'hover')
+    return 'ui-select-current-panel-hover'
+
+  return 'ui-select-current-panel-idle'
+})
+
+const panelHoverableClass = computed(() => (
+  !disabled.value
+  && !hasError.value
+  && !isOpen.value
+  && previewState.value === 'default'
+    ? 'ui-select-current-panel-hoverable'
+    : ''
+))
+
 const errorAnimationKey = computed(() => `ds-select-error-${errorShakeKey.value}`)
 
 function findFirstEnabledIndex(): number {
@@ -382,12 +409,13 @@ onBeforeUnmount(() => {
   <div class="grid gap-2">
     <div
       ref="rootEl"
-      class="ui-select-current-root" :class="[rootClass]"
+      class="ui-select-current-root" :class="[rootClass, rootLayerClass]"
     >
       <div class="ds-select-slot ui-select-current-slot" aria-hidden="true" />
 
       <div
-        class="ui-select-current-panel" :class="[panelClass]"
+        class="ui-select-current-panel ui-select-current-panel-motion"
+        :class="[panelClass, panelVisualClass, panelHoverableClass]"
         :style="{ maxHeight: `${panelHeight}px` }"
       >
         <button
@@ -568,42 +596,6 @@ onBeforeUnmount(() => {
   --ds-select-radius: var(--radius-form-pill);
 }
 
-.ds-select.is-open {
-  z-index: 80;
-}
-
-.ds-select.is-closing {
-  z-index: 80;
-}
-
-.ds-select-panel {
-  box-shadow: 0 0 0 var(--ds-select-ring-w) var(--ds-select-ring);
-  transition:
-    max-height 360ms var(--ds-select-motion-ease),
-    box-shadow 180ms ease;
-}
-
-.ds-select:not(.is-disabled):not(.is-invalid):not(.is-open) .ds-select-panel:hover,
-.ds-select.is-preview-hover:not(.is-disabled):not(.is-invalid):not(.is-open) .ds-select-panel {
-  box-shadow: 0 0 0 var(--focus-ring-inner-width, 2px) var(--ds-select-ring-hover);
-}
-
-.ds-select.is-focused:not(.is-disabled):not(.is-invalid) .ds-select-panel,
-.ds-select.is-open:not(.is-disabled):not(.is-invalid) .ds-select-panel,
-.ds-select.is-preview-focus:not(.is-disabled):not(.is-invalid) .ds-select-panel {
-  box-shadow: 0 0 0 var(--focus-ring-inner-width, 2px) var(--ds-select-ring-focus);
-}
-
-.ds-select.is-invalid .ds-select-panel {
-  box-shadow: 0 0 0 var(--ds-select-ring-w) var(--border-error, #ff4d94);
-}
-
-.ds-select.is-disabled .ds-select-panel {
-  opacity: 0.65;
-  box-shadow: 0 0 0 var(--ds-select-ring-w)
-    var(--border-disabled, color-mix(in oklch, var(--foreground) 20%, transparent));
-}
-
 .ds-select-header {
   transition: transform 300ms var(--ds-select-motion-ease);
 }
@@ -710,14 +702,14 @@ onBeforeUnmount(() => {
   border: 0;
   background: transparent;
   color: var(--ds-select-text);
-  min-height: 2.75rem;
+  min-height: 2.25rem;
   border-radius: 0.625rem;
   text-align: left;
   display: grid;
   grid-template-columns: 1fr var(--ds-select-indicator-column);
   align-items: center;
   gap: 0.75rem;
-  padding: 0.625rem var(--ds-select-option-inline-pad);
+  padding: 0.375rem var(--ds-select-option-inline-pad);
   cursor: pointer;
   opacity: 0;
   transform: translateY(6px);
@@ -730,9 +722,9 @@ onBeforeUnmount(() => {
   opacity: 1;
   transform: translateY(0);
   transition:
-    opacity 210ms ease,
-    transform 280ms var(--ds-select-motion-ease);
-  transition-delay: calc(var(--stagger-index) * 28ms + 45ms);
+    opacity 450ms ease,
+    transform 600ms var(--ds-select-motion-ease);
+  transition-delay: calc(var(--stagger-index) * 90ms + 120ms);
 }
 
 .ds-select-option:hover,
@@ -758,11 +750,11 @@ onBeforeUnmount(() => {
 }
 
 .ds-select-empty {
-  min-height: 2.75rem;
+  min-height: 2.25rem;
   border-radius: 0.625rem;
   display: flex;
   align-items: center;
-  padding: 0.625rem var(--ds-select-option-inline-pad);
+  padding: 0.375rem var(--ds-select-option-inline-pad);
   opacity: 0.8;
 }
 
