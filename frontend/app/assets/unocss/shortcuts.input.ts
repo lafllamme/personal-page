@@ -186,6 +186,50 @@ export const inputShortcuts: UserShortcuts = [
     'list-none m-0 pt-$space-2_5 pb-$space-2 [padding-inline:var(--ds-select-list-inset-x)] grid gap-$space-1 [background:var(--ds-select-surface)]',
   ],
   [
+    'ui-select-current-body',
+    '[background:var(--ds-select-surface)] opacity-0 [transform:translateY(-6px)] pointer-events-none [transition:opacity_220ms_ease,transform_320ms_var(--ds-select-motion-ease),background-color_180ms_ease]',
+  ],
+  [
+    'ui-select-current-body-open',
+    'opacity-100 [transform:translateY(0)] pointer-events-auto',
+  ],
+  [
+    'ui-select-current-option',
+    'w-full border-0 [background:transparent] [color:var(--ds-select-text)] min-h-[2.25rem] [border-radius:0.625rem] text-left grid [grid-template-columns:1fr_var(--ds-select-indicator-column)] items-center gap-$space-3 [padding:0.375rem_var(--ds-select-option-inline-pad)] cursor-pointer opacity-0 [transform:translateY(6px)] [transition:background-color_160ms_ease,color_160ms_ease]',
+  ],
+  [
+    'ui-select-current-option-open',
+    'opacity-100 [transform:translateY(0)] [transition:opacity_450ms_ease,transform_600ms_var(--ds-select-motion-ease)] [transition-delay:calc(var(--stagger-index)_*_90ms_+_120ms)]',
+  ],
+  [
+    'ui-select-current-option-highlighted',
+    '[background:color-mix(in_oklch,var(--color-accent-ui,hsl(var(--foreground)))_10%,transparent)] [color:var(--color-accent-ui,hsl(var(--foreground)))]',
+  ],
+  [
+    'ui-select-current-option-selected',
+    '[background:color-mix(in_oklch,var(--color-accent-ui,hsl(var(--foreground)))_18%,transparent)] [color:var(--ds-select-text)]',
+  ],
+  [
+    'ui-select-current-option-selected-highlighted',
+    '[background:color-mix(in_oklch,var(--color-accent-ui,hsl(var(--foreground)))_24%,transparent)] [color:var(--ds-select-text)]',
+  ],
+  [
+    'ui-select-current-option-disabled',
+    'disabled:opacity-45 disabled:cursor-not-allowed',
+  ],
+  [
+    'ui-select-current-empty',
+    'min-h-[2.25rem] [border-radius:0.625rem] flex items-center [padding:0.375rem_var(--ds-select-option-inline-pad)] opacity-80',
+  ],
+  [
+    'ui-select-current-indicator-dot',
+    'w-$space-2 h-$space-2 rounded-full [background:var(--ds-select-indicator)] justify-self-center opacity-0 [transition:opacity_140ms_ease]',
+  ],
+  [
+    'ui-select-current-indicator-dot-visible',
+    'opacity-100',
+  ],
+  [
     'ui-select-current-panel-idle',
     '[box-shadow:0_0_0_var(--ds-select-ring-w)_var(--ds-select-ring)]',
   ],

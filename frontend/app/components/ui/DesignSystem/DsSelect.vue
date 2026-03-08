@@ -478,8 +478,8 @@ onBeforeUnmount(() => {
 
         <div
           ref="bodyEl"
-          class="ds-select-body"
-          :class="{ 'is-open': isOpen }"
+          class="ui-select-current-body"
+          :class="[isOpen && 'ui-select-current-body-open']"
           :aria-hidden="isOpen ? 'false' : 'true'"
           :inert="!isOpen"
         >
@@ -498,10 +498,12 @@ onBeforeUnmount(() => {
             >
               <button
                 type="button"
-                class="ds-select-option"
+                class="ui-select-current-option ui-select-current-option-disabled"
                 :class="[
-                  modelValue === option.value && 'is-selected',
-                  highlightedIndex === index && highlightMode !== 'idle' && 'is-highlighted',
+                  isOpen && 'ui-select-current-option-open',
+                  modelValue === option.value && 'ui-select-current-option-selected',
+                  highlightedIndex === index && highlightMode !== 'idle' && 'ui-select-current-option-highlighted',
+                  modelValue === option.value && highlightedIndex === index && highlightMode !== 'idle' && 'ui-select-current-option-selected-highlighted',
                 ]"
                 :style="{ '--stagger-index': String(index) }"
                 :disabled="option.disabled"
@@ -514,15 +516,15 @@ onBeforeUnmount(() => {
                 </DsTypography>
 
                 <span
-                  class="ds-select-indicator-dot"
-                  :class="{ 'is-visible': modelValue === option.value }"
+                  class="ui-select-current-indicator-dot"
+                  :class="{ 'ui-select-current-indicator-dot-visible': modelValue === option.value }"
                   aria-hidden="true"
                 />
               </button>
             </li>
             <li
               v-if="!hasOptions"
-              class="ds-select-empty"
+              class="ui-select-current-empty"
               role="presentation"
             >
               <DsTypography as="span" role="body" size="md" tone="muted">
@@ -678,98 +680,6 @@ onBeforeUnmount(() => {
 
 .ds-select-chevron.is-open {
   transform: translateY(var(--ds-select-chevron-offset-open)) rotate(180deg);
-}
-
-.ds-select-body {
-  background: var(--ds-select-surface);
-  opacity: 0;
-  transform: translateY(-6px);
-  pointer-events: none;
-  transition:
-    opacity 220ms ease,
-    transform 320ms var(--ds-select-motion-ease),
-    background-color 180ms ease;
-}
-
-.ds-select-body.is-open {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.ds-select-option {
-  width: 100%;
-  border: 0;
-  background: transparent;
-  color: var(--ds-select-text);
-  min-height: 2.25rem;
-  border-radius: 0.625rem;
-  text-align: left;
-  display: grid;
-  grid-template-columns: 1fr var(--ds-select-indicator-column);
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.375rem var(--ds-select-option-inline-pad);
-  cursor: pointer;
-  opacity: 0;
-  transform: translateY(6px);
-  transition:
-    background-color 160ms ease,
-    color 160ms ease;
-}
-
-.ds-select-body.is-open .ds-select-option {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 450ms ease,
-    transform 600ms var(--ds-select-motion-ease);
-  transition-delay: calc(var(--stagger-index) * 90ms + 120ms);
-}
-
-.ds-select-option:hover,
-.ds-select-option.is-highlighted {
-  background: color-mix(in oklch, var(--color-accent-ui, hsl(var(--foreground))) 10%, transparent);
-  color: var(--color-accent-ui, hsl(var(--foreground)));
-}
-
-.ds-select-option.is-selected {
-  background: color-mix(in oklch, var(--color-accent-ui, hsl(var(--foreground))) 18%, transparent);
-  color: var(--ds-select-text);
-}
-
-.ds-select-option.is-selected:hover,
-.ds-select-option.is-selected.is-highlighted {
-  background: color-mix(in oklch, var(--color-accent-ui, hsl(var(--foreground))) 24%, transparent);
-  color: var(--ds-select-text);
-}
-
-.ds-select-option:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-.ds-select-empty {
-  min-height: 2.25rem;
-  border-radius: 0.625rem;
-  display: flex;
-  align-items: center;
-  padding: 0.375rem var(--ds-select-option-inline-pad);
-  opacity: 0.8;
-}
-
-.ds-select-indicator-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 9999px;
-  background: var(--ds-select-indicator);
-  justify-self: center;
-  opacity: 0;
-  transition: opacity 140ms ease;
-}
-
-.ds-select-indicator-dot.is-visible {
-  opacity: 1;
 }
 
 .ds-select-error-row {
