@@ -90,6 +90,10 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Form-Density-Entscheid (2026-03-08):
   - Horizontaler Form-Control-Inset ist vereinheitlicht auf `--form-control-inset-x`.
   - Defaultwert: `20px` (`var(--space-5)`), gilt fuer `DsInput`, `DsTextarea`, `DsSelect`.
+- Form-Shape-Entscheid (2026-03-08):
+  - Form-Controls unterstuetzen `shape='pill' | 'rounded'`.
+  - Token-Level: `pill` (`--radius-form-pill = 1rem / 16px`) und `rounded` (`--radius-form-rounded = 0.5rem / 8px`).
+  - Component-Defaults: `DsInput` + `DsTextarea` + `DsSelect` nutzen `rounded`.
 
 ## 8) Was wir bewusst nicht mehr pflegen
 - A-E Exploration-Rahmen als System-Definition.

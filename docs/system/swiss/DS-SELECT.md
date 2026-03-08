@@ -10,7 +10,7 @@ Status: aktiv
 
 ### Contract
 - Variante: `floating` (einziger aktiver Runtime-Path)
-- Props: `modelValue`, `options`, `label`, `hint`, `error`, `required`, `placeholder`, `fillText`, `disabled`, `invalid`, `previewState`
+- Props: `modelValue`, `options`, `shape`, `label`, `hint`, `error`, `required`, `placeholder`, `fillText`, `emptyText`, `disabled`, `invalid`, `previewState`
 - Option-Shape: `{ label: string, value: string, disabled?: boolean }`
 - States: `default`, `hover`, `focus-visible`, `open`, `invalid`, `disabled`
 - Scope v1: `single-select`, kein Search, kein Multi-select
@@ -52,7 +52,8 @@ Status: aktiv
 - `--form-control-inset-x` (Default: `var(--space-5)` = 20px)
 - `--input-control-padding-y`
 - `--input-control-padding-top-floating`
-- `--radius-lg`
+- `--radius-form-pill` (Default: `1rem` / 16px)
+- `--radius-form-rounded` (`0.5rem` / 8px)
 
 ### Select-Shortcuts
 - `ui-select-root`
@@ -89,6 +90,10 @@ Status: aktiv
 - Header-Content, Label-Anchor und Value-Inset folgen dem gemeinsamen Form-Token `--form-control-inset-x`.
 - Defaultwert: `20px` (`var(--space-5)`).
 - Ziel: X-Achsen-Paritaet mit `DsInput` und `DsTextarea`.
+
+## Form Shape (2026-03-08)
+- `shape='rounded'` ist der Default fuer `DsSelect` (8px).
+- `shape='pill'` bleibt als weichere Alternative (16px), ohne Interaktion/Animation/Spacing zu aendern.
 
 ## JS vs CSS Verantwortung
 - In CSS/Uno:

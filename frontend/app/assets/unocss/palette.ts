@@ -230,6 +230,8 @@ const sizingTokens: TokenSet = {
   'radius-lg': '0.5rem',
   'radius-xl': '0.75rem',
   'radius-2xl': '1rem',
+  'radius-form-pill': '1rem',
+  'radius-form-rounded': '0.5rem',
   'radius-3xl': '1.5rem',
   'radius-4xl': '2rem',
   'radius-pill': '9999px',

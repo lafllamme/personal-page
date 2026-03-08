@@ -11,6 +11,7 @@ defineOptions({
 const props = withDefaults(defineProps<{
   modelValue?: string
   options?: SelectOption[]
+  shape?: 'pill' | 'rounded'
   label?: string
   hint?: string
   error?: string
@@ -24,6 +25,7 @@ const props = withDefaults(defineProps<{
 }>(), {
   modelValue: '',
   options: () => [],
+  shape: 'rounded',
   label: '',
   hint: '',
   error: '',
@@ -53,6 +55,7 @@ const HEADER_HEIGHT = 50
 const {
   modelValue,
   options,
+  shape,
   label,
   hint,
   error,
@@ -145,6 +148,7 @@ const activeDescendant = computed(() => {
 
 const rootClass = computed(() => [
   'ds-select',
+  shape.value === 'rounded' ? 'shape-rounded' : 'shape-pill',
   isOpen.value && 'is-open',
   isClosing.value && 'is-closing',
   isFocused.value && 'is-focused',
@@ -524,7 +528,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .ds-select {
   --ds-select-trigger-h: calc(var(--size-control-lg) + var(--space-2));
-  --ds-select-radius: 1.125rem;
+  --ds-select-radius: var(--radius-form-pill);
   --ds-select-ring-w: 1px;
   --ds-select-ring: var(--border-input-idle, color-mix(in oklch, var(--foreground) 28%, transparent));
   --ds-select-ring-hover: var(--border-accent-hover, color-mix(in oklch, var(--foreground) 42%, transparent));
@@ -544,6 +548,14 @@ onBeforeUnmount(() => {
   width: 100%;
   isolation: isolate;
   z-index: 0;
+}
+
+.ds-select.shape-rounded {
+  --ds-select-radius: var(--radius-form-rounded);
+}
+
+.ds-select.shape-pill {
+  --ds-select-radius: var(--radius-form-pill);
 }
 
 .ds-select.is-open {
@@ -661,10 +673,9 @@ onBeforeUnmount(() => {
   transform: translateY(-50%);
   transform-origin: left center;
   color: var(--ds-select-muted);
-  transition:
-    top 250ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 250ms cubic-bezier(0.22, 1, 0.36, 1),
-    color 180ms ease;
+  transition-property: transform, top, color, font-size, line-height, letter-spacing, text-transform, font-family, font-weight;
+  transition-duration: var(--motion-input-floating-duration);
+  transition-timing-function: var(--motion-input-floating-ease);
   pointer-events: none;
 }
 

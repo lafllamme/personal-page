@@ -11,7 +11,7 @@ Status: aktiv
 
 ### Contract
 - Varianten: `default`, `floating`
-- Props: `label`, `placeholder`, `fillText`, `hint`, `error`, `invalid`, `required`, `disabled`, `readonly`
+- Props: `shape`, `label`, `placeholder`, `fillText`, `hint`, `error`, `invalid`, `required`, `disabled`, `readonly`
 - States: `default`, `hover`, `focus-visible`, `invalid`, `readonly`, `readonly-hover`, `disabled`
 - Error: Icon + Shake-In
 - Styling-Engine: CSS/Pseudoklassen (`hover`, `focus-within`, `read-only`) via Uno shortcuts
@@ -41,6 +41,8 @@ Status: aktiv
 - `shake-in`
 
 ### Sizing / Control
+- `--radius-form-pill` (Default: `1rem` / 16px)
+- `--radius-form-rounded` (`0.5rem` / 8px)
 - `--control-border-width`
 - `--focus-ring-inner-width`
 - `--focus-ring-active-width`
@@ -95,3 +97,8 @@ Status: aktiv
 - Horizontaler Content-Inset fuer Form-Controls ist vereinheitlicht auf `--form-control-inset-x`.
 - Defaultwert: `20px` (`var(--space-5)`).
 - Betrifft Shell-Padding und Floating-Label-X-Anker.
+
+## Form Shape (2026-03-08)
+- `shape='rounded'` ist der Default fuer `DsInput` (8px).
+- `shape='pill'` steht als weichere Alternative zur Verfuegung (16px).
+- Shape wirkt nur auf den Radius, nicht auf Padding, Hoehe oder State-Motion.

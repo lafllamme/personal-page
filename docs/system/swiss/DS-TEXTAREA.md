@@ -11,7 +11,7 @@ Status: aktiv
 
 ### Contract
 - Variante: `floating` (einziger aktiver Runtime-Path)
-- Props: `label`, `placeholder`, `fillText`, `hint`, `error`, `invalid`, `required`, `disabled`, `readonly`, `rows`, `maxLength`
+- Props: `shape`, `label`, `placeholder`, `fillText`, `hint`, `error`, `invalid`, `required`, `disabled`, `readonly`, `rows`, `maxLength`
 - States: `default`, `hover`, `focus-visible`, `invalid`, `readonly`, `readonly-hover`, `disabled`
 - Resize: manuell ueber Resize-Handle (unten rechts)
 - Error: Icon + Shake-In
@@ -45,6 +45,8 @@ Status: aktiv
 - `shake-in`
 
 ### Sizing / Control
+- `--radius-form-pill` (Default: `1rem` / 16px)
+- `--radius-form-rounded` (`0.5rem` / 8px)
 - `--size-control-xl`
 - `--size-textarea-height-default`
 - `--size-textarea-height-focus`
@@ -97,3 +99,4 @@ Status: aktiv
 ## Notizen
 - Readonly-State ist im Contract enthalten (paritaet zu `DsInput`) und kann bei Bedarf produktseitig genutzt oder ignoriert werden.
 - Form Density ist mit Input/Select vereinheitlicht: horizontaler Inset ueber `--form-control-inset-x`.
+- Form Shape folgt derselben Logik wie Input/Select: `rounded` (default) oder `pill`.

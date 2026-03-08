@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<{
   required?: boolean
   placeholder?: string
   fillText?: string
+  shape?: 'pill' | 'rounded'
   disabled?: boolean
   readonly?: boolean
   invalid?: boolean
@@ -29,6 +30,7 @@ const props = withDefaults(defineProps<{
   required: false,
   placeholder: '',
   fillText: '',
+  shape: 'rounded',
   disabled: false,
   readonly: false,
   invalid: false,
@@ -48,6 +50,7 @@ const {
   required,
   placeholder,
   fillText,
+  shape,
   disabled,
   readonly,
   invalid,
@@ -116,6 +119,7 @@ const counterTone = computed(() => {
 
 const shellClass = computed(() => [
   'ui-input-shell-base',
+  shape.value === 'rounded' ? 'ui-form-shape-rounded' : 'ui-form-shape-pill',
   'ui-textarea-shell-floating',
   !disabled.value && !readonly.value && !hasError.value && 'ui-input-shell-interactive',
   disabled.value && 'ui-input-shell-disabled',

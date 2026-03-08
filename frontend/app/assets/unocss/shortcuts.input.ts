@@ -2,6 +2,14 @@ import type { UserShortcuts } from 'unocss'
 
 export const inputShortcuts: UserShortcuts = [
   [
+    'ui-form-shape-pill',
+    '![border-radius:var(--radius-form-pill)]',
+  ],
+  [
+    'ui-form-shape-rounded',
+    '![border-radius:var(--radius-form-rounded)]',
+  ],
+  [
     'ui-input-shell-base',
     'group relative w-full border border-solid border-transparent [border-width:var(--control-border-width)] rounded-$radius-lg bg-transparent [padding-inline:var(--form-control-inset-x)] transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
   ],

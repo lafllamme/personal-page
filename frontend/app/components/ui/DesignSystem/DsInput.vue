@@ -11,6 +11,7 @@ const props = withDefaults(defineProps<{
   modelValue?: string
   type?: 'text' | 'email' | 'password' | 'search' | 'url' | 'tel'
   variant?: 'default' | 'floating'
+  shape?: 'pill' | 'rounded'
   label?: string
   hint?: string
   error?: string
@@ -24,6 +25,7 @@ const props = withDefaults(defineProps<{
   modelValue: '',
   type: 'text',
   variant: 'default',
+  shape: 'rounded',
   label: '',
   hint: '',
   error: '',
@@ -43,6 +45,7 @@ const {
   modelValue,
   type,
   variant,
+  shape,
   label,
   hint,
   error,
@@ -103,6 +106,7 @@ const inputAttrs = computed(() => attrs)
 
 const shellClass = computed(() => [
   'ui-input-shell-base',
+  shape.value === 'rounded' ? 'ui-form-shape-rounded' : 'ui-form-shape-pill',
   isFloating.value ? 'ui-input-shell-floating' : 'ui-input-shell-default',
   !disabled.value && !readonly.value && !hasError.value && 'ui-input-shell-interactive',
   disabled.value && 'ui-input-shell-disabled',
