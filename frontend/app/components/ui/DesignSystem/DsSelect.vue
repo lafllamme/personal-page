@@ -491,6 +491,7 @@ useEventListener(window, 'resize', () => {
   --ds-select-label: var(--color-input-floating-label, hsl(var(--muted-foreground)));
   --ds-select-shadow: var(--color-select-shadow, color-mix(in oklch, var(--foreground) 18%, transparent));
   --ds-select-indicator: var(--color-select-indicator, var(--toxic-11));
+  --ds-select-indicator-column: 1rem;
   --ds-select-option-inline-pad: 0.875rem;
   --ds-select-list-inset-x: calc(var(--form-control-inset-x, var(--space-5)) - var(--ds-select-option-inline-pad));
   --ds-select-divider-inset-x: var(--form-control-inset-x, var(--space-5));
@@ -555,7 +556,7 @@ useEventListener(window, 'resize', () => {
   margin: 0;
   text-align: left;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr var(--ds-select-indicator-column);
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
@@ -640,6 +641,7 @@ useEventListener(window, 'resize', () => {
   --ds-select-chevron-offset-closed: 1px;
   --ds-select-chevron-offset-open: 3px;
   color: var(--ds-select-text);
+  justify-self: center;
   transform: translateY(var(--ds-select-chevron-offset-closed));
   transition: transform 300ms var(--ds-select-motion-ease);
 }
@@ -685,7 +687,7 @@ useEventListener(window, 'resize', () => {
   border-radius: 0.625rem;
   text-align: left;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr var(--ds-select-indicator-column);
   align-items: center;
   gap: 0.75rem;
   padding: 0.625rem var(--ds-select-option-inline-pad);
@@ -733,6 +735,7 @@ useEventListener(window, 'resize', () => {
   height: 0.5rem;
   border-radius: 9999px;
   background: var(--ds-select-indicator);
+  justify-self: center;
   opacity: 0;
   transition: opacity 140ms ease;
 }
