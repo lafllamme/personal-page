@@ -94,6 +94,9 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
   - Form-Controls unterstuetzen `shape='pill' | 'rounded'`.
   - Token-Level: `pill` (`--radius-form-pill = 1rem / 16px`) und `rounded` (`--radius-form-rounded = 0.5rem / 8px`).
   - Component-Defaults: `DsInput` + `DsTextarea` + `DsSelect` nutzen `rounded`.
+- DS-Select Architekturstand (2026-03-08):
+  - `DsSelect` laeuft jetzt vollstaendig ueber Uno-Shortcuts (`ui-select-current-*`), ohne komponentenspezifischen Styleblock.
+  - Required-on-blur nutzt das Input-Pattern: nur Error-Message shake't, nicht das Feld selbst.
 
 ## 8) Was wir bewusst nicht mehr pflegen
 - A-E Exploration-Rahmen als System-Definition.
