@@ -79,7 +79,12 @@ const selectId = computed(() => {
 })
 
 const hasError = computed(() => Boolean(error.value) || invalid.value)
-const optionList = computed(() => options.value || [])
+const optionList = computed(() => {
+  const list = options.value || []
+  return [...list].sort((left, right) =>
+    left.label.localeCompare(right.label, undefined, { sensitivity: 'base' }),
+  )
+})
 const selectedIndex = computed(() => optionList.value.findIndex(option => option.value === modelValue.value))
 const selectedOption = computed(() => {
   const index = selectedIndex.value
@@ -643,7 +648,9 @@ useEventListener(window, 'resize', () => {
 .ds-select-list {
   list-style: none;
   margin: 0;
-  padding: 0.5rem;
+  --ds-select-option-inline-pad: 0.875rem;
+  padding-block: 0.5rem;
+  padding-inline: calc(var(--form-control-inset-x, var(--space-5)) - var(--ds-select-option-inline-pad));
   display: grid;
   gap: 0.25rem;
   background: var(--ds-select-surface);
@@ -661,7 +668,7 @@ useEventListener(window, 'resize', () => {
   grid-template-columns: 1fr auto;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.625rem 0.875rem;
+  padding: 0.625rem var(--ds-select-option-inline-pad);
   cursor: pointer;
   opacity: 0;
   transform: translateY(6px);
