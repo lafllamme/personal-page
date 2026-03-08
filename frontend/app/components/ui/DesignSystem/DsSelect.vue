@@ -492,10 +492,10 @@ useEventListener(window, 'resize', () => {
   --ds-select-muted: var(--color-input-placeholder, hsl(var(--muted-foreground)));
   --ds-select-label: var(--color-input-floating-label, hsl(var(--muted-foreground)));
   --ds-select-shadow: var(--color-select-shadow, color-mix(in oklch, var(--foreground) 18%, transparent));
-  --ds-select-indicator: var(
-    --color-select-indicator,
-    var(--toxic-11)
-  );
+  --ds-select-indicator: var(--color-select-indicator, var(--toxic-11));
+  --ds-select-option-inline-pad: 0.875rem;
+  --ds-select-list-inset-x: calc(var(--form-control-inset-x, var(--space-5)) - var(--ds-select-option-inline-pad));
+  --ds-select-divider-inset-x: var(--form-control-inset-x, var(--space-5));
   position: relative;
   width: 100%;
   isolation: isolate;
@@ -641,16 +641,17 @@ useEventListener(window, 'resize', () => {
 
 .ds-select-divider {
   height: 1px;
-  margin-inline: 1rem;
-  background: color-mix(in oklch, var(--foreground) 16%, transparent);
+  margin-inline: var(--ds-select-divider-inset-x);
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+  background: var(--un-preset-radix-sand8);
 }
 
 .ds-select-list {
   list-style: none;
   margin: 0;
-  --ds-select-option-inline-pad: 0.875rem;
   padding-block: 0.5rem;
-  padding-inline: calc(var(--form-control-inset-x, var(--space-5)) - var(--ds-select-option-inline-pad));
+  padding-inline: var(--ds-select-list-inset-x);
   display: grid;
   gap: 0.25rem;
   background: var(--ds-select-surface);
@@ -756,5 +757,4 @@ useEventListener(window, 'resize', () => {
     transform: translateX(0);
   }
 }
-
 </style>
