@@ -387,7 +387,7 @@ const selectInvalidError = computed(() => {
               <DsSelect
                 id="debug-select-default"
                 v-model="selectTopic"
-                label="Topic"
+                placeholder="Topic"
                 fill-text="Choose a topic"
                 :options="selectOptions"
                 hint="Default interactive state. Open to inspect overlay transition."
@@ -398,7 +398,7 @@ const selectInvalidError = computed(() => {
               <DsSelect
                 id="debug-select-selected"
                 v-model="selectSelected"
-                label="Category"
+                placeholder="Category"
                 fill-text="Pick one category"
                 :options="selectOptions"
                 hint="Selected state preview."
@@ -407,7 +407,7 @@ const selectInvalidError = computed(() => {
               <DsSelect
                 id="debug-select-invalid"
                 v-model="selectInvalid"
-                label="Request"
+                placeholder="Request"
                 fill-text="Select request type"
                 :options="selectOptions"
                 :error="selectInvalidError"
@@ -418,7 +418,7 @@ const selectInvalidError = computed(() => {
               <DsSelect
                 id="debug-select-disabled"
                 model-value=""
-                label="Audience"
+                placeholder="Audience"
                 fill-text="Choose audience"
                 :options="selectOptions"
                 hint="Disabled state preview."

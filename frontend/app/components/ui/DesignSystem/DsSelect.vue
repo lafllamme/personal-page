@@ -88,20 +88,17 @@ const selectedOption = computed(() => {
 const hasValue = computed(() => Boolean(selectedOption.value))
 const floatingActive = computed(() => isOpen.value || hasValue.value)
 
+const floatingLabelBaseText = computed(() => label.value || placeholder.value || '')
 const floatingLabelText = computed(() => {
-  if (!label.value)
+  if (!floatingLabelBaseText.value)
     return ''
 
-  return required.value ? `${label.value} *` : label.value
+  return required.value ? `${floatingLabelBaseText.value} *` : floatingLabelBaseText.value
 })
 
-const resolvedFillText = computed(() => fillText.value || placeholder.value || '')
 const valueText = computed(() => {
   if (selectedOption.value)
     return selectedOption.value.label
-
-  if (isOpen.value || !label.value)
-    return resolvedFillText.value
 
   return ''
 })
@@ -358,14 +355,14 @@ useEventListener(window, 'resize', () => {
           @focus="onTriggerFocus"
           @blur="onTriggerBlur"
         >
-          <span class="ds-select-content" :class="{ 'has-label': Boolean(label) }">
+          <span class="ds-select-content" :class="{ 'has-label': Boolean(floatingLabelText) }">
             <DsTypography
               v-if="floatingLabelText"
               as="span"
-              role="meta"
-              size="2xs"
-              weight="regular"
-              uppercase
+              role="body"
+              size="sm"
+              weight="light"
+              :uppercase="false"
               class="ds-select-label"
               :class="{ 'is-floating': floatingActive }"
             >
@@ -377,7 +374,7 @@ useEventListener(window, 'resize', () => {
               role="body"
               size="sm"
               class="ds-select-value"
-              :class="{ 'is-placeholder': !hasValue }"
+              :class="{ 'is-placeholder': !hasValue, 'is-empty': !hasValue }"
             >
               {{ valueText || '\u00A0' }}
             </DsTypography>
@@ -561,8 +558,8 @@ useEventListener(window, 'resize', () => {
 }
 
 .ds-select-content.has-label {
-  padding-top: 1.125rem;
-  padding-bottom: 0.4375rem;
+  padding-top: var(--input-control-padding-top-floating, calc(var(--space-4_75) - 1px));
+  padding-bottom: var(--input-control-padding-y, calc(var(--space-2) - 1px));
 }
 
 .ds-select-label {
@@ -580,8 +577,12 @@ useEventListener(window, 'resize', () => {
 }
 
 .ds-select-label.is-floating {
-  top: 0.625rem;
-  transform: translateY(0);
+  top: var(--space-1, 0.25rem);
+  transform: translateY(0) scale(0.82);
+  transform-origin: left top;
+  text-transform: uppercase;
+  letter-spacing: var(--type-track-meta-2xs, 0.08em);
+  font-weight: 400;
   color: var(--ds-select-label);
 }
 
@@ -596,6 +597,10 @@ useEventListener(window, 'resize', () => {
 
 .ds-select-value.is-placeholder {
   color: var(--ds-select-muted);
+}
+
+.ds-select-value.is-empty {
+  opacity: 0;
 }
 
 .ds-select-chevron {
