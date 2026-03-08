@@ -57,6 +57,7 @@ Ziel:
 - gemeinsamer Field-Contract
 - gleicher Height-/Padding-/Border-/Focus-Ring-Pfad
 - gleiche Label-/Hint-/Error-Logik vorbereiten
+- Form Density konsistent: horizontaler Inset ueber `--form-control-inset-x` (Default 20px)
 
 ### Phase 2: Form Selection
 4. `DsCheckbox`

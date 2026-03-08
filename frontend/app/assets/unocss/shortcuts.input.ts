@@ -3,7 +3,7 @@ import type { UserShortcuts } from 'unocss'
 export const inputShortcuts: UserShortcuts = [
   [
     'ui-input-shell-base',
-    'group relative w-full border border-solid border-transparent [border-width:var(--control-border-width)] rounded-$radius-lg bg-transparent px-$space-3_5 transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
+    'group relative w-full border border-solid border-transparent [border-width:var(--control-border-width)] rounded-$radius-lg bg-transparent [padding-inline:var(--form-control-inset-x)] transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
   ],
   [
     'ui-input-shell-default',
@@ -39,7 +39,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-select-shell-base',
-    'relative w-full text-left outline-none rounded-$radius-lg px-$space-3_5 [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)] transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
+    'relative w-full text-left outline-none rounded-$radius-lg [padding-inline:var(--form-control-inset-x)] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)] transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
   ],
   [
     'ui-select-shell-interactive',
@@ -187,15 +187,15 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-floating-label-base',
-    'pointer-events-none absolute left-$space-3_5 top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
+    'pointer-events-none absolute [left:var(--form-control-inset-x)] top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
   ],
   [
     'ui-textarea-floating-label-base',
-    'pointer-events-none absolute left-$space-3_5 top-$space-5 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
+    'pointer-events-none absolute [left:var(--form-control-inset-x)] top-$space-5 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
   ],
   [
     'ui-input-floating-label-active',
-    '!left-$space-3_5 !top-$space-1 ![transform:translateY(0)_scale(0.82)] ![color:var(--color-input-floating-label)]',
+    '![left:var(--form-control-inset-x)] !top-$space-1 ![transform:translateY(0)_scale(0.82)] ![color:var(--color-input-floating-label)]',
   ],
   [
     'ui-input-floating-label-readonly',

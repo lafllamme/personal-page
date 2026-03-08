@@ -50,7 +50,7 @@ Status: aktiv
 - `--size-textarea-height-focus`
 - `--control-border-width`
 - `--focus-ring-inner-width`
-- `--space-3_5`
+- `--form-control-inset-x` (Default: `var(--space-5)` = 20px)
 - `--space-6`
 - `--space-8`
 - `--space-2_5`
@@ -96,3 +96,4 @@ Status: aktiv
 
 ## Notizen
 - Readonly-State ist im Contract enthalten (paritaet zu `DsInput`) und kann bei Bedarf produktseitig genutzt oder ignoriert werden.
+- Form Density ist mit Input/Select vereinheitlicht: horizontaler Inset ueber `--form-control-inset-x`.

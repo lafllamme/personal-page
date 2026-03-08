@@ -237,6 +237,7 @@ const sizingTokens: TokenSet = {
   'focus-ring-inner-width': '2px',
   'focus-ring-outer-width': '4px',
   'focus-ring-active-width': '1.5px',
+  'form-control-inset-x': 'var(--space-5)',
   'input-control-padding-y': 'calc(var(--space-2) - 1px)',
   'input-control-padding-top-floating': 'calc(var(--space-4_75) - 1px)',
   'size-textarea-height-default': 'calc(var(--size-control-xl) * 3.35)',

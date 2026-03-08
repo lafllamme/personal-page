@@ -28,7 +28,7 @@ const props = withDefaults(defineProps<{
   error: '',
   required: false,
   placeholder: '',
-  fillText: '',
+  fillText: 'Please choose an option',
   disabled: false,
   invalid: false,
   previewState: 'default',
@@ -46,7 +46,7 @@ interface SelectOption {
   disabled?: boolean
 }
 
-const HEADER_HEIGHT = 56
+const HEADER_HEIGHT = 50
 
 const {
   modelValue,
@@ -98,10 +98,14 @@ const floatingLabelText = computed(() => {
 const floatingLabelRole = computed<'body' | 'meta'>(() => (floatingActive.value ? 'meta' : 'body'))
 const floatingLabelSize = computed<'sm' | '2xs'>(() => (floatingActive.value ? '2xs' : 'sm'))
 const floatingLabelWeight = computed<'light' | 'regular'>(() => (floatingActive.value ? 'regular' : 'light'))
+const resolvedFillText = computed(() => fillText.value || 'Please choose an option')
 
 const valueText = computed(() => {
   if (selectedOption.value)
     return selectedOption.value.label
+
+  if (isOpen.value)
+    return resolvedFillText.value
 
   return ''
 })
@@ -378,7 +382,7 @@ useEventListener(window, 'resize', () => {
               size="sm"
               weight="light"
               class="ds-select-value"
-              :class="{ 'is-placeholder': !hasValue, 'is-empty': !hasValue }"
+              :class="{ 'is-placeholder': !hasValue, 'is-empty': !valueText }"
             >
               {{ valueText || '\u00A0' }}
             </DsTypography>
@@ -474,7 +478,7 @@ useEventListener(window, 'resize', () => {
 
 <style scoped>
 .ds-select {
-  --ds-select-trigger-h: 56px;
+  --ds-select-trigger-h: calc(var(--size-control-lg) + var(--space-2));
   --ds-select-radius: 1.125rem;
   --ds-select-ring-w: 1px;
   --ds-select-ring: var(--border-input-idle, color-mix(in oklch, var(--foreground) 28%, transparent));
@@ -541,7 +545,7 @@ useEventListener(window, 'resize', () => {
   border: 0;
   background: var(--ds-select-surface);
   color: var(--ds-select-text);
-  padding: 0 1.5rem;
+  padding: 0 var(--form-control-inset-x, var(--space-5));
   margin: 0;
   text-align: left;
   display: grid;
@@ -582,7 +586,7 @@ useEventListener(window, 'resize', () => {
 
 .ds-select-label.is-floating {
   top: var(--space-1, 0.25rem);
-  transform: translateY(0);
+  transform: translateY(0) scale(0.82);
   color: var(--ds-select-label);
 }
 

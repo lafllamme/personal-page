@@ -49,6 +49,7 @@ Status: aktiv
 - `--size-control-lg`
 - `--control-border-width`
 - `--focus-ring-inner-width`
+- `--form-control-inset-x` (Default: `var(--space-5)` = 20px)
 - `--input-control-padding-y`
 - `--input-control-padding-top-floating`
 - `--radius-lg`
@@ -83,6 +84,11 @@ Status: aktiv
 
 ## State-Prioritaet (komponente)
 - `disabled` > `invalid` > `open/focus` > `hover` > `default`
+
+## Form Density (2026-03-08)
+- Header-Content, Label-Anchor und Value-Inset folgen dem gemeinsamen Form-Token `--form-control-inset-x`.
+- Defaultwert: `20px` (`var(--space-5)`).
+- Ziel: X-Achsen-Paritaet mit `DsInput` und `DsTextarea`.
 
 ## JS vs CSS Verantwortung
 - In CSS/Uno:

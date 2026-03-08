@@ -87,6 +87,9 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Prozessentscheid:
   - Exploration bleibt Referenz, Build erfolgt nur aus diesem Dokument + aktiven Referenzen
   - Neue Komponenten werden nur mit `Font`, `Weight`, `Intention`, `Color` spezifiziert
+- Form-Density-Entscheid (2026-03-08):
+  - Horizontaler Form-Control-Inset ist vereinheitlicht auf `--form-control-inset-x`.
+  - Defaultwert: `20px` (`var(--space-5)`), gilt fuer `DsInput`, `DsTextarea`, `DsSelect`.
 
 ## 8) Was wir bewusst nicht mehr pflegen
 - A-E Exploration-Rahmen als System-Definition.

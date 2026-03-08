@@ -44,6 +44,7 @@ Status: aktiv
 - `--control-border-width`
 - `--focus-ring-inner-width`
 - `--focus-ring-active-width`
+- `--form-control-inset-x` (Default: `var(--space-5)` = 20px)
 - `--input-control-padding-y`
 - `--input-control-padding-top-floating`
 
@@ -89,3 +90,8 @@ Status: aktiv
 ## Bewusst literal (Stabilitaet)
 - `1px` Offsets (floating top/left)
 - `scale(0.82)` (floating label)
+
+## Form Density (2026-03-08)
+- Horizontaler Content-Inset fuer Form-Controls ist vereinheitlicht auf `--form-control-inset-x`.
+- Defaultwert: `20px` (`var(--space-5)`).
+- Betrifft Shell-Padding und Floating-Label-X-Anker.
