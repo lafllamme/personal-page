@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
+import DsCheckbox from '@/components/ui/DesignSystem/DsCheckbox.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
 import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
@@ -58,6 +59,13 @@ const selectInvalid = ref('')
 const selectTopicTouched = ref(false)
 const selectInvalidTouched = ref(false)
 const selectEmpty = ref('')
+const checkboxDefault = ref<true | false | 'indeterminate'>(false)
+const checkboxAccent = ref<true | false | 'indeterminate'>(false)
+const checkboxMixed = ref<true | false | 'indeterminate'>('indeterminate')
+const checkboxSizeSm = ref<true | false | 'indeterminate'>(false)
+const checkboxSizeMd = ref<true | false | 'indeterminate'>(true)
+const checkboxSizeLg = ref<true | false | 'indeterminate'>(false)
+const checkboxRequired = ref<true | false | 'indeterminate'>(false)
 
 const selectOptions = [
   { label: 'Editorial feedback', value: 'editorial' },
@@ -436,6 +444,123 @@ const selectInvalidError = computed(() => {
                 :options="selectEmptyOptions"
                 hint="Empty state preview."
               />
+            </div>
+          </div>
+
+          <div class="pt-3 space-y-4">
+            <div class="space-y-2">
+              <DsTypography
+                as="p"
+                role="meta"
+                size="xs"
+                uppercase
+              >
+                Checkbox Prototype A
+              </DsTypography>
+              <DsTypography
+                as="p"
+                role="body"
+                size="sm"
+                tone="muted"
+              >
+                Default, accent, and mixed variants with subtle scale interaction and animated indicator.
+              </DsTypography>
+            </div>
+
+            <div class="space-y-5">
+              <div class="space-y-2">
+                <DsTypography
+                  as="p"
+                  role="meta"
+                  size="2xs"
+                  uppercase
+                >
+                  Variants (Medium)
+                </DsTypography>
+                <div class="grid gap-5 lg:grid-cols-3">
+                  <DsCheckbox
+                    id="debug-checkbox-default"
+                    v-model="checkboxDefault"
+                    variant="default"
+                    size="md"
+                    label="Primary (default)"
+                  />
+
+                  <DsCheckbox
+                    id="debug-checkbox-accent"
+                    v-model="checkboxAccent"
+                    variant="accent"
+                    size="md"
+                    label="Accent"
+                  />
+
+                  <DsCheckbox
+                    id="debug-checkbox-mixed"
+                    v-model="checkboxMixed"
+                    variant="mixed"
+                    size="md"
+                    label="Mixed"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <DsTypography
+                  as="p"
+                  role="meta"
+                  size="2xs"
+                  uppercase
+                >
+                  Sizes
+                </DsTypography>
+                <div class="grid gap-5 lg:grid-cols-3">
+                  <DsCheckbox
+                    id="debug-checkbox-size-sm"
+                    v-model="checkboxSizeSm"
+                    variant="default"
+                    size="sm"
+                    label="Small"
+                  />
+
+                  <DsCheckbox
+                    id="debug-checkbox-size-md"
+                    v-model="checkboxSizeMd"
+                    variant="default"
+                    size="md"
+                    label="Medium"
+                  />
+
+                  <DsCheckbox
+                    id="debug-checkbox-size-lg"
+                    v-model="checkboxSizeLg"
+                    variant="default"
+                    size="lg"
+                    label="Large"
+                  />
+                </div>
+              </div>
+
+              <div class="grid gap-5 lg:grid-cols-2">
+                <DsCheckbox
+                  id="debug-checkbox-disabled"
+                  :model-value="true"
+                  variant="default"
+                  size="md"
+                  label="Disabled selected state"
+                  hint="Disabled contract preview."
+                  disabled
+                />
+
+                <DsCheckbox
+                  id="debug-checkbox-required"
+                  v-model="checkboxRequired"
+                  variant="default"
+                  size="md"
+                  label="Required agreement"
+                  hint="Blur without selection to inspect error shake."
+                  required
+                />
+              </div>
             </div>
           </div>
 

@@ -98,6 +98,10 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
   - `DsSelect` laeuft jetzt vollstaendig ueber Uno-Shortcuts (`ui-select-current-*`), ohne komponentenspezifischen Styleblock.
   - Required-on-blur nutzt das Input-Pattern: nur Error-Message shake't, nicht das Feld selbst.
   - Storybook ist auf State-Parity ausgebaut (`DsSelect.stories.ts`): default/hover/focus/open/selected/error/disabled/empty + shape.
+- Scope-Cleanup (2026-03-09):
+  - `DsStack`, `DsCluster`, `DsMediaFrame`, `DsTag` sind aus dem aktiven Build-Scope entfernt (deferred).
+  - Begruendung: Fokus auf Form-Core + Selection-Block vor weiteren Surface-/Layout-Primitives.
+  - Diese Komponenten gelten bis zur Reaktivierung als `out of active scope`.
 
 ## 8) Was wir bewusst nicht mehr pflegen
 - A-E Exploration-Rahmen als System-Definition.

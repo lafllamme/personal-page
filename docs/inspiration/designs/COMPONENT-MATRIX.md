@@ -41,7 +41,7 @@
 | P0 | `DsButton` | Primary/Secondary/Tertiary/Quartery CTA | `default,hover,active,focus-visible,disabled` | `brand/img_3`, `music`, `sport/img_1` | "Read Brief", "View Signals" |
 | P0 | `DsLink` | Inline Aktion im Fliesstext | `default,hover,focus-visible,visited,disabled` | `magazine-2/img`, `portfolio/img_1` | "Read full report" |
 | P0 | `DsInput` | Eingabe-Feldsystem | `default,hover,focus-visible,error,disabled` | `magazine-2/img`, `agency/img_4` | Search, Newsletter, Filter |
-| P0 | `DsTag` | Kategorisierung/Filterchips | `default,hover,active,focus-visible,disabled` | `cloth/img_3`, `magazine-3/img_1` | AI, Infra, Policy, Security |
+| P0 | `DsBadge` | Kategorisierung/Statuschips | `default,hover,active,focus-visible,disabled` | `cloth/img_3`, `magazine-3/img_1` | AI, Infra, Policy, Security |
 | P0 | `DsCard` | Universelle Kartenflaeche fuer Story/Media/Meta | `default,hover,focus-within,disabled` | `agency/img_4`, `estate/img_2`, `photography/img_4` | Storykarten mit Bild+Teaser |
 | P0 | `DsDivider` | Kapitel- und Modultrenner | n/a | `portfolio/img_1`, `construct/img_3` | horizontale Rules im Feed |
 
@@ -52,7 +52,7 @@
 | P1 | `DsAuthorRow` | Autor, Rolle, Datum, Lesedauer | n/a | `cloth/img_2`, `magazine-3/img_1` | "Mara Stein / 8 min / Feb 2026" |
 | P1 | `DsMarketPulseItem` | Kennzahl + Label + Note | n/a | `run/img_1`, `construct-2/img_2`, `tech/img_1` | "Critical incidents: 03" |
 | P1 | `DsAccordion` | Expandierbare Info-Cluster | `default,hover,focus-visible,open,disabled` | `skate`, `music` | "Signal Notes", "Policy Update" |
-| P1 | `DsMediaFrame` | Bild-/Video-Frame mit Ratio-Handling | n/a | `estate/img_2`, `product/img_1`, `photography/img_4` | Hero image, article cover |
+| P1 | `DsMediaFrame` (deferred) | Bild-/Video-Frame mit Ratio-Handling | n/a | `estate/img_2`, `product/img_1`, `photography/img_4` | Hero image, article cover |
 | P1 | `DsCarouselControls` | Navigation fuer Slider/Featured-Rails | `default,hover,active,focus-visible,disabled` | `magazine-3/img_3`, `music` | Featured stories carousel |
 | P1 | `DsFooterBlock` | strukturierter Abschluss (links + legal + social) | n/a | `cloth/img_7`, `sport/img_1`, `portfolio/img_1` | About, Legal, Contact |
 
@@ -78,11 +78,11 @@
 | `agency` | `img_4` | `DsStoryLead`, `DsStoryCard`, `DsNewsTickerBar` | Pattern |
 | `brand` | `img_3` | `DsCampaignHero`, `DsCtaRow`, `DsSignalBadge` | Pattern/Foundation |
 | `cloth` | `img_2` | `DsHeroDoubleHeadline`, `DsBadgeRow`, `DsCoordinateMetaRow` | Pattern |
-| `cloth` | `img_3`,`img_4`,`img_5` | `DsContentRail`, `DsTag`, `DsSectionCode`, `DsGrid`, `DsCard` | Foundation/Pattern |
+| `cloth` | `img_3`,`img_4`,`img_5` | `DsContentRail`, `DsBadge`, `DsSectionCode`, `DsGrid`, `DsCard` | Foundation/Pattern |
 | `cloth` | `img_7` | `DsFooterBlock`, `DsBrandOutro` | Pattern |
 | `construct` | `img_1`,`img_3` | `DsProjectGrid`, `DsProjectCard`, `DsServiceList` | Pattern |
 | `construct-2` | `img_1`,`img_2` | `DsStudioHeroPanel`, `DsTeamStrip`, `DsMarketPulseItem` | Pattern |
-| `estate` | `img_2` | `DsImageGalleryGrid`, `DsMediaFrame`, `DsGalleryCaption` | Foundation/Pattern |
+| `estate` | `img_2` | `DsImageGalleryGrid`, `DsMediaFrame (deferred)`, `DsGalleryCaption` | Foundation/Pattern |
 | `fashion` | `img` | `DsPosterHero`, `DsExpertiseList`, `DsMediaTileRow` | Pattern |
 | `furniture` | `img_1` | `DsLongformBlock`, `DsQuoteBlock` | Pattern |
 | `magazine-2` | `img` | `DsEventList`, `DsPostCard`, `DsCategoryPill` | Pattern |
@@ -98,7 +98,7 @@
 | `tech` | `img_1` | `DsInnovationHero`, `DsFeatureCardSet`, `DsNarrativeColumn`, `DsSpecLabelRow` | Pattern |
 
 ## 9) Storybook Naming Convention (verbindlich)
-- `Foundation/*`: primitives (`Typography`, `Button`, `Field`, `Input`, `Select`, `Textarea`, `Card`, `Divider`, `Tag`, `Grid`, `Stack`, `Cluster`, `MediaFrame`)
+- `Foundation/*`: primitives (`Typography`, `Button`, `Field`, `Input`, `Select`, `Textarea`, `Card`, `Divider`, `Badge`, `Grid`)
 - `Patterns/*`: reusable editorial/product blocks (`AuthorRow`, `MarketPulseItem`, `StoryCard`, `Accordion`, `CTAStrip`)
 - `Layouts/*`: macro structures (`SectionShell`, `HeroStage`, `EditorialPageScaffold`)
 - `References/*`: image-near rebuilds by source (`References/Cloth/img_2 Hero`, `References/Skate/Whole`)
@@ -114,6 +114,6 @@
   5. `A11y Notes`
 
 ## 10) Immediate Build Queue from Sources
-1. `P0 remaining`: `DsTag`, `DsGrid`, `DsStack`, `DsCluster`, `DsMediaFrame`
+1. `P0 remaining`: `DsBadge`, `DsGrid`
 2. `P1 starter`: `DsAuthorRow`, `DsMarketPulseItem`, `DsAccordion`
 3. `First source-close references`: `Cloth/img_2`, `Agency/img_4`, `Skate/whole concept`

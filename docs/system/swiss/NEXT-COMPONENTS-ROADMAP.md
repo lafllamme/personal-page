@@ -97,6 +97,14 @@ Begruendung:
 - `DsSelect` ist jetzt umgesetzt und schliesst den Field-Contract fuer Form Core.
 - Danach ist die Selection-Familie (`Checkbox`, `Radio`, `Switch`) als konsistenter Block dran.
 
+## Scope-Cleanup (2026-03-09)
+- Aus dem aktiven Build entfernt (deferred):
+  - `DsStack`
+  - `DsCluster`
+  - `DsMediaFrame`
+  - `DsTag`
+- Diese Komponenten sind kein Teil des aktuellen Basics-Scopes und werden spaeter neu bewertet.
+
 Aktiver Plan fuer den ersten Schritt:
 - [DS-INPUT.md](./DS-INPUT.md)
 - [DS-TEXTAREA.md](./DS-TEXTAREA.md)

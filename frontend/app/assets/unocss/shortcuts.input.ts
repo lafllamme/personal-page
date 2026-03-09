@@ -294,6 +294,102 @@ export const inputShortcuts: UserShortcuts = [
     'opacity-70',
   ],
   [
+    'ui-checkbox-root',
+    'grid gap-$space-2',
+  ],
+  [
+    'ui-checkbox-hit',
+    'inline-grid w-fit max-w-full gap-$space-1_5',
+  ],
+  [
+    'ui-checkbox-main-row',
+    'inline-flex items-center gap-$space-3',
+  ],
+  [
+    'ui-checkbox-meta-wrap',
+    '[padding-left:calc(var(--ds-checkbox-control-size)+var(--space-3))]',
+  ],
+  [
+    'ui-checkbox-control-base',
+    'relative inline-flex shrink-0 items-center justify-center border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-input-idle)] [background:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[transform,background-color,border-color,box-shadow,color,opacity] [transition-duration:180ms] [transition-timing-function:var(--motion-input-shell-ease)] hover:[transform:scale(1.04)] active:[transform:scale(0.96)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+  ],
+  [
+    'ui-checkbox-control-sm',
+    '[--ds-checkbox-control-size:1.125rem] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] rounded-[0.3125rem]',
+  ],
+  [
+    'ui-checkbox-control-md',
+    '[--ds-checkbox-control-size:1.25rem] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] rounded-[0.375rem]',
+  ],
+  [
+    'ui-checkbox-control-lg',
+    '[--ds-checkbox-control-size:1.5rem] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] rounded-[0.4375rem]',
+  ],
+  [
+    'ui-checkbox-control-variant-default',
+    '[background:var(--bg-inverse)] [color:var(--color-inverse)]',
+  ],
+  [
+    'ui-checkbox-control-variant-accent',
+    '[background:color-mix(in_oklch,var(--color-accent-ui)_10%,var(--bg-inverse))] [color:var(--color-accent-strong)]',
+  ],
+  [
+    'ui-checkbox-control-variant-mixed',
+    '[background:color-mix(in_oklch,var(--color-accent-ui)_6%,var(--bg-inverse))] [color:var(--color-accent-strong)]',
+  ],
+  [
+    'ui-checkbox-control-checked-default',
+    '[background:var(--color-primary)] [border-color:var(--color-primary)] [color:var(--color-inverse)]',
+  ],
+  [
+    'ui-checkbox-control-checked-accent',
+    '[background:var(--color-accent-ui)] [border-color:var(--color-accent-ui)] [color:var(--pure-black)]',
+  ],
+  [
+    'ui-checkbox-control-checked-mixed',
+    '[background:var(--bg-accent-soft)] [border-color:var(--color-accent-ui)] [color:var(--color-accent-strong)]',
+  ],
+  [
+    'ui-checkbox-control-invalid',
+    '[border-color:var(--border-error)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-error)]',
+  ],
+  [
+    'ui-checkbox-control-disabled',
+    'cursor-not-allowed opacity-55 hover:[transform:none] active:[transform:none] [border-color:var(--border-disabled)] [color:var(--color-disabled)] [background:var(--bg-soft-disabled)]',
+  ],
+  [
+    'ui-checkbox-indicator',
+    'pointer-events-none [width:72%] [height:72%] opacity-70 [transform:scale(0.86)] [transition:transform_220ms_var(--motion-input-shell-ease),opacity_180ms_ease]',
+  ],
+  [
+    'ui-checkbox-indicator-active',
+    'opacity-100 [transform:scale(1)]',
+  ],
+  [
+    'ui-checkbox-check-path',
+    'fill-none [stroke:currentColor] [stroke-width:3] [stroke-linecap:round] [stroke-linejoin:round] [stroke-dasharray:28] [stroke-dashoffset:28] opacity-0 [transition:stroke-dashoffset_260ms_var(--motion-input-shell-ease),opacity_180ms_ease]',
+  ],
+  [
+    'ui-checkbox-check-path-visible',
+    'opacity-100 [stroke-dashoffset:0]',
+  ],
+  [
+    'ui-checkbox-indeterminate-line',
+    '[stroke:currentColor] [stroke-width:3] [stroke-linecap:round] opacity-0 [transform-origin:center] [transform:scaleX(0.2)] [transition:transform_180ms_var(--motion-input-shell-ease),opacity_120ms_ease]',
+  ],
+  [
+    'ui-checkbox-indeterminate-line-visible',
+    'opacity-100 [transform:scaleX(1)]',
+  ],
+  [
+    'ui-checkbox-label',
+    'select-none',
+  ],
+  [
+    'ui-checkbox-label-disabled',
+    'opacity-65',
+  ],
+  [
     'ui-select-current-panel-idle',
     '[box-shadow:0_0_0_var(--ds-select-ring-w)_var(--ds-select-ring)]',
   ],
