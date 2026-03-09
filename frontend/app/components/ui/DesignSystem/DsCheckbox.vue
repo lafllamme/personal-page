@@ -157,11 +157,34 @@ const checkboxMotion = computed(() => {
     borderColor,
     color: textColor,
     transition: {
-      duration: isCheckedOrMixed ? 0.54 : 0.5,
+      duration: isCheckedOrMixed ? 0.54 : 0.52,
+      delay: isCheckedOrMixed ? 0 : 0.09,
       ease: smoothEase,
     },
   }
 })
+
+const indicatorMotion = computed(() => (
+  isActive.value
+    ? {
+        opacity: 1,
+        scale: 1,
+        transition: {
+          duration: 0.24,
+          delay: 0.2,
+          ease: smoothEase,
+        },
+      }
+    : {
+        opacity: 0.62,
+        scale: 0.8,
+        transition: {
+          duration: 0.24,
+          delay: 0.08,
+          ease: smoothEase,
+        },
+      }
+) as any)
 
 const checkMotion = computed(() => (
   isChecked.value
@@ -178,8 +201,8 @@ const checkMotion = computed(() => (
         pathLength: 0,
         opacity: 0,
         transition: {
-          duration: 0.24,
-          delay: 0.06,
+          duration: 0.22,
+          delay: 0,
           ease: smoothEase,
         },
       }
@@ -200,8 +223,8 @@ const indeterminateMotion = computed(() => (
         pathLength: 0,
         opacity: 0,
         transition: {
-          duration: 0.24,
-          delay: 0.06,
+          duration: 0.22,
+          delay: 0,
           ease: smoothEase,
         },
       }
@@ -256,12 +279,12 @@ function onBlur(event: FocusEvent): void {
         >
           <Motion
             as="svg"
-            class="ui-checkbox-indicator" :class="[
-              (isChecked || isIndeterminate) && 'ui-checkbox-indicator-active',
-            ]"
+            class="ui-checkbox-indicator"
             viewBox="0 0 24 24"
             fill="none"
             aria-hidden="true"
+            :initial="{ opacity: 0.62, scale: 0.8 }"
+            :animate="indicatorMotion"
           >
             <Motion
               as="path"
