@@ -104,6 +104,64 @@ const labelClass = computed(() => [
 ])
 
 const smoothEase = [0.22, 1, 0.36, 1]
+const isActive = computed(() => isChecked.value || isIndeterminate.value)
+
+const idleSurfaceColor = computed(() => {
+  if (disabled.value)
+    return 'var(--bg-soft-disabled)'
+
+  if (variant.value === 'accent')
+    return 'color-mix(in oklch, var(--color-accent-ui) 10%, var(--bg-inverse))'
+
+  if (variant.value === 'mixed')
+    return 'color-mix(in oklch, var(--color-accent-ui) 6%, var(--bg-inverse))'
+
+  return 'var(--bg-inverse)'
+})
+
+const activeSurfaceColor = computed(() => {
+  if (disabled.value)
+    return 'var(--bg-soft-disabled)'
+
+  if (variant.value === 'accent')
+    return 'var(--color-accent-ui)'
+
+  if (variant.value === 'mixed')
+    return 'var(--bg-accent-soft)'
+
+  return 'var(--color-primary)'
+})
+
+const checkboxMotion = computed(() => {
+  const isCheckedOrMixed = isActive.value
+  const textColor
+    = variant.value === 'accent' && isCheckedOrMixed
+      ? 'var(--pure-black)'
+      : variant.value === 'mixed' && isCheckedOrMixed
+        ? 'var(--color-accent-strong)'
+        : 'var(--color-inverse)'
+
+  const borderColor
+    = disabled.value
+      ? 'var(--border-disabled)'
+      : hasError.value
+        ? 'var(--border-error)'
+        : isCheckedOrMixed
+          ? variant.value === 'default'
+            ? 'var(--color-primary)'
+            : 'var(--color-accent-ui)'
+          : 'var(--border-input-idle)'
+
+  return {
+    backgroundColor: isCheckedOrMixed ? activeSurfaceColor.value : idleSurfaceColor.value,
+    borderColor,
+    color: textColor,
+    transition: {
+      duration: isCheckedOrMixed ? 0.5 : 0.38,
+      ease: smoothEase,
+    },
+  }
+})
 
 const checkMotion = computed(() => (
   isChecked.value
@@ -180,14 +238,16 @@ function onBlur(event: FocusEvent): void {
           type="button"
           role="checkbox"
           :class="controlClass"
-          :while-hover="disabled ? undefined : { scale: 1.018 }"
-          :while-tap="disabled ? undefined : { scale: 0.982 }"
           :data-checked="isChecked ? 'true' : 'false'"
           :data-indeterminate="isIndeterminate ? 'true' : 'false'"
           :aria-checked="isIndeterminate ? 'mixed' : (isChecked ? 'true' : 'false')"
           :aria-invalid="hasError ? 'true' : 'false'"
           :aria-describedby="describedBy"
           :disabled="disabled"
+          :while-hover="disabled ? undefined : { scale: 1.04 }"
+          :while-tap="disabled ? undefined : { scale: 0.96 }"
+          :transition="{ duration: 0.24, ease: smoothEase }"
+          :animate="checkboxMotion"
           @click="onToggle"
           @focus="onFocus"
           @blur="onBlur"

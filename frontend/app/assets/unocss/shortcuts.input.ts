@@ -311,7 +311,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-base',
-    'relative inline-flex shrink-0 items-center justify-center border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-input-idle)] [background:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[background-color,border-color,box-shadow,color,opacity] [transition-duration:440ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+    'relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-input-idle)] [background-color:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:500ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
   ],
   [
     'ui-checkbox-control-sm',
@@ -327,15 +327,15 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-variant-default',
-    '[background:var(--bg-inverse)] [color:var(--color-inverse)] [&[data-checked=true],&[data-indeterminate=true]]:[background:var(--color-primary)] [&[data-checked=true],&[data-indeterminate=true]]:[border-color:var(--color-primary)] [&[data-checked=true],&[data-indeterminate=true]]:[color:var(--color-inverse)]',
+    '[background-color:var(--bg-inverse)] [color:var(--color-inverse)]',
   ],
   [
     'ui-checkbox-control-variant-accent',
-    '[background:color-mix(in_oklch,var(--color-accent-ui)_10%,var(--bg-inverse))] [color:var(--color-accent-strong)] [&[data-checked=true],&[data-indeterminate=true]]:[background:var(--color-accent-ui)] [&[data-checked=true],&[data-indeterminate=true]]:[border-color:var(--color-accent-ui)] [&[data-checked=true],&[data-indeterminate=true]]:[color:var(--pure-black)]',
+    '[background-color:color-mix(in_oklch,var(--color-accent-ui)_10%,var(--bg-inverse))] [color:var(--color-accent-strong)]',
   ],
   [
     'ui-checkbox-control-variant-mixed',
-    '[background:color-mix(in_oklch,var(--color-accent-ui)_6%,var(--bg-inverse))] [color:var(--color-accent-strong)] [&[data-checked=true],&[data-indeterminate=true]]:[background:var(--bg-accent-soft)] [&[data-checked=true],&[data-indeterminate=true]]:[border-color:var(--color-accent-ui)] [&[data-checked=true],&[data-indeterminate=true]]:[color:var(--color-accent-strong)]',
+    '[background-color:color-mix(in_oklch,var(--color-accent-ui)_6%,var(--bg-inverse))] [color:var(--color-accent-strong)]',
   ],
   [
     'ui-checkbox-control-invalid',
@@ -343,11 +343,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-disabled',
-    'cursor-not-allowed opacity-55 hover:[transform:none] active:[transform:none] [border-color:var(--border-disabled)] [color:var(--color-disabled)] [background:var(--bg-soft-disabled)]',
+    'cursor-not-allowed opacity-55 hover:[transform:none] active:[transform:none] [border-color:var(--border-disabled)] [color:var(--color-disabled)] [background-color:var(--bg-soft-disabled)]',
   ],
   [
     'ui-checkbox-indicator',
-    'pointer-events-none [width:72%] [height:72%] opacity-62 [transform:scale(0.8)] [transition:transform_260ms_cubic-bezier(0.22,1,0.36,1),opacity_220ms_ease]',
+    'pointer-events-none relative z-1 [width:72%] [height:72%] opacity-62 [transform:scale(0.8)] [transition:transform_260ms_cubic-bezier(0.22,1,0.36,1),opacity_220ms_ease]',
   ],
   [
     'ui-checkbox-indicator-active',
