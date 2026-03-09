@@ -111,10 +111,10 @@ const idleSurfaceColor = computed(() => {
     return 'var(--bg-soft-disabled)'
 
   if (variant.value === 'accent')
-    return 'color-mix(in oklch, var(--color-accent-ui) 10%, var(--bg-inverse))'
+    return 'var(--bg-inverse)'
 
   if (variant.value === 'mixed')
-    return 'color-mix(in oklch, var(--color-accent-ui) 6%, var(--bg-inverse))'
+    return 'var(--bg-inverse)'
 
   return 'var(--bg-inverse)'
 })
@@ -157,7 +157,7 @@ const checkboxMotion = computed(() => {
     borderColor,
     color: textColor,
     transition: {
-      duration: isCheckedOrMixed ? 0.5 : 0.38,
+      duration: isCheckedOrMixed ? 0.54 : 0.5,
       ease: smoothEase,
     },
   }
@@ -178,7 +178,8 @@ const checkMotion = computed(() => (
         pathLength: 0,
         opacity: 0,
         transition: {
-          duration: 0.16,
+          duration: 0.24,
+          delay: 0.06,
           ease: smoothEase,
         },
       }
@@ -199,7 +200,8 @@ const indeterminateMotion = computed(() => (
         pathLength: 0,
         opacity: 0,
         transition: {
-          duration: 0.16,
+          duration: 0.24,
+          delay: 0.06,
           ease: smoothEase,
         },
       }

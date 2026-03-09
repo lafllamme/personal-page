@@ -331,11 +331,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-variant-accent',
-    '[background-color:color-mix(in_oklch,var(--color-accent-ui)_10%,var(--bg-inverse))] [color:var(--color-accent-strong)]',
+    '[background-color:var(--bg-inverse)] [color:var(--color-accent-strong)]',
   ],
   [
     'ui-checkbox-control-variant-mixed',
-    '[background-color:color-mix(in_oklch,var(--color-accent-ui)_6%,var(--bg-inverse))] [color:var(--color-accent-strong)]',
+    '[background-color:var(--bg-inverse)] [color:var(--color-accent-strong)]',
   ],
   [
     'ui-checkbox-control-invalid',
