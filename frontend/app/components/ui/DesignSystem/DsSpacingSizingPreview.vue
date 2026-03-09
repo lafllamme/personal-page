@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import DsButton from './DsButton.vue'
-import DsCluster from './DsCluster.vue'
 
 type ButtonSize = 'sm' | 'md' | 'lg'
 type ButtonTracking = 'default' | 'relaxed'
@@ -64,10 +63,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
       <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
         Variant Consistency (MD)
       </p>
-      <DsCluster
-        class="mt-3"
-        gap="md"
-      >
+      <div class="mt-3 flex flex-wrap gap-4">
         <DsButton
           variant="default"
           type="primary"
@@ -112,17 +108,14 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
         >
           Quaternary
         </DsButton>
-      </DsCluster>
+      </div>
     </section>
 
     <section class="mt-4 border border-pureBlack/10 rounded-lg border-solid p-4 dark:border-pureWhite/10">
       <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">
         Accent Variant (MD)
       </p>
-      <DsCluster
-        class="mt-3"
-        gap="md"
-      >
+      <div class="mt-3 flex flex-wrap gap-4">
         <DsButton
           variant="accent"
           type="primary"
@@ -167,7 +160,7 @@ const sizeScale: Array<{ key: ButtonSize, label: string }> = [
         >
           Quaternary
         </DsButton>
-      </DsCluster>
+      </div>
     </section>
   </article>
 </template>

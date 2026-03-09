@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import DsButtonMatrixPreview from '@/components/ui/DesignSystem/DsButtonMatrixPreview.vue'
 import DsCard from '@/components/ui/DesignSystem/DsCard.vue'
-import DsCluster from '@/components/ui/DesignSystem/DsCluster.vue'
 import DsColorScheme from '@/components/ui/DesignSystem/DsColorScheme.vue'
 import DsDivider from '@/components/ui/DesignSystem/DsDivider.vue'
 import DsField from '@/components/ui/DesignSystem/DsField.vue'
@@ -10,7 +9,6 @@ import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
 import DsSectionContainer from '@/components/ui/DesignSystem/DsSectionContainer.vue'
 import DsSectionHeader from '@/components/ui/DesignSystem/DsSectionHeader.vue'
 import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
-import DsStack from '@/components/ui/DesignSystem/DsStack.vue'
 import DsTextarea from '@/components/ui/DesignSystem/DsTextarea.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
@@ -142,40 +140,6 @@ const selectOptions = [
         title="Buttons"
       />
       <DsButtonMatrixPreview />
-    </DsSectionContainer>
-
-    <DsSectionContainer layout="block">
-      <DsSectionHeader
-        kicker="layout primitives"
-        title="Stack + Cluster"
-        description="Stack handles vertical rhythm. Cluster handles wrapped inline groups for tags, meta, and actions."
-      />
-      <DsCard>
-        <div class="grid gap-6 lg:grid-cols-2">
-          <DsStack gap="sm" align="start">
-            <DsTypography as="p" role="meta" size="xs" uppercase tone="muted">
-              DsStack
-            </DsTypography>
-            <DsTypography as="p" role="headline" size="md" uppercase>
-              Vertical Flow
-            </DsTypography>
-            <DsTypography as="p" role="body" size="sm" tone="muted">
-              Headlines, decks, and metadata keep a fixed rhythm.
-            </DsTypography>
-          </DsStack>
-          <DsStack gap="sm" align="start">
-            <DsTypography as="p" role="meta" size="xs" uppercase tone="muted">
-              DsCluster
-            </DsTypography>
-            <DsCluster gap="sm">
-              <span class="space-grotesk-regular border border-pureBlack/18 rounded-full border-solid px-2 py-1 text-[10px] tracking-[0.14em] uppercase dark:border-pureWhite/18">AI</span>
-              <span class="space-grotesk-regular border border-pureBlack/18 rounded-full border-solid px-2 py-1 text-[10px] tracking-[0.14em] uppercase dark:border-pureWhite/18">Policy</span>
-              <span class="space-grotesk-regular border border-pureBlack/18 rounded-full border-solid px-2 py-1 text-[10px] tracking-[0.14em] uppercase dark:border-pureWhite/18">Infra</span>
-              <span class="space-grotesk-regular border border-pureBlack/18 rounded-full border-solid px-2 py-1 text-[10px] tracking-[0.14em] uppercase dark:border-pureWhite/18">Market</span>
-            </DsCluster>
-          </DsStack>
-        </div>
-      </DsCard>
     </DsSectionContainer>
 
     <DsSectionContainer layout="block">

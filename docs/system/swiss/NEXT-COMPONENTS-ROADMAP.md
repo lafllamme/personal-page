@@ -71,7 +71,7 @@ Ziel:
 ## Danach (sinnvolle Folge)
 
 ### Phase 3: Surface / Utility
-7. `DsTag` / `DsBadge`
+7. `DsBadge`
 8. `DsDivider`
 9. `DsCard` / `DsSurface`
 
