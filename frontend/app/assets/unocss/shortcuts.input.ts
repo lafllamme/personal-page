@@ -311,7 +311,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-base',
-    'relative inline-flex shrink-0 items-center justify-center border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-input-idle)] [background:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[transform,background-color,border-color,box-shadow,color,opacity] [transition-duration:180ms] [transition-timing-function:var(--motion-input-shell-ease)] hover:[transform:scale(1.04)] active:[transform:scale(0.96)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+    'relative inline-flex shrink-0 items-center justify-center border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-input-idle)] [background:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[background-color,border-color,box-shadow,color,opacity] [transition-duration:440ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
   ],
   [
     'ui-checkbox-control-sm',
@@ -327,27 +327,15 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-variant-default',
-    '[background:var(--bg-inverse)] [color:var(--color-inverse)]',
+    '[background:var(--bg-inverse)] [color:var(--color-inverse)] [&[data-checked=true],&[data-indeterminate=true]]:[background:var(--color-primary)] [&[data-checked=true],&[data-indeterminate=true]]:[border-color:var(--color-primary)] [&[data-checked=true],&[data-indeterminate=true]]:[color:var(--color-inverse)]',
   ],
   [
     'ui-checkbox-control-variant-accent',
-    '[background:color-mix(in_oklch,var(--color-accent-ui)_10%,var(--bg-inverse))] [color:var(--color-accent-strong)]',
+    '[background:color-mix(in_oklch,var(--color-accent-ui)_10%,var(--bg-inverse))] [color:var(--color-accent-strong)] [&[data-checked=true],&[data-indeterminate=true]]:[background:var(--color-accent-ui)] [&[data-checked=true],&[data-indeterminate=true]]:[border-color:var(--color-accent-ui)] [&[data-checked=true],&[data-indeterminate=true]]:[color:var(--pure-black)]',
   ],
   [
     'ui-checkbox-control-variant-mixed',
-    '[background:color-mix(in_oklch,var(--color-accent-ui)_6%,var(--bg-inverse))] [color:var(--color-accent-strong)]',
-  ],
-  [
-    'ui-checkbox-control-checked-default',
-    '[background:var(--color-primary)] [border-color:var(--color-primary)] [color:var(--color-inverse)]',
-  ],
-  [
-    'ui-checkbox-control-checked-accent',
-    '[background:var(--color-accent-ui)] [border-color:var(--color-accent-ui)] [color:var(--pure-black)]',
-  ],
-  [
-    'ui-checkbox-control-checked-mixed',
-    '[background:var(--bg-accent-soft)] [border-color:var(--color-accent-ui)] [color:var(--color-accent-strong)]',
+    '[background:color-mix(in_oklch,var(--color-accent-ui)_6%,var(--bg-inverse))] [color:var(--color-accent-strong)] [&[data-checked=true],&[data-indeterminate=true]]:[background:var(--bg-accent-soft)] [&[data-checked=true],&[data-indeterminate=true]]:[border-color:var(--color-accent-ui)] [&[data-checked=true],&[data-indeterminate=true]]:[color:var(--color-accent-strong)]',
   ],
   [
     'ui-checkbox-control-invalid',
@@ -359,7 +347,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-indicator',
-    'pointer-events-none [width:72%] [height:72%] opacity-70 [transform:scale(0.86)] [transition:transform_220ms_var(--motion-input-shell-ease),opacity_180ms_ease]',
+    'pointer-events-none [width:72%] [height:72%] opacity-62 [transform:scale(0.8)] [transition:transform_260ms_cubic-bezier(0.22,1,0.36,1),opacity_220ms_ease]',
   ],
   [
     'ui-checkbox-indicator-active',
@@ -367,19 +355,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-check-path',
-    'fill-none [stroke:currentColor] [stroke-width:3] [stroke-linecap:round] [stroke-linejoin:round] [stroke-dasharray:28] [stroke-dashoffset:28] opacity-0 [transition:stroke-dashoffset_260ms_var(--motion-input-shell-ease),opacity_180ms_ease]',
-  ],
-  [
-    'ui-checkbox-check-path-visible',
-    'opacity-100 [stroke-dashoffset:0]',
+    'fill-none [stroke:currentColor] [stroke-width:3.35] [stroke-linecap:round] [stroke-linejoin:round]',
   ],
   [
     'ui-checkbox-indeterminate-line',
-    '[stroke:currentColor] [stroke-width:3] [stroke-linecap:round] opacity-0 [transform-origin:center] [transform:scaleX(0.2)] [transition:transform_180ms_var(--motion-input-shell-ease),opacity_120ms_ease]',
-  ],
-  [
-    'ui-checkbox-indeterminate-line-visible',
-    'opacity-100 [transform:scaleX(1)]',
+    '[stroke:currentColor] [stroke-width:3.35] [stroke-linecap:round]',
   ],
   [
     'ui-checkbox-label',

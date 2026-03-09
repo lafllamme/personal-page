@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, toRefs, useAttrs } from 'vue'
+import { Motion } from 'motion-v'
 import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
@@ -102,40 +103,49 @@ const labelClass = computed(() => [
   disabled.value && 'ui-checkbox-label-disabled',
 ])
 
-const controlStateStyle = computed(() => {
-  if (disabled.value || (!isChecked.value && !isIndeterminate.value))
-    return undefined
+const smoothEase = [0.22, 1, 0.36, 1]
 
-  if (variant.value === 'accent') {
-    return {
-      background: 'var(--color-accent-ui)',
-      borderColor: 'var(--color-accent-ui)',
-      color: 'var(--pure-black)',
-    }
-  }
+const checkMotion = computed(() => (
+  isChecked.value
+    ? {
+        pathLength: 1,
+        opacity: 1,
+        transition: {
+          duration: 0.24,
+          delay: 0.3,
+          ease: smoothEase,
+        },
+      }
+    : {
+        pathLength: 0,
+        opacity: 0,
+        transition: {
+          duration: 0.16,
+          ease: smoothEase,
+        },
+      }
+) as any)
 
-  if (variant.value === 'mixed') {
-    return {
-      background: 'var(--bg-accent-soft)',
-      borderColor: 'var(--color-accent-ui)',
-      color: 'var(--color-accent-strong)',
-    }
-  }
-
-  return {
-    background: 'var(--color-primary)',
-    borderColor: 'var(--color-primary)',
-    color: 'var(--color-inverse)',
-  }
-})
-
-const checkPathStyle = computed(() => ({
-  transitionDelay: isChecked.value ? '120ms' : '0ms',
-}))
-
-const indeterminateLineStyle = computed(() => ({
-  transitionDelay: isIndeterminate.value ? '40ms' : '0ms',
-}))
+const indeterminateMotion = computed(() => (
+  isIndeterminate.value
+    ? {
+        pathLength: 1,
+        opacity: 1,
+        transition: {
+          duration: 0.22,
+          delay: 0.28,
+          ease: smoothEase,
+        },
+      }
+    : {
+        pathLength: 0,
+        opacity: 0,
+        transition: {
+          duration: 0.16,
+          ease: smoothEase,
+        },
+      }
+) as any)
 
 function onToggle(): void {
   if (disabled.value)
@@ -163,13 +173,17 @@ function onBlur(event: FocusEvent): void {
   <div class="ui-checkbox-root">
     <label class="ui-checkbox-hit">
       <div class="ui-checkbox-main-row">
-        <button
+        <Motion
+          as="button"
           v-bind="attrs"
           :id="checkboxId || undefined"
           type="button"
           role="checkbox"
           :class="controlClass"
-          :style="controlStateStyle"
+          :while-hover="disabled ? undefined : { scale: 1.018 }"
+          :while-tap="disabled ? undefined : { scale: 0.982 }"
+          :data-checked="isChecked ? 'true' : 'false'"
+          :data-indeterminate="isIndeterminate ? 'true' : 'false'"
           :aria-checked="isIndeterminate ? 'mixed' : (isChecked ? 'true' : 'false')"
           :aria-invalid="hasError ? 'true' : 'false'"
           :aria-describedby="describedBy"
@@ -178,7 +192,8 @@ function onBlur(event: FocusEvent): void {
           @focus="onFocus"
           @blur="onBlur"
         >
-          <svg
+          <Motion
+            as="svg"
             class="ui-checkbox-indicator" :class="[
               (isChecked || isIndeterminate) && 'ui-checkbox-indicator-active',
             ]"
@@ -186,25 +201,25 @@ function onBlur(event: FocusEvent): void {
             fill="none"
             aria-hidden="true"
           >
-            <path
+            <Motion
+              as="path"
               d="M4.5 12.75L9.25 17.5L19.5 7"
-              :style="checkPathStyle"
-              class="ui-checkbox-check-path" :class="[
-                isChecked && 'ui-checkbox-check-path-visible',
-              ]"
+              class="ui-checkbox-check-path"
+              :initial="{ pathLength: 0, opacity: 0 }"
+              :animate="checkMotion"
             />
-            <line
+            <Motion
+              as="line"
               x1="5"
               y1="12"
               x2="19"
               y2="12"
-              :style="indeterminateLineStyle"
-              class="ui-checkbox-indeterminate-line" :class="[
-                isIndeterminate && 'ui-checkbox-indeterminate-line-visible',
-              ]"
+              class="ui-checkbox-indeterminate-line"
+              :initial="{ pathLength: 0, opacity: 0 }"
+              :animate="indeterminateMotion"
             />
-          </svg>
-        </button>
+          </Motion>
+        </Motion>
 
         <DsTypography
           v-if="label"
