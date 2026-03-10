@@ -103,18 +103,12 @@ const labelClass = computed(() => [
   disabled.value && 'ui-checkbox-label-disabled',
 ])
 
-const smoothEase = [0.22, 1, 0.36, 1]
+const smoothEase = [0.16, 1, 0.3, 1] as const
 const isActive = computed(() => isChecked.value || isIndeterminate.value)
 
 const idleSurfaceColor = computed(() => {
   if (disabled.value)
     return 'var(--bg-soft-disabled)'
-
-  if (variant.value === 'accent')
-    return 'var(--bg-inverse)'
-
-  if (variant.value === 'mixed')
-    return 'var(--bg-inverse)'
 
   return 'var(--bg-inverse)'
 })
@@ -157,32 +151,11 @@ const checkboxMotion = computed(() => {
     borderColor,
     color: textColor,
     transition: {
-      duration: isCheckedOrMixed ? 0.42 : 0.34,
-      delay: isCheckedOrMixed ? 0 : 0.06,
+      duration: 0.5,
       ease: smoothEase,
     },
   }
 })
-
-const indicatorMotion = computed(() => (
-  isActive.value
-    ? {
-        opacity: 1,
-        transition: {
-          duration: 0.16,
-          delay: 0.06,
-          ease: smoothEase,
-        },
-      }
-    : {
-        opacity: 0.9,
-        transition: {
-          duration: 0.14,
-          delay: 0,
-          ease: smoothEase,
-        },
-      }
-) as any)
 
 const checkMotion = computed(() => (
   isChecked.value
@@ -191,22 +164,21 @@ const checkMotion = computed(() => (
         pathOffset: 0,
         opacity: 1,
         transition: {
-          duration: 0.34,
-          delay: 0.07,
+          duration: 0.2,
+          delay: 0.2,
           ease: smoothEase,
         },
       }
     : {
         pathLength: 0,
-        pathOffset: 0.08,
+        pathOffset: 0.2,
         opacity: 0,
         transition: {
           duration: 0.2,
-          delay: 0,
           ease: smoothEase,
         },
       }
-) as any)
+))
 
 const indeterminateMotion = computed(() => (
   isIndeterminate.value
@@ -214,8 +186,7 @@ const indeterminateMotion = computed(() => (
         pathLength: 1,
         opacity: 1,
         transition: {
-          duration: 0.24,
-          delay: 0.08,
+          duration: 0.2,
           ease: smoothEase,
         },
       }
@@ -223,12 +194,11 @@ const indeterminateMotion = computed(() => (
         pathLength: 0,
         opacity: 0,
         transition: {
-          duration: 0.16,
-          delay: 0,
+          duration: 0.2,
           ease: smoothEase,
         },
       }
-) as any)
+))
 
 function onToggle(): void {
   if (disabled.value)
@@ -258,7 +228,7 @@ function onBlur(event: FocusEvent): void {
       <div class="ui-checkbox-main-row">
         <Motion
           v-bind="attrs"
-          :id="checkboxId"
+          :id="checkboxId || undefined"
           as="button"
           type="button"
           role="checkbox"
@@ -269,9 +239,8 @@ function onBlur(event: FocusEvent): void {
           :aria-invalid="hasError ? 'true' : 'false'"
           :aria-describedby="describedBy"
           :disabled="disabled"
-          :while-hover="disabled ? undefined : { scale: 1.03 }"
-          :while-tap="disabled ? undefined : { scale: 0.97 }"
-          :transition="{ duration: 0.24, ease: smoothEase }"
+          :while-hover="disabled ? undefined : { scale: 1.05 }"
+          :while-tap="disabled ? undefined : { scale: 0.95 }"
           :animate="checkboxMotion"
           @click="onToggle"
           @focus="onFocus"
@@ -283,14 +252,12 @@ function onBlur(event: FocusEvent): void {
             viewBox="0 0 24 24"
             fill="none"
             aria-hidden="true"
-            :initial="{ opacity: 0.9 }"
-            :animate="indicatorMotion"
           >
             <Motion
               as="path"
               d="M4.5 12.75L9.25 17.5L19.5 7"
               class="ui-checkbox-check-path"
-              :initial="{ pathLength: 0, pathOffset: 0.1, opacity: 0 }"
+              :initial="{ pathLength: 0, pathOffset: 0.2, opacity: 0 }"
               :animate="checkMotion"
             />
             <Motion
