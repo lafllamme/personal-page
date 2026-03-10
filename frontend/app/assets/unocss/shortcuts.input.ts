@@ -347,7 +347,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-indicator',
-    'pointer-events-none relative z-1 [width:72%] [height:72%] opacity-62 [transform:scale(0.8)] [transition:transform_260ms_cubic-bezier(0.22,1,0.36,1),opacity_220ms_ease]',
+    'pointer-events-none relative z-1 [width:84%] [height:84%]',
   ],
   [
     'ui-checkbox-indicator-active',

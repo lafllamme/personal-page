@@ -168,18 +168,16 @@ const indicatorMotion = computed(() => (
   isActive.value
     ? {
         opacity: 1,
-        scale: 1,
         transition: {
-          duration: 0.2,
+          duration: 0.16,
           delay: 0.06,
           ease: smoothEase,
         },
       }
     : {
-        opacity: 0.62,
-        scale: 0.8,
+        opacity: 0.9,
         transition: {
-          duration: 0.18,
+          duration: 0.14,
           delay: 0,
           ease: smoothEase,
         },
@@ -190,18 +188,20 @@ const checkMotion = computed(() => (
   isChecked.value
     ? {
         pathLength: 1,
+        pathOffset: 0,
         opacity: 1,
         transition: {
-          duration: 0.26,
-          delay: 0.08,
+          duration: 0.34,
+          delay: 0.07,
           ease: smoothEase,
         },
       }
     : {
         pathLength: 0,
+        pathOffset: 0.08,
         opacity: 0,
         transition: {
-          duration: 0.16,
+          duration: 0.2,
           delay: 0,
           ease: smoothEase,
         },
@@ -283,14 +283,14 @@ function onBlur(event: FocusEvent): void {
             viewBox="0 0 24 24"
             fill="none"
             aria-hidden="true"
-            :initial="{ opacity: 0.62, scale: 0.8 }"
+            :initial="{ opacity: 0.9 }"
             :animate="indicatorMotion"
           >
             <Motion
               as="path"
               d="M4.5 12.75L9.25 17.5L19.5 7"
               class="ui-checkbox-check-path"
-              :initial="{ pathLength: 0, opacity: 0 }"
+              :initial="{ pathLength: 0, pathOffset: 0.1, opacity: 0 }"
               :animate="checkMotion"
             />
             <Motion
