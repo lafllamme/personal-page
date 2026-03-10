@@ -36,7 +36,7 @@ const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void
 }>()
 
-type CheckboxValue = boolean | 'indeterminate'
+type CheckboxValue = boolean
 
 const {
   modelValue,
@@ -60,8 +60,7 @@ const checkboxId = computed(() => {
 })
 
 const isChecked = computed(() => modelValue.value === true)
-const isIndeterminate = computed(() => modelValue.value === 'indeterminate')
-const hasValue = computed(() => isChecked.value || isIndeterminate.value)
+const hasValue = computed(() => isChecked.value)
 const missingRequiredValue = computed(() => touched.value && required.value && !hasValue.value)
 const hasError = computed(() => Boolean(error.value) || invalid.value || missingRequiredValue.value)
 const resolvedTabIndex = computed(() => {
@@ -121,7 +120,7 @@ const labelClass = computed(() => [
 ])
 
 const smoothEase = [0.16, 1, 0.3, 1] as const
-const isActive = computed(() => isChecked.value || isIndeterminate.value)
+const isActive = computed(() => isChecked.value)
 
 const idleSurfaceColor = computed(() => {
   if (disabled.value)
@@ -249,7 +248,7 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
           role="checkbox"
           :class="controlClass"
           :data-checked="isChecked ? 'true' : 'false'"
-          :aria-checked="isActive ? 'true' : 'false'"
+          :aria-checked="isChecked ? 'true' : 'false'"
           :aria-invalid="hasError ? 'true' : 'false'"
           :aria-describedby="describedBy"
           :disabled="disabled"

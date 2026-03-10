@@ -350,16 +350,8 @@ export const inputShortcuts: UserShortcuts = [
     'pointer-events-none relative z-1 [width:84%] [height:84%]',
   ],
   [
-    'ui-checkbox-indicator-active',
-    'opacity-100 [transform:scale(1)]',
-  ],
-  [
     'ui-checkbox-check-path',
     'fill-none [stroke:currentColor] [stroke-width:3.5] [stroke-linecap:round] [stroke-linejoin:round]',
-  ],
-  [
-    'ui-checkbox-indeterminate-line',
-    '[stroke:currentColor] [stroke-width:3.35] [stroke-linecap:round]',
   ],
   [
     'ui-checkbox-label',
