@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Motion } from 'motion-v'
-import { computed, ref, toRefs, useAttrs } from 'vue'
+import { computed, ref, toRefs, useAttrs, watch } from 'vue'
 import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
@@ -52,6 +52,7 @@ const {
 
 const attrs = useAttrs()
 const touched = ref(false)
+const errorShakeKey = ref(0)
 
 const checkboxId = computed(() => {
   const rawId = attrs.id
@@ -88,6 +89,7 @@ const resolvedErrorText = computed(() => {
 
   return ''
 })
+const errorAnimationKey = computed(() => `ds-checkbox-error-${errorShakeKey.value}`)
 
 const hintId = computed(() => (checkboxId.value && hint.value && !hasError.value ? `${checkboxId.value}-hint` : ''))
 const errorId = computed(() => (checkboxId.value && hasError.value && resolvedErrorText.value ? `${checkboxId.value}-error` : ''))
@@ -143,14 +145,19 @@ const activeSurfaceColor = computed(() => {
 
 const checkboxMotion = computed(() => {
   const isCheckedOrMixed = isActive.value
+  const hasInvalidState = hasError.value && !disabled.value
   const textColor
-    = variant.value === 'accent' && isCheckedOrMixed
-      ? 'var(--color-on-accent)'
-      : variant.value === 'accent'
-        ? 'var(--color-inverse)'
-        : variant.value === 'mixed'
-          ? 'var(--color-accent-strong)'
-          : 'var(--color-inverse)'
+    = disabled.value
+      ? 'var(--color-disabled)'
+      : hasInvalidState
+        ? 'var(--color-error-text)'
+        : variant.value === 'accent' && isCheckedOrMixed
+          ? 'var(--color-on-accent)'
+          : variant.value === 'accent'
+            ? 'var(--color-inverse)'
+            : variant.value === 'mixed'
+              ? 'var(--color-accent-strong)'
+              : 'var(--color-inverse)'
 
   const borderColor
     = disabled.value
@@ -164,7 +171,11 @@ const checkboxMotion = computed(() => {
           : 'var(--border-input-idle)'
 
   return {
-    backgroundColor: isCheckedOrMixed ? activeSurfaceColor.value : idleSurfaceColor.value,
+    backgroundColor: hasInvalidState
+      ? 'var(--bg-input-error-soft)'
+      : isCheckedOrMixed
+        ? activeSurfaceColor.value
+        : idleSurfaceColor.value,
     borderColor,
     color: textColor,
     transition: {
@@ -174,8 +185,10 @@ const checkboxMotion = computed(() => {
   }
 })
 
+const isIndicatorVisible = computed(() => isActive.value && !disabled.value)
+
 const checkStrokeMotion = computed(() => (
-  isActive.value
+  isIndicatorVisible.value
     ? {
         pathLength: 1,
         opacity: 1,
@@ -213,6 +226,14 @@ function onBlur(event: FocusEvent): void {
   touched.value = true
   emit('blur', event)
 }
+
+watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, prevError]) => {
+  if (!nextHasError || !nextError)
+    return
+
+  if (!prevHasError || nextError !== prevError)
+    errorShakeKey.value += 1
+})
 </script>
 
 <template>
@@ -279,6 +300,7 @@ function onBlur(event: FocusEvent): void {
         <div
           v-if="hasError && Boolean(resolvedErrorText)"
           :id="errorId || undefined"
+          :key="errorAnimationKey"
           class="ui-input-error-row color-$color-error-text"
         >
           <DsIcon
@@ -302,7 +324,7 @@ function onBlur(event: FocusEvent): void {
           as="p"
           role="meta"
           size="2xs"
-          tone="muted"
+          :tone="disabled ? 'muted' : 'default'"
         >
           {{ hint }}
         </DsTypography>

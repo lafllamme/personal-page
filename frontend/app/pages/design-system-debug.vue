@@ -66,6 +66,7 @@ const checkboxSizeSm = ref<true | false | 'indeterminate'>(false)
 const checkboxSizeMd = ref<true | false | 'indeterminate'>(true)
 const checkboxSizeLg = ref<true | false | 'indeterminate'>(false)
 const checkboxRequired = ref<true | false | 'indeterminate'>(false)
+const checkboxRequiredErrorPreview = ref<true | false | 'indeterminate'>(false)
 
 const selectOptions = [
   { label: 'Editorial feedback', value: 'editorial' },
@@ -559,6 +560,18 @@ const selectInvalidError = computed(() => {
                   label="Required agreement"
                   hint="Blur without selection to inspect error shake."
                   required
+                />
+
+                <DsCheckbox
+                  id="debug-checkbox-required-error"
+                  v-model="checkboxRequiredErrorPreview"
+                  variant="default"
+                  size="md"
+                  label="Required (error preview)"
+                  hint="Forced error state preview."
+                  required
+                  invalid
+                  error="Please confirm this field."
                 />
               </div>
             </div>
