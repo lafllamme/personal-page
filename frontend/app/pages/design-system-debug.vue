@@ -3,9 +3,9 @@ import { computed, ref } from 'vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsCheckbox from '@/components/ui/DesignSystem/DsCheckbox.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
-import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
+import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
 import DsTextarea from '@/components/ui/DesignSystem/DsTextarea.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
@@ -61,7 +61,7 @@ const selectInvalidTouched = ref(false)
 const selectEmpty = ref('')
 const checkboxDefault = ref<true | false | 'indeterminate'>(false)
 const checkboxAccent = ref<true | false | 'indeterminate'>(false)
-const checkboxMixed = ref<true | false | 'indeterminate'>('indeterminate')
+const checkboxMixed = ref<true | false | 'indeterminate'>(false)
 const checkboxSizeSm = ref<true | false | 'indeterminate'>(false)
 const checkboxSizeMd = ref<true | false | 'indeterminate'>(true)
 const checkboxSizeLg = ref<true | false | 'indeterminate'>(false)

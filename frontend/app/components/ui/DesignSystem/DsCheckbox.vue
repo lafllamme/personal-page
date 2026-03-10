@@ -146,9 +146,11 @@ const checkboxMotion = computed(() => {
   const textColor
     = variant.value === 'accent' && isCheckedOrMixed
       ? 'var(--pure-black)'
-      : variant.value === 'mixed' && isCheckedOrMixed
-        ? 'var(--color-accent-strong)'
-        : 'var(--color-inverse)'
+      : variant.value === 'accent'
+        ? 'var(--color-inverse)'
+        : variant.value === 'mixed'
+          ? 'var(--color-accent-strong)'
+          : 'var(--color-inverse)'
 
   const borderColor
     = disabled.value
@@ -226,8 +228,7 @@ function onBlur(event: FocusEvent): void {
           role="checkbox"
           :class="controlClass"
           :data-checked="isChecked ? 'true' : 'false'"
-          :data-indeterminate="isIndeterminate ? 'true' : 'false'"
-          :aria-checked="isIndeterminate ? 'mixed' : (isChecked ? 'true' : 'false')"
+          :aria-checked="isActive ? 'true' : 'false'"
           :aria-invalid="hasError ? 'true' : 'false'"
           :aria-describedby="describedBy"
           :disabled="disabled"
