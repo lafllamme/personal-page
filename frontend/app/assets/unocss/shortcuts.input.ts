@@ -355,7 +355,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-check-path',
-    'fill-none [stroke:currentColor] [stroke-width:3.35] [stroke-linecap:round] [stroke-linejoin:round]',
+    'fill-none [stroke:currentColor] [stroke-width:3.35] [stroke-linecap:butt] [stroke-linejoin:round]',
   ],
   [
     'ui-checkbox-indeterminate-line',
