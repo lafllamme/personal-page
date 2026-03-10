@@ -145,7 +145,7 @@ const checkboxMotion = computed(() => {
   const isCheckedOrMixed = isActive.value
   const textColor
     = variant.value === 'accent' && isCheckedOrMixed
-      ? 'var(--pure-black)'
+      ? 'var(--color-on-accent)'
       : variant.value === 'accent'
         ? 'var(--color-inverse)'
         : variant.value === 'mixed'
