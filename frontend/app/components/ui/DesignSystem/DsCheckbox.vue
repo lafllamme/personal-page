@@ -161,17 +161,17 @@ const checkStrokeMotion = computed(() => (
   isChecked.value
     ? {
         pathLength: 1,
+        opacity: 1,
         transition: {
-          duration: 0.24,
+          duration: 0.2,
           delay: 0.2,
-          ease: smoothEase,
         },
       }
     : {
         pathLength: 0,
+        opacity: 0,
         transition: {
-          duration: 0.16,
-          ease: smoothEase,
+          duration: 0.2,
         },
       }
 ))
@@ -251,9 +251,9 @@ function onBlur(event: FocusEvent): void {
           >
             <Motion
               as="path"
-              d="M4.5 12.75L9.25 17.5L19.5 7"
+              d="m5 13l4 4L19 7"
               class="ui-checkbox-check-path"
-              :initial="{ pathLength: 0 }"
+              :initial="{ pathLength: 0, opacity: 0 }"
               :animate="checkStrokeMotion"
             />
             <Motion
