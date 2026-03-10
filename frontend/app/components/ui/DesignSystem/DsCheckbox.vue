@@ -60,9 +60,24 @@ const checkboxId = computed(() => {
 
 const isChecked = computed(() => modelValue.value === true)
 const isIndeterminate = computed(() => modelValue.value === 'indeterminate')
-const hasValue = computed(() => isChecked.value)
+const hasValue = computed(() => isChecked.value || isIndeterminate.value)
 const missingRequiredValue = computed(() => touched.value && required.value && !hasValue.value)
 const hasError = computed(() => Boolean(error.value) || invalid.value || missingRequiredValue.value)
+const resolvedTabIndex = computed(() => {
+  if (disabled.value)
+    return -1
+
+  const rawTabIndex = attrs.tabindex
+  if (typeof rawTabIndex === 'number')
+    return Number.isFinite(rawTabIndex) ? rawTabIndex : 0
+
+  if (typeof rawTabIndex === 'string') {
+    const parsed = Number.parseInt(rawTabIndex, 10)
+    return Number.isNaN(parsed) ? 0 : parsed
+  }
+
+  return 0
+})
 
 const resolvedErrorText = computed(() => {
   if (error.value)
@@ -158,7 +173,7 @@ const checkboxMotion = computed(() => {
 })
 
 const checkStrokeMotion = computed(() => (
-  isChecked.value
+  isActive.value
     ? {
         pathLength: 1,
         opacity: 1,
@@ -176,31 +191,11 @@ const checkStrokeMotion = computed(() => (
       }
 ))
 
-const indeterminateMotion = computed(() => (
-  isIndeterminate.value
-    ? {
-        pathLength: 1,
-        opacity: 1,
-        transition: {
-          duration: 0.2,
-          ease: smoothEase,
-        },
-      }
-    : {
-        pathLength: 0,
-        opacity: 0,
-        transition: {
-          duration: 0.2,
-          ease: smoothEase,
-        },
-      }
-))
-
 function onToggle(): void {
   if (disabled.value)
     return
 
-  if (isChecked.value) {
+  if (isActive.value) {
     emit('update:modelValue', false)
     return
   }
@@ -225,6 +220,7 @@ function onBlur(event: FocusEvent): void {
         <Motion
           v-bind="attrs"
           :id="checkboxId || undefined"
+          :tabindex="resolvedTabIndex"
           as="button"
           type="button"
           role="checkbox"
@@ -248,6 +244,8 @@ function onBlur(event: FocusEvent): void {
             viewBox="0 0 24 24"
             fill="none"
             aria-hidden="true"
+            focusable="false"
+            tabindex="-1"
           >
             <Motion
               as="path"
@@ -255,16 +253,8 @@ function onBlur(event: FocusEvent): void {
               class="ui-checkbox-check-path"
               :initial="{ pathLength: 0, opacity: 0 }"
               :animate="checkStrokeMotion"
-            />
-            <Motion
-              as="line"
-              x1="5"
-              y1="12"
-              x2="19"
-              y2="12"
-              class="ui-checkbox-indeterminate-line"
-              :initial="{ pathLength: 0, opacity: 0 }"
-              :animate="indeterminateMotion"
+              focusable="false"
+              tabindex="-1"
             />
           </Motion>
         </Motion>
