@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { computed, ref, toRefs, useAttrs } from 'vue'
 import { Motion } from 'motion-v'
+import { computed, ref, toRefs, useAttrs } from 'vue'
 import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
@@ -157,8 +157,8 @@ const checkboxMotion = computed(() => {
     borderColor,
     color: textColor,
     transition: {
-      duration: isCheckedOrMixed ? 0.54 : 0.52,
-      delay: isCheckedOrMixed ? 0 : 0.09,
+      duration: isCheckedOrMixed ? 0.42 : 0.34,
+      delay: isCheckedOrMixed ? 0 : 0.06,
       ease: smoothEase,
     },
   }
@@ -170,8 +170,8 @@ const indicatorMotion = computed(() => (
         opacity: 1,
         scale: 1,
         transition: {
-          duration: 0.24,
-          delay: 0.2,
+          duration: 0.2,
+          delay: 0.06,
           ease: smoothEase,
         },
       }
@@ -179,8 +179,8 @@ const indicatorMotion = computed(() => (
         opacity: 0.62,
         scale: 0.8,
         transition: {
-          duration: 0.24,
-          delay: 0.08,
+          duration: 0.18,
+          delay: 0,
           ease: smoothEase,
         },
       }
@@ -192,8 +192,8 @@ const checkMotion = computed(() => (
         pathLength: 1,
         opacity: 1,
         transition: {
-          duration: 0.24,
-          delay: 0.3,
+          duration: 0.26,
+          delay: 0.08,
           ease: smoothEase,
         },
       }
@@ -201,7 +201,7 @@ const checkMotion = computed(() => (
         pathLength: 0,
         opacity: 0,
         transition: {
-          duration: 0.22,
+          duration: 0.16,
           delay: 0,
           ease: smoothEase,
         },
@@ -214,8 +214,8 @@ const indeterminateMotion = computed(() => (
         pathLength: 1,
         opacity: 1,
         transition: {
-          duration: 0.22,
-          delay: 0.28,
+          duration: 0.24,
+          delay: 0.08,
           ease: smoothEase,
         },
       }
@@ -223,7 +223,7 @@ const indeterminateMotion = computed(() => (
         pathLength: 0,
         opacity: 0,
         transition: {
-          duration: 0.22,
+          duration: 0.16,
           delay: 0,
           ease: smoothEase,
         },
@@ -257,9 +257,9 @@ function onBlur(event: FocusEvent): void {
     <label class="ui-checkbox-hit">
       <div class="ui-checkbox-main-row">
         <Motion
-          as="button"
           v-bind="attrs"
-          :id="checkboxId || undefined"
+          :id="checkboxId"
+          as="button"
           type="button"
           role="checkbox"
           :class="controlClass"
@@ -269,8 +269,8 @@ function onBlur(event: FocusEvent): void {
           :aria-invalid="hasError ? 'true' : 'false'"
           :aria-describedby="describedBy"
           :disabled="disabled"
-          :while-hover="disabled ? undefined : { scale: 1.04 }"
-          :while-tap="disabled ? undefined : { scale: 0.96 }"
+          :while-hover="disabled ? undefined : { scale: 1.03 }"
+          :while-tap="disabled ? undefined : { scale: 0.97 }"
           :transition="{ duration: 0.24, ease: smoothEase }"
           :animate="checkboxMotion"
           @click="onToggle"
