@@ -45,6 +45,7 @@ Diese Datei ist die zentrale Quelle fuer Token-Layering, Naming und Runtime-Guar
   - `ui-button-label`
   - `ui-ghost-button`
   - `ui-ghost-label`
+  - `ui-field-error-row`
 - Regel: nur fuer Struktur, nicht fuer Farb-/State-Logik.
 
 ## 2) Naming Contract
