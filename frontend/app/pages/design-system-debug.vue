@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsCheckbox from '@/components/ui/DesignSystem/DsCheckbox.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
+import DsLink from '@/components/ui/DesignSystem/DsLink.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
 import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
@@ -175,6 +176,22 @@ const selectInvalidError = computed(() => {
           >
             Diese Seite zeigt bewusst nur Container/Section/Button-Grundlagen mit aktiven Debug-Outlines.
           </DsTypography>
+
+          <div class="flex flex-wrap items-center gap-4">
+            <DsLink
+              to="/design-system"
+              text="Interner Link Test"
+              variant="default"
+              underline="hover"
+            />
+            <DsLink
+              href="https://example.com"
+              text="Externer Link Test"
+              variant="accent"
+              underline="always"
+              external
+            />
+          </div>
         </div>
       </DsSectionBody>
     </DsSectionShell>

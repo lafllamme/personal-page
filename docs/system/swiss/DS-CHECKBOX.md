@@ -24,7 +24,7 @@ Status: aktiv
 - `--bg-inverse`
 - `--bg-soft-disabled`
 - `--bg-accent-soft`
-- `--bg-input-error-soft`
+- `--bg-field-error-soft`
 - `--color-primary`
 - `--color-inverse`
 - `--color-accent-ui`
@@ -32,15 +32,16 @@ Status: aktiv
 - `--color-on-accent`
 - `--color-error-text`
 - `--color-disabled`
-- `--border-input-idle`
+- `--border-field-idle`
 - `--border-accent-hover`
 - `--border-error`
 - `--border-disabled`
 
 ### Motion
-- Shell-Fill: `500ms` (`cubic-bezier(0.22,1,0.36,1)`)
-- Checkmark-Draw (checked): `200ms` + `200ms delay`
-- Checkmark-Draw (unchecked): `200ms`
+- `--motion-checkbox-shell-duration`
+- `--motion-checkbox-shell-ease`
+- `--motion-checkbox-check-duration`
+- `--motion-checkbox-check-delay`
 - Hover/Tap: `scale 1.05 / 0.95`
 
 ### Sizing / Control
@@ -48,6 +49,14 @@ Status: aktiv
 - `--focus-ring-inner-width`
 - `--focus-ring-active-width`
 - `--ds-checkbox-control-size` (je groesse gesetzt)
+- `--size-checkbox-control-sm`
+- `--size-checkbox-control-md`
+- `--size-checkbox-control-lg`
+- `--radius-checkbox-sm`
+- `--radius-checkbox-md`
+- `--radius-checkbox-lg`
+- `--size-checkbox-indicator`
+- `--size-checkbox-check-stroke`
 
 ### Checkbox-Shortcuts
 - `ui-checkbox-root`
@@ -67,6 +76,8 @@ Status: aktiv
 - `ui-checkbox-check-path`
 - `ui-checkbox-label`
 - `ui-checkbox-label-disabled`
+- `ui-field-error-row`
+- `ui-field-error-icon`
 
 ## State-Prioritaet (komponente)
 - `disabled` > `invalid` > `focus-visible` > `hover` > `default`
@@ -81,6 +92,7 @@ Status: aktiv
   - Focus/Invalid/Disabled-Ring und Border
 - In JS:
   - Variant-/State-Aufloesung ueber statische Object-Maps (`sizeClassMap`, `variantClassMap`, `variantColorMap`, `stateOverrideMap`)
+  - Interaction-Resolver ueber Keymap (`interactionStateKey`, `interactionMotionMap`, `stateOverrideKey`)
   - Toggle-Logik (`boolean` only)
   - Required-on-blur Validation (`missingRequiredValue`)
   - Resolved Error-Text (`error` hat Vorrang, sonst fallback)

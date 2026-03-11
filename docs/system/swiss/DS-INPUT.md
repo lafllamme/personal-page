@@ -21,12 +21,12 @@ Status: aktiv
 ## Input-relevante Tokens/Variablen
 
 ### Color/BG/Border
-- `--color-input-placeholder`
-- `--color-input-floating-label`
-- `--color-readonly-idle-text`
-- `--color-readonly-hover-text`
-- `--bg-input-error-soft`
-- `--border-input-idle`
+- `--color-field-placeholder`
+- `--color-field-floating-label`
+- `--color-field-readonly-idle-text`
+- `--color-field-readonly-hover-text`
+- `--bg-field-error-soft`
+- `--border-field-idle`
 - `--border-error`
 
 ### Motion

@@ -58,13 +58,13 @@ Status: aktiv
 
 ### Color / Border / Surface
 - `--bg-inverse`
-- `--color-input-placeholder`
-- `--color-input-floating-label`
+- `--color-field-placeholder`
+- `--color-field-floating-label`
 - `--color-select-shadow`
 - `--color-select-indicator`
 - `--color-accent-ui`
 - `--color-error-text`
-- `--border-input-idle`
+- `--border-field-idle`
 - `--border-accent-hover`
 - `--border-accent`
 - `--border-error`

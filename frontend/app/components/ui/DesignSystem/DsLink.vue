@@ -67,8 +67,8 @@ const typoSize = computed(() => {
 
 const externalTextClass = computed(() => {
   return props.underline === 'hover'
-    ? 'ui-link-external-text ui-link-external-text-underline-hover ds-link-external__text ds-link-external__text--hover'
-    : 'ui-link-external-text ui-link-external-text-underline-always ds-link-external__text ds-link-external__text--always'
+    ? 'ui-link-external-text ui-link-external-text-underline-hover'
+    : 'ui-link-external-text ui-link-external-text-underline-always'
 })
 
 const externalArrowToneClass = computed(() => {
@@ -100,7 +100,7 @@ const linkProps = computed(() => {
     :is="linkTag"
     v-bind="linkProps"
     class="ui-link-base"
-    :class="[sizeClass, variantClass, props.external ? 'ui-link-external ds-link-external' : underlineClass]"
+    :class="[sizeClass, variantClass, props.external ? 'ui-link-external' : underlineClass]"
   >
     <template v-if="external">
       <span :class="externalTextClass">
@@ -118,7 +118,7 @@ const linkProps = computed(() => {
         </DsTypography>
       </span>
       <span
-        class="ds-link-external__arrow ui-link-external-arrow"
+        class="ui-link-external-arrow"
         :class="externalArrowToneClass"
         aria-hidden="true"
       >
@@ -146,7 +146,7 @@ const linkProps = computed(() => {
 </template>
 
 <style scoped>
-.ds-link-external__text::after {
+.ui-link-external-text::after {
   content: '';
   position: absolute;
   left: 0;
@@ -163,14 +163,14 @@ const linkProps = computed(() => {
     opacity var(--link-external-line-duration) ease;
 }
 
-.ds-link-external:hover .ds-link-external__text::after,
-.ds-link-external:focus-visible .ds-link-external__text::after {
+.ui-link-external:hover .ui-link-external-text::after,
+.ui-link-external:focus-visible .ui-link-external-text::after {
   transform: scaleX(var(--link-external-line-hover-scale));
   transform-origin: var(--link-external-line-hover-origin);
   opacity: var(--link-external-line-hover-opacity);
 }
 
-.ds-link-external__arrow {
+.ui-link-external-arrow {
   color: var(--link-external-arrow-idle);
   opacity: 0.6;
   transform: translate(0, 0);
@@ -181,8 +181,8 @@ const linkProps = computed(() => {
     color var(--motion-link-stagger-arrow-duration) ease var(--motion-link-stagger-arrow-delay);
 }
 
-.ds-link-external:hover .ds-link-external__arrow,
-.ds-link-external:focus-visible .ds-link-external__arrow {
+.ui-link-external:hover .ui-link-external-arrow,
+.ui-link-external:focus-visible .ui-link-external-arrow {
   color: var(--link-external-arrow-active);
   opacity: 1;
   transform: translate(var(--link-external-arrow-shift-x), var(--link-external-arrow-shift-y));

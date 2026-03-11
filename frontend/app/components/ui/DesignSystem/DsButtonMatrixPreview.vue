@@ -89,8 +89,8 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'before:translate-y-0 color-pureWhite [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--pure-white),0_0_0_var(--focus-ring-outer-width)_var(--un-preset-radix-sand10)] dark:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--pure-black),0_0_0_var(--focus-ring-outer-width)_var(--un-preset-radix-sand10)]',
   },
   'default-tertiary': {
-    'hover': 'is-ghost-morph-on',
-    'active': 'is-ghost-morph-on-active scale-[var(--motion-active-press-scale)]',
+    'hover': 'ui-button-ghost-state-on',
+    'active': 'ui-button-ghost-state-on-active scale-[var(--motion-active-press-scale)]',
     'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-primary-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-ghost-morph-fill)]',
   },
   'default-quaternary': {
@@ -109,8 +109,8 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'before:translate-y-0 color-$color-accent-strong [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--border-accent-outline-fill)]',
   },
   'accent-tertiary': {
-    'hover': 'is-ghost-morph-on',
-    'active': 'is-ghost-morph-on-active scale-[var(--motion-active-press-scale)]',
+    'hover': 'ui-button-ghost-state-on',
+    'active': 'ui-button-ghost-state-on-active scale-[var(--motion-active-press-scale)]',
     'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-ghost-morph-accent-fill)]',
   },
   'accent-quaternary': {
@@ -129,8 +129,8 @@ const forcedStateClassMap: Record<ComboKey, Record<InteractiveMatrixState, strin
     'focus-visible': 'before:translate-y-0 color-$color-accent-strong [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--border-accent-outline-fill)]',
   },
   'mixed-tertiary': {
-    'hover': 'is-ghost-morph-on',
-    'active': 'is-ghost-morph-on-active scale-[var(--motion-active-press-scale)]',
+    'hover': 'ui-button-ghost-state-on',
+    'active': 'ui-button-ghost-state-on-active scale-[var(--motion-active-press-scale)]',
     'focus-visible': '[color:var(--ghost-morph-text)] before:opacity-0 after:left-0 after:right-0 after:top-0 after:bottom-0 after:[border-radius:inherit] after:bg-[var(--ghost-morph-fill)] [box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ring-accent-offset-inner),0_0_0_var(--focus-ring-outer-width)_var(--bg-ghost-morph-accent-fill)]',
   },
   'mixed-quaternary': {

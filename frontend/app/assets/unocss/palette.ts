@@ -34,11 +34,17 @@ const colorTokens: TokenSet = {
   'color-link-accent-hover': { light: 'var(--toxic-12)', dark: 'var(--toxic-9)' },
   'color-link-arrow-default-idle': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--pure-white)' },
   'color-link-arrow-accent-idle': { light: 'var(--toxic-10)', dark: 'var(--toxic-10)' },
-  'color-input-placeholder': { light: 'rgba(0, 0, 0, 0.46)', dark: 'rgba(242, 239, 230, 0.46)' },
-  'color-input-meta-subtle': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand11)' },
-  'color-input-floating-label': { light: 'var(--color-accent-ui)', dark: 'var(--color-accent)' },
-  'color-readonly-idle-text': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand10)' },
-  'color-readonly-hover-text': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand11)' },
+  'color-field-placeholder': { light: 'rgba(0, 0, 0, 0.46)', dark: 'rgba(242, 239, 230, 0.46)' },
+  'color-field-meta-subtle': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand11)' },
+  'color-field-floating-label': { light: 'var(--color-accent-ui)', dark: 'var(--color-accent)' },
+  'color-field-readonly-idle-text': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand10)' },
+  'color-field-readonly-hover-text': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand11)' },
+  // Backward-compatible aliases during field token migration.
+  'color-input-placeholder': 'var(--color-field-placeholder)',
+  'color-input-meta-subtle': 'var(--color-field-meta-subtle)',
+  'color-input-floating-label': 'var(--color-field-floating-label)',
+  'color-readonly-idle-text': 'var(--color-field-readonly-idle-text)',
+  'color-readonly-hover-text': 'var(--color-field-readonly-hover-text)',
   'color-error-text': { light: 'var(--un-preset-radix-crimson11)', dark: 'var(--un-preset-radix-crimson11)' },
   'color-select-shadow': { light: 'rgba(0, 0, 0, 0.16)', dark: 'rgba(0, 0, 0, 0.45)' },
 }
@@ -75,7 +81,9 @@ const bgTokens: TokenSet = {
   'bg-ghost-morph-fill-active': { light: 'var(--un-preset-radix-sand9)', dark: 'var(--un-preset-radix-sand9)' },
   'bg-ghost-morph-accent-fill': { light: 'var(--toxic-6)', dark: 'var(--toxic-5)' },
   'bg-ghost-morph-accent-fill-active': { light: 'var(--toxic-7)', dark: 'var(--toxic-6)' },
-  'bg-input-error-soft': { light: 'rgba(223, 52, 120, 0.025)', dark: 'var(--un-preset-radix-crimson-a3)' },
+  'bg-field-error-soft': { light: 'rgba(223, 52, 120, 0.025)', dark: 'var(--un-preset-radix-crimson-a3)' },
+  // Backward-compatible alias during field token migration.
+  'bg-input-error-soft': 'var(--bg-field-error-soft)',
 }
 
 const borderTokens: TokenSet = {
@@ -94,7 +102,9 @@ const borderTokens: TokenSet = {
   'border-accent-soft': 'var(--toxic-7)',
   'border-accent-soft-hover': 'var(--toxic-8)',
   'border-accent-soft-disabled': { light: '#dbe5e3', dark: 'rgba(28, 105, 97, 0.48)' },
-  'border-input-idle': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand11)' },
+  'border-field-idle': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand11)' },
+  // Backward-compatible alias during field token migration.
+  'border-input-idle': 'var(--border-field-idle)',
   'border-error': { light: 'var(--un-preset-radix-crimson10)', dark: 'var(--un-preset-radix-crimson10)' },
 }
 

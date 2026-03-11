@@ -21,14 +21,14 @@ Status: aktiv
 ## Textarea-relevante Tokens/Variablen
 
 ### Color/BG/Border
-- `--color-input-placeholder`
-- `--color-input-floating-label`
-- `--color-input-meta-subtle`
-- `--color-readonly-idle-text`
-- `--color-readonly-hover-text`
+- `--color-field-placeholder`
+- `--color-field-floating-label`
+- `--color-field-meta-subtle`
+- `--color-field-readonly-idle-text`
+- `--color-field-readonly-hover-text`
 - `--color-error-text`
-- `--bg-input-error-soft`
-- `--border-input-idle`
+- `--bg-field-error-soft`
+- `--border-field-idle`
 - `--border-error`
 - `--border-accent-hover`
 - `--border-accent`

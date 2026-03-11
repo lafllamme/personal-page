@@ -136,7 +136,7 @@ const comboKey = computed<ComboKey>(() => `${normalizedVariant.value}-${normaliz
 const variantTypeClass = computed(() => variantTypeClassMap[comboKey.value])
 const isGhostType = computed(() => normalizedType.value === 'tertiary')
 const isPrimaryType = computed(() => normalizedType.value === 'primary')
-const ghostButtonClass = 'is-ghost-button is-ghost-morph is-ghost-morph-clip ui-ghost-button ui-ghost-morph-clip'
+const ghostButtonClass = 'ui-ghost-button ui-ghost-morph-clip'
 
 const sizeClassMap: Record<ButtonSize, string> = {
   sm: 'ui-button-sm',
@@ -340,7 +340,7 @@ onBeforeUnmount(() => {
       :uppercase="true"
       :style="typographyTrackingStyle"
       class="ui-button-label"
-      :class="[isGhostType ? 'is-ghost-label ui-ghost-label' : '', primaryRotateTypographyClass]"
+      :class="[isGhostType ? 'ui-ghost-label' : '', primaryRotateTypographyClass]"
     >
       <template v-if="isPrimaryDecryptAnimation && labelText">
         <DsDecryptedText

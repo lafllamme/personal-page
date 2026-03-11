@@ -15,15 +15,15 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-shell-default',
-    'min-h-[var(--size-control-md)] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)]',
+    'min-h-[var(--size-control-md)] [box-shadow:0_0_0_var(--control-border-width)_var(--border-field-idle)]',
   ],
   [
     'ui-input-shell-floating',
-    'min-h-[calc(var(--size-control-lg)+var(--space-2))] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)]',
+    'min-h-[calc(var(--size-control-lg)+var(--space-2))] [box-shadow:0_0_0_var(--control-border-width)_var(--border-field-idle)]',
   ],
   [
     'ui-textarea-shell-floating',
-    'overflow-hidden [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)] [transition-property:background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
+    'overflow-hidden [box-shadow:0_0_0_var(--control-border-width)_var(--border-field-idle)] [transition-property:background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
   ],
   [
     'ui-input-shell-interactive',
@@ -31,11 +31,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-shell-invalid',
-    '[box-shadow:0_0_0_var(--control-border-width)_var(--border-error)] bg-$bg-input-error-soft',
+    '[box-shadow:0_0_0_var(--control-border-width)_var(--border-error)] bg-$bg-field-error-soft',
   ],
   [
     'ui-input-shell-readonly',
-    'cursor-text bg-$bg-soft [box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-idle-text)] hover:bg-$bg-soft-hover hover:[box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-hover-text)] focus-within:[box-shadow:0_0_0_var(--control-border-width)_var(--color-readonly-idle-text)]',
+    'cursor-text bg-$bg-soft [box-shadow:0_0_0_var(--control-border-width)_var(--color-field-readonly-idle-text)] hover:bg-$bg-soft-hover hover:[box-shadow:0_0_0_var(--control-border-width)_var(--color-field-readonly-hover-text)] focus-within:[box-shadow:0_0_0_var(--control-border-width)_var(--color-field-readonly-idle-text)]',
   ],
   [
     'ui-input-shell-disabled',
@@ -47,7 +47,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-select-vars',
-    '[--ds-select-trigger-h:calc(var(--size-control-lg)+var(--space-2))] [--ds-select-ring-w:1px] [--ds-select-ring:var(--border-input-idle,color-mix(in_oklch,var(--foreground)_28%,transparent))] [--ds-select-ring-hover:var(--border-accent-hover,color-mix(in_oklch,var(--foreground)_42%,transparent))] [--ds-select-ring-focus:var(--border-accent,color-mix(in_oklch,var(--foreground)_56%,transparent))] [--ds-select-surface:var(--bg-inverse,var(--pure-white))] [--ds-select-text:hsl(var(--foreground))] [--ds-select-muted:var(--color-input-placeholder,hsl(var(--muted-foreground)))] [--ds-select-label:var(--color-input-floating-label,hsl(var(--muted-foreground)))] [--ds-select-shadow:var(--color-select-shadow,color-mix(in_oklch,var(--foreground)_18%,transparent))] [--ds-select-indicator:var(--color-select-indicator,var(--toxic-11))] [--ds-select-indicator-column:1rem] [--ds-select-option-inline-pad:0.875rem] [--ds-select-list-inset-x:calc(var(--form-control-inset-x,var(--space-5))-var(--ds-select-option-inline-pad))] [--ds-select-divider-inset-x:var(--form-control-inset-x,var(--space-5))] [--ds-select-motion-ease:cubic-bezier(0.22,1,0.36,1)]',
+    '[--ds-select-trigger-h:calc(var(--size-control-lg)+var(--space-2))] [--ds-select-ring-w:1px] [--ds-select-ring:var(--border-field-idle,color-mix(in_oklch,var(--foreground)_28%,transparent))] [--ds-select-ring-hover:var(--border-accent-hover,color-mix(in_oklch,var(--foreground)_42%,transparent))] [--ds-select-ring-focus:var(--border-accent,color-mix(in_oklch,var(--foreground)_56%,transparent))] [--ds-select-surface:var(--bg-inverse,var(--pure-white))] [--ds-select-text:hsl(var(--foreground))] [--ds-select-muted:var(--color-field-placeholder,hsl(var(--muted-foreground)))] [--ds-select-label:var(--color-field-floating-label,hsl(var(--muted-foreground)))] [--ds-select-shadow:var(--color-select-shadow,color-mix(in_oklch,var(--foreground)_18%,transparent))] [--ds-select-indicator:var(--color-select-indicator,var(--toxic-11))] [--ds-select-indicator-column:1rem] [--ds-select-option-inline-pad:0.875rem] [--ds-select-list-inset-x:calc(var(--form-control-inset-x,var(--space-5))-var(--ds-select-option-inline-pad))] [--ds-select-divider-inset-x:var(--form-control-inset-x,var(--space-5))] [--ds-select-motion-ease:cubic-bezier(0.22,1,0.36,1)]',
   ],
   [
     'ui-select-shape-rounded',
@@ -203,7 +203,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-base',
-    'relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-input-idle)] [background-color:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+    'relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-field-idle)] [background-color:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
   ],
   [
     'ui-checkbox-control-sm',
@@ -283,7 +283,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-control-readonly',
-    'read-only:cursor-text read-only:[color:var(--color-readonly-idle-text)] read-only:hover:[color:var(--color-readonly-hover-text)] read-only:placeholder:[color:var(--color-readonly-idle-text)] read-only:hover:placeholder:[color:var(--color-readonly-hover-text)] read-only:placeholder:opacity-100',
+    'read-only:cursor-text read-only:[color:var(--color-field-readonly-idle-text)] read-only:hover:[color:var(--color-field-readonly-hover-text)] read-only:placeholder:[color:var(--color-field-readonly-idle-text)] read-only:hover:placeholder:[color:var(--color-field-readonly-hover-text)] read-only:placeholder:opacity-100',
   ],
   [
     'ui-input-control-default',
@@ -303,15 +303,15 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-textarea-meta-row',
-    'absolute right-$space-2_5 bottom-$space-2 z-2 inline-flex items-center gap-$space-1_5 color-$color-input-meta-subtle',
+    'absolute right-$space-2_5 bottom-$space-2 z-2 inline-flex items-center gap-$space-1_5 color-$color-field-meta-subtle',
   ],
   [
     'ui-textarea-resize-handle',
-    'inline-flex items-center justify-center rounded-$radius-sm p-$space-0_5 color-$color-input-meta-subtle transition-colors [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] hover:color-$color-accent-ui disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:color-$color-input-meta-subtle cursor-ns-resize',
+    'inline-flex items-center justify-center rounded-$radius-sm p-$space-0_5 color-$color-field-meta-subtle transition-colors [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)] hover:color-$color-accent-ui disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:color-$color-field-meta-subtle cursor-ns-resize',
   ],
   [
     'ui-input-control-placeholder',
-    'placeholder:[color:var(--color-input-placeholder)] placeholder:opacity-100',
+    'placeholder:[color:var(--color-field-placeholder)] placeholder:opacity-100',
   ],
   [
     'ui-input-control-floating-placeholder-hidden',
@@ -323,19 +323,19 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-input-floating-label-base',
-    'pointer-events-none absolute [left:var(--form-control-inset-x)] top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
+    'pointer-events-none absolute [left:var(--form-control-inset-x)] top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-field-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
   ],
   [
     'ui-textarea-floating-label-base',
-    'pointer-events-none absolute [left:var(--form-control-inset-x)] top-$space-5 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-input-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
+    'pointer-events-none absolute [left:var(--form-control-inset-x)] top-$space-5 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--color-field-placeholder)] transition-[transform,top,left,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
   ],
   [
     'ui-input-floating-label-active',
-    '![left:var(--form-control-inset-x)] !top-$space-1 ![transform:translateY(0)_scale(0.82)] ![color:var(--color-input-floating-label)]',
+    '![left:var(--form-control-inset-x)] !top-$space-1 ![transform:translateY(0)_scale(0.82)] ![color:var(--color-field-floating-label)]',
   ],
   [
     'ui-input-floating-label-readonly',
-    '![color:var(--color-readonly-idle-text)] group-hover:![color:var(--color-readonly-hover-text)]',
+    '![color:var(--color-field-readonly-idle-text)] group-hover:![color:var(--color-field-readonly-hover-text)]',
   ],
   [
     'ui-input-floating-label-disabled',

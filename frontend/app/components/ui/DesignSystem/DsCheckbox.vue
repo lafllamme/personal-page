@@ -68,7 +68,7 @@ const checkboxTokens = {
   bgInverse: 'var(--bg-inverse)',
   bgSoftDisabled: 'var(--bg-soft-disabled)',
   bgAccentSoft: 'var(--bg-accent-soft)',
-  bgInputErrorSoft: 'var(--bg-input-error-soft)',
+  bgFieldErrorSoft: 'var(--bg-field-error-soft)',
   colorPrimary: 'var(--color-primary)',
   colorInverse: 'var(--color-inverse)',
   colorAccentUi: 'var(--color-accent-ui)',
@@ -76,14 +76,14 @@ const checkboxTokens = {
   colorOnAccent: 'var(--color-on-accent)',
   colorErrorText: 'var(--color-error-text)',
   colorDisabled: 'var(--color-disabled)',
-  borderInputIdle: 'var(--border-input-idle)',
+  borderFieldIdle: 'var(--border-field-idle)',
   borderError: 'var(--border-error)',
   borderDisabled: 'var(--border-disabled)',
 } as const
 
 const neutralIdleState: CheckboxVisualState = {
   backgroundColor: checkboxTokens.bgInverse,
-  borderColor: checkboxTokens.borderInputIdle,
+  borderColor: checkboxTokens.borderFieldIdle,
   color: checkboxTokens.colorInverse,
 }
 
@@ -119,7 +119,7 @@ const variantColorMap: Record<CheckboxVariant, { idle: CheckboxVisualState, acti
   mixed: {
     idle: {
       backgroundColor: checkboxTokens.bgInverse,
-      borderColor: checkboxTokens.borderInputIdle,
+      borderColor: checkboxTokens.borderFieldIdle,
       color: checkboxTokens.colorAccentStrong,
     },
     active: {
@@ -137,7 +137,7 @@ const stateOverrideMap = {
     color: checkboxTokens.colorDisabled,
   },
   invalid: {
-    backgroundColor: checkboxTokens.bgInputErrorSoft,
+    backgroundColor: checkboxTokens.bgFieldErrorSoft,
     borderColor: checkboxTokens.borderError,
     color: checkboxTokens.colorErrorText,
   },
