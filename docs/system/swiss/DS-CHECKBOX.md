@@ -46,6 +46,7 @@ Status: aktiv
 ### Sizing / Control
 - `--control-border-width`
 - `--focus-ring-inner-width`
+- `--focus-ring-active-width`
 - `--ds-checkbox-control-size` (je groesse gesetzt)
 
 ### Checkbox-Shortcuts
@@ -70,6 +71,8 @@ Status: aktiv
 ## State-Prioritaet (komponente)
 - `disabled` > `invalid` > `focus-visible` > `hover` > `default`
 - `required-error` ist Teil von `invalid` (wenn kein expliziter `error`-Text gesetzt ist, wird fallback genutzt)
+- Checkbox-Interaktionsring skaliert ueber `--focus-ring-active-width` (1.5px), damit kleine Control-Flaechen visuell zu Input/Select passen.
+- Spezialfall `accent + checked + focus-visible` nutzt Single-Ring in `--border-accent-hover` (kein Double-Ring).
 
 ## JS vs CSS Verantwortung
 - In CSS/Uno:

@@ -212,8 +212,13 @@ const checkboxMotion = computed(() => {
     ? variantColorMap[variant.value].active
     : variantColorMap[variant.value].idle
 
-  const hoverRing = '0 0 0 var(--focus-ring-inner-width) var(--border-accent-hover)'
-  const focusRing = '0 0 0 var(--focus-ring-inner-width) var(--border-accent)'
+  const checkboxRingWidth = 'var(--focus-ring-active-width)'
+  const hoverRing = `0 0 0 ${checkboxRingWidth} var(--border-accent-hover)`
+  const focusRingDefault = `0 0 0 ${checkboxRingWidth} var(--border-accent)`
+  const focusRingAccentChecked = `0 0 0 ${checkboxRingWidth} var(--border-accent-hover)`
+  const focusRing = variant.value === 'accent' && isActive.value
+    ? focusRingAccentChecked
+    : focusRingDefault
   const interactionMotion = disabled.value || hasError.value
     ? { boxShadow: '0 0 0 0 rgba(0,0,0,0)' }
     : isHoveringHit.value && !isActive.value
@@ -235,8 +240,20 @@ const checkboxMotion = computed(() => {
     ...interactionMotion,
     ...(stateOverrideMotion ?? {}),
     transition: {
-      duration: 0.5,
-      ease: smoothEase,
+      backgroundColor: {
+        duration: 0.5,
+        ease: smoothEase,
+      },
+      color: {
+        duration: 0.5,
+        ease: smoothEase,
+      },
+      borderColor: {
+        duration: 0,
+      },
+      boxShadow: {
+        duration: 0,
+      },
     },
   }
 })
