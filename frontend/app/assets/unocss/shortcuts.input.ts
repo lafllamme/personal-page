@@ -315,15 +315,15 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-sm',
-    '[--ds-checkbox-control-size:1.125rem] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] rounded-[0.3125rem]',
+    '[--ds-checkbox-control-size:var(--size-checkbox-control-sm)] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] [border-radius:var(--radius-checkbox-sm)]',
   ],
   [
     'ui-checkbox-control-md',
-    '[--ds-checkbox-control-size:1.25rem] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] rounded-[0.375rem]',
+    '[--ds-checkbox-control-size:var(--size-checkbox-control-md)] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] [border-radius:var(--radius-checkbox-md)]',
   ],
   [
     'ui-checkbox-control-lg',
-    '[--ds-checkbox-control-size:1.5rem] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] rounded-[0.4375rem]',
+    '[--ds-checkbox-control-size:var(--size-checkbox-control-lg)] [width:var(--ds-checkbox-control-size)] [height:var(--ds-checkbox-control-size)] [border-radius:var(--radius-checkbox-lg)]',
   ],
   [
     'ui-checkbox-control-variant-default',
@@ -347,11 +347,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-indicator',
-    'pointer-events-none relative z-1 [width:84%] [height:84%]',
+    'pointer-events-none relative z-1 [width:var(--size-checkbox-indicator)] [height:var(--size-checkbox-indicator)]',
   ],
   [
     'ui-checkbox-check-path',
-    'fill-none [stroke:currentColor] [stroke-width:3.5] [stroke-linecap:round] [stroke-linejoin:round]',
+    'fill-none [stroke:currentColor] [stroke-width:var(--size-checkbox-check-stroke)] [stroke-linecap:round] [stroke-linejoin:round]',
   ],
   [
     'ui-checkbox-label',

@@ -248,6 +248,14 @@ const sizingTokens: TokenSet = {
   'input-control-padding-top-floating': 'calc(var(--space-4_75) - 1px)',
   'size-textarea-height-default': 'calc(var(--size-control-xl) * 3.35)',
   'size-textarea-height-focus': 'calc(var(--size-control-xl) * 4)',
+  'size-checkbox-control-sm': '1.125rem',
+  'size-checkbox-control-md': '1.25rem',
+  'size-checkbox-control-lg': '1.5rem',
+  'radius-checkbox-sm': '0.3125rem',
+  'radius-checkbox-md': '0.375rem',
+  'radius-checkbox-lg': '0.4375rem',
+  'size-checkbox-indicator': '84%',
+  'size-checkbox-check-stroke': '3.5',
 }
 
 const typographyFontFamilyTheme = {
