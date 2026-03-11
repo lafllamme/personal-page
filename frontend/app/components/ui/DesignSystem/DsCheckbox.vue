@@ -55,6 +55,8 @@ const {
 const attrs = useAttrs()
 const touched = ref(false)
 const errorShakeKey = ref(0)
+const isHoveringHit = ref(false)
+const isFocusVisible = ref(false)
 const smoothEase = [0.16, 1, 0.3, 1] as const
 
 interface CheckboxVisualState {
@@ -147,7 +149,7 @@ const checkboxId = computed(() => {
   return typeof rawId === 'string' ? rawId : ''
 })
 
-const isChecked = computed(() => modelValue.value === true)
+const isChecked = computed(() => modelValue.value)
 const hasValue = computed(() => isChecked.value)
 const missingRequiredValue = computed(() => touched.value && required.value && !hasValue.value)
 const hasError = computed(() => Boolean(error.value) || invalid.value || missingRequiredValue.value)
@@ -210,6 +212,18 @@ const checkboxMotion = computed(() => {
     ? variantColorMap[variant.value].active
     : variantColorMap[variant.value].idle
 
+  const hoverRing = '0 0 0 var(--focus-ring-inner-width) var(--border-accent-hover)'
+  const focusRing = '0 0 0 var(--focus-ring-inner-width) var(--border-accent)'
+  const interactionMotion = disabled.value || hasError.value
+    ? { boxShadow: '0 0 0 0 rgba(0,0,0,0)' }
+    : isHoveringHit.value && !isActive.value
+      ? { borderColor: 'var(--border-accent-hover)', boxShadow: hoverRing }
+      : isFocusVisible.value
+        ? (isActive.value
+            ? { boxShadow: focusRing }
+            : { borderColor: 'var(--border-accent)', boxShadow: focusRing })
+        : { boxShadow: '0 0 0 0 rgba(0,0,0,0)' }
+
   const stateOverrideMotion = disabled.value
     ? stateOverrideMap.disabled
     : hasError.value
@@ -218,6 +232,7 @@ const checkboxMotion = computed(() => {
 
   return {
     ...baseVariantMotion,
+    ...interactionMotion,
     ...(stateOverrideMotion ?? {}),
     transition: {
       duration: 0.5,
@@ -260,10 +275,13 @@ function onToggle(): void {
 }
 
 function onFocus(event: FocusEvent): void {
+  const target = event.target
+  isFocusVisible.value = target instanceof HTMLElement && target.matches(':focus-visible')
   emit('focus', event)
 }
 
 function onBlur(event: FocusEvent): void {
+  isFocusVisible.value = false
   touched.value = true
   emit('blur', event)
 }
@@ -279,7 +297,11 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
 
 <template>
   <div class="ui-checkbox-root">
-    <label class="ui-checkbox-hit">
+    <label
+      class="ui-checkbox-hit"
+      @mouseenter="isHoveringHit = true"
+      @mouseleave="isHoveringHit = false"
+    >
       <div class="ui-checkbox-main-row">
         <Motion
           v-bind="attrs"
