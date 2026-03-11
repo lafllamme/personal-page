@@ -302,13 +302,13 @@ useEventListener(window, 'pointercancel', stopResize)
         v-if="hasError && Boolean(error)"
         :id="errorId || undefined"
         :key="errorAnimationKey"
-        class="ui-input-error-row color-$color-error-text"
+        class="ui-field-error-row color-$color-error-text"
       >
         <DsIcon
           name="iconoir:warning-triangle"
           size="sm"
           variant="inherit"
-          class="ui-input-error-icon"
+          class="ui-field-error-icon"
         />
         <DsTypography
           as="p"

@@ -75,8 +75,8 @@ Status: aktiv
 - `ui-input-floating-label-active`
 - `ui-input-floating-label-readonly`
 - `ui-input-floating-label-disabled`
-- `ui-input-error-row`
-- `ui-input-error-icon`
+- `ui-field-error-row`
+- `ui-field-error-icon`
 
 ## State-Prioritaet (komponente)
 - `disabled` > `invalid` > `readonly` > `focus` > `hover` > `default`

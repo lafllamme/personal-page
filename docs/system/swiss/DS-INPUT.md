@@ -71,10 +71,6 @@ Status: aktiv
 - `ui-field-error-row`
 - `ui-field-error-icon`
 
-Alias (Phase 1 Migration):
-- `ui-input-error-row` -> `ui-field-error-row`
-- `ui-input-error-icon` -> `ui-field-error-icon`
-
 ## State-Prioritaet (komponente)
 - `disabled` > `invalid` > `readonly` > `focus` > `hover` > `default`
 - `readonly` blockiert Focus/Hover-Akzentzustand und verwendet eigene Sand-Tokens

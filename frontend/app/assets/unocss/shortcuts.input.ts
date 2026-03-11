@@ -457,13 +457,4 @@ export const inputShortcuts: UserShortcuts = [
     'ui-field-error-icon',
     'shrink-0',
   ],
-  // Backward-compatible aliases during Phase 1 migration.
-  [
-    'ui-input-error-row',
-    'ui-field-error-row',
-  ],
-  [
-    'ui-input-error-icon',
-    'ui-field-error-icon',
-  ],
 ]
