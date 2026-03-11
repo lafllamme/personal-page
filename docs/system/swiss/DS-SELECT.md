@@ -94,59 +94,59 @@ Status: aktiv
 - `--space-2_5`
 - `--space-2`
 
-## Shortcut-Inventar (runtime, `ui-select-current-*`)
+## Shortcut-Inventar (runtime, `ui-select-*`)
 
 ### Root / Shape / Layer
-- `ui-select-current-root`
-- `ui-select-current-vars`
-- `ui-select-current-shape-rounded`
-- `ui-select-current-shape-pill`
-- `ui-select-current-root-layer`
-- `ui-select-current-slot`
+- `ui-select-root`
+- `ui-select-vars`
+- `ui-select-shape-rounded`
+- `ui-select-shape-pill`
+- `ui-select-root-layer`
+- `ui-select-slot`
 
 ### Panel / Header
-- `ui-select-current-panel`
-- `ui-select-current-panel-motion`
-- `ui-select-current-panel-idle`
-- `ui-select-current-panel-hoverable`
-- `ui-select-current-panel-hover`
-- `ui-select-current-panel-focus`
-- `ui-select-current-panel-invalid`
-- `ui-select-current-panel-disabled`
-- `ui-select-current-header`
-- `ui-select-current-header-motion`
-- `ui-select-current-header-disabled`
-- `ui-select-current-header-divider`
-- `ui-select-current-header-divider-open`
+- `ui-select-panel`
+- `ui-select-panel-motion`
+- `ui-select-panel-idle`
+- `ui-select-panel-hoverable`
+- `ui-select-panel-hover`
+- `ui-select-panel-focus`
+- `ui-select-panel-invalid`
+- `ui-select-panel-disabled`
+- `ui-select-header`
+- `ui-select-header-motion`
+- `ui-select-header-disabled`
+- `ui-select-header-divider`
+- `ui-select-header-divider-open`
 
 ### Content / Label / Value / Chevron
-- `ui-select-current-content`
-- `ui-select-current-content-labeled`
-- `ui-select-current-label`
-- `ui-select-current-label-floating`
-- `ui-select-current-value`
-- `ui-select-current-value-placeholder`
-- `ui-select-current-value-empty`
-- `ui-select-current-chevron`
-- `ui-select-current-chevron-open`
+- `ui-select-content`
+- `ui-select-content-labeled`
+- `ui-select-label`
+- `ui-select-label-floating`
+- `ui-select-value`
+- `ui-select-value-placeholder`
+- `ui-select-value-empty`
+- `ui-select-chevron`
+- `ui-select-chevron-open`
 
 ### Body / List / Option / Indicator
-- `ui-select-current-body`
-- `ui-select-current-body-open`
-- `ui-select-current-list`
-- `ui-select-current-option`
-- `ui-select-current-option-open`
-- `ui-select-current-option-highlighted`
-- `ui-select-current-option-selected`
-- `ui-select-current-option-selected-highlighted`
-- `ui-select-current-option-disabled`
-- `ui-select-current-empty`
-- `ui-select-current-indicator-dot`
-- `ui-select-current-indicator-dot-visible`
+- `ui-select-body`
+- `ui-select-body-open`
+- `ui-select-list`
+- `ui-select-option`
+- `ui-select-option-open`
+- `ui-select-option-highlighted`
+- `ui-select-option-selected`
+- `ui-select-option-selected-highlighted`
+- `ui-select-option-disabled`
+- `ui-select-empty`
+- `ui-select-indicator-dot`
+- `ui-select-indicator-dot-visible`
 
 ### Meta
-- `ui-select-current-error-row`
-- `ui-select-current-hint`
+- `ui-select-error-row`
+- `ui-select-hint`
 
 ## JS vs CSS Verantwortung
 - CSS/Uno:
@@ -168,5 +168,4 @@ Status: aktiv
 - `Shape / Pill`
 
 ## Offene Punkte
-- In `shortcuts.input.ts` existiert noch ein alter ungenutzter Select-Block `ui-select-*` (ohne `-current-`).
-- Vorschlag: in separatem Cleanup-Commit entfernen, sobald keine Referenz mehr gebraucht wird.
+- Keine offenen Naming-Cleanup-Punkte im Select-Shortcut-Bereich.

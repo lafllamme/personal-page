@@ -157,22 +157,22 @@ const activeDescendant = computed(() => {
   return `${listboxId.value}-option-${index}`
 })
 
-const rootLayerClass = computed(() => (isOpen.value || isClosing.value) ? 'ui-select-current-root-layer' : '')
+const rootLayerClass = computed(() => (isOpen.value || isClosing.value) ? 'ui-select-root-layer' : '')
 
 const panelVisualClass = computed(() => {
   if (disabled.value)
-    return 'ui-select-current-panel-disabled'
+    return 'ui-select-panel-disabled'
 
   if (hasError.value)
-    return 'ui-select-current-panel-invalid'
+    return 'ui-select-panel-invalid'
 
   if (isOpen.value || isFocused.value || previewState.value === 'focus-visible')
-    return 'ui-select-current-panel-focus'
+    return 'ui-select-panel-focus'
 
   if (previewState.value === 'hover')
-    return 'ui-select-current-panel-hover'
+    return 'ui-select-panel-hover'
 
-  return 'ui-select-current-panel-idle'
+  return 'ui-select-panel-idle'
 })
 
 const panelHoverableClass = computed(() => (
@@ -180,14 +180,14 @@ const panelHoverableClass = computed(() => (
   && !hasError.value
   && !isOpen.value
   && previewState.value === 'default'
-    ? 'ui-select-current-panel-hoverable'
+    ? 'ui-select-panel-hoverable'
     : ''
 ))
 
 const shapeClass = computed(() => (
   shape.value === 'pill'
-    ? 'ui-select-current-shape-pill'
-    : 'ui-select-current-shape-rounded'
+    ? 'ui-select-shape-pill'
+    : 'ui-select-shape-rounded'
 ))
 
 const errorAnimationKey = computed(() => `ds-select-error-${errorShakeKey.value}`)
@@ -416,13 +416,13 @@ onBeforeUnmount(() => {
   <div class="grid gap-2">
     <div
       ref="rootEl"
-      class="ui-select-current-vars ui-select-current-root"
+      class="ui-select-vars ui-select-root"
       :class="[rootLayerClass, shapeClass]"
     >
-      <div class="ui-select-current-slot" aria-hidden="true" />
+      <div class="ui-select-slot" aria-hidden="true" />
 
       <div
-        class="ui-select-current-panel ui-select-current-panel-motion"
+        class="ui-select-panel ui-select-panel-motion"
         :class="[panelVisualClass, panelHoverableClass]"
         :style="{ maxHeight: `${panelHeight}px` }"
       >
@@ -430,8 +430,8 @@ onBeforeUnmount(() => {
           ref="triggerEl"
           v-bind="attrs"
           type="button"
-          class="ui-select-current-header ui-select-current-header-divider ui-select-current-header-motion ui-select-current-header-disabled"
-          :class="[isOpen && 'ui-select-current-header-divider-open']"
+          class="ui-select-header ui-select-header-divider ui-select-header-motion ui-select-header-disabled"
+          :class="[isOpen && 'ui-select-header-divider-open']"
           :disabled="disabled"
           :aria-expanded="isOpen ? 'true' : 'false'"
           aria-haspopup="listbox"
@@ -445,9 +445,9 @@ onBeforeUnmount(() => {
           @blur="onTriggerBlur"
         >
           <span
-            class="ui-select-current-content"
+            class="ui-select-content"
             :class="[
-              Boolean(floatingLabelText) && 'ui-select-current-content-labeled',
+              Boolean(floatingLabelText) && 'ui-select-content-labeled',
             ]"
           >
             <DsTypography
@@ -457,8 +457,8 @@ onBeforeUnmount(() => {
               :size="floatingLabelSize"
               :weight="floatingLabelWeight"
               :uppercase="floatingActive"
-              class="ui-select-current-label"
-              :class="{ 'ui-select-current-label-floating': floatingActive }"
+              class="ui-select-label"
+              :class="{ 'ui-select-label-floating': floatingActive }"
             >
               {{ floatingLabelText }}
             </DsTypography>
@@ -468,16 +468,16 @@ onBeforeUnmount(() => {
               role="body"
               size="md"
               weight="light"
-              class="ui-select-current-value"
-              :class="{ 'ui-select-current-value-placeholder': !hasValue, 'ui-select-current-value-empty': !valueText }"
+              class="ui-select-value"
+              :class="{ 'ui-select-value-placeholder': !hasValue, 'ui-select-value-empty': !valueText }"
             >
               {{ valueText || '\u00A0' }}
             </DsTypography>
           </span>
 
           <span
-            class="ui-select-current-chevron"
-            :class="{ 'ui-select-current-chevron-open': isOpen }"
+            class="ui-select-chevron"
+            :class="{ 'ui-select-chevron-open': isOpen }"
           >
             <DsIcon
               name="iconoir:nav-arrow-down"
@@ -489,14 +489,14 @@ onBeforeUnmount(() => {
 
         <div
           ref="bodyEl"
-          class="ui-select-current-body"
-          :class="[isOpen && 'ui-select-current-body-open']"
+          class="ui-select-body"
+          :class="[isOpen && 'ui-select-body-open']"
           :aria-hidden="isOpen ? 'false' : 'true'"
           :inert="!isOpen"
         >
           <ul
             :id="listboxId"
-            class="ui-select-current-list"
+            class="ui-select-list"
             role="listbox"
             :aria-activedescendant="activeDescendant"
           >
@@ -509,12 +509,12 @@ onBeforeUnmount(() => {
             >
               <button
                 type="button"
-                class="ui-select-current-option ui-select-current-option-disabled"
+                class="ui-select-option ui-select-option-disabled"
                 :class="[
-                  isOpen && 'ui-select-current-option-open',
-                  modelValue === option.value && 'ui-select-current-option-selected',
-                  highlightedIndex === index && highlightMode !== 'idle' && 'ui-select-current-option-highlighted',
-                  modelValue === option.value && highlightedIndex === index && highlightMode !== 'idle' && 'ui-select-current-option-selected-highlighted',
+                  isOpen && 'ui-select-option-open',
+                  modelValue === option.value && 'ui-select-option-selected',
+                  highlightedIndex === index && highlightMode !== 'idle' && 'ui-select-option-highlighted',
+                  modelValue === option.value && highlightedIndex === index && highlightMode !== 'idle' && 'ui-select-option-selected-highlighted',
                 ]"
                 :style="{ '--stagger-index': String(index) }"
                 :disabled="option.disabled"
@@ -527,15 +527,15 @@ onBeforeUnmount(() => {
                 </DsTypography>
 
                 <span
-                  class="ui-select-current-indicator-dot"
-                  :class="{ 'ui-select-current-indicator-dot-visible': modelValue === option.value }"
+                  class="ui-select-indicator-dot"
+                  :class="{ 'ui-select-indicator-dot-visible': modelValue === option.value }"
                   aria-hidden="true"
                 />
               </button>
             </li>
             <li
               v-if="!hasOptions"
-              class="ui-select-current-empty"
+              class="ui-select-empty"
               role="presentation"
             >
               <DsTypography as="span" role="body" size="md" tone="muted">
@@ -551,7 +551,7 @@ onBeforeUnmount(() => {
       v-if="hasError && Boolean(resolvedErrorText)"
       :id="errorId || undefined"
       :key="errorAnimationKey"
-      class="ui-select-current-error-row"
+      class="ui-select-error-row"
     >
       <DsIcon
         name="iconoir:warning-triangle"
@@ -573,7 +573,7 @@ onBeforeUnmount(() => {
       as="p"
       role="meta"
       size="2xs"
-      class="ui-select-current-hint"
+      class="ui-select-hint"
     >
       {{ hint }}
     </DsTypography>

@@ -43,254 +43,146 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-select-root',
-    'relative w-full min-h-[calc(var(--size-control-lg)+var(--space-2))]',
-  ],
-  [
-    'ui-select-shell-base',
-    'relative w-full text-left outline-none rounded-$radius-lg [padding-inline:var(--form-control-inset-x)] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle)] transition-[background-color,box-shadow,color] [transition-duration:var(--motion-input-shell-duration)] [transition-timing-function:var(--motion-input-shell-ease)]',
-  ],
-  [
-    'ui-select-shell-interactive',
-    'hover:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
-  ],
-  [
-    'ui-select-shell-open',
-    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
-  ],
-  [
-    'ui-select-shell-preview-hover',
-    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent-hover)]',
-  ],
-  [
-    'ui-select-shell-preview-focus-visible',
-    '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
-  ],
-  [
-    'ui-select-shell-invalid',
-    '[box-shadow:0_0_0_var(--control-border-width)_var(--border-error)] bg-$bg-input-error-soft',
-  ],
-  [
-    'ui-select-shell-disabled',
-    'cursor-not-allowed color-$color-disabled bg-$bg-soft-disabled [box-shadow:0_0_0_var(--control-border-width)_var(--border-disabled)]',
-  ],
-  [
-    'ui-select-trigger-content',
-    'flex w-full min-h-[calc(var(--size-control-lg)+var(--space-2))] items-center justify-between',
-  ],
-  [
-    'ui-select-value-wrap',
-    'relative flex min-w-0 flex-1 flex-col justify-center [padding-top:var(--input-control-padding-top-floating)] [padding-bottom:var(--input-control-padding-y)]',
-  ],
-  [
-    'ui-select-value-wrap-no-label',
-    '[padding-top:var(--input-control-padding-y)]',
-  ],
-  [
-    'ui-select-value-text',
-    'truncate type-body-md font-light color-$color-primary',
-  ],
-  [
-    'ui-select-value-placeholder',
-    '[color:var(--color-input-placeholder)]',
-  ],
-  [
-    'ui-select-chevron',
-    'shrink-0 color-$color-input-placeholder transition-transform [transition-duration:var(--motion-select-chevron-duration)] [transition-timing-function:var(--motion-select-chevron-ease)]',
-  ],
-  [
-    'ui-select-chevron-open',
-    '[transform:rotate(180deg)]',
-  ],
-  [
-    'ui-select-overlay-base',
-    'absolute left-0 top-0 z-40 w-full overflow-hidden rounded-$radius-lg bg-$bg-inverse [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle),0_0_0_var(--color-select-shadow)] transition-[clip-path,opacity,box-shadow] [transition-duration:var(--motion-select-overlay-duration)] [transition-timing-function:var(--motion-select-overlay-ease)]',
-  ],
-  [
-    'ui-select-overlay-open',
-    'opacity-100 pointer-events-auto [clip-path:inset(0%_0%_0%_0%_round_var(--radius-lg))] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle),0_16px_48px_var(--color-select-shadow)]',
-  ],
-  [
-    'ui-select-overlay-closed',
-    'opacity-0 pointer-events-none [clip-path:inset(0%_0%_100%_0%_round_var(--radius-lg))] [box-shadow:0_0_0_var(--control-border-width)_var(--border-input-idle),0_0_0_var(--color-select-shadow)]',
-  ],
-  [
-    'ui-select-divider',
-    'mx-$space-3 h-px bg-$border-quaternary',
-  ],
-  [
-    'ui-select-option-list',
-    'p-$space-1_5',
-  ],
-  [
-    'ui-select-option-base',
-    'flex w-full items-center justify-between rounded-$radius-md px-$space-3 py-$space-2 text-left type-body-sm font-light color-$color-primary transition-[background-color,color,opacity,transform] [transition-duration:var(--motion-select-option-duration)] [transition-timing-function:var(--motion-select-option-ease)]',
-  ],
-  [
-    'ui-select-value-hidden',
-    'max-h-0 opacity-0 overflow-hidden pointer-events-none',
-  ],
-  [
-    'ui-select-option-visible',
-    'opacity-100 [transform:translateY(0)]',
-  ],
-  [
-    'ui-select-option-hidden',
-    'opacity-0 [transform:translateY(6px)]',
-  ],
-  [
-    'ui-select-option-hoverable',
-    'hover:bg-$bg-soft',
-  ],
-  [
-    'ui-select-option-active',
-    'bg-$bg-soft-hover',
-  ],
-  [
-    'ui-select-option-selected',
-    'bg-$bg-soft',
-  ],
-  [
-    'ui-select-current-root',
     'relative w-full isolate z-0',
   ],
   [
-    'ui-select-current-vars',
+    'ui-select-vars',
     '[--ds-select-trigger-h:calc(var(--size-control-lg)+var(--space-2))] [--ds-select-ring-w:1px] [--ds-select-ring:var(--border-input-idle,color-mix(in_oklch,var(--foreground)_28%,transparent))] [--ds-select-ring-hover:var(--border-accent-hover,color-mix(in_oklch,var(--foreground)_42%,transparent))] [--ds-select-ring-focus:var(--border-accent,color-mix(in_oklch,var(--foreground)_56%,transparent))] [--ds-select-surface:var(--bg-inverse,var(--pure-white))] [--ds-select-text:hsl(var(--foreground))] [--ds-select-muted:var(--color-input-placeholder,hsl(var(--muted-foreground)))] [--ds-select-label:var(--color-input-floating-label,hsl(var(--muted-foreground)))] [--ds-select-shadow:var(--color-select-shadow,color-mix(in_oklch,var(--foreground)_18%,transparent))] [--ds-select-indicator:var(--color-select-indicator,var(--toxic-11))] [--ds-select-indicator-column:1rem] [--ds-select-option-inline-pad:0.875rem] [--ds-select-list-inset-x:calc(var(--form-control-inset-x,var(--space-5))-var(--ds-select-option-inline-pad))] [--ds-select-divider-inset-x:var(--form-control-inset-x,var(--space-5))] [--ds-select-motion-ease:cubic-bezier(0.22,1,0.36,1)]',
   ],
   [
-    'ui-select-current-shape-rounded',
+    'ui-select-shape-rounded',
     '![--ds-select-radius:var(--radius-form-rounded)]',
   ],
   [
-    'ui-select-current-shape-pill',
+    'ui-select-shape-pill',
     '![--ds-select-radius:var(--radius-form-pill)]',
   ],
   [
-    'ui-select-current-root-layer',
+    'ui-select-root-layer',
     'z-80',
   ],
   [
-    'ui-select-current-slot',
+    'ui-select-slot',
     'h-[var(--ds-select-trigger-h)]',
   ],
   [
-    'ui-select-current-panel',
+    'ui-select-panel',
     'absolute inset-[0_auto_auto_0] z-1 w-full overflow-hidden [border-radius:var(--ds-select-radius)] [background:var(--ds-select-surface)]',
   ],
   [
-    'ui-select-current-panel-motion',
+    'ui-select-panel-motion',
     '[transition:max-height_360ms_var(--ds-select-motion-ease),box-shadow_180ms_ease]',
   ],
   [
-    'ui-select-current-header',
+    'ui-select-header',
     'relative w-full [height:var(--ds-select-trigger-h)] border-0 [background:var(--ds-select-surface)] [color:var(--ds-select-text)] [padding-inline:var(--form-control-inset-x)] m-0 text-left grid [grid-template-columns:1fr_var(--ds-select-indicator-column)] items-center gap-$space-3 cursor-pointer outline-none',
   ],
   [
-    'ui-select-current-header-divider',
+    'ui-select-header-divider',
     '[&::after]:content-[\'\'] [&::after]:absolute [&::after]:left-[var(--ds-select-divider-inset-x)] [&::after]:right-[var(--ds-select-divider-inset-x)] [&::after]:bottom-0 [&::after]:h-px [&::after]:bg-$border-quaternary [&::after]:opacity-0 [&::after]:[transform:scaleX(0)] [&::after]:[transform-origin:center] [&::after]:[transition:opacity_280ms_ease,transform_420ms_var(--ds-select-motion-ease)]',
   ],
   [
-    'ui-select-current-header-divider-open',
+    'ui-select-header-divider-open',
     '[&::after]:opacity-100 [&::after]:[transform:scaleX(1)] [&::after]:[transition-delay:120ms]',
   ],
   [
-    'ui-select-current-header-motion',
+    'ui-select-header-motion',
     '[transition:transform_300ms_var(--ds-select-motion-ease)]',
   ],
   [
-    'ui-select-current-header-disabled',
+    'ui-select-header-disabled',
     'disabled:cursor-not-allowed',
   ],
   [
-    'ui-select-current-content',
+    'ui-select-content',
     'min-w-0 relative grid',
   ],
   [
-    'ui-select-current-label',
+    'ui-select-label',
     'absolute left-0 top-1/2 [transform:translateY(-50%)] [transform-origin:left_center] [color:var(--ds-select-muted)] pointer-events-none [transition-property:transform,top,color,font-size,line-height,letter-spacing,text-transform,font-family,font-weight] [transition-duration:var(--motion-input-floating-duration)] [transition-timing-function:var(--motion-input-floating-ease)]',
   ],
   [
-    'ui-select-current-label-floating',
+    'ui-select-label-floating',
     'top-$space-1 [transform:translateY(0)_scale(0.82)] [color:var(--ds-select-label)]',
   ],
   [
-    'ui-select-current-value',
+    'ui-select-value',
     'min-w-0 whitespace-nowrap overflow-hidden text-ellipsis [color:var(--ds-select-text)]',
   ],
   [
-    'ui-select-current-value-placeholder',
+    'ui-select-value-placeholder',
     '[color:var(--ds-select-muted)]',
   ],
   [
-    'ui-select-current-value-empty',
+    'ui-select-value-empty',
     'opacity-0',
   ],
   [
-    'ui-select-current-chevron',
+    'ui-select-chevron',
     '[color:var(--ds-select-text)] justify-self-center translate-y-[1px] transition-transform [transition-duration:300ms] [transition-timing-function:var(--ds-select-motion-ease)]',
   ],
   [
-    'ui-select-current-chevron-open',
+    'ui-select-chevron-open',
     'translate-y-[3px] rotate-180',
   ],
   [
-    'ui-select-current-content-labeled',
+    'ui-select-content-labeled',
     '[padding-top:var(--input-control-padding-top-floating)] [padding-bottom:var(--input-control-padding-y)]',
   ],
   [
-    'ui-select-current-list',
+    'ui-select-list',
     'list-none m-0 pt-$space-2_5 pb-$space-2 [padding-inline:var(--ds-select-list-inset-x)] grid gap-$space-1 [background:var(--ds-select-surface)]',
   ],
   [
-    'ui-select-current-body',
+    'ui-select-body',
     '[background:var(--ds-select-surface)] opacity-0 [transform:translateY(-6px)] pointer-events-none [transition:opacity_220ms_ease,transform_320ms_var(--ds-select-motion-ease),background-color_180ms_ease]',
   ],
   [
-    'ui-select-current-body-open',
+    'ui-select-body-open',
     'opacity-100 [transform:translateY(0)] pointer-events-auto',
   ],
   [
-    'ui-select-current-option',
+    'ui-select-option',
     'w-full border-0 [background:transparent] [color:var(--ds-select-text)] min-h-[2.25rem] [border-radius:0.625rem] text-left grid [grid-template-columns:1fr_var(--ds-select-indicator-column)] items-center gap-$space-3 [padding:0.375rem_var(--ds-select-option-inline-pad)] cursor-pointer opacity-0 [transform:translateY(6px)] [transition:background-color_160ms_ease,color_160ms_ease]',
   ],
   [
-    'ui-select-current-option-open',
+    'ui-select-option-open',
     'opacity-100 [transform:translateY(0)] [transition:opacity_450ms_ease,transform_600ms_var(--ds-select-motion-ease)] [transition-delay:calc(var(--stagger-index)_*_90ms_+_120ms)]',
   ],
   [
-    'ui-select-current-option-highlighted',
+    'ui-select-option-highlighted',
     '[background:color-mix(in_oklch,var(--color-accent-ui,hsl(var(--foreground)))_10%,transparent)] [color:var(--color-accent-ui,hsl(var(--foreground)))]',
   ],
   [
-    'ui-select-current-option-selected',
+    'ui-select-option-selected',
     '[background:color-mix(in_oklch,var(--color-accent-ui,hsl(var(--foreground)))_18%,transparent)] [color:var(--ds-select-text)]',
   ],
   [
-    'ui-select-current-option-selected-highlighted',
+    'ui-select-option-selected-highlighted',
     '[background:color-mix(in_oklch,var(--color-accent-ui,hsl(var(--foreground)))_24%,transparent)] [color:var(--ds-select-text)]',
   ],
   [
-    'ui-select-current-option-disabled',
+    'ui-select-option-disabled',
     'disabled:opacity-45 disabled:cursor-not-allowed',
   ],
   [
-    'ui-select-current-empty',
+    'ui-select-empty',
     'min-h-[2.25rem] [border-radius:0.625rem] flex items-center [padding:0.375rem_var(--ds-select-option-inline-pad)] opacity-80',
   ],
   [
-    'ui-select-current-indicator-dot',
+    'ui-select-indicator-dot',
     'w-$space-2 h-$space-2 rounded-full [background:var(--ds-select-indicator)] justify-self-center opacity-0 [transition:opacity_140ms_ease]',
   ],
   [
-    'ui-select-current-indicator-dot-visible',
+    'ui-select-indicator-dot-visible',
     'opacity-100',
   ],
   [
-    'ui-select-current-error-row',
+    'ui-select-error-row',
     'flex items-center gap-$space-2_5 [color:var(--color-error-text,#ff6fa9)] animate-shake-in [animation-fill-mode:both]',
   ],
   [
-    'ui-select-current-hint',
+    'ui-select-hint',
     'opacity-70',
   ],
   [
@@ -362,27 +254,27 @@ export const inputShortcuts: UserShortcuts = [
     'opacity-65',
   ],
   [
-    'ui-select-current-panel-idle',
+    'ui-select-panel-idle',
     '[box-shadow:0_0_0_var(--ds-select-ring-w)_var(--ds-select-ring)]',
   ],
   [
-    'ui-select-current-panel-hoverable',
+    'ui-select-panel-hoverable',
     'hover:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ds-select-ring-hover)]',
   ],
   [
-    'ui-select-current-panel-hover',
+    'ui-select-panel-hover',
     '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ds-select-ring-hover)]',
   ],
   [
-    'ui-select-current-panel-focus',
+    'ui-select-panel-focus',
     '[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ds-select-ring-focus)]',
   ],
   [
-    'ui-select-current-panel-invalid',
+    'ui-select-panel-invalid',
     '[box-shadow:0_0_0_var(--ds-select-ring-w)_var(--border-error)]',
   ],
   [
-    'ui-select-current-panel-disabled',
+    'ui-select-panel-disabled',
     '[opacity:0.65] [box-shadow:0_0_0_var(--ds-select-ring-w)_var(--border-disabled)]',
   ],
   [
