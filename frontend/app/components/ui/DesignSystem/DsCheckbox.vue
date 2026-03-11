@@ -4,14 +4,18 @@ import { computed, ref, toRefs, useAttrs, watch } from 'vue'
 import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
+type CheckboxValue = boolean
+type CheckboxVariant = 'default' | 'accent' | 'mixed'
+type CheckboxSize = 'sm' | 'md' | 'lg'
+
 defineOptions({
   inheritAttrs: false,
 })
 
 const props = withDefaults(defineProps<{
   modelValue?: CheckboxValue
-  variant?: 'default' | 'accent' | 'mixed'
-  size?: 'sm' | 'md' | 'lg'
+  variant?: CheckboxVariant
+  size?: CheckboxSize
   label?: string
   hint?: string
   error?: string
@@ -36,8 +40,6 @@ const emit = defineEmits<{
   (e: 'blur', event: FocusEvent): void
 }>()
 
-type CheckboxValue = boolean
-
 const {
   modelValue,
   variant,
@@ -53,6 +55,92 @@ const {
 const attrs = useAttrs()
 const touched = ref(false)
 const errorShakeKey = ref(0)
+const smoothEase = [0.16, 1, 0.3, 1] as const
+
+interface CheckboxVisualState {
+  backgroundColor: string
+  borderColor: string
+  color: string
+}
+
+const checkboxTokens = {
+  bgInverse: 'var(--bg-inverse)',
+  bgSoftDisabled: 'var(--bg-soft-disabled)',
+  bgAccentSoft: 'var(--bg-accent-soft)',
+  bgInputErrorSoft: 'var(--bg-input-error-soft)',
+  colorPrimary: 'var(--color-primary)',
+  colorInverse: 'var(--color-inverse)',
+  colorAccentUi: 'var(--color-accent-ui)',
+  colorAccentStrong: 'var(--color-accent-strong)',
+  colorOnAccent: 'var(--color-on-accent)',
+  colorErrorText: 'var(--color-error-text)',
+  colorDisabled: 'var(--color-disabled)',
+  borderInputIdle: 'var(--border-input-idle)',
+  borderError: 'var(--border-error)',
+  borderDisabled: 'var(--border-disabled)',
+} as const
+
+const neutralIdleState: CheckboxVisualState = {
+  backgroundColor: checkboxTokens.bgInverse,
+  borderColor: checkboxTokens.borderInputIdle,
+  color: checkboxTokens.colorInverse,
+}
+
+const sizeClassMap: Record<CheckboxSize, string> = {
+  sm: 'ui-checkbox-control-sm',
+  md: 'ui-checkbox-control-md',
+  lg: 'ui-checkbox-control-lg',
+}
+
+const variantClassMap: Record<CheckboxVariant, string> = {
+  default: 'ui-checkbox-control-variant-default',
+  accent: 'ui-checkbox-control-variant-accent',
+  mixed: 'ui-checkbox-control-variant-mixed',
+}
+
+const variantColorMap: Record<CheckboxVariant, { idle: CheckboxVisualState, active: CheckboxVisualState }> = {
+  default: {
+    idle: neutralIdleState,
+    active: {
+      backgroundColor: checkboxTokens.colorPrimary,
+      borderColor: checkboxTokens.colorPrimary,
+      color: checkboxTokens.colorInverse,
+    },
+  },
+  accent: {
+    idle: neutralIdleState,
+    active: {
+      backgroundColor: checkboxTokens.colorAccentUi,
+      borderColor: checkboxTokens.colorAccentUi,
+      color: checkboxTokens.colorOnAccent,
+    },
+  },
+  mixed: {
+    idle: {
+      backgroundColor: checkboxTokens.bgInverse,
+      borderColor: checkboxTokens.borderInputIdle,
+      color: checkboxTokens.colorAccentStrong,
+    },
+    active: {
+      backgroundColor: checkboxTokens.bgAccentSoft,
+      borderColor: checkboxTokens.colorAccentUi,
+      color: checkboxTokens.colorAccentStrong,
+    },
+  },
+}
+
+const stateOverrideMap = {
+  disabled: {
+    backgroundColor: checkboxTokens.bgSoftDisabled,
+    borderColor: checkboxTokens.borderDisabled,
+    color: checkboxTokens.colorDisabled,
+  },
+  invalid: {
+    backgroundColor: checkboxTokens.bgInputErrorSoft,
+    borderColor: checkboxTokens.borderError,
+    color: checkboxTokens.colorErrorText,
+  },
+} as const
 
 const checkboxId = computed(() => {
   const rawId = attrs.id
@@ -104,12 +192,8 @@ const describedBy = computed(() => {
 
 const controlClass = computed(() => [
   'ui-checkbox-control-base',
-  size.value === 'sm' ? 'ui-checkbox-control-sm' : size.value === 'lg' ? 'ui-checkbox-control-lg' : 'ui-checkbox-control-md',
-  variant.value === 'accent'
-    ? 'ui-checkbox-control-variant-accent'
-    : variant.value === 'mixed'
-      ? 'ui-checkbox-control-variant-mixed'
-      : 'ui-checkbox-control-variant-default',
+  sizeClassMap[size.value],
+  variantClassMap[variant.value],
   hasError.value && !disabled.value && 'ui-checkbox-control-invalid',
   disabled.value && 'ui-checkbox-control-disabled',
 ])
@@ -119,64 +203,22 @@ const labelClass = computed(() => [
   disabled.value && 'ui-checkbox-label-disabled',
 ])
 
-const smoothEase = [0.16, 1, 0.3, 1] as const
 const isActive = computed(() => isChecked.value)
 
-const idleSurfaceColor = computed(() => {
-  if (disabled.value)
-    return 'var(--bg-soft-disabled)'
-
-  return 'var(--bg-inverse)'
-})
-
-const activeSurfaceColor = computed(() => {
-  if (disabled.value)
-    return 'var(--bg-soft-disabled)'
-
-  if (variant.value === 'accent')
-    return 'var(--color-accent-ui)'
-
-  if (variant.value === 'mixed')
-    return 'var(--bg-accent-soft)'
-
-  return 'var(--color-primary)'
-})
-
 const checkboxMotion = computed(() => {
-  const isCheckedOrMixed = isActive.value
-  const hasInvalidState = hasError.value && !disabled.value
-  const textColor
-    = disabled.value
-      ? 'var(--color-disabled)'
-      : hasInvalidState
-        ? 'var(--color-error-text)'
-        : variant.value === 'accent' && isCheckedOrMixed
-          ? 'var(--color-on-accent)'
-          : variant.value === 'accent'
-            ? 'var(--color-inverse)'
-            : variant.value === 'mixed'
-              ? 'var(--color-accent-strong)'
-              : 'var(--color-inverse)'
+  const baseVariantMotion = isActive.value
+    ? variantColorMap[variant.value].active
+    : variantColorMap[variant.value].idle
 
-  const borderColor
-    = disabled.value
-      ? 'var(--border-disabled)'
-      : hasError.value
-        ? 'var(--border-error)'
-        : isCheckedOrMixed
-          ? variant.value === 'default'
-            ? 'var(--color-primary)'
-            : 'var(--color-accent-ui)'
-          : 'var(--border-input-idle)'
+  const stateOverrideMotion = disabled.value
+    ? stateOverrideMap.disabled
+    : hasError.value
+      ? stateOverrideMap.invalid
+      : undefined
 
   return {
-    backgroundColor: hasInvalidState
-      ? 'var(--bg-input-error-soft)'
-      : isCheckedOrMixed
-        ? activeSurfaceColor.value
-        : idleSurfaceColor.value,
-    borderColor,
-    color: textColor,
+    ...baseVariantMotion,
+    ...(stateOverrideMotion ?? {}),
     transition: {
       duration: 0.5,
       ease: smoothEase,

@@ -77,6 +77,7 @@ Status: aktiv
   - Variant-Idle-Styles
   - Focus/Invalid/Disabled-Ring und Border
 - In JS:
+  - Variant-/State-Aufloesung ueber statische Object-Maps (`sizeClassMap`, `variantClassMap`, `variantColorMap`, `stateOverrideMap`)
   - Toggle-Logik (`boolean` only)
   - Required-on-blur Validation (`missingRequiredValue`)
   - Resolved Error-Text (`error` hat Vorrang, sonst fallback)
