@@ -39,12 +39,6 @@ const colorTokens: TokenSet = {
   'color-field-floating-label': { light: 'var(--color-accent-ui)', dark: 'var(--color-accent)' },
   'color-field-readonly-idle-text': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand10)' },
   'color-field-readonly-hover-text': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand11)' },
-  // Backward-compatible aliases during field token migration.
-  'color-input-placeholder': 'var(--color-field-placeholder)',
-  'color-input-meta-subtle': 'var(--color-field-meta-subtle)',
-  'color-input-floating-label': 'var(--color-field-floating-label)',
-  'color-readonly-idle-text': 'var(--color-field-readonly-idle-text)',
-  'color-readonly-hover-text': 'var(--color-field-readonly-hover-text)',
   'color-error-text': { light: 'var(--un-preset-radix-crimson11)', dark: 'var(--un-preset-radix-crimson11)' },
   'color-select-shadow': { light: 'rgba(0, 0, 0, 0.16)', dark: 'rgba(0, 0, 0, 0.45)' },
 }
@@ -82,8 +76,6 @@ const bgTokens: TokenSet = {
   'bg-ghost-morph-accent-fill': { light: 'var(--toxic-6)', dark: 'var(--toxic-5)' },
   'bg-ghost-morph-accent-fill-active': { light: 'var(--toxic-7)', dark: 'var(--toxic-6)' },
   'bg-field-error-soft': { light: 'rgba(223, 52, 120, 0.025)', dark: 'var(--un-preset-radix-crimson-a3)' },
-  // Backward-compatible alias during field token migration.
-  'bg-input-error-soft': 'var(--bg-field-error-soft)',
 }
 
 const borderTokens: TokenSet = {
@@ -103,8 +95,6 @@ const borderTokens: TokenSet = {
   'border-accent-soft-hover': 'var(--toxic-8)',
   'border-accent-soft-disabled': { light: '#dbe5e3', dark: 'rgba(28, 105, 97, 0.48)' },
   'border-field-idle': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand11)' },
-  // Backward-compatible alias during field token migration.
-  'border-input-idle': 'var(--border-field-idle)',
   'border-error': { light: 'var(--un-preset-radix-crimson10)', dark: 'var(--un-preset-radix-crimson10)' },
 }
 
