@@ -311,7 +311,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-base',
-    'relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-input-idle)] [background-color:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:500ms] [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+    'relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-input-idle)] [background-color:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
   ],
   [
     'ui-checkbox-control-sm',
