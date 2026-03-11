@@ -57,7 +57,6 @@ const touched = ref(false)
 const errorShakeKey = ref(0)
 const isHoveringHit = ref(false)
 const isFocusVisible = ref(false)
-const smoothEase = [0.16, 1, 0.3, 1] as const
 
 interface CheckboxVisualState {
   backgroundColor: string
@@ -144,6 +143,44 @@ const stateOverrideMap = {
   },
 } as const
 
+const checkboxMotionConfig = {
+  transitionDuration: 0.5,
+  transitionEase: [0.16, 1, 0.3, 1] as const,
+  ringWidth: 'var(--focus-ring-active-width)',
+  ringDefaultColor: 'var(--border-accent)',
+  ringHoverColor: 'var(--border-accent-hover)',
+  noShadow: '0 0 0 0 rgba(0,0,0,0)',
+} as const
+
+function ringShadow(color: string): string {
+  return `0 0 0 ${checkboxMotionConfig.ringWidth} ${color}`
+}
+
+type InteractionStateKey = 'blocked' | 'hoverUnchecked' | 'focusUnchecked' | 'focusCheckedAccent' | 'focusChecked' | 'idle'
+
+const interactionMotionMap: Record<InteractionStateKey, () => Partial<CheckboxVisualState> & { boxShadow: string }> = {
+  blocked: () => ({
+    boxShadow: checkboxMotionConfig.noShadow,
+  }),
+  hoverUnchecked: () => ({
+    borderColor: checkboxMotionConfig.ringHoverColor,
+    boxShadow: ringShadow(checkboxMotionConfig.ringHoverColor),
+  }),
+  focusUnchecked: () => ({
+    borderColor: checkboxMotionConfig.ringDefaultColor,
+    boxShadow: ringShadow(checkboxMotionConfig.ringDefaultColor),
+  }),
+  focusCheckedAccent: () => ({
+    boxShadow: ringShadow(checkboxMotionConfig.ringHoverColor),
+  }),
+  focusChecked: () => ({
+    boxShadow: ringShadow(checkboxMotionConfig.ringDefaultColor),
+  }),
+  idle: () => ({
+    boxShadow: checkboxMotionConfig.noShadow,
+  }),
+}
+
 const checkboxId = computed(() => {
   const rawId = attrs.id
   return typeof rawId === 'string' ? rawId : ''
@@ -207,33 +244,39 @@ const labelClass = computed(() => [
 
 const isActive = computed(() => isChecked.value)
 
+const interactionStateKey = computed<InteractionStateKey>(() => {
+  if (disabled.value || hasError.value)
+    return 'blocked'
+
+  if (isFocusVisible.value) {
+    if (!isActive.value)
+      return 'focusUnchecked'
+
+    return variant.value === 'accent' ? 'focusCheckedAccent' : 'focusChecked'
+  }
+
+  if (isHoveringHit.value && !isActive.value)
+    return 'hoverUnchecked'
+
+  return 'idle'
+})
+
+const stateOverrideKey = computed<'disabled' | 'invalid' | null>(() => {
+  if (disabled.value)
+    return 'disabled'
+
+  if (hasError.value)
+    return 'invalid'
+
+  return null
+})
+
 const checkboxMotion = computed(() => {
   const baseVariantMotion = isActive.value
     ? variantColorMap[variant.value].active
     : variantColorMap[variant.value].idle
-
-  const checkboxRingWidth = 'var(--focus-ring-active-width)'
-  const hoverRing = `0 0 0 ${checkboxRingWidth} var(--border-accent-hover)`
-  const focusRingDefault = `0 0 0 ${checkboxRingWidth} var(--border-accent)`
-  const focusRingAccentChecked = `0 0 0 ${checkboxRingWidth} var(--border-accent-hover)`
-  const focusRing = variant.value === 'accent' && isActive.value
-    ? focusRingAccentChecked
-    : focusRingDefault
-  const interactionMotion = disabled.value || hasError.value
-    ? { boxShadow: '0 0 0 0 rgba(0,0,0,0)' }
-    : isHoveringHit.value && !isActive.value
-      ? { borderColor: 'var(--border-accent-hover)', boxShadow: hoverRing }
-      : isFocusVisible.value
-        ? (isActive.value
-            ? { boxShadow: focusRing }
-            : { borderColor: 'var(--border-accent)', boxShadow: focusRing })
-        : { boxShadow: '0 0 0 0 rgba(0,0,0,0)' }
-
-  const stateOverrideMotion = disabled.value
-    ? stateOverrideMap.disabled
-    : hasError.value
-      ? stateOverrideMap.invalid
-      : undefined
+  const interactionMotion = interactionMotionMap[interactionStateKey.value]()
+  const stateOverrideMotion = stateOverrideKey.value ? stateOverrideMap[stateOverrideKey.value] : undefined
 
   return {
     ...baseVariantMotion,
@@ -241,12 +284,12 @@ const checkboxMotion = computed(() => {
     ...(stateOverrideMotion ?? {}),
     transition: {
       backgroundColor: {
-        duration: 0.5,
-        ease: smoothEase,
+        duration: checkboxMotionConfig.transitionDuration,
+        ease: checkboxMotionConfig.transitionEase,
       },
       color: {
-        duration: 0.5,
-        ease: smoothEase,
+        duration: checkboxMotionConfig.transitionDuration,
+        ease: checkboxMotionConfig.transitionEase,
       },
       borderColor: {
         duration: 0,
