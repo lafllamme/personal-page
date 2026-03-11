@@ -5,6 +5,7 @@ Instructions for code agents (Cursor Agent, Codex) working in this repository.
 ## Source of truth
 
 Project truth lives in `docs/`. Treat `.cursor/` content as agent runtime guidance only.
+Commit naming truth lives in [`COMMIT-PATTERN.md`](file:///Users/flame/Developer/Projects/personal-page/COMMIT-PATTERN.md).
 
 Note: Some generic skills may mention Nuxt 3 or older defaults. In this repo, treat those as Nuxt 4 equivalents unless [`docs/general/ARCHITECTURE.md`](file:///Users/flame/Developer/Projects/personal-page/docs/general/ARCHITECTURE.md) says otherwise.
 
@@ -52,6 +53,17 @@ Allowed dependency directions
 * `shared` must not depend on app specific code
 
 If you need functionality in both apps, prefer creating or extending a shared package rather than duplicating logic.
+
+## Commit workflow (verbindlich)
+
+Rules
+* Commit messages use only these prefixes: `feat:`, `fix:`, `chore:`
+* Never use parentheses in commit titles
+* Keep title short and specific
+* On explicit user command `commit`:
+  1. inspect changed files
+  2. summarize the actual change scope in one short title
+  3. commit only relevant files using the required prefix schema
 
 ## Agent operating principles
 

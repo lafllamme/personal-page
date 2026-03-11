@@ -1,6 +1,6 @@
 # DS Checkbox
 
-Stand: 2026-03-10  
+Stand: 2026-03-11  
 Status: aktiv
 
 ## Ist-Zustand
@@ -117,3 +117,4 @@ Status: aktiv
 - Kein `readonly`-State fuer Checkbox.
 - Kein `indeterminate`-UI (nur Checkmark als visueller Indicator).
 - Mixed bleibt als eigene Farbvariante aktiv, ohne eigenen Indicator-Typ.
+- Error-Row folgt dem gemeinsamen Field-Pattern (`ui-field-error-row` + `ui-field-error-icon`) ohne Legacy-Sonderpfad.

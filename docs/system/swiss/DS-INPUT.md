@@ -1,6 +1,6 @@
 # DS Input
 
-Stand: 2026-03-06  
+Stand: 2026-03-11  
 Status: aktiv
 
 ## Ist-Zustand
@@ -102,3 +102,10 @@ Status: aktiv
 - `shape='rounded'` ist der Default fuer `DsInput` (8px).
 - `shape='pill'` steht als weichere Alternative zur Verfuegung (16px).
 - Shape wirkt nur auf den Radius, nicht auf Padding, Hoehe oder State-Motion.
+
+## Naming-Migration (2026-03-11)
+- `DsInput` nutzt keine Legacy-Input-Alias-Tokens mehr.
+- Aktive Tokenbasis ist ausschliesslich `field`:
+  - `--color-field-*`
+  - `--bg-field-*`
+  - `--border-field-*`

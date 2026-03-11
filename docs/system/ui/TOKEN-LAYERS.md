@@ -1,6 +1,6 @@
 # Token Layers (Active Contract)
 
-Stand: 2026-02-20  
+Stand: 2026-03-11  
 Status: Verbindlicher Token- und Naming-Contract fuer den UI-Build
 
 Diese Datei ist die zentrale Quelle fuer Token-Layering, Naming und Runtime-Guardrails.
@@ -109,3 +109,19 @@ Diese Datei ist die zentrale Quelle fuer Token-Layering, Naming und Runtime-Guar
 - Neue interaktive Muster zuerst als `v-*` definieren.
 - Erst Contract-Doku updaten, dann Runtime-Code.
 - Komponentenspezifische Struktur-Shortcuts getrennt von Variant-Shortcuts halten.
+
+## 7) Migration-Status (2026-03-11)
+
+- Field-Naming ist jetzt durchgaengig auf `field` vereinheitlicht.
+- Die alten Backward-Alias-Tokens wurden entfernt und sind kein aktiver Contract mehr:
+  - `color-input-placeholder`
+  - `color-input-meta-subtle`
+  - `color-input-floating-label`
+  - `color-readonly-idle-text`
+  - `color-readonly-hover-text`
+  - `bg-input-error-soft`
+  - `border-input-idle`
+- Aktiver Contract fuer Form-Controls:
+  - `--color-field-*`
+  - `--bg-field-*`
+  - `--border-field-*`

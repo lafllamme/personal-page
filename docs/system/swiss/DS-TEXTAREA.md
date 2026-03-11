@@ -1,6 +1,6 @@
 # DS Textarea
 
-Stand: 2026-03-06  
+Stand: 2026-03-11  
 Status: aktiv
 
 ## Ist-Zustand
@@ -100,3 +100,4 @@ Status: aktiv
 - Readonly-State ist im Contract enthalten (paritaet zu `DsInput`) und kann bei Bedarf produktseitig genutzt oder ignoriert werden.
 - Form Density ist mit Input/Select vereinheitlicht: horizontaler Inset ueber `--form-control-inset-x`.
 - Form Shape folgt derselben Logik wie Input/Select: `rounded` (default) oder `pill`.
+- Naming ist auf `field` vereinheitlicht; Legacy-Alias-Tokens werden nicht mehr verwendet.

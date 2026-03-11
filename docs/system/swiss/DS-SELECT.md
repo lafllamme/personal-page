@@ -1,6 +1,6 @@
 # ds-select
 
-Stand: 2026-03-09  
+Stand: 2026-03-11  
 Status: aktiv
 
 ## Komponente
@@ -169,3 +169,4 @@ Status: aktiv
 
 ## Offene Punkte
 - Keine offenen Naming-Cleanup-Punkte im Select-Shortcut-Bereich.
+- Select ist auf finalem Shortcut-Namespace `ui-select-*` ohne Legacy-Pfade.

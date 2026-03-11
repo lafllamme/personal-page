@@ -1,6 +1,6 @@
 # DS Link (Default + Hover Underline)
 
-Stand: 2026-02-25  
+Stand: 2026-03-11  
 Status: aktiv
 
 ## Ziel
@@ -114,3 +114,7 @@ Status: aktiv
   - der Text-Underline erscheint normal auf Hover/Fokus
   - der Arrow nutzt dieselbe verzogene Motion
   - der Arrow hat auch hier einen eigenen Idle-/Hover-Ton
+
+## Naming-Stand (2026-03-11)
+- Link folgt dem aktuellen `ui-link-*` Shortcut-Contract.
+- Keine offenen Legacy-Naming-Aliase im Link-Tokenpfad.

@@ -1,6 +1,6 @@
 # Component Matrix v2 - Foundation Only
 
-> Status: Active Build Matrix (2026-02-15)
+> Status: Active Build Matrix (2026-03-11)
 > Ziel: Nur Basis-Komponenten definieren, damit wir danach gezielt Screens und Storybook-artige Demos bauen.
 > Scope: Pure Black / Pure White + Accent-Familie (Radix Teal), Swiss-Style Struktur, TechNews Demo-Content.
 
@@ -29,6 +29,17 @@
 - `sport/img_1`
 - `studio` (whole concept)
 - `tech/img_1`
+
+## 2.1 Migration-Status (2026-03-11)
+- Naming-Migration im Form-/Action-Block ist abgeschlossen fuer:
+  - `DsInput`
+  - `DsTextarea`
+  - `DsSelect`
+  - `DsCheckbox`
+  - `DsLink`
+  - `DsButton`
+- Form-Tokenbasis ist konsolidiert auf `field` (`color-field-*`, `bg-field-*`, `border-field-*`).
+- `DsSelect` nutzt final den Shortcut-Namespace `ui-select-*`.
 
 ## 3) Foundation-Komponenten (P0 zuerst)
 

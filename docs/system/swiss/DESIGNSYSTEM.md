@@ -1,6 +1,6 @@
 # DESIGNSYSTEM (P04-MPZ01 + RedXT)
 
-Stand: 2026-02-22  
+Stand: 2026-03-11  
 Status: Single Source of Truth fuer den naechsten Komponentenbau
 Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben und zu verfeinern.
 
@@ -57,10 +57,10 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Motion Baseline: [MOTION.md](./MOTION.md)
 - Link Contract: [DS-LINK.md](./DS-LINK.md)
 - Icon Contract: [DS-ICON.md](./DS-ICON.md)
-- Input Contract (Konzept): [DS-INPUT.md](./DS-INPUT.md)
-- Checkbox Contract (Konzept): [DS-CHECKBOX.md](./DS-CHECKBOX.md)
-- Textarea Contract (Konzept): [DS-TEXTAREA.md](./DS-TEXTAREA.md)
-- Select Contract (Konzept): [DS-SELECT.md](./DS-SELECT.md)
+- Input Contract (aktiv): [DS-INPUT.md](./DS-INPUT.md)
+- Checkbox Contract (aktiv): [DS-CHECKBOX.md](./DS-CHECKBOX.md)
+- Textarea Contract (aktiv): [DS-TEXTAREA.md](./DS-TEXTAREA.md)
+- Select Contract (aktiv): [DS-SELECT.md](./DS-SELECT.md)
 - Next Components Roadmap: [NEXT-COMPONENTS-ROADMAP.md](./NEXT-COMPONENTS-ROADMAP.md)
 - Storybook / Nuxt Stubbing: [STUBBING.md](./STUBBING.md)
 - Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
@@ -96,9 +96,16 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
   - Token-Level: `pill` (`--radius-form-pill = 1rem / 16px`) und `rounded` (`--radius-form-rounded = 0.5rem / 8px`).
   - Component-Defaults: `DsInput` + `DsTextarea` + `DsSelect` nutzen `rounded`.
 - DS-Select Architekturstand (2026-03-08):
-  - `DsSelect` laeuft jetzt vollstaendig ueber Uno-Shortcuts (`ui-select-current-*`), ohne komponentenspezifischen Styleblock.
+  - `DsSelect` laeuft jetzt vollstaendig ueber Uno-Shortcuts (`ui-select-*`), ohne komponentenspezifischen Styleblock.
   - Required-on-blur nutzt das Input-Pattern: nur Error-Message shake't, nicht das Feld selbst.
   - Storybook ist auf State-Parity ausgebaut (`DsSelect.stories.ts`): default/hover/focus/open/selected/error/disabled/empty + shape.
+- DS-Checkbox Architekturstand (2026-03-11):
+  - `DsCheckbox` ist aktiv im Runtime-Pfad (`motion-v` + `ui-checkbox-*` Shortcuts) und im Debug-View integriert.
+  - Motion/Size-Grundwerte sind im Token-Set verankert (`--motion-checkbox-*`, `--size-checkbox-*`, `--radius-checkbox-*`).
+  - State-Prioritaet bleibt: `disabled > invalid > focus-visible > hover > default`.
+- Naming-Migration Form Controls (2026-03-11):
+  - Legacy-Field-Aliase in `palette.ts` wurden entfernt.
+  - Aktive Form-Token laufen nur noch ueber `field`-Namen (`color-field-*`, `bg-field-*`, `border-field-*`).
 - Scope-Cleanup (2026-03-09):
   - `DsStack`, `DsCluster`, `DsMediaFrame`, `DsTag` sind aus dem aktiven Build-Scope entfernt (deferred).
   - Begruendung: Fokus auf Form-Core + Selection-Block vor weiteren Surface-/Layout-Primitives.
