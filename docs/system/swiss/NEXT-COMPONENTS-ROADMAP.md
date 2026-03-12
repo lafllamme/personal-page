@@ -62,7 +62,7 @@ Ziel:
 
 ### Phase 2: Form Selection
 4. `DsCheckbox` (done)
-5. `DsRadio`
+5. `DsRadio` (done)
 6. `DsSwitch`
 
 Ziel:
@@ -89,14 +89,15 @@ Ziel:
 
 ## Nächste konkrete Umsetzung
 Als naechste echte Komponente bauen wir:
-1. `DsRadio`
-2. dann `DsSwitch`
+1. `DsSwitch`
+2. danach `DsBadge`
 
 Begruendung:
 - `DsInput` und `DsTextarea` sind bereits umgesetzt und stabil.
 - `DsSelect` ist jetzt umgesetzt und schliesst den Field-Contract fuer Form Core.
 - `DsCheckbox` ist umgesetzt und als aktiver Contract dokumentiert.
-- Damit ist `Radio`/`Switch` der verbleibende Selection-Block.
+- `DsRadio` ist umgesetzt und als aktiver Contract dokumentiert.
+- Damit ist `DsSwitch` der verbleibende Selection-Block.
 
 ## Scope-Cleanup (2026-03-09)
 - Aus dem aktiven Build entfernt (deferred):
@@ -111,3 +112,4 @@ Aktiver Plan fuer den ersten Schritt:
 - [DS-CHECKBOX.md](./DS-CHECKBOX.md)
 - [DS-TEXTAREA.md](./DS-TEXTAREA.md)
 - [DS-SELECT.md](./DS-SELECT.md)
+- [DS-RADIO.md](./DS-RADIO.md)

@@ -254,6 +254,78 @@ export const inputShortcuts: UserShortcuts = [
     'opacity-65',
   ],
   [
+    'ui-radio-root',
+    'grid gap-$space-2',
+  ],
+  [
+    'ui-radio-size-sm',
+    '[--ds-radio-control-size:var(--size-checkbox-control-sm)]',
+  ],
+  [
+    'ui-radio-size-md',
+    '[--ds-radio-control-size:var(--size-checkbox-control-md)]',
+  ],
+  [
+    'ui-radio-size-lg',
+    '[--ds-radio-control-size:var(--size-checkbox-control-lg)]',
+  ],
+  [
+    'ui-radio-group',
+    'grid gap-$space-2',
+  ],
+  [
+    'ui-radio-item',
+    'inline-grid w-fit max-w-full gap-$space-1_5',
+  ],
+  [
+    'ui-radio-main-row',
+    'inline-flex items-center gap-$space-3',
+  ],
+  [
+    'ui-radio-meta-wrap',
+    '[padding-left:calc(var(--ds-radio-control-size)+var(--space-3))] grid gap-1',
+  ],
+  [
+    'ui-radio-control-base',
+    'relative isolate inline-flex shrink-0 items-center justify-center rounded-full border border-solid [border-width:var(--control-border-width)] [width:var(--ds-radio-control-size)] [height:var(--ds-radio-control-size)] [border-color:var(--border-field-idle)] [background:transparent] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] hover:[border-color:var(--border-accent-hover)] hover:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent)]',
+  ],
+  [
+    'ui-radio-control-variant-default',
+    '[--ds-radio-accent:var(--color-primary)] [color:var(--color-primary)]',
+  ],
+  [
+    'ui-radio-control-variant-accent',
+    '[--ds-radio-accent:var(--color-accent-ui)] [color:var(--color-accent-ui)]',
+  ],
+  [
+    'ui-radio-control-variant-mixed',
+    '[--ds-radio-accent:var(--color-accent-strong)] [color:var(--color-accent-strong)]',
+  ],
+  [
+    'ui-radio-control-checked',
+    '[border-color:var(--ds-radio-accent)]',
+  ],
+  [
+    'ui-radio-control-invalid',
+    '[border-color:var(--border-error)] [color:var(--color-error-text)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-error)]',
+  ],
+  [
+    'ui-radio-control-disabled',
+    'cursor-not-allowed opacity-55 [border-color:var(--border-disabled)] [color:var(--color-disabled)] hover:[box-shadow:0_0_0_0_transparent] focus-visible:[box-shadow:0_0_0_0_transparent]',
+  ],
+  [
+    'ui-radio-indicator',
+    'pointer-events-none inline-flex rounded-full [background-color:currentColor] [width:calc(var(--ds-radio-control-size)*0.5)] [height:calc(var(--ds-radio-control-size)*0.5)]',
+  ],
+  [
+    'ui-radio-label',
+    'select-none',
+  ],
+  [
+    'ui-radio-label-disabled',
+    'opacity-65',
+  ],
+  [
     'ui-select-panel-idle',
     '[box-shadow:0_0_0_var(--ds-select-ring-w)_var(--ds-select-ring)]',
   ],

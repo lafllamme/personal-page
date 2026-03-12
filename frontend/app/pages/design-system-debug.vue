@@ -4,6 +4,7 @@ import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsCheckbox from '@/components/ui/DesignSystem/DsCheckbox.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
 import DsLink from '@/components/ui/DesignSystem/DsLink.vue'
+import DsRadio from '@/components/ui/DesignSystem/DsRadio.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
 import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
@@ -68,6 +69,13 @@ const checkboxSizeMd = ref<boolean>(true)
 const checkboxSizeLg = ref<boolean>(false)
 const checkboxRequired = ref<boolean>(false)
 const checkboxRequiredErrorPreview = ref<boolean>(false)
+const radioDefault = ref('')
+const radioAccent = ref('product')
+const radioMixed = ref('community')
+const radioSizeSm = ref('')
+const radioSizeMd = ref('product')
+const radioSizeLg = ref('community')
+const radioRequired = ref('')
 
 const selectOptions = [
   { label: 'Editorial feedback', value: 'editorial' },
@@ -77,6 +85,11 @@ const selectOptions = [
   { label: 'Community support', value: 'community' },
 ]
 const selectEmptyOptions: { label: string, value: string }[] = []
+const radioOptions = [
+  { label: 'Editorial feedback', value: 'editorial', hint: 'Long-form and article quality' },
+  { label: 'Product question', value: 'product', hint: 'Feature request or bug report' },
+  { label: 'Community support', value: 'community', hint: 'Forum and moderation topics' },
+]
 
 function isValidEmail(value: string): boolean {
   const trimmed = value.trim()
@@ -589,6 +602,131 @@ const selectInvalidError = computed(() => {
                   required
                   invalid
                   error="Please confirm this field."
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 space-y-4">
+            <div class="space-y-2">
+              <DsTypography
+                as="p"
+                role="meta"
+                size="xs"
+                uppercase
+              >
+                Radio Prototype A
+              </DsTypography>
+              <DsTypography
+                as="p"
+                role="body"
+                size="sm"
+                tone="muted"
+              >
+                Base-radio style: neutral ring plus animated dot, no filled control background.
+              </DsTypography>
+            </div>
+
+            <div class="space-y-5">
+              <div class="space-y-2">
+                <DsTypography
+                  as="p"
+                  role="meta"
+                  size="2xs"
+                  uppercase
+                >
+                  Variants (Medium)
+                </DsTypography>
+                <div class="grid gap-5 lg:grid-cols-3">
+                  <DsRadio
+                    id="debug-radio-default"
+                    v-model="radioDefault"
+                    variant="default"
+                    size="md"
+                    label="Default variant"
+                    :options="radioOptions"
+                  />
+
+                  <DsRadio
+                    id="debug-radio-accent"
+                    v-model="radioAccent"
+                    variant="accent"
+                    size="md"
+                    label="Accent variant"
+                    :options="radioOptions"
+                  />
+
+                  <DsRadio
+                    id="debug-radio-mixed"
+                    v-model="radioMixed"
+                    variant="mixed"
+                    size="md"
+                    label="Mixed variant"
+                    :options="radioOptions"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <DsTypography
+                  as="p"
+                  role="meta"
+                  size="2xs"
+                  uppercase
+                >
+                  Sizes
+                </DsTypography>
+                <div class="grid gap-5 lg:grid-cols-3">
+                  <DsRadio
+                    id="debug-radio-size-sm"
+                    v-model="radioSizeSm"
+                    variant="default"
+                    size="sm"
+                    label="Small"
+                    :options="radioOptions"
+                  />
+
+                  <DsRadio
+                    id="debug-radio-size-md"
+                    v-model="radioSizeMd"
+                    variant="default"
+                    size="md"
+                    label="Medium"
+                    :options="radioOptions"
+                  />
+
+                  <DsRadio
+                    id="debug-radio-size-lg"
+                    v-model="radioSizeLg"
+                    variant="default"
+                    size="lg"
+                    label="Large"
+                    :options="radioOptions"
+                  />
+                </div>
+              </div>
+
+              <div class="grid gap-5 lg:grid-cols-2">
+                <DsRadio
+                  id="debug-radio-required"
+                  v-model="radioRequired"
+                  variant="default"
+                  size="md"
+                  label="Required topic"
+                  hint="Blur the group without selection to inspect error shake."
+                  :options="radioOptions"
+                  required
+                />
+
+                <DsRadio
+                  id="debug-radio-disabled"
+                  model-value="product"
+                  variant="default"
+                  size="md"
+                  label="Disabled selected"
+                  hint="Disabled contract preview."
+                  :options="radioOptions"
+                  disabled
                 />
               </div>
             </div>

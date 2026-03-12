@@ -61,6 +61,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Checkbox Contract (aktiv): [DS-CHECKBOX.md](./DS-CHECKBOX.md)
 - Textarea Contract (aktiv): [DS-TEXTAREA.md](./DS-TEXTAREA.md)
 - Select Contract (aktiv): [DS-SELECT.md](./DS-SELECT.md)
+- Radio Contract (aktiv): [DS-RADIO.md](./DS-RADIO.md)
 - Next Components Roadmap: [NEXT-COMPONENTS-ROADMAP.md](./NEXT-COMPONENTS-ROADMAP.md)
 - Storybook / Nuxt Stubbing: [STUBBING.md](./STUBBING.md)
 - Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
@@ -103,6 +104,10 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
   - `DsCheckbox` ist aktiv im Runtime-Pfad (`motion-v` + `ui-checkbox-*` Shortcuts) und im Debug-View integriert.
   - Motion/Size-Grundwerte sind im Token-Set verankert (`--motion-checkbox-*`, `--size-checkbox-*`, `--radius-checkbox-*`).
   - State-Prioritaet bleibt: `disabled > invalid > focus-visible > hover > default`.
+- DS-Radio Architekturstand (2026-03-12):
+  - `DsRadio` ist aktiv im Runtime-Pfad (`ui-radio-*` Shortcuts) und im Debug-View integriert.
+  - Basis-Visual folgt dem Base-Radio-Prinzip: neutraler Ring + animierter Dot, ohne gefuellte Control-Surface.
+  - Required-on-blur + Error-Shake folgt dem gemeinsamen Field-Pattern.
 - Naming-Migration Form Controls (2026-03-11):
   - Legacy-Field-Aliase in `palette.ts` wurden entfernt.
   - Aktive Form-Token laufen nur noch ueber `field`-Namen (`color-field-*`, `bg-field-*`, `border-field-*`).

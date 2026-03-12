@@ -170,3 +170,4 @@ Status: aktiv
 ## Offene Punkte
 - Keine offenen Naming-Cleanup-Punkte im Select-Shortcut-Bereich.
 - Select ist auf finalem Shortcut-Namespace `ui-select-*` ohne Legacy-Pfade.
+- Chevron ist geometrisch zentriert (`ui-select-chevron` ohne Y-Offset); Open-State rotiert nur ueber `rotate-180`.
