@@ -283,6 +283,8 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
             :tabindex="resolveTabIndex(index)"
             :disabled="isOptionDisabled(option)"
             :ref="element => setControlRef(index, element)"
+            :while-hover="isOptionDisabled(option) ? undefined : { scale: 1.05 }"
+            :while-tap="isOptionDisabled(option) ? undefined : { scale: 0.95 }"
             @click="selectAt(index)"
             @keydown="onControlKeydown(index, $event)"
             @focus="onControlFocus"
@@ -293,7 +295,7 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
               class="ui-radio-indicator"
               :initial="{ scale: 0, opacity: 0 }"
               :animate="modelValue === option.value ? { scale: 1, opacity: 1 } : { scale: 0, opacity: 0 }"
-              :transition="{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }"
+              :transition="{ type: 'spring', stiffness: 200, damping: 16 }"
             />
           </Motion>
 

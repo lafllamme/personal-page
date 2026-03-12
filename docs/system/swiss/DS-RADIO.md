@@ -16,6 +16,8 @@ Status: aktiv
 - Hover/Fokus folgt der Checkbox-/Field-Pragmatik:
   - Hover: etwas staerkerer Ring in Accent-Hover-Farbe
   - Focus-visible: klarer Ring ueber Accent-Focus-Farbe
+  - Press-Feedback am Control: `whileHover { scale: 1.05 }`, `whileTap { scale: 0.95 }`
+  - Indicator-Motion: Spring (`stiffness: 200`, `damping: 16`)
 
 Referenz:
 - `https://animate-ui.com/docs/primitives/base/radio`

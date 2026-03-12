@@ -315,7 +315,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-radio-indicator',
-    'pointer-events-none inline-flex rounded-full [background-color:currentColor] [width:calc(var(--ds-radio-control-size)*0.5)] [height:calc(var(--ds-radio-control-size)*0.5)]',
+    'pointer-events-none inline-flex rounded-full [background-color:currentColor] [width:calc(var(--ds-radio-control-size)*0.6)] [height:calc(var(--ds-radio-control-size)*0.6)]',
   ],
   [
     'ui-radio-label',
