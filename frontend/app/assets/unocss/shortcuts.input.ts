@@ -119,11 +119,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-select-chevron',
-    '[color:var(--ds-select-text)] justify-self-center translate-y-[1px] transition-transform [transition-duration:300ms] [transition-timing-function:var(--ds-select-motion-ease)]',
+    'inline-flex items-center justify-center self-center justify-self-center [line-height:1] [color:var(--ds-select-text)] transition-transform [transition-duration:300ms] [transition-timing-function:var(--ds-select-motion-ease)]',
   ],
   [
     'ui-select-chevron-open',
-    'translate-y-[3px] rotate-180',
+    'rotate-180',
   ],
   [
     'ui-select-content-labeled',

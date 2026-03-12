@@ -32,6 +32,7 @@ Status: aktiv (Build-Priorisierung)
 - `DsInput`
 - `DsTextarea`
 - `DsSelect`
+- `DsCheckbox`
 
 ### Runtime / Tooling
 - UnoCSS Token-Layer aktiv
@@ -60,7 +61,7 @@ Ziel:
 - Form Density konsistent: horizontaler Inset ueber `--form-control-inset-x` (Default 20px)
 
 ### Phase 2: Form Selection
-4. `DsCheckbox`
+4. `DsCheckbox` (done)
 5. `DsRadio`
 6. `DsSwitch`
 
@@ -88,14 +89,14 @@ Ziel:
 
 ## Nächste konkrete Umsetzung
 Als naechste echte Komponente bauen wir:
-1. `DsCheckbox`
-2. dann `DsRadio`
-3. dann `DsSwitch`
+1. `DsRadio`
+2. dann `DsSwitch`
 
 Begruendung:
 - `DsInput` und `DsTextarea` sind bereits umgesetzt und stabil.
 - `DsSelect` ist jetzt umgesetzt und schliesst den Field-Contract fuer Form Core.
-- Danach ist die Selection-Familie (`Checkbox`, `Radio`, `Switch`) als konsistenter Block dran.
+- `DsCheckbox` ist umgesetzt und als aktiver Contract dokumentiert.
+- Damit ist `Radio`/`Switch` der verbleibende Selection-Block.
 
 ## Scope-Cleanup (2026-03-09)
 - Aus dem aktiven Build entfernt (deferred):
@@ -107,5 +108,6 @@ Begruendung:
 
 Aktiver Plan fuer den ersten Schritt:
 - [DS-INPUT.md](./DS-INPUT.md)
+- [DS-CHECKBOX.md](./DS-CHECKBOX.md)
 - [DS-TEXTAREA.md](./DS-TEXTAREA.md)
 - [DS-SELECT.md](./DS-SELECT.md)
