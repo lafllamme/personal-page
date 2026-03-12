@@ -10,7 +10,6 @@ type RadioSize = 'sm' | 'md' | 'lg'
 interface RadioOption {
   label: string
   value: string
-  hint?: string
   disabled?: boolean
 }
 
@@ -274,6 +273,7 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
             class="ui-radio-control-base"
             :class="[
               variantClassMap[variant],
+              modelValue !== option.value && !hasError && !isOptionDisabled(option) && 'ui-radio-control-hoverable',
               modelValue === option.value && 'ui-radio-control-checked',
               hasError && !isOptionDisabled(option) && 'ui-radio-control-invalid',
               isOptionDisabled(option) && 'ui-radio-control-disabled',
@@ -299,28 +299,16 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
             />
           </Motion>
 
-          <div class="grid gap-0.5">
-            <DsTypography
-              as="span"
-              role="body"
-              size="sm"
-              weight="light"
-              class="ui-radio-label"
-              :class="isOptionDisabled(option) && 'ui-radio-label-disabled'"
-            >
-              {{ option.label }}
-            </DsTypography>
-
-            <DsTypography
-              v-if="option.hint"
-              as="span"
-              role="meta"
-              size="2xs"
-              :tone="isOptionDisabled(option) ? 'muted' : 'default'"
-            >
-              {{ option.hint }}
-            </DsTypography>
-          </div>
+          <DsTypography
+            as="span"
+            role="body"
+            size="sm"
+            weight="regular"
+            class="ui-radio-label"
+            :class="isOptionDisabled(option) && 'ui-radio-label-disabled'"
+          >
+            {{ option.label }}
+          </DsTypography>
         </div>
       </label>
     </div>

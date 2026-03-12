@@ -13,6 +13,7 @@ Status: aktiv
 - Single-choice Group mit `role="radiogroup"` und Item-Buttons `role="radio"`.
 - Visuelle Basis orientiert sich an Base Radio (Animate UI / Base UI): neutraler Ring, kein gefuellter Control-Hintergrund.
 - Auswahl erfolgt ueber animierten Dot (scale + opacity), nicht ueber Flaechen-Fill.
+- Pro Option wird nur eine Textzeile gerendert (keine zweite Hint-Zeile direkt am Radio).
 - Hover/Fokus folgt der Checkbox-/Field-Pragmatik:
   - Hover: etwas staerkerer Ring in Accent-Hover-Farbe
   - Focus-visible: klarer Ring ueber Accent-Focus-Farbe
@@ -44,6 +45,11 @@ Referenz:
 
 ## State-Prioritaet
 - `disabled > invalid > focus-visible > hover > checked > default`
+
+## Mixed-Variant Verhalten
+- `mixed` bleibt im Idle neutral (`color-primary`).
+- Im `checked` Zustand wechselt `mixed` auf Accent (`color-accent-ui`) fuer Border + Indicator.
+- Ziel: weniger visuelle Haerte als ein dauerhaft accent-getoentes Idle.
 
 ## Validation-Verhalten
 - `hasError = Boolean(error) || invalid || missingRequiredValue`

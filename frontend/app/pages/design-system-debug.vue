@@ -86,9 +86,9 @@ const selectOptions = [
 ]
 const selectEmptyOptions: { label: string, value: string }[] = []
 const radioOptions = [
-  { label: 'Editorial feedback', value: 'editorial', hint: 'Long-form and article quality' },
-  { label: 'Product question', value: 'product', hint: 'Feature request or bug report' },
-  { label: 'Community support', value: 'community', hint: 'Forum and moderation topics' },
+  { label: 'Editorial feedback', value: 'editorial' },
+  { label: 'Product question', value: 'product' },
+  { label: 'Community support', value: 'community' },
 ]
 
 function isValidEmail(value: string): boolean {
