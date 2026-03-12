@@ -303,7 +303,7 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
             as="span"
             role="body"
             size="sm"
-            weight="regular"
+            weight="light"
             class="ui-radio-label"
             :class="isOptionDisabled(option) && 'ui-radio-label-disabled'"
           >

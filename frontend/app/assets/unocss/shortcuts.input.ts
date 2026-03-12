@@ -287,7 +287,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-radio-control-base',
-    'relative isolate inline-flex shrink-0 items-center justify-center rounded-full border border-solid [border-width:var(--control-border-width)] [width:var(--ds-radio-control-size)] [height:var(--ds-radio-control-size)] [border-color:var(--border-field-idle)] [background:transparent] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent)]',
+    'relative isolate inline-flex shrink-0 items-center justify-center rounded-full border border-solid [border-width:var(--control-border-width)] [width:var(--ds-radio-control-size)] [height:var(--ds-radio-control-size)] [border-color:var(--border-field-idle)] [background:transparent] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] focus-visible:[border-color:var(--border-accent)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent)]',
   ],
   [
     'ui-radio-control-hoverable',

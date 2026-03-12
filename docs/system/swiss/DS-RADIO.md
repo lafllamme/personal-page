@@ -44,7 +44,7 @@ Referenz:
 - Error: Icon + Message + Shake-In (gleiches Pattern wie Input/Checkbox/Select)
 
 ## State-Prioritaet
-- `disabled > invalid > focus-visible > hover > checked > default`
+- `disabled > invalid > focus-visible > checked > hover > default`
 
 ## Mixed-Variant Verhalten
 - `mixed` bleibt im Idle neutral (`color-primary`).
