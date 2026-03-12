@@ -8,6 +8,7 @@ import DsRadio from '@/components/ui/DesignSystem/DsRadio.vue'
 import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
 import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
 import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
+import DsSwitch from '@/components/ui/DesignSystem/DsSwitch.vue'
 import DsTextarea from '@/components/ui/DesignSystem/DsTextarea.vue'
 import DsTypography from '@/components/ui/DesignSystem/DsTypography.vue'
 
@@ -76,6 +77,13 @@ const radioSizeSm = ref('')
 const radioSizeMd = ref('product')
 const radioSizeLg = ref('community')
 const radioRequired = ref('')
+const switchDefault = ref<boolean>(false)
+const switchAccent = ref<boolean>(true)
+const switchMixed = ref<boolean>(false)
+const switchSizeSm = ref<boolean>(false)
+const switchSizeMd = ref<boolean>(true)
+const switchSizeLg = ref<boolean>(false)
+const switchRequired = ref<boolean>(false)
 
 const selectOptions = [
   { label: 'Editorial feedback', value: 'editorial' },
@@ -732,6 +740,123 @@ const selectInvalidError = computed(() => {
             </div>
           </div>
 
+          <div class="pt-3 space-y-4">
+            <div class="space-y-2">
+              <DsTypography
+                as="p"
+                role="meta"
+                size="xs"
+                uppercase
+              >
+                Switch Prototype A
+              </DsTypography>
+              <DsTypography
+                as="p"
+                role="body"
+                size="sm"
+                tone="muted"
+              >
+                Clean track/thumb toggle with spring thumb press and shared field error pattern.
+              </DsTypography>
+            </div>
+
+            <div class="space-y-5">
+              <div class="space-y-2">
+                <DsTypography
+                  as="p"
+                  role="meta"
+                  size="2xs"
+                  uppercase
+                >
+                  Variants (Medium)
+                </DsTypography>
+                <div class="grid gap-5 lg:grid-cols-3">
+                  <DsSwitch
+                    id="debug-switch-default"
+                    v-model="switchDefault"
+                    variant="default"
+                    size="md"
+                    label="Default variant"
+                  />
+
+                  <DsSwitch
+                    id="debug-switch-accent"
+                    v-model="switchAccent"
+                    variant="accent"
+                    size="md"
+                    label="Accent variant"
+                  />
+
+                  <DsSwitch
+                    id="debug-switch-mixed"
+                    v-model="switchMixed"
+                    variant="mixed"
+                    size="md"
+                    label="Mixed variant"
+                  />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <DsTypography
+                  as="p"
+                  role="meta"
+                  size="2xs"
+                  uppercase
+                >
+                  Sizes
+                </DsTypography>
+                <div class="grid gap-5 lg:grid-cols-3">
+                  <DsSwitch
+                    id="debug-switch-size-sm"
+                    v-model="switchSizeSm"
+                    variant="default"
+                    size="sm"
+                    label="Small"
+                  />
+
+                  <DsSwitch
+                    id="debug-switch-size-md"
+                    v-model="switchSizeMd"
+                    variant="default"
+                    size="md"
+                    label="Medium"
+                  />
+
+                  <DsSwitch
+                    id="debug-switch-size-lg"
+                    v-model="switchSizeLg"
+                    variant="default"
+                    size="lg"
+                    label="Large"
+                  />
+                </div>
+              </div>
+
+              <div class="grid gap-5 lg:grid-cols-2">
+                <DsSwitch
+                  id="debug-switch-required"
+                  v-model="switchRequired"
+                  variant="default"
+                  size="md"
+                  label="Required toggle"
+                  hint="Blur without turning it on to inspect error shake."
+                  required
+                />
+
+                <DsSwitch
+                  id="debug-switch-disabled"
+                  :model-value="true"
+                  variant="default"
+                  size="md"
+                  label="Disabled selected"
+                  hint="Disabled contract preview."
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+
           <div class="pt-3 space-y-6">
             <div class="space-y-2">
               <DsTypography
@@ -1078,6 +1203,52 @@ const selectInvalidError = computed(() => {
               >
                 Quaternary
               </DsButton>
+            </div>
+          </div>
+
+          <div class="mt-3 bg-[#ef4444]/6 outline-2 outline-[#ef4444]/80 outline dark:bg-[#ef4444]/10 dark:outline-[#f87171]/90">
+            <div class="grid gap-5 p-4 lg:grid-cols-2">
+              <div class="space-y-3">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Switch Context Pack
+                </DsTypography>
+                <DsSwitch
+                  id="debug-switch-context-airplane"
+                  v-model="switchAccent"
+                  variant="accent"
+                  size="md"
+                  label="Airplane mode"
+                  hint="Spring thumb + pressed width animation."
+                />
+                <DsSwitch
+                  id="debug-switch-context-analytics"
+                  v-model="switchDefault"
+                  variant="default"
+                  size="md"
+                  label="Analytics tracking"
+                  hint="Default context in contained=false section."
+                />
+              </div>
+
+              <div class="space-y-3">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Dense Utility Pack
+                </DsTypography>
+                <DsSwitch
+                  id="debug-switch-context-compact-1"
+                  v-model="switchSizeSm"
+                  variant="mixed"
+                  size="sm"
+                  label="Compact updates"
+                />
+                <DsSwitch
+                  id="debug-switch-context-compact-2"
+                  v-model="switchSizeLg"
+                  variant="default"
+                  size="lg"
+                  label="Large display alerts"
+                />
+              </div>
             </div>
           </div>
         </div>

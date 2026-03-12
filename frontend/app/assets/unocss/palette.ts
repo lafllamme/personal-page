@@ -159,6 +159,11 @@ const motionTokens: TokenSet = {
   'motion-select-option-stagger-step': '28ms',
   'motion-select-chevron-duration': '260ms',
   'motion-select-chevron-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+  'motion-switch-track-duration': '220ms',
+  'motion-switch-track-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+  'motion-switch-thumb-duration': '260ms',
+  'motion-switch-thumb-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
+  'motion-switch-press-duration': '160ms',
 }
 
 const spacingTokens: TokenSet = {
@@ -256,6 +261,18 @@ const sizingTokens: TokenSet = {
   'radius-checkbox-lg': 'calc(var(--radius-md) + var(--space-0_25))',
   'size-checkbox-indicator': '84%',
   'size-checkbox-check-stroke': '3.5',
+  'size-switch-track-sm': 'var(--space-5)',
+  'size-switch-track-md': 'var(--space-6)',
+  'size-switch-track-lg': 'calc(var(--space-6) + var(--space-1))',
+  'size-switch-width-sm': 'calc(var(--space-8) + var(--space-0_5))',
+  'size-switch-width-md': 'var(--space-10)',
+  'size-switch-width-lg': 'calc(var(--space-10) + var(--space-1_5))',
+  'size-switch-thumb-sm': 'calc(var(--space-3) + var(--space-0_5))',
+  'size-switch-thumb-md': 'var(--space-4_75)',
+  'size-switch-thumb-lg': 'var(--space-5)',
+  'size-switch-thumb-press-sm': 'var(--space-4_75)',
+  'size-switch-thumb-press-md': 'calc(var(--space-5) + var(--space-0_5))',
+  'size-switch-thumb-press-lg': 'var(--space-6)',
 }
 
 const typographyFontFamilyTheme = {

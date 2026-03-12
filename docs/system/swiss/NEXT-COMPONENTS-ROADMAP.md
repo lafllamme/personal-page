@@ -1,6 +1,6 @@
 # Next Components Roadmap
 
-Stand: 2026-03-02  
+Stand: 2026-03-12  
 Status: aktiv (Build-Priorisierung)
 
 ## Ziel
@@ -33,6 +33,8 @@ Status: aktiv (Build-Priorisierung)
 - `DsTextarea`
 - `DsSelect`
 - `DsCheckbox`
+- `DsRadio`
+- `DsSwitch`
 
 ### Runtime / Tooling
 - UnoCSS Token-Layer aktiv
@@ -63,7 +65,7 @@ Ziel:
 ### Phase 2: Form Selection
 4. `DsCheckbox` (done)
 5. `DsRadio` (done)
-6. `DsSwitch`
+6. `DsSwitch` (done)
 
 Ziel:
 - gleicher State-Contract (`default`, `hover`, `active`, `focus-visible`, `disabled`, optional `checked`)
@@ -89,15 +91,16 @@ Ziel:
 
 ## Nächste konkrete Umsetzung
 Als naechste echte Komponente bauen wir:
-1. `DsSwitch`
-2. danach `DsBadge`
+1. `DsBadge`
+2. danach `DsDivider`
 
 Begruendung:
 - `DsInput` und `DsTextarea` sind bereits umgesetzt und stabil.
 - `DsSelect` ist jetzt umgesetzt und schliesst den Field-Contract fuer Form Core.
 - `DsCheckbox` ist umgesetzt und als aktiver Contract dokumentiert.
 - `DsRadio` ist umgesetzt und als aktiver Contract dokumentiert.
-- Damit ist `DsSwitch` der verbleibende Selection-Block.
+- `DsSwitch` ist umgesetzt und als aktiver Contract dokumentiert.
+- Der Selection-Block ist damit abgeschlossen.
 
 ## Scope-Cleanup (2026-03-09)
 - Aus dem aktiven Build entfernt (deferred):
@@ -113,3 +116,4 @@ Aktiver Plan fuer den ersten Schritt:
 - [DS-TEXTAREA.md](./DS-TEXTAREA.md)
 - [DS-SELECT.md](./DS-SELECT.md)
 - [DS-RADIO.md](./DS-RADIO.md)
+- [DS-SWITCH.md](./DS-SWITCH.md)

@@ -36,6 +36,8 @@
   - `DsTextarea`
   - `DsSelect`
   - `DsCheckbox`
+  - `DsRadio`
+  - `DsSwitch`
   - `DsLink`
   - `DsButton`
 - Form-Tokenbasis ist konsolidiert auf `field` (`color-field-*`, `bg-field-*`, `border-field-*`).

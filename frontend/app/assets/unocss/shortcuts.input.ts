@@ -330,6 +330,90 @@ export const inputShortcuts: UserShortcuts = [
     'opacity-65',
   ],
   [
+    'ui-switch-root',
+    'grid gap-$space-2',
+  ],
+  [
+    'ui-switch-hit',
+    'inline-grid w-fit max-w-full gap-$space-1_5',
+  ],
+  [
+    'ui-switch-main-row',
+    'inline-flex items-center gap-$space-3',
+  ],
+  [
+    'ui-switch-meta-wrap',
+    '[padding-left:calc(var(--ds-switch-track-w)+var(--space-3))] grid gap-1',
+  ],
+  [
+    'ui-switch-size-sm',
+    '[--ds-switch-track-h:var(--size-switch-track-sm)] [--ds-switch-track-w:var(--size-switch-width-sm)] [--ds-switch-thumb-size:var(--size-switch-thumb-sm)] [--ds-switch-thumb-size-pressed:var(--size-switch-thumb-press-sm)] [--ds-switch-thumb-x-checked:calc(var(--ds-switch-track-w)-var(--ds-switch-thumb-size)-var(--space-1))]',
+  ],
+  [
+    'ui-switch-size-md',
+    '[--ds-switch-track-h:var(--size-switch-track-md)] [--ds-switch-track-w:var(--size-switch-width-md)] [--ds-switch-thumb-size:var(--size-switch-thumb-md)] [--ds-switch-thumb-size-pressed:var(--size-switch-thumb-press-md)] [--ds-switch-thumb-x-checked:calc(var(--ds-switch-track-w)-var(--ds-switch-thumb-size)-var(--space-1))]',
+  ],
+  [
+    'ui-switch-size-lg',
+    '[--ds-switch-track-h:var(--size-switch-track-lg)] [--ds-switch-track-w:var(--size-switch-width-lg)] [--ds-switch-thumb-size:var(--size-switch-thumb-lg)] [--ds-switch-thumb-size-pressed:var(--size-switch-thumb-press-lg)] [--ds-switch-thumb-x-checked:calc(var(--ds-switch-track-w)-var(--ds-switch-thumb-size)-var(--space-1))]',
+  ],
+  [
+    'ui-switch-track-base',
+    'relative isolate inline-flex shrink-0 items-center [width:var(--ds-switch-track-w)] [height:var(--ds-switch-track-h)] rounded-full border border-solid [border-width:var(--control-border-width)] [padding:var(--space-0_5)] [background:transparent] [border-color:var(--border-field-idle)] outline-none transition-[background-color,border-color,box-shadow] [transition-duration:var(--motion-switch-track-duration)] [transition-timing-function:var(--motion-switch-track-ease)]',
+  ],
+  [
+    'ui-switch-track-hoverable',
+    'hover:[border-color:var(--border-accent-hover)] hover:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent-hover)]',
+  ],
+  [
+    'ui-switch-track-focused',
+    'focus-visible:[border-color:var(--border-accent)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent)]',
+  ],
+  [
+    'ui-switch-track-variant-default',
+    '[--ds-switch-accent-bg:var(--color-primary)] [--ds-switch-accent-border:var(--color-primary)] [--ds-switch-thumb-on:var(--color-inverse)] [--ds-switch-thumb-off:var(--color-primary)]',
+  ],
+  [
+    'ui-switch-track-variant-accent',
+    '[--ds-switch-accent-bg:var(--color-accent-ui)] [--ds-switch-accent-border:var(--color-accent-ui)] [--ds-switch-thumb-on:var(--color-on-accent)] [--ds-switch-thumb-off:var(--color-accent-ui)]',
+  ],
+  [
+    'ui-switch-track-variant-mixed',
+    '[--ds-switch-accent-bg:var(--bg-accent-soft)] [--ds-switch-accent-border:var(--color-accent-ui)] [--ds-switch-thumb-on:var(--color-accent-strong)] [--ds-switch-thumb-off:var(--color-primary)]',
+  ],
+  [
+    'ui-switch-track-checked',
+    '[--ds-switch-state:1]',
+  ],
+  [
+    'ui-switch-track-unchecked-colors',
+    '[background:transparent] [border-color:var(--border-field-idle)] [color:var(--ds-switch-thumb-off)]',
+  ],
+  [
+    'ui-switch-track-checked-colors',
+    '[background:var(--ds-switch-accent-bg)] [border-color:var(--ds-switch-accent-border)] [color:var(--ds-switch-thumb-on)]',
+  ],
+  [
+    'ui-switch-track-invalid',
+    '[background:var(--bg-field-error-soft)] [border-color:var(--border-error)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-error)]',
+  ],
+  [
+    'ui-switch-track-disabled',
+    'cursor-not-allowed opacity-55 [background:var(--bg-soft-disabled)] [border-color:var(--border-disabled)] hover:[box-shadow:0_0_0_0_transparent] focus-visible:[box-shadow:0_0_0_0_transparent]',
+  ],
+  [
+    'ui-switch-thumb',
+    'pointer-events-none inline-flex rounded-full [width:var(--ds-switch-thumb-size)] [height:var(--ds-switch-thumb-size)] [background:currentColor] [transition:width_var(--motion-switch-press-duration)_ease] will-change-transform',
+  ],
+  [
+    'ui-switch-label',
+    'select-none',
+  ],
+  [
+    'ui-switch-label-disabled',
+    'opacity-65',
+  ],
+  [
     'ui-select-panel-idle',
     '[box-shadow:0_0_0_var(--ds-select-ring-w)_var(--ds-select-ring)]',
   ],
