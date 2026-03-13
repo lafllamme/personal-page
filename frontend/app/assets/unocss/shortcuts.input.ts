@@ -359,27 +359,27 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-switch-track-base',
-    'relative isolate inline-flex shrink-0 items-center justify-start [width:var(--ds-switch-track-w)] [height:var(--ds-switch-track-h)] rounded-full border border-solid [border-width:var(--control-border-width)] [padding:var(--size-switch-track-inset)] [background:transparent] [border-color:var(--border-field-idle)] outline-none transition-[background-color,border-color,box-shadow] [transition-duration:var(--motion-switch-track-duration)] [transition-timing-function:var(--motion-switch-track-ease)]',
+    'relative isolate inline-flex shrink-0 items-center justify-start [width:var(--ds-switch-track-w)] [height:var(--ds-switch-track-h)] rounded-full border border-solid [border-width:var(--control-border-width)] [padding:var(--size-switch-track-inset)] [background:transparent] [border-color:var(--border-field-idle)] [--ds-switch-hover-border:var(--border-accent-hover)] [--ds-switch-hover-ring:var(--border-accent-hover)] [--ds-switch-focus-border:var(--border-accent)] [--ds-switch-focus-ring:var(--border-accent)] outline-none transition-[background-color,border-color,box-shadow] [transition-duration:var(--motion-switch-track-duration)] [transition-timing-function:var(--motion-switch-track-ease)]',
   ],
   [
     'ui-switch-track-hoverable',
-    'hover:[border-color:var(--border-accent-hover)] hover:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent-hover)]',
+    'hover:[border-color:var(--ds-switch-hover-border)] hover:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--ds-switch-hover-ring)]',
   ],
   [
     'ui-switch-track-focused',
-    'focus-visible:[border-color:var(--border-accent)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent)]',
+    'focus-visible:[border-color:var(--ds-switch-focus-border)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--ds-switch-focus-ring)]',
   ],
   [
     'ui-switch-track-variant-default',
-    '[--ds-switch-accent-bg:var(--color-primary)] [--ds-switch-accent-border:var(--color-primary)] [--ds-switch-thumb-on:var(--color-inverse)] [--ds-switch-thumb-off:var(--color-switch-thumb-idle)] [--ds-switch-idle-border:var(--border-field-idle)]',
+    '[--ds-switch-accent-bg:var(--color-primary)] [--ds-switch-accent-border:var(--color-primary)] [--ds-switch-thumb-on:var(--color-inverse)] [--ds-switch-thumb-off:var(--color-switch-thumb-idle)] [--ds-switch-idle-border:var(--border-field-idle)] [--ds-switch-hover-border:var(--un-preset-radix-sand11)] [--ds-switch-hover-ring:var(--un-preset-radix-sand11)] [--ds-switch-focus-border:var(--un-preset-radix-sand12)] [--ds-switch-focus-ring:var(--un-preset-radix-sand12)]',
   ],
   [
     'ui-switch-track-variant-accent',
-    '[--ds-switch-accent-bg:var(--color-accent-ui)] [--ds-switch-accent-border:var(--color-accent-ui)] [--ds-switch-thumb-on:var(--color-on-accent)] [--ds-switch-thumb-off:var(--color-accent-ui)] [--ds-switch-idle-border:var(--border-accent-hover)]',
+    '[--ds-switch-accent-bg:var(--color-accent-ui)] [--ds-switch-accent-border:var(--color-accent-ui)] [--ds-switch-thumb-on:var(--color-on-accent)] [--ds-switch-thumb-off:var(--color-accent-ui)] [--ds-switch-idle-border:var(--border-accent-hover)] [--ds-switch-hover-border:var(--border-accent-hover)] [--ds-switch-hover-ring:var(--border-accent-hover)] [--ds-switch-focus-border:var(--border-accent)] [--ds-switch-focus-ring:var(--border-accent)]',
   ],
   [
     'ui-switch-track-variant-mixed',
-    '[--ds-switch-accent-bg:var(--color-accent-ui)] [--ds-switch-accent-border:var(--color-accent-ui)] [--ds-switch-thumb-on:var(--color-on-accent)] [--ds-switch-thumb-off:var(--color-switch-thumb-idle)] [--ds-switch-idle-border:var(--border-field-idle)]',
+    '[--ds-switch-accent-bg:var(--color-accent-ui)] [--ds-switch-accent-border:var(--color-accent-ui)] [--ds-switch-thumb-on:var(--color-on-accent)] [--ds-switch-thumb-off:var(--color-switch-thumb-idle)] [--ds-switch-idle-border:var(--border-field-idle)] [--ds-switch-hover-border:var(--un-preset-radix-sand11)] [--ds-switch-hover-ring:var(--un-preset-radix-sand11)] [--ds-switch-focus-border:var(--border-accent)] [--ds-switch-focus-ring:var(--border-accent)]',
   ],
   [
     'ui-switch-track-checked',
