@@ -403,7 +403,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-switch-thumb',
-    'pointer-events-none inline-flex rounded-full [width:var(--ds-switch-thumb-size)] [height:var(--ds-switch-thumb-size)] [background:currentColor] [transition:width_var(--motion-switch-press-duration)_ease] will-change-transform',
+    'pointer-events-none inline-flex rounded-full [width:var(--ds-switch-thumb-size)] [height:var(--ds-switch-thumb-size)] [background:currentColor] will-change-transform',
   ],
   [
     'ui-switch-label',

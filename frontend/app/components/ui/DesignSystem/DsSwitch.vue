@@ -56,6 +56,7 @@ const attrs = useAttrs()
 const touched = ref(false)
 const isPressed = ref(false)
 const errorShakeKey = ref(0)
+const pressReleaseTimer = ref<number | null>(null)
 
 const sizeClassMap: Record<SwitchSize, string> = {
   sm: 'ui-switch-size-sm',
@@ -135,13 +136,27 @@ const labelClass = computed(() => [
 const thumbAnimate = computed(() => ({
   width: isPressed.value ? 'var(--ds-switch-thumb-size-pressed)' : 'var(--ds-switch-thumb-size)',
   height: 'var(--ds-switch-thumb-size)',
+  transition: { duration: 0.14, ease: 'easeInOut' },
 }))
+
+function clearPressReleaseTimer(): void {
+  if (pressReleaseTimer.value === null)
+    return
+
+  window.clearTimeout(pressReleaseTimer.value)
+  pressReleaseTimer.value = null
+}
 
 function onToggle(): void {
   if (disabled.value)
     return
 
   emit('update:modelValue', !isChecked.value)
+  clearPressReleaseTimer()
+  pressReleaseTimer.value = window.setTimeout(() => {
+    isPressed.value = false
+    pressReleaseTimer.value = null
+  }, 90)
 }
 
 function onKeydown(event: KeyboardEvent): void {
@@ -160,6 +175,7 @@ function onFocus(event: FocusEvent): void {
 
 function onBlur(event: FocusEvent): void {
   touched.value = true
+  clearPressReleaseTimer()
   isPressed.value = false
   emit('blur', event)
 }
@@ -172,6 +188,7 @@ function onPressStart(): void {
 }
 
 function onPressEnd(): void {
+  clearPressReleaseTimer()
   isPressed.value = false
 }
 
@@ -200,13 +217,11 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
           :aria-invalid="hasError ? 'true' : 'false'"
           :aria-describedby="describedBy"
           :disabled="disabled"
-          :while-tap="disabled ? undefined : { scale: 0.98 }"
           @click="onToggle"
           @keydown="onKeydown"
           @focus="onFocus"
           @blur="onBlur"
           @pointerdown="onPressStart"
-          @pointerup="onPressEnd"
           @pointercancel="onPressEnd"
           @pointerleave="onPressEnd"
         >
@@ -215,7 +230,7 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
             class="ui-switch-thumb"
             layout
             :animate="thumbAnimate"
-            :transition="{ type: 'spring', stiffness: 300, damping: 24, mass: 0.9 }"
+            :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
           />
         </Motion>
 
