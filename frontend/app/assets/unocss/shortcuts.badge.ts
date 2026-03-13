@@ -23,15 +23,15 @@ export const badgeShortcuts: UserShortcuts = [
   ],
   [
     'ui-badge-variant-default',
-    '[--ds-badge-solid-bg:var(--color-primary)] [--ds-badge-solid-border:var(--color-primary)] [--ds-badge-solid-text:var(--color-inverse)] [--ds-badge-outline-bg:transparent] [--ds-badge-outline-border:var(--border-field-idle)] [--ds-badge-outline-text:var(--color-primary)] [--ds-badge-soft-bg:var(--un-preset-radix-sand4)] [--ds-badge-soft-border:var(--un-preset-radix-sand6)] [--ds-badge-soft-text:var(--un-preset-radix-sand12)] [--ds-badge-dot:var(--color-primary)]',
+    '[--ds-badge-solid-bg:var(--color-primary)] [--ds-badge-solid-border:var(--color-primary)] [--ds-badge-solid-text:var(--color-inverse)] [--ds-badge-outline-bg:transparent] [--ds-badge-outline-border:var(--border-field-idle)] [--ds-badge-outline-text:var(--color-primary)] [--ds-badge-soft-bg:var(--un-preset-radix-sand4)] [--ds-badge-soft-border:var(--un-preset-radix-sand6)] [--ds-badge-soft-text:var(--un-preset-radix-sand12)] [--ds-badge-crisp-bg:var(--un-preset-radix-sand4)] [--ds-badge-crisp-border:var(--un-preset-radix-sand6)] [--ds-badge-crisp-text:var(--un-preset-radix-sand12)] [--ds-badge-dot:var(--color-primary)]',
   ],
   [
     'ui-badge-variant-accent',
-    '[--ds-badge-solid-bg:var(--color-accent-ui)] [--ds-badge-solid-border:var(--color-accent-ui)] [--ds-badge-solid-text:var(--color-on-accent)] [--ds-badge-outline-bg:transparent] [--ds-badge-outline-border:var(--border-accent-hover)] [--ds-badge-outline-text:var(--color-accent-ui)] [--ds-badge-soft-bg:var(--color-accent-soft)] [--ds-badge-soft-border:var(--color-accent-soft-hover)] [--ds-badge-soft-text:var(--color-accent-strong)] [--ds-badge-dot:var(--color-accent-strong)]',
+    '[--ds-badge-solid-bg:var(--color-accent-ui)] [--ds-badge-solid-border:var(--color-accent-ui)] [--ds-badge-solid-text:var(--color-on-accent)] [--ds-badge-outline-bg:transparent] [--ds-badge-outline-border:var(--border-accent-hover)] [--ds-badge-outline-text:var(--color-accent-ui)] [--ds-badge-soft-bg:var(--bg-badge-accent-soft)] [--ds-badge-soft-border:var(--border-badge-accent-soft)] [--ds-badge-soft-text:var(--color-badge-accent-soft-text)] [--ds-badge-crisp-bg:var(--bg-badge-accent-crisp)] [--ds-badge-crisp-border:var(--border-badge-accent-crisp)] [--ds-badge-crisp-text:var(--color-badge-accent-crisp-text)] [--ds-badge-dot:var(--color-badge-accent-soft-text)]',
   ],
   [
     'ui-badge-variant-mixed',
-    '[--ds-badge-solid-bg:var(--color-primary)] [--ds-badge-solid-border:var(--color-primary)] [--ds-badge-solid-text:var(--color-inverse)] [--ds-badge-outline-bg:transparent] [--ds-badge-outline-border:var(--border-field-idle)] [--ds-badge-outline-text:var(--color-primary)] [--ds-badge-soft-bg:var(--un-preset-radix-sand4)] [--ds-badge-soft-border:var(--un-preset-radix-sand6)] [--ds-badge-soft-text:var(--un-preset-radix-sand12)] [--ds-badge-dot:var(--color-accent-ui)]',
+    '[--ds-badge-solid-bg:var(--color-primary)] [--ds-badge-solid-border:var(--color-primary)] [--ds-badge-solid-text:var(--color-inverse)] [--ds-badge-outline-bg:transparent] [--ds-badge-outline-border:var(--border-field-idle)] [--ds-badge-outline-text:var(--color-primary)] [--ds-badge-soft-bg:var(--un-preset-radix-sand4)] [--ds-badge-soft-border:var(--un-preset-radix-sand6)] [--ds-badge-soft-text:var(--un-preset-radix-sand12)] [--ds-badge-crisp-bg:var(--un-preset-radix-sand4)] [--ds-badge-crisp-border:var(--un-preset-radix-sand6)] [--ds-badge-crisp-text:var(--un-preset-radix-sand12)] [--ds-badge-dot:var(--color-accent-ui)]',
   ],
   [
     'ui-badge-type-solid',
@@ -44,6 +44,10 @@ export const badgeShortcuts: UserShortcuts = [
   [
     'ui-badge-type-soft',
     '[--ds-badge-bg:var(--ds-badge-soft-bg)] [--ds-badge-border:var(--ds-badge-soft-border)] [--ds-badge-text:var(--ds-badge-soft-text)]',
+  ],
+  [
+    'ui-badge-type-crisp',
+    '[--ds-badge-bg:var(--ds-badge-crisp-bg)] [--ds-badge-border:var(--ds-badge-crisp-border)] [--ds-badge-text:var(--ds-badge-crisp-text)]',
   ],
   [
     'ui-badge-disabled',

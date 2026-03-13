@@ -25,7 +25,7 @@ Status: aktiv (doc-first contract)
 ### Props
 - `text: string`
 - `variant?: 'default' | 'accent' | 'mixed'` (Default: `default`)
-- `type?: 'solid' | 'outline' | 'soft'` (Default: `solid`)
+- `type?: 'solid' | 'outline' | 'soft' | 'crisp'` (Default: `solid`)
 - `size?: 'sm' | 'md'` (Default: `md`)
 - `dot?: boolean` (Default: `false`)
 - `icon?: string` (optional, ein einzelnes Icon)
@@ -50,6 +50,7 @@ Hinweis:
 - `solid`: gefuellte Badge-Flaeche
 - `outline`: transparente Flaeche mit Border
 - `soft`: sehr leichte Flaechenfaerbung, ruhiger als `solid`
+- `crisp`: kontraststarker Soft-Ableger fuer editorial Stamps (vorrangig `accent`)
 
 ### Matrix-Regeln
 - `default + solid`:
@@ -65,6 +66,8 @@ Hinweis:
   - transparent surface + accent border + accent text
 - `accent + soft`:
   - subtile accent surface + accent-nahe textfarbe
+- `accent + crisp`:
+  - mode-adaptiver Kontrast-Look (Light dichter/invers, Dark crisp/hell)
 
 - `mixed + solid`:
   - neutrale surface + accent signal element (dot oder icon)
@@ -72,6 +75,8 @@ Hinweis:
   - neutral border + accent signal element
 - `mixed + soft`:
   - neutrale soft surface + accent signal element
+- `mixed + crisp`:
+  - gleiche Farbsemantik wie `mixed + soft` (kein eigener vierter Farbraum)
 
 ### Disabled-Regel (alle Varianten/Types)
 - Kontrast reduziert ueber bestehende disabled token family.

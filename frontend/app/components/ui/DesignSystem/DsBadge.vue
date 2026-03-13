@@ -5,7 +5,7 @@ import DsIcon from './DsIcon.vue'
 import DsTypography from './DsTypography.vue'
 
 type BadgeVariant = 'default' | 'accent' | 'mixed'
-type BadgeType = 'solid' | 'outline' | 'soft'
+type BadgeType = 'solid' | 'outline' | 'soft' | 'crisp'
 type BadgeSize = 'sm' | 'md'
 type BadgeShape = 'pill' | 'rounded'
 
@@ -40,6 +40,7 @@ const typeClassMap: Record<BadgeType, string> = {
   solid: 'ui-badge-type-solid',
   outline: 'ui-badge-type-outline',
   soft: 'ui-badge-type-soft',
+  crisp: 'ui-badge-type-crisp',
 }
 
 const sizeClassMap: Record<BadgeSize, string> = {

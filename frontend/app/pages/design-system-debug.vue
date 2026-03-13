@@ -106,6 +106,169 @@ const selectInvalidError = computed(() => {
 
   return ''
 })
+
+type BadgeSoftCandidate = {
+  id: string
+  name: string
+  label: string
+  bgStep: number
+  textStep: number
+  borderStep: number
+  note: string
+}
+
+const toxicLightScale: Record<number, string> = {
+  1: '#fafefd',
+  2: '#f3fbf9',
+  3: '#e0f8f3',
+  4: '#ccf3ea',
+  5: '#b8eae0',
+  6: '#a1ded2',
+  7: '#83cdc1',
+  8: '#53b9ab',
+  9: '#12a594',
+  10: '#0d9b8a',
+  11: '#008573',
+  12: '#0d3d38',
+}
+
+const toxicDarkScale: Record<number, string> = {
+  1: '#0d1514',
+  2: '#111c1b',
+  3: '#0d2d2a',
+  4: '#023b37',
+  5: '#084843',
+  6: '#145750',
+  7: '#1c6961',
+  8: '#207e73',
+  9: '#12a594',
+  10: '#0eb39e',
+  11: '#0bd8b6',
+  12: '#adf0dd',
+}
+
+const accentSoftCandidates: BadgeSoftCandidate[] = [
+  {
+    id: 'a',
+    name: 'A / Balanced Editorial',
+    label: 'Update',
+    bgStep: 4,
+    textStep: 12,
+    borderStep: 6,
+    note: 'Current baseline with a slightly stronger border.',
+  },
+  {
+    id: 'b',
+    name: 'B / Crisp Contrast',
+    label: 'Update',
+    bgStep: 3,
+    textStep: 12,
+    borderStep: 7,
+    note: 'Lighter surface, sharper text separation.',
+  },
+  {
+    id: 'c',
+    name: 'C / Denser Soft',
+    label: 'Update',
+    bgStep: 5,
+    textStep: 12,
+    borderStep: 7,
+    note: 'More body in the surface while preserving clarity.',
+  },
+  {
+    id: 'd',
+    name: 'D / Inverse Quiet',
+    label: 'Update',
+    bgStep: 12,
+    textStep: 3,
+    borderStep: 11,
+    note: 'Dark toxic plate with soft mint text.',
+  },
+  {
+    id: 'e',
+    name: 'E / Inverse Dense',
+    label: 'Update',
+    bgStep: 12,
+    textStep: 2,
+    borderStep: 10,
+    note: 'Heavier editorial feel, slightly calmer than D.',
+  },
+  {
+    id: 'f',
+    name: 'F / Premium Deep',
+    label: 'Update',
+    bgStep: 12,
+    textStep: 1,
+    borderStep: 9,
+    note: 'Max dark-luxury direction with strongest contrast.',
+  },
+]
+
+function toRgb(hex: string) {
+  const normalized = hex.replace('#', '')
+  const value = Number.parseInt(normalized, 16)
+  return {
+    r: (value >> 16) & 255,
+    g: (value >> 8) & 255,
+    b: value & 255,
+  }
+}
+
+function linearize(channel: number) {
+  const s = channel / 255
+  return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4
+}
+
+function luminance(hex: string) {
+  const { r, g, b } = toRgb(hex)
+  return 0.2126 * linearize(r) + 0.7152 * linearize(g) + 0.0722 * linearize(b)
+}
+
+function contrastRatio(fgHex: string, bgHex: string) {
+  const l1 = luminance(fgHex)
+  const l2 = luminance(bgHex)
+  const lighter = Math.max(l1, l2)
+  const darker = Math.min(l1, l2)
+  return (lighter + 0.05) / (darker + 0.05)
+}
+
+function ratioToLevel(ratio: number) {
+  if (ratio >= 7)
+    return 'AAA'
+  if (ratio >= 4.5)
+    return 'AA'
+  return 'fail'
+}
+
+const accentSoftCandidateStats = computed(() => {
+  return accentSoftCandidates.map((candidate) => {
+    const lightRatio = contrastRatio(
+      toxicLightScale[candidate.textStep],
+      toxicLightScale[candidate.bgStep],
+    )
+    const darkRatio = contrastRatio(
+      toxicDarkScale[candidate.textStep],
+      toxicDarkScale[candidate.bgStep],
+    )
+
+    return {
+      ...candidate,
+      lightRatio: lightRatio.toFixed(2),
+      darkRatio: darkRatio.toFixed(2),
+      lightLevel: ratioToLevel(lightRatio),
+      darkLevel: ratioToLevel(darkRatio),
+    }
+  })
+})
+
+function badgeSoftStyle(candidate: BadgeSoftCandidate) {
+  return {
+    '--ds-badge-soft-bg': `var(--toxic-${candidate.bgStep})`,
+    '--ds-badge-soft-border': `var(--toxic-${candidate.borderStep})`,
+    '--ds-badge-soft-text': `var(--toxic-${candidate.textStep})`,
+    '--ds-badge-dot': `var(--toxic-${candidate.textStep})`,
+  }
+}
 </script>
 
 <template>
@@ -784,6 +947,7 @@ const selectInvalidError = computed(() => {
                     <DsBadge text="Release" variant="accent" type="solid" />
                     <DsBadge text="Signal" variant="accent" type="outline" />
                     <DsBadge text="Update" variant="accent" type="soft" />
+                    <DsBadge text="Crisp" variant="accent" type="crisp" />
                   </div>
                 </div>
 
@@ -818,6 +982,7 @@ const selectInvalidError = computed(() => {
                 <div class="flex flex-wrap gap-2">
                   <DsBadge text="Rounded SM" size="sm" shape="rounded" variant="default" type="outline" />
                   <DsBadge text="Rounded MD" size="md" shape="rounded" variant="accent" type="soft" />
+                  <DsBadge text="Rounded Crisp" size="md" shape="rounded" variant="accent" type="crisp" />
                 </div>
               </div>
 
@@ -838,6 +1003,51 @@ const selectInvalidError = computed(() => {
                 <div class="flex flex-wrap gap-2">
                   <DsBadge text="Disabled" variant="default" type="solid" disabled />
                   <DsBadge text="Disabled Accent" variant="accent" type="outline" disabled />
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-3">
+              <DsTypography as="p" role="meta" size="2xs" uppercase>
+                Accent Soft Exploration (WCAG)
+              </DsTypography>
+              <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                6 toxic combinations for soft accent badges. Ratios are text vs badge background.
+              </DsTypography>
+              <div class="grid gap-3 xl:grid-cols-2">
+                <div
+                  v-for="candidate in accentSoftCandidateStats"
+                  :key="candidate.id"
+                  class="space-y-2 rounded-lg border border-pureBlack/14 border-solid p-3 dark:border-pureWhite/14"
+                >
+                  <DsTypography as="p" role="meta" size="2xs" uppercase>
+                    {{ candidate.name }}
+                  </DsTypography>
+                  <div class="flex flex-wrap items-center gap-2">
+                    <DsBadge
+                      :text="candidate.label"
+                      variant="accent"
+                      type="soft"
+                      dot
+                      :style="badgeSoftStyle(candidate)"
+                    />
+                    <DsBadge
+                      text="Rounded MD"
+                      variant="accent"
+                      type="soft"
+                      shape="rounded"
+                      :style="badgeSoftStyle(candidate)"
+                    />
+                  </div>
+                  <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                    bg toxic-{{ candidate.bgStep }} · text toxic-{{ candidate.textStep }} · border toxic-{{ candidate.borderStep }}
+                  </DsTypography>
+                  <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                    Light {{ candidate.lightRatio }}:1 ({{ candidate.lightLevel }}) · Dark {{ candidate.darkRatio }}:1 ({{ candidate.darkLevel }})
+                  </DsTypography>
+                  <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                    {{ candidate.note }}
+                  </DsTypography>
                 </div>
               </div>
             </div>
