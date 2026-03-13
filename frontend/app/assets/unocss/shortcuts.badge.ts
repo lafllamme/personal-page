@@ -3,7 +3,15 @@ import type { UserShortcuts } from 'unocss'
 export const badgeShortcuts: UserShortcuts = [
   [
     'ui-badge-base',
-    'inline-flex w-fit max-w-full items-center rounded-full border border-solid [border-width:var(--control-border-width)] [background:var(--ds-badge-bg)] [border-color:var(--ds-badge-border)] [color:var(--ds-badge-text)] [column-gap:var(--ds-badge-gap)]',
+    'inline-flex w-fit max-w-full items-center [border-radius:var(--ds-badge-radius)] border border-solid [border-width:var(--control-border-width)] [background:var(--ds-badge-bg)] [border-color:var(--ds-badge-border)] [color:var(--ds-badge-text)] [column-gap:var(--ds-badge-gap)]',
+  ],
+  [
+    'ui-badge-shape-pill',
+    '[--ds-badge-radius:var(--radius-pill)]',
+  ],
+  [
+    'ui-badge-shape-rounded',
+    '[--ds-badge-radius:var(--radius-form-rounded)]',
   ],
   [
     'ui-badge-size-sm',

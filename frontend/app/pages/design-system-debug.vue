@@ -813,6 +813,16 @@ const selectInvalidError = computed(() => {
 
               <div class="space-y-3">
                 <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Rounded
+                </DsTypography>
+                <div class="flex flex-wrap gap-2">
+                  <DsBadge text="Rounded SM" size="sm" shape="rounded" variant="default" type="outline" />
+                  <DsBadge text="Rounded MD" size="md" shape="rounded" variant="accent" type="soft" />
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
                   Dot + Icon
                 </DsTypography>
                 <div class="flex flex-wrap gap-2">

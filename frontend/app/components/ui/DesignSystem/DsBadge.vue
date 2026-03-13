@@ -7,12 +7,14 @@ import DsTypography from './DsTypography.vue'
 type BadgeVariant = 'default' | 'accent' | 'mixed'
 type BadgeType = 'solid' | 'outline' | 'soft'
 type BadgeSize = 'sm' | 'md'
+type BadgeShape = 'pill' | 'rounded'
 
 const props = withDefaults(defineProps<{
   text: string
   variant?: BadgeVariant
   type?: BadgeType
   size?: BadgeSize
+  shape?: BadgeShape
   dot?: boolean
   icon?: string
   disabled?: boolean
@@ -20,12 +22,13 @@ const props = withDefaults(defineProps<{
   variant: 'default',
   type: 'solid',
   size: 'md',
+  shape: 'pill',
   dot: false,
   icon: '',
   disabled: false,
 })
 
-const { text, variant, type, size, dot, icon, disabled } = toRefs(props)
+const { text, variant, type, size, shape, dot, icon, disabled } = toRefs(props)
 
 const variantClassMap: Record<BadgeVariant, string> = {
   default: 'ui-badge-variant-default',
@@ -44,6 +47,11 @@ const sizeClassMap: Record<BadgeSize, string> = {
   md: 'ui-badge-size-md',
 }
 
+const shapeClassMap: Record<BadgeShape, string> = {
+  pill: 'ui-badge-shape-pill',
+  rounded: 'ui-badge-shape-rounded',
+}
+
 const textSizeByBadgeSize: Record<BadgeSize, '2xs' | 'xs'> = {
   sm: '2xs',
   md: 'xs',
@@ -57,6 +65,7 @@ const iconSizeByBadgeSize: Record<BadgeSize, 'xs' | 'sm'> = {
 const rootClass = computed(() => useClsx(
   'ui-badge-base',
   sizeClassMap[size.value],
+  shapeClassMap[shape.value],
   variantClassMap[variant.value],
   typeClassMap[type.value],
   disabled.value && 'ui-badge-disabled',
