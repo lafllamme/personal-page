@@ -146,8 +146,6 @@ const checkboxMotionConfig = {
   transitionDuration: 0.5,
   transitionEase: [0.16, 1, 0.3, 1] as const,
   ringWidth: 'var(--focus-ring-active-width)',
-  ringDefaultColor: 'var(--border-accent)',
-  ringHoverColor: 'var(--border-accent-hover)',
   noShadow: '0 0 0 0 rgba(0,0,0,0)',
 } as const
 
@@ -155,27 +153,22 @@ function ringShadow(color: string): string {
   return `0 0 0 ${checkboxMotionConfig.ringWidth} ${color}`
 }
 
-type InteractionStateKey = 'blocked' | 'hoverUnchecked' | 'focusUnchecked' | 'focusChecked' | 'idle'
-
-const interactionMotionMap: Record<InteractionStateKey, () => Partial<CheckboxVisualState> & { boxShadow: string }> = {
-  blocked: () => ({
-    boxShadow: checkboxMotionConfig.noShadow,
-  }),
-  hoverUnchecked: () => ({
-    borderColor: checkboxMotionConfig.ringHoverColor,
-    boxShadow: ringShadow(checkboxMotionConfig.ringHoverColor),
-  }),
-  focusUnchecked: () => ({
-    borderColor: checkboxMotionConfig.ringDefaultColor,
-    boxShadow: ringShadow(checkboxMotionConfig.ringDefaultColor),
-  }),
-  focusChecked: () => ({
-    boxShadow: ringShadow(checkboxMotionConfig.ringDefaultColor),
-  }),
-  idle: () => ({
-    boxShadow: checkboxMotionConfig.noShadow,
-  }),
+const interactionColorMap: Record<CheckboxVariant, { hover: string, focus: string }> = {
+  default: {
+    hover: 'var(--un-preset-radix-sand11)',
+    focus: 'var(--un-preset-radix-sand12)',
+  },
+  accent: {
+    hover: 'var(--border-accent-hover)',
+    focus: 'var(--border-accent)',
+  },
+  mixed: {
+    hover: 'var(--un-preset-radix-sand11)',
+    focus: 'var(--border-accent)',
+  },
 }
+
+type InteractionStateKey = 'blocked' | 'hoverUnchecked' | 'focusUnchecked' | 'focusChecked' | 'idle'
 
 const checkboxId = computed(() => {
   const rawId = attrs.id
@@ -257,6 +250,31 @@ const interactionStateKey = computed<InteractionStateKey>(() => {
   return 'idle'
 })
 
+const interactionColors = computed(() => interactionColorMap[variant.value])
+
+const interactionMotion = computed<Partial<CheckboxVisualState> & { boxShadow: string }>(() => {
+  if (interactionStateKey.value === 'blocked' || interactionStateKey.value === 'idle')
+    return { boxShadow: checkboxMotionConfig.noShadow }
+
+  if (interactionStateKey.value === 'hoverUnchecked') {
+    return {
+      borderColor: interactionColors.value.hover,
+      boxShadow: ringShadow(interactionColors.value.hover),
+    }
+  }
+
+  if (interactionStateKey.value === 'focusUnchecked') {
+    return {
+      borderColor: interactionColors.value.focus,
+      boxShadow: ringShadow(interactionColors.value.focus),
+    }
+  }
+
+  return {
+    boxShadow: ringShadow(interactionColors.value.focus),
+  }
+})
+
 const stateOverrideKey = computed<'disabled' | 'invalid' | null>(() => {
   if (disabled.value)
     return 'disabled'
@@ -271,12 +289,12 @@ const checkboxMotion = computed(() => {
   const baseVariantMotion = isActive.value
     ? variantColorMap[variant.value].active
     : variantColorMap[variant.value].idle
-  const interactionMotion = interactionMotionMap[interactionStateKey.value]()
+  const interactionStateMotion = interactionMotion.value
   const stateOverrideMotion = stateOverrideKey.value ? stateOverrideMap[stateOverrideKey.value] : undefined
 
   return {
     ...baseVariantMotion,
-    ...interactionMotion,
+    ...interactionStateMotion,
     ...(stateOverrideMotion ?? {}),
     transition: {
       backgroundColor: {
