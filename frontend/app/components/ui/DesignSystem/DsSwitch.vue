@@ -133,7 +133,6 @@ const labelClass = computed(() => [
 ])
 
 const thumbAnimate = computed(() => ({
-  x: isChecked.value ? 'var(--ds-switch-thumb-x-checked)' : '0px',
   width: isPressed.value ? 'var(--ds-switch-thumb-size-pressed)' : 'var(--ds-switch-thumb-size)',
   height: 'var(--ds-switch-thumb-size)',
 }))
@@ -214,6 +213,7 @@ watch([hasError, resolvedErrorText], ([nextHasError, nextError], [prevHasError, 
           <Motion
             as="span"
             class="ui-switch-thumb"
+            layout
             :animate="thumbAnimate"
             :transition="{ type: 'spring', stiffness: 300, damping: 24, mass: 0.9 }"
           />

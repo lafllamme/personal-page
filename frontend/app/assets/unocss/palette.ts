@@ -268,7 +268,7 @@ const sizingTokens: TokenSet = {
   'size-switch-width-md': 'var(--space-10)',
   'size-switch-width-lg': 'calc(var(--space-10) + var(--space-1_5))',
   'size-switch-thumb-sm': 'calc(var(--space-3) + var(--space-0_5))',
-  'size-switch-thumb-md': 'var(--space-4_75)',
+  'size-switch-thumb-md': 'calc(var(--space-4) + var(--space-0_5))',
   'size-switch-thumb-lg': 'var(--space-5)',
   'size-switch-thumb-press-sm': 'var(--space-4_75)',
   'size-switch-thumb-press-md': 'calc(var(--space-5) + var(--space-0_5))',

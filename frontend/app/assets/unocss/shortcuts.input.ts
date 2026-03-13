@@ -359,7 +359,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-switch-track-base',
-    'relative isolate inline-flex shrink-0 items-center [width:var(--ds-switch-track-w)] [height:var(--ds-switch-track-h)] rounded-full border border-solid [border-width:var(--control-border-width)] [padding:var(--space-0_5)] [background:transparent] [border-color:var(--border-field-idle)] outline-none transition-[background-color,border-color,box-shadow] [transition-duration:var(--motion-switch-track-duration)] [transition-timing-function:var(--motion-switch-track-ease)]',
+    'relative isolate inline-flex shrink-0 items-center justify-start [width:var(--ds-switch-track-w)] [height:var(--ds-switch-track-h)] rounded-full border border-solid [border-width:var(--control-border-width)] [padding:2px] [background:transparent] [border-color:var(--border-field-idle)] outline-none transition-[background-color,border-color,box-shadow] [transition-duration:var(--motion-switch-track-duration)] [transition-timing-function:var(--motion-switch-track-ease)]',
   ],
   [
     'ui-switch-track-hoverable',
@@ -383,7 +383,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-switch-track-checked',
-    '[--ds-switch-state:1]',
+    '[--ds-switch-state:1] justify-end',
   ],
   [
     'ui-switch-track-unchecked-colors',
