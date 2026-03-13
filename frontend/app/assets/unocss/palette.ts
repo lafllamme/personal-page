@@ -39,6 +39,7 @@ const colorTokens: TokenSet = {
   'color-field-floating-label': { light: 'var(--color-accent-ui)', dark: 'var(--color-accent)' },
   'color-field-readonly-idle-text': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand10)' },
   'color-field-readonly-hover-text': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand11)' },
+  'color-switch-thumb-idle': { light: 'var(--un-preset-radix-sand11)', dark: 'var(--un-preset-radix-sand11)' },
   'color-error-text': { light: 'var(--un-preset-radix-crimson11)', dark: 'var(--un-preset-radix-crimson11)' },
   'color-select-shadow': { light: 'rgba(0, 0, 0, 0.16)', dark: 'rgba(0, 0, 0, 0.45)' },
 }
@@ -264,6 +265,7 @@ const sizingTokens: TokenSet = {
   'size-switch-track-sm': 'var(--space-5)',
   'size-switch-track-md': 'var(--space-6)',
   'size-switch-track-lg': 'calc(var(--space-6) + var(--space-1))',
+  'size-switch-track-inset': '2px',
   'size-switch-width-sm': 'calc(var(--space-8) + var(--space-0_5))',
   'size-switch-width-md': 'var(--space-10)',
   'size-switch-width-lg': 'calc(var(--space-10) + var(--space-1_5))',
