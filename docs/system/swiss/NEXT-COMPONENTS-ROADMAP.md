@@ -1,6 +1,6 @@
 # Next Components Roadmap
 
-Stand: 2026-03-12  
+Stand: 2026-03-13  
 Status: aktiv (Build-Priorisierung)
 
 ## Ziel
@@ -101,6 +101,7 @@ Begruendung:
 - `DsRadio` ist umgesetzt und als aktiver Contract dokumentiert.
 - `DsSwitch` ist umgesetzt und als aktiver Contract dokumentiert.
 - Der Selection-Block ist damit abgeschlossen.
+- `DsBadge` ist jetzt als doc-first Contract angelegt und bereit fuer Runtime-Umsetzung.
 
 ## Scope-Cleanup (2026-03-09)
 - Aus dem aktiven Build entfernt (deferred):
@@ -117,3 +118,4 @@ Aktiver Plan fuer den ersten Schritt:
 - [DS-SELECT.md](./DS-SELECT.md)
 - [DS-RADIO.md](./DS-RADIO.md)
 - [DS-SWITCH.md](./DS-SWITCH.md)
+- [DS-BADGE.md](./DS-BADGE.md)

@@ -1,4 +1,5 @@
 import type { UserShortcuts } from 'unocss'
+import { badgeShortcuts } from './shortcuts.badge'
 import { buttonShortcuts } from './shortcuts.button'
 import { iconShortcuts } from './shortcuts.icon'
 import { inputShortcuts } from './shortcuts.input'
@@ -15,6 +16,7 @@ const utilityShortcuts: UserShortcuts = [
 ]
 
 const mergedShortcuts = [
+  ...(badgeShortcuts as any[]),
   ...(buttonShortcuts as any[]),
   ...(iconShortcuts as any[]),
   ...(inputShortcuts as any[]),

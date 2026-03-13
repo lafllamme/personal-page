@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import DsBadge from '@/components/ui/DesignSystem/DsBadge.vue'
 import DsButton from '@/components/ui/DesignSystem/DsButton.vue'
 import DsCheckbox from '@/components/ui/DesignSystem/DsCheckbox.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
@@ -35,19 +36,6 @@ function tokenLabel(role: string, size: string) {
   return `text-$type-${role}-${size}`
 }
 
-const contactName = ref('')
-const contactEmail = ref('')
-const contactCompany = ref('')
-const contactSubject = ref('')
-const formSubject = ref('')
-const formFirstName = ref('')
-const formLastName = ref('')
-const formEmail = ref('')
-const formPhone = ref('')
-const formReadonlyHandle = ref('published')
-const formReadonlyEmail = ref('editorial@tecnews.com')
-const formFirstNameTouched = ref(false)
-const formEmailTouched = ref(false)
 const inputDefaultValue = ref('')
 const inputFloatValue = ref('')
 const inputUnderlineValue = ref('')
@@ -98,50 +86,6 @@ const radioOptions = [
   { label: 'Product question', value: 'product' },
   { label: 'Community support', value: 'community' },
 ]
-
-function isValidEmail(value: string): boolean {
-  const trimmed = value.trim()
-  const atIndex = trimmed.indexOf('@')
-  if (atIndex <= 0 || atIndex !== trimmed.lastIndexOf('@'))
-    return false
-
-  const local = trimmed.slice(0, atIndex)
-  const domain = trimmed.slice(atIndex + 1)
-  if (!local || !domain)
-    return false
-
-  if (domain.startsWith('.') || domain.endsWith('.') || !domain.includes('.'))
-    return false
-
-  if (trimmed.includes(' '))
-    return false
-
-  return true
-}
-
-const formEmailError = computed(() => {
-  if (!formEmailTouched.value)
-    return ''
-
-  const value = formEmail.value.trim()
-  if (!value)
-    return 'Bitte gib eine E-Mail Adresse ein.'
-
-  if (!isValidEmail(value))
-    return 'E-Mail Adresse ist ungueltig.'
-
-  return ''
-})
-
-const formFirstNameError = computed(() => {
-  if (!formFirstNameTouched.value)
-    return ''
-
-  if (!formFirstName.value.trim())
-    return 'Vorname ist erforderlich.'
-
-  return ''
-})
 
 const articleSummaryError = computed(() => {
   if (!articleSummaryTouched.value)
@@ -227,64 +171,7 @@ const selectInvalidError = computed(() => {
         :debug="false"
       >
         <div class="mb-8 p-4 space-y-6 md:p-5">
-          <DsTypography
-            as="p"
-            role="meta"
-            size="xs"
-            uppercase
-          >
-            Input Forge
-          </DsTypography>
-
-          <div class="grid gap-5 lg:grid-cols-2">
-            <div class="space-y-5">
-              <DsInput
-                id="debug-contact-name"
-                v-model="contactName"
-                label="Full Name"
-                placeholder="Ada Lovelace"
-                hint="Use the same body voice you would expect in a real form."
-              />
-
-              <DsInput
-                id="debug-contact-email"
-                v-model="contactEmail"
-                type="email"
-                label="Work Email"
-                placeholder="ada@analytical.engine"
-                hint="Focus-visible preview uses the accent ring."
-              />
-            </div>
-
-            <div class="space-y-5">
-              <DsInput
-                id="debug-contact-company"
-                v-model="contactCompany"
-                label="Company"
-                placeholder="Analytical Engines Ltd."
-                hint="Hover preview should stay subtle and neutral."
-              />
-
-              <DsInput
-                id="debug-contact-subject"
-                v-model="contactSubject"
-                label="Subject"
-                placeholder="Tell us what you need"
-                required
-              />
-            </div>
-          </div>
-
           <div class="input-form-study space-y-4">
-            <DsTypography
-              as="p"
-              role="body"
-              size="sm"
-              tone="muted"
-            >
-              Bitte fuelle alle mit * gekennzeichneten Felder aus.
-            </DsTypography>
-
             <DsInput
               id="debug-form-subject"
               v-model="formSubject"
@@ -301,9 +188,7 @@ const selectInvalidError = computed(() => {
                 variant="floating"
                 label="First name"
                 fill-text="Given"
-                :error="formFirstNameError"
                 required
-                @blur="formFirstNameTouched = true"
               />
 
               <DsInput
@@ -324,9 +209,7 @@ const selectInvalidError = computed(() => {
                 variant="floating"
                 label="Email"
                 fill-text="name@domain.com"
-                :error="formEmailError"
                 required
-                @blur="formEmailTouched = true"
               />
 
               <DsInput
@@ -853,6 +736,99 @@ const selectInvalidError = computed(() => {
                   hint="Disabled contract preview."
                   disabled
                 />
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-3 space-y-4">
+            <div class="space-y-2">
+              <DsTypography
+                as="p"
+                role="meta"
+                size="xs"
+                uppercase
+              >
+                Badge Prototype A
+              </DsTypography>
+              <DsTypography
+                as="p"
+                role="body"
+                size="sm"
+                tone="muted"
+              >
+                Read-only label primitive with variant/type matrix and optional signal helpers.
+              </DsTypography>
+            </div>
+
+            <div class="space-y-4">
+              <DsTypography as="p" role="meta" size="2xs" uppercase>
+                Variant x Type
+              </DsTypography>
+              <div class="grid gap-4 lg:grid-cols-3">
+                <div class="space-y-3">
+                  <DsTypography as="p" role="meta" size="2xs" uppercase tone="muted">
+                    Default
+                  </DsTypography>
+                  <div class="flex flex-wrap gap-2">
+                    <DsBadge text="Editorial" variant="default" type="solid" />
+                    <DsBadge text="Outline" variant="default" type="outline" />
+                    <DsBadge text="Soft" variant="default" type="soft" />
+                  </div>
+                </div>
+
+                <div class="space-y-3">
+                  <DsTypography as="p" role="meta" size="2xs" uppercase tone="muted">
+                    Accent
+                  </DsTypography>
+                  <div class="flex flex-wrap gap-2">
+                    <DsBadge text="Release" variant="accent" type="solid" />
+                    <DsBadge text="Signal" variant="accent" type="outline" />
+                    <DsBadge text="Update" variant="accent" type="soft" />
+                  </div>
+                </div>
+
+                <div class="space-y-3">
+                  <DsTypography as="p" role="meta" size="2xs" uppercase tone="muted">
+                    Mixed
+                  </DsTypography>
+                  <div class="flex flex-wrap gap-2">
+                    <DsBadge text="Neutral + Accent" variant="mixed" type="solid" dot />
+                    <DsBadge text="Hybrid" variant="mixed" type="outline" dot />
+                    <DsBadge text="Context" variant="mixed" type="soft" dot />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid gap-4 lg:grid-cols-3">
+              <div class="space-y-3">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Sizes
+                </DsTypography>
+                <div class="flex flex-wrap items-center gap-2">
+                  <DsBadge text="SM badge" size="sm" />
+                  <DsBadge text="MD badge" size="md" />
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Dot + Icon
+                </DsTypography>
+                <div class="flex flex-wrap gap-2">
+                  <DsBadge text="Live" variant="accent" type="soft" dot />
+                  <DsBadge text="Curated" variant="mixed" type="outline" icon="iconoir:star-solid" />
+                </div>
+              </div>
+
+              <div class="space-y-3">
+                <DsTypography as="p" role="meta" size="2xs" uppercase>
+                  Disabled
+                </DsTypography>
+                <div class="flex flex-wrap gap-2">
+                  <DsBadge text="Disabled" variant="default" type="solid" disabled />
+                  <DsBadge text="Disabled Accent" variant="accent" type="outline" disabled />
+                </div>
               </div>
             </div>
           </div>

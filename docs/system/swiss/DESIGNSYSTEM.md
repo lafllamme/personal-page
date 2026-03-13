@@ -63,6 +63,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Select Contract (aktiv): [DS-SELECT.md](./DS-SELECT.md)
 - Radio Contract (aktiv): [DS-RADIO.md](./DS-RADIO.md)
 - Switch Contract (aktiv): [DS-SWITCH.md](./DS-SWITCH.md)
+- Badge Contract (aktiv, doc-first): [DS-BADGE.md](./DS-BADGE.md)
 - Next Components Roadmap: [NEXT-COMPONENTS-ROADMAP.md](./NEXT-COMPONENTS-ROADMAP.md)
 - Storybook / Nuxt Stubbing: [STUBBING.md](./STUBBING.md)
 - Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
@@ -113,6 +114,10 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
   - `DsSwitch` ist aktiv im Runtime-Pfad (`ui-switch-*` Shortcuts), Storybook und Debug-View.
   - Motion folgt dem Base-Switch-Prinzip: spring thumb + pressed width animation.
   - Required-on-blur + Error-Shake folgt dem gemeinsamen Field-Pattern.
+- DS-Badge Contract-Stand (2026-03-13):
+  - `DS-BADGE.md` ist als doc-first Contract aktiv.
+  - V1 ist read-only (nicht interaktiv), mit Matrix `variant x type x size`.
+  - Interaktive Tag/Chip-Faelle bleiben bewusst ausserhalb von Badge-v1.
 - Naming-Migration Form Controls (2026-03-11):
   - Legacy-Field-Aliase in `palette.ts` wurden entfernt.
   - Aktive Form-Token laufen nur noch ueber `field`-Namen (`color-field-*`, `bg-field-*`, `border-field-*`).
