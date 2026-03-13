@@ -1,6 +1,6 @@
 # DS Checkbox
 
-Stand: 2026-03-11  
+Stand: 2026-03-13  
 Status: aktiv
 
 ## Ist-Zustand
@@ -20,15 +20,22 @@ Status: aktiv
 
 ## Checkbox-relevante Tokens/Variablen
 
+### Variant Matrix (verbindlich)
+- `default`: neutral idle -> primary active
+- `accent`: toxic-family idle -> toxic-family active
+- `mixed`: neutral idle -> toxic-family active
+
+### Interaction Color Rule (verbindlich)
+- `hover` und `focus-visible` sind globales Interaktionssignal und bleiben variant-unabhaengig toxic-basiert.
+- Variant-Unterschiede liegen in `idle` und `active`, nicht in separaten Hover-Paletten pro Variante.
+
 ### Color/BG/Border
 - `--bg-inverse`
 - `--bg-soft-disabled`
-- `--bg-accent-soft`
 - `--bg-field-error-soft`
 - `--color-primary`
 - `--color-inverse`
 - `--color-accent-ui`
-- `--color-accent-strong`
 - `--color-on-accent`
 - `--color-error-text`
 - `--color-disabled`
@@ -83,7 +90,6 @@ Status: aktiv
 - `disabled` > `invalid` > `focus-visible` > `hover` > `default`
 - `required-error` ist Teil von `invalid` (wenn kein expliziter `error`-Text gesetzt ist, wird fallback genutzt)
 - Checkbox-Interaktionsring skaliert ueber `--focus-ring-active-width` (1.5px), damit kleine Control-Flaechen visuell zu Input/Select passen.
-- Spezialfall `accent + checked + focus-visible` nutzt Single-Ring in `--border-accent-hover` (kein Double-Ring).
 
 ## JS vs CSS Verantwortung
 - In CSS/Uno:
@@ -116,5 +122,5 @@ Status: aktiv
 ## Scope-Entscheidungen
 - Kein `readonly`-State fuer Checkbox.
 - Kein `indeterminate`-UI (nur Checkmark als visueller Indicator).
-- Mixed bleibt als eigene Farbvariante aktiv, ohne eigenen Indicator-Typ.
+- Mixed bleibt als semantische Kombination aus neutralem Idle und Accent-Active.
 - Error-Row folgt dem gemeinsamen Field-Pattern (`ui-field-error-row` + `ui-field-error-icon`) ohne Legacy-Sonderpfad.

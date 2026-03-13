@@ -223,11 +223,11 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-variant-accent',
-    '[background-color:var(--bg-inverse)] [color:var(--color-accent-strong)]',
+    '[background-color:var(--bg-inverse)] [border-color:var(--border-accent-hover)] [color:var(--color-accent-ui)]',
   ],
   [
     'ui-checkbox-control-variant-mixed',
-    '[background-color:var(--bg-inverse)] [color:var(--color-accent-strong)]',
+    '[background-color:var(--bg-inverse)] [color:var(--color-inverse)]',
   ],
   [
     'ui-checkbox-control-invalid',
@@ -287,7 +287,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-radio-control-base',
-    'relative isolate inline-flex shrink-0 items-center justify-center rounded-full border border-solid [border-width:var(--control-border-width)] [width:var(--ds-radio-control-size)] [height:var(--ds-radio-control-size)] [border-color:var(--border-field-idle)] [background:transparent] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] focus-visible:[border-color:var(--border-accent)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent)]',
+    'relative isolate inline-flex shrink-0 items-center justify-center rounded-full border border-solid [border-width:var(--control-border-width)] [width:var(--ds-radio-control-size)] [height:var(--ds-radio-control-size)] [border-color:var(--ds-radio-idle-border,var(--border-field-idle))] [color:var(--ds-radio-idle-color,var(--color-primary))] [background:transparent] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] focus-visible:[border-color:var(--border-accent)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent)]',
   ],
   [
     'ui-radio-control-hoverable',
@@ -295,19 +295,19 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-radio-control-variant-default',
-    '[--ds-radio-accent:var(--color-primary)] [color:var(--color-primary)]',
+    '[--ds-radio-idle-border:var(--border-field-idle)] [--ds-radio-idle-color:var(--color-primary)] [--ds-radio-active-border:var(--color-primary)] [--ds-radio-active-color:var(--color-primary)]',
   ],
   [
     'ui-radio-control-variant-accent',
-    '[--ds-radio-accent:var(--color-accent-ui)] [color:var(--color-accent-ui)]',
+    '[--ds-radio-idle-border:var(--border-accent-hover)] [--ds-radio-idle-color:var(--color-accent-ui)] [--ds-radio-active-border:var(--color-accent-ui)] [--ds-radio-active-color:var(--color-accent-ui)]',
   ],
   [
     'ui-radio-control-variant-mixed',
-    '[--ds-radio-accent:var(--color-accent-ui)] [color:var(--color-primary)]',
+    '[--ds-radio-idle-border:var(--border-field-idle)] [--ds-radio-idle-color:var(--color-primary)] [--ds-radio-active-border:var(--color-accent-ui)] [--ds-radio-active-color:var(--color-accent-ui)]',
   ],
   [
     'ui-radio-control-checked',
-    '[border-color:var(--ds-radio-accent)] [color:var(--ds-radio-accent)]',
+    '[border-color:var(--ds-radio-active-border)] [color:var(--ds-radio-active-color)]',
   ],
   [
     'ui-radio-control-invalid',

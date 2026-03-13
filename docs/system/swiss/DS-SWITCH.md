@@ -1,6 +1,6 @@
 # DS Switch
 
-Stand: 2026-03-12  
+Stand: 2026-03-13  
 Status: aktiv
 
 ## Ist-Zustand
@@ -61,11 +61,20 @@ Status: aktiv
 - `disabled > invalid > focus-visible > checked > hover > default`
 - Active/press ist eine kurze Motion-Schicht ueber dem aktuellen visuellen State.
 
+## Variant Matrix (verbindlich)
+- `default`: neutral idle -> primary active
+- `accent`: toxic-family idle -> toxic-family active
+- `mixed`: neutral idle -> toxic-family active
+
+## Interaction Color Rule (verbindlich)
+- `hover` und `focus-visible` sind globales Interaktionssignal und bleiben variant-unabhaengig toxic-basiert.
+- Variant-Unterschiede liegen in `idle` und `checked`, nicht in separaten Hover-Paletten pro Variante.
+
 ## Motion-Konzept
 - Root:
   - `whileTap` fuer kurze Press-Reaktion
 - Thumb:
-  - Spring-Transition fuer Positionswechsel (`left <-> right`, ueber `x`-Animation)
+  - Spring-Transition fuer Positionswechsel (`justify-start/end` + `layout`)
   - Press-Animation (`pressedAnimation`) fuer Breite beim Tap
 - Tokens (neu, v1 Vorschlag):
   - `--motion-switch-track-duration`
@@ -76,7 +85,9 @@ Status: aktiv
 
 ## Visuelles Konzept
 - Track:
-  - idle: neutral border/surface
+  - idle:
+    - `default`, `mixed`: neutral border/surface
+    - `accent`: toxic-getoente Border + Thumb
   - checked: accent background + accent border
 - Thumb:
   - kontrastreiche Kreisflaeche
@@ -84,7 +95,7 @@ Status: aktiv
   - bei unchecked an linker Position
 - Mixed:
   - idle neutral
-  - checked accent
+  - checked wie accent
 
 ## A11y
 - `role="switch"`

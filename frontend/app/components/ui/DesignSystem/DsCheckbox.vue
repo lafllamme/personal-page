@@ -67,16 +67,15 @@ interface CheckboxVisualState {
 const checkboxTokens = {
   bgInverse: 'var(--bg-inverse)',
   bgSoftDisabled: 'var(--bg-soft-disabled)',
-  bgAccentSoft: 'var(--bg-accent-soft)',
   bgFieldErrorSoft: 'var(--bg-field-error-soft)',
   colorPrimary: 'var(--color-primary)',
   colorInverse: 'var(--color-inverse)',
   colorAccentUi: 'var(--color-accent-ui)',
-  colorAccentStrong: 'var(--color-accent-strong)',
   colorOnAccent: 'var(--color-on-accent)',
   colorErrorText: 'var(--color-error-text)',
   colorDisabled: 'var(--color-disabled)',
   borderFieldIdle: 'var(--border-field-idle)',
+  borderAccentHover: 'var(--border-accent-hover)',
   borderError: 'var(--border-error)',
   borderDisabled: 'var(--border-disabled)',
 } as const
@@ -109,7 +108,11 @@ const variantColorMap: Record<CheckboxVariant, { idle: CheckboxVisualState, acti
     },
   },
   accent: {
-    idle: neutralIdleState,
+    idle: {
+      backgroundColor: checkboxTokens.bgInverse,
+      borderColor: checkboxTokens.borderAccentHover,
+      color: checkboxTokens.colorAccentUi,
+    },
     active: {
       backgroundColor: checkboxTokens.colorAccentUi,
       borderColor: checkboxTokens.colorAccentUi,
@@ -117,15 +120,11 @@ const variantColorMap: Record<CheckboxVariant, { idle: CheckboxVisualState, acti
     },
   },
   mixed: {
-    idle: {
-      backgroundColor: checkboxTokens.bgInverse,
-      borderColor: checkboxTokens.borderFieldIdle,
-      color: checkboxTokens.colorAccentStrong,
-    },
+    idle: neutralIdleState,
     active: {
-      backgroundColor: checkboxTokens.bgAccentSoft,
+      backgroundColor: checkboxTokens.colorAccentUi,
       borderColor: checkboxTokens.colorAccentUi,
-      color: checkboxTokens.colorAccentStrong,
+      color: checkboxTokens.colorOnAccent,
     },
   },
 }
@@ -156,7 +155,7 @@ function ringShadow(color: string): string {
   return `0 0 0 ${checkboxMotionConfig.ringWidth} ${color}`
 }
 
-type InteractionStateKey = 'blocked' | 'hoverUnchecked' | 'focusUnchecked' | 'focusCheckedAccent' | 'focusChecked' | 'idle'
+type InteractionStateKey = 'blocked' | 'hoverUnchecked' | 'focusUnchecked' | 'focusChecked' | 'idle'
 
 const interactionMotionMap: Record<InteractionStateKey, () => Partial<CheckboxVisualState> & { boxShadow: string }> = {
   blocked: () => ({
@@ -169,9 +168,6 @@ const interactionMotionMap: Record<InteractionStateKey, () => Partial<CheckboxVi
   focusUnchecked: () => ({
     borderColor: checkboxMotionConfig.ringDefaultColor,
     boxShadow: ringShadow(checkboxMotionConfig.ringDefaultColor),
-  }),
-  focusCheckedAccent: () => ({
-    boxShadow: ringShadow(checkboxMotionConfig.ringHoverColor),
   }),
   focusChecked: () => ({
     boxShadow: ringShadow(checkboxMotionConfig.ringDefaultColor),
@@ -252,7 +248,7 @@ const interactionStateKey = computed<InteractionStateKey>(() => {
     if (!isActive.value)
       return 'focusUnchecked'
 
-    return variant.value === 'accent' ? 'focusCheckedAccent' : 'focusChecked'
+    return 'focusChecked'
   }
 
   if (isHoveringHit.value && !isActive.value)
@@ -288,8 +284,7 @@ const checkboxMotion = computed(() => {
         ease: checkboxMotionConfig.transitionEase,
       },
       color: {
-        duration: checkboxMotionConfig.transitionDuration,
-        ease: checkboxMotionConfig.transitionEase,
+        duration: 0,
       },
       borderColor: {
         duration: 0,
@@ -317,7 +312,7 @@ const checkStrokeMotion = computed(() => (
         pathLength: 0,
         opacity: 0,
         transition: {
-          duration: 0.2,
+          duration: 0,
         },
       }
 ))

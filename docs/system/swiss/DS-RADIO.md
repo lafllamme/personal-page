@@ -1,6 +1,6 @@
 # DS Radio
 
-Stand: 2026-03-12  
+Stand: 2026-03-13  
 Status: aktiv
 
 ## Ist-Zustand
@@ -46,10 +46,14 @@ Referenz:
 ## State-Prioritaet
 - `disabled > invalid > focus-visible > checked > hover > default`
 
-## Mixed-Variant Verhalten
-- `mixed` bleibt im Idle neutral (`color-primary`).
-- Im `checked` Zustand wechselt `mixed` auf Accent (`color-accent-ui`) fuer Border + Indicator.
-- Ziel: weniger visuelle Haerte als ein dauerhaft accent-getoentes Idle.
+## Variant Matrix (verbindlich)
+- `default`: neutral idle -> primary active
+- `accent`: toxic-family idle -> toxic-family active
+- `mixed`: neutral idle -> toxic-family active
+
+## Interaction Color Rule (verbindlich)
+- `hover` und `focus-visible` sind globales Interaktionssignal und bleiben variant-unabhaengig toxic-basiert.
+- Variant-Unterschiede liegen in `idle` und `checked`, nicht in separaten Hover-Paletten pro Variante.
 
 ## Validation-Verhalten
 - `hasError = Boolean(error) || invalid || missingRequiredValue`
@@ -89,6 +93,10 @@ Referenz:
 - `--color-error-text`
 - `--color-disabled`
 - `--size-checkbox-control-sm|md|lg` (v1-Reuse fuer Radio-Control-Groesse)
+- `--ds-radio-idle-border`
+- `--ds-radio-idle-color`
+- `--ds-radio-active-border`
+- `--ds-radio-active-color`
 
 ### Radio Shortcuts
 - `ui-radio-root`
