@@ -52,8 +52,9 @@ Referenz:
 - `mixed`: neutral idle -> toxic-family active
 
 ## Interaction Color Rule (verbindlich)
-- `hover` und `focus-visible` sind globales Interaktionssignal und bleiben variant-unabhaengig toxic-basiert.
-- Variant-Unterschiede liegen in `idle` und `checked`, nicht in separaten Hover-Paletten pro Variante.
+- `default`: `hover` + `focus-visible` nutzen neutrale Sand-Tonwerte (kein Toxic-Accent).
+- `accent`: `hover` + `focus-visible` bleiben toxic-basiert.
+- `mixed`: `hover` nutzt neutralen Sand-Ton, `focus-visible` bleibt toxic-basiert.
 
 ## Validation-Verhalten
 - `hasError = Boolean(error) || invalid || missingRequiredValue`

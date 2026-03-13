@@ -203,7 +203,7 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-base',
-    'relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-field-idle)] [background-color:var(--bg-inverse)] [color:var(--color-inverse)] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] hover:[border-color:var(--border-accent-hover)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--border-accent)]',
+    'relative isolate inline-flex shrink-0 items-center justify-center overflow-hidden border border-solid [border-width:var(--control-border-width)] [border-color:var(--border-field-idle)] [background-color:var(--bg-inverse)] [color:var(--color-inverse)] [--ds-checkbox-hover-border:var(--border-accent-hover)] [--ds-checkbox-focus-ring:var(--border-accent)] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] hover:[border-color:var(--ds-checkbox-hover-border)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-inner-width)_var(--ds-checkbox-focus-ring)]',
   ],
   [
     'ui-checkbox-control-sm',
@@ -219,15 +219,15 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-checkbox-control-variant-default',
-    '[background-color:var(--bg-inverse)] [color:var(--color-inverse)]',
+    '[background-color:var(--bg-inverse)] [color:var(--color-inverse)] [--ds-checkbox-hover-border:var(--un-preset-radix-sand10)] [--ds-checkbox-focus-ring:var(--un-preset-radix-sand10)]',
   ],
   [
     'ui-checkbox-control-variant-accent',
-    '[background-color:var(--bg-inverse)] [border-color:var(--border-accent-hover)] [color:var(--color-accent-ui)]',
+    '[background-color:var(--bg-inverse)] [border-color:var(--border-accent-hover)] [color:var(--color-accent-ui)] [--ds-checkbox-hover-border:var(--border-accent-hover)] [--ds-checkbox-focus-ring:var(--border-accent)]',
   ],
   [
     'ui-checkbox-control-variant-mixed',
-    '[background-color:var(--bg-inverse)] [color:var(--color-inverse)]',
+    '[background-color:var(--bg-inverse)] [color:var(--color-inverse)] [--ds-checkbox-hover-border:var(--un-preset-radix-sand10)] [--ds-checkbox-focus-ring:var(--border-accent)]',
   ],
   [
     'ui-checkbox-control-invalid',
@@ -287,23 +287,23 @@ export const inputShortcuts: UserShortcuts = [
   ],
   [
     'ui-radio-control-base',
-    'relative isolate inline-flex shrink-0 items-center justify-center rounded-full border border-solid [border-width:var(--control-border-width)] [width:var(--ds-radio-control-size)] [height:var(--ds-radio-control-size)] [border-color:var(--ds-radio-idle-border,var(--border-field-idle))] [color:var(--ds-radio-idle-color,var(--color-primary))] [background:transparent] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] focus-visible:[border-color:var(--border-accent)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent)]',
+    'relative isolate inline-flex shrink-0 items-center justify-center rounded-full border border-solid [border-width:var(--control-border-width)] [width:var(--ds-radio-control-size)] [height:var(--ds-radio-control-size)] [border-color:var(--ds-radio-idle-border,var(--border-field-idle))] [color:var(--ds-radio-idle-color,var(--color-primary))] [background:transparent] [--ds-radio-hover-border:var(--border-accent-hover)] [--ds-radio-hover-ring:var(--border-accent-hover)] [--ds-radio-focus-border:var(--border-accent)] [--ds-radio-focus-ring:var(--border-accent)] outline-none transition-[border-color,box-shadow,color,opacity] [transition-duration:var(--motion-checkbox-shell-duration)] [transition-timing-function:var(--motion-checkbox-shell-ease)] focus-visible:[border-color:var(--ds-radio-focus-border)] focus-visible:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--ds-radio-focus-ring)]',
   ],
   [
     'ui-radio-control-hoverable',
-    'hover:[border-color:var(--border-accent-hover)] hover:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--border-accent-hover)]',
+    'hover:[border-color:var(--ds-radio-hover-border)] hover:[box-shadow:0_0_0_var(--focus-ring-active-width)_var(--ds-radio-hover-ring)]',
   ],
   [
     'ui-radio-control-variant-default',
-    '[--ds-radio-idle-border:var(--border-field-idle)] [--ds-radio-idle-color:var(--color-primary)] [--ds-radio-active-border:var(--color-primary)] [--ds-radio-active-color:var(--color-primary)]',
+    '[--ds-radio-idle-border:var(--border-field-idle)] [--ds-radio-idle-color:var(--color-primary)] [--ds-radio-active-border:var(--color-primary)] [--ds-radio-active-color:var(--color-primary)] [--ds-radio-hover-border:var(--un-preset-radix-sand11)] [--ds-radio-hover-ring:var(--un-preset-radix-sand11)] [--ds-radio-focus-border:var(--un-preset-radix-sand12)] [--ds-radio-focus-ring:var(--un-preset-radix-sand12)]',
   ],
   [
     'ui-radio-control-variant-accent',
-    '[--ds-radio-idle-border:var(--border-accent-hover)] [--ds-radio-idle-color:var(--color-accent-ui)] [--ds-radio-active-border:var(--color-accent-ui)] [--ds-radio-active-color:var(--color-accent-ui)]',
+    '[--ds-radio-idle-border:var(--border-accent-hover)] [--ds-radio-idle-color:var(--color-accent-ui)] [--ds-radio-active-border:var(--color-accent-ui)] [--ds-radio-active-color:var(--color-accent-ui)] [--ds-radio-hover-border:var(--border-accent-hover)] [--ds-radio-hover-ring:var(--border-accent-hover)] [--ds-radio-focus-border:var(--border-accent)] [--ds-radio-focus-ring:var(--border-accent)]',
   ],
   [
     'ui-radio-control-variant-mixed',
-    '[--ds-radio-idle-border:var(--border-field-idle)] [--ds-radio-idle-color:var(--color-primary)] [--ds-radio-active-border:var(--color-accent-ui)] [--ds-radio-active-color:var(--color-accent-ui)]',
+    '[--ds-radio-idle-border:var(--border-field-idle)] [--ds-radio-idle-color:var(--color-primary)] [--ds-radio-active-border:var(--color-accent-ui)] [--ds-radio-active-color:var(--color-accent-ui)] [--ds-radio-hover-border:var(--un-preset-radix-sand11)] [--ds-radio-hover-ring:var(--un-preset-radix-sand11)] [--ds-radio-focus-border:var(--border-accent)] [--ds-radio-focus-ring:var(--border-accent)]',
   ],
   [
     'ui-radio-control-checked',
