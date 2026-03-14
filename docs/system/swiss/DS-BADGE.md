@@ -40,6 +40,7 @@ Hinweis:
 - Hover/active/focus-visible sind fuer v1 nicht Teil des Badge-Contracts, da die Komponente read-only ist.
 - Falls spaeter Interaktion benoetigt wird, entsteht eine eigene Komponente (`Chip`/`Tag`) statt Badge-v1 aufzuweiten.
 - `animation` ist rein dekorativ und darf die Badge-Semantik nicht aendern.
+- `animation='beam'` ist immer ein externer 1px Overlay-Ring und bleibt type-preserving (`solid|outline|soft|crisp` werden nicht umcodiert).
 
 ## Variant-Matrix (verbindlich)
 
@@ -85,6 +86,7 @@ Hinweis:
 ### Disabled-Regel (alle Varianten/Types)
 - Kontrast reduziert ueber bestehende disabled token family.
 - Kein neuer Farbpfad, keine neuen disabled Sondertokens nur fuer Badge.
+- Bei `disabled` laufen keine Badge-Animationen (`shimmer`/`beam` deaktiviert).
 
 ## Typografie- und Token-Regeln
 
@@ -105,6 +107,10 @@ Hinweis:
   - Farbe: bestehende `color-*`, `border-*`, `bg-*` (inkl. accent/disabled)
   - Typografie: bestehende `type-meta-*` Scale
   - Spacing/Radius: bestehende `space-*`, `radius-*`
+- Badge-Animationen laufen ueber Tokenfamilien:
+  - Motion: `--motion-badge-shimmer-*`, `--motion-badge-beam-*`
+  - Farbe: `--color-badge-shimmer-highlight`, `--color-badge-beam-*`
+  - Beam-Ring: `--size-badge-beam-ring-width` (+ optionaler inner-offset radius token)
 - Keine ad-hoc Typografie-Werte.
 - Keine neue Status-Farbwelt (`success/warning/error/info`) in Badge-v1.
 

@@ -43,6 +43,10 @@ const colorTokens: TokenSet = {
   'color-badge-default-crisp-text': { light: 'var(--un-preset-radix-sand2)', dark: 'var(--un-preset-radix-sand12)' },
   'color-badge-accent-soft-text': { light: 'var(--toxic-12)', dark: 'var(--toxic-12)' },
   'color-badge-accent-crisp-text': { light: 'var(--toxic-2)', dark: 'var(--toxic-12)' },
+  'color-badge-shimmer-highlight': { light: 'rgba(255, 255, 255, 0.42)', dark: 'rgba(242, 239, 230, 0.36)' },
+  'color-badge-beam-start': { light: '#000000', dark: '#000000' },
+  'color-badge-beam-mid': { light: '#333333', dark: '#4a4a4a' },
+  'color-badge-beam-end': { light: '#ffffff', dark: '#f2efe6' },
   'color-error-text': { light: 'var(--un-preset-radix-crimson11)', dark: 'var(--un-preset-radix-crimson11)' },
   'color-select-shadow': { light: 'rgba(0, 0, 0, 0.16)', dark: 'rgba(0, 0, 0, 0.45)' },
 }
@@ -174,6 +178,10 @@ const motionTokens: TokenSet = {
   'motion-switch-thumb-duration': '260ms',
   'motion-switch-thumb-ease': 'cubic-bezier(0.22, 1, 0.36, 1)',
   'motion-switch-press-duration': '160ms',
+  'motion-badge-shimmer-duration': '5s',
+  'motion-badge-shimmer-ease': 'linear',
+  'motion-badge-beam-duration': '8s',
+  'motion-badge-beam-ease': 'linear',
 }
 
 const spacingTokens: TokenSet = {
@@ -251,6 +259,7 @@ const sizingTokens: TokenSet = {
   'radius-2xl': '1rem',
   'radius-form-pill': '1rem',
   'radius-form-rounded': '0.5rem',
+  'radius-badge-beam-inner-offset': '1px',
   'radius-3xl': '1.5rem',
   'radius-4xl': '2rem',
   'radius-pill': '9999px',
@@ -284,6 +293,7 @@ const sizingTokens: TokenSet = {
   'size-switch-thumb-press-sm': 'var(--space-4_75)',
   'size-switch-thumb-press-md': '21px',
   'size-switch-thumb-press-lg': 'var(--space-6)',
+  'size-badge-beam-ring-width': '1px',
 }
 
 const typographyFontFamilyTheme = {

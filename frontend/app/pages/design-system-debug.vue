@@ -1058,9 +1058,26 @@ function badgeSoftStyle(candidate: BadgeSoftCandidate) {
               <DsTypography as="p" role="meta" size="2xs" uppercase>
                 Animated (Experimental)
               </DsTypography>
-              <div class="flex flex-wrap gap-2">
-                <DsBadge text="Shimmer" variant="accent" type="soft" animation="shimmer" />
-                <DsBadge text="Beam" variant="accent" type="outline" animation="beam" />
+              <div class="space-y-3">
+                <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                  Variant parity
+                </DsTypography>
+                <div class="flex flex-wrap gap-2">
+                  <DsBadge text="Default Shimmer" variant="default" type="soft" animation="shimmer" />
+                  <DsBadge text="Accent Shimmer" variant="accent" type="soft" animation="shimmer" icon="iconoir:spark" />
+                  <DsBadge text="Mixed Shimmer" variant="mixed" type="soft" animation="shimmer" dot />
+                </div>
+              </div>
+              <div class="space-y-3">
+                <DsTypography as="p" role="meta" size="2xs" tone="muted">
+                  Type parity (beam overlay ring)
+                </DsTypography>
+                <div class="flex flex-wrap gap-2">
+                  <DsBadge text="Beam Solid" variant="accent" type="solid" animation="beam" />
+                  <DsBadge text="Beam Outline" variant="accent" type="outline" animation="beam" />
+                  <DsBadge text="Beam Soft" variant="accent" type="soft" animation="beam" />
+                  <DsBadge text="Beam Crisp" variant="accent" type="crisp" animation="beam" />
+                </div>
               </div>
             </div>
           </div>

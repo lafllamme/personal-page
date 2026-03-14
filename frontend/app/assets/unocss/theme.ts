@@ -12,6 +12,8 @@ const animations = {
     'fade-out': '{0%{opacity:1;}100%{opacity:0;}}',
     'ui-ghost-underline-sweep': '{0%{transform:scaleX(1) rotate(0.001deg);transform-origin:right;}49%{transform:scaleX(0) rotate(0.001deg);transform-origin:right;}50%{transform:scaleX(0) rotate(0.001deg);transform-origin:left;}100%{transform:scaleX(1) rotate(0.001deg);transform-origin:left;}}',
     'shake-in': '{0%{opacity:0;transform:translateX(-6px);}20%{opacity:1;transform:translateX(4px);}40%{transform:translateX(-3px);}60%{transform:translateX(2px);}80%{transform:translateX(-1px);}100%{opacity:1;transform:translateX(0);}}',
+    'ds-badge-shimmer': '{0%{background-position:100% 0;}100%{background-position:-100% 0;}}',
+    'ds-badge-beam': '{100%{transform:rotate(360deg);}}',
   },
   durations: {
     'enter-from-right': '250ms',
@@ -24,6 +26,8 @@ const animations = {
     'fade-out': '200ms',
     'ui-ghost-underline-sweep': '650ms',
     'shake-in': 'var(--motion-input-error-shake-duration)',
+    'ds-badge-shimmer': 'var(--motion-badge-shimmer-duration)',
+    'ds-badge-beam': 'var(--motion-badge-beam-duration)',
   },
   timingFns: {
     'enter-from-right': 'ease',
@@ -36,6 +40,8 @@ const animations = {
     'fade-out': 'ease',
     'ui-ghost-underline-sweep': 'ease',
     'shake-in': 'var(--motion-input-error-shake-ease)',
+    'ds-badge-shimmer': 'var(--motion-badge-shimmer-ease)',
+    'ds-badge-beam': 'var(--motion-badge-beam-ease)',
   },
   counts: {
     'enter-from-right': '1',
@@ -48,6 +54,8 @@ const animations = {
     'fade-out': '1',
     'ui-ghost-underline-sweep': '1',
     'shake-in': '1',
+    'ds-badge-shimmer': 'infinite',
+    'ds-badge-beam': 'infinite',
   },
 }
 

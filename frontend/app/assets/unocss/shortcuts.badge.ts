@@ -61,4 +61,20 @@ export const badgeShortcuts: UserShortcuts = [
     'ui-badge-text',
     'leading-none select-none whitespace-nowrap',
   ],
+  [
+    'ui-badge-anim-shimmer',
+    'relative overflow-hidden [isolation:isolate] after:content-[\'\'] after:absolute after:inset-0 after:pointer-events-none after:[background:linear-gradient(120deg,transparent_40%,var(--color-badge-shimmer-highlight)_50%,transparent_60%)] after:[background-size:200%_100%] after:[background-position:100%_0] after:[mix-blend-mode:screen] after:animate-ds-badge-shimmer motion-reduce:after:animate-none',
+  ],
+  [
+    'ui-badge-anim-beam-wrap',
+    'relative inline-flex items-center justify-center w-fit max-w-full overflow-hidden [isolation:isolate] [padding:var(--size-badge-beam-ring-width)] [border-radius:var(--ds-badge-radius)]',
+  ],
+  [
+    'ui-badge-anim-beam-orbit',
+    'absolute top-[-1000%] right-[-1000%] bottom-[-1000%] left-[-1000%] pointer-events-none z-0 [background:conic-gradient(from_90deg_at_50%_50%,var(--color-badge-beam-start)_0%,var(--color-badge-beam-mid)_50%,var(--color-badge-beam-end)_100%)] animate-ds-badge-beam motion-reduce:animate-none',
+  ],
+  [
+    'ui-badge-anim-beam-inner',
+    'relative z-10',
+  ],
 ]

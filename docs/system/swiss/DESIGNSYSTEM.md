@@ -118,6 +118,10 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
   - `DS-BADGE.md` ist als doc-first Contract aktiv.
   - V1 ist read-only (nicht interaktiv), mit Matrix `variant x type x size`.
   - Interaktive Tag/Chip-Faelle bleiben bewusst ausserhalb von Badge-v1.
+- DS-Badge Animation-Stand (2026-03-14):
+  - `DsBadge` unterstuetzt `animation='none|shimmer|beam'` fuer alle Varianten/Types.
+  - `beam` ist als externer Overlay-Ring umgesetzt (type-preserving, keine Type-Rewrites).
+  - Badge-Animationen laufen ueber UnoCSS + Tokens (`ui-badge-anim-*`), ohne lokalen Styleblock in der Komponente.
 - Naming-Migration Form Controls (2026-03-11):
   - Legacy-Field-Aliase in `palette.ts` wurden entfernt.
   - Aktive Form-Token laufen nur noch ueber `field`-Namen (`color-field-*`, `bg-field-*`, `border-field-*`).

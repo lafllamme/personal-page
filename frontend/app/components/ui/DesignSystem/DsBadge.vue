@@ -58,8 +58,8 @@ const shapeClassMap: Record<BadgeShape, string> = {
 
 const animationClassMap: Record<BadgeAnimation, string> = {
   none: '',
-  shimmer: 'ds-badge-anim-shimmer',
-  beam: 'ds-badge-anim-beam',
+  shimmer: 'ui-badge-anim-shimmer',
+  beam: '',
 }
 
 const textSizeByBadgeSize: Record<BadgeSize, '2xs' | 'xs'> = {
@@ -83,13 +83,13 @@ const rootClass = computed(() => useClsx(
 ))
 
 const beamWrapperClass = computed(() => useClsx(
-  'ds-badge-beam-wrap',
+  'ui-badge-anim-beam-wrap',
   shapeClassMap[shape.value],
 ))
 
 const beamInnerClass = computed(() => useClsx(
   rootClass.value,
-  'ds-badge-beam-inner',
+  'ui-badge-anim-beam-inner',
 ))
 
 const hasIcon = computed(() => Boolean(icon.value))
@@ -100,7 +100,7 @@ const isBeamAnimation = computed(() => !disabled.value && animation.value === 'b
 
 <template>
   <span v-if="isBeamAnimation" :class="beamWrapperClass" :aria-disabled="disabled ? 'true' : undefined">
-    <span class="ds-badge-beam-orbit" />
+    <span class="ui-badge-anim-beam-orbit" />
     <span :class="beamInnerClass">
       <span v-if="hasDot" class="ui-badge-dot" />
 
@@ -146,88 +146,3 @@ const isBeamAnimation = computed(() => !disabled.value && animation.value === 'b
     </DsTypography>
   </span>
 </template>
-
-<style scoped>
-.ds-badge-anim-shimmer {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-
-.ds-badge-anim-shimmer::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(120deg, transparent 40%, rgb(255 255 255 / 42%) 50%, transparent 60%);
-  background-size: 200% 100%;
-  background-position: 100% 0;
-  mix-blend-mode: screen;
-  pointer-events: none;
-  animation: ds-badge-shimmer 5s linear infinite;
-}
-
-.ds-badge-beam-wrap {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  max-width: 100%;
-  padding: 1px;
-  overflow: hidden;
-  isolation: isolate;
-  border-radius: var(--ds-badge-radius);
-}
-
-.ds-badge-beam-wrap::before {
-  content: '';
-  position: absolute;
-  inset: 1px;
-  border-radius: calc(var(--ds-badge-radius) - 1px);
-  background: var(--bg-ghost-morph-fill);
-  z-index: 1;
-}
-
-.ds-badge-beam-orbit {
-  position: absolute;
-  inset: -1000%;
-  background: conic-gradient(
-    from 90deg at 50% 50%,
-    transparent 0deg 320deg,
-    rgb(255 255 255 / 95%) 334deg 344deg,
-    transparent 360deg
-  );
-  pointer-events: none;
-  animation: ds-badge-beam 3.8s linear infinite;
-  z-index: 0;
-}
-
-.ds-badge-beam-inner {
-  position: relative;
-  z-index: 2;
-  border-color: transparent;
-  border-width: 0;
-  background: transparent;
-}
-
-@keyframes ds-badge-shimmer {
-  0% {
-    background-position: 100% 0;
-  }
-  100% {
-    background-position: -100% 0;
-  }
-}
-
-@keyframes ds-badge-beam {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ds-badge-anim-shimmer::after,
-  .ds-badge-beam-orbit {
-    animation: none;
-  }
-}
-</style>
