@@ -936,6 +936,7 @@ function badgeSoftStyle(candidate: BadgeSoftCandidate) {
                     <DsBadge text="Editorial" variant="default" type="solid" />
                     <DsBadge text="Outline" variant="default" type="outline" />
                     <DsBadge text="Soft" variant="default" type="soft" />
+                    <DsBadge text="Crisp" variant="default" type="crisp" />
                   </div>
                 </div>
 
@@ -959,6 +960,7 @@ function badgeSoftStyle(candidate: BadgeSoftCandidate) {
                     <DsBadge text="Neutral + Accent" variant="mixed" type="solid" dot />
                     <DsBadge text="Hybrid" variant="mixed" type="outline" dot />
                     <DsBadge text="Context" variant="mixed" type="soft" dot />
+                    <DsBadge text="Crisp Mix" variant="mixed" type="crisp" dot />
                   </div>
                 </div>
               </div>

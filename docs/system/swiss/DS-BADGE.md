@@ -59,6 +59,8 @@ Hinweis:
   - transparent surface + neutral border + neutral text
 - `default + soft`:
   - subtile neutrale surface + neutral text
+- `default + crisp`:
+  - kontraststarkes neutrales Inverse-Schema (Sand-Familie, kein Accent)
 
 - `accent + solid`:
   - accent surface + on-accent text
@@ -76,7 +78,7 @@ Hinweis:
 - `mixed + soft`:
   - neutrale soft surface + accent signal element
 - `mixed + crisp`:
-  - gleiche Farbsemantik wie `mixed + soft` (kein eigener vierter Farbraum)
+  - gleiche Basis wie `default + crisp` + Accent nur als Signal (dot/icon)
 
 ### Disabled-Regel (alle Varianten/Types)
 - Kontrast reduziert ueber bestehende disabled token family.
