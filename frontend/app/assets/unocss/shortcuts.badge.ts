@@ -15,11 +15,11 @@ export const badgeShortcuts: UserShortcuts = [
   ],
   [
     'ui-badge-size-sm',
-    '[--ds-badge-h:1.5rem] [--ds-badge-px:var(--space-3)] [--ds-badge-gap:var(--space-1_5)] [--ds-badge-dot-size:0.375rem] min-h-[var(--ds-badge-h)] px-[var(--ds-badge-px)]',
+    '[--ds-badge-h:var(--size-badge-height-sm)] [--ds-badge-px:var(--space-3)] [--ds-badge-gap:var(--space-1_5)] [--ds-badge-dot-size:var(--size-badge-dot-sm)] min-h-[var(--ds-badge-h)] px-[var(--ds-badge-px)]',
   ],
   [
     'ui-badge-size-md',
-    '[--ds-badge-h:1.625rem] [--ds-badge-px:var(--space-3)] [--ds-badge-gap:var(--space-2)] [--ds-badge-dot-size:0.4375rem] min-h-[var(--ds-badge-h)] px-[var(--ds-badge-px)]',
+    '[--ds-badge-h:var(--size-badge-height-md)] [--ds-badge-px:var(--space-3)] [--ds-badge-gap:var(--space-2)] [--ds-badge-dot-size:var(--size-badge-dot-md)] min-h-[var(--ds-badge-h)] px-[var(--ds-badge-px)]',
   ],
   [
     'ui-badge-variant-default',
@@ -63,7 +63,7 @@ export const badgeShortcuts: UserShortcuts = [
   ],
   [
     'ui-badge-anim-shimmer',
-    'relative overflow-hidden [isolation:isolate] after:content-[\'\'] after:absolute after:inset-0 after:pointer-events-none after:[background:linear-gradient(120deg,transparent_40%,var(--color-badge-shimmer-highlight)_50%,transparent_60%)] after:[background-size:200%_100%] after:[background-position:100%_0] after:[mix-blend-mode:screen] after:animate-ds-badge-shimmer motion-reduce:after:animate-none',
+    'relative overflow-hidden [isolation:isolate] after:content-[\'\'] after:absolute after:inset-0 after:pointer-events-none after:[background:linear-gradient(120deg,transparent_40%,var(--color-badge-shimmer-highlight)_50%,transparent_60%)] after:[background-size:200%_100%] after:[background-position:100%_0] after:[mix-blend-mode:multiply] dark:after:[mix-blend-mode:screen] after:animate-ds-badge-shimmer motion-reduce:after:animate-none',
   ],
   [
     'ui-badge-anim-beam-wrap',
@@ -71,7 +71,7 @@ export const badgeShortcuts: UserShortcuts = [
   ],
   [
     'ui-badge-anim-beam-orbit',
-    'absolute top-[-1000%] right-[-1000%] bottom-[-1000%] left-[-1000%] pointer-events-none z-0 [background:conic-gradient(from_90deg_at_50%_50%,var(--color-badge-beam-start)_0%,var(--color-badge-beam-mid)_50%,var(--color-badge-beam-end)_100%)] animate-ds-badge-beam motion-reduce:animate-none',
+    'absolute pointer-events-none z-0 [inset:calc(var(--size-badge-beam-orbit-overscan)*-1)] [background:conic-gradient(from_90deg_at_50%_50%,var(--color-badge-beam-start)_0%,var(--color-badge-beam-mid)_50%,var(--color-badge-beam-end)_100%)] animate-ds-badge-beam motion-reduce:animate-none',
   ],
   [
     'ui-badge-anim-beam-inner',
