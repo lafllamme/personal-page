@@ -27,6 +27,7 @@ Status: aktiv (doc-first contract)
 - `variant?: 'default' | 'accent' | 'mixed'` (Default: `default`)
 - `type?: 'solid' | 'outline' | 'soft' | 'crisp'` (Default: `solid`)
 - `size?: 'sm' | 'md'` (Default: `md`)
+- `animation?: 'none' | 'shimmer' | 'beam'` (Default: `none`, optional/experimental)
 - `dot?: boolean` (Default: `false`)
 - `icon?: string` (optional, ein einzelnes Icon)
 - `disabled?: boolean` (Default: `false`)
@@ -38,6 +39,7 @@ Status: aktiv (doc-first contract)
 Hinweis:
 - Hover/active/focus-visible sind fuer v1 nicht Teil des Badge-Contracts, da die Komponente read-only ist.
 - Falls spaeter Interaktion benoetigt wird, entsteht eine eigene Komponente (`Chip`/`Tag`) statt Badge-v1 aufzuweiten.
+- `animation` ist rein dekorativ und darf die Badge-Semantik nicht aendern.
 
 ## Variant-Matrix (verbindlich)
 

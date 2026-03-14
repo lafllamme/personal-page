@@ -1053,6 +1053,16 @@ function badgeSoftStyle(candidate: BadgeSoftCandidate) {
                 </div>
               </div>
             </div>
+
+            <div class="space-y-3">
+              <DsTypography as="p" role="meta" size="2xs" uppercase>
+                Animated (Experimental)
+              </DsTypography>
+              <div class="flex flex-wrap gap-2">
+                <DsBadge text="Shimmer" variant="accent" type="soft" animation="shimmer" />
+                <DsBadge text="Beam" variant="accent" type="outline" animation="beam" />
+              </div>
+            </div>
           </div>
 
           <div class="pt-3 space-y-6">
