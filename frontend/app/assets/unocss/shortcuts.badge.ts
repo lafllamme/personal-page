@@ -31,7 +31,7 @@ export const badgeShortcuts: UserShortcuts = [
   ],
   [
     'ui-badge-variant-mixed',
-    '[--ds-badge-solid-bg:var(--color-primary)] [--ds-badge-solid-border:var(--color-primary)] [--ds-badge-solid-text:var(--color-inverse)] [--ds-badge-outline-bg:transparent] [--ds-badge-outline-border:var(--border-field-idle)] [--ds-badge-outline-text:var(--color-primary)] [--ds-badge-soft-bg:var(--un-preset-radix-sand4)] [--ds-badge-soft-border:var(--un-preset-radix-sand6)] [--ds-badge-soft-text:var(--un-preset-radix-sand12)] [--ds-badge-crisp-bg:var(--bg-badge-default-crisp)] [--ds-badge-crisp-border:var(--border-badge-default-crisp)] [--ds-badge-crisp-text:var(--color-badge-default-crisp-text)] [--ds-badge-dot:var(--color-accent-ui)]',
+    '[--ds-badge-solid-bg:var(--color-primary)] [--ds-badge-solid-border:var(--color-primary)] [--ds-badge-solid-text:var(--color-inverse)] [--ds-badge-outline-bg:transparent] [--ds-badge-outline-border:var(--border-field-idle)] [--ds-badge-outline-text:var(--color-primary)] [--ds-badge-soft-bg:var(--un-preset-radix-sand4)] [--ds-badge-soft-border:var(--un-preset-radix-sand6)] [--ds-badge-soft-text:var(--un-preset-radix-sand12)] [--ds-badge-crisp-bg:var(--bg-badge-mixed-crisp)] [--ds-badge-crisp-border:var(--border-badge-mixed-crisp)] [--ds-badge-crisp-text:var(--color-badge-mixed-crisp-text)] [--ds-badge-dot:var(--color-accent-ui)]',
   ],
   [
     'ui-badge-type-solid',
