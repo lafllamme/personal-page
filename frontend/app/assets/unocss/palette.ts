@@ -43,7 +43,7 @@ const colorTokens: TokenSet = {
   'color-badge-default-crisp-text': { light: 'var(--un-preset-radix-sand2)', dark: 'var(--un-preset-radix-sand12)' },
   'color-badge-accent-soft-text': { light: 'var(--toxic-12)', dark: 'var(--toxic-12)' },
   'color-badge-accent-crisp-text': { light: 'var(--toxic-2)', dark: 'var(--toxic-12)' },
-  'color-badge-shimmer-highlight': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand2)' },
+  'color-badge-shimmer-highlight': { light: 'color-mix(in srgb, var(--un-preset-radix-sand12) 14%, transparent)', dark: 'var(--un-preset-radix-sand2)' },
   'color-badge-beam-start': { light: 'var(--pure-white)', dark: '#000000' },
   'color-badge-beam-mid': { light: 'var(--un-preset-radix-sand8)', dark: '#4a4a4a' },
   'color-badge-beam-end': { light: '#000000', dark: '#f2efe6' },
