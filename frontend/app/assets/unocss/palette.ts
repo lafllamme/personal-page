@@ -81,6 +81,7 @@ const bgTokens: TokenSet = {
   'bg-badge-default-crisp': { light: 'var(--un-preset-radix-sand12)', dark: 'var(--un-preset-radix-sand3)' },
   'bg-badge-accent-soft': { light: 'var(--toxic-5)', dark: 'var(--toxic-7)' },
   'bg-badge-accent-crisp': { light: 'var(--toxic-12)', dark: 'var(--toxic-3)' },
+  'bg-badge-beam-outline-inner': { light: 'var(--pure-white)', dark: 'var(--pure-black)' },
   'bg-accent-soft-disabled': { light: '#f2f6f5', dark: '#0f1f1d' },
   'bg-ghost-morph-fill': { light: 'var(--un-preset-radix-sand8)', dark: 'var(--un-preset-radix-sand8)' },
   'bg-ghost-morph-fill-active': { light: 'var(--un-preset-radix-sand9)', dark: 'var(--un-preset-radix-sand9)' },

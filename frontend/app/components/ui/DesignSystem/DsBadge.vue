@@ -101,6 +101,7 @@ const isBeamAnimation = computed(() => !disabled.value && animation.value === 'b
 <template>
   <span v-if="isBeamAnimation" :class="beamWrapperClass" :aria-disabled="disabled ? 'true' : undefined">
     <span class="ui-badge-anim-beam-orbit" />
+    <span v-if="type === 'outline'" class="ui-badge-anim-beam-mask-outline" />
     <span :class="beamInnerClass">
       <span v-if="hasDot" class="ui-badge-dot" />
 

@@ -77,4 +77,8 @@ export const badgeShortcuts: UserShortcuts = [
     'ui-badge-anim-beam-inner',
     'relative z-10',
   ],
+  [
+    'ui-badge-anim-beam-mask-outline',
+    'absolute z-[1] pointer-events-none [inset:var(--size-badge-beam-ring-width)] [border-radius:calc(var(--ds-badge-radius)-var(--radius-badge-beam-inner-offset))] [background:var(--bg-badge-beam-outline-inner)]',
+  ],
 ]
