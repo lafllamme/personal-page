@@ -6,7 +6,7 @@ import DsTypography from './DsTypography.vue'
 
 type BadgeVariant = 'default' | 'accent' | 'mixed'
 type BadgeType = 'solid' | 'outline' | 'soft' | 'crisp'
-type BadgeSize = 'sm' | 'md'
+type BadgeSize = 'sm' | 'md' | 'lg' | 'xl'
 type BadgeShape = 'pill' | 'rounded'
 type BadgeAnimation = 'none' | 'shimmer' | 'beam'
 
@@ -49,6 +49,8 @@ const typeClassMap: Record<BadgeType, string> = {
 const sizeClassMap: Record<BadgeSize, string> = {
   sm: 'ui-badge-size-sm',
   md: 'ui-badge-size-md',
+  lg: 'ui-badge-size-lg',
+  xl: 'ui-badge-size-xl',
 }
 
 const shapeClassMap: Record<BadgeShape, string> = {
@@ -62,14 +64,18 @@ const animationClassMap: Record<BadgeAnimation, string> = {
   beam: '',
 }
 
-const textSizeByBadgeSize: Record<BadgeSize, '2xs' | 'xs'> = {
+const textSizeByBadgeSize: Record<BadgeSize, '2xs' | 'xs' | 'sm' | 'md'> = {
   sm: '2xs',
   md: 'xs',
+  lg: 'sm',
+  xl: 'md',
 }
 
-const iconSizeByBadgeSize: Record<BadgeSize, 'xs' | 'sm'> = {
+const iconSizeByBadgeSize: Record<BadgeSize, 'xs' | 'sm' | 'md' | 'lg'> = {
   sm: 'xs',
   md: 'sm',
+  lg: 'md',
+  xl: 'lg',
 }
 
 const rootClass = computed(() => useClsx(

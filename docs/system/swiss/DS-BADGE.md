@@ -26,7 +26,7 @@ Status: aktiv (doc-first contract)
 - `text: string`
 - `variant?: 'default' | 'accent' | 'mixed'` (Default: `default`)
 - `type?: 'solid' | 'outline' | 'soft' | 'crisp'` (Default: `solid`)
-- `size?: 'sm' | 'md'` (Default: `md`)
+- `size?: 'sm' | 'md' | 'lg' | 'xl'` (Default: `md`)
 - `animation?: 'none' | 'shimmer' | 'beam'` (Default: `none`, optional/experimental)
 - `dot?: boolean` (Default: `false`)
 - `icon?: string` (optional, ein einzelnes Icon)
@@ -114,6 +114,28 @@ Hinweis:
 - Keine ad-hoc Typografie-Werte.
 - Keine neue Status-Farbwelt (`success/warning/error/info`) in Badge-v1.
 
+### Size-Ratio Ladder (tokenisiert)
+- `sm`:
+  - `height: --size-badge-height-sm`
+  - `dot: --size-badge-dot-sm`
+  - `text: meta/2xs`
+  - `icon: xs`
+- `md`:
+  - `height: --size-badge-height-md`
+  - `dot: --size-badge-dot-md`
+  - `text: meta/xs`
+  - `icon: sm`
+- `lg`:
+  - `height: --size-badge-height-lg`
+  - `dot: --size-badge-dot-lg`
+  - `text: meta/sm`
+  - `icon: md`
+- `xl`:
+  - `height: --size-badge-height-xl`
+  - `dot: --size-badge-dot-xl`
+  - `text: meta/md`
+  - `icon: lg`
+
 ## Accessibility + Usage Guardrails
 - Default-Element ist semantisch neutral (`span`-basiert) fuer read-only labeling.
 - Badge-v1 hat keinen eigenen Keyboard-/Focus-Contract.
@@ -133,7 +155,7 @@ Hinweis:
   - `/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsBadge.stories.ts`
   - Abdeckung:
     - `variant x type` Matrix (default/accent/mixed x solid/outline/soft/crisp)
-    - `size` (`sm|md`)
+    - `size` (`sm|md|lg|xl`)
     - `shape` (`pill|rounded`)
     - `states` (`disabled`, dot/icon helper)
     - `animation` (`none|shimmer|beam`, inkl. disabled animation-off)

@@ -28,7 +28,7 @@ const meta = {
     },
     size: {
       control: 'select',
-      options: ['sm', 'md'],
+      options: ['sm', 'md', 'lg', 'xl'],
     },
     shape: {
       control: 'select',
@@ -117,6 +117,8 @@ export const SizeScale: Story = {
         <div class="flex flex-wrap items-center gap-3">
           <DsBadge v-bind="args" text="SM badge" size="sm" />
           <DsBadge v-bind="args" text="MD badge" size="md" />
+          <DsBadge v-bind="args" text="LG badge" size="lg" />
+          <DsBadge v-bind="args" text="XL badge" size="xl" />
         </div>
       </div>
     `,

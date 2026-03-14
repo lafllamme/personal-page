@@ -124,8 +124,11 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
   - Badge-Animationen laufen ueber UnoCSS + Tokens (`ui-badge-anim-*`), ohne lokalen Styleblock in der Komponente.
 - DS-Badge Storybook-Stand (2026-03-15):
   - `DsBadge.stories.ts` deckt Matrix und Contract vollstaendig ab:
-    - `variant x type`, `size`, `shape`, `disabled`, `dot/icon`, `animation`.
+    - `variant x type`, `size (sm|md|lg|xl)`, `shape`, `disabled`, `dot/icon`, `animation`.
   - `disabled` erzwingt bei Badge-Animationen den Off-State (kein laufender Beam/Shimmer).
+- DS-Badge Scale/Cleanup-Stand (2026-03-15):
+  - `DsBadge` unterstuetzt jetzt `lg|xl` als tokenisierte Groessenstufen.
+  - Debug-Exploration-Bloecke `Accent Soft Exploration (WCAG)` und `Input Variants Study` wurden aus `design-system-debug.vue` entfernt.
 - Naming-Migration Form Controls (2026-03-11):
   - Legacy-Field-Aliase in `palette.ts` wurden entfernt.
   - Aktive Form-Token laufen nur noch ueber `field`-Namen (`color-field-*`, `bg-field-*`, `border-field-*`).
