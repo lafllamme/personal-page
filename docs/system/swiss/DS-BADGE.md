@@ -1,6 +1,6 @@
 # DS Badge
 
-Stand: 2026-03-13  
+Stand: 2026-03-15  
 Status: aktiv (doc-first contract)
 
 ## Zielbild
@@ -123,18 +123,25 @@ Hinweis:
   - oder ein Icon
 - Kein Ersatz fuer Buttons, Tabs oder Filterchips.
 
-## Geplanter Runtime-Rahmen
-- Komponente (geplant):
+## Runtime-Stand
+- Komponente:
   - `/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsBadge.vue`
-- Uno-Shortcuts (geplant):
-  - `/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.badge.ts` oder bestehender Shortcut-Block
+- Uno-Shortcuts:
+  - `/Users/flame/Developer/Projects/personal-page/frontend/app/assets/unocss/shortcuts.badge.ts`
   - namespace: `ui-badge-*`
-- Storybook (geplant):
+- Storybook:
   - `/Users/flame/Developer/Projects/personal-page/frontend/app/components/ui/DesignSystem/DsBadge.stories.ts`
   - Abdeckung:
-    - `variant x type x size`
-    - `disabled`
-    - Dot/Icon Beispiele
+    - `variant x type` Matrix (default/accent/mixed x solid/outline/soft/crisp)
+    - `size` (`sm|md`)
+    - `shape` (`pill|rounded`)
+    - `states` (`disabled`, dot/icon helper)
+    - `animation` (`none|shimmer|beam`, inkl. disabled animation-off)
+
+## Tokenisierung (Stand)
+- Badge-Farben/Motion/Radius/Spacing laufen ueber DS-Tokenpfad (`palette.ts` + `ui-badge-*` Shortcuts).
+- Keine komponentenlokalen Stylebloecke in `DsBadge.vue`.
+- Verbleibende feste Werte in Shortcut-Gradients (z. B. Prozent-Stops) sind bewusst Effektparameter und keine Layout-/Spacing-Token.
 
 ## Abgrenzung zu Tag/Chip
 - Es gibt aktuell keine aktive `DsTag`-Komponente.

@@ -122,6 +122,10 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
   - `DsBadge` unterstuetzt `animation='none|shimmer|beam'` fuer alle Varianten/Types.
   - `beam` ist als externer Overlay-Ring umgesetzt (type-preserving, keine Type-Rewrites).
   - Badge-Animationen laufen ueber UnoCSS + Tokens (`ui-badge-anim-*`), ohne lokalen Styleblock in der Komponente.
+- DS-Badge Storybook-Stand (2026-03-15):
+  - `DsBadge.stories.ts` deckt Matrix und Contract vollstaendig ab:
+    - `variant x type`, `size`, `shape`, `disabled`, `dot/icon`, `animation`.
+  - `disabled` erzwingt bei Badge-Animationen den Off-State (kein laufender Beam/Shimmer).
 - Naming-Migration Form Controls (2026-03-11):
   - Legacy-Field-Aliase in `palette.ts` wurden entfernt.
   - Aktive Form-Token laufen nur noch ueber `field`-Namen (`color-field-*`, `bg-field-*`, `border-field-*`).
