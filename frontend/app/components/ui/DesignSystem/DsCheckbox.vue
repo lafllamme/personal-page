@@ -153,6 +153,38 @@ function ringShadow(color: string): string {
   return `0 0 0 ${checkboxMotionConfig.ringWidth} ${color}`
 }
 
+function resolveCssColorToken(color: string): string {
+  if (!import.meta.client || !color.startsWith('var('))
+    return color
+
+  const cssVarName = color.slice(4, -1).trim()
+  const resolvedColor = getComputedStyle(document.documentElement).getPropertyValue(cssVarName).trim()
+  return resolvedColor || color
+}
+
+function toSoftErrorBackground(color: string, alpha = 0.08): string {
+  const normalizedAlpha = Math.min(Math.max(alpha, 0), 1)
+  const hexMatch = color.match(/^#([0-9a-f]{3}|[0-9a-f]{6})$/i)
+  if (hexMatch) {
+    const hex = hexMatch[1]
+    const normalizedHex = hex.length === 3
+      ? hex.split('').map(ch => `${ch}${ch}`).join('')
+      : hex
+    const red = Number.parseInt(normalizedHex.slice(0, 2), 16)
+    const green = Number.parseInt(normalizedHex.slice(2, 4), 16)
+    const blue = Number.parseInt(normalizedHex.slice(4, 6), 16)
+    return `rgba(${red}, ${green}, ${blue}, ${normalizedAlpha})`
+  }
+
+  const rgbMatch = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)/i)
+  if (rgbMatch) {
+    const [, red, green, blue] = rgbMatch
+    return `rgba(${red}, ${green}, ${blue}, ${normalizedAlpha})`
+  }
+
+  return `rgba(223, 52, 120, ${normalizedAlpha})`
+}
+
 const interactionColorMap: Record<CheckboxVariant, { hover: string, focus: string }> = {
   default: {
     hover: 'var(--un-preset-radix-sand11)',
@@ -291,11 +323,26 @@ const checkboxMotion = computed(() => {
     : variantColorMap[variant.value].idle
   const interactionStateMotion = interactionMotion.value
   const stateOverrideMotion = stateOverrideKey.value ? stateOverrideMap[stateOverrideKey.value] : undefined
+  const resolvedErrorBorderColor = resolveCssColorToken(checkboxTokens.borderError)
+  const resolvedInvalidBackgroundColor = toSoftErrorBackground(resolvedErrorBorderColor)
+
+  const resolvedBackgroundColor = stateOverrideKey.value === 'invalid'
+    ? resolvedInvalidBackgroundColor
+    : resolveCssColorToken(
+        stateOverrideMotion?.backgroundColor ?? baseVariantMotion.backgroundColor,
+      )
+  const resolvedBorderColor = resolveCssColorToken(
+    stateOverrideMotion?.borderColor ?? interactionStateMotion.borderColor ?? baseVariantMotion.borderColor,
+  )
+  const resolvedColor = resolveCssColorToken(
+    stateOverrideMotion?.color ?? baseVariantMotion.color,
+  )
 
   return {
-    ...baseVariantMotion,
-    ...interactionStateMotion,
-    ...(stateOverrideMotion ?? {}),
+    backgroundColor: resolvedBackgroundColor,
+    borderColor: resolvedBorderColor,
+    color: resolvedColor,
+    boxShadow: interactionStateMotion.boxShadow ?? checkboxMotionConfig.noShadow,
     transition: {
       backgroundColor: {
         duration: checkboxMotionConfig.transitionDuration,

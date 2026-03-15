@@ -38,6 +38,13 @@ function tokenLabel(role: string, size: string) {
 
 const articleSummary = ref('')
 const articleSummaryTouched = ref(false)
+const formSubject = ref('')
+const formFirstName = ref('')
+const formLastName = ref('')
+const formEmail = ref('')
+const formPhone = ref('')
+const formReadonlyHandle = ref('@editorial-desk')
+const formReadonlyEmail = ref('owner@tecnews.local')
 const selectTopic = ref('')
 const selectSelected = ref('product')
 const selectInvalid = ref('')

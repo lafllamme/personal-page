@@ -56,7 +56,9 @@ useHead(() => {
         :color="loadingGradient"
       />
       <PageTransition />
-      <Cursor />
+      <ClientOnly>
+        <Cursor />
+      </ClientOnly>
       <NuxtPage />
     </NuxtLayout>
   </VueLenis>
