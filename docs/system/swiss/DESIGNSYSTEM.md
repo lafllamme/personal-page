@@ -66,6 +66,7 @@ Hinweis: Wir sind aktuell aktiv dabei, das Design-System iterativ zu schreiben u
 - Badge Contract (aktiv, doc-first): [DS-BADGE.md](./DS-BADGE.md)
 - Next Components Roadmap: [NEXT-COMPONENTS-ROADMAP.md](./NEXT-COMPONENTS-ROADMAP.md)
 - Storybook / Nuxt Stubbing: [STUBBING.md](./STUBBING.md)
+- Storybook Visual Regression (lokal): [STORYBOOK-VISUAL-REGRESSION.md](./STORYBOOK-VISUAL-REGRESSION.md)
 - Typography Scaling Plan: [TYPOGRAPHY-SCALING-PLAN.md](./TYPOGRAPHY-SCALING-PLAN.md)
 - Component Contract: [COMPONENT-CONTRACT.md](./COMPONENT-CONTRACT.md)
 - Typography Source Map: [TYPOGRAPHY-SOURCE-MAP.md](./TYPOGRAPHY-SOURCE-MAP.md)

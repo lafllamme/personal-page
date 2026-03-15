@@ -15,7 +15,7 @@ export const badgeShortcuts: UserShortcuts = [
   ],
   [
     'ui-badge-size-sm',
-    '[--ds-badge-h:var(--size-badge-height-sm)] [--ds-badge-px:var(--space-3)] [--ds-badge-gap:var(--space-1_5)] [--ds-badge-dot-size:var(--size-badge-dot-sm)] h-[var(--ds-badge-h)] px-[var(--ds-badge-px)]',
+    '[--ds-badge-h:var(--size-badge-height-sm)] [--ds-badge-px:var(--space-3)] [--ds-badge-gap:0.375rem] [--ds-badge-dot-size:var(--size-badge-dot-sm)] h-[var(--ds-badge-h)] px-[var(--ds-badge-px)]',
   ],
   [
     'ui-badge-size-md',
@@ -23,7 +23,7 @@ export const badgeShortcuts: UserShortcuts = [
   ],
   [
     'ui-badge-size-lg',
-    '[--ds-badge-h:var(--size-badge-height-lg)] [--ds-badge-px:var(--space-4)] [--ds-badge-gap:var(--space-2_5)] [--ds-badge-dot-size:var(--size-badge-dot-lg)] h-[var(--ds-badge-h)] px-[var(--ds-badge-px)]',
+    '[--ds-badge-h:var(--size-badge-height-lg)] [--ds-badge-px:var(--space-4)] [--ds-badge-gap:0.625rem] [--ds-badge-dot-size:var(--size-badge-dot-lg)] h-[var(--ds-badge-h)] px-[var(--ds-badge-px)]',
   ],
   [
     'ui-badge-size-xl',

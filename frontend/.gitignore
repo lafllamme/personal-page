@@ -1,3 +1,6 @@
 .vercel
 storybook-static
 node_modules/.cache/storybook
+tests/visual/playwright-report
+tests/visual/test-results
+tests/visual/__screenshots__

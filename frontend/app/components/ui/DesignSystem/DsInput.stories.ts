@@ -162,6 +162,12 @@ export const ErrorState: Story = {
     error: 'Please enter a valid email address.',
     required: true,
   },
+  parameters: {
+    globals: {
+      colorMode: 'light',
+      snapshotMode: true,
+    },
+  },
 }
 
 export const ShapeRounded: Story = {

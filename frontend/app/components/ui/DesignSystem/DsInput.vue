@@ -182,7 +182,7 @@ watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) 
       :for="inputId || undefined"
       class="block"
     >
-      <div :class="shellClass">
+      <div :class="['group', shellClass]">
         <input
           v-bind="inputAttrs"
           :value="modelValue"
@@ -214,7 +214,7 @@ watch([hasError, error], ([nextHasError, nextError], [prevHasError, prevError]) 
 
     <div
       v-else
-      :class="shellClass"
+      :class="['group', shellClass]"
     >
       <input
         v-bind="inputAttrs"

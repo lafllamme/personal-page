@@ -228,7 +228,7 @@ useEventListener(window, 'pointercancel', stopResize)
       :for="textareaId || undefined"
       class="block"
     >
-      <div :class="shellClass">
+      <div :class="['group', shellClass]">
         <textarea
           ref="textareaEl"
           v-bind="textareaAttrs"

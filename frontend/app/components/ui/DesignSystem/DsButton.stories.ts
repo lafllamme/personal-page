@@ -343,3 +343,36 @@ export const RoundedVariants: Story = {
   render: Variants.render,
   parameters: Variants.parameters,
 }
+
+export const VisualRegressionBaseline: Story = {
+  name: 'Visual Regression / Baseline',
+  args: {
+    text: 'Visual Baseline',
+    variant: 'accent',
+    type: 'secondary',
+    size: 'lg',
+    shape: 'pill',
+    tracking: 'default',
+    weight: 'default',
+    icon: 'iconoir:sparks',
+    iconPosition: 'right',
+    iconOnly: false,
+    animation: 'none',
+    disabled: false,
+  },
+  parameters: {
+    layout: 'centered',
+    backgrounds: {
+      default: 'pureWhite',
+    },
+    globals: {
+      colorMode: 'light',
+      snapshotMode: true,
+    },
+    docs: {
+      description: {
+        story: 'Stable baseline story for local visual regression snapshots.',
+      },
+    },
+  },
+}

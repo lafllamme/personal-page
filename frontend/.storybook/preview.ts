@@ -8,6 +8,41 @@ import 'virtual:uno.css'
 
 setup(registerStorybookStubs)
 
+const isVisualRegressionBuild = import.meta.env.VITE_VR_TEST_MODE === '1'
+
+function applyVisualRegressionMode(isActive: boolean): void {
+  if (typeof document === 'undefined')
+    return
+
+  document.documentElement.classList.toggle('vr-test-mode', isActive)
+  document.body?.classList.toggle('vr-test-mode', isActive)
+  document.documentElement.dataset.vrTestMode = isActive ? 'on' : 'off'
+  if (document.body)
+    document.body.dataset.vrTestMode = isActive ? 'on' : 'off'
+
+  const styleId = 'storybook-vr-test-mode-style'
+  const currentStyle = document.getElementById(styleId)
+  if (!isActive) {
+    currentStyle?.remove()
+    return
+  }
+
+  if (currentStyle)
+    return
+
+  const style = document.createElement('style')
+  style.id = styleId
+  style.textContent = `
+    *, *::before, *::after {
+      transition: none !important;
+      animation: none !important;
+      scroll-behavior: auto !important;
+      caret-color: transparent !important;
+    }
+  `
+  document.head.appendChild(style)
+}
+
 const preview: Preview = {
   globalTypes: {
     colorMode: {
@@ -23,10 +58,24 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    snapshotMode: {
+      name: 'Snapshot mode',
+      description: 'Disables animation and transitions for visual regression testing',
+      defaultValue: isVisualRegressionBuild,
+      toolbar: {
+        icon: 'camera',
+        items: [
+          { value: false, title: 'Off' },
+          { value: true, title: 'On' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   decorators: [
     (story, context) => {
       const isDark = context.globals.colorMode === 'dark'
+      const isSnapshotMode = context.globals.snapshotMode === true
       if (typeof document !== 'undefined') {
         document.documentElement.classList.toggle('dark', isDark)
         document.documentElement.classList.toggle('light', !isDark)
@@ -36,6 +85,7 @@ const preview: Preview = {
           document.body.classList.toggle('light', !isDark)
           document.body.dataset.colorMode = isDark ? 'dark' : 'light'
         }
+        applyVisualRegressionMode(isSnapshotMode)
       }
       return {
         components: { story },

@@ -8,12 +8,6 @@ export const useMenu = defineStore('menu', () => {
   const isHeaderMinimized = ref(false)
   const forceMinimized = ref<boolean | null>(null)
 
-  // Logging function
-  function _log(message: string) {
-    const infoPrint = '[Menu Store] =>'
-    consola.debug(`${infoPrint} ${message}`)
-  }
-
   // TODO: Move the menu items to a separate file or API call
   const menuItems = [
     {
@@ -194,14 +188,6 @@ export const useMenu = defineStore('menu', () => {
     if (!open) {
       resetMenuStates()
     }
-  })
-
-  watch(items, (v) => {
-    consola.debug('[Menu Store] Items updated:', v)
-  }, { immediate: true })
-
-  watch(openItems, (v) => {
-    consola.debug('[Menu Store] Open items updated:', v)
   })
 
   return {
