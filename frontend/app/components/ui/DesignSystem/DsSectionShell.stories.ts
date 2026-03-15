@@ -35,13 +35,24 @@ export const Playground: Story = {
       <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
         <DsSectionShell v-bind="args">
           <DsSectionBody :debug="true">
-            <div class="space-y-6 md:space-y-7">
-              <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">Shell spacing rhythm</p>
-              <article class="border border-solid border-pureBlack/16 rounded-xl p-5 dark:border-pureWhite/16 md:max-w-2xl">
-                <p class="font-manrope text-sm leading-relaxed opacity-80">
-                  Toggle spacing/border/screen to inspect vertical section behavior.
+            <div class="bg-[#10b981]/8 outline outline-1 outline-[#10b981]/80 dark:bg-[#10b981]/12 dark:outline-[#34d399]/80 p-4 md:p-5 space-y-6 md:space-y-7">
+              <div class="space-y-2">
+                <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">Shell spacing rhythm</p>
+                <h2 class="font-clash-regular text-[clamp(1.35rem,2.2vw,2rem)] leading-tight uppercase">Section Shell Playground</h2>
+                <p class="font-manrope text-sm leading-relaxed opacity-80 max-w-3xl">
+                  Toggle spacing, border and screen to inspect shell-level vertical rhythm and section separation.
                 </p>
-              </article>
+              </div>
+              <div class="grid gap-4 md:grid-cols-2">
+                <div class="bg-[#ef4444]/8 outline outline-1 outline-[#ef4444]/70 dark:bg-[#ef4444]/10 dark:outline-[#f87171]/80 p-4">
+                  <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">left lane</p>
+                  <p class="font-manrope text-sm leading-relaxed opacity-85 mt-2">Content block in lane A.</p>
+                </div>
+                <div class="bg-[#ef4444]/8 outline outline-1 outline-[#ef4444]/70 dark:bg-[#ef4444]/10 dark:outline-[#f87171]/80 p-4">
+                  <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-70">right lane</p>
+                  <p class="font-manrope text-sm leading-relaxed opacity-85 mt-2">Content block in lane B.</p>
+                </div>
+              </div>
             </div>
           </DsSectionBody>
         </DsSectionShell>
@@ -60,18 +71,18 @@ export const StackComparison: Story = {
       <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
         <DsSectionShell spacing="sm" :debug="true">
           <DsSectionBody :debug="true">
-            <div class="space-y-4">
+            <div class="bg-[#10b981]/8 outline outline-1 outline-[#10b981]/80 dark:bg-[#10b981]/12 dark:outline-[#34d399]/80 p-4 space-y-3">
               <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">Shell / sm</p>
-              <div class="border border-solid border-pureBlack/16 rounded-xl p-4 dark:border-pureWhite/16">Section A</div>
+              <p class="font-manrope text-sm leading-relaxed opacity-85">Compact section rhythm for dense page modules.</p>
             </div>
           </DsSectionBody>
         </DsSectionShell>
 
         <DsSectionShell spacing="lg" :debug="true">
           <DsSectionBody :debug="true">
-            <div class="space-y-4">
+            <div class="bg-[#10b981]/8 outline outline-1 outline-[#10b981]/80 dark:bg-[#10b981]/12 dark:outline-[#34d399]/80 p-4 space-y-3">
               <p class="space-grotesk-regular text-[10px] tracking-[0.16em] uppercase opacity-65">Shell / lg</p>
-              <div class="border border-solid border-pureBlack/16 rounded-xl p-4 dark:border-pureWhite/16">Section B</div>
+              <p class="font-manrope text-sm leading-relaxed opacity-85">Expanded rhythm for stage-like sections and hero blocks.</p>
             </div>
           </DsSectionBody>
         </DsSectionShell>
