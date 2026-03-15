@@ -303,9 +303,15 @@ function updateColumns(now: number, referenceGlyphs: Glyph[]) {
 }
 
 function resolveGlyphX(glyphs: Glyph[], index: number, fromGlyphs: Glyph[] | null, t: number) {
-  if (!fromGlyphs || !fromGlyphs[index])
-    return glyphs[index].x
-  return lerp(fromGlyphs[index].x, glyphs[index].x, t)
+  const toGlyph = glyphs[index]
+  if (!toGlyph)
+    return 0
+
+  const fromGlyph = fromGlyphs?.[index]
+  if (!fromGlyph)
+    return toGlyph.x
+
+  return lerp(fromGlyph.x, toGlyph.x, t)
 }
 
 function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[] | null = null, t = 1) {
@@ -316,7 +322,7 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
   const half = repeats / 2
   context.value.save()
   context.value.globalAlpha = alpha
-  context.value.fillStyle = resolveFillColor(textColor.value, 'text')
+  context.value.fillStyle = resolveFillColor(textColor.value || '#0a0a0a', 'text')
   context.value.textBaseline = 'middle'
   context.value.textAlign = 'left'
   context.value.font = `${fontWeight.value} ${fontSize}px ${fontFamily.value}`
@@ -329,8 +335,12 @@ function drawGlyphs(glyphs: Glyph[], now: number, alpha = 1, fromGlyphs: Glyph[]
     const eased = easeInOutPow(moveT, stepEase.value)
     for (let index = 0; index < glyphs.length; index++) {
       const glyph = glyphs[index]
+      if (!glyph)
+        continue
       ensureColumnIndex(column, index, glyph)
-      const offset = lerp(column.starts[index], column.targets[index], eased)
+      const start = column.starts[index] ?? 0
+      const target = column.targets[index] ?? 0
+      const offset = lerp(start, target, eased)
       const baseX = resolveGlyphX(glyphs, index, fromGlyphs, t)
       for (let i = 0; i < repeats; i++) {
         const y = centerY + offset + (i - half) * lineStep
@@ -363,7 +373,7 @@ function drawFrame(now: number) {
   }
 
   context.value.clearRect(0, 0, canvasSize.w, canvasSize.h)
-  context.value.fillStyle = resolveFillColor(backgroundColor.value, 'background')
+  context.value.fillStyle = resolveFillColor(backgroundColor.value || 'transparent', 'background')
   context.value.fillRect(0, 0, canvasSize.w, canvasSize.h)
 
   if (isFading && nextGlyphs.length) {

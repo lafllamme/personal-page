@@ -350,7 +350,7 @@ export const VisualRegressionBaseline: Story = {
     text: 'Visual Baseline',
     variant: 'accent',
     type: 'secondary',
-    size: 'lg',
+    size: 'md',
     shape: 'pill',
     tracking: 'default',
     weight: 'default',

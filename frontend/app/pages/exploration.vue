@@ -297,19 +297,30 @@ const variants = reactive<Variant[]>([
 ])
 
 const activeAccentPreset = computed(() => {
-  return accentPresets.find(preset => preset.id === activeAccentPresetId.value) ?? accentPresets[0]
+  const fallback = accentPresets[0]
+  return accentPresets.find(preset => preset.id === activeAccentPresetId.value) ?? fallback ?? {
+    id: 'fallback',
+    name: 'Fallback',
+    source: 'N/A',
+    light: '#000000',
+    dark: '#ffffff',
+    description: 'Fallback preset',
+  }
 })
 
 function applyAccentPreset(presetId: string): void {
   const preset = accentPresets.find(item => item.id === presetId)
+  const firstVariant = variants[0]
+  if (!firstVariant)
+    return
   if (!preset)
     return
 
   activeAccentPresetId.value = preset.id
-  variants[0].colors.light.accent = preset.light
-  variants[0].colors.dark.accent = preset.dark
-  variants[0].experimentDelta = `Market Pulse metric font only: Druk Bold Trial -> Zalando Sans Expanded. Accent preset: ${preset.name} (${preset.light}/${preset.dark}).`
-  variants[0].summary = `Exact Swiss Signal Orange clone with MP Zalando metric. Active accent preset: ${preset.name}.`
+  firstVariant.colors.light.accent = preset.light
+  firstVariant.colors.dark.accent = preset.dark
+  firstVariant.experimentDelta = `Market Pulse metric font only: Druk Bold Trial -> Zalando Sans Expanded. Accent preset: ${preset.name} (${preset.light}/${preset.dark}).`
+  firstVariant.summary = `Exact Swiss Signal Orange clone with MP Zalando metric. Active accent preset: ${preset.name}.`
 }
 
 applyAccentPreset(activeAccentPresetId.value)
@@ -334,9 +345,20 @@ function buildInitialEvaluations(): Record<string, VariantEvaluation> {
 const evaluations = reactive<Record<string, VariantEvaluation>>(buildInitialEvaluations())
 const exportStatus = ref<'idle' | 'copied' | 'downloaded' | 'error'>('idle')
 
+function getEvaluation(pack: string): VariantEvaluation {
+  return evaluations[pack] ?? {
+    scores: Object.fromEntries(
+      scoreCriteria.map(criteria => [criteria.key, 3]),
+    ) as Record<CriterionKey, number>,
+    likes: '',
+    concerns: '',
+    decision: '',
+  }
+}
+
 const rankedVariants = computed(() => {
   return variants.map((variant) => {
-    const scoreState = evaluations[variant.pack]
+    const scoreState = getEvaluation(variant.pack)
     const average
       = scoreCriteria.reduce((sum, criteria) => sum + scoreState.scores[criteria.key], 0)
         / scoreCriteria.length
@@ -379,7 +401,7 @@ const evaluationPayload = computed(() => {
     ranking: rankedVariants.value,
     winnerPack: rankedVariants.value[0]?.pack ?? null,
     variants: variants.map((variant) => {
-      const scoreState = evaluations[variant.pack]
+      const scoreState = getEvaluation(variant.pack)
       const average
         = scoreCriteria.reduce((sum, criteria) => sum + scoreState.scores[criteria.key], 0)
           / scoreCriteria.length
@@ -951,7 +973,7 @@ function downloadEvaluationJson(): void {
                     <span class="ml-1 opacity-60">({{ criteria.hint }})</span>
                   </label>
                   <select
-                    v-model.number="evaluations[variant.pack].scores[criteria.key]"
+                    v-model.number="evaluations[variant.pack]!.scores[criteria.key]"
                     class="border border-pureBlack/20 rounded-md border-solid bg-transparent px-2 py-1 text-xs dark:border-pureWhite/25"
                   >
                     <option v-for="value in [1, 2, 3, 4, 5]" :key="`${variant.pack}-${criteria.key}-${value}`" :value="value">
@@ -964,21 +986,21 @@ function downloadEvaluationJson(): void {
               <div class="mt-4 space-y-2">
                 <label class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">Liked</label>
                 <textarea
-                  v-model="evaluations[variant.pack].likes"
+                  v-model="evaluations[variant.pack]!.likes"
                   class="h-18 w-full border border-pureBlack/20 rounded-md border-solid bg-transparent px-2 py-2 text-xs leading-relaxed outline-none dark:border-pureWhite/25"
                   placeholder="What felt strong?"
                 />
 
                 <label class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">Concerns</label>
                 <textarea
-                  v-model="evaluations[variant.pack].concerns"
+                  v-model="evaluations[variant.pack]!.concerns"
                   class="h-18 w-full border border-pureBlack/20 rounded-md border-solid bg-transparent px-2 py-2 text-xs leading-relaxed outline-none dark:border-pureWhite/25"
                   placeholder="What needs improvement?"
                 />
 
                 <label class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">Decision</label>
                 <select
-                  v-model="evaluations[variant.pack].decision"
+                  v-model="evaluations[variant.pack]!.decision"
                   class="w-full border border-pureBlack/20 rounded-md border-solid bg-transparent px-2 py-2 text-xs dark:border-pureWhite/25"
                 >
                   <option value="">

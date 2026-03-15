@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { OverlayTextProps } from './OverlayText.model'
+import type { Easing } from 'motion-v'
 import { Motion } from 'motion-v'
 import { useClsx } from '~/composables/useClsx'
 import { OverlayTextDefaultProps } from './OverlayText.model'
@@ -36,10 +37,11 @@ const exitSlideDurationMs = 800
 const exitSlideDelayMs = 200
 const exitPathDurationMs = 700
 const exitPathDelayMs = 300
+const OVERLAY_EASE: Easing = [0.76, 0, 0.24, 1]
 
 const slideTransition = computed(() => ({
   duration: exitSlideDurationMs / 1000,
-  ease: [0.76, 0, 0.24, 1],
+  ease: OVERLAY_EASE,
   delay: isExiting.value ? exitSlideDelayMs / 1000 : 0,
 }))
 
@@ -49,7 +51,7 @@ const pathTransition = computed(() => {
   }
   return {
     duration: exitPathDurationMs / 1000,
-    ease: [0.76, 0, 0.24, 1],
+    ease: OVERLAY_EASE,
     delay: exitPathDelayMs / 1000,
   }
 })
@@ -71,9 +73,12 @@ const targetPath = computed(() => {
 function shuffleWords(list: string[]) {
   for (let i = list.length - 1; i > 0; i -= 1) {
     const j = Math.floor(Math.random() * (i + 1))
-    const tmp = list[i]
-    list[i] = list[j]
-    list[j] = tmp
+    const current = list[i]
+    const next = list[j]
+    if (typeof current !== 'string' || typeof next !== 'string')
+      continue
+    list[i] = next
+    list[j] = current
   }
   return list
 }

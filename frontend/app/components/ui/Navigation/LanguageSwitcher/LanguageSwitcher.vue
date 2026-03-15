@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import type { LanguageSwitcherProps } from './LanguageSwitcher.model'
+import type { Easing } from 'motion-v'
 import { AnimatePresence, Motion } from 'motion-v'
 import { computed, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
@@ -23,12 +24,22 @@ const sortedLanguages = computed(() => {
 })
 
 const currentIndex = computed(() => {
+  if (!sortedLanguages.value.length)
+    return 0
   const index = sortedLanguages.value.findIndex(lang => lang.code === locale.value)
   return index >= 0 ? index : 0
 })
-const currentLabel = computed(() => t(sortedLanguages.value[currentIndex.value].labelKey))
+const currentLabel = computed(() => {
+  const current = sortedLanguages.value[currentIndex.value]
+  if (!current)
+    return ''
+  return t(current.labelKey)
+})
 const labelChars = computed(() => currentLabel.value.split(''))
 const isHovered = ref(false)
+
+const SWITCHER_EASE: Easing = [0.25, 0.46, 0.45, 0.94]
+const ENTER_EASE: Easing = [0.22, 1, 0.36, 1]
 
 const containerVariants = {
   hidden: { opacity: 1 },
@@ -52,14 +63,14 @@ const charVariants = {
     y: -30,
     transition: {
       duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: SWITCHER_EASE,
     },
   },
   exit: {
     y: 2,
     transition: {
       duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: SWITCHER_EASE,
     },
   },
 }
@@ -70,14 +81,14 @@ const charVariants2 = {
     y: 0,
     transition: {
       duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: SWITCHER_EASE,
     },
   },
   exit: {
     y: 30,
     transition: {
       duration: 0.25,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      ease: SWITCHER_EASE,
     },
   },
 }
@@ -88,13 +99,23 @@ function setLanguage(code: string) {
 }
 
 function goNext() {
+  if (!sortedLanguages.value.length)
+    return
   const nextIndex = (currentIndex.value + 1) % sortedLanguages.value.length
-  setLanguage(sortedLanguages.value[nextIndex].code)
+  const nextLanguage = sortedLanguages.value[nextIndex]
+  if (!nextLanguage)
+    return
+  setLanguage(nextLanguage.code)
 }
 
 function goPrev() {
+  if (!sortedLanguages.value.length)
+    return
   const prevIndex = (currentIndex.value - 1 + sortedLanguages.value.length) % sortedLanguages.value.length
-  setLanguage(sortedLanguages.value[prevIndex].code)
+  const prevLanguage = sortedLanguages.value[prevIndex]
+  if (!prevLanguage)
+    return
+  setLanguage(prevLanguage.code)
 }
 </script>
 
@@ -141,7 +162,7 @@ function goPrev() {
             :initial="{ opacity: 0, y: 6 }"
             :animate="{ opacity: 1, y: 0 }"
             :exit="{ opacity: 0, y: -6 }"
-            :transition="{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }"
+            :transition="{ duration: 0.2, ease: ENTER_EASE }"
           >
             <span
               class="relative inline-block h-[1.6em] overflow-hidden"

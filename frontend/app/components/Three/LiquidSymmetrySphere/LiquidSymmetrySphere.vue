@@ -417,7 +417,7 @@ function measureFrames({ warmup = WARMUP_FRAMES, measure = MEASURE_FRAMES } = {}
       if (count >= warmup + measure) {
         samples.sort((a, b) => a - b)
         const avg = samples.reduce((sum, v) => sum + v, 0) / samples.length
-        const p90 = samples[Math.floor(samples.length * 0.9)]
+        const p90 = samples[Math.floor(samples.length * 0.9)] ?? TARGET_FRAME_MS
         resolve({ avgMs: avg, p90Ms: p90 })
         return
       }
@@ -436,8 +436,9 @@ async function autoQualityBoot() {
   const measured = pickPreset(stats)
 
   const cachedPreset = cached?.preset
-  const chosen = cachedPreset
+  const chosen: QualityPresetName = cachedPreset
     ? QUALITY_ORDER[Math.max(QUALITY_ORDER.indexOf(cachedPreset), QUALITY_ORDER.indexOf(measured))]
+      ?? measured
     : measured
 
   if (chosen !== currentPresetName.value) {

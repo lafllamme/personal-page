@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { animate, scroll, spring } from 'motion-v'
+import { animate, scroll } from 'motion-v'
 
 interface HorizontalScrollItem {
   title: string
@@ -64,16 +64,24 @@ onMounted(async () => {
   if (!section)
     return
 
-  const controls = animate(
-    ulRef.value,
-    {
-      transform: ['none', `translateX(-${(itemCount - 1) * 100}svw)`],
+  const progressFrom: number = 0
+  const progressTo: number = 1
+  const controls = animate(progressFrom, progressTo, {
+    ease: 'easeInOut',
+    onUpdate: (value) => {
+      if (!ulRef.value)
+        return
+      const percentage = (itemCount - 1) * 100 * value
+      ulRef.value.style.transform = `translateX(-${percentage}svw)`
     },
-    { easing: spring() },
-  )
+  })
 
   cleanupFns.push(scroll(controls, { target: section }))
   cleanupFns.push(() => controls.stop())
+  cleanupFns.push(() => {
+    if (ulRef.value)
+      ulRef.value.style.transform = 'none'
+  })
 
   const segmentLength = 1 / itemCount
   const headers = listItems.map(item => item.querySelector('h2'))
@@ -82,7 +90,14 @@ onMounted(async () => {
     if (!header)
       return
 
-    const control = animate(header, { x: [800, -800] }, { easing: 'linear' })
+    const segmentFrom: number = 0
+    const segmentTo: number = 1
+    const control = animate(segmentFrom, segmentTo, {
+      ease: 'linear',
+      onUpdate: (value) => {
+        header.style.transform = `translateX(${800 - (1600 * value)}px)`
+      },
+    })
 
     cleanupFns.push(
       scroll(control, {
@@ -94,6 +109,9 @@ onMounted(async () => {
       }),
     )
     cleanupFns.push(() => control.stop())
+    cleanupFns.push(() => {
+      header.style.transform = ''
+    })
   })
 })
 

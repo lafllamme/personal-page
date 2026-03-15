@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Easing } from 'motion-v'
 import {
   breakpointsTailwind,
   useBreakpoints,
@@ -77,6 +78,7 @@ const canRenderMetaballs = computed(() => {
 const canAnimateMetaballs = computed(() => canRenderMetaballs.value && !isMenuOpen.value)
 const canRevealMetaballs = computed(() => isHeadlineAnimationDone.value)
 const shouldAnimatePointer = computed(() => isHeroVisible.value && isLgUp.value && isPointerActive.value)
+const HERO_EASE: Easing = [0.33, 1, 0.68, 1]
 
 /**
  * Motion config
@@ -87,7 +89,7 @@ const headlineMotion = {
     y: '0%',
     transition: {
       duration: 0.75,
-      ease: [0.33, 1, 0.68, 1],
+      ease: HERO_EASE,
       delay: 0,
     },
   },

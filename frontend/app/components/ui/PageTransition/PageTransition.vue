@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import gsap from 'gsap'
+import type { ComponentPublicInstance, VNodeRef } from 'vue'
 import { START_LOCATION } from 'vue-router'
 
 const LINE_COUNT = 17
@@ -25,18 +26,22 @@ onBeforeUpdate(() => {
   backRefs.value = []
 })
 
-function setLineRef(el: HTMLElement | null) {
-  if (el)
+function isHTMLElementRef(el: Element | ComponentPublicInstance | null): el is HTMLElement {
+  return el instanceof HTMLElement
+}
+
+const setLineRef: VNodeRef = (el) => {
+  if (isHTMLElementRef(el))
     lineRefs.value.push(el)
 }
 
-function setLineHRef(el: HTMLElement | null) {
-  if (el)
+const setLineHRef: VNodeRef = (el) => {
+  if (isHTMLElementRef(el))
     lineHRefs.value.push(el)
 }
 
-function setBackRef(el: HTMLElement | null) {
-  if (el)
+const setBackRef: VNodeRef = (el) => {
+  if (isHTMLElementRef(el))
     backRefs.value.push(el)
 }
 
@@ -91,9 +96,21 @@ const variants: TransitionVariant[] = [
     color: 'var(--un-preset-radix-mint8)',
   },
 ]
+const DEFAULT_VARIANT: TransitionVariant = {
+  id: 'center',
+  axis: 'yPercent',
+  enterFrom: 100,
+  exitTo: -100,
+  inDuration: 0.5,
+  outDuration: 0.53,
+  exitDelay: 0.2,
+  delayForIndex: (index, total) => Math.abs((index - (total - 1) / 2) * 0.03),
+  color: 'var(--un-preset-radix-teal8)',
+}
 
-function pickVariant() {
-  return variants[Math.floor(Math.random() * variants.length)]
+function pickVariant(): TransitionVariant {
+  const variant = variants[Math.floor(Math.random() * variants.length)]
+  return variant ?? DEFAULT_VARIANT
 }
 
 function setTransitionColor(color: string) {
@@ -106,6 +123,8 @@ function triggerBackBlock() {
     return
 
   const block = blocks[Math.floor(Math.random() * blocks.length)]
+  if (!block)
+    return
   const timeline = gsap.timeline()
   timeline
     .set(block, { scaleY: 0, transformOrigin: 'bottom' })

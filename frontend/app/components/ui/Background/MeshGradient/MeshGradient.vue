@@ -21,11 +21,23 @@ import {
 import { shaderGradientSphereFragment, shaderGradientSphereVertex } from './shaders'
 
 interface NumericUniform { value: number }
-type ShaderUniformMap = Record<string, NumericUniform>
+interface ShaderUniformMap {
+  uTime: NumericUniform
+  uSpeed: NumericUniform
+  uLoadingTime: NumericUniform
+  uNoiseDensity: NumericUniform
+  uNoiseStrength: NumericUniform
+  uFrequency: NumericUniform
+  uAmplitude: NumericUniform
+  uIntensity: NumericUniform
+  uLoop: NumericUniform
+  uLoopDuration: NumericUniform
+}
 type ColorUniformMap = Record<
   'uC1r' | 'uC1g' | 'uC1b' | 'uC2r' | 'uC2g' | 'uC2b' | 'uC3r' | 'uC3g' | 'uC3b',
   NumericUniform
 >
+type BeforeCompileShader = Parameters<NonNullable<MeshPhysicalMaterial['onBeforeCompile']>>[0]
 
 const props = withDefaults(defineProps<MeshGradientProps>(), meshGradientDefaults)
 
@@ -197,7 +209,7 @@ function buildGeometry() {
 
 function buildMaterial() {
   material.value?.dispose()
-  material.value = new MeshPhysicalMaterial({
+  const nextMaterial = new MeshPhysicalMaterial({
     metalness: 0.2,
     roughness: clamp(1 - props.reflection, 0, 1),
     envMapIntensity: props.brightness,
@@ -205,18 +217,19 @@ function buildMaterial() {
     transparent: false,
     depthWrite: false,
     wireframe: props.wireframe,
-    onBeforeCompile: (shader) => {
-      if (shaderUniforms.value && colorUniforms.value) {
-        shader.uniforms = {
-          ...shader.uniforms,
-          ...shaderUniforms.value,
-          ...colorUniforms.value,
-        }
-      }
-      shader.vertexShader = shaderGradientSphereVertex
-      shader.fragmentShader = shaderGradientSphereFragment
-    },
   })
+  nextMaterial.onBeforeCompile = (shader: BeforeCompileShader) => {
+    if (shaderUniforms.value && colorUniforms.value) {
+      shader.uniforms = {
+        ...shader.uniforms,
+        ...shaderUniforms.value,
+        ...colorUniforms.value,
+      }
+    }
+    shader.vertexShader = shaderGradientSphereVertex
+    shader.fragmentShader = shaderGradientSphereFragment
+  }
+  material.value = nextMaterial
   if (envTexture.value)
     material.value.envMap = envTexture.value
 }
@@ -257,7 +270,10 @@ function createShaderUniforms(): ShaderUniformMap {
 }
 
 function createColorUniforms(colors: string[]): ColorUniformMap {
-  const [c1, c2, c3] = colors.map(hex => hexToUnitColor(hex))
+  const normalized = colors.map(hex => hexToUnitColor(hex || '#000000'))
+  const c1 = normalized[0] ?? hexToUnitColor('#000000')
+  const c2 = normalized[1] ?? hexToUnitColor('#000000')
+  const c3 = normalized[2] ?? hexToUnitColor('#000000')
 
   return {
     uC1r: { value: c1.r },
@@ -272,13 +288,13 @@ function createColorUniforms(colors: string[]): ColorUniformMap {
   }
 }
 
-function applyColorUniforms([color1, color2, color3]: string[]) {
+function applyColorUniforms([color1, color2, color3]: Array<string | undefined>) {
   if (!colorUniforms.value)
     return
 
-  const c1 = hexToUnitColor(color1)
-  const c2 = hexToUnitColor(color2)
-  const c3 = hexToUnitColor(color3)
+  const c1 = hexToUnitColor(color1 || '#000000')
+  const c2 = hexToUnitColor(color2 || '#000000')
+  const c3 = hexToUnitColor(color3 || '#000000')
 
   colorUniforms.value.uC1r.value = c1.r
   colorUniforms.value.uC1g.value = c1.g

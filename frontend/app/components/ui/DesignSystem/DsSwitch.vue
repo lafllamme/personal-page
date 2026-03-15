@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Easing } from 'motion-v'
 import { Motion } from 'motion-v'
 import { computed, ref, toRefs, useAttrs, watch } from 'vue'
 import DsIcon from './DsIcon.vue'
@@ -132,11 +133,12 @@ const labelClass = computed(() => [
   'ui-switch-label',
   disabled.value && 'ui-switch-label-disabled',
 ])
+const switchThumbEase: Easing = [0.42, 0, 0.58, 1]
 
 const thumbAnimate = computed(() => ({
   width: isPressed.value ? 'var(--ds-switch-thumb-size-pressed)' : 'var(--ds-switch-thumb-size)',
   height: 'var(--ds-switch-thumb-size)',
-  transition: { duration: 0.14, ease: 'easeInOut' },
+  transition: { duration: 0.14, ease: switchThumbEase },
 }))
 
 function clearPressReleaseTimer(): void {

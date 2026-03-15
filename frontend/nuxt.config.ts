@@ -11,7 +11,6 @@ const fonts: NuxtFontsOptions = {
   provider: 'google',
   defaults: {
     preload: true,
-    display: 'swap',
     weights: ['400'],
     styles: ['normal'],
     subsets: ['latin', 'latin-ext'],

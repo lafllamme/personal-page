@@ -76,6 +76,13 @@ useHead({
 })
 
 const presets = computed(() => data.value?.meta.presets ?? [])
+const metaItemsExcluded = computed<number | null>(() => {
+  if (!data.value)
+    return null
+
+  const meta = data.value.meta as DigestMeta & { itemsExcluded?: number }
+  return typeof meta.itemsExcluded === 'number' ? meta.itemsExcluded : null
+})
 
 const filteredItems = computed(() => data.value?.items ?? [])
 
@@ -414,8 +421,8 @@ onMounted(() => {
             <div>Window Hours: {{ data.meta.windowHours }}</div>
             <div>Sources: {{ data.meta.sourcesSucceeded }} / {{ data.meta.sourcesRequested }}</div>
             <div>Items: {{ data.meta.itemsReturned }} / {{ data.meta.itemsTotal }}</div>
-            <div v-if="data.meta.itemsExcluded">
-              Excluded: {{ data.meta.itemsExcluded }}
+            <div v-if="metaItemsExcluded !== null">
+              Excluded: {{ metaItemsExcluded }}
             </div>
           </div>
         </div>

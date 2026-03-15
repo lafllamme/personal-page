@@ -38,6 +38,10 @@ const emit = defineEmits<{
 }>()
 
 const state = useVModel(props, 'modelValue', emit, { deep: true, passive: true })
+const resolvedState = computed<Required<CaveTunnelProps>>(() => ({
+  ...caveTunnelDefaults,
+  ...(state.value || {}),
+}))
 
 const CHUNK_WIDTH = 250
 const CHUNK_LENGTH = 60
@@ -87,7 +91,7 @@ async function copySettingsJson() {
 }
 
 function getElevation(x: number, z: number, isTop: boolean) {
-  const settings = state.value
+  const settings = resolvedState.value
   const offset = isTop ? 9999 : 0
   let y = noise2D((x + offset) / settings.scale, (z + offset) / settings.scale) * settings.heightMultiplier
 
@@ -107,7 +111,7 @@ function createChunk(index: number): CaveChunk {
   const geometry = new PlaneGeometry(CHUNK_WIDTH, CHUNK_LENGTH, SEGMENTS_W, SEGMENTS_L)
   geometry.rotateX(-Math.PI / 2)
 
-  const settings = state.value
+  const settings = resolvedState.value
   const matGround = new MeshStandardMaterial({
     color: settings.groundColor,
     roughness: 0.9,
@@ -152,6 +156,8 @@ function updateChunk(chunk: CaveChunk) {
   const posG = geoG.attributes.position
   const geoC = chunk.meshCeil.geometry
   const posC = geoC.attributes.position
+  if (!posG || !posC)
+    return
 
   for (let i = 0; i < posG.count; i++) {
     const x = posG.getX(i)
@@ -183,7 +189,7 @@ function syncCeilingVisibility() {
   if (!chunks.length)
     return
 
-  const settings = state.value
+  const settings = resolvedState.value
   chunks.forEach((chunk) => {
     chunk.meshCeil.visible = settings.showCeiling
   })
@@ -193,7 +199,7 @@ function syncShading() {
   if (!chunks.length)
     return
 
-  const settings = state.value
+  const settings = resolvedState.value
   chunks.forEach((chunk) => {
     chunk.meshGround.material.flatShading = settings.flatShading
     chunk.meshGround.material.needsUpdate = true
@@ -208,7 +214,7 @@ function syncWireframe() {
   if (!chunks.length)
     return
 
-  const settings = state.value
+  const settings = resolvedState.value
   chunks.forEach((chunk) => {
     chunk.meshGround.material.wireframe = settings.wireframe
     chunk.meshCeil.material.wireframe = settings.wireframe
@@ -219,7 +225,7 @@ function syncMaterialColors() {
   if (!chunks.length)
     return
 
-  const settings = state.value
+  const settings = resolvedState.value
   chunks.forEach((chunk) => {
     chunk.meshGround.material.color.set(settings.groundColor)
     chunk.meshCeil.material.color.set(settings.ceilingColor)
@@ -231,7 +237,7 @@ function syncSceneAtmosphere() {
   if (!scene)
     return
 
-  const settings = state.value
+  const settings = resolvedState.value
   if (scene.background instanceof Color)
     scene.background.set(settings.bgColor)
   else
@@ -239,7 +245,7 @@ function syncSceneAtmosphere() {
 }
 
 function syncFog() {
-  const settings = state.value
+  const settings = resolvedState.value
   if (!fogRef.value)
     fogRef.value = new FogExp2(settings.bgColor, settings.fogDensity)
 
@@ -284,7 +290,7 @@ const { pause, resume } = useRafFn(({ delta }) => {
     return
 
   const dt = delta / 1000
-  camera.position.z -= state.value.speed * dt
+  camera.position.z -= resolvedState.value.speed * dt
   camLightRef.value?.position.copy(camera.position)
 
   let maxIndex = 0
@@ -311,36 +317,36 @@ watch(documentVisibility, (state) => {
 }, { immediate: true })
 
 watch(
-  () => state.value.showCeiling,
+  () => resolvedState.value.showCeiling,
   () => syncCeilingVisibility(),
   { immediate: true },
 )
 
 watch(
-  () => state.value.flatShading,
+  () => resolvedState.value.flatShading,
   () => syncShading(),
   { immediate: true },
 )
 
 watch(
-  () => state.value.wireframe,
+  () => resolvedState.value.wireframe,
   () => syncWireframe(),
   { immediate: true },
 )
 
 watch(
-  () => [state.value.scale, state.value.heightMultiplier, state.value.detailStrength, state.value.valleyWidth],
+  () => [resolvedState.value.scale, resolvedState.value.heightMultiplier, resolvedState.value.detailStrength, resolvedState.value.valleyWidth],
   () => refreshTerrain(),
 )
 
 watch(
-  () => [state.value.groundColor, state.value.ceilingColor],
+  () => [resolvedState.value.groundColor, resolvedState.value.ceilingColor],
   () => syncMaterialColors(),
   { immediate: true },
 )
 
 watch(
-  () => [state.value.bgColor, state.value.fogDensity],
+  () => [resolvedState.value.bgColor, resolvedState.value.fogDensity],
   () => {
     syncSceneAtmosphere()
     syncFog()
@@ -374,7 +380,7 @@ onBeforeUnmount(() => {
         :antialias="true"
         :alpha="false"
         :clear-alpha="1"
-        :clear-color="state.bgColor"
+        :clear-color="resolvedState.bgColor"
         render-mode="always"
         power-preference="high-performance"
         precision="highp"
@@ -392,12 +398,12 @@ onBeforeUnmount(() => {
         <TresHemisphereLight
           color="#ffffff"
           ground-color="#444444"
-          :intensity="state.ambientInt"
+          :intensity="resolvedState.ambientInt"
         />
         <TresPointLight
           ref="camLightRef"
           color="#ffaa00"
-          :intensity="state.camLightInt"
+          :intensity="resolvedState.camLightInt"
           :distance="120"
           :decay="1.5"
           :position="[0, 0, CAMERA_START_Z]"
@@ -445,7 +451,7 @@ onBeforeUnmount(() => {
         <div class="grid gap-4">
           <div class="grid gap-2">
             <label class="text-xs text-muted-foreground font-semibold">
-              Speed: {{ state.speed.toFixed(1) }}
+              Speed: {{ resolvedState.speed.toFixed(1) }}
             </label>
             <input v-model.number="state.speed" type="range" min="0" max="50" step="0.1">
           </div>

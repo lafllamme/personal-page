@@ -420,13 +420,22 @@ function syncTransmissionBackdrop() {
   if (!material)
     return
 
-  if (material.uniforms.envMap.value !== environmentMap.value) {
-    material.uniforms.envMap.value = environmentMap.value
+  const envMapUniform = material.uniforms.envMap
+  if (!envMapUniform)
+    return
+
+  if (envMapUniform.value !== environmentMap.value) {
+    envMapUniform.value = environmentMap.value
     material.needsUpdate = true
   }
 
-  material.uniforms.backgroundBlurriness.value = settings.environment.backgroundBlurriness
-  material.uniforms.backgroundIntensity.value = settings.environment.backgroundIntensity
+  const backgroundBlurrinessUniform = material.uniforms.backgroundBlurriness
+  if (backgroundBlurrinessUniform)
+    backgroundBlurrinessUniform.value = settings.environment.backgroundBlurriness
+
+  const backgroundIntensityUniform = material.uniforms.backgroundIntensity
+  if (backgroundIntensityUniform)
+    backgroundIntensityUniform.value = settings.environment.backgroundIntensity
 }
 
 function applyBackgroundSceneSettings() {
@@ -813,8 +822,9 @@ function handleRaycast() {
   raycaster.setFromCamera(pointerPos, cameraRef.value)
   raycastHits.length = 0
   raycaster.intersectObject(mousePlane.value, false, raycastHits)
-  if (raycastHits.length > 0)
-    mouseTarget.copy(raycastHits[0].point)
+  const firstHit = raycastHits[0]
+  if (firstHit)
+    mouseTarget.copy(firstHit.point)
 }
 
 function updateMaterialReveal(deltaMs: number) {
@@ -843,12 +853,17 @@ function stepSimulation({ delta, timestamp }: { delta: number, timestamp: number
   world.step()
 
   const timeS = timestamp / 1000
-  for (let i = 0; i < bodies.length; i++)
-    bodies[i].updatePhysics(timeS)
+  for (let i = 0; i < bodies.length; i++) {
+    const body = bodies[i]
+    if (body)
+      body.updatePhysics(timeS)
+  }
 
   metaballs.value.reset()
   for (let i = 0; i < bodies.length; i++) {
     const b = bodies[i]
+    if (!b)
+      continue
     const p = b.getMetaPos()
     metaballs.value.addBall(p.x, p.y, p.z, b.strength, b.subtract, b.color)
   }
