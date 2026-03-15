@@ -6,7 +6,8 @@ import DsDivider from '@/components/ui/DesignSystem/DsDivider.vue'
 import DsField from '@/components/ui/DesignSystem/DsField.vue'
 import DsHeadingBlock from '@/components/ui/DesignSystem/DsHeadingBlock.vue'
 import DsInput from '@/components/ui/DesignSystem/DsInput.vue'
-import DsSectionContainer from '@/components/ui/DesignSystem/DsSectionContainer.vue'
+import DsSectionBody from '@/components/ui/DesignSystem/DsSectionBody.vue'
+import DsSectionShell from '@/components/ui/DesignSystem/DsSectionShell.vue'
 import DsSectionHeader from '@/components/ui/DesignSystem/DsSectionHeader.vue'
 import DsSelect from '@/components/ui/DesignSystem/DsSelect.vue'
 import DsTextarea from '@/components/ui/DesignSystem/DsTextarea.vue'
@@ -33,7 +34,9 @@ const selectOptions = [
 
 <template>
   <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
-    <DsSectionContainer as="header" spacing="lg" layout="block">
+    <DsSectionShell as="header" spacing="lg">
+      <DsSectionBody>
+        <div class="space-y-6 md:space-y-7">
       <p class="space-grotesk-regular text-[10px] tracking-[0.2em] uppercase opacity-65">
         P04-MPZ01 · Foundation Build
       </p>
@@ -43,9 +46,13 @@ const selectOptions = [
       <p class="font-manrope mt-4 max-w-3xl text-sm leading-relaxed opacity-78 md:text-base">
         Pure black and pure white as base. Accent remains controlled via Radix Teal and is only used for interaction and hierarchy.
       </p>
-    </DsSectionContainer>
+            </div>
+      </DsSectionBody>
+    </DsSectionShell>
 
-    <DsSectionContainer layout="block">
+    <DsSectionShell>
+      <DsSectionBody>
+        <div class="space-y-6 md:space-y-7">
       <div class="mb-7">
         <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
           foundation
@@ -97,9 +104,13 @@ const selectOptions = [
           </div>
         </div>
       </article>
-    </DsSectionContainer>
+            </div>
+      </DsSectionBody>
+    </DsSectionShell>
 
-    <DsSectionContainer layout="block">
+    <DsSectionShell>
+      <DsSectionBody>
+        <div class="space-y-6 md:space-y-7">
       <div class="mb-7">
         <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
           foundation
@@ -119,9 +130,13 @@ const selectOptions = [
           title-size="2xl"
         />
       </article>
-    </DsSectionContainer>
+            </div>
+      </DsSectionBody>
+    </DsSectionShell>
 
-    <DsSectionContainer layout="block">
+    <DsSectionShell>
+      <DsSectionBody>
+        <div class="space-y-6 md:space-y-7">
       <div class="mb-7">
         <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
           foundation
@@ -132,17 +147,25 @@ const selectOptions = [
       </div>
 
       <DsColorScheme />
-    </DsSectionContainer>
+            </div>
+      </DsSectionBody>
+    </DsSectionShell>
 
-    <DsSectionContainer layout="block">
+    <DsSectionShell>
+      <DsSectionBody>
+        <div class="space-y-6 md:space-y-7">
       <DsSectionHeader
         kicker="components"
         title="Buttons"
       />
       <DsButtonMatrixPreview />
-    </DsSectionContainer>
+            </div>
+      </DsSectionBody>
+    </DsSectionShell>
 
-    <DsSectionContainer layout="block">
+    <DsSectionShell>
+      <DsSectionBody>
+        <div class="space-y-6 md:space-y-7">
       <div class="mb-7">
         <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
           foundation
@@ -230,9 +253,13 @@ const selectOptions = [
           </DsField>
         </div>
       </DsCard>
-    </DsSectionContainer>
+            </div>
+      </DsSectionBody>
+    </DsSectionShell>
 
-    <DsSectionContainer layout="block">
+    <DsSectionShell>
+      <DsSectionBody>
+        <div class="space-y-6 md:space-y-7">
       <div class="mb-7">
         <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
           foundation
@@ -291,6 +318,8 @@ const selectOptions = [
           </DsTypography>
         </div>
       </DsCard>
-    </DsSectionContainer>
+            </div>
+      </DsSectionBody>
+    </DsSectionShell>
   </div>
 </template>

@@ -11,7 +11,7 @@ const SELECT_OPTIONS = [
 ]
 
 const meta = {
-  title: 'Design System/Components/DsSelect',
+  title: 'Design System/Form/DsSelect',
   component: DsSelect,
   tags: ['autodocs'],
   args: {

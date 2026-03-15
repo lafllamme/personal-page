@@ -3,7 +3,7 @@ import { nextTick, onMounted, ref } from 'vue'
 import DsTextarea from './DsTextarea.vue'
 
 const meta = {
-  title: 'Design System/Components/DsTextarea',
+  title: 'Design System/Form/DsTextarea',
   component: DsTextarea,
   tags: ['autodocs'],
   args: {

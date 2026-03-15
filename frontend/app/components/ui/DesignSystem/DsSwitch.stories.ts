@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import DsSwitch from './DsSwitch.vue'
 
 const meta = {
-  title: 'Design System/Components/DsSwitch',
+  title: 'Design System/Form/DsSwitch',
   component: DsSwitch,
   tags: ['autodocs'],
   args: {

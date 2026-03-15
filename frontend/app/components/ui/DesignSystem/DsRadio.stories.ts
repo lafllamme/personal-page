@@ -9,7 +9,7 @@ const radioOptions = [
 ]
 
 const meta = {
-  title: 'Design System/Components/DsRadio',
+  title: 'Design System/Form/DsRadio',
   component: DsRadio,
   tags: ['autodocs'],
   args: {

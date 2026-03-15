@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import DsCheckbox from './DsCheckbox.vue'
 
 const meta = {
-  title: 'Design System/Components/DsCheckbox',
+  title: 'Design System/Form/DsCheckbox',
   component: DsCheckbox,
   tags: ['autodocs'],
   args: {

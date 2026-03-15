@@ -3,7 +3,8 @@ import { h } from 'vue'
 import DsButton from './DsButton.vue'
 import DsButtonIconVariantsPreview from './DsButtonIconVariantsPreview.vue'
 import DsButtonMatrixPreview from './DsButtonMatrixPreview.vue'
-import DsSectionContainer from './DsSectionContainer.vue'
+import DsSectionBody from './DsSectionBody.vue'
+import DsSectionShell from './DsSectionShell.vue'
 import DsSpacingSizingPreview from './DsSpacingSizingPreview.vue'
 
 const meta = {
@@ -74,17 +75,21 @@ const meta = {
     disabled: { control: 'boolean' },
   },
   render: args => ({
-    components: { DsButton, DsSectionContainer },
+    components: { DsButton, DsSectionShell, DsSectionBody },
     setup() {
       return { args }
     },
     template: `
       <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
-        <DsSectionContainer layout="block" :full-viewport="false" :bordered="false">
-          <div class="flex justify-center">
-            <DsButton v-bind="args" />
-          </div>
-        </DsSectionContainer>
+        <DsSectionShell :bordered="false">
+          <DsSectionBody>
+            <div class="space-y-6 md:space-y-7">
+              <div class="flex justify-center">
+                <DsButton v-bind="args" />
+              </div>
+            </div>
+          </DsSectionBody>
+        </DsSectionShell>
       </div>
     `,
   }),

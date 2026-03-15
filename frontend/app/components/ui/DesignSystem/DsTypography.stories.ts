@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { h } from 'vue'
-import DsSectionContainer from './DsSectionContainer.vue'
+import DsSectionBody from './DsSectionBody.vue'
+import DsSectionShell from './DsSectionShell.vue'
 import DsTypography from './DsTypography.vue'
 import DsTypographyFoundationPreview from './DsTypographyFoundationPreview.vue'
 
@@ -25,7 +26,7 @@ function createScaleStory(
       as,
     },
     render: (args: Record<string, unknown>) => ({
-      components: { DsSectionContainer, DsTypography },
+      components: { DsSectionShell, DsSectionBody, DsTypography },
       setup() {
         return {
           args,
@@ -36,26 +37,28 @@ function createScaleStory(
       },
       template: `
         <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
-          <DsSectionContainer layout="block">
-            <div class="space-y-5">
-              <div
-                v-for="size in sizes"
-                :key="size"
-                class="border border-pureBlack/14 rounded-xl border-solid p-4 dark:border-pureWhite/16"
-              >
-                <DsTypography as="p" role="meta" size="xs" tone="muted">
-                  {{ role }} / {{ size }} • type-{{ role }}-{{ size }}
-                </DsTypography>
-                <DsTypography
-                  v-bind="args"
-                  :role="role"
-                  :size="size"
+          <DsSectionShell>
+            <DsSectionBody>
+              <div class="space-y-5">
+                <div
+                  v-for="size in sizes"
+                  :key="size"
+                  class="border border-pureBlack/14 rounded-xl border-solid p-4 dark:border-pureWhite/16"
                 >
-                  {{ sample }}
-                </DsTypography>
+                  <DsTypography as="p" role="meta" size="xs" tone="muted">
+                    {{ role }} / {{ size }} • type-{{ role }}-{{ size }}
+                  </DsTypography>
+                  <DsTypography
+                    v-bind="args"
+                    :role="role"
+                    :size="size"
+                  >
+                    {{ sample }}
+                  </DsTypography>
+                </div>
               </div>
-            </div>
-          </DsSectionContainer>
+            </DsSectionBody>
+          </DsSectionShell>
         </div>
       `,
     }),
@@ -66,7 +69,7 @@ function createScaleStory(
 }
 
 const meta = {
-  title: 'Design System/Components/DsTypography',
+  title: 'Design System/Core/DsTypography',
   component: DsTypography,
   tags: ['autodocs'],
   args: {
@@ -138,62 +141,65 @@ export const SignalScale: Story = createScaleStory('signal', 'p')
 
 export const DesignSystemSection: Story = {
   render: () => ({
-    components: { DsSectionContainer, DsTypography },
+    components: { DsSectionShell, DsSectionBody, DsTypography },
     template: `
       <div class="bg-pureWhite color-pureBlack dark:bg-pureBlack dark:color-pureWhite">
-        <DsSectionContainer layout="block">
-          <div class="mb-7">
-            <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
-              foundation
-            </p>
-            <h2 class="font-clash-regular mt-2 text-[clamp(1.45rem,2.6vw,2.35rem)] leading-tight">
-              Typography
-            </h2>
-          </div>
-
-          <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
-            <div class="grid gap-4 md:grid-cols-2">
-              <div class="grid gap-2">
-                <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
-                  display
-                </DsTypography>
-                <DsTypography as="h2" role="display" size="3xl" uppercase>
-                  Signal Desk
-                </DsTypography>
+        <DsSectionShell>
+          <DsSectionBody>
+            <div class="space-y-6 md:space-y-7">
+              <div class="mb-7">
+                <p class="space-grotesk-regular text-[10px] tracking-[0.18em] uppercase opacity-65">
+                  foundation
+                </p>
+                <h2 class="font-clash-regular mt-2 text-[clamp(1.45rem,2.6vw,2.35rem)] leading-tight">
+                  Typography
+                </h2>
               </div>
+              <article class="border border-pureBlack/16 rounded-xl border-solid p-5 dark:border-pureWhite/16">
+                <div class="grid gap-4 md:grid-cols-2">
+                  <div class="grid gap-2">
+                    <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
+                      display
+                    </DsTypography>
+                    <DsTypography as="h2" role="display" size="3xl" uppercase>
+                      Signal Desk
+                    </DsTypography>
+                  </div>
 
-              <div class="grid gap-2">
-                <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
-                  headline
-                </DsTypography>
-                <DsTypography as="h3" role="headline" size="2xl" uppercase>
-                  Editorial hierarchy stays strict
-                </DsTypography>
-              </div>
+                  <div class="grid gap-2">
+                    <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
+                      headline
+                    </DsTypography>
+                    <DsTypography as="h3" role="headline" size="2xl" uppercase>
+                      Editorial hierarchy stays strict
+                    </DsTypography>
+                  </div>
 
-              <div class="grid gap-2">
-                <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
-                  body
-                </DsTypography>
-                <DsTypography as="p" role="body" size="md">
-                  Teams evaluate AI systems not only by quality, but by auditability, rollback speed, and operational clarity.
-                </DsTypography>
-              </div>
+                  <div class="grid gap-2">
+                    <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
+                      body
+                    </DsTypography>
+                    <DsTypography as="p" role="body" size="md">
+                      Teams evaluate AI systems not only by quality, but by auditability, rollback speed, and operational clarity.
+                    </DsTypography>
+                  </div>
 
-              <div class="grid gap-2">
-                <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
-                  quote + signal
-                </DsTypography>
-                <DsTypography as="blockquote" role="quote" size="lg">
-                  “Consistency is not visual sameness, it is predictable decision flow.”
-                </DsTypography>
-                <DsTypography as="p" role="signal" size="sm" uppercase>
-                  Market Pulse 64
-                </DsTypography>
-              </div>
+                  <div class="grid gap-2">
+                    <DsTypography as="p" role="meta" size="xs" tone="muted" uppercase>
+                      quote + signal
+                    </DsTypography>
+                    <DsTypography as="blockquote" role="quote" size="lg">
+                      “Consistency is not visual sameness, it is predictable decision flow.”
+                    </DsTypography>
+                    <DsTypography as="p" role="signal" size="sm" uppercase>
+                      Market Pulse 64
+                    </DsTypography>
+                  </div>
+                </div>
+              </article>
             </div>
-          </article>
-        </DsSectionContainer>
+          </DsSectionBody>
+        </DsSectionShell>
       </div>
     `,
   }),

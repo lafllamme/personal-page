@@ -3,7 +3,7 @@ import { nextTick, onMounted, ref } from 'vue'
 import DsInput from './DsInput.vue'
 
 const meta = {
-  title: 'Design System/Components/DsInput',
+  title: 'Design System/Form/DsInput',
   component: DsInput,
   tags: ['autodocs'],
   args: {
